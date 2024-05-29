@@ -13,7 +13,7 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner'
-import { getRentalRates } from './services/rates'
+import { getRentalRates, updateRentalRate } from './services/rates'
 
 const router = express.Router()
 
@@ -67,6 +67,14 @@ router.delete(
   deleteRental
 )
 
+router.patch(
+  '/:rentalId/pricing',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  updateRentalRate
+)
+
 router.get(
   '/:rentalId/basic-info',
   isOriginValid,
@@ -74,10 +82,5 @@ router.get(
   getRentalBasicInfo
 )
 //rates
-router.get(
-  '/:rentalId/pricing',
-  isOriginValid,
-  isUserLoggedIn,
-  getRentalRates
-)
+router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
 export default router
