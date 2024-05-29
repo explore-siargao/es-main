@@ -1,6 +1,7 @@
 {
   "version": "0.3.0",
-  "name": "explore-siargao",
+  "name": "es-main",
+  "author": "Zkript Solutions",
   "private": true,
   "scripts": {
     "setup": "npm install && npm run build",
