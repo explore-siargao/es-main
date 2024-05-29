@@ -38,7 +38,7 @@ const MenuModal = ({
   }
   const userId = useSessionStore((state) => state).id
   const { mutate: renameTitle, isPending: renameTitleIsPending } =
-    useEditWishGroupTitle(userId)
+    useEditWishGroupTitle(userId as number)
   const { mutate: deleteWishGroup, isPending: deleteWishGroupIsPending } =
     useDeleteWishGroupByTitle(userId as number, title)
   const { register, getValues } = useForm<IWishGroup>()

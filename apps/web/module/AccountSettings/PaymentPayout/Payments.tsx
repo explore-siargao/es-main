@@ -38,10 +38,10 @@ const Payments = () => {
   }
   const session = useSessionStore((state) => state)
   const { data: paymentMethods, isPending: isPendingPaymentMethods } =
-    useGetPaymentMethods(session.id)
-  const { mutate, isPending } = useUpdatePaymentMethod(session.id)
+    useGetPaymentMethods(session.id as number)
+  const { mutate, isPending } = useUpdatePaymentMethod(session.id as number)
   const { mutate: redeemCoupon, isPending: isPendingRedeemCoupon } =
-    useUpdateCoupon(session.id)
+    useUpdateCoupon(session.id as number)
   const callBackReqDefaultPaymentMethod = {
     onSuccess: (data: any) => {
       if (!data.error) {
@@ -237,7 +237,7 @@ const Payments = () => {
                           {
                             code: getValues("code"),
                             isUsed: true,
-                            usedBy: session.id,
+                            usedBy: session.id as number,
                           },
                           CallBackCheckCoupon
                         )

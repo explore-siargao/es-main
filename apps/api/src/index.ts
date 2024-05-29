@@ -5,6 +5,7 @@ import fileupload from 'express-fileupload'
 import routes from '@/routes'
 import { ALLOWED_CLIENTS, API_PORT } from '@/common/constants/ev'
 import '@/common/utils/redisClient'
+import { initMongo } from '@repo/database'
 
 const es = express()
 es.disable('x-powered-by')
@@ -17,6 +18,7 @@ es.use(
     credentials: true,
   })
 )
+initMongo()
 routes(es)
 es.listen(API_PORT, () => {
   console.log(`API server is running at http://localhost:${API_PORT}`)

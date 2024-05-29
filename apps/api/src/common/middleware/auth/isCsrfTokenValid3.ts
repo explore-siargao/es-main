@@ -22,12 +22,11 @@ const isCsrfTokenValid2 = async (
       )
       const decryptedCsrf = csrfEncryption.decrypt(csrfCookie) as {
         sessionKey: string
-        userId: number
+        userId: string
       }
-      console.log(sessionCookie)
       if (
         decryptedCsrf.sessionKey === sessionCookie &&
-        decryptedCsrf.userId === Number(session?.userId)
+        decryptedCsrf.userId === session?.userId
       ) {
         next()
       } else {
