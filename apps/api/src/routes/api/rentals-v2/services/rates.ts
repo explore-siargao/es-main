@@ -9,6 +9,24 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 
+export const getRentalRates = async (req: Request, res: Response) => {
+  const rentalId = req.params.rentalId
+  try {
+    const getRental = await dbRentalRates.findOne({ _id: rentalId })
+    if (!getRental) {
+      return res.json(response.error({ message: 'rental not found' }))
+    }
+
+    res.json(response.success({ item: getRental }))
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
 export const updateRentalRate = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const rentalId = req.params.rentalId
