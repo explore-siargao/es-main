@@ -64,6 +64,7 @@ export const addRental = async (req: Request, res: Response) => {
     const pricing = new dbRentalRates({
       dayRate: null,
       requiredDeposit: null,
+      adminBookingCharge: null
     })
 
     const addOns = new dbRentalAddOns({
@@ -112,6 +113,8 @@ export const addRental = async (req: Request, res: Response) => {
       finishedSections: '',
       status: 'Pending',
     })
+
+    await rental.save()
 
     res.json(
       response.success({
