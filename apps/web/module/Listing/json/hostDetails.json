@@ -1,0 +1,21 @@
+{
+    "hostName":"Ramil L. Kaharian",
+    "hostProfilePic":"2.jpg",
+    "joinedIn":"January, 2021",
+    "countReviews":728,
+    "rules":[
+        {
+            "id":1,
+            "title":"During your stay",
+            "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed saepe, eveniet incidunt laudantium earum vel quibusdam deleniti vitae fugiat, nesciunt consectetur harum voluptatibus nam illo magnam recusandae numquam cum delectus!"
+        },
+        {
+            "id":2,
+            "title":"Camper and Cabin is Superhost",
+            "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed saepe, eveniet incidunt laudantium earum vel quibusdam deleniti vitae fugiat, nesciunt consectetur harum voluptatibus nam illo magnam recusandae numquam cum delectus!"
+        }
+    ],
+    "responseRate":96,
+    "responseTime":"with a few hours"
+
+}

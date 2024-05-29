@@ -1,0 +1,61 @@
+FROM node:20.11.1-slim
+
+ARG API_URL
+ARG API_AUTH_URL
+ARG API_MOCK_URL
+ARG WEB_URL
+ARG RECAPTCHA_KEY
+ARG RECAPTCHA_KEY_SECRET
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_SECRET_ID
+ARG FACEBOOK_CLIENT_ID
+ARG FACEBOOK_SECRET_ID
+ARG CARD_ENCRYPT_KEY
+ARG PASSWORD_ENCRYPT_KEY
+
+ENV API_URL=$API_URL
+ENV API_AUTH_URL=$API_AUTH_URL
+ENV API_MOCK_URL=$API_MOCK_URL
+ENV WEB_URL=$WEB_URL
+ENV RECAPTCHA_KEY=$RECAPTCHA_KEY
+ENV RECAPTCHA_KEY_SECRET=$RECAPTCHA_KEY_SECRET
+ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+ENV GOOGLE_SECRET_ID=$GOOGLE_SECRET_ID
+ENV FACEBOOK_CLIENT_ID=$FACEBOOK_CLIENT_ID
+ENV FACEBOOK_SECRET_ID=$FACEBOOK_SECRET_ID
+ENV CARD_ENCRYPT_KEY=$CARD_ENCRYPT_KEY
+ENV PASSWORD_ENCRYPT_KEY=$PASSWORD_ENCRYPT_KEY
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
+RUN echo "data: $API_URL"
+
+WORKDIR /usr/src/app
+ 
+# Copy root folders files
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
+COPY .npmrc ./
+COPY tsconfig.json ./
+COPY turbo.json ./
+ 
+# Copy sub folders files
+COPY apps/web ./apps/web
+COPY packages/contract ./packages/contract
+COPY packages/constants ./packages/constants
+COPY packages/services ./packages/services
+COPY packages/eslint-config ./packages/eslint-config
+COPY packages/typescript-config ./packages/typescript-config
+
+# Install global packages
+RUN npm install -g pnpm@8.14.1
+RUN pnpm add -g typescript
+
+# Run setup
+RUN pnpm install
+RUN pnpm run build
+ 
+EXPOSE 3000
+ 
+CMD [ "pnpm", "run", "start" ]
