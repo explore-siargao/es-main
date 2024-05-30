@@ -14,6 +14,7 @@ import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner'
 import { getRentalRates, updateRentalRate } from './services/rates'
+import { getRentalPhotos } from './services/photos'
 
 const router = express.Router()
 
@@ -83,4 +84,13 @@ router.get(
 )
 //rates
 router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
+
+//photos
+router.get(
+  '/:rentalId/photos',
+  isOriginValid,
+  isUserLoggedIn,
+  //isHostRentalOwner,
+  getRentalPhotos
+)
 export default router
