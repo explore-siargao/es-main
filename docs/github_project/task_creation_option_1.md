@@ -18,7 +18,7 @@ You will see a list of projects. Look for the project 'Host Account User Stories
 
 ### Step 3:
 
-You will see a list of ticket stories. If you do not see any tickets in the ***Current Iteration*** tab, please check the ***Next Iteration*** tab.
+You will see a list of ticket stories. If you do not see any tickets in the **_Current Iteration_** tab, please check the **_Next Iteration_** tab.
 
 ![Image](./images//step3.0.png)
 
@@ -40,17 +40,17 @@ Highlight and copy the text label of the task that you want to create.
 
 ### Step 7
 
-Go back to ***Project List*** page.
+Go back to **_Project List_** page.
 
 ### Step 8:
 
-Select ***Host Account Tasks*** project.
+Select **_Host Account Tasks_** project.
 
 ![Image](./images//step8.0.png)
 
 ### Step 9:
 
-Click the ***Add Item*** button in the bottom of Task list
+Click the **_Add Item_** button in the bottom of Task list
 
 ![Image](./images/step9.0.png)
 
@@ -60,7 +60,7 @@ Paste the task label you copied from **Step 6** to the textbox and press enter o
 
 ![Image](./images/step10.0.png)
 
-After pressed enter, you will see your newly created task in the ***Prioritized Backlog*** tab.
+After pressed enter, you will see your newly created task in the **_Prioritized Backlog_** tab.
 
 ![Image](./images/step10.1.png)
 
@@ -103,11 +103,11 @@ Remember or copy the number on the right side of the issue title.
 
 ### Step 15:
 
-Go back to the ***Host Account Story*** project and open the current Story ticket you are doing.
+Go back to the **_Host Account Story_** project and open the current Story ticket you are doing.
 
 ### Step 16:
 
-Edit the task list by clicking the three dots and selecting ***Edit*** in the menu.
+Edit the task list by clicking the three dots and selecting **_Edit_** in the menu.
 
 ![Image](./images/step16.0.png)
 
@@ -123,20 +123,21 @@ then save it.
 
 ### Step 18:
 
-Go back to the ***Host Account Tasks*** project to proceed with creating a branch and open the task ticket for which you want to create a branch.
+Go back to the **_Host Account Tasks_** project to proceed with creating a branch and open the task ticket for which you want to create a branch.
 
 ### Step 19:
 
-After opening the task ticket, scroll down the sidebar until you see the ***Development*** section, then click on the ***Create a branch*** link.
+After opening the task ticket, scroll down the sidebar until you see the **_Development_** section, then click on the **_Create a branch_** link.
 
 ![Image](./images/step19.0.png)
 
-After clicking the ***Create a branch*** link, you will see a modal similar to the image below.
+After clicking the **_Create a branch_** link, you will see a modal similar to the image below.
 
 ![Image](./images/step19.1.png)
 
 ### Step 20:
-Choose the branch source for your current task and click the ***Create branch*** button to create a branch for your task.
+
+Choose the branch source for your current task and click the **_Create branch_** button to create a branch for your task.
 
 ![Image](./images/step20.0.png)
 
