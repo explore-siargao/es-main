@@ -1,6 +1,6 @@
 import { ResponseService } from '@/common/service/response'
 import { Request, Response } from 'express'
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { REQUIRED_VALUE_EMPTY, UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import {
   dbPhotos,
     dbRentals,
@@ -115,5 +115,53 @@ export const updateRentalPhotos = async (req: Request, res: Response) => {
     }
 }
 
+export const editPhotoInfo = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id;
+  const id = req.params.rentalId;
+  const photoId = req.params.photoId;
+  const { tag, description } = req.body;
+
+  if (!tag && !description) {
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }));
+  }
+
+  try {
+    const rental = await dbRentals.findOne(
+      { host: hostId, _id: id }
+    ).populate('photos');
+
+    if (!rental) {
+      return res.json(response.error({ message: 'Rental not exists' }));
+    }
+
+    const photo = await dbPhotos.findById(photoId); 
+    if (!photo) {
+      return res.json(response.error({ message: 'Photo not exists' }));
+    }
+
+    const photoExistsInRental = rental.photos?.some(photo => photo._id.equals(photoId));
+    if (!photoExistsInRental) {
+      return res.json(response.error({ message: 'Photo does not exist' }));
+    }
+
+    photo.description = description;
+    photo.tag = tag;
+    photo.updatedAt = new Date();
+    await photo.save();
+
+    res.json(
+      response.success({
+        item: { tag: tag, description: description },
+        message: 'Rental photo information successfully updated',
+      })
+    );
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    );
+  }
+};
 
   
