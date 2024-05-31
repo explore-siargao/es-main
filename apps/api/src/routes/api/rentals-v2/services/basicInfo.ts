@@ -105,7 +105,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.year = null
       }
 
-      rental.finishedSections = '["basicInfo"]'
+      rental.finishedSections = ["basicInfo"]
       rental.updatedAt = new Date()
       await rental.save()
 

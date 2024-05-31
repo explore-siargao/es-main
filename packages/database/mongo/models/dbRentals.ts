@@ -72,7 +72,10 @@ const rentals = new Schema({
     enum: statusEnum,
     default: "Pending",
   },
-  finishedSections: String,
+  finishedSections:{
+    type:[String],
+    default:[]
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

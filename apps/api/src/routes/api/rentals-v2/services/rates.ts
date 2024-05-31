@@ -63,7 +63,7 @@ export const updateRentalRate = async (req: Request, res: Response) => {
     }
     await rates?.save()
     rental.finishedSections =
-      '["basicInfo", "details", "addOns", "photos", "pricing"]'
+      ["basicInfo", "details", "addOns", "photos", "pricing"]
     rental.updatedAt = new Date()
     await rental.save()
     res.json(

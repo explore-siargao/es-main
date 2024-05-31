@@ -119,7 +119,7 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
       details.updatedAt = new Date()
       await details.save()
 
-      rental.finishedSections = '["basicInfo", "details"]'
+      rental.finishedSections = ["basicInfo", "details"]
       rental.updatedAt = new Date()
       await rental.save()
 
