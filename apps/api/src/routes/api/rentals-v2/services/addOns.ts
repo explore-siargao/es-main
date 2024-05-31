@@ -68,8 +68,6 @@ export const updateAddOns = async (req: Request, res: Response) => {
     others,
   }: T_Rental_AddOns = req.body
 
-  
-  
   const isValidInput = Z_Rental_AddOns.safeParse(req.body as T_Rental_AddOns)
   if (isValidInput.success) {
     try {
@@ -88,7 +86,8 @@ export const updateAddOns = async (req: Request, res: Response) => {
         return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
       }
 
-      const addOns: T_Rental_AddOns = getRental.addOns as unknown as T_Rental_AddOns;
+      const addOns: T_Rental_AddOns =
+        getRental.addOns as unknown as T_Rental_AddOns
 
       if (getRental.category === 'Car') {
         addOns.roofRack = roofRack ?? addOns.roofRack
@@ -118,11 +117,11 @@ export const updateAddOns = async (req: Request, res: Response) => {
             babySeat: addOns.babySeat,
             dashCam: addOns.dashCam,
             includesHelmet: addOns.includesHelmet,
-            others: addOns.others
-          }
+            others: addOns.others,
+          },
         },
         {
-          new: true
+          new: true,
         }
       )
 
