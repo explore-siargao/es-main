@@ -21,8 +21,11 @@ import {
   updateRentalPhotos,
 } from './services/photos'
 
-import { getRentalLocation, updateRentalLocation} from './services/locations'
-import { getFinishedSections, updateFinishedSections } from './services/finishedSections'
+import { getRentalLocation, updateRentalLocation } from './services/locations'
+import {
+  getFinishedSections,
+  updateFinishedSections,
+} from './services/finishedSections'
 import { getAddOns } from './services/addOns'
 import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
@@ -168,8 +171,8 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   // isHostRentalOwner,
-   updateFinishedSections
-  )
+  updateFinishedSections
+)
 
 //status
 router.patch(
