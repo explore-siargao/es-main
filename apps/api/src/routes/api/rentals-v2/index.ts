@@ -20,6 +20,8 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
+
+import { getAddOns } from './services/addOns'
 import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { getFinishedSections } from './services/finishedSections'
 import { updateStatus } from './services/status'
@@ -146,6 +148,9 @@ router.patch(
   // isHostRentalOwner,
   updateRentalLocation
 )
+
+//add-ons
+router.get('/:rentalId/add-ons', isOriginValid, isUserLoggedIn, getAddOns)
 
 //finishedSection
 router.get(
