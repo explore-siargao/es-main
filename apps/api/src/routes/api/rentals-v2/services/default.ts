@@ -63,7 +63,7 @@ export const addRental = async (req: Request, res: Response) => {
     const pricing = new dbRentalRates({
       dayRate: null,
       requiredDeposit: null,
-      adminBookingCharge: null
+      adminBookingCharge: null,
     })
 
     const addOns = new dbRentalAddOns({

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@repo/database"
+import { PrismaClient } from '@repo/database'
 
 // eslint-disable-next-line no-undef
 const globalForPrisma = globalThis as unknown as {
