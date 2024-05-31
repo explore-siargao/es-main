@@ -12,7 +12,6 @@ import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
-import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner'
 import { getRentalRates, updateRentalRate } from './services/rates'
 import {
   deleteRentalPhotosByPhotoId,
@@ -20,28 +19,44 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
-
 import { getAddOns, updateAddOns } from './services/addOns'
+import {
+  getFinishedSections,
+  updateFinishedSections,
+} from './services/finishedSections'
 import { getRentalLocation, updateRentalLocation } from './services/locations'
-import { getFinishedSections } from './services/finishedSections'
 import { updateStatus } from './services/status'
+import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
 
 const router = express.Router()
 
 //Rentals
 router.get('/', isOriginValid, isUserLoggedIn, getAllRentals)
 
-router.get('/host', isOriginValid, isUserLoggedIn, getAllRentalsByHostId)
+router.get(
+  '/host',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostRentalOwner,
+  getAllRentalsByHostId
+)
 
-router.post('/', isUserLoggedIn, isCsrfTokenValid, addRental)
+router.post('/', isUserLoggedIn, isCsrfTokenValid, isHostRentalOwner, addRental)
 
 //rental details
-router.get('/:rentalId', isOriginValid, isUserLoggedIn, getRental)
+router.get(
+  '/:rentalId',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostRentalOwner,
+  getRental
+)
 
 router.get(
   '/:rentalId/details',
   isOriginValid,
   isUserLoggedIn,
+  isHostRentalOwner,
   getRentalDetails
 )
 
@@ -49,6 +64,7 @@ router.get(
   '/:rentalId/details',
   isOriginValid,
   isUserLoggedIn,
+  isHostRentalOwner,
   getRentalDetails
 )
 
@@ -83,6 +99,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
+  isHostRentalOwner,
   updateRentalRate
 )
 
@@ -90,17 +107,24 @@ router.get(
   '/:rentalId/basic-info',
   isOriginValid,
   isUserLoggedIn,
+  isHostRentalOwner,
   getRentalBasicInfo
 )
 //rates
-router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
+router.get(
+  '/:rentalId/pricing',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostRentalOwner,
+  getRentalRates
+)
 
 //photos
 router.get(
   '/:rentalId/photos',
   isOriginValid,
   isUserLoggedIn,
-  //isHostRentalOwner,
+  isHostRentalOwner,
   getRentalPhotos
 )
 
@@ -109,7 +133,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   updateRentalPhotos
 )
 
@@ -118,7 +142,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  //isHostRentalOwner,
+  isHostRentalOwner,
   editPhotoInfo
 )
 
@@ -127,7 +151,7 @@ router.delete(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   deleteRentalPhotosByPhotoId
 )
 
@@ -136,7 +160,7 @@ router.get(
   '/:rentalId/location',
   isOriginValid,
   isUserLoggedIn,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   getRentalLocation
 )
 
@@ -145,7 +169,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   updateRentalLocation
 )
 
@@ -156,17 +180,34 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
+  isHostRentalOwner,
   updateAddOns
 )
 
+router.get(
+  '/:rentalId/add-ons',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostRentalOwner,
+  getAddOns
+)
 
 //finishedSection
 router.get(
   '/:rentalId/finished-sections',
   isOriginValid,
   isUserLoggedIn,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   getFinishedSections
+)
+
+router.patch(
+  '/:rentalId/finished-sections',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostRentalOwner,
+  updateFinishedSections
 )
 
 //status
@@ -175,7 +216,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   updateStatus
 )
 
