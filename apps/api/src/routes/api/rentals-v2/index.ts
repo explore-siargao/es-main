@@ -150,12 +150,7 @@ router.patch(
 )
 
 //add-ons
-router.get(
-  '/:rentalId/add-ons',
-  isOriginValid,
-  isUserLoggedIn,
-  getAddOns
-)
+router.get('/:rentalId/add-ons', isOriginValid, isUserLoggedIn, getAddOns)
 
 //finishedSection
 router.get(
