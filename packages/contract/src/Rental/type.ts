@@ -6,6 +6,7 @@ import {
   Z_Rental_Pricing,
   Z_Rental_Basic_Info,
   Z_Rental_Status,
+  Z_UpdateRentalLocation,
 } from "./zod"
 
 export type T_Rentals = z.infer<typeof Z_Rental>
@@ -14,3 +15,4 @@ export type T_Rental_AddOns = z.infer<typeof Z_Rental_AddOns>
 export type T_Rental_Pricing = z.infer<typeof Z_Rental_Pricing>
 export type T_Rental_Basic_Info = z.infer<typeof Z_Rental_Basic_Info>
 export type T_Rental_Status = z.infer<typeof Z_Rental_Status>
+export type T_UpdateRentalLocation = z.infer<typeof Z_UpdateRentalLocation>
