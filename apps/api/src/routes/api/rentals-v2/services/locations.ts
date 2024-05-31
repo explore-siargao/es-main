@@ -4,7 +4,7 @@ import {
   USER_NOT_AUTHORIZED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { T_UpdateRentalLocation, Z_UpdateRentalLocation } from '@repo/contract'
+import { T_UpdateRentalLocation } from '@repo/contract'
 import { dbAddresses, dbRentals } from '@repo/database'
 import { Request, Response } from 'express'
 
