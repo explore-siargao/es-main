@@ -1,6 +1,6 @@
 import { ResponseService } from '@/common/service/response'
 import { Request, Response } from 'express'
-import { REQUIRED_VALUE_EMPTY, UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { REQUIRED_VALUE_EMPTY, UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import {
   dbPhotos,
     dbRentals,
@@ -164,4 +164,65 @@ export const editPhotoInfo = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteRentalPhotosByPhotoId = async(req:Request, res:Response)=>{
+  const userId = res.locals.user?.id
+  try {
+    const id = req.params.rentalId
+    const photoId = req.params.photoId
+    const rental = await dbRentals.findOne(
+      {
+        host:userId,
+        _id:id
+      }
+    ).populate("photos")
+    if (!rental) {
+      return res.json(
+        response.error({ message: 'Rental with the given ID not found!' })
+      )
+    }
+    if (rental.host?.toString() !== userId) {
+      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    }
+    let photoIndex = -1
+    if(rental.photos){
+      photoIndex = rental?.photos.findIndex((photo) => photo._id.toString() === photoId as string)
+    }
+
+    if (photoIndex === -1) {
+      return res.json(
+        response.error({
+          message: 'Photo with the given ID not found in the rental!',
+        })
+      )
+    }
+    if(rental.photos){
+    rental.photos.splice(photoIndex, 1)
+    await rental.save();
+    }
+    const filteredDataDeleteRentalPhotosByPhotoId = {
+      _id: rental._id,
+      category: rental.category,
+      make: rental.make,
+      modelBadge: rental.modelBadge,
+      bodyType: rental.bodyType,
+      fuel: rental.fuel,
+      transmission: rental.transmission,
+      year: rental.year,
+      photos: rental.photos,
+      Location: rental.location,
+    }
   
+    return res.json(
+      response.success({
+        item: filteredDataDeleteRentalPhotosByPhotoId,
+        message: 'Rental photo with the given photo id successfully deleted!',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}

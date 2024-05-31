@@ -14,7 +14,7 @@ import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner'
 import { getRentalRates, updateRentalRate } from './services/rates'
-import { editPhotoInfo, getRentalPhotos, updateRentalPhotos } from './services/photos'
+import { deleteRentalPhotosByPhotoId, editPhotoInfo, getRentalPhotos, updateRentalPhotos } from './services/photos'
 
 const router = express.Router()
 
@@ -111,4 +111,14 @@ router.patch(
   //isHostRentalOwner,
   editPhotoInfo
 )
+
+router.delete(
+  '/:rentalId/photos/:photoId',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  // isHostRentalOwner,
+  deleteRentalPhotosByPhotoId
+)
+
 export default router
