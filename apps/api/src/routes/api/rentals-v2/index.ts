@@ -19,12 +19,11 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
-
+import { getAddOns, updateAddOns } from './services/addOns'
 import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSections'
-import { getAddOns } from './services/addOns'
 import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
@@ -175,6 +174,16 @@ router.patch(
 )
 
 //add-ons
+router.get('/:rentalId/add-ons', isOriginValid, isUserLoggedIn, getAddOns)
+router.patch(
+  '/:rentalId/add-ons',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostRentalOwner,
+  updateAddOns
+)
+
 router.get(
   '/:rentalId/add-ons',
   isOriginValid,
