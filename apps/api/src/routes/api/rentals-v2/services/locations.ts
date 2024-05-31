@@ -78,10 +78,9 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       location.updatedAt = new Date()
     }
     await location?.save()
-    rental.finishedSections =
-      '["basicInfo", "details", "addOns", "photos", "pricing", "location"]'
-    await rental.save()
+    rental.finishedSections = ["basicInfo", "details", "addOns", "photos", "pricing", "location"]
     rental.updatedAt = new Date()
+    await rental.save()
     res.json(
       response.success({
         item: location,
