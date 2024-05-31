@@ -98,7 +98,7 @@ export const updateRentalPhotos = async (req: Request, res: Response) => {
     )
 
     rental.photos = savedPhotos
-    rental.finishedSections = ["basicInfo", "details", "addOns", "photos"]
+    rental.finishedSections = ['basicInfo', 'details', 'addOns', 'photos']
 
     await rental.save()
 
