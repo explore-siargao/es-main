@@ -36,6 +36,7 @@ export const Z_Rental_AddOns = z.object({
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),
+  _id: z.string().optional()
 })
 
 export const Z_Rental_Pricing = z.object({
