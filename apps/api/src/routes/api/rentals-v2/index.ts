@@ -21,6 +21,7 @@ import {
   updateRentalPhotos,
 } from './services/photos'
 import { getRentalLocation } from './services/locations'
+import { getFinishedSections } from './services/finishedSections'
 
 const router = express.Router()
 
@@ -134,6 +135,15 @@ router.get(
   isUserLoggedIn,
   // isHostRentalOwner,
   getRentalLocation
+)
+
+//finishedSection
+router.get(
+  '/:rentalId/finished-sections',
+  isOriginValid,
+  isUserLoggedIn,
+  // isHostRentalOwner,
+  getFinishedSections
 )
 
 export default router
