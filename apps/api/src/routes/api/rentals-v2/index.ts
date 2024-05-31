@@ -22,6 +22,7 @@ import {
 } from './services/photos'
 import { getRentalLocation, updateRentalLocation} from './services/locations'
 import { getFinishedSections } from './services/finishedSections'
+import { updateStatus } from './services/status'
 
 
 const router = express.Router()
@@ -145,6 +146,7 @@ router.patch(
   isCsrfTokenValid,
   // isHostRentalOwner,
   updateRentalLocation
+)
 
 //finishedSection
 router.get(
@@ -153,6 +155,16 @@ router.get(
   isUserLoggedIn,
   // isHostRentalOwner,
   getFinishedSections
+)
+
+//status
+router.patch(
+  '/:rentalId/status',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  // isHostRentalOwner,
+  updateStatus
 )
 
 export default router
