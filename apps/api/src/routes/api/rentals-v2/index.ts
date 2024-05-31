@@ -136,5 +136,4 @@ router.get(
   getRentalLocation
 )
 
-
 export default router
