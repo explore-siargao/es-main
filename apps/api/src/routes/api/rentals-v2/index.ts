@@ -20,8 +20,9 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
-import { getRentalLocation } from './services/locations'
+import { getRentalLocation, updateRentalLocation} from './services/locations'
 import { getFinishedSections } from './services/finishedSections'
+
 
 const router = express.Router()
 
@@ -136,6 +137,14 @@ router.get(
   // isHostRentalOwner,
   getRentalLocation
 )
+
+router.patch(
+  '/:rentalId/location',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  // isHostRentalOwner,
+  updateRentalLocation
 
 //finishedSection
 router.get(

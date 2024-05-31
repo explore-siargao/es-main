@@ -83,6 +83,15 @@ export const Z_Rental_Basic_Info = z.object({
   year: z.string().optional().nullable(),
 })
 
+export const Z_UpdateRentalLocation = z.object({
+  streetAddress: z.string(),
+  city: z.string(),
+  barangay: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+  howToGetThere: z.string().optional().nullable(),
+})
+
 export const Z_Rental_Status = z.object({
   status: z.nativeEnum(E_Rental_Status),
 })
