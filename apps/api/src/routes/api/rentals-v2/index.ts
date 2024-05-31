@@ -20,6 +20,7 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
+import { getRentalLocation } from './services/locations'
 
 const router = express.Router()
 
@@ -124,6 +125,15 @@ router.delete(
   isCsrfTokenValid,
   // isHostRentalOwner,
   deleteRentalPhotosByPhotoId
+)
+
+//locations
+router.get(
+  '/:rentalId/location',
+  isOriginValid,
+  isUserLoggedIn,
+  // isHostRentalOwner,
+  getRentalLocation
 )
 
 export default router
