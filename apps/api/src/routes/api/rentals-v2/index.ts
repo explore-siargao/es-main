@@ -20,10 +20,9 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
-import { getRentalLocation, updateRentalLocation} from './services/locations'
+import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { getFinishedSections } from './services/finishedSections'
 import { updateStatus } from './services/status'
-
 
 const router = express.Router()
 
