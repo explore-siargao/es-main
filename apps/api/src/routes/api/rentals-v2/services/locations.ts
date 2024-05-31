@@ -76,9 +76,16 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       location.latitude = latitude || location.latitude
       location.howToGetThere = howToGetThere || location.howToGetThere
       location.updatedAt = new Date()
+      await location?.save()
     }
-    await location?.save()
-    rental.finishedSections = ["basicInfo", "details", "addOns", "photos", "pricing", "location"]
+    rental.finishedSections = [
+      'basicInfo',
+      'details',
+      'addOns',
+      'photos',
+      'pricing',
+      'location',
+    ]
     rental.updatedAt = new Date()
     await rental.save()
     res.json(

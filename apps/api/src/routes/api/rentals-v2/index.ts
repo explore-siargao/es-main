@@ -20,9 +20,12 @@ import {
   getRentalPhotos,
   updateRentalPhotos,
 } from './services/photos'
+
 import { getRentalLocation, updateRentalLocation} from './services/locations'
 import { getFinishedSections, updateFinishedSections } from './services/finishedSections'
-
+import { getAddOns } from './services/addOns'
+import { getRentalLocation, updateRentalLocation } from './services/locations'
+import { updateStatus } from './services/status'
 
 const router = express.Router()
 
@@ -147,6 +150,9 @@ router.patch(
   updateRentalLocation
 )
 
+//add-ons
+router.get('/:rentalId/add-ons', isOriginValid, isUserLoggedIn, getAddOns)
+
 //finishedSection
 router.get(
   '/:rentalId/finished-sections',
@@ -162,7 +168,17 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   // isHostRentalOwner,
-  updateFinishedSections
+   updateFinishedSections
+  )
+
+//status
+router.patch(
+  '/:rentalId/status',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  // isHostRentalOwner,
+  updateStatus
 )
 
 export default router
