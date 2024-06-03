@@ -7,7 +7,7 @@ export async function updatePersonalInfo(
   userId: number | undefined,
   props: IPersonalInfo
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.patch(
     `${API_URL_USERS}/personal-info/${userId}`,
     props
