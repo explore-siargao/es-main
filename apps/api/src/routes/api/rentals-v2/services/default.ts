@@ -21,7 +21,6 @@ export const getAllRentals = async (req: Request, res: Response) => {
     const filteredDataGetAllRentals = await dbRentals
       .find({ hostId: hostId })
       .sort({ _id: -1 })
-    console.log('id: ', hostId)
 
     return res.json(
       response.success({
@@ -64,6 +63,7 @@ export const addRental = async (req: Request, res: Response) => {
     const pricing = new dbRentalRates({
       dayRate: null,
       requiredDeposit: null,
+      adminBookingCharge: null,
     })
 
     const addOns = new dbRentalAddOns({
@@ -74,7 +74,7 @@ export const addRental = async (req: Request, res: Response) => {
     })
 
     const photos = new dbPhotos({
-      photos: [],
+      photos: null,
     })
 
     const location = new dbAddresses({
@@ -99,7 +99,7 @@ export const addRental = async (req: Request, res: Response) => {
       details: details._id,
       pricing: pricing._id,
       addOns: addOns._id,
-      photos: [photos._id],
+      //photos: [photos._id],
       location: location._id,
       category: '',
       make: '',
@@ -112,6 +112,8 @@ export const addRental = async (req: Request, res: Response) => {
       finishedSections: '',
       status: 'Pending',
     })
+
+    await rental.save()
 
     res.json(
       response.success({

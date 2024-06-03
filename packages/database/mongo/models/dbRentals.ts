@@ -57,12 +57,12 @@ const rentals = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "RentalAddOns",
   },
-  photos: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Photos",
-    },
-  ],
+  photos: {
+    type: [mongoose.Schema.ObjectId],
+    ref: "Photos",
+    required: false,
+    default: null,
+  },
   location: {
     type: mongoose.Schema.ObjectId,
     ref: "Addresses",
@@ -72,7 +72,10 @@ const rentals = new Schema({
     enum: statusEnum,
     default: "Pending",
   },
-  finishedSections: String,
+  finishedSections: {
+    type: [String],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
