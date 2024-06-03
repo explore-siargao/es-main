@@ -425,6 +425,7 @@ export const forgotVerify = async (req: Request, res: Response) => {
 
 export const forgot = async (req: Request, res: Response) => {
   const { token, email } = req.body
+  console.log("hello")
   if (email && token) {
     try {
       const isCaptchaTokenValid = await verifyCaptcha(token)
