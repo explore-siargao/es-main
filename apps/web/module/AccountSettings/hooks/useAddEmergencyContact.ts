@@ -7,7 +7,7 @@ export async function addEmergencyContact(
   personId: number | undefined,
   props: T_AddEmergencyContact
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.post(
     `${API_URL_USERS}/${personId}/emergency-contact/add`,
     props
