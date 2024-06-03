@@ -4,7 +4,7 @@ import { API_URL_USERS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function updatePersonalInfo(
-  userId: number | undefined,
+  userId: string | undefined,
   props: IPersonalInfo
 ) {
   const apiService = new ApiService("v2")
@@ -14,7 +14,7 @@ export async function updatePersonalInfo(
   )
 }
 
-function useUpdatePersonalInfo(userId: number) {
+function useUpdatePersonalInfo(userId: string) {
   const query = useMutation({
     mutationFn: (props: IPersonalInfo) => updatePersonalInfo(userId, props),
   })

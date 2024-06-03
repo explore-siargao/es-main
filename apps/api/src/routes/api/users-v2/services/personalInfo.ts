@@ -55,8 +55,19 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
     } = req.body
 
     const userId = req.params.userId
+
+    if (!userId) {
+      return res.status(400).json(
+        response.error({
+          message: 'Invalid user ID format',
+        })
+      )
+    }
+
+    const getUser = await dbUsers.findById(userId)
+
     const editPersonalInfo = await dbGuests.findByIdAndUpdate(
-      { _id: userId },
+      getUser?.guest,
       {
         firstName: firstName,
         lastName: lastName,
@@ -69,16 +80,26 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
       },
       { new: true }
     )
+
+    if (!editPersonalInfo) {
+      return res.status(404).json(
+        response.error({
+          message: 'User not found',
+        })
+      )
+    }
+
     res.json(
-      response.error({
+      response.success({
         item: editPersonalInfo,
         message: 'Successfully updated',
       })
     )
   } catch (err: any) {
-    res.json(
+    console.error('Error updating personal info:', err)
+    res.status(500).json(
       response.error({
-        message: UNKNOWN_ERROR_OCCURRED,
+        message: 'An unknown error occurred',
       })
     )
   }
@@ -349,6 +370,7 @@ export const getAllGovernmentIdByPersonInfoId = async (
   res: Response
 ) => {
   const personId = req.params.guestId
+
   try {
     const getPersonInfoId = await dbGuests.findById(personId)
     if (getPersonInfoId) {
@@ -414,13 +436,17 @@ export const addGovernmentId = async (req: Request, res: Response) => {
   if (isValidInput.success && files) {
     const { type } = req.body
     try {
-      const getGuestInfo = await dbGuests.findById({ _id: guestId })
+      const getUser = await dbUsers.findById(guestId)
+      const getGuestId = getUser?.guest
+
+      const getGuestInfo = await dbGuests.findById({ _id: getGuestId })
+      console.log('Guest info: ', getGuestInfo)
 
       if (getGuestInfo) {
         if (getGuestInfo.governmentId === null) {
           const upload = await fileService.upload({ files })
-          const addNewGovernmentId = await dbGuests.findOneAndUpdate(
-            { _id: guestId },
+          const addNewGovernmentId = await dbGuests.findByIdAndUpdate(
+            getUser?.guest,
             {
               governmentId: JSON.stringify([
                 { fileKey: upload.key, type: type, createdAt: new Date() },
@@ -430,9 +456,7 @@ export const addGovernmentId = async (req: Request, res: Response) => {
           )
           res.json(
             response.success({
-              items: JSON.parse(
-                JSON.stringify(addNewGovernmentId?.governmentId)
-              ) as T_GovernmentId[],
+              items: addNewGovernmentId?.governmentId,
               message: 'Government Id successfully added!',
             })
           )
@@ -454,17 +478,18 @@ export const addGovernmentId = async (req: Request, res: Response) => {
               })
 
               const updateGovId = await dbGuests.findOneAndUpdate(
-                { _id: guestId },
-                { governmentId: JSON.stringify(updatedGovernmentId) }
+                { _id: getGuestId },
+                { governmentId: updatedGovernmentId }
               )
 
               res.json(
-                response.success({
-                  items: JSON.parse(
-                    JSON.stringify(updateGovId?.governmentId) as string
-                  ) as T_GovernmentId[],
-                  message: 'Government Id successfully added!',
-                })
+                res.json(
+                  response.success({
+                    items: updateGovId?.governmentId || [],
+                    message: 'Government Id successfully added!',
+                  })
+                )
+                
               )
             } else {
               res.json(
@@ -503,5 +528,5 @@ export const addGovernmentId = async (req: Request, res: Response) => {
           : UNKNOWN_ERROR_OCCURRED,
       })
     )
-  }
+  } 
 }

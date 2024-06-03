@@ -15,8 +15,8 @@ export interface IUser {
 }
 
 export interface IPersonalInfo {
-  id?: number
-  userId?: number
+  id?: string
+  userId?: string
   firstName?: string
   lastName?: string
   middleName?: string

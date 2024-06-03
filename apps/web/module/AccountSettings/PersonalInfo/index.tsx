@@ -34,7 +34,7 @@ const PersonalInfo = () => {
           <LegalName
             firstName={personalInfo?.firstName}
             lastName={personalInfo?.lastName}
-            userId={session?.id as number}
+            userId={session?.id as string}
           />
           <EmailAddress
             email={session?.email as string}
@@ -44,7 +44,7 @@ const PersonalInfo = () => {
             <>
               <PhoneNumber
                 phoneNumber={personalInfo?.phoneNumber}
-                userId={session?.id as number}
+                userId={session?.id as string}
               />
               <GovernmentId governmentId={personalInfo?.governmentId} />
               <Address
