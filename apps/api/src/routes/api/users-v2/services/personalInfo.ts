@@ -489,7 +489,6 @@ export const addGovernmentId = async (req: Request, res: Response) => {
                     message: 'Government Id successfully added!',
                   })
                 )
-                
               )
             } else {
               res.json(
@@ -528,5 +527,5 @@ export const addGovernmentId = async (req: Request, res: Response) => {
           : UNKNOWN_ERROR_OCCURRED,
       })
     )
-  } 
+  }
 }
