@@ -2,14 +2,14 @@ import { API_URL_USERS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 import { ApiService } from "@/common/service/api"
 
-export async function setReceivedEmail(userId: number, canReceive: boolean) {
-  const apiService = new ApiService()
+export async function setReceivedEmail(userId: number | string, canReceive: boolean) {
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_USERS}/${userId}/received-email`, {
     canReceive,
   })
 }
 function useSetReceivedEmail(
-  userId: number,
+  userId: number | string,
   callbacks: { onSuccess: Function; onError: Function }
 ) {
   const query = useMutation({
