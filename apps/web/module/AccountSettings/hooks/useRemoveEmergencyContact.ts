@@ -7,7 +7,7 @@ export async function removeEmergencyContact(
   personalInfoId: number,
   id: number
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.delete(
     `${API_URL_USERS}/${personalInfoId}/emergency-contact/${id}`
   )
