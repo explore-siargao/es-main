@@ -272,7 +272,7 @@ const Payments = () => {
       <AddCardDetailModal
         isOpen={addCardModal}
         onClose={() => setAddCardModal(false)}
-        userId={session.id as number}
+        userId={session.id as string}
       />
       <RemovePaymentModal
         id={paymentMethodId}
