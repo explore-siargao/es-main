@@ -23,7 +23,7 @@ const Taxpayers = () => {
     isButtonClicked: false,
     contentId: "",
   })
-  const { data, isLoading } = useGetTaxByUser(session.id as number)
+  const { data, isLoading } = useGetTaxByUser(session.id as string)
   const { register, reset, handleSubmit } = useForm<T_Taxes>({
     values: data?.item,
   })
