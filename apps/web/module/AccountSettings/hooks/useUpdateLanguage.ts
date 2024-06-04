@@ -23,4 +23,4 @@ function useUpdateLanguage(personalInfoId: string | null) {
   })
   return query
 }
-export default useUpdateLanguage 
+export default useUpdateLanguage
