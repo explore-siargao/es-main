@@ -4,20 +4,20 @@ import { useMutation } from "@tanstack/react-query"
 import { T_AddEmergencyContact } from "@repo/contract/src/EmergencyContact/type"
 
 export async function addEmergencyContact(
-  personId: number | undefined,
+  guestId: string | undefined,
   props: T_AddEmergencyContact
 ) {
   const apiService = new ApiService("v2")
   return await apiService.post(
-    `${API_URL_USERS}/${personId}/emergency-contact/add`,
+    `${API_URL_USERS}/${guestId}/emergency-contact/add`,
     props
   )
 }
 
-function useAddEmergencyContact(personId: number) {
+function useAddEmergencyContact(guestId: string | undefined) {
   const query = useMutation({
     mutationFn: (props: T_AddEmergencyContact) =>
-      addEmergencyContact(personId, props),
+      addEmergencyContact(guestId, props),
   })
   return query
 }

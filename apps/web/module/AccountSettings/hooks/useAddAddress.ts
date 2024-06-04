@@ -4,19 +4,20 @@ import { useMutation } from "@tanstack/react-query"
 import { T_AddUpdateAddress } from "@repo/contract"
 
 export async function addAddress(
-  personId: number | undefined,
+  personalInfoId: string | undefined,
   props: T_AddUpdateAddress
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.post(
-    `${API_URL_USERS}/${personId}/address/add`,
+    `${API_URL_USERS}/${personalInfoId}/address/add`,
     props
   )
 }
 
-function useAddAddress(personId: number) {
+function useAddAddress(personalInfoId: string | undefined) {
   const query = useMutation({
-    mutationFn: (props: T_AddUpdateAddress) => addAddress(personId, props),
+    mutationFn: (props: T_AddUpdateAddress) =>
+      addAddress(personalInfoId, props),
   })
   return query
 }

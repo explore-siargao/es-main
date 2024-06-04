@@ -14,4 +14,4 @@ const emergencyContacts = new Schema({
   deletedAt: Date,
 })
 
-export default mongoose.model("emergencyContacts", emergencyContacts)
+export default mongoose.model("EmergencyContacts", emergencyContacts)
