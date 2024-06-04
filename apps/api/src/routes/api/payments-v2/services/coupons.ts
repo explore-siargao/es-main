@@ -167,7 +167,7 @@ export const updateCoupon = async (req: Request, res: Response) => {
                 expirationDate: expirationDate,
                 usedBy: usedBy,
                 isUsed: isUsed,
-                updatedAt: Date.now()
+                updatedAt: Date.now(),
               },
             },
             { new: true }
