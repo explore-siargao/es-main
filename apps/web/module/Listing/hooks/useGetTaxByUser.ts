@@ -7,12 +7,12 @@ type T_DBReturn = Omit<T_BackendResponse, "item"> & {
   item: T_Taxes
 }
 
-export async function geTaxId(userId: number | undefined) {
-  const apiService = new ApiService()
+export async function geTaxId(userId: string | undefined) {
+  const apiService = new ApiService("v2")
   return await apiService.get<T_DBReturn>(`${API_URL_TAX}/${userId}`)
 }
 
-function useGetTaxByUser(userId: number | undefined) {
+function useGetTaxByUser(userId: string | undefined) {
   const query = useQuery({
     queryKey: ["tax", userId],
     queryFn: () => geTaxId(userId),
