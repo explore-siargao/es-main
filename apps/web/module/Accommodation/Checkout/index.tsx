@@ -26,7 +26,7 @@ const encryptionService = new EncryptionService("card")
 const Checkout = () => {
   const paymentInfo = usePaymentInfoStore((state) => state)
   const session = useSessionStore((state) => state)
-  const { data: paymentMethods } = useGetPaymentMethods(session.id as string)
+  const { data: paymentMethods } = useGetPaymentMethods()
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )

@@ -2,17 +2,16 @@ import { ApiService } from "@/common/service/api"
 import { API_URL_PAYMENTS } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
 
-export async function getPaymentMethods(userId: string | null) {
+export async function getPaymentMethods() {
   const apiService = new ApiService("v2")
-  return await apiService.get(`${API_URL_PAYMENTS}/${userId}/payment-method`)
+  return await apiService.get(`${API_URL_PAYMENTS}/payment-method`)
 }
 
-function useGetPaymentMethods(userId: string | null) {
+function useGetPaymentMethods() {
   const query = useQuery({
-    queryKey: ["payment-method", userId],
-    queryFn: () => getPaymentMethods(userId),
+    queryKey: ["payment-method"],
+    queryFn: () => getPaymentMethods(),
     refetchOnWindowFocus: false,
-    enabled: !!userId,
   })
   return query
 }

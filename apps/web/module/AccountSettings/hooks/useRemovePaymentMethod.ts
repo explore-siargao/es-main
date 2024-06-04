@@ -4,8 +4,8 @@ import { API_URL_PAYMENTS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function removePaymentMethod(
-  userid: number,
-  paymentMethodId: number
+  userid: string,
+  paymentMethodId: string
 ) {
   const apiService = new ApiService()
   return await apiService.delete(
@@ -13,7 +13,7 @@ export async function removePaymentMethod(
   )
 }
 
-function useRemovePaymentmethod(userId: number, paymentMethodId: number) {
+function useRemovePaymentmethod(userId: string, paymentMethodId: string) {
   const query = useMutation({
     mutationFn: (props: IPaymentMethod) =>
       removePaymentMethod(userId, paymentMethodId),
