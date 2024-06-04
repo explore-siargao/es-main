@@ -38,7 +38,7 @@ const Payments = () => {
   }
   const session = useSessionStore((state) => state)
   const { data: paymentMethods, isPending: isPendingPaymentMethods } =
-    useGetPaymentMethods(session.id as number)
+    useGetPaymentMethods(session.id as string)
   const { mutate, isPending } = useUpdatePaymentMethod(session.id as number)
   const { mutate: redeemCoupon, isPending: isPendingRedeemCoupon } =
     useUpdateCoupon(session.id as number)
