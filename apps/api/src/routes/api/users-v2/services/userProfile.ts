@@ -133,7 +133,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   if (index !== -1) {
     profiles[index] = {
       ...profiles[index],
-      id: profiles[index]?.id || '664c52cce1a3560632548b19',
+      id: userId,
       imageFile: imageFile,
       imageKey: '4.jpg',
       school: school,
