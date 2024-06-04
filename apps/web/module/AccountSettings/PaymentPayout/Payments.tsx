@@ -41,8 +41,7 @@ const Payments = () => {
     useGetPaymentMethods()
   const { mutate, isPending } = useUpdatePaymentMethod()
   const { mutate: redeemCoupon, isPending: isPendingRedeemCoupon } =
-    useUpdateCoupon(session.id as number)
-
+    useUpdateCoupon(session.id as string)
   const callBackReqDefaultPaymentMethod = {
     onSuccess: (data: any) => {
       if (!data.error) {
