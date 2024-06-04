@@ -20,7 +20,7 @@ interface ProfileProps {
   aboutMe?: string
 }
 export async function updateProfile(props: T_ProfileEditStore) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_USERS}/profile`, props)
 }
 
