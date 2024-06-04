@@ -3,9 +3,7 @@ import { IPaymentMethod } from "@/common/types/global"
 import { API_URL_PAYMENTS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
-export async function updatePaymentMethod(
-  props: IPaymentMethod
-) {
+export async function updatePaymentMethod(props: IPaymentMethod) {
   const apiService = new ApiService("v2")
   return await apiService.patch(
     `${API_URL_PAYMENTS}/payment-method/${props.id}`,

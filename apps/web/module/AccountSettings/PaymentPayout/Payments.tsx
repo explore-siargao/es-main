@@ -30,7 +30,7 @@ const Payments = () => {
   const queryClient = useQueryClient()
   const [addCardModal, setAddCardModal] = useState<boolean>(false)
   const [removePaymentModal, setRemovePaymentModal] = useState<boolean>(false)
-  const [paymentMethodId, setPaymentMethodId] = useState('0')
+  const [paymentMethodId, setPaymentMethodId] = useState("0")
   const [showHide, setShowHide] = useState(false)
   const { register, reset, getValues } = useForm<ICoupon>()
   const toggleVisibility = () => {
@@ -71,8 +71,6 @@ const Payments = () => {
       toast.error(String(err))
     },
   }
-
-
 
   return (
     <>
@@ -174,16 +172,19 @@ const Payments = () => {
                             <button
                               className="relative rounded hover:bg-gray-50 px-5 py-2 text-left"
                               onClick={() => {
-                                console.log("PaymentMethod Object:", paymentMethod);
+                                console.log(
+                                  "PaymentMethod Object:",
+                                  paymentMethod
+                                )
                                 if (!paymentMethod.id) {
-                                  console.error("PaymentMethod ID is undefined");
-                                  toast.error("Payment method ID is missing");
-                                  return;
+                                  console.error("PaymentMethod ID is undefined")
+                                  toast.error("Payment method ID is missing")
+                                  return
                                 }
                                 mutate(
                                   { id: paymentMethod.id, isDefault: true },
                                   callBackReqDefaultPaymentMethod
-                                );
+                                )
                               }}
                             >
                               Set as default

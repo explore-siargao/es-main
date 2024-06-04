@@ -58,7 +58,7 @@ export const updatePaymentMethod = async (req: Request, res: Response) => {
     const getUser = await dbUsers.findOne({
       _id: userId,
     })
-    
+
     console.log(userId)
     if (getUser) {
       const getPaymentMethod = await dbPaymentMethods.findOne({
