@@ -19,7 +19,7 @@ const EmergencyContact = ({
   id,
 }: {
   emergencyContact: T_EmergencyContact[]
-  id: number
+  id: string
 }) => {
   const [contentState, setContentState] = useState<PersonalInfoProps>({
     isButtonClicked: false,
@@ -131,13 +131,16 @@ const EmergencyContact = ({
               A trusted contact we can alert in an urgent situation.
             </Typography>
             {emergencyContact?.map((contact: T_EmergencyContact) => (
-              <div key={contact.id} className="flex justify-between py-5">
-                <Typography key={contact.id}>{contact.name}</Typography>
+              <div key={contact._id} className="flex justify-between py-5">
+                <Typography key={contact._id}>{contact.name}</Typography>
                 <button
                   type="button"
                   className="underline self-start select-none text-sm font-semibold"
                   onClick={() =>
-                    removeEmergencyContact({ id: contact?.id }, callBackReq2)
+                    removeEmergencyContact(
+                      { id: String(contact?._id) },
+                      callBackReq2
+                    )
                   }
                 >
                   {isPendingRemoveEmergencyContact ? (

@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query"
 import { ApiService } from "@/common/service/api"
 
 export async function logout() {
-  const apiService = new ApiService()
-  return await apiService.post(`${API_URL_USERS}/auth/logout2`, {})
+  const apiService = new ApiService("v2")
+  return await apiService.post(`${API_URL_USERS}/auth/logout`, {})
 }
 
 function useLogout() {

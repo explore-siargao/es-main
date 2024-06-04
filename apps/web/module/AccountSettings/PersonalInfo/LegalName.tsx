@@ -24,7 +24,7 @@ const LegalName = ({ firstName, lastName, userId }: IPersonalInfo) => {
     handleSubmit: handleLegalNameSubmit,
   } = useForm<IPersonalInfo>()
   const { mutate: mutateLegalName, isPending: isPendingLegalName } =
-    useUpdatePersonalInfo(userId as number)
+    useUpdatePersonalInfo(userId as string)
   const queryClient = useQueryClient()
 
   const onSubmitLegalName = (formData: IPersonalInfo) => {

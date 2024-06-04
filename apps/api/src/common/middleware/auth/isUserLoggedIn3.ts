@@ -26,7 +26,19 @@ const isUserLoggedIn3 = async (
           deletedAt: null,
           deactivated: false,
         })
-        .populate('guest')
+        .populate({
+          path: 'guest',
+          populate: [
+            {
+              path: 'emergencyContacts',
+              model: 'EmergencyContacts',
+            },
+            {
+              path: 'address',
+              model: 'Addresses',
+            },
+          ],
+        })
 
       const authUser: T_Session = {
         isHost: user?.isHost as boolean,
@@ -40,6 +52,16 @@ const isUserLoggedIn3 = async (
         changePasswordAt: String(user?.changePasswordAt),
         //TODO: FIX THE ANY FOR THIS VALUE
         personalInfo: {
+          //@ts-ignore
+          firstName: user?.guest?.firstName,
+          //@ts-ignore
+          lastName: user?.guest?.lastName,
+          //@ts-ignore
+          phoneNumber: user?.guest?.phoneNumber,
+          //@ts-ignore
+          Address: user?.guest?.address,
+          //@ts-ignore
+          emergencyContacts: user?.guest?.emergencyContacts,
           //@ts-ignore
           governmentId: user?.guest?.governmentId
             ? //@ts-ignore

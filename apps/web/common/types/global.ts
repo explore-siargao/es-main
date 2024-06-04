@@ -15,8 +15,8 @@ export interface IUser {
 }
 
 export interface IPersonalInfo {
-  id?: number
-  userId?: number
+  id?: string
+  userId?: string
   firstName?: string
   lastName?: string
   middleName?: string
@@ -45,8 +45,8 @@ export interface IAddress {
 }
 
 export interface IEmergencyContact {
-  id?: number
-  peronalInfoId?: number
+  id?: string
+  personalInfoId?: string
   name?: string
   relationship?: string
   email?: string
