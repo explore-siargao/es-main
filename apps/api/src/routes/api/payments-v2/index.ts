@@ -27,7 +27,7 @@ router.get(
 )
 
 //coupons
-router.get('/:userId/coupon', isOriginValid, isUserLoggedIn, getUsedCoupons)
+router.get('/coupon', isOriginValid, isUserLoggedIn, getUsedCoupons)
 
 router.post(
   '/:userId/coupon',

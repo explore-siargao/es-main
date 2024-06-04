@@ -142,7 +142,7 @@ export const addCoupon = async (req: Request, res: Response) => {
 }
 
 export const updateCoupon = async (req: Request, res: Response) => {
-  const userId = req.params.userId
+  const userId = res.locals.user?.id
   const { code, reward, expirationDate, usedBy, isUsed } = req.body
   try {
     const isUserExist =
@@ -167,6 +167,7 @@ export const updateCoupon = async (req: Request, res: Response) => {
                 expirationDate: expirationDate,
                 usedBy: usedBy,
                 isUsed: isUsed,
+                updatedAt: Date.now()
               },
             },
             { new: true }
