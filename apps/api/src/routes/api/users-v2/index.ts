@@ -110,7 +110,7 @@ router.patch(
 )
 
 router.delete(
-  '/:guestId/emergency-contact/:emergencyContactId',
+  '/emergency-contact/:emergencyContactId',
   isCsrfTokenValid,
   isOriginValid,
   isUserLoggedIn,

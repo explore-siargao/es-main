@@ -1,8 +1,8 @@
 import { z } from "zod"
 
 export const Z_Address = z.object({
-  id: z.number(),
-  peronalInfoId: z.number(),
+  id: z.union([z.number(), z.string()]),
+  personalInfoId: z.string(),
   streetAddress: z.string(),
   city: z.string(),
   stateProvince: z.string(),
