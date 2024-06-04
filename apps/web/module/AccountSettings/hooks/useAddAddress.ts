@@ -16,7 +16,8 @@ export async function addAddress(
 
 function useAddAddress(personalInfoId: string | undefined) {
   const query = useMutation({
-    mutationFn: (props: T_AddUpdateAddress) => addAddress(personalInfoId, props),
+    mutationFn: (props: T_AddUpdateAddress) =>
+      addAddress(personalInfoId, props),
   })
   return query
 }
