@@ -11,7 +11,7 @@ export async function addGovernmentId(
   const formData = new FormData()
   formData.append("file", props.file)
   formData.append("type", props.type)
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.post(
     `${API_URL_USERS}/${personId}/government-id`,
     formData,

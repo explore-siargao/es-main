@@ -55,8 +55,19 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
     } = req.body
 
     const userId = req.params.userId
+
+    if (!userId) {
+      return res.status(400).json(
+        response.error({
+          message: 'Invalid user ID format',
+        })
+      )
+    }
+
+    const getUser = await dbUsers.findById(userId)
+
     const editPersonalInfo = await dbGuests.findByIdAndUpdate(
-      { _id: userId },
+      getUser?.guest,
       {
         firstName: firstName,
         lastName: lastName,
@@ -69,16 +80,26 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
       },
       { new: true }
     )
+
+    if (!editPersonalInfo) {
+      return res.status(404).json(
+        response.error({
+          message: 'User not found',
+        })
+      )
+    }
+
     res.json(
-      response.error({
+      response.success({
         item: editPersonalInfo,
         message: 'Successfully updated',
       })
     )
   } catch (err: any) {
-    res.json(
+    console.error('Error updating personal info:', err)
+    res.status(500).json(
       response.error({
-        message: UNKNOWN_ERROR_OCCURRED,
+        message: 'An unknown error occurred',
       })
     )
   }
@@ -88,18 +109,22 @@ export const addAddress = async (req: Request, res: Response) => {
   const { country, streetAddress, city, stateProvince, aptSuite, zipCode } =
     req.body
   const personalInfoId = req.params.personalInfoId
+  const getUser = await dbUsers.findById(personalInfoId)
   try {
     if ((streetAddress && city && stateProvince) || (aptSuite && zipCode)) {
       const getPersonalInfo = await dbGuests
         .findOne({
-          _id: personalInfoId,
+          _id: getUser?.guest,
           deletedAt: null,
         })
         .populate('address')
 
       if (getPersonalInfo) {
         let returnAddress = null
-        if (getPersonalInfo.address === null) {
+        if (
+          getPersonalInfo.address === null ||
+          getPersonalInfo.address === undefined
+        ) {
           const newAddress = new dbAddresses({
             country: country,
             streetAddress: streetAddress,
@@ -109,6 +134,10 @@ export const addAddress = async (req: Request, res: Response) => {
             zipCode: zipCode,
           })
           await newAddress.save()
+          await dbGuests.updateOne(
+            { _id: getUser?.guest },
+            { address: newAddress._id }
+          )
           returnAddress = newAddress
         } else {
           const updateAddress = await dbAddresses.findByIdAndUpdate(
@@ -125,6 +154,10 @@ export const addAddress = async (req: Request, res: Response) => {
               },
             },
             { new: true }
+          )
+          await dbGuests.updateOne(
+            { _id: getUser?.guest },
+            { address: updateAddress?._id }
           )
 
           returnAddress = updateAddress
@@ -209,27 +242,36 @@ export const editAddress = async (req: Request, res: Response) => {
 }
 
 export const addEmergencyContact = async (req: Request, res: Response) => {
+  const userId = res.locals.user?.id
+  const getUser = await dbUsers.findById(userId)
+  const { email, phoneNumber, name, relationship } = req.body
   try {
-    const { email, phoneNumber, name, relationship } = req.body
-    const guestId = req.params.guestId
-    if (name && relationship && (email || phoneNumber)) {
-      const getPersonalInfo = await dbGuests.findOne({
-        _id: guestId,
-        deletedAt: null,
-      })
+    if (name && phoneNumber && email && relationship) {
+      const getPersonalInfo = await dbGuests
+        .findOne({ _id: getUser?.guest, deletedAt: null })
+        .populate('emergencyContacts')
+
       if (getPersonalInfo) {
+        let returnEmergencyContact = null
         const newEmergencyContact = new dbEmergencyContacts({
-          guestId: guestId,
+          name: name,
           email: email,
           phoneNumber: phoneNumber,
-          name: name,
           relationship: relationship,
         })
         await newEmergencyContact.save()
+        await dbGuests.findByIdAndUpdate(
+          getUser?.guest,
+          {
+            $push: { emergencyContacts: newEmergencyContact },
+          },
+          { new: true }
+        )
+        returnEmergencyContact = newEmergencyContact
         res.json(
           response.success({
-            item: newEmergencyContact,
-            message: 'Emergency contact successfully added',
+            item: returnEmergencyContact,
+            message: 'Emergency contact updated successfully!',
           })
         )
       } else {
@@ -247,7 +289,7 @@ export const addEmergencyContact = async (req: Request, res: Response) => {
       )
     }
   } catch (err: any) {
-    res.json(
+    return res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -256,10 +298,11 @@ export const addEmergencyContact = async (req: Request, res: Response) => {
 }
 
 export const removeEmergencyContact = async (req: Request, res: Response) => {
-  const guestId = req.params.guestId
+  const userId = res.locals?.user.id
+  const getUser = await dbUsers.findById(userId)
   const emergencyContactId = req.params.emergencyContactId
   try {
-    const personalInfo = await dbGuests.findById({ _id: guestId })
+    const personalInfo = await dbGuests.findById({ _id: getUser?.guest })
     if (personalInfo !== null) {
       const emergencyContact = await dbEmergencyContacts.findOne({
         _id: emergencyContactId,
@@ -349,6 +392,7 @@ export const getAllGovernmentIdByPersonInfoId = async (
   res: Response
 ) => {
   const personId = req.params.guestId
+
   try {
     const getPersonInfoId = await dbGuests.findById(personId)
     if (getPersonInfoId) {
@@ -414,13 +458,17 @@ export const addGovernmentId = async (req: Request, res: Response) => {
   if (isValidInput.success && files) {
     const { type } = req.body
     try {
-      const getGuestInfo = await dbGuests.findById({ _id: guestId })
+      const getUser = await dbUsers.findById(guestId)
+      const getGuestId = getUser?.guest
+
+      const getGuestInfo = await dbGuests.findById({ _id: getGuestId })
+      console.log('Guest info: ', getGuestInfo)
 
       if (getGuestInfo) {
         if (getGuestInfo.governmentId === null) {
           const upload = await fileService.upload({ files })
-          const addNewGovernmentId = await dbGuests.findOneAndUpdate(
-            { _id: guestId },
+          const addNewGovernmentId = await dbGuests.findByIdAndUpdate(
+            getUser?.guest,
             {
               governmentId: JSON.stringify([
                 { fileKey: upload.key, type: type, createdAt: new Date() },
@@ -430,9 +478,7 @@ export const addGovernmentId = async (req: Request, res: Response) => {
           )
           res.json(
             response.success({
-              items: JSON.parse(
-                JSON.stringify(addNewGovernmentId?.governmentId)
-              ) as T_GovernmentId[],
+              items: addNewGovernmentId?.governmentId,
               message: 'Government Id successfully added!',
             })
           )
@@ -454,17 +500,17 @@ export const addGovernmentId = async (req: Request, res: Response) => {
               })
 
               const updateGovId = await dbGuests.findOneAndUpdate(
-                { _id: guestId },
-                { governmentId: JSON.stringify(updatedGovernmentId) }
+                { _id: getGuestId },
+                { governmentId: updatedGovernmentId }
               )
 
               res.json(
-                response.success({
-                  items: JSON.parse(
-                    JSON.stringify(updateGovId?.governmentId) as string
-                  ) as T_GovernmentId[],
-                  message: 'Government Id successfully added!',
-                })
+                res.json(
+                  response.success({
+                    items: updateGovId?.governmentId || [],
+                    message: 'Government Id successfully added!',
+                  })
+                )
               )
             } else {
               res.json(

@@ -6,7 +6,7 @@ import useDeactivateAccount from "../../hooks/useDeactivateAccount"
 import useLogout from "@/module/Authentication/hooks/useLogout"
 
 interface DeactivateUserModalProps {
-  userId: number
+  userId: number | string
   isOpen: boolean
   onClose: () => void
 }
@@ -68,7 +68,7 @@ const DeactivateUserModal = ({
         isSubmit={false}
         onClose={closeModal}
         buttonFn={() => {
-          mutate(userId, callBackReq)
+          mutate(userId as string, callBackReq)
         }}
       />
     </ModalContainer>
