@@ -129,7 +129,7 @@ export const getPaymentMethods = async (req: Request, res: Response) => {
       })) !== null
     if (isUserExist) {
       const getPaymentsMethod = await dbPaymentMethods
-        .find({ user: userId })
+        .find({ user: userId, deletedAt: null })
         .populate({
           path: 'user',
           populate: [{ path: 'guest' }],

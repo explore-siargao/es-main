@@ -7,17 +7,17 @@ export async function removePaymentMethod(
   userid: string,
   paymentMethodId: string
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.delete(
     `${API_URL_PAYMENTS}/${userid}/payment-method/${paymentMethodId}`
   )
 }
 
-function useRemovePaymentmethod(userId: string, paymentMethodId: string) {
+function useRemovePaymentMethod(userId: string, paymentMethodId: string) {
   const query = useMutation({
     mutationFn: (props: IPaymentMethod) =>
       removePaymentMethod(userId, paymentMethodId),
   })
   return query
 }
-export default useRemovePaymentmethod
+export default useRemovePaymentMethod
