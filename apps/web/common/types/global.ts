@@ -71,8 +71,8 @@ export interface IPrice {
 }
 
 export interface IPaymentMethod {
-  id?: number
-  userId?: number
+  id?: string
+  userId?: string
   cardNumber?: string
   countryRegion?: string
   cvv?: number

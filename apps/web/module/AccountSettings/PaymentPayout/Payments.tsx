@@ -30,7 +30,7 @@ const Payments = () => {
   const queryClient = useQueryClient()
   const [addCardModal, setAddCardModal] = useState<boolean>(false)
   const [removePaymentModal, setRemovePaymentModal] = useState<boolean>(false)
-  const [paymentMethodId, setPaymentMethodId] = useState(0)
+  const [paymentMethodId, setPaymentMethodId] = useState('0')
   const [showHide, setShowHide] = useState(false)
   const { register, reset, getValues } = useForm<ICoupon>()
   const toggleVisibility = () => {
@@ -38,10 +38,11 @@ const Payments = () => {
   }
   const session = useSessionStore((state) => state)
   const { data: paymentMethods, isPending: isPendingPaymentMethods } =
-    useGetPaymentMethods(session.id as string)
-  const { mutate, isPending } = useUpdatePaymentMethod(session.id as number)
+    useGetPaymentMethods()
+  const { mutate, isPending } = useUpdatePaymentMethod()
   const { mutate: redeemCoupon, isPending: isPendingRedeemCoupon } =
     useUpdateCoupon(session.id as number)
+
   const callBackReqDefaultPaymentMethod = {
     onSuccess: (data: any) => {
       if (!data.error) {
@@ -72,6 +73,8 @@ const Payments = () => {
     },
   }
 
+
+
   return (
     <>
       {isPendingPaymentMethods ? (
@@ -99,6 +102,7 @@ const Payments = () => {
             </Typography>
             {paymentMethods?.items?.length !== 0 ? (
               paymentMethods?.items?.map((paymentMethod) => {
+                console.log(paymentMethod)
                 const cardInfo = encryptionService.decrypt(
                   paymentMethod.cardInfo
                 ) as T_CardInfo
@@ -171,17 +175,23 @@ const Payments = () => {
                             <button
                               className="relative rounded hover:bg-gray-50 px-5 py-2 text-left"
                               onClick={() => {
+                                console.log("PaymentMethod Object:", paymentMethod);
+                                if (!paymentMethod.id) {
+                                  console.error("PaymentMethod ID is undefined");
+                                  toast.error("Payment method ID is missing");
+                                  return;
+                                }
                                 mutate(
                                   { id: paymentMethod.id, isDefault: true },
                                   callBackReqDefaultPaymentMethod
-                                )
+                                );
                               }}
                             >
                               Set as default
                             </button>
                             <button
                               onClick={() => {
-                                setPaymentMethodId(paymentMethod.id as number)
+                                setPaymentMethodId(paymentMethod.id as string)
                                 setRemovePaymentModal(true)
                               }}
                               className="relative rounded hover:bg-gray-50 px-5 py-2 text-left"
@@ -276,7 +286,7 @@ const Payments = () => {
       />
       <RemovePaymentModal
         id={paymentMethodId}
-        userId={session.id as number}
+        userId={session.id as string}
         isOpen={removePaymentModal}
         onClose={() => setRemovePaymentModal(false)}
       />

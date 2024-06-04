@@ -4,19 +4,18 @@ import { API_URL_PAYMENTS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function updatePaymentMethod(
-  userId: number | null,
   props: IPaymentMethod
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.patch(
-    `${API_URL_PAYMENTS}/${userId}/payment-method/${props.id}`,
+    `${API_URL_PAYMENTS}/payment-method/${props.id}`,
     props
   )
 }
 
-function useUpdatePaymentMethod(userId: number | null) {
+function useUpdatePaymentMethod() {
   const query = useMutation({
-    mutationFn: (props: IPaymentMethod) => updatePaymentMethod(userId, props),
+    mutationFn: (props: IPaymentMethod) => updatePaymentMethod(props),
   })
   return query
 }
