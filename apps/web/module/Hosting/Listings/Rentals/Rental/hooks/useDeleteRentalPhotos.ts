@@ -3,15 +3,15 @@ import { API_URL_RENTALS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function deleteRentalPhotos(
-  id: number | undefined,
+  id: string | undefined,
   photoId: number | undefined
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.delete(`${API_URL_RENTALS}/${id}/photos/${photoId}`)
 }
 
 function useDeleteRentalPhotos(
-  id: number | undefined,
+  id: string | undefined,
   photoId: number | undefined
 ) {
   const query = useMutation({
