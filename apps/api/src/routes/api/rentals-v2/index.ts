@@ -111,12 +111,7 @@ router.get(
   getRentalBasicInfo
 )
 //rates
-router.get(
-  '/:rentalId/pricing',
-  isOriginValid,
-  isUserLoggedIn,
-  getRentalRates
-)
+router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
 
 //photos
 router.get(
