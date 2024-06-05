@@ -17,10 +17,10 @@ const response = new ResponseService()
 export const getAllRentals = async (req: Request, res: Response) => {
   try {
     const hostId = res.locals.user?.id
-
     const filteredDataGetAllRentals = await dbRentals
-      .find({ hostId: hostId })
+      .find({ host: hostId })
       .sort({ _id: -1 })
+      .populate('photos')
 
     return res.json(
       response.success({
