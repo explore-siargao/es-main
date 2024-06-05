@@ -22,7 +22,7 @@ const AddOns = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalAddOns(
-    listingId as unknown as number
+    listingId
   )
   const { register, handleSubmit } = useForm<T_Rental_AddOns>({
     values: data?.item?.AddOns as T_Rental_AddOns,

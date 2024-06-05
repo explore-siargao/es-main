@@ -32,7 +32,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateRentalLocation(
-    listingId as unknown as number
+    listingId
   )
   const { data } = useGetRentalById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
