@@ -4,14 +4,14 @@ import { useMutation } from "@tanstack/react-query"
 import { T_Photo } from "@repo/contract"
 
 export async function updatePropertyPhotos(
-  id: number | undefined,
+  id: string | undefined,
   props: { photos: T_Photo[] }
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_PROPERTIES}/${id}/photos`, props)
 }
 
-function useUpdatePropertyPhotos(id: number | undefined) {
+function useUpdatePropertyPhotos(id: string | undefined) {
   const query = useMutation({
     mutationFn: (props: { photos: T_Photo[] }) =>
       updatePropertyPhotos(id, props),

@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import useUpdatePropertyPhotos from "../../../hooks/useUpdatePropertyPhotos"
 import toast from "react-hot-toast"
 import { T_Photo } from "@repo/contract"
+import { useParams } from "next/navigation"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -15,12 +16,15 @@ interface ISetUpProfileAboutYouModalProps {
   selectedPhoto: IPhotos
 }
 
+const params = useParams<{ listingId: string }>()
+const listingId = String(params.listingId)
+
 const PhotosModal = ({
   isModalOpen,
   onClose,
   selectedPhoto,
 }: ISetUpProfileAboutYouModalProps) => {
-  const { mutate } = useUpdatePropertyPhotos(1)
+  const { mutate } = useUpdatePropertyPhotos(listingId)
 
   const { register, handleSubmit } = useForm<T_Photo>()
 

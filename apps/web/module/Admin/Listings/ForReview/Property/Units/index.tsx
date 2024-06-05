@@ -15,7 +15,7 @@ type Prop = {
 const Units = ({ pageType }: Prop) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetPropertyById(listingId)
   const [isSelectUnitTypeModalOpen, setIsSelectUnitTypeModalOpen] =
     useState(false)
