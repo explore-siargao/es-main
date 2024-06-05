@@ -180,7 +180,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  isHostRentalOwner,
+  // isHostRentalOwner,
   updateAddOns
 )
 
