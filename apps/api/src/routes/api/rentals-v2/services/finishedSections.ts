@@ -41,15 +41,16 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
         })
       )
     }
-   await dbRentals.findByIdAndUpdate(
-    rental._id,
-    {
-      $set:{
-        finishedSections:finishedSections,
-        updatedAt: Date.now()
-      }
-    },{new:true}
-   )
+    await dbRentals.findByIdAndUpdate(
+      rental._id,
+      {
+        $set: {
+          finishedSections: finishedSections,
+          updatedAt: Date.now(),
+        },
+      },
+      { new: true }
+    )
 
     res.json(
       response.success({
