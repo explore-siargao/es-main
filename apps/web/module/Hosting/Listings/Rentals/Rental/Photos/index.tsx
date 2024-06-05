@@ -26,7 +26,9 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
   const { data, isLoading } = useGetRentalById(listingId)
-  const { mutate, isPending } = useUpdateRentalPhotos(listingId as unknown as number)
+  const { mutate, isPending } = useUpdateRentalPhotos(
+    listingId as unknown as number
+  )
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setToEditPhotoIndex = usePhotoStore(
