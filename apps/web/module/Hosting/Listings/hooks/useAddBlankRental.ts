@@ -3,7 +3,7 @@ import { API_URL_RENTALS } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 
 export async function addBlankRental() {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.post(`${API_URL_RENTALS}`, {})
 }
 
