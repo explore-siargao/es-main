@@ -115,7 +115,6 @@ router.get(
   '/:rentalId/pricing',
   isOriginValid,
   isUserLoggedIn,
-  isHostRentalOwner,
   getRentalRates
 )
 
