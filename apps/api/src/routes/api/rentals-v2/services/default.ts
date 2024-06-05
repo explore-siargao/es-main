@@ -143,7 +143,7 @@ export const getRentalDetails = async (req: Request, res: Response) => {
     if (!getRental) {
       return res.json(response.error({ message: 'No rental details found' }))
     }
-   
+
     const category = getRental.category as unknown as string
 
     if (category === E_Rental_Category.Car) {
