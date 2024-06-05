@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 
 export async function deleteRentalPhotos(
   id: string | undefined,
-  photoId: number | undefined
+  photoId: string | undefined
 ) {
   const apiService = new ApiService("v2")
   return await apiService.delete(`${API_URL_RENTALS}/${id}/photos/${photoId}`)
@@ -12,7 +12,7 @@ export async function deleteRentalPhotos(
 
 function useDeleteRentalPhotos(
   id: string | undefined,
-  photoId: number | undefined
+  photoId: string | undefined
 ) {
   const query = useMutation({
     mutationFn: () => deleteRentalPhotos(id, photoId),
