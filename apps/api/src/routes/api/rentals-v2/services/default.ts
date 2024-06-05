@@ -143,15 +143,13 @@ export const getRentalDetails = async (req: Request, res: Response) => {
     if (!getRental) {
       return res.json(response.error({ message: 'No rental details found' }))
     }
-    console.log('Get rental: ', getRental)
+   
     const category = getRental.category as unknown as string
 
     if (category === E_Rental_Category.Car) {
       rentalDetail = getRental.details
-      console.log('Rental Details(Car):', rentalDetail)
     } else if ('Motorbike' === E_Rental_Category.Motorbike) {
       const details = getRental.details as unknown as RentalDetails
-      console.log('Rental Details(Motor Bike):', details)
       rentalDetail = {
         // id: details._id,
         engineCapacityLiter: details.engineCapacityLiter,
