@@ -28,7 +28,7 @@ const BasicInfo = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalBasicInfo(
-    listingId as unknown as number
+    listingId
   )
   const { register, handleSubmit, watch } = useForm<T_Rental_Basic_Info>({
     values: data?.item as T_Rental_Basic_Info,

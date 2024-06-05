@@ -19,9 +19,9 @@ const Pricing = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
-  const { mutate, isPending } = useUpdateRentalPricing(listingId)
+  const { mutate, isPending } = useUpdateRentalPricing(listingId as unknown as number)
   const { register, handleSubmit } = useForm<T_Rental_Pricing>({
     values: data?.item?.Pricing as T_Rental_Pricing,
   })
