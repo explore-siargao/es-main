@@ -21,7 +21,9 @@ const AddOns = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
-  const { mutate, isPending } = useUpdateRentalAddOns(listingId)
+  const { mutate, isPending } = useUpdateRentalAddOns(
+    listingId as unknown as number
+  )
   const { register, handleSubmit } = useForm<T_Rental_AddOns>({
     values: data?.item?.AddOns as T_Rental_AddOns,
   })
