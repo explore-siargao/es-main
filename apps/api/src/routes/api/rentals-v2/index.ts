@@ -118,7 +118,6 @@ router.get(
   '/:rentalId/photos',
   isOriginValid,
   isUserLoggedIn,
-  isHostRentalOwner,
   getRentalPhotos
 )
 
