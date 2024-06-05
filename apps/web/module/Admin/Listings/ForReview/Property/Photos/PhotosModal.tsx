@@ -16,7 +16,7 @@ interface ISetUpProfileAboutYouModalProps {
   selectedPhoto: IPhotos
 }
 
-const params = useParams<{listingId: string}>()
+const params = useParams<{ listingId: string }>()
 const listingId = String(params.listingId)
 
 const PhotosModal = ({
