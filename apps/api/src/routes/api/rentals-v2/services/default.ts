@@ -19,7 +19,8 @@ export const getAllRentals = async (req: Request, res: Response) => {
     const hostId = res.locals.user?.id
     const filteredDataGetAllRentals = await dbRentals
       .find({ host: hostId })
-      .sort({ _id: -1 }).populate("photos")
+      .sort({ _id: -1 })
+      .populate('photos')
 
     return res.json(
       response.success({
