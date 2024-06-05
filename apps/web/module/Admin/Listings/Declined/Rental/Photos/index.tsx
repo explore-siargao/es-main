@@ -22,7 +22,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalPhotos(listingId)
