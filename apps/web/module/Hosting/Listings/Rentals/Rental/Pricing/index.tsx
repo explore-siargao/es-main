@@ -22,7 +22,7 @@ const Pricing = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalPricing(
-    listingId as unknown as number
+    listingId as string
   )
   const { register, handleSubmit } = useForm<T_Rental_Pricing>({
     values: data?.item?.Pricing as T_Rental_Pricing,
