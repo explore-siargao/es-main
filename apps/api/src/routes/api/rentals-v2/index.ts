@@ -114,13 +114,7 @@ router.get(
 router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
 
 //photos
-router.get(
-  '/:rentalId/photos',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostRentalOwner,
-  getRentalPhotos
-)
+router.get('/:rentalId/photos', isOriginValid, isUserLoggedIn, getRentalPhotos)
 
 router.patch(
   '/:rentalId/photos',
