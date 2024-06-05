@@ -31,9 +31,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { mutate, isPending } = useUpdateRentalLocation(
-    listingId as unknown as number
-  )
+  const { mutate, isPending } = useUpdateRentalLocation(listingId)
   const { data } = useGetRentalById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")

@@ -23,7 +23,7 @@ const RentalSummary = () => {
   const listingId = String(params.listingId as string)
   const { data } = useGetRentalById(listingId)
   const rental = data?.item
-  const { mutate } = useUpdateRentalStatusById(listingId as unknown as number)
+  const { mutate } = useUpdateRentalStatusById(listingId)
   const handleSubmit = async () => {
     const newStatus = { status: E_Rental_Status.Pending }
     const callBackReq = {
