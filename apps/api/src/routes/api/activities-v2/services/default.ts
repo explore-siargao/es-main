@@ -5,24 +5,27 @@ import { dbActivities } from '@repo/database'
 
 const response = new ResponseService()
 export const addActivity = async (req: Request, res: Response) => {
+  const userId = res.locals.user?.id
+
   try {
     const value = {
-      id: 4,
+      host: userId,
       title: '',
       description: '',
-      highLights: '[]',
-      durationHour: '',
-      durationMinute: '',
-      language: '',
+      highLights: [],
+      durationHour: null,
+      durationMinute: null,
+      language: [],
       isFoodIncluded: false,
       isNonAlcoholicDrinkIncluded: false,
       isAlcoholicDrinkIncluded: false,
-      otherInclusion: '[]',
-      notIncluded: '',
-      whatToBrings: '',
-      notAllowed: '[]',
-      activityPolicies: '[]',
-      cancellationPolicies: '[]',
+      otherInclusion: [],
+      notIncluded: [],
+      whatToBrings: [],
+      cancellationDays: 0,
+      notAllowed: [],
+      activityPolicies: [],
+      cancellationPolicies: [],
       activityPhotos: [],
     }
 
