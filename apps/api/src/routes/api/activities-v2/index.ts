@@ -3,13 +3,14 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import express from 'express'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
+import { getActivities, updateActivities } from './services/basic-info'
+
 import {
   getAdditionalInfo,
   updateAdditionalInfo,
 } from './services/additionalInfo'
 
 import { addActivity, getActivity } from './services/default'
-import { updateActivities } from './services/basic-info'
 import { getActivityInclusions } from './services/activity-inclussions'
 import { updateStatus } from './services/status'
 
@@ -57,6 +58,15 @@ router.patch(
   isOriginValid,
   isHostActivityOwner,
   updateActivities
+)
+
+// activity-info
+router.get(
+  '/:activityId/info',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostActivityOwner,
+  getActivities
 )
 
 //add
