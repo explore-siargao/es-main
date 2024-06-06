@@ -13,38 +13,49 @@ export async function getFilteredPaymentHistory(
     (item) =>
       (!category || item.category === category) &&
       (!listing || item.listing === listing)
-  );
+  )
 
-  const paymentHistoryByYear = filteredData.map(item => item.paymentHistoryData?.find(entry => entry.year === year));
+  const paymentHistoryByYear = filteredData.map((item) =>
+    item.paymentHistoryData?.find((entry) => entry.year === year)
+  )
 
-  let filteredPaymentHistory: any[];
+  let filteredPaymentHistory: any[]
 
   if (month.toLowerCase() === "all") {
-    filteredPaymentHistory = [paymentHistoryByYear.reduce((accumulator, paymentHistory) => {
-      if (paymentHistory) {
-        paymentHistory.data.forEach(({ cancelled, completed }) => {
-          accumulator.cancelled += cancelled;
-          accumulator.completed += completed;
-        });
-      }
-      return accumulator;
-    }, { cancelled: 0, completed: 0 })];
+    filteredPaymentHistory = [
+      paymentHistoryByYear.reduce(
+        (accumulator, paymentHistory) => {
+          if (paymentHistory) {
+            paymentHistory.data.forEach(({ cancelled, completed }) => {
+              accumulator.cancelled += cancelled
+              accumulator.completed += completed
+            })
+          }
+          return accumulator
+        },
+        { cancelled: 0, completed: 0 }
+      ),
+    ]
   } else {
     filteredPaymentHistory = filteredData.flatMap((item, index) => {
-      const paymentHistory = paymentHistoryByYear[index];
+      const paymentHistory = paymentHistoryByYear[index]
       return (
         paymentHistory?.data
           .filter((entry) => entry.date === month)
           .map(({ cancelled, completed }) => ({ cancelled, completed })) || []
-      );
-    });
+      )
+    })
   }
 
-  return filteredPaymentHistory;
+  return filteredPaymentHistory
 }
 
-
-function useGetFilteredPaymentHistory(category: String, listing: String, year: String, month: String) {
+function useGetFilteredPaymentHistory(
+  category: String,
+  listing: String,
+  year: String,
+  month: String
+) {
   const query = useQuery({
     queryKey: ["insights", category, listing, year, month],
     queryFn: () => getFilteredPaymentHistory(category, listing, year, month),

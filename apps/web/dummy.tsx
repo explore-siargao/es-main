@@ -21,7 +21,7 @@ export const data = [
       { date: "Nov", count: 75 },
       { date: "Dec", count: 19 },
     ],
-     paymentHistoryData: [
+    paymentHistoryData: [
       {
         year: "2023",
         data: [
@@ -36,8 +36,8 @@ export const data = [
           { date: "Sep", cancelled: 11000, completed: 320000 },
           { date: "Oct", cancelled: 0, completed: 0 },
           { date: "Nov", cancelled: 0, completed: 0 },
-          { date: "Dec", cancelled: 0, completed: 0 }
-        ]
+          { date: "Dec", cancelled: 0, completed: 0 },
+        ],
       },
       {
         year: "2024",
@@ -53,9 +53,9 @@ export const data = [
           { date: "Sep", cancelled: 9000, completed: 270000 },
           { date: "Oct", cancelled: 6000, completed: 180000 },
           { date: "Nov", cancelled: 25000, completed: 900000 },
-          { date: "Dec", cancelled: 10000, completed: 320000 }
-        ]
-      }
+          { date: "Dec", cancelled: 10000, completed: 320000 },
+        ],
+      },
     ],
     specificMonth: {
       month: "May",
@@ -72,13 +72,12 @@ export const data = [
         { date: "10", count: 0 },
         { date: "11", count: 0 },
         { date: "12", count: 0 },
-        { date: "13", count: 0 }, 
+        { date: "13", count: 0 },
         { date: "14", count: 0 },
         { date: "15", count: 0 },
         { date: "16", count: 0 },
         { date: "17", count: 0 },
         { date: "18", count: 0 },
-     
       ],
     },
     listing: "Mountain top house",
@@ -103,8 +102,8 @@ export const data = [
           { date: "Sep", cancelled: 13000, completed: 450000 },
           { date: "Oct", cancelled: 0, completed: 0 },
           { date: "Nov", cancelled: 0, completed: 0 },
-          { date: "Dec", cancelled: 0, completed: 0 }
-        ]
+          { date: "Dec", cancelled: 0, completed: 0 },
+        ],
       },
       {
         year: "2024",
@@ -120,9 +119,9 @@ export const data = [
           { date: "Sep", cancelled: 7000, completed: 210000 },
           { date: "Oct", cancelled: 3000, completed: 70000 },
           { date: "Nov", cancelled: 12000, completed: 600000 },
-          { date: "Dec", cancelled: 5000, completed: 180000 }
-        ]
-      }
+          { date: "Dec", cancelled: 5000, completed: 180000 },
+        ],
+      },
     ],
     cancelled: 85000,
     completed: 1000000,

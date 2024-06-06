@@ -66,23 +66,21 @@ const GraphTab = () => {
     values: [
       [
         formatCurrency(
-          (
-            !filteredPaymentHistoryIsPending &&
+          !filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.completed),
+            filteredPaymentHistory[0]?.completed,
           "Philippines"
         ),
         formatCurrency(
-          (
-            !filteredPaymentHistoryIsPending &&
+          !filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.cancelled),
+            filteredPaymentHistory[0]?.cancelled,
           "Philippines"
         ),
       ],
     ],
     total: formatCurrency(
-       !filteredPaymentHistoryIsPending && filteredPaymentHistory
+      !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
             (filteredPaymentHistory[0]?.cancelled || 0)
         : 0,
@@ -95,7 +93,7 @@ const GraphTab = () => {
     values: [[category, listing]],
 
     total: formatCurrency(
-        !filteredPaymentHistoryIsPending && filteredPaymentHistory
+      !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
             (filteredPaymentHistory[0]?.cancelled || 0)
         : 0,
@@ -145,7 +143,7 @@ const GraphTab = () => {
           value={month}
           onChange={(e) => setMonth(e.target.value)}
         >
-          <Option value={"all"}>All</Option>    
+          <Option value={"all"}>All</Option>
           <Option value={"Feb"}>February</Option>
           <Option value={"Mar"}>March</Option>
           <Option value={"Apr"}>April</Option>
