@@ -18,24 +18,23 @@ const RestaurantLocation = () => {
             <MapPin />
           </div>
           <div className="w-full">
-            Tourism Road, General Luna, Siargao Island, Surigao del Norte, Philippines
+            Tourism Road, General Luna, Siargao Island, Surigao del Norte,
+            Philippines
           </div>
         </div>
         <div className="flex items-center gap-4">
           <Phone />
-          <div>
-            09123456789
-          </div>
+          <div>09123456789</div>
         </div>
         <div className="flex items-center gap-4">
           <AtSign />
-          <div>
-           restaurantemail@gmail.com
-          </div>
+          <div>restaurantemail@gmail.com</div>
         </div>
       </div>
       <div className="mt-8">
-        <Button variant={"primary"} className="w-full">WRITE A REVIEW</Button>
+        <Button variant={"primary"} className="w-full">
+          WRITE A REVIEW
+        </Button>
       </div>
     </div>
   )

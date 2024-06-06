@@ -210,30 +210,21 @@ export const RestaurantGuide = () => {
   return (
     <WidthWrapper width="small" className="mt-4 lg:mt-8">
       <h1 className="text-2xl font-bold">RESTAURANT GUIDE</h1>
-      <SectionInfo
-        images={imageGallery}
-        title="Kermit Siargao"
-      />
+      <SectionInfo images={imageGallery} title="Kermit Siargao" />
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div>
             <div className="pb-6 flex flex-col gap-8">
               <h1 className="text-2xl font-bold">ABOUT</h1>
-                <div>
+              <div>
                 <BookingDescription {...description} />
               </div>
             </div>
-            <Separator
-              orientation="horizontal"
-              className="bg-gray-300"
-            />
+            <Separator orientation="horizontal" className="bg-gray-300" />
             <div className="py-6 ">
               <PlaceOffers offers={offers} group={group} />
             </div>
-            <Separator
-              orientation="horizontal"
-              className="bg-gray-300"
-            />
+            <Separator orientation="horizontal" className="bg-gray-300" />
             <div>
               <div className="py-8">
                 <div className="pb-4">
@@ -255,23 +246,20 @@ export const RestaurantGuide = () => {
           </div>
         </div>
       </div>
-      
-      <Separator
-        orientation="horizontal"
-        className="bg-gray-300"
-      />
+
+      <Separator orientation="horizontal" className="bg-gray-300" />
       <div>
         <div className="py-8">
           <h1 className="text-2xl font-bold">ACCOMMODATION NEARBY</h1>
           <div className="w-full flex gap-8 mt-8">
             <div className="w-full flex flex-col gap-2">
               <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image 
-                  src={'/assets/1.jpg'} 
-                  className='h-full w-full object-cover' 
-                  width={500} 
-                  height={500} 
-                  alt='' 
+                <Image
+                  src={"/assets/1.jpg"}
+                  className="h-full w-full object-cover"
+                  width={500}
+                  height={500}
+                  alt=""
                 />
               </div>
               <Typography variant="h3" fontWeight="semibold">
@@ -280,12 +268,12 @@ export const RestaurantGuide = () => {
             </div>
             <div className="w-full flex flex-col gap-2">
               <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image 
-                  src={'/assets/1.jpg'} 
-                  className='h-full w-full object-cover' 
-                  width={500} 
-                  height={500} 
-                  alt='' 
+                <Image
+                  src={"/assets/1.jpg"}
+                  className="h-full w-full object-cover"
+                  width={500}
+                  height={500}
+                  alt=""
                 />
               </div>
               <Typography variant="h3" fontWeight="semibold">
@@ -294,12 +282,12 @@ export const RestaurantGuide = () => {
             </div>
             <div className="w-full flex flex-col gap-2">
               <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image 
-                  src={'/assets/1.jpg'} 
-                  className='h-full w-full object-cover' 
-                  width={500} 
-                  height={500} 
-                  alt='' 
+                <Image
+                  src={"/assets/1.jpg"}
+                  className="h-full w-full object-cover"
+                  width={500}
+                  height={500}
+                  alt=""
                 />
               </div>
               <Typography variant="h3" fontWeight="semibold">
