@@ -37,7 +37,7 @@ const Facilities = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetPropertyById(listingId)
   const { mutate, isPending } = useUpdatePropertyFacilities(listingId)
   const facilities = useSelectFacilityStore((state) => state.facilities)

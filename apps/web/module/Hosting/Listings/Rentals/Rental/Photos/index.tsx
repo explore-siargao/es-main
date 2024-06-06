@@ -23,7 +23,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalPhotos(listingId)
@@ -61,7 +61,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const handleSave = () => {
     if (
       data?.item?.category === E_Rental_Category.Car &&
-      (photos.length > 4 ||
+      (photos?.length > 4 ||
         (data?.item?.Photos && data?.item?.Photos.length > 4))
     ) {
       const callBackReq = {
@@ -90,7 +90,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
       mutate({ photos }, callBackReq)
     } else if (
       data?.item?.category === E_Rental_Category.Car &&
-      (photos.length < 5 ||
+      (photos?.length < 5 ||
         (data?.item?.Photos && data?.item?.Photos.length < 5))
     ) {
       toast.error("Please add at least 5 photos")
@@ -98,7 +98,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
 
     if (
       data?.item?.category !== E_Rental_Category.Car &&
-      (photos.length > 2 ||
+      (photos?.length > 2 ||
         (data?.item?.Photos && data?.item?.Photos.length > 2))
     ) {
       const callBackReq = {
@@ -127,7 +127,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
       mutate({ photos }, callBackReq)
     } else if (
       data?.item?.category !== E_Rental_Category.Car &&
-      (photos.length < 3 ||
+      (photos?.length < 3 ||
         (data?.item?.Photos && data?.item?.Photos.length < 3))
     ) {
       toast.error("Please add at least 3 photos")
@@ -239,7 +239,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
                     <input {...getInputProps()} />
                   </label>
                 </div>
-                {photos.map((photo, index) => (
+                {photos?.map((photo, index) => (
                   <div key={index} className="h-full">
                     {photo.isMain && (
                       <div className="flex justify-center">

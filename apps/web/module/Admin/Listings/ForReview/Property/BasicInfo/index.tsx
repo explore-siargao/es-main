@@ -21,7 +21,7 @@ const BasicInfo = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetPropertyById(listingId)
   const { mutate, isPending } = useUpdatePropertyBasicInfo(listingId)
   const { register, handleSubmit } = useForm<T_Property_Basic_Info>()

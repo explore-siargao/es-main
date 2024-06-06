@@ -20,7 +20,7 @@ import toast from "react-hot-toast"
 const RentalSummary = () => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId as string)
   const { data } = useGetRentalById(listingId)
   const rental = data?.item
   const { mutate } = useUpdateRentalStatusById(listingId)

@@ -19,7 +19,7 @@ const AddOns = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalAddOns(listingId)
   const { register, handleSubmit } = useForm<T_Rental_AddOns>({

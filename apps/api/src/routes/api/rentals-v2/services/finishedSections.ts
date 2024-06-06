@@ -24,7 +24,7 @@ export const getFinishedSections = async (req: Request, res: Response) => {
 export const updateFinishedSections = async (req: Request, res: Response) => {
   const rentalId = req.params.rentalId
   const hostId = res.locals.user?.id
-  const finishedSections = req.body.finishedSections
+  const finishedSections = req.body.finishedSection
   try {
     const rental = await dbRentals.findById({ _id: rentalId })
     if (!rental) {
@@ -41,9 +41,16 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
         })
       )
     }
-    rental.finishedSections = finishedSections
-    rental.updatedAt = new Date()
-    await rental.save()
+    await dbRentals.findByIdAndUpdate(
+      rental._id,
+      {
+        $set: {
+          finishedSections: finishedSections,
+          updatedAt: Date.now(),
+        },
+      },
+      { new: true }
+    )
 
     res.json(
       response.success({
