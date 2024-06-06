@@ -16,10 +16,12 @@ const GraphTab = () => {
     useGetPaymentHistoryGraph("all")
   const [category, setCategory] = useState("Property")
   const [listing, setListing] = useState("Mountain top house")
+  const [year, setYear] = useState("2024")
+  const [month, setMonth] = useState("All")
   const {
     data: filteredPaymentHistory,
     isPending: filteredPaymentHistoryIsPending,
-  } = useGetFilteredPaymentHistory(category, listing)
+  } = useGetFilteredPaymentHistory(category, listing, year, month)
 
   // const summaryData = {
   //   labels: ["Completed", "Cancelled"],
@@ -64,38 +66,34 @@ const GraphTab = () => {
     values: [
       [
         formatCurrency(
-          (!isPending &&
-            !filteredPaymentHistoryIsPending &&
+          !filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.cancelled) ||
-            0,
+            filteredPaymentHistory[0]?.completed,
           "Philippines"
         ),
         formatCurrency(
-          (!isPending &&
-            !filteredPaymentHistoryIsPending &&
+          !filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.completed) ||
-            0,
+            filteredPaymentHistory[0]?.cancelled,
           "Philippines"
         ),
       ],
     ],
     total: formatCurrency(
-      !isPending && !filteredPaymentHistoryIsPending && filteredPaymentHistory
+      !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
             (filteredPaymentHistory[0]?.cancelled || 0)
         : 0,
       "Philippines"
     ),
   }
-
+  console.log(summaryData)
   const filterData = {
     labels: ["Category", "Listing"],
     values: [[category, listing]],
 
     total: formatCurrency(
-      !isPending && !filteredPaymentHistoryIsPending && filteredPaymentHistory
+      !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
             (filteredPaymentHistory[0]?.cancelled || 0)
         : 0,
@@ -107,7 +105,7 @@ const GraphTab = () => {
       <Typography variant="h1" fontWeight="semibold">
         Payment History
       </Typography>
-      <div className="my-5 grid lg:grid-cols-6 grid-cols-2 gap-4 mb-4 border-b pb-4">
+      <div className="my-5 grid lg:grid-cols-6 grid-cols-2 gap-4 mb-4 pb-4">
         <Select
           label="Category"
           required
@@ -127,6 +125,29 @@ const GraphTab = () => {
           <Option value={"Mountain top house"}>Mountain top house</Option>
           <Option value={"Word of Life"}>Word of Life</Option>
           <Option value={"Bianca Hotel"}>Bianca Hotel</Option>
+        </Select>
+        <Select
+          label="Year"
+          required
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+        >
+          <Option value={"2024"}>2024</Option>
+          <Option value={"2023"}>2023</Option>
+          <Option value={"2022"}>2022</Option>
+          <Option value={"2021"}>2021</Option>
+        </Select>
+        <Select
+          label="Month"
+          required
+          value={month}
+          onChange={(e) => setMonth(e.target.value)}
+        >
+          <Option value={"all"}>All</Option>
+          <Option value={"Feb"}>February</Option>
+          <Option value={"Mar"}>March</Option>
+          <Option value={"Apr"}>April</Option>
+          <Option value={"May"}>May</Option>
         </Select>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
