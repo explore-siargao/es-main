@@ -1,7 +1,6 @@
 // NOTE: This needs to be place after isUserLoggedIn middleware
 
 import { NextFunction, Request, Response } from 'express'
-import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
 import { USER_NOT_AUTHORIZED } from '@/common/constants'
 
