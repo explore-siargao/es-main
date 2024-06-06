@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export async function getActivitiesById(id: number | undefined) {
   const apiService = new ApiService("mock")
-  return await apiService.get(`${API_URL_ACTIVITIES}/${id}/info`)
+  return await apiService.get(`${API_URL_ACTIVITIES}/${id}`)
 }
 
 function useGetActivitiesById(id: number | undefined) {

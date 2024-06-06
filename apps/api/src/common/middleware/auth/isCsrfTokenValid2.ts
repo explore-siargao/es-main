@@ -24,7 +24,6 @@ const isCsrfTokenValid2 = async (
         sessionKey: string
         userId: number
       }
-      console.log(sessionCookie)
       if (
         decryptedCsrf.sessionKey === sessionCookie &&
         decryptedCsrf.userId === Number(session?.userId)

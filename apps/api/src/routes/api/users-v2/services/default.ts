@@ -102,7 +102,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
         firstName: user.guest.firstName,
         middleName: user.guest.middleName,
         lastName: user.guest.lastName,
-        language: user.guest.language,
+        language: user.guest.languages,
         currency: user.guest.currency,
         gender: user.guest.gender,
         phone: user.guest.phone,

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const ActivityBasicInfoPage = () => {
   return (
     <AuthGuard>
-      <BasicInfo pageType="edit" />
+      <BasicInfo pageType="setup" />
     </AuthGuard>
   )
 }
