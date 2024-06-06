@@ -22,7 +22,7 @@ const isHostActivityOwner = async (
   let activity
   try {
     activity = await dbActivities.findOne({
-      host: loggedInUser.id,
+      hostId: loggedInUser.id,
       _id: activityId,
     })
   } catch (err) {
