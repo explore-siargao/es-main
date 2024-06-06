@@ -8,9 +8,10 @@ import {
   updateAdditionalInfo,
 } from './services/additionalInfo'
 
-import { addActivity, getActivity, getActivity } from './services/default'
+import { addActivity, getActivity } from './services/default'
 import { updateActivities } from './services/basic-info'
 import { getActivityInclusions } from './services/activity-inclussions'
+import { updateStatus } from './services/status'
 
 const router = express.Router()
 
@@ -60,5 +61,15 @@ router.patch(
 
 //add
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
+
+//status
+router.patch(
+  '/:activityId/status',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  updateStatus
+)
 
 export default router
