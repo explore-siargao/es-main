@@ -66,15 +66,17 @@ const GraphTab = () => {
     values: [
       [
         formatCurrency(
-          !filteredPaymentHistoryIsPending &&
+          (!filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.completed || 0,
+            filteredPaymentHistory[0]?.completed) ||
+            0,
           "Philippines"
         ),
         formatCurrency(
-          !filteredPaymentHistoryIsPending &&
+          (!filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.cancelled || 0,
+            filteredPaymentHistory[0]?.cancelled) ||
+            0,
           "Philippines"
         ),
       ],
@@ -87,7 +89,7 @@ const GraphTab = () => {
       "Philippines"
     ),
   }
-  
+
   const filterData = {
     labels: ["Category", "Listing"],
     values: [[category, listing]],
