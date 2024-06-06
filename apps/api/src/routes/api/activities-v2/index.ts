@@ -5,7 +5,7 @@ import isHostActivityOwner from './middleware/isHostActivityOwner'
 import { addActivity, getActivity } from './services/default'
 import { getAdditionalInfo } from './services/addionalInfo'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import { updateActivities } from './services/basic-info'
+import { getActivities, updateActivities } from './services/basic-info'
 import { getActivityInclusions } from './services/activity-inclussions'
 
 const router = express.Router()
@@ -44,6 +44,15 @@ router.patch(
   isOriginValid,
   isHostActivityOwner,
   updateActivities
+)
+
+// activity-info
+router.get(
+  '/:activityId/info',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostActivityOwner,
+  getActivities
 )
 
 //add
