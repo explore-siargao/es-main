@@ -17,7 +17,7 @@ const GraphTab = () => {
   const [category, setCategory] = useState("Property")
   const [listing, setListing] = useState("Mountain top house")
   const [year, setYear] = useState("2024")
-  const [month, setMonth] = useState("All")
+  const [month, setMonth] = useState("all")
   const {
     data: filteredPaymentHistory,
     isPending: filteredPaymentHistoryIsPending,
@@ -66,15 +66,17 @@ const GraphTab = () => {
     values: [
       [
         formatCurrency(
-          !filteredPaymentHistoryIsPending &&
+          (!filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.completed,
+            filteredPaymentHistory[0]?.completed) ||
+            0,
           "Philippines"
         ),
         formatCurrency(
-          !filteredPaymentHistoryIsPending &&
+          (!filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
-            filteredPaymentHistory[0]?.cancelled,
+            filteredPaymentHistory[0]?.cancelled) ||
+            0,
           "Philippines"
         ),
       ],
@@ -87,11 +89,11 @@ const GraphTab = () => {
       "Philippines"
     ),
   }
-  console.log(summaryData)
+
   const filterData = {
     labels: ["Category", "Listing"],
     values: [[category, listing]],
-
+    date: [year, month],
     total: formatCurrency(
       !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
@@ -152,9 +154,9 @@ const GraphTab = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <Tabs tabs={paymentHistoryTabs} />
-          </div>
+          </div> */}
           <Graph graphData={mockData} />
         </div>
         <div className="col-span-1 relative">
