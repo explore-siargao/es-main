@@ -7,11 +7,11 @@ import { getActivity } from './services/default'
 const router = express.Router()
 
 router.get(
-    '/:activityId',
-    isUserLoggedIn,
-    isOriginValid,
-    isHostActivityOwner,
-    getActivity
-  )
+  '/:activityId',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostActivityOwner,
+  getActivity
+)
 
 export default router

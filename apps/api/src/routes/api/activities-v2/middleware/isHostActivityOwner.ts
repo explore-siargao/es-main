@@ -18,7 +18,7 @@ const isHostActivityOwner = async (
   if (loggedInUser.role === 'Admin') {
     return next()
   }
-  
+
   let activity
   try {
     activity = await dbActivities.findOne({
