@@ -8,12 +8,12 @@ import Chart, { ChartType } from "./components/Chart"
 
 const Insights = () => {
   const [category, setCategory] = useState("Property")
-  const [name, setName] = useState("Mountain top house")
+  const [listing, setListing] = useState("Mountain top house")
   const [year, setYear] = useState("2024")
   const [month, setMonth] = useState("All")
 
   const { data: filteredInsights, isPending: filteredInsightsIsPending } =
-    useGetInsights(category, name, year, month)
+    useGetInsights(category, listing, year, month)
   console.log(filteredInsights)
   return (
     <div className="mt-20">
@@ -40,8 +40,8 @@ const Insights = () => {
         <Select
           label="Listing"
           required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={listing}
+          onChange={(e) => setListing(e.target.value)}
         >
           <Option value={"Mountain top house"}>Mountain top house</Option>
           <Option value={"Word of Life"}>Word of Life</Option>
