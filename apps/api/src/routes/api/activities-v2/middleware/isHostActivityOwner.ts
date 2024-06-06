@@ -3,6 +3,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { ResponseService } from '@/common/service/response'
 import { USER_NOT_AUTHORIZED } from '@/common/constants'
+import { dbActivities } from '@repo/database'
 
 const response = new ResponseService()
 
@@ -17,10 +18,9 @@ const isHostActivityOwner = async (
   if (loggedInUser.role === 'Admin') {
     return next()
   }
-
+  
   let activity
   try {
-    //@ts-expect-error
     activity = await dbActivities.findOne({
       host: loggedInUser.id,
       _id: activityId,
