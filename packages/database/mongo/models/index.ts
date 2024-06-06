@@ -34,5 +34,5 @@ export {
   dbRentalAddOns,
   dbPhotos,
   dbActivities,
-  dbActivityItineraries
+  dbActivityItineraries,
 }
