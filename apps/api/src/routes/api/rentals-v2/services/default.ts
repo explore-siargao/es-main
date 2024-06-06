@@ -129,6 +129,7 @@ export const addRental = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const getRentalDetails = async (req: Request, res: Response) => {
   const id = req.params.rentalId
   const hostId = res.locals.user?.id
