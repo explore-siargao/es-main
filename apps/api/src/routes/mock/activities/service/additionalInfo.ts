@@ -8,7 +8,6 @@ import { Request, Response } from 'express'
 import { activities } from './jsons/activities'
 import { Z_UpdateActivityAdditionalInfo } from '@repo/contract'
 
-
 const response = new ResponseService()
 
 export const updateAdditionalInfo = async (req: Request, res: Response) => {
@@ -58,7 +57,6 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
   }
 }
 
-
 export const getAdditionalInfo = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const activityId = Number(req.params.activityId)
@@ -88,4 +86,3 @@ export const getAdditionalInfo = async (req: Request, res: Response) => {
     )
   }
 }
-

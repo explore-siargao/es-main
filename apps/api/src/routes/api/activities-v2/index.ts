@@ -3,12 +3,14 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import express from 'express'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import {getAdditionalInfo, updateAdditionalInfo } from './services/additionalInfo'
+import {
+  getAdditionalInfo,
+  updateAdditionalInfo,
+} from './services/additionalInfo'
 
-import { addActivity, getActivity,getActivity } from './services/default'
+import { addActivity, getActivity, getActivity } from './services/default'
 import { updateActivities } from './services/basic-info'
 import { getActivityInclusions } from './services/activity-inclussions'
-
 
 const router = express.Router()
 
@@ -28,7 +30,6 @@ router.get(
   isHostActivityOwner,
   getActivity
 )
-
 
 //Additional info
 router.get(
