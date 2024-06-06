@@ -8,36 +8,8 @@ import { Request, Response } from 'express'
 import { activities } from './jsons/activities'
 import { Z_UpdateActivityAdditionalInfo } from '@repo/contract'
 
+
 const response = new ResponseService()
-export const getAdditionalInfo = async (req: Request, res: Response) => {
-  const userId = res.locals.user?.id
-  const activityId = Number(req.params.activityId)
-  try {
-    const getActivity = activities.find((item) => item.id === activityId)
-    if (!getActivity) {
-      return res.json(response.error({ message: 'Activity not found' }))
-    }
-
-    if (!getActivity.hostId === userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-    }
-
-    const additionalInfo = {
-      whatToBring: JSON.parse(getActivity.whatToBring),
-      notAllowed: JSON.parse(getActivity.notAllowed),
-      policies: JSON.parse(getActivity.policies),
-      cancellationDays: getActivity.cancellationDays,
-    }
-
-    res.json(response.success({ item: additionalInfo }))
-  } catch (err: any) {
-    return res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
-  }
-}
 
 export const updateAdditionalInfo = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
@@ -85,3 +57,35 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
     )
   }
 }
+
+
+export const getAdditionalInfo = async (req: Request, res: Response) => {
+  const userId = res.locals.user?.id
+  const activityId = Number(req.params.activityId)
+  try {
+    const getActivity = activities.find((item) => item.id === activityId)
+    if (!getActivity) {
+      return res.json(response.error({ message: 'Activity not found' }))
+    }
+
+    if (!getActivity.hostId === userId) {
+      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    }
+
+    const additionalInfo = {
+      whatToBring: JSON.parse(getActivity.whatToBring),
+      notAllowed: JSON.parse(getActivity.notAllowed),
+      policies: JSON.parse(getActivity.policies),
+      cancellationDays: getActivity.cancellationDays,
+    }
+
+    res.json(response.success({ item: additionalInfo }))
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
