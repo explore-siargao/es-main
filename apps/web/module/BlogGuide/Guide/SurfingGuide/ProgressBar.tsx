@@ -1,6 +1,12 @@
-import React from 'react';
+import React from "react"
 
-const ProgressBar = ({ progress, label }: { progress: number, label?: string }) => {
+const ProgressBar = ({
+  progress,
+  label,
+}: {
+  progress: number
+  label?: string
+}) => {
   return (
     <div className="w-full bg-gray-200 rounded-full h-2">
       <div
@@ -10,7 +16,7 @@ const ProgressBar = ({ progress, label }: { progress: number, label?: string }) 
         {label}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProgressBar;
+export default ProgressBar
