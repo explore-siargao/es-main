@@ -32,14 +32,14 @@ export const addActivity = async (req: Request, res: Response) => {
     res.json(
       response.success({ item: value, message: 'Activity successfully added' })
     )
-     } catch (err: any) {
+  } catch (err: any) {
     return res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
-  }
+}
 
 export const getActivity = async (req: Request, res: Response) => {
   const activityId = req.params.activityId
