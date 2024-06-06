@@ -22,7 +22,7 @@ const isHostActivityOwner = async (
   try {
     //@ts-expect-error
     activity = await dbActivities.findOne({
-      host: loggedInUser.id,
+      hostId: loggedInUser.id,
       _id: activityId,
     })
   } catch (err) {
