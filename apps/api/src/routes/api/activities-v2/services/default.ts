@@ -5,7 +5,6 @@ import { dbActivities } from '@repo/database'
 
 const response = new ResponseService()
 export const addActivity = async (req: Request, res: Response) => {
-
   const userId = res.locals.user?.id
 
   try {

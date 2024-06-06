@@ -47,11 +47,6 @@ router.patch(
 )
 
 //add
-router.post(
-  '/',
-  isUserLoggedIn,
-  isOriginValid,
-  addActivity
-)
+router.post('/', isUserLoggedIn, isOriginValid, addActivity)
 
 export default router
