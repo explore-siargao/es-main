@@ -7,17 +7,17 @@ interface ILanguage {
 }
 
 export async function updateLanguage(
-  personalInfoId: number | null,
+  personalInfoId: string | null,
   props: ILanguage
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.patch(
     `${API_URL_USERS}/personal-info/language/${personalInfoId}`,
     props
   )
 }
 
-function useUpdateLanguage(personalInfoId: number | null) {
+function useUpdateLanguage(personalInfoId: string | null) {
   const query = useMutation({
     mutationFn: (props: ILanguage) => updateLanguage(personalInfoId, props),
   })

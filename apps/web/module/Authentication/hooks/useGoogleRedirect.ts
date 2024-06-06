@@ -4,7 +4,7 @@ import { ApiService } from "@/common/service/api"
 import { useSearchParams } from "next/navigation"
 
 export async function googleRedirect(allSearchParams: string) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.get(
     `${API_URL_USERS}/auth/google/redirect?${allSearchParams}`
   )

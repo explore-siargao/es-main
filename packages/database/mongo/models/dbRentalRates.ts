@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose"
 const rentalRates = new Schema({
   dayRate: Number,
   requiredDeposit: Number,
+  adminBookingCharge: Number,
   createdAt: {
     type: Date,
     default: Date.now(),

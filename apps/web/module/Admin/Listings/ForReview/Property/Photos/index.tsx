@@ -22,7 +22,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
   const { data, isLoading } = useGetPropertyById(listingId)
   const { mutate, isPending } = useUpdatePropertyPhotos(listingId)

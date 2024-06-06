@@ -25,7 +25,7 @@ const Details = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalDetails(listingId)
   const { register, handleSubmit } = useForm<T_Rental_Details>({

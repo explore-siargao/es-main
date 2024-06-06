@@ -36,6 +36,7 @@ export const Z_Rental_AddOns = z.object({
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),
+  _id: z.string().optional(),
 })
 
 export const Z_Rental_Pricing = z.object({
@@ -81,6 +82,15 @@ export const Z_Rental_Basic_Info = z.object({
     .optional()
     .nullable(),
   year: z.string().optional().nullable(),
+})
+
+export const Z_UpdateRentalLocation = z.object({
+  streetAddress: z.string(),
+  city: z.string(),
+  barangay: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+  howToGetThere: z.string().optional().nullable(),
 })
 
 export const Z_Rental_Status = z.object({

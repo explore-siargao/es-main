@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import DeactivateUserModal from "../components/modals/DeactivateUserModal"
+import useSessionStore from "@/common/store/useSessionStore"
 
 const DeactivateAccount = () => {
   const [deactivateUserModal, setDeactivateUserModal] = useState<boolean>(false)
+  const userId = useSessionStore().id
   return (
     <>
       <div className="text-sm mt-2 border-b border-text-100">
@@ -20,7 +22,7 @@ const DeactivateAccount = () => {
         </div>
       </div>
       <DeactivateUserModal
-        userId={1}
+        userId={userId as string}
         isOpen={deactivateUserModal}
         onClose={() => setDeactivateUserModal(false)}
       />

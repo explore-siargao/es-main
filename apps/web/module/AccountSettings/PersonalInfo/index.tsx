@@ -16,6 +16,7 @@ import { Typography } from "@/common/components/ui/Typography"
 
 const PersonalInfo = () => {
   const session = useSessionStore((state) => state)
+  const userId = session.id
   const personalInfo = session?.personalInfo
   return (
     <AccountSettingWrapper>
@@ -34,7 +35,7 @@ const PersonalInfo = () => {
           <LegalName
             firstName={personalInfo?.firstName}
             lastName={personalInfo?.lastName}
-            userId={session?.id as number}
+            userId={session?.id as string}
           />
           <EmailAddress
             email={session?.email as string}
@@ -44,7 +45,7 @@ const PersonalInfo = () => {
             <>
               <PhoneNumber
                 phoneNumber={personalInfo?.phoneNumber}
-                userId={session?.id as number}
+                userId={session?.id as string}
               />
               <GovernmentId governmentId={personalInfo?.governmentId} />
               <Address
@@ -53,15 +54,15 @@ const PersonalInfo = () => {
                 stateProvince={personalInfo?.Address?.stateProvince as string}
                 streetAddress={personalInfo?.Address?.streetAddress as string}
                 zipCode={personalInfo?.Address?.zipCode as number}
-                peronalInfoId={personalInfo?.id as number}
+                personalInfoId={userId as string}
                 aptSuite={personalInfo?.Address?.aptSuite}
-                id={personalInfo?.Address?.id as number}
+                id={personalInfo?.Address?.id as string}
               />
               <EmergencyContact
                 emergencyContact={
                   personalInfo?.emergencyContacts as T_EmergencyContact[]
                 }
-                id={personalInfo?.id as number}
+                id={personalInfo?.id as string}
               />
             </>
           )}

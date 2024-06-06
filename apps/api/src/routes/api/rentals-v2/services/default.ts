@@ -17,11 +17,10 @@ const response = new ResponseService()
 export const getAllRentals = async (req: Request, res: Response) => {
   try {
     const hostId = res.locals.user?.id
-
     const filteredDataGetAllRentals = await dbRentals
-      .find({ hostId: hostId })
+      .find({ host: hostId })
       .sort({ _id: -1 })
-    console.log('id: ', hostId)
+      .populate('photos')
 
     return res.json(
       response.success({
@@ -64,6 +63,7 @@ export const addRental = async (req: Request, res: Response) => {
     const pricing = new dbRentalRates({
       dayRate: null,
       requiredDeposit: null,
+      adminBookingCharge: null,
     })
 
     const addOns = new dbRentalAddOns({
@@ -74,7 +74,7 @@ export const addRental = async (req: Request, res: Response) => {
     })
 
     const photos = new dbPhotos({
-      photos: [],
+      photos: null,
     })
 
     const location = new dbAddresses({
@@ -99,7 +99,7 @@ export const addRental = async (req: Request, res: Response) => {
       details: details._id,
       pricing: pricing._id,
       addOns: addOns._id,
-      photos: [photos._id],
+      //photos: [photos._id],
       location: location._id,
       category: '',
       make: '',
@@ -112,6 +112,8 @@ export const addRental = async (req: Request, res: Response) => {
       finishedSections: '',
       status: 'Pending',
     })
+
+    await rental.save()
 
     res.json(
       response.success({
@@ -127,6 +129,7 @@ export const addRental = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const getRentalDetails = async (req: Request, res: Response) => {
   const id = req.params.rentalId
   const hostId = res.locals.user?.id
@@ -141,15 +144,13 @@ export const getRentalDetails = async (req: Request, res: Response) => {
     if (!getRental) {
       return res.json(response.error({ message: 'No rental details found' }))
     }
-    console.log('Get rental: ', getRental)
+
     const category = getRental.category as unknown as string
 
     if (category === E_Rental_Category.Car) {
       rentalDetail = getRental.details
-      console.log('Rental Details(Car):', rentalDetail)
     } else if ('Motorbike' === E_Rental_Category.Motorbike) {
       const details = getRental.details as unknown as RentalDetails
-      console.log('Rental Details(Motor Bike):', details)
       rentalDetail = {
         // id: details._id,
         engineCapacityLiter: details.engineCapacityLiter,

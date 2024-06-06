@@ -5,7 +5,7 @@ import { useParams } from "next/navigation"
 
 const Motorbike = () => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data } = useGetRentalById(listingId)
   const rental = data?.item
   return (

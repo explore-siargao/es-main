@@ -17,7 +17,7 @@ import DetailsBicycle from "./Details/Bicycle"
 
 const RentalSummary = () => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data } = useGetRentalById(listingId)
   const rental = data?.item
   const BASIC_INFO = {

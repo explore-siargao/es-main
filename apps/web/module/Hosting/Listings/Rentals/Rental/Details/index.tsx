@@ -25,10 +25,10 @@ const Details = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalDetails(listingId)
-  const { register, handleSubmit } = useForm<T_Rental_Details>({
+  const { register, handleSubmit, getValues } = useForm<T_Rental_Details>({
     values: data?.item?.Details as T_Rental_Details,
   })
 
@@ -59,7 +59,13 @@ const Details = ({ pageType }: Prop) => {
           toast.error(String(err))
         },
       }
-      mutate({ ...formData }, callBackReq)
+      mutate(
+        {
+          ...formData,
+          engineCapacityLiter: (getValues("engineCapacityCc") as number) / 1000,
+        },
+        callBackReq
+      )
     } else {
       toast.error("Sorry! We cannot proceed if this is not registered")
     }

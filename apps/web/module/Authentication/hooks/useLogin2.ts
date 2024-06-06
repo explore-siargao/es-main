@@ -4,8 +4,8 @@ import { useMutation } from "@tanstack/react-query"
 import { ApiService } from "@/common/service/api"
 
 export async function loginUser(props: IUser) {
-  const apiService = new ApiService()
-  return await apiService.post(`${API_URL_USERS}/auth/manual2`, props)
+  const apiService = new ApiService("v2")
+  return await apiService.post(`${API_URL_USERS}/auth/manual`, props)
 }
 function useLogin2() {
   const query = useMutation({
