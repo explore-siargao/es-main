@@ -2,11 +2,17 @@ import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import express from 'express'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
-import { addActivity, getActivity } from './services/default'
-import { getAdditionalInfo } from './services/addionalInfo'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import { getActivities, updateActivities } from './services/basic-info'
+
+import {
+  getAdditionalInfo,
+  updateAdditionalInfo,
+} from './services/additionalInfo'
+
+import { addActivity, getActivity } from './services/default'
 import { getActivityInclusions } from './services/activity-inclussions'
+import { updateStatus } from './services/status'
 
 const router = express.Router()
 
@@ -36,6 +42,14 @@ router.get(
   getAdditionalInfo
 )
 
+router.patch(
+  '/:activityId/additional-info',
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostActivityOwner,
+  updateAdditionalInfo
+)
+
 //Basic info
 router.patch(
   '/:activityId/info',
@@ -57,5 +71,15 @@ router.get(
 
 //add
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
+
+//status
+router.patch(
+  '/:activityId/status',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  updateStatus
+)
 
 export default router
