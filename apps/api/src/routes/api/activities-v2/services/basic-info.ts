@@ -75,7 +75,7 @@ export const getActivities = async (req: Request, res: Response) => {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   try {
-    const activitiesData = await dbActivities.findOne({ _id: id });
+    const activitiesData = await dbActivities.findOne({ _id: id })
 
     if (!activitiesData) {
       return res.json(
