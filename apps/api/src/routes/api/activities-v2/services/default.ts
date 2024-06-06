@@ -32,6 +32,25 @@ export const addActivity = async (req: Request, res: Response) => {
     res.json(
       response.success({ item: value, message: 'Activity successfully added' })
     )
+     } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+  }
+
+export const getActivity = async (req: Request, res: Response) => {
+  const activityId = req.params.activityId
+  try {
+    const getActivity = await dbActivities
+      .findOne({ _id: activityId, deletedAt: null })
+      .populate('host')
+      .populate('address')
+      .populate('itineraries')
+      .populate('activityPhotos')
+    res.json(response.success({ item: getActivity }))
   } catch (err: any) {
     return res.json(
       response.error({
