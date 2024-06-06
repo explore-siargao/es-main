@@ -41,7 +41,7 @@ router.get(
   getAllRentalsByHostId
 )
 
-router.post('/', isUserLoggedIn, isCsrfTokenValid, isHostRentalOwner, addRental)
+router.post('/', isUserLoggedIn, isCsrfTokenValid, addRental)
 
 //rental details
 router.get(

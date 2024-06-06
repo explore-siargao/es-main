@@ -39,14 +39,6 @@ export const getAllRentals = async (req: Request, res: Response) => {
 
 export const addRental = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
-  const isHost = res.locals.user?.isHost
-  if (!isHost) {
-    return res.json(
-      response.error({
-        message: USER_NOT_AUTHORIZED,
-      })
-    )
-  }
   try {
     const details = new dbRentalDetails({
       engineCapacityLiter: null,
@@ -129,6 +121,7 @@ export const addRental = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const getRentalDetails = async (req: Request, res: Response) => {
   const id = req.params.rentalId
   const hostId = res.locals.user?.id
