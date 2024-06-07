@@ -8,19 +8,14 @@ interface ExportReportExcelProps {
 
 export function ExportReportExcel(props: ExportReportExcelProps) {
     const xport = React.useCallback(() => {
+      
         if (props.reportData && props.reportData.length > 0) {
             const wb = XLSX.utils.book_new();
-            props.reportData.forEach((report, index) => {
-                console.log(report.serviceFee)
-                if (report.serviceFee) {
-                    const wsServiceFee = XLSX.utils.json_to_sheet(report.serviceFee);
-                    addServiceFeeCalculations(wsServiceFee, report.serviceFee); 
-                    XLSX.utils.book_append_sheet(wb, wsServiceFee, `Sheet 1`);
-                }
-            });
-
-
-            XLSX.writeFile(wb, "ReportData.xlsx");
+            const wsServiceFee = XLSX.utils.json_to_sheet(props.reportData );
+            addServiceFeeCalculations(wsServiceFee, props.reportData ); 
+            XLSX.utils.book_append_sheet(wb, wsServiceFee, `Sheet 1`);
+            XLSX.writeFile(wb, "EarningsReportData.xlsx");
+            
         } else {
             console.log("No report data found");
         }

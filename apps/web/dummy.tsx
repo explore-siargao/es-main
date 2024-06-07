@@ -7,6 +7,18 @@ export const data = [
     views: 2000,
     newBookings: 160,
     bookingRate: 5,
+    earningsData: [
+      { reservation: "Suyog Life Siargao", cost: 2007, service: 200, afterVat: 176, deductions: 127 },
+      { reservation: "Your Next Home in Paradise!", cost: 1798, service: 176, afterVat: 154.88, deductions: 145 },
+      { reservation: "The Bamboo House", cost: 6600, service: 1000, afterVat: 880, deductions: 213 },
+      { reservation: "Byahero siargao #2", cost: 950, service: 100, afterVat: 88, deductions: 198 },
+      { reservation: "Marahuyo Siargao", cost: 3696, service: 500, afterVat: 440, deductions: 232 },
+      { reservation: "Bubble Siargao", cost: 3658, service: 300, afterVat: 264, deductions: 120 },
+      { reservation: "Siargao Bed and Brew", cost: 2398, service: 200, afterVat: 176, deductions: 274 },
+      { reservation: "Cris Mar Homestay", cost: 1215, service: 100, afterVat: 88, deductions: 189 },
+      { reservation: "Aloha Hostel Siargao", cost: 1226, service: 100, afterVat: 88, deductions: 173 },
+      { reservation: "Mango Tree Siargao", cost: 2500, service: 200, afterVat: 176, deductions: 203 }
+  ],
     serviceFee: [
       { reservation: "Hillside Resort Siargao", cost: 5132, service: 500, afterVat: 440, deductions: 127 },
       { reservation: "Ferra Resort Siargao", cost: 5965, service: 200, afterVat: 176, deductions: 145 },
