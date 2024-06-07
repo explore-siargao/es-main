@@ -152,23 +152,22 @@ const GraphTab = () => {
           value={month}
           onChange={(e) => setMonth(e.target.value)}
         >
-          <Option value={"all"}>All</Option>    
+          <Option value={"all"}>All</Option>
           <Option value={"Jan"}>January</Option>
           <Option value={"Feb"}>February</Option>
           <Option value={"Mar"}>March</Option>
           <Option value={"Apr"}>April</Option>
           <Option value={"May"}>May</Option>
-          <Option value={"Jun"}>June</Option>    
+          <Option value={"Jun"}>June</Option>
           <Option value={"Jul"}>July</Option>
           <Option value={"Aug"}>August</Option>
           <Option value={"Sep"}>September</Option>
           <Option value={"OCt"}>October</Option>
-          <Option value={"Nov"}>November</Option>    
+          <Option value={"Nov"}>November</Option>
           <Option value={"Dec"}>December</Option>
         </Select>
-        
-          <ExportReportExcel reportData={paymentHistoryReport}/>
-          
+
+        <ExportReportExcel reportData={paymentHistoryReport} />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">

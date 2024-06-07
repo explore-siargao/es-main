@@ -16,10 +16,7 @@ export async function getPaymentHistoryReport(
   return filteredData
 }
 
-function useGetPaymentHistoryReport(
-  category: String,
-  listing: String,
-) {
+function useGetPaymentHistoryReport(category: String, listing: String) {
   const query = useQuery({
     queryKey: ["insights", category, listing],
     queryFn: () => getPaymentHistoryReport(category, listing),
