@@ -2,12 +2,12 @@ import { API_URL_ACTIVITIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 
-export async function getActivitiesById(id: number | undefined) {
-  const apiService = new ApiService("mock")
+export async function getActivitiesById(id: string | undefined) {
+  const apiService = new ApiService("v2")
   return await apiService.get(`${API_URL_ACTIVITIES}/${id}/inclusions`)
 }
 
-function useGetActivityInclusionsById(id: number | undefined) {
+function useGetActivityInclusionsById(id: string | undefined) {
   const query = useQuery({
     queryKey: ["get-activities-inclusions", id],
     queryFn: () => getActivitiesById(id),
