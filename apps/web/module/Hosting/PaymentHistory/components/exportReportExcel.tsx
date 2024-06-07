@@ -1,7 +1,7 @@
 import { Button } from "@/common/components/ui/Button";
 import React from "react";
 import * as XLSX from 'xlsx';
-
+import { Import } from 'lucide-react';
 interface ExportReportExcelProps {
     reportData?: any[];
 }
@@ -74,10 +74,12 @@ export function ExportReportExcel(props: ExportReportExcelProps) {
 
 
     return (
-        <>
+        <div className="flex items-center">
             <Button 
             variant={"primary"}
-            onClick={xport}><b>Export Report</b></Button>
-        </>
+            onClick={xport}>
+            <Import className="mr-2"/>
+                <b>Export Report</b></Button>
+        </div>
     );
 }

@@ -7,18 +7,6 @@ export const data = [
     views: 2000,
     newBookings: 160,
     bookingRate: 5,
-    listItems: [
-      { item: "Item 1", cost: 100},
-      { item: "Item 2", cost: 50},
-      { item: "Item 3", cost: 75},
-      { item: "Item 4", cost: 50},
-      { item: "Item 5", cost: 25 },
-      { item: "Item 6", cost: 30 },
-      { item: "Item 7", cost: 90 },
-      { item: "Item 8", cost: 25 },
-      { item: "Item 9", cost: 40 },
-      { item: "Item 10", cost: 80 }
-    ],
     serviceFee: [
       { reservation: "Hillside Resort Siargao", cost: 5132, service: 500, afterVat: 440, deductions: 127 },
       { reservation: "Ferra Resort Siargao", cost: 5965, service: 200, afterVat: 176, deductions: 145 },

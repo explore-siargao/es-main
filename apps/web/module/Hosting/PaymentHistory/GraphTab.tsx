@@ -166,7 +166,9 @@ const GraphTab = () => {
           <Option value={"Nov"}>November</Option>    
           <Option value={"Dec"}>December</Option>
         </Select>
+        
           <ExportReportExcel reportData={paymentHistoryReport}/>
+          
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
