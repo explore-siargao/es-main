@@ -20,17 +20,17 @@ export const data = [
       { item: "Item 10", cost: 80 }
     ],
     serviceFee: [
-      { service: "Service 1", cost: 100, afterVat: 88, deductions: 3},
-      { service: "Service 2", cost: 50, afterVat: 44, deductions: 5},
-      { service: "Service 3", cost: 75, afterVat: 66, deductions: 20},
-      { service: "Service 4", cost: 50, afterVat: 44, deductions: 5},
-      { service: "Service 5", cost: 25, afterVat: 22, deductions: 10 },
-      { service: "Service 6", cost: 30, afterVat: 26.4, deductions: 0 },
-      { service: "Service 7", cost: 90, afterVat: 79.2, deductions: 4 },
-      { service: "Service 8", cost: 25, afterVat: 22, deductions: 2 },
-      { service: "Service 9", cost: 40, afterVat: 35.2, deductions: 1 },
-      { service: "Service 10", cost: 80, afterVat: 70.4, deductions: 8 }
-    ],
+      { reservation: "Hillside Resort Siargao", cost: 5132, service: 500, afterVat: 440, deductions: 127 },
+      { reservation: "Ferra Resort Siargao", cost: 5965, service: 200, afterVat: 176, deductions: 145 },
+      { reservation: "Dahun Villas Siargao", cost: 7650, service: 800, afterVat: 704, deductions: 213 },
+      { reservation: "Secret Spot Siargao Eco-Homestay", cost: 1461, service: 300, afterVat: 264, deductions: 198 },
+      { reservation: "G Villas Siarago", cost: 3696, service: 400, afterVat: 352, deductions: 232 },
+      { reservation: "Siargao Bleu Resort & Spa", cost: 1739, service: 500, afterVat: 440, deductions: 120 },
+      { reservation: "Bohemian Beach House", cost: 8760, service: 700, afterVat: 616, deductions: 274 },
+      { reservation: "Isla Cabana Resort", cost: 13114, service: 350, afterVat: 308, deductions: 189 },
+      { reservation: "Happiness Hostel Siargao", cost: 2681, service: 450, afterVat: 396, deductions: 173 },
+      { reservation: "Mi Casa Suites Siargao", cost: 891, service: 500, afterVat: 440, deductions: 203 }
+  ],
     viewsData: [
       { date: "Jan", count: 20 },
       { date: "Feb", count: 3 },
@@ -148,6 +148,30 @@ export const data = [
         ]
       }
     ],
+    listItems: [
+      { item: "Item 1", cost: 78234 },
+      { item: "Item 2", cost: 56472 },
+      { item: "Item 3", cost: 34891 },
+      { item: "Item 4", cost: 92453 },
+      { item: "Item 5", cost: 62873 },
+      { item: "Item 6", cost: 105720 },
+      { item: "Item 7", cost: 44893 },
+      { item: "Item 8", cost: 100237 },
+      { item: "Item 9", cost: 77542 },
+      { item: "Item 10", cost: 82941 }
+    ],
+    serviceFee: [
+      { service: "Service 1", cost: 56789, afterVat: 49995.32, deductions: 345 },
+      { service: "Service 2", cost: 100234, afterVat: 88181.52, deductions: 790 },
+      { service: "Service 3", cost: 68942, afterVat: 60549.76, deductions: 113 },
+      { service: "Service 4", cost: 83429, afterVat: 73290.32, deductions: 220 },
+      { service: "Service 5", cost: 57362, afterVat: 50488.56, deductions: 161 },
+      { service: "Service 6", cost: 94720, afterVat: 83241.6, deductions: 604 },
+      { service: "Service 7", cost: 79853, afterVat: 70198.64, deductions: 447 },
+      { service: "Service 8", cost: 42576, afterVat: 37428.48, deductions: 225 },
+      { service: "Service 9", cost: 34681, afterVat: 30508.08, deductions: 118 },
+      { service: "Service 10", cost: 57894, afterVat: 50936.32, deductions: 272 }
+    ],
     cancelled: 85000,
     completed: 1000000,
   },
@@ -155,6 +179,30 @@ export const data = [
     category: "Property",
     listing: "Bianca Hotel",
     cancelled: 20000,
+    listItems: [
+      { item: "Item 1", cost: 75600 },
+      { item: "Item 2", cost: 39800 },
+      { item: "Item 3", cost: 82000 },
+      { item: "Item 4", cost: 66200 },
+      { item: "Item 5", cost: 52400 },
+      { item: "Item 6", cost: 93200 },
+      { item: "Item 7", cost: 42100 },
+      { item: "Item 8", cost: 75600 },
+      { item: "Item 9", cost: 22000 },
+      { item: "Item 10", cost: 58700 }
+    ],
+    serviceFee: [
+      { service: "Service 1", cost: 10000, afterVat: 8800, deductions: 500 },
+      { service: "Service 2", cost: 75600, afterVat: 66528, deductions: 3500 },
+      { service: "Service 3", cost: 39800, afterVat: 35024, deductions: 2200 },
+      { service: "Service 4", cost: 58700, afterVat: 51656, deductions: 1400 },
+      { service: "Service 5", cost: 22000, afterVat: 19360, deductions: 1000 },
+      { service: "Service 6", cost: 52400, afterVat: 46048, deductions: 2800 },
+      { service: "Service 7", cost: 75600, afterVat: 66528, deductions: 3900 },
+      { service: "Service 8", cost: 66200, afterVat: 58176, deductions: 3000 },
+      { service: "Service 9", cost: 93200, afterVat: 81856, deductions: 5000 },
+      { service: "Service 10", cost: 42100, afterVat: 37048, deductions: 2000 }
+    ],
     completed: 225000,
   },
   {
