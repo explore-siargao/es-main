@@ -43,7 +43,7 @@ const SelectListingTypeModal = ({ isOpen, onClose }: Props) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           router.push(
-            `/hosting/listings/rentals/setup/${data.item.id}/basic-info`
+            `/hosting/listings/rentals/setup/${data.item._id}/basic-info`
           )
         } else {
           toast.error(String(data.message))

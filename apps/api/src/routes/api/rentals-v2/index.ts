@@ -41,7 +41,7 @@ router.get(
   getAllRentalsByHostId
 )
 
-router.post('/', isUserLoggedIn, isCsrfTokenValid, isHostRentalOwner, addRental)
+router.post('/', isUserLoggedIn, isCsrfTokenValid, addRental)
 
 //rental details
 router.get(
@@ -111,22 +111,10 @@ router.get(
   getRentalBasicInfo
 )
 //rates
-router.get(
-  '/:rentalId/pricing',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostRentalOwner,
-  getRentalRates
-)
+router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
 
 //photos
-router.get(
-  '/:rentalId/photos',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostRentalOwner,
-  getRentalPhotos
-)
+router.get('/:rentalId/photos', isOriginValid, isUserLoggedIn, getRentalPhotos)
 
 router.patch(
   '/:rentalId/photos',
@@ -180,7 +168,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  isHostRentalOwner,
+  // isHostRentalOwner,
   updateAddOns
 )
 

@@ -67,3 +67,44 @@ export const updateActivities = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getActivities = async (req: Request, res: Response) => {
+  const isHost = res.locals.user?.isHost
+  const id = req.params.activityId
+  if (!isHost) {
+    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+  }
+  try {
+    const activitiesData = await dbActivities.findOne({ _id: id })
+
+    if (!activitiesData) {
+      return res.json(
+        response.error({
+          message: 'Activities with the given ID not found!',
+        })
+      )
+    }
+
+    const data = {
+      id: activitiesData._id,
+      title: activitiesData.title,
+      description: activitiesData.description,
+      highLights: activitiesData.highLights,
+      durationHour: activitiesData.durationHour,
+      durationMinute: activitiesData.durationMinute,
+      language: activitiesData.language,
+    }
+
+    return res.json(
+      response.success({
+        item: data,
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}

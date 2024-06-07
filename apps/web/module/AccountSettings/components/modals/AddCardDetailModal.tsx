@@ -23,7 +23,7 @@ import { T_CardInfo } from "@repo/contract"
 interface CardDetailModal {
   isOpen: boolean
   onClose: () => void
-  userId: number
+  userId: string
 }
 
 const AddCardDetailModal = ({ isOpen, onClose, userId }: CardDetailModal) => {

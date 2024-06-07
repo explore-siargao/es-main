@@ -25,7 +25,7 @@ const PropertyType = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
   const { data } = useGetPropertyById(listingId)
   const [selectedProperty, setSelectedProperty] = useState("")
