@@ -3,7 +3,7 @@ import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 
 export async function getHostRentals() {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.get(`${API_URL_RENTALS}`)
 }
 

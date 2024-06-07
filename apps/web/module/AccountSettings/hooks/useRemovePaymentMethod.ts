@@ -4,20 +4,20 @@ import { API_URL_PAYMENTS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function removePaymentMethod(
-  userid: number,
-  paymentMethodId: number
+  userid: string,
+  paymentMethodId: string
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.delete(
     `${API_URL_PAYMENTS}/${userid}/payment-method/${paymentMethodId}`
   )
 }
 
-function useRemovePaymentmethod(userId: number, paymentMethodId: number) {
+function useRemovePaymentMethod(userId: string, paymentMethodId: string) {
   const query = useMutation({
     mutationFn: (props: IPaymentMethod) =>
       removePaymentMethod(userId, paymentMethodId),
   })
   return query
 }
-export default useRemovePaymentmethod
+export default useRemovePaymentMethod

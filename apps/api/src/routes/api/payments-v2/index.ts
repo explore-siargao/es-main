@@ -16,18 +16,19 @@ const router = express.Router()
 
 //payment method
 router.post('/:userId/payment-method', addPaymentMethod)
-router.patch('/:userId/payment-method/:paymentMethodId', updatePaymentMethod)
-router.delete('/:userId/payment-method/:paymentMethodId', removePaymentMethod)
-
-router.get(
-  '/:userId/payment-method',
+router.patch(
+  '/payment-method/:paymentMethodId',
+  isCsrfTokenValid,
   isOriginValid,
   isUserLoggedIn,
-  getPaymentMethods
+  updatePaymentMethod
 )
+router.delete('/:userId/payment-method/:paymentMethodId', removePaymentMethod)
+
+router.get('/payment-method', isOriginValid, isUserLoggedIn, getPaymentMethods)
 
 //coupons
-router.get('/:userId/coupon', isOriginValid, isUserLoggedIn, getUsedCoupons)
+router.get('/coupon', isOriginValid, isUserLoggedIn, getUsedCoupons)
 
 router.post(
   '/:userId/coupon',

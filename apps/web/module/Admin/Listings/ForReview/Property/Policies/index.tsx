@@ -30,7 +30,7 @@ const Policies = ({ pageType }: Prop) => {
     (state) => state.setDefaultPolicies
   )
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetPropertyById(listingId)
   const { mutate, isPending } = useUpdatePropertyPolicies(listingId)
   const handleSave = () => {
