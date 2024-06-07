@@ -15,6 +15,7 @@ import { updateActivities } from './services/basic-info'
 import { getActivityInclusions, updateActivityInclusions } from './services/activity-inclussions'
 import { addActivity, getActivity } from './services/default'
 import { updateStatus } from './services/status'
+import { getFinishedSections } from './services/finishedSection'
 
 
 const router = express.Router()
@@ -92,6 +93,14 @@ router.patch(
   isUserLoggedIn,
   isHostActivityOwner,
   updateStatus
+)
+//finished sections
+router.get(
+  '/:activityId/finished-sections',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  getFinishedSections
 )
 
 export default router
