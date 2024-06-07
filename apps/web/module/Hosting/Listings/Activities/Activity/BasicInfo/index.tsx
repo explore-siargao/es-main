@@ -105,7 +105,7 @@ const BasicInfo = ({ pageType }: Prop) => {
   }
 
   const onSubmit = () => {
-    if(title && description) {
+    if (title && description) {
       const parsedDurationHour = parseInt(durationHour.toString(), 10)
 
       if (!isNaN(parsedDurationHour)) {
@@ -129,7 +129,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                   queryClient.invalidateQueries({
                     queryKey: ["activity-finished-sections", listingId],
                   })
-                  router.push(`/hosting/listings/activities/setup/${listingId}/itinerary`)
+                  router.push(
+                    `/hosting/listings/activities/setup/${listingId}/itinerary`
+                  )
                 }
               } else {
                 toast.error(String(data.message))
@@ -205,11 +207,7 @@ const BasicInfo = ({ pageType }: Prop) => {
               </div>
               <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
               <div className="mt-4">
-                <Typography
-                  variant="h4"
-                  fontWeight="semibold"
-                  className="mb-4"
-                >
+                <Typography variant="h4" fontWeight="semibold" className="mb-4">
                   Highlights
                 </Typography>
                 {itemList.length > 0 && (
@@ -225,9 +223,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                           onClick={() => removeItem(item.id)}
                           aria-label="Remove Item"
                         >
-                          <LucideX
-                            className="w-5 h-5 hover:text-error-500 transition"
-                          />
+                          <LucideX className="w-5 h-5 hover:text-error-500 transition" />
                         </button>
                       </li>
                     ))}
@@ -236,7 +232,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                 <div className="mt-2">
                   <Input
                     className="p-2 rounded-md"
-                    value={itemData.length > 0 ? itemData[0]?.itemName || "" : ""}
+                    value={
+                      itemData.length > 0 ? itemData[0]?.itemName || "" : ""
+                    }
                     type="text"
                     label="Highlight"
                     onChange={(event) =>
@@ -251,18 +249,20 @@ const BasicInfo = ({ pageType }: Prop) => {
                       className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
                       onClick={addButton}
                     >
-                      <LucidePlus color="black" className="rounded-sm w-4 h-4" />
-                      <Typography className="text-sm"> Add highlight</Typography>
+                      <LucidePlus
+                        color="black"
+                        className="rounded-sm w-4 h-4"
+                      />
+                      <Typography className="text-sm">
+                        {" "}
+                        Add highlight
+                      </Typography>
                     </button>
                   </div>
                 </div>
               </div>
               <div className="mt-4">
-                <Typography
-                  variant="h4"
-                  fontWeight="semibold"
-                  className="mb-4"
-                >
+                <Typography variant="h4" fontWeight="semibold" className="mb-4">
                   Activity Duration
                 </Typography>
                 <div className="flex gap-12">
@@ -386,7 +386,7 @@ const BasicInfo = ({ pageType }: Prop) => {
           </form>
         </div>
       )}
-      </>
+    </>
   )
 }
 
