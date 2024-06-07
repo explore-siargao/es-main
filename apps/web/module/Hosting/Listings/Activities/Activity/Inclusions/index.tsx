@@ -298,18 +298,17 @@ const Inclusions = ({ pageType }: Prop) => {
       {isPending ? (
         <Spinner>Loading...</Spinner>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-6"
+        >
           <div>
             <Typography variant="h1" fontWeight="semibold" className="mb-4">
               Inclusions
             </Typography>
 
             <div>
-            <Typography
-                variant="h4"
-                fontWeight="semibold"
-                className="mb-4"
-              >
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Is food included in your activity?
               </Typography>
               <RadioInput
@@ -343,11 +342,7 @@ const Inclusions = ({ pageType }: Prop) => {
               )}
             </div>
             <div>
-            <Typography
-                variant="h4"
-                fontWeight="semibold"
-                className="mb-4"
-              >
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Are non-alcoholic drinks included in your activity?
               </Typography>
               <RadioInput
@@ -355,7 +350,7 @@ const Inclusions = ({ pageType }: Prop) => {
                 value="yes"
                 checked={nonAlcoholicDrinksIncluded === true}
                 onChange={(e) =>
-                  handleOptionChange(e, setNonAlcoholicDrinksIncluded, () => { })
+                  handleOptionChange(e, setNonAlcoholicDrinksIncluded, () => {})
                 }
                 label="Yes"
               />
@@ -364,17 +359,13 @@ const Inclusions = ({ pageType }: Prop) => {
                 value="no"
                 checked={!nonAlcoholicDrinksIncluded}
                 onChange={(e) =>
-                  handleOptionChange(e, setNonAlcoholicDrinksIncluded, () => { })
+                  handleOptionChange(e, setNonAlcoholicDrinksIncluded, () => {})
                 }
                 label="No"
               />
             </div>
             <div>
-              <Typography
-                variant="h4"
-                fontWeight="semibold"
-                className="mb-4"
-              >
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Is alcoholic drinks included in your activity (18+)?
               </Typography>
               <RadioInput
@@ -416,13 +407,8 @@ const Inclusions = ({ pageType }: Prop) => {
               )}
             </div>
 
-
             <div className="mt-4">
-              <Typography
-                variant="h4"
-                fontWeight="semibold"
-                className="mb-4"
-              >
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 What else is included in your activity?
               </Typography>
               {inclusions.length > 0 && (
@@ -440,9 +426,7 @@ const Inclusions = ({ pageType }: Prop) => {
                         }
                         aria-label="Remove Item"
                       >
-                        <LucideX
-                          className="w-5 h-5 hover:text-error-500 transition"
-                        />
+                        <LucideX className="w-5 h-5 hover:text-error-500 transition" />
                       </button>
                     </li>
                   ))}
@@ -480,11 +464,7 @@ const Inclusions = ({ pageType }: Prop) => {
             </div>
 
             <div className="mt-4">
-              <Typography
-                variant="h4"
-                fontWeight="semibold"
-                className="mb-4"
-              >
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 What else is not included?
               </Typography>
               {exclusions.length > 0 && (
@@ -502,9 +482,7 @@ const Inclusions = ({ pageType }: Prop) => {
                         }
                         aria-label="Remove Item"
                       >
-                        <LucideX
-                          className="w-5 h-5 hover:text-error-500 transition"
-                        />
+                        <LucideX className="w-5 h-5 hover:text-error-500 transition" />
                       </button>
                     </li>
                   ))}
