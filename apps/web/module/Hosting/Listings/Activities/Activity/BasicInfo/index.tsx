@@ -28,8 +28,10 @@ const BasicInfo = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { isLoading, data } = useGetActivitiesById(listingId)
+  const listingId = String(params.listingId)
+  const { isLoading, data } = useGetActivitiesById(
+    listingId as unknown as number
+  )
   const { isPending, mutate } = useUpdateActivityBasicInfo(listingId)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
