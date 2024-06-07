@@ -10,8 +10,6 @@ import {
   updateAdditionalInfo,
 } from './services/additionalInfo'
 
-
-import { updateActivities } from './services/basic-info'
 import { getActivityInclusions, updateActivityInclusions } from './services/activity-inclussions'
 import { addActivity, getActivity } from './services/default'
 import { updateStatus } from './services/status'
@@ -71,6 +69,7 @@ router.patch(
   isOriginValid,
   isHostActivityOwner,
   updateActivityInclusions
+)
 
 // activity-info
 router.get(
