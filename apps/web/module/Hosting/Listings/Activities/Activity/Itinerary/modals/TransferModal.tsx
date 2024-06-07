@@ -29,18 +29,14 @@ const TransferModal = ({
   const submitSegment = () => {
     if (!transfer) {
       toast.error("Select at least 1 activity")
-    } else if (!location) {
-      toast.error("Location is needed for this segment")
     } else if (!durationHour && !durationMinute) {
       toast.error("Please add duration for this segment")
     } else {
       updateSegments({
-        transfer,
-        location,
         durationHour,
         durationMinute,
         optional: optional === "Yes",
-        fee: fee === "Yes",
+        hasAdditionalFee: fee === "Yes",
       })
       toast.success("New transfer was added")
       onClose(false)
@@ -77,20 +73,7 @@ const TransferModal = ({
         </div>
         <div className="mt-6">
           <Typography variant="h4" fontWeight="semibold" className="mb-4">
-            Where is the destination of this transfer?
-          </Typography>
-          <div className="w-full">
-            <Input
-              id="location"
-              label="Location"
-              onChange={(e) => setLocation(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-        <div className="mt-6">
-          <Typography variant="h4" fontWeight="semibold" className="mb-4">
-            How long does this segment last?
+            How long does this transfer last?
           </Typography>
           <div className="flex gap-12">
             <div>
@@ -171,7 +154,7 @@ const TransferModal = ({
         </div>
         <div className="mt-6">
           <label className="block font-medium text-text-900">
-            Is this segment optional?
+            Is this transfer optional?
           </label>
           <div className="flex items-center mt-2">
             <label
@@ -209,7 +192,7 @@ const TransferModal = ({
         </div>
         <div className="mt-6">
           <label className="block font-medium text-text-900">
-            Is this segment require an additional fee?
+            Is this transfer require an additional fee?
           </label>
           <div className="flex items-center mt-2">
             <label

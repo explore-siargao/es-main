@@ -2,12 +2,11 @@ import { ResponseService } from '@/common/service/response'
 import { Request, Response } from 'express'
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import {
-  dbAddresses,
+  dbLocations,
   dbPhotos,
   dbRentalAddOns,
   dbRentalDetails,
   dbRentalRates,
-  RentalDetails,
   dbRentals,
 } from '@repo/database'
 import { E_Rental_Category } from '@repo/contract'
@@ -77,7 +76,7 @@ export const addRental = async (req: Request, res: Response) => {
       photos: null,
     })
 
-    const location = new dbAddresses({
+    const location = new dbLocations({
       streetAddress: null,
       barangay: null,
       city: null,
@@ -150,7 +149,8 @@ export const getRentalDetails = async (req: Request, res: Response) => {
     if (category === E_Rental_Category.Car) {
       rentalDetail = getRental.details
     } else if ('Motorbike' === E_Rental_Category.Motorbike) {
-      const details = getRental.details as unknown as RentalDetails
+      // FIX ANY HERE
+      const details = getRental.details as any
       rentalDetail = {
         // id: details._id,
         engineCapacityLiter: details.engineCapacityLiter,
@@ -163,8 +163,8 @@ export const getRentalDetails = async (req: Request, res: Response) => {
         isRegistered: details.isRegistered,
       }
     } else if (category === E_Rental_Category.Bicycle) {
-      const details = getRental.details as unknown as RentalDetails
-      console.log('Rental Details(Bicycle):', details)
+      // FIX ANY HERE
+      const details = getRental.details as any
       rentalDetail = {
         // id: details._id,
         condition: details.condition,
@@ -193,6 +193,7 @@ export const getRental = async (req: Request, res: Response) => {
     const rental = await dbRentals
       .findOne({ _id: rentalId, host: hostId })
       .populate('details')
+      .populate('photos')
       .exec()
 
     if (!rental) {
