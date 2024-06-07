@@ -1,20 +1,18 @@
+import express from 'express'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
-import express from 'express'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
+import { addActivity, getActivity } from './services/default'
 import { getActivities, updateActivities } from './services/basic-info'
-
-import {
-  getAdditionalInfo,
-  updateAdditionalInfo,
-} from './services/additionalInfo'
-
 import {
   getActivityInclusions,
   updateActivityInclusions,
 } from './services/activity-inclussions'
-import { addActivity, getActivity } from './services/default'
+import {
+  getAdditionalInfo,
+  updateAdditionalInfo,
+} from './services/additionalInfo'
 import { updateStatus } from './services/status'
 import {
   getFinishedSections,
@@ -23,14 +21,8 @@ import {
 
 const router = express.Router()
 
-// activity-inclusions
-router.get(
-  '/:activityId/inclusions',
-  isUserLoggedIn,
-  isOriginValid,
-  isHostActivityOwner,
-  getActivityInclusions
-)
+//activity
+router.post('/', isUserLoggedIn, isOriginValid, addActivity)
 
 router.get(
   '/:activityId',
@@ -40,21 +32,39 @@ router.get(
   getActivity
 )
 
-//Additional info
+// activity-inclusions
+router.patch(
+  '/:activityId/inclusions',
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isOriginValid,
+  isHostActivityOwner,
+  updateActivityInclusions
+)
+
 router.get(
-  '/:activityId/additional-info',
+  '/:activityId/inclusions',
   isUserLoggedIn,
   isOriginValid,
   isHostActivityOwner,
-  getAdditionalInfo
+  getActivityInclusions
 )
 
+//Additional info
 router.patch(
   '/:activityId/additional-info',
   isUserLoggedIn,
   isCsrfTokenValid,
   isHostActivityOwner,
   updateAdditionalInfo
+)
+
+router.get(
+  '/:activityId/additional-info',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostActivityOwner,
+  getAdditionalInfo
 )
 
 //Basic info
@@ -67,16 +77,6 @@ router.patch(
   updateActivities
 )
 
-router.patch(
-  '/:activityId/inclusions',
-  isUserLoggedIn,
-  isCsrfTokenValid,
-  isOriginValid,
-  isHostActivityOwner,
-  updateActivityInclusions
-)
-
-// activity-info
 router.get(
   '/:activityId/info',
   isUserLoggedIn,
@@ -84,9 +84,6 @@ router.get(
   isHostActivityOwner,
   getActivities
 )
-
-//add
-router.post('/', isUserLoggedIn, isOriginValid, addActivity)
 
 //status
 router.patch(
@@ -97,15 +94,8 @@ router.patch(
   isHostActivityOwner,
   updateStatus
 )
-//finished sections
-router.get(
-  '/:activityId/finished-sections',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostActivityOwner,
-  getFinishedSections
-)
 
+//finished sections
 router.patch(
   '/:activityId/finished-sections',
   isOriginValid,
@@ -113,6 +103,14 @@ router.patch(
   isUserLoggedIn,
   isHostActivityOwner,
   updateFinishedSections
+)
+
+router.get(
+  '/:activityId/finished-sections',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  getFinishedSections
 )
 
 export default router
