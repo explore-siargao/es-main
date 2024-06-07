@@ -33,7 +33,7 @@ export const addActivity = async (req: Request, res: Response) => {
     await newActivity.save()
 
     res.json(
-      response.success({ item: value, message: 'Activity successfully added' })
+      response.success({ item: newActivity, message: 'Activity successfully added' })
     )
   } catch (err: any) {
     return res.json(
