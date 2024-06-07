@@ -58,4 +58,3 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
     )
   }
 }
-
