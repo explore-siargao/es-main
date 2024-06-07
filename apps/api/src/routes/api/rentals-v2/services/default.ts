@@ -110,7 +110,7 @@ export const addRental = async (req: Request, res: Response) => {
       year: '',
       qty: null,
       finishedSections: '',
-      status: 'Pending',
+      status: 'Incomplete',
     })
 
     await rental.save()
