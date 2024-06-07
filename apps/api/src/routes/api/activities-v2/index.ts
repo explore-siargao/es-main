@@ -19,7 +19,7 @@ import { updateStatus } from './services/status'
 import {
   getFinishedSections,
   updateFinishedSections,
-} from './services/finishedSections'
+} from './services/finishedSection'
 
 const router = express.Router()
 
