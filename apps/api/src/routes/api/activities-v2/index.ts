@@ -16,7 +16,10 @@ import {
 } from './services/activity-inclussions'
 import { addActivity, getActivity } from './services/default'
 import { updateStatus } from './services/status'
-import {getFinishedSections, updateFinishedSections } from './services/finishedSections'
+import {
+  getFinishedSections,
+  updateFinishedSections,
+} from './services/finishedSections'
 
 const router = express.Router()
 
