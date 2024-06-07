@@ -118,7 +118,9 @@ const Inclusions = ({ pageType }: Prop) => {
   const [isOpenFood, setIsOpenFood] = useState(false)
   const [isOpenAlcohol, setIsOpenAlcohol] = useState(false)
 
-  const { isPending, data } = useGetActivityInclusionsById("66614eb7e86b02e14c8fdad1")
+  const { isPending, data } = useGetActivityInclusionsById(
+    "66614eb7e86b02e14c8fdad1"
+  )
   const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(1)
 
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
