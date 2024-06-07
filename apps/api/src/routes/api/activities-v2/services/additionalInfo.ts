@@ -1,4 +1,4 @@
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { Z_UpdateActivityAdditionalInfo } from '@repo/contract'
 import { dbActivities } from '@repo/database'
@@ -65,3 +65,35 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getAdditionalInfo = async (req: Request, res: Response) => {
+    const userId = res.locals.user?.id
+    const activityId = req.params.activityId
+    try {
+      const getActivity = await dbActivities
+        .findOne({ _id: activityId, deletedAt: null })
+        .populate('host')
+      if (!getActivity) {
+        return res.json(response.error({ message: 'Activity not found' }))
+      }
+  
+      if (!getActivity.host === userId) {
+        return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      }
+  
+      const additionalInfo = {
+        whatToBring: getActivity.whatToBring,
+        notAllowed: getActivity.notAllowed,
+        policies: getActivity.policies,
+        cancellationDays: getActivity.cancellationDays,
+      }
+  
+      res.json(response.success({ item: additionalInfo }))
+    } catch (err: any) {
+      return res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  }

@@ -8,9 +8,9 @@ import {
   updateAdditionalInfo,
 } from './services/additionalInfo'
 
-import { addActivity, getActivity, getActivity } from './services/default'
 import { updateActivities } from './services/basic-info'
-import { getActivityInclusions } from './services/activity-inclussions'
+import { getActivityInclusions, updateActivityInclusions } from './services/activity-inclussions'
+import { addActivity, getActivity } from './services/default'
 
 const router = express.Router()
 
@@ -56,6 +56,15 @@ router.patch(
   isOriginValid,
   isHostActivityOwner,
   updateActivities
+)
+
+router.patch(
+  '/:activityId/inclusions',
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isOriginValid,
+  isHostActivityOwner,
+  updateActivityInclusions
 )
 
 //add
