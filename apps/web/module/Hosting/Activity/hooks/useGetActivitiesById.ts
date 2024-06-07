@@ -3,7 +3,7 @@ import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 
 export async function getActivitiesById(id: number) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService("mock")
   return await apiService.get(`${API_URL_ACTIVITIES}/${id}`)
 }
 
