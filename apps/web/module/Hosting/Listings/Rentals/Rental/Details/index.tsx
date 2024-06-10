@@ -62,7 +62,8 @@ const Details = ({ pageType }: Prop) => {
       mutate(
         {
           ...formData,
-          engineCapacityLiter: (getValues("engineCapacityCc") as number) / 1000,
+          engineCapacityLiter: (typeof getValues("engineCapacityLiter") === 'undefined' || getValues("engineCapacityLiter") === null)? (getValues("engineCapacityCc") as number) / 1000: getValues("engineCapacityLiter"),
+          engineCapacityCc: ( typeof getValues("engineCapacityCc") === 'undefined' || getValues("engineCapacityCc")===null)? (getValues("engineCapacityLiter") as number) *1000 : getValues("engineCapacityCc")
         },
         callBackReq
       )
