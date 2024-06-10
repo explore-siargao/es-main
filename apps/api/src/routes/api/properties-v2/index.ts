@@ -3,7 +3,13 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn2'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid2'
 import isHostPropertyOwner from './middlewares/isHostPropertyOwner'
-import { addPhoto, deletePhoto, getPhotosByBookableUnitId, getPhotosByPropertyId, updatePhoto } from './services/photos'
+import {
+  addPhoto,
+  deletePhoto,
+  getPhotosByBookableUnitId,
+  getPhotosByPropertyId,
+  updatePhoto,
+} from './services/photos'
 
 const router = express.Router()
 

@@ -1,4 +1,8 @@
-import { REQUIRED_VALUE_EMPTY, UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+  USER_NOT_AUTHORIZED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { Z_Photo, Z_Update_Photo } from '@repo/contract'
 import { dbPhotos } from '@repo/database'
@@ -12,12 +16,7 @@ export const addPhoto = async (req: Request, res: Response) => {
   const isHost = true
   const propertyId = req.params.propertyId
   const files = req.files
-  const {
-    bookableUnitTypeId,
-    description,
-    tags,
-    isMain
-  } = req.body
+  const { bookableUnitTypeId, description, tags, isMain } = req.body
   const isValidInput = Z_Photo.safeParse(req.body)
   if (!isHost) {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
@@ -73,11 +72,7 @@ export const addPhoto = async (req: Request, res: Response) => {
 export const updatePhoto = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
   const photoId = req.params.photoId
-  const {
-    description,
-    tags,
-    isMain
-  } = req.body
+  const { description, tags, isMain } = req.body
   const isValidInput = Z_Update_Photo.safeParse(req.body)
   if (!isHost) {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
@@ -152,7 +147,10 @@ export const getPhotosByPropertyId = async (req: Request, res: Response) => {
   }
 }
 
-export const getPhotosByBookableUnitId = async (req: Request, res: Response) => {
+export const getPhotosByBookableUnitId = async (
+  req: Request,
+  res: Response
+) => {
   const isHost = res.locals.user?.isHost
   const bookableUnitId = req.params.bookableUnitId
   if (!isHost) {
@@ -197,9 +195,7 @@ export const deletePhoto = async (req: Request, res: Response) => {
       if (!getPhoto) {
         return res.json(response.error({ message: 'Photo not found' }))
       }
-      const deletePhoto = await dbPhotos.findByIdAndDelete(
-        photoId,
-      )
+      const deletePhoto = await dbPhotos.findByIdAndDelete(photoId)
       // const updatePhotos = await dbProperties.findByIdAndUpdate(
       //   propertyId,
       //   {

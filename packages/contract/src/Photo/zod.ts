@@ -22,4 +22,3 @@ export const Z_Update_Photo = z.object({
   tags: z.string(),
   isMain: z.union([z.boolean(), z.string()]).optional(),
 })
-
