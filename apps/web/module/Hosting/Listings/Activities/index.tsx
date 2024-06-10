@@ -8,44 +8,44 @@ import { useState } from "react"
 import Tabs from "@/common/components/Tabs"
 import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
-import { ACTIVITIES_DATA } from "./constants"
+import useActivitiesByHost from "../../Activity/hooks/useGetActivitiesByHost"
+import { Spinner } from "@/common/components/ui/Spinner"
 // import useGetHostProperties from "../hooks/useGetHostProperties"
 
 const HostListing = () => {
-  // const { data } = useGetHostProperties()
+  const {data, isPending} = useActivitiesByHost()
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("Photos", {
+    columnHelper.accessor("activityPhotos", {
       header: "Listing",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <div className="relative w-24 h-16 rounded-xl overflow-hidden">
             <Image
-              src={`/assets/${context.getValue() ? context.getValue()[0]?.key : "1.jpg"}`}
+              src={`/assets/${context.getValue()?.length!==0 ? context.getValue()[0]?.key : "1.jpg"}`}
               alt="Image"
               layout="fill"
               objectFit="cover"
             />
           </div>
           <span>
-            <Typography variant="p">{context.row.original.name}</Typography>
+            <Typography variant="p">{context.row.original.title}</Typography>
           </span>
         </Link>
       ),
     }),
-    columnHelper.accessor("Location", {
+    columnHelper.accessor("description", {
       header: "Meet-up Point",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <Typography variant="p">
-            {context.getValue() ? context.getValue().street : ""},{" "}
-            {context.getValue() ? context.getValue().city : ""}
+            {context.getValue() ? context.row.original?.description : ""},{" "}
           </Typography>
         </Link>
       ),
@@ -54,7 +54,7 @@ const HostListing = () => {
       header: "Status",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center"
         >
           <StatusDot
@@ -78,7 +78,7 @@ const HostListing = () => {
   const paginatedData = () => {
     const startIndex = pageIndex * pageSize
     const endIndex = startIndex + pageSize
-    return ACTIVITIES_DATA.slice(startIndex, endIndex)
+    return data?.items?.slice(startIndex, endIndex)
   }
 
   const gotoPage = (pageIndex: number) => {
@@ -86,7 +86,7 @@ const HostListing = () => {
   }
 
   const nextPage = () => {
-    if (pageIndex < Math.ceil((ACTIVITIES_DATA.length || 0) / pageSize) - 1) {
+    if (pageIndex < Math.ceil((data?.items?.length || 0) / pageSize) - 1) {
       setPageIndex(pageIndex + 1)
     }
   }
@@ -98,6 +98,8 @@ const HostListing = () => {
   }
 
   return (
+    <>
+    {isPending ? (<Spinner>Loading...</Spinner>):(
     <div className="mt-20 mb-14">
       <div className="mb-4">
         <Typography
@@ -105,18 +107,18 @@ const HostListing = () => {
           fontWeight="semibold"
           className="flex justify-between items-center mb-2"
         >
-          Your listings
+          Your listings 2
         </Typography>
         <Tabs tabs={listingTabs} />
       </div>
       <Table
-        data={ACTIVITIES_DATA || []}
+        data={data?.items || []}
         columns={columns}
         pageIndex={pageIndex}
-        pageCount={Math.ceil((ACTIVITIES_DATA?.length || 0) / pageSize)}
+        pageCount={Math.ceil((data?.items?.length || 0) / pageSize)}
         canPreviousPage={pageIndex > 0}
         canNextPage={
-          pageIndex < Math.ceil((ACTIVITIES_DATA?.length || 0) / pageSize) - 1
+          pageIndex < Math.ceil((data?.items?.length || 0) / pageSize) - 1
         }
         gotoPage={gotoPage}
         previousPage={previousPage}
@@ -124,6 +126,8 @@ const HostListing = () => {
         pageSize={pageSize}
       />
     </div>
+    )}
+    </>
   )
 }
 

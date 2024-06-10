@@ -15,7 +15,7 @@ const HostListing = () => {
   const { data } = useGetHostRentals()
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("Photos", {
+    columnHelper.accessor("photos", {
       header: "Listing",
       cell: (context) => (
         <Link
