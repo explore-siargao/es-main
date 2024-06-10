@@ -21,6 +21,23 @@ const LandingPage = () => {
     }
   }, [])
 
+  const items = [
+    {
+      id: "Test1"
+    },
+    {
+      id: "Test2"
+    }
+  ];
+  const formData = new FormData();
+  items.forEach(element => {
+    formData.append("item[]", element.id)
+  });
+  formData.forEach((value,key) => {
+    console.log('key', key)
+    console.log('value', value)
+  });
+
   return (
     <>
       {isPending ? (

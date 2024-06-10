@@ -162,7 +162,7 @@ export const editPhotoInfo = async (req: Request, res: Response) => {
     }
 
     photo.description = description
-    photo.tag = tag
+    photo.tags = tag
     photo.updatedAt = new Date()
     await photo.save()
 

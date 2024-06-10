@@ -19,6 +19,7 @@ import TaxesRouteV2 from '@/routes/api/taxes-v2'
 import ReportsRouteV2 from '@/routes/api/reports-v2'
 import RentalsRouteV2 from '@/routes/api/rentals-v2'
 import ActivitiesRouteV2 from '@/routes/api/activities-v2'
+import PropertiesRouteV2 from '@/routes/api/properties-v2'
 
 // mock
 import MockUsersRoute from '@/routes/mock/users'
@@ -52,6 +53,7 @@ export default function (app: Application) {
   app.use(`${API_ROOT_V2}/reports`, ReportsRouteV2)
   app.use(`${API_ROOT_V2}/rentals`, RentalsRouteV2)
   app.use(`${API_ROOT_V2}/activities`, ActivitiesRouteV2)
+  app.use(`${API_ROOT_V2}/properties`, PropertiesRouteV2)
 
   // MOCK
   app.use(`${MOCK_ROOT}/users`, MockUsersRoute)
