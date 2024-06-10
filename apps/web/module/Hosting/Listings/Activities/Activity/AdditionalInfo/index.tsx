@@ -40,12 +40,12 @@ const AdditionalInfo = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (data) {
-      setWhatToBring(data?.item?.whatToBring || []);
-      setNotAllowed(data?.item?.notAllowed || []);
-      setPolicies(data?.item?.policies || []);
-      setCancellationDays(data?.item?.cancellationDays || null);
+      setWhatToBring(data?.item?.whatToBring || [])
+      setNotAllowed(data?.item?.notAllowed || [])
+      setPolicies(data?.item?.policies || [])
+      setCancellationDays(data?.item?.cancellationDays || null)
     }
-  }, [data, setWhatToBring, setNotAllowed, setPolicies, setCancellationDays]);
+  }, [data, setWhatToBring, setNotAllowed, setPolicies, setCancellationDays])
 
   const onSubmit: SubmitHandler<T_UpdateActivityAdditionalInfo> = () => {
     const payload = {
