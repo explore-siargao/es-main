@@ -24,7 +24,7 @@ interface HostSidebarProps {
 
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data } = useGetFinishedSections({ listingId, type: "property" })
   const finishedSections = data?.item?.finishedSections || []
   const PROPERTY_SETUP_BASE_PATH = "/hosting/listings/properties/setup"
