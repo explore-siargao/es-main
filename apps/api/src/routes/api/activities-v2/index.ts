@@ -3,7 +3,7 @@ import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import { addActivity, getActivity } from './services/default'
+import { addActivity, getActivity, getAllActivitiesByHostId } from './services/default'
 import { getActivities, updateActivities } from './services/basic-info'
 import {
   getActivityInclusions,
@@ -22,6 +22,13 @@ import {
 const router = express.Router()
 
 //activity
+router.get(
+  '/host',
+  isOriginValid,
+  isUserLoggedIn,
+  getAllActivitiesByHostId
+)
+
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
 
 router.get(
