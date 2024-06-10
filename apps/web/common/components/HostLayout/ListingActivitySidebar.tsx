@@ -18,7 +18,7 @@ interface HostSidebarProps {
 
 const ListingActivitySidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const ACTIVITY_EDIT_BASE_PATH = "/hosting/listings/activities"
   const TOP_LINKS = [
     {
