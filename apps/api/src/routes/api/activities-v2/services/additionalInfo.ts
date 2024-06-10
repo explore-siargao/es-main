@@ -69,9 +69,11 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
 export const getAdditionalInfo = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const activityId = req.params.activityId
+
+  console.log(activityId)
   try {
     const getActivity = await dbActivities
-      .findOne({ _id: activityId, deletedAt: null })
+      .findOne({ _id: activityId })
       .populate('host')
     if (!getActivity) {
       return res.json(response.error({ message: 'Activity not found' }))
