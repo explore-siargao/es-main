@@ -121,7 +121,8 @@ const Inclusions = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const activityId = String(params.listingId)
   const { isPending, data } = useGetActivityInclusionsById(activityId)
-  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(activityId)
+  const { isPending: updateInclusions, mutate } =
+    useUpdateActivityInclusions(activityId)
 
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
