@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose"
 const rentalCategoryEnum = ["Car", "Motorbike", "Bicycle", ""]
 const bodyTypeEnum = ["Hatchback", "Sedan", "SUV", "Pickup", "Van", null]
 const fuelEnum = ["Petrol", "Diesel", "Electric", null]
-const transmissionEnum = ["Automatic", "SemiAutomatic", "Manual", null]
+const transmissionEnum = ["Automatic", "Semi-Automatic", "Manual", null]
 const statusEnum = ["Pending", "Incomplete", "Live"]
 
 const rentals = new Schema({
