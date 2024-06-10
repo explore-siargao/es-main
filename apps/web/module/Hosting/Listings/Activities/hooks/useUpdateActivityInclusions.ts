@@ -8,7 +8,10 @@ export async function updateActivityInclusions(
   props: T_Update_Activity_Inclusions
 ) {
   const apiService = new ApiService("v2")
-  return await apiService.patch(`${API_URL_ACTIVITIES}/${ActivityId}/inclusions`, props)
+  return await apiService.patch(
+    `${API_URL_ACTIVITIES}/${ActivityId}/inclusions`,
+    props
+  )
 }
 
 function useUpdateActivityInclusions(ActivityId: string | undefined) {

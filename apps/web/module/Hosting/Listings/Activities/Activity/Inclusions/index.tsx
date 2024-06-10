@@ -121,7 +121,9 @@ const Inclusions = ({ pageType }: Prop) => {
   const { isPending, data } = useGetActivityInclusionsById(
     "66614eb7e86b02e14c8fdad1"
   )
-  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions("6662c9a27fcfccd907b37b9e")
+  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(
+    "6662c9a27fcfccd907b37b9e"
+  )
 
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
