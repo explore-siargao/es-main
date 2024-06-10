@@ -35,7 +35,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
   const { cancellationDays, setCancellationDays } = useRadioStore()
   const { data, isPending } = useGetAdditionalInfoByActivityId(activityId)
   const { mutate, isPending: updateActivityAdditionalInfo } =
-    useUpdateActivityAdditionalInfo(1)
+    useUpdateActivityAdditionalInfo("665d0e556a778bc95bcef5b0")
   const { handleSubmit } = useForm<T_UpdateActivityAdditionalInfo>({})
 
   useEffect(() => {
@@ -83,8 +83,6 @@ const AdditionalInfo = ({ pageType }: Prop) => {
     }
 
     mutate(payload, callBackReq)
-
-    console.log("Payload:", payload)
   }
 
   return (
