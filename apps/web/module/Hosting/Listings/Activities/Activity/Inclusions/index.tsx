@@ -11,6 +11,7 @@ import useUpdateActivityInclusions from "../../hooks/useUpdateActivityInclusions
 import { T_Update_Activity_Inclusions } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useParams } from "next/navigation"
 
 interface Item {
   id: number
@@ -117,13 +118,11 @@ const Inclusions = ({ pageType }: Prop) => {
   const [selectedAlcoholOption, setSelectedAlcoholOption] = useState<string>("")
   const [isOpenFood, setIsOpenFood] = useState(false)
   const [isOpenAlcohol, setIsOpenAlcohol] = useState(false)
-
-  const { isPending, data } = useGetActivityInclusionsById(
-    "66614eb7e86b02e14c8fdad1"
-  )
-  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(
-    "6662c9a27fcfccd907b37b9e"
-  )
+  const params = useParams<{ listingId: string }>()
+  const activityId = String(params.listingId)
+  const { isPending, data } = useGetActivityInclusionsById(activityId)
+  const { isPending: updateInclusions, mutate } =
+    useUpdateActivityInclusions(activityId)
 
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 

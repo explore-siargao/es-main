@@ -28,9 +28,9 @@ const BasicInfo = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = String(params.listingId)
-  const { isLoading, data } = useGetActivitiesById(listingId)
-  const { isPending, mutate } = useUpdateActivityBasicInfo(listingId)
+  const activityId = String(params.listingId)
+  const { isLoading, data } = useGetActivitiesById(activityId)
+  const { isPending, mutate } = useUpdateActivityBasicInfo(activityId)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [itemData, setItemData] = useState<Item[]>([])
@@ -127,10 +127,10 @@ const BasicInfo = ({ pageType }: Prop) => {
                 toast.success(data.message)
                 if (pageType === "setup") {
                   queryClient.invalidateQueries({
-                    queryKey: ["activity-finished-sections", listingId],
+                    queryKey: ["activity-finished-sections", activityId],
                   })
                   router.push(
-                    `/hosting/listings/activities/setup/${listingId}/itinerary`
+                    `/hosting/listings/activities/setup/${activityId}/itinerary`
                   )
                 }
               } else {
