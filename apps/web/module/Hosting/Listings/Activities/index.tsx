@@ -13,7 +13,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 // import useGetHostProperties from "../hooks/useGetHostProperties"
 
 const HostListing = () => {
-  const {data, isPending} = useActivitiesByHost()
+  const { data, isPending } = useActivitiesByHost()
   const columnHelper = createColumnHelper<any>()
   const columns = [
     columnHelper.accessor("activityPhotos", {
@@ -25,7 +25,7 @@ const HostListing = () => {
         >
           <div className="relative w-24 h-16 rounded-xl overflow-hidden">
             <Image
-              src={`/assets/${context.getValue()?.length!==0 ? context.getValue()[0]?.key : "1.jpg"}`}
+              src={`/assets/${context.getValue()?.length !== 0 ? context.getValue()[0]?.key : "1.jpg"}`}
               alt="Image"
               layout="fill"
               objectFit="cover"
@@ -99,34 +99,36 @@ const HostListing = () => {
 
   return (
     <>
-    {isPending ? (<Spinner>Loading...</Spinner>):(
-    <div className="mt-20 mb-14">
-      <div className="mb-4">
-        <Typography
-          variant="h1"
-          fontWeight="semibold"
-          className="flex justify-between items-center mb-2"
-        >
-          Your listings 2
-        </Typography>
-        <Tabs tabs={listingTabs} />
-      </div>
-      <Table
-        data={data?.items || []}
-        columns={columns}
-        pageIndex={pageIndex}
-        pageCount={Math.ceil((data?.items?.length || 0) / pageSize)}
-        canPreviousPage={pageIndex > 0}
-        canNextPage={
-          pageIndex < Math.ceil((data?.items?.length || 0) / pageSize) - 1
-        }
-        gotoPage={gotoPage}
-        previousPage={previousPage}
-        nextPage={nextPage}
-        pageSize={pageSize}
-      />
-    </div>
-    )}
+      {isPending ? (
+        <Spinner>Loading...</Spinner>
+      ) : (
+        <div className="mt-20 mb-14">
+          <div className="mb-4">
+            <Typography
+              variant="h1"
+              fontWeight="semibold"
+              className="flex justify-between items-center mb-2"
+            >
+              Your listings 2
+            </Typography>
+            <Tabs tabs={listingTabs} />
+          </div>
+          <Table
+            data={data?.items || []}
+            columns={columns}
+            pageIndex={pageIndex}
+            pageCount={Math.ceil((data?.items?.length || 0) / pageSize)}
+            canPreviousPage={pageIndex > 0}
+            canNextPage={
+              pageIndex < Math.ceil((data?.items?.length || 0) / pageSize) - 1
+            }
+            gotoPage={gotoPage}
+            previousPage={previousPage}
+            nextPage={nextPage}
+            pageSize={pageSize}
+          />
+        </div>
+      )}
     </>
   )
 }

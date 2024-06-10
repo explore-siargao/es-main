@@ -11,7 +11,7 @@ function useActivitiesByHost() {
   const query = useQuery({
     queryKey: ["activity-host"],
     queryFn: () => getActivitiesByHost(),
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
   })
   return query
 }
