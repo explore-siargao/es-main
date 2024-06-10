@@ -121,7 +121,7 @@ const Inclusions = ({ pageType }: Prop) => {
   const { isPending, data } = useGetActivityInclusionsById(
     "66614eb7e86b02e14c8fdad1"
   )
-  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(1)
+  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions("6662c9a27fcfccd907b37b9e")
 
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
@@ -218,7 +218,6 @@ const Inclusions = ({ pageType }: Prop) => {
   const handleInputChange = (event: {
     target: { value: React.SetStateAction<string> }
   }) => {
-    console.log(event.target.value)
     setExclusionName(event.target.value)
   }
 
@@ -288,11 +287,6 @@ const Inclusions = ({ pageType }: Prop) => {
     }
 
     mutate(payload, callBackReq)
-    console.log("Food Included:", foodIncluded)
-    console.log("Non-Alcoholic Drinks Included:", nonAlcoholicDrinksIncluded)
-    console.log("Alcoholic Drinks Included:", alcoholicDrinksIncluded)
-    console.log("Selected Food Option After Reset:", selectedFoodOption)
-    console.log("Selected Alcohol Option After Reset:", selectedAlcoholOption)
   }
 
   return (
