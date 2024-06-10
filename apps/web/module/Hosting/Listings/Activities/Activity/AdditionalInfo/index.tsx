@@ -26,8 +26,8 @@ type Prop = {
 }
 
 const AdditionalInfo = ({ pageType }: Prop) => {
-  const params = useParams<{ activityId: string }>()
-  const activityId = String(params.activityId)
+  const params = useParams<{ listingId: string }>()
+  const activityId = String(params.listingId)
   const queryClient = new QueryClient()
   const { whatToBring, setWhatToBring } = useItemStore()
   const { notAllowed, setNotAllowed } = useItemStore()
@@ -35,7 +35,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
   const { cancellationDays, setCancellationDays } = useRadioStore()
   const { data, isPending } = useGetAdditionalInfoByActivityId(activityId)
   const { mutate, isPending: updateActivityAdditionalInfo } =
-    useUpdateActivityAdditionalInfo("665d0e556a778bc95bcef5b0")
+    useUpdateActivityAdditionalInfo(activityId)
   const { handleSubmit } = useForm<T_UpdateActivityAdditionalInfo>({})
 
   useEffect(() => {
