@@ -11,7 +11,7 @@ import useUpdateActivityInclusions from "../../hooks/useUpdateActivityInclusions
 import { T_Update_Activity_Inclusions } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 interface Item {
   id: number
@@ -104,7 +104,7 @@ type Prop = {
 
 const Inclusions = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
-  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
+  const router = useRouter()
   const [nonAlcoholicDrinksIncluded, setNonAlcoholicDrinksIncluded] =
     useState<boolean>(false)
   const [alcoholicDrinksIncluded, setAlcoholicDrinksIncluded] =
@@ -123,7 +123,7 @@ const Inclusions = ({ pageType }: Prop) => {
   const { isPending, data } = useGetActivityInclusionsById(activityId)
   const { isPending: updateInclusions, mutate } =
     useUpdateActivityInclusions(activityId)
-
+  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
   const toggleDropdown = (dropdownId: string) => {
@@ -207,9 +207,11 @@ const Inclusions = ({ pageType }: Prop) => {
           name,
         }))
       )
-      setSelectedFoodOption(data?.item?.isFoodIncluded)
+      setFoodIncluded(data?.item?.isFoodIncluded)
+      setSelectedFoodOption(data?.item?.selectedFoodOptions[0])
       setAlcoholicDrinksIncluded(data?.item?.isAlcoholicDrinkIncluded)
       setNonAlcoholicDrinksIncluded(data?.item?.isNonAlcoholicDrinkIncluded)
+      setSelectedAlcoholOption(data?.item?.selectedAlcoholicDrinkOptions[0])
     }
   }, [data])
 
@@ -275,9 +277,14 @@ const Inclusions = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          queryClient.invalidateQueries({
-            queryKey: ["get-activities-inclusions"],
-          })
+          if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["activity-finished-sections", activityId],
+            })
+            router.push(
+              `/hosting/listings/activities/setup/${activityId}/additional-info`
+            )
+          }
         } else {
           toast.error(String(data.message))
         }
@@ -309,16 +316,16 @@ const Inclusions = ({ pageType }: Prop) => {
                 Is food included in your activity?
               </Typography>
               <RadioInput
-                id="foodYes"
+                id="food"
                 value="yes"
-                checked={foodIncluded === true}
+                checked={foodIncluded}
                 onChange={(e) =>
                   handleOptionChange(e, setFoodIncluded, setSelectedFoodOption)
                 }
                 label="Yes"
               />
               <RadioInput
-                id="foodNo"
+                id="food"
                 value="no"
                 checked={!foodIncluded}
                 onChange={(e) =>

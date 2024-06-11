@@ -13,7 +13,7 @@ import toast from "react-hot-toast"
 import { QueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { T_UpdateActivityAdditionalInfo } from "@repo/contract"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 const radioItems = [
   { id: "1", value: 5, label: "5 days" },
@@ -26,6 +26,7 @@ type Prop = {
 }
 
 const AdditionalInfo = ({ pageType }: Prop) => {
+  const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const activityId = String(params.listingId)
   const queryClient = new QueryClient()
@@ -70,9 +71,14 @@ const AdditionalInfo = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          queryClient.invalidateQueries({
-            queryKey: ["update-activity-additional-info"],
-          })
+          if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["activity-finished-sections", activityId],
+            })
+            router.push(
+              `/hosting/listings/activities/setup/${activityId}/summary`
+            )
+          }
         } else {
           toast.error(String(data.message))
         }
