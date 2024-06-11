@@ -90,6 +90,7 @@ const Details = ({ pageType }: Prop) => {
             <Input
               type="text"
               id="engineCapacity"
+              defaultValue={data.item?.details?.engineCapacityLiter}
               step=".01"
               label="Engine Capacity (L)"
               disabled={isPending || isLoading}
@@ -102,6 +103,7 @@ const Details = ({ pageType }: Prop) => {
             <Input
               type="text"
               id="engineCapacity"
+              defaultValue={data.item?.details?.engineCapacityCc}
               step=".01"
               label="Engine Capacity (CC)"
               disabled={isPending || isLoading}
@@ -119,7 +121,14 @@ const Details = ({ pageType }: Prop) => {
           >
             <Option value="">Select</Option>
             {Object.keys(E_Rental_Condition).map((key) => {
-              return <Option>{key}</Option>
+              return (
+                <Option
+                  key={key}
+                  selected={key === data?.item?.details.condition}
+                >
+                  {key}
+                </Option>
+              )
             })}
           </Select>
           <Input
@@ -127,6 +136,7 @@ const Details = ({ pageType }: Prop) => {
             id="exteriorColor"
             label="Exterior Color"
             disabled={isPending || isLoading}
+            defaultValue={data?.item?.details?.exteriorColor}
             {...register("exteriorColor")}
           />
           {data?.item?.category === E_Rental_Category.Car && (
@@ -136,6 +146,7 @@ const Details = ({ pageType }: Prop) => {
               label="Interior Color"
               disabled={isPending || isLoading}
               {...register("interiorColor")}
+              defaultValue={data?.item?.details?.interiorColor}
             />
           )}
           {data?.item?.category !== E_Rental_Category.Bicycle && (
@@ -145,6 +156,7 @@ const Details = ({ pageType }: Prop) => {
               label="Seating Capacity"
               required={data?.item?.category === E_Rental_Category.Car}
               disabled={isPending || isLoading}
+              defaultValue={data?.item?.details?.seatingCapacity}
               {...register("seatingCapacity", {
                 required: data?.item?.category === E_Rental_Category.Car,
                 valueAsNumber: true,
@@ -157,6 +169,7 @@ const Details = ({ pageType }: Prop) => {
             label="Weight Capacity (kg)"
             step=".01"
             disabled={isPending || isLoading}
+            defaultValue={data?.item?.details?.weightCapacityKg}
             {...register("weightCapacity", {
               valueAsNumber: true,
             })}
@@ -165,6 +178,7 @@ const Details = ({ pageType }: Prop) => {
             type="number"
             id="minAgeReq"
             disabled={isPending || isLoading}
+            defaultValue={data?.item?.details?.minAgeReq}
             label="Minimum Age Requirement"
             required
             {...register("minAgeReq", { required: true, valueAsNumber: true })}
@@ -189,6 +203,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="No"
                   required
+                  checked={data?.item?.details?.isRegistered === "No"}
                 />
                 <label
                   htmlFor="registered-yes"
@@ -204,6 +219,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="Yes"
                   required
+                  checked={data?.item?.details?.isRegistered === "Yes"}
                 />
               </div>
               <Typography
