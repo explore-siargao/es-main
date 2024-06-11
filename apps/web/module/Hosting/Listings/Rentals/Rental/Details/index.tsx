@@ -120,8 +120,15 @@ const Details = ({ pageType }: Prop) => {
             {...register("condition", { required: true })}
           >
             <Option value="">Select</Option>
-                {Object.keys(E_Rental_Condition).map((key) => {
-                  return <Option key={key} selected={key===data?.item?.details.condition}>{key}</Option>
+            {Object.keys(E_Rental_Condition).map((key) => {
+              return (
+                <Option
+                  key={key}
+                  selected={key === data?.item?.details.condition}
+                >
+                  {key}
+                </Option>
+              )
             })}
           </Select>
           <Input
@@ -196,7 +203,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="No"
                   required
-                  checked={data?.item?.details?.isRegistered==="No"}
+                  checked={data?.item?.details?.isRegistered === "No"}
                 />
                 <label
                   htmlFor="registered-yes"
@@ -212,7 +219,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="Yes"
                   required
-                  checked={data?.item?.details?.isRegistered==="Yes"}
+                  checked={data?.item?.details?.isRegistered === "Yes"}
                 />
               </div>
               <Typography
