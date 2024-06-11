@@ -87,7 +87,10 @@ const BasicInfo = ({ pageType }: Prop) => {
       )
       setTitle(data?.item?.title || "")
       setDescription(data?.item?.description || "")
-      setSelectedLanguages(data?.item?.languages || [])
+      setSelectedLanguages(
+        (data?.item?.language || []).filter((lang: string) => lang != null)
+      )
+      
     }
   }, [data])
 
@@ -115,11 +118,13 @@ const BasicInfo = ({ pageType }: Prop) => {
           const updatedFormData = {
             title: title,
             description: description,
-            languages: selectedLanguages,
+            languages: selectedLanguages.filter(lang => lang != null && lang.trim() !== ""),
             durationHour: durationHour,
             durationMinute: durationMinute,
             highLights: itemList.map((item) => item.itemName),
+
           }
+          console.log("Test: ", updatedFormData.languages)
 
           const callBackReq = {
             onSuccess: (data: any) => {
@@ -128,6 +133,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                 if (pageType === "setup") {
                   queryClient.invalidateQueries({
                     queryKey: ["activity-finished-sections", activityId],
+                  })
+                  queryClient.invalidateQueries({
+                    queryKey: ["activity-basic-info", activityId],
                   })
                   router.push(
                     `/hosting/listings/activities/setup/${activityId}/itinerary`
@@ -356,8 +364,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 >
                   Language/s spoken by host
                 </Typography>
-
-                {languages.map((language, index) => (
+                {languages.map((language: string, index: number) => (
                   <div key={language} className="flex gap-2 my-2 ">
                     <Checkbox
                       id={index}
