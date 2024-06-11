@@ -90,7 +90,6 @@ const BasicInfo = ({ pageType }: Prop) => {
       setSelectedLanguages(
         (data?.item?.language || []).filter((lang: string) => lang != null)
       )
-      
     }
   }, [data])
 
@@ -118,11 +117,12 @@ const BasicInfo = ({ pageType }: Prop) => {
           const updatedFormData = {
             title: title,
             description: description,
-            languages: selectedLanguages.filter(lang => lang != null && lang.trim() !== ""),
+            languages: selectedLanguages.filter(
+              (lang) => lang != null && lang.trim() !== ""
+            ),
             durationHour: durationHour,
             durationMinute: durationMinute,
             highLights: itemList.map((item) => item.itemName),
-
           }
           console.log("Test: ", updatedFormData.languages)
 
