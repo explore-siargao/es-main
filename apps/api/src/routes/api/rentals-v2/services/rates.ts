@@ -12,12 +12,12 @@ const response = new ResponseService()
 export const getRentalRates = async (req: Request, res: Response) => {
   const rentalId = req.params.rentalId
   try {
-    const getRental = await dbRentalRates.findOne({ _id: rentalId })
+    const getRental = await dbRentals.findOne({_id:rentalId})
     if (!getRental) {
-      return res.json(response.error({ message: 'rental not found' }))
+      return res.json(response.error({message: 'rental not found' }))
     }
-
-    res.json(response.success({ item: getRental }))
+    const getRentalRate = await dbRentalRates.findOne({ _id: getRental.pricing })
+    res.json(response.success({ item: getRentalRate }))
   } catch (err: any) {
     return res.json(
       response.error({
