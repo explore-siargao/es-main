@@ -123,7 +123,7 @@ const Inclusions = ({ pageType }: Prop) => {
   const { isPending, data } = useGetActivityInclusionsById(activityId)
   const { isPending: updateInclusions, mutate } =
     useUpdateActivityInclusions(activityId)
-    const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
+  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
   const toggleDropdown = (dropdownId: string) => {
@@ -195,7 +195,6 @@ const Inclusions = ({ pageType }: Prop) => {
   }
 
   useEffect(() => {
-
     if (data) {
       setInclusions(
         (data.item?.otherInclusion || []).map(
