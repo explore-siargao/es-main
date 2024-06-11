@@ -107,7 +107,7 @@ export const Z_Update_Activity_Basic_Info = z.object({
   highLights: z.array(z.string()).optional(),
   durationHour: z.number().optional(),
   durationMinute: z.number().optional(),
-  language: z.array(z.string()).optional(),
+  languages: z.array(z.string()).optional(),
 })
 
 export const Z_Activity_Status = z.object({

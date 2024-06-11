@@ -17,7 +17,7 @@ export const updateActivities = async (req: Request, res: Response) => {
     description,
     durationHour,
     durationMinute,
-    language,
+    languages,
   }: T_Update_Activity_Basic_Info = req.body
   const isValidInput = Z_Update_Activity_Basic_Info.safeParse(req.body)
   if (!isHost) {
@@ -41,7 +41,7 @@ export const updateActivities = async (req: Request, res: Response) => {
             highLights: highLights,
             durationHour: durationHour,
             durationMinute: durationMinute,
-            language: language,
+            language: languages,
             finishedSections: ['basicInfo'],
             updatedAt: Date.now(),
           },
