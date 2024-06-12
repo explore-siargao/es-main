@@ -6,7 +6,7 @@ import { Z_User } from "../User"
 import { E_Activity_Status } from "./enum"
 
 export const Z_Activities = z.object({
-  id: z.number().optional(),
+  id: z.string().optional(),
   host: Z_User.optional(),
   finishedSections: z.string().optional(),
   meetingPointDescription: z.string().optional(),
@@ -71,7 +71,7 @@ export const Z_ActivitiesAdd = z.object({
 })
 
 export const Z_UpdateActivities = z.object({
-  id: z.number().optional().nullable(),
+  id: z.string().optional().nullable(),
   meetingPointDescription: z.string().optional().nullable(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
