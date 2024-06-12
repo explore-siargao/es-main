@@ -14,10 +14,10 @@ import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
 import { getRentalRates, updateRentalRate } from './services/rates'
 import {
-  deleteRentalPhotosByPhotoId,
-  editPhotoInfo,
-  getRentalPhotos,
-  updateRentalPhotos,
+  addPhoto,
+  deletePhoto,
+  getPhotosByRentalId,
+  updatePhoto,
 } from './services/photos'
 import { getAddOns, updateAddOns } from './services/addOns'
 import {
@@ -114,33 +114,34 @@ router.get(
 router.get('/:rentalId/pricing', isOriginValid, isUserLoggedIn, getRentalRates)
 
 //photos
-router.get('/:rentalId/photos', isOriginValid, isUserLoggedIn, getRentalPhotos)
-
-router.patch(
+router.get(
   '/:rentalId/photos',
   isOriginValid,
   isUserLoggedIn,
-  isCsrfTokenValid,
   isHostRentalOwner,
-  updateRentalPhotos
+  getPhotosByRentalId
 )
-
 router.patch(
-  '/:rentalId/photos/:photoId',
+  '/:rentalId/photo/:photoId',
   isOriginValid,
-  isUserLoggedIn,
   isCsrfTokenValid,
-  isHostRentalOwner,
-  editPhotoInfo
+  isUserLoggedIn,
+  updatePhoto
 )
-
-router.delete(
-  '/:rentalId/photos/:photoId',
+router.post(
+  '/:rentalId/photo',
   isOriginValid,
-  isUserLoggedIn,
   isCsrfTokenValid,
+  isUserLoggedIn,
   isHostRentalOwner,
-  deleteRentalPhotosByPhotoId
+  addPhoto
+)
+router.delete(
+  '/:rentalId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  deletePhoto
 )
 
 //locations
@@ -168,7 +169,7 @@ router.patch(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  // isHostRentalOwner,
+  isHostRentalOwner,
   updateAddOns
 )
 

@@ -18,10 +18,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
   const setTags = usePhotoStore((state) => state.setTags)
   const setMainPhoto = usePhotoStore((state) => state.setMainPhoto)
   const removePhoto = usePhotoStore((state) => state.removePhoto)
-
-  // @ts-ignore
-  const currentPhoto = toEditPhotoIndex ? photos[toEditPhotoIndex] : null
-
+  const currentPhoto = typeof toEditPhotoIndex === 'number' && toEditPhotoIndex > -1 ? photos[toEditPhotoIndex] : null
   const [description, editDescription] = useState(currentPhoto?.description)
   const [tags, editTags] = useState(currentPhoto?.tags)
   const [isMain, setIsMain] = useState(currentPhoto?.isMain || false)

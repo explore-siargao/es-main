@@ -57,12 +57,12 @@ const rentals = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "RentalAddOns",
   },
-  photos: {
-    type: [mongoose.Schema.ObjectId],
+  photos: [{
+    type: mongoose.Schema.ObjectId,
     ref: "Photos",
     required: false,
     default: null,
-  },
+  }],
   location: {
     type: mongoose.Schema.ObjectId,
     ref: "Addresses",
