@@ -15,10 +15,10 @@ const reservations = new Schema({
   status: {
     type: String,
     enum: statusEnum,
-    default: "Not-Confirmed"
+    default: "Not-Confirmed",
   },
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 })
 
 export default mongoose.model("Reservations", reservations)

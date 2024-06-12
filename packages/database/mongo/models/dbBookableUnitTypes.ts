@@ -42,9 +42,9 @@ const bookableUnitTypes = new Schema({
   },
   bedConfigs: [
     {
-        type: mongoose.Schema.ObjectId,
-        ref: 'BedConfigs'
-    }
+      type: mongoose.Schema.ObjectId,
+      ref: "BedConfigs",
+    },
   ],
   createdAt: {
     type: Date,
