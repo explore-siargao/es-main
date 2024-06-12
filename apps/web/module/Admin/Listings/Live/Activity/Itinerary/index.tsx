@@ -115,10 +115,10 @@ const ListingLocation = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="street"
+                id="streetAddress"
                 label="Street address"
                 required
-                {...register("street", { required: true })}
+                {...register("streetAddress", { required: true })}
               />
               <Select
                 label="City / Municipality"

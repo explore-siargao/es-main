@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -18,9 +18,9 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
-import useGetRentalById from "../../../hooks/useGetRentalById"
 import useUpdateRentalLocation from "../hooks/useUpdateRentalLocation"
 import { T_Listing_Location } from "@repo/contract"
+import useGetRentalLocation from "../hooks/useGetRentalLocation"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -32,12 +32,20 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateRentalLocation(listingId)
-  const { data } = useGetRentalById(listingId)
+  const { data } = useGetRentalLocation(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
     values: data?.item?.Location,
   })
+
+  const [streetAddress, setStreet] = useState<string>()
+  const [howToGetThere, setHowToGetThere] = useState<string>()
+
+  useEffect(() => {
+    setStreet(data?.item?.streetAddress)
+    setHowToGetThere(data?.item?.howToGetThere)
+  }, [data])
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
@@ -53,6 +61,9 @@ const ListingLocation = ({ pageType }: Prop) => {
           toast.success(data.message)
           queryClient.invalidateQueries({
             queryKey: ["rental-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["rental-location", listingId],
           })
           if (pageType === "setup") {
             router.push(`/hosting/listings/rentals/setup/${listingId}/summary`)
@@ -113,25 +124,32 @@ const ListingLocation = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="street"
+                id="streetAddress"
                 label="Street address"
                 required
-                {...register("street", { required: true })}
+                {...register("streetAddress", { required: true })}
+                defaultValue={data?.item?.streetAddress}
+                onChange={() => setStreet(streetAddress)}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                value={selectedMunicipality}
                 required
                 {...register("city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
-                {MUNICIPALITIES.map((municipality) => (
-                  <Option key={municipality.name} value={municipality.name}>
-                    {municipality.name}
-                  </Option>
-                ))}
+                {MUNICIPALITIES.map((key) => {
+                  return (
+                    <Option
+                      value={key.name}
+                      key={key.name}
+                      selected={key.name === data?.item?.city}
+                    >
+                      {key.name}
+                    </Option>
+                  )
+                })}
               </Select>
               <Select
                 label="Barangay / District"
@@ -143,9 +161,13 @@ const ListingLocation = ({ pageType }: Prop) => {
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === data?.item?.city
                 ).map((barangay) => (
-                  <Option key={barangay.name} value={barangay.name}>
+                  <Option
+                    key={barangay.name}
+                    value={barangay.name}
+                    selected={barangay.name === data?.item?.barangay}
+                  >
                     {barangay.name}
                   </Option>
                 ))}
@@ -158,6 +180,8 @@ const ListingLocation = ({ pageType }: Prop) => {
                   className="mt-1"
                   required
                   {...register("howToGetThere", { required: true })}
+                  defaultValue={data?.item?.howToGetThere}
+                  onChange={() => setHowToGetThere(howToGetThere)}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
                   Accurately explain on how to get in your property address
