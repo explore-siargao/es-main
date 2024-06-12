@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const Z_Listing_Location = z.object({
-  street: z.string(),
+  streetAddress: z.string(),
   barangay: z.string(),
   city: z.string(),
   province: z.string(),
