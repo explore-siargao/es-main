@@ -163,7 +163,7 @@ export const getRentalDetails = async (req: Request, res: Response) => {
         isRegistered: details.isRegistered,
       }
     } else if (category === E_Rental_Category.Bicycle) {
-       // FIX ANY HERE
+      // FIX ANY HERE
       const details = getRental.details as any
       rentalDetail = {
         // id: details._id,

@@ -20,7 +20,10 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
   const setTags = usePhotoStore((state) => state.setTags)
   const setMainPhoto = usePhotoStore((state) => state.setMainPhoto)
   const removePhoto = usePhotoStore((state) => state.removePhoto)
-  const currentPhoto = typeof toEditPhotoIndex === 'number' && toEditPhotoIndex > -1 ? photos[toEditPhotoIndex] : null
+  const currentPhoto =
+    typeof toEditPhotoIndex === "number" && toEditPhotoIndex > -1
+      ? photos[toEditPhotoIndex]
+      : null
   const [description, editDescription] = useState(currentPhoto?.description)
   const [tags, editTags] = useState(currentPhoto?.tags)
   const [isMain, setIsMain] = useState(currentPhoto?.isMain || false)
@@ -85,45 +88,52 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
               setIsMain((state: boolean | string) => !state)
             }}
           />
-          <label htmlFor="main" className={cn(`text-sm ml-3`, photos?.length < 2 && "opacity-70")}>
+          <label
+            htmlFor="main"
+            className={cn(`text-sm ml-3`, photos?.length < 2 && "opacity-70")}
+          >
             Mark as main photo
           </label>
         </div>
 
         <div className="flex justify-between mt-6">
-        <div className="flex space-x-3">
-          <Button
-            variant="default"
-            size="sm"
-            type="button"
-            tabIndex={-1}
-            onClick={() => {
-              if(isMain !== currentPhoto?.isMain) {
-                const updatedIsMainPhotos = photos.map((photo, index) => {
-                  return {
-                    ...photo,
-                    isMain: typeof toEditPhotoIndex === "number" && toEditPhotoIndex > -1 && toEditPhotoIndex === index && isMain
-                  }
-                })
-                setPhotos([...updatedIsMainPhotos])
-              }
-              setDescription(description as string)
-              setTags(tags as string)
-              setMainPhoto(isMain as boolean)
-              toast.success("Photo successfully updated")
-            }}
-          >
-            Save Changes
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            type="button"
-            tabIndex={-1}
-            onClick={() => onClose()}
-          >
-            Close
-          </Button>
+          <div className="flex space-x-3">
+            <Button
+              variant="default"
+              size="sm"
+              type="button"
+              tabIndex={-1}
+              onClick={() => {
+                if (isMain !== currentPhoto?.isMain) {
+                  const updatedIsMainPhotos = photos.map((photo, index) => {
+                    return {
+                      ...photo,
+                      isMain:
+                        typeof toEditPhotoIndex === "number" &&
+                        toEditPhotoIndex > -1 &&
+                        toEditPhotoIndex === index &&
+                        isMain,
+                    }
+                  })
+                  setPhotos([...updatedIsMainPhotos])
+                }
+                setDescription(description as string)
+                setTags(tags as string)
+                setMainPhoto(isMain as boolean)
+                toast.success("Photo successfully updated")
+              }}
+            >
+              Save Changes
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              tabIndex={-1}
+              onClick={() => onClose()}
+            >
+              Close
+            </Button>
           </div>
           <Button
             variant="danger"

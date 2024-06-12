@@ -31,7 +31,8 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const { mutateAsync, isPending } = useUpdateRentalPhotos(listingId)
   const { mutateAsync: addMutateAsync } = useAddRentalPhoto(listingId)
   const { mutateAsync: deleteMutateAsync } = useDeleteRentalPhoto(listingId)
-  const { mutateAsync: updateFinishedSections } = useUpdateRentalFinishedSections(listingId)
+  const { mutateAsync: updateFinishedSections } =
+    useUpdateRentalFinishedSections(listingId)
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setToEditPhotoIndex = usePhotoStore(
@@ -62,48 +63,61 @@ const RentalPhotos = ({ pageType }: Prop) => {
   })
 
   const updatePhotosInDb = async () => {
-    const toAddPhotos = photos.filter((photo) => !photo._id).map(async (photo) => {
-      return await addMutateAsync(photo)
-    }) || []
-    const toEditPhotos = photos.filter((photo) => photo._id).map(async (photo) => {
-      return await mutateAsync(photo)
-    }) || []
-    const toDeletePhotos = photos.filter((photo) => photo.isDeleted).map(async (photo) => {
-      return await deleteMutateAsync(photo)
-    }) || []
-    await Promise.all([...toAddPhotos, ...toEditPhotos, ...toDeletePhotos]).then((items) => {
-      items.forEach((item) => {
-        const message = String(item.message) as string;
-        toast.success(message, { id: message })
-      })
-      if (pageType === "setup" && !data?.item?.finishedSections?.includes("photos")) {
-        const callBackReq = {
-          onSuccess: (data: any) => {
-            if (data.error) {
-              toast.error(String(data.message))
-            }
-          },
-          onError: (err: any) => {
-            toast.error(String(err))
-          },
+    const toAddPhotos =
+      photos
+        .filter((photo) => !photo._id)
+        .map(async (photo) => {
+          return await addMutateAsync(photo)
+        }) || []
+    const toEditPhotos =
+      photos
+        .filter((photo) => photo._id)
+        .map(async (photo) => {
+          return await mutateAsync(photo)
+        }) || []
+    const toDeletePhotos =
+      photos
+        .filter((photo) => photo.isDeleted)
+        .map(async (photo) => {
+          return await deleteMutateAsync(photo)
+        }) || []
+    await Promise.all([...toAddPhotos, ...toEditPhotos, ...toDeletePhotos])
+      .then((items) => {
+        items.forEach((item) => {
+          const message = String(item.message) as string
+          toast.success(message, { id: message })
+        })
+        if (
+          pageType === "setup" &&
+          !data?.item?.finishedSections?.includes("photos")
+        ) {
+          const callBackReq = {
+            onSuccess: (data: any) => {
+              if (data.error) {
+                toast.error(String(data.message))
+              }
+            },
+            onError: (err: any) => {
+              toast.error(String(err))
+            },
+          }
+          updateFinishedSections({ newFinishedSection: "photos" }, callBackReq)
         }
-        updateFinishedSections({ newFinishedSection: "photos" }, callBackReq)
-      }
-    }).then(() => {
-      queryClient.invalidateQueries({
-        queryKey: ["rental", listingId],
       })
-      queryClient.invalidateQueries({
-        queryKey: ["rental-finished-sections", listingId],
+      .then(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["rental", listingId],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ["rental-finished-sections", listingId],
+        })
+        if (pageType === "setup") {
+          router.push(`/hosting/listings/rentals/setup/${listingId}/pricing`)
+        }
       })
-      if (pageType === "setup") {
-        router.push(
-          `/hosting/listings/rentals/setup/${listingId}/pricing`
-        )
-      }
-    }).catch((err) => {
-      toast.error(String(err))
-    })
+      .catch((err) => {
+        toast.error(String(err))
+      })
   }
 
   const handleSave = async () => {
@@ -160,7 +174,8 @@ const RentalPhotos = ({ pageType }: Prop) => {
           fontWeight="semibold"
           className="text-gray-500 mb-0.5 italic"
         >
-          Please upload at least {data?.item?.category !== E_Rental_Category.Car ? "3" : "5"} photos
+          Please upload at least{" "}
+          {data?.item?.category !== E_Rental_Category.Car ? "3" : "5"} photos
         </Typography>
         <Typography
           variant="h6"
@@ -226,8 +241,8 @@ const RentalPhotos = ({ pageType }: Prop) => {
                     />
                   </svg>
                   <Typography className="mb-2 text-text-500 px-2 text-center">
-                    <span className="font-semibold">Drop photos here</span>{" "}
-                    or click this
+                    <span className="font-semibold">Drop photos here</span> or
+                    click this
                   </Typography>
                   <Typography className="text-xs text-text-500">
                     PNG, JPG or GIF

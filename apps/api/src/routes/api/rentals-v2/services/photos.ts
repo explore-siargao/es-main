@@ -41,7 +41,7 @@ export const addPhoto = async (req: Request, res: Response) => {
         rentalId,
         {
           $push: {
-            photos: uploadedPhoto._id
+            photos: uploadedPhoto._id,
           },
           $set: {
             updatedAt: Date.now(),
@@ -88,13 +88,17 @@ export const updatePhoto = async (req: Request, res: Response) => {
       if (!getPhoto) {
         return res.json(response.error({ message: 'Photo not found' }))
       }
-      const { 
+      const {
         description: dbDescription,
         tags: dbTags,
         isMain: dbIsMain,
-      } = getPhoto;
+      } = getPhoto
       // Needed this to not update if nothing changes
-      if (dbDescription === description && dbTags === tags && dbIsMain === isMain) {
+      if (
+        dbDescription === description &&
+        dbTags === tags &&
+        dbIsMain === isMain
+      ) {
         return res.json(
           response.success({
             item: getPhoto,
@@ -141,7 +145,10 @@ export const getPhotosByRentalId = async (req: Request, res: Response) => {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   try {
-    const photosData = await dbPhotos.find({ rentalId }).populate('photos').exec()
+    const photosData = await dbPhotos
+      .find({ rentalId })
+      .populate('photos')
+      .exec()
     if (!photosData) {
       return res.json(
         response.error({
@@ -186,10 +193,10 @@ export const deletePhoto = async (req: Request, res: Response) => {
       getPhoto.rentalId,
       {
         $pull: {
-          photos: photoId
+          photos: photoId,
         },
         $set: {
-          updatedAt: Date.now()
+          updatedAt: Date.now(),
         },
       },
       { new: true }

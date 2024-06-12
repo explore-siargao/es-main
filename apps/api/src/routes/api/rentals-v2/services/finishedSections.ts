@@ -45,7 +45,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
       rental._id,
       {
         $push: {
-          finishedSections: newFinishedSection
+          finishedSections: newFinishedSection,
         },
         $set: {
           updatedAt: Date.now(),
