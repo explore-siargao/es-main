@@ -28,7 +28,7 @@ const BuilderModal = ({
 
   const updateActivities = (activity: string) => {
     const isExist = activities.find((item) => item === activity)
-    if (!isExist) {
+    if (!isExist && activities.length < 3) {
       const data = [...activities, activity]
       setActivities([...data])
     }
@@ -81,6 +81,7 @@ const BuilderModal = ({
               label="Activity"
               required
               className="col-span-1"
+              disabled={activities.length > 2}
               onChange={(e) => updateActivities(e.target.value)}
             >
               <Option value={""}>Select Activity</Option>
@@ -90,6 +91,9 @@ const BuilderModal = ({
                 </Option>
               ))}
             </Select>
+            <Typography className="text-xs text-text-300 italic mt-1">
+              You can select up to 3 activity
+            </Typography>
             {activities.length > 0 && (
               <div className="flex gap-4 pt-4">
                 {activities.map((activity) => (

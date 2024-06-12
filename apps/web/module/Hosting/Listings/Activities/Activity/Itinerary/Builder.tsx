@@ -20,7 +20,7 @@ const Builder = () => {
             <LucideMapPin className="h-5 w-5" />
           </div>
           <Typography fontWeight="semibold" className="text-text-400">
-            Meeting Point
+            Meeting Point (Address above)
           </Typography>
         </div>
         {segments.map((segment) => {
