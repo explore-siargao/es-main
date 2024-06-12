@@ -1,6 +1,7 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import Sidebar from "./Sidebar"
+import CalendarTable from "./CalendarTable"
 
 const ReservationCalendar = () => {
   return (
@@ -13,8 +14,9 @@ const ReservationCalendar = () => {
         >
           Calendar
         </Typography>
-        <div>
-          <Sidebar />
+        <div className="flex gap-8">
+          
+          <CalendarTable />
         </div>
       </div>
     </div>
