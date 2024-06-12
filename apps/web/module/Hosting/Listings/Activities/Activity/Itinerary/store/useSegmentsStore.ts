@@ -4,11 +4,15 @@ type T_Segment = {
   index?: number
   transfer?: string
   activities?: string[]
-  location: string
+  location?: string
   durationHour: number
   durationMinute: number
   optional: boolean
   fee: boolean
+  coordinates?: {
+    latitude: number,
+    longitude: number,
+  }
 }
 
 type T_Segments = {

@@ -8,6 +8,10 @@ import ModalContainerFooter from "@/common/components/ModalContainer/ModalContai
 import { ACTIVITIES } from "../constants"
 import toast from "react-hot-toast"
 import { useSegmentsStore } from "../store/useSegmentsStore"
+import SpecificMap from "@/common/components/SpecificMap"
+import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
+import { useParams } from "next/navigation"
+import CustomSpecificMap from "@/common/components/CustomSpecificMap"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -25,6 +29,13 @@ const BuilderModal = ({
   const [durationMinute, setDurationMinute] = useState(0)
   const [optional, setOptional] = useState("No")
   const [fee, setFee] = useState("No")
+  const [coordinates, setCoordinates] = useState<{latitude:number, longitude:number}| null>(null);
+  const params = useParams<{ listingId: string }>()
+  const listingId = String(params.listingId)
+  const { data } = useGetRentalById(listingId)
+  const updateCoordinates = (latitude: number, longitude: number) => {
+    setCoordinates({latitude, longitude});
+  };
 
   const updateActivities = (activity: string) => {
     const isExist = activities.find((item) => item === activity)
@@ -49,12 +60,16 @@ const BuilderModal = ({
       toast.error("Location is needed for this segment")
     } else if (!durationHour && !durationMinute) {
       toast.error("Please add duration for this segment")
+    }
+      else if (!coordinates) {
+        toast.error("Please add coordinates for this segment")
     } else {
       updateSegments({
         activities,
         location,
         durationHour,
         durationMinute,
+        coordinates,
         optional: optional === "Yes",
         fee: fee === "Yes",
       })
@@ -64,6 +79,11 @@ const BuilderModal = ({
     }
   }
 
+  const currentCoords = (
+    data?.item?.Location?.latitude
+      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
+      : [9.913431, 126.049483]
+  ) as [number, number]
   return (
     <ModalContainer
       onClose={() => onClose(!isModalOpen)}
@@ -124,7 +144,16 @@ const BuilderModal = ({
             />
           </div>
         </div>
-        <div className="mt-6">
+        <div className="flex flex-col my-5 justify-center">
+            <CustomSpecificMap
+            center={currentCoords}
+            mapHeight={"h-[200px]"}
+            mapWidth={"w-full"}
+            zoom={11}  
+            setCoordinates={updateCoordinates}  
+            />
+          </div>
+        <div>
           <Typography variant="h4" fontWeight="semibold" className="mb-4">
             How long does this segment last?
           </Typography>
