@@ -10,6 +10,7 @@ export const Z_Photo = z.object({
   thumbKey: z.string().nullable().optional(),
   description: z.string(),
   tags: z.string(),
+  isDeleted: z.boolean().optional(),
   isMain: z.union([z.boolean(), z.string()]).optional(),
   file: z.record(z.any()).optional(),
   createdAt: z.date().optional(),

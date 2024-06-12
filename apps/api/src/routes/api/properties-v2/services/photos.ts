@@ -47,7 +47,7 @@ export const addPhoto = async (req: Request, res: Response) => {
       //       updatedAt: Date.now(),
       //     },
       //   },
-      //   { new: false }
+      //   { new: true }
       // )
       res.json(
         response.success({
@@ -96,7 +96,7 @@ export const updatePhoto = async (req: Request, res: Response) => {
             updatedAt: Date.now(),
           },
         },
-        { new: false }
+        { new: true }
       )
       res.json(
         response.success({
@@ -204,7 +204,7 @@ export const deletePhoto = async (req: Request, res: Response) => {
       //       updatedAt: Date.now(),
       //     },
       //   },
-      //   { new: false }
+      //   { new: true }
       // )
       res.json(
         response.success({
