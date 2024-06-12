@@ -80,7 +80,7 @@ const BasicInfo = ({ pageType }: Prop) => {
       setDurationHour(data?.item?.durationHour || 0)
       setDurationMinute(data?.item?.durationMinute || 0)
       setItemList(
-        data?.item?.highLights.map((itemName: string, index: number) => ({
+        data?.item?.highLights?.map((itemName: string, index: number) => ({
           id: index + 1,
           itemName: itemName,
         })) || []
