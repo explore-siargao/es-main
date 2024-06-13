@@ -452,16 +452,14 @@ const Inclusions = ({ pageType }: Prop) => {
                   <button
                     type="button"
                     className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
-                    onClick={() =>{
+                    onClick={() => {
                       addItem(
                         inclusions,
                         setInclusions,
                         inclusionName,
                         setInclusionName
                       )
-                      
-                    }
-                    }
+                    }}
                   >
                     <LucidePlus color="black" className="rounded-sm w-4 h-4" />
                     <Typography className="text-sm"> Add inclusion</Typography>
