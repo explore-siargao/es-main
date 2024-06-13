@@ -51,13 +51,12 @@ export const addProperty = async (req: Request, res: Response) => {
     )
   } catch (err: any) {
     return res.json(
-        response.error({
+      response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
 }
-
 
 export const getPropertiesByHostId = async (req: Request, res: Response) => {
   try {
