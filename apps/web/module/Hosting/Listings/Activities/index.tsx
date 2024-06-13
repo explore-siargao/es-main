@@ -16,7 +16,7 @@ const HostListing = () => {
   const { data, isPending } = useActivitiesByHost()
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("activityPhotos", {
+    columnHelper.accessor("photos", {
       header: "Listing",
       cell: (context) => (
         <Link

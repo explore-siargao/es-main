@@ -160,19 +160,19 @@ const RentalSummary = () => {
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">Street Address:</span>{" "}
-            {rental?.location.streetAddress}
+            {rental?.location?.street}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">City / Municipality:</span>{" "}
-            {rental?.location.city}
+            {rental?.location?.city}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">Barangay / District:</span>{" "}
-            {rental?.location.barangay}
+            {rental?.location?.barangay}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">How to get there:</span>{" "}
-            {rental?.location.howToGetThere}
+            {rental?.location?.howToGetThere}
           </Typography>
         </div>
       </div>

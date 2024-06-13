@@ -81,7 +81,7 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
     const filteredActivities = await dbActivities
       .find({ host: hostId })
       .populate('host', 'email isHost')
-      .populate({ path: 'activityPhotos', options: { limit: 1, skip: 0 } })
+      .populate({ path: 'photos', options: { limit: 1, skip: 0 } })
       .select('title description status')
     res.json(
       response.success({

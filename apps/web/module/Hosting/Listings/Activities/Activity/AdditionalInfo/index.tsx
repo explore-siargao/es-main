@@ -76,7 +76,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
               queryKey: ["activity-finished-sections", activityId],
             })
             router.push(
-              `/hosting/listings/activities/setup/${activityId}/summary`
+              `/hosting/listings/activities/setup/${activityId}/photos`
             )
           }
         } else {
