@@ -12,7 +12,7 @@ const ReservationCalendar = () => {
           fontWeight="semibold"
           className="flex justify-between items-center mb-2"
         >
-          Calendar
+          Reservations
         </Typography>
         <div className="flex gap-8">
           

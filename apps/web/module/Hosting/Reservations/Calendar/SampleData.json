@@ -10,7 +10,12 @@
             {
               "name": "Maria",
               "start_date": "2024-06-03",
-              "end_date": "2024-07-07"
+              "end_date": "2024-06-07"
+            },
+            {
+              "name": "Mario",
+              "start_date": "2024-06-07",
+              "end_date": "2024-06-10"
             }
           ]
         },
@@ -26,7 +31,7 @@
             {
               "name": "Big Chuck",
               "start_date": "2024-06-08",
-              "end_date": "2024-06-09"
+              "end_date": "2024-06-10"
             }
           ]
         },
@@ -43,7 +48,13 @@
         {
           "abbr": "DR5(1)",
           "status": "available",
-          "bookings": []
+          "bookings": [
+            {
+              "name": "John",
+              "start_date": "2024-06-12",
+              "end_date": "2024-06-14"
+            }
+          ]
         },
         {
           "abbr": "TWN 5/1",
