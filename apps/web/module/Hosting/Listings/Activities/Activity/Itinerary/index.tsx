@@ -84,7 +84,7 @@ const Itinerary = ({ pageType }: Prop) => {
           longitude: longitude as number,
         },
         isSegmentBuilderEnabled: isToggled,
-        segments
+        segments,
       },
       callBackReq
     )

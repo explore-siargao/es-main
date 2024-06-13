@@ -28,13 +28,16 @@ const BuilderModal = ({
   const [durationMinute, setDurationMinute] = useState(0)
   const [optional, setOptional] = useState("No")
   const [fee, setFee] = useState("No")
-  const [coordinates, setCoordinates] = useState<{latitude:number, longitude:number}| null>(null);
+  const [coordinates, setCoordinates] = useState<{
+    latitude: number
+    longitude: number
+  } | null>(null)
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { data } = useGetRentalById(listingId)
   const updateCoordinates = (latitude: number, longitude: number) => {
-    setCoordinates({latitude, longitude});
-  };
+    setCoordinates({ latitude, longitude })
+  }
 
   const updateActivities = (activity: string) => {
     const isExist = activities.find((item) => item === activity)
@@ -59,9 +62,8 @@ const BuilderModal = ({
       toast.error("Location is needed for this segment")
     } else if (!durationHour && !durationMinute) {
       toast.error("Please add duration for this segment")
-    }
-      else if (!coordinates) {
-        toast.error("Please add coordinates for this segment")
+    } else if (!coordinates) {
+      toast.error("Please add coordinates for this segment")
     } else {
       updateSegments({
         activities,
@@ -70,7 +72,7 @@ const BuilderModal = ({
         durationMinute,
         optional: optional === "Yes",
         hasAdditionalFee: fee === "Yes",
-        ...coordinates
+        ...coordinates,
       })
       toast.success("New segment was added")
       setActivities([])
@@ -144,14 +146,14 @@ const BuilderModal = ({
           </div>
         </div>
         <div className="flex flex-col my-5 justify-center">
-            <CustomSpecificMap
-              center={currentCoords}
-              mapHeight={"h-[300px]"}
-              mapWidth={"w-full"}
-              zoom={11}  
-              setCoordinates={updateCoordinates}  
-            />
-          </div>
+          <CustomSpecificMap
+            center={currentCoords}
+            mapHeight={"h-[300px]"}
+            mapWidth={"w-full"}
+            zoom={11}
+            setCoordinates={updateCoordinates}
+          />
+        </div>
         <div>
           <Typography variant="h4" fontWeight="semibold" className="mb-4">
             How long does this segment last?

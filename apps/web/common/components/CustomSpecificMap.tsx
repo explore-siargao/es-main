@@ -27,7 +27,6 @@ const CustomSpecificMap = ({
   zoom,
   setCoordinates,
 }: SpecificMapProps) => {
-
   const [position, setPosition] = useState<[number, number] | null>(null)
 
   const handleMarkerDragEnd = (event: any) => {
