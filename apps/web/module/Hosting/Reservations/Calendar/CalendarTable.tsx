@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { format, addDays, startOfMonth, getMonth, differenceInDays, isAfter, isBefore } from 'date-fns';
 import Sidebar from './Sidebar';
 import sampleData from './SampleData.json';
-import React from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
 export interface Booking {
@@ -19,6 +18,7 @@ export interface Room {
 
 export interface Category {
   name: string;
+  price: string;
   rooms: Room[];
 }
 
@@ -59,7 +59,6 @@ const CalendarTable = () => {
     }
     return headers;
   };
-  
 
   const generateMonthHeader = () => {
     const headers = [];
@@ -74,7 +73,7 @@ const CalendarTable = () => {
       } else {
         headers.push(
           <td key={i} colSpan={colspan} className="border text-lg py-2 font-bold text-center">
-            {format(addDays(startDate, i - colspan), 'MMMM yyyy')}
+            {format(addDays(startDate, i - colspan), 'MMM yyyy')}
           </td>
         );
         currentMonth = month;
@@ -83,7 +82,7 @@ const CalendarTable = () => {
     }
     headers.push(
       <td key="last" colSpan={colspan} className="border text-lg py-2 font-bold text-center">
-        {format(addDays(startDate, daysPerPage - colspan), 'MMMM yyyy')}
+        {format(addDays(startDate, daysPerPage - colspan), 'MMM yyyy')}
       </td>
     );
 
@@ -114,9 +113,9 @@ const CalendarTable = () => {
   };
 
   return (
-    <div className="w-full mt-4">
-      <div className="overflow-auto rounded-lg">
-        <table className="min-w-max w-full rounded-lg table-auto border">
+    <div className="w-full mt-4 overflow-hidden rounded-lg border">
+      <div className="overflow-auto">
+        <table className="min-w-max w-full rounded-lg">
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="border">
@@ -132,9 +131,17 @@ const CalendarTable = () => {
             {sampleData.categories.map(category => (
               <React.Fragment key={category.name}>
                 <tr className="hover:bg-gray-100 cursor-pointer" onClick={() => toggleCollapse(category.name)}>
-                  <td className="border p-4 text-left font-bold" colSpan={daysPerPage + 1}>
-                    <span className='flex gap-2'>{!collapsed[category.name] ? <ChevronRight /> : <ChevronDown />}{category.name}</span>
+                  <td className="border p-4 text-left font-bold">
+                    <span className='flex gap-2 items-center'>
+                      {!collapsed[category.name] ? <ChevronRight /> : <ChevronDown />}
+                      {category.name}
+                    </span>
                   </td>
+                  {[...Array(daysPerPage)].map((_, i) => (
+                    <td key={i} className="border text-sm p-2 w-24 text-center text-gray-500 font-semibold">
+                      ${parseFloat(category.price).toFixed(2)}
+                    </td>
+                  ))}
                 </tr>
                 {!collapsed[category.name] && category.rooms.map(room => (
                   <tr key={room.abbr} className="hover:bg-gray-100 relative">

@@ -2,6 +2,7 @@
   "categories": [
     {
       "name": "Standard",
+      "price": "800",
       "rooms": [
         {
           "abbr": "STA(1)",
@@ -44,6 +45,7 @@
     },
     {
       "name": "Double Room",
+      "price": "1200",
       "rooms": [
         {
           "abbr": "DR5(1)",
@@ -70,6 +72,7 @@
     },
     {
       "name": "Room",
+      "price": "400",
       "rooms": [
         {
           "abbr": "TWI 1/1",
