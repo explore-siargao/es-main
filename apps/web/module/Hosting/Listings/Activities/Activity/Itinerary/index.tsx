@@ -20,23 +20,25 @@ import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
 import useGetRentalById from "../../../hooks/useGetRentalById"
 import { T_Listing_Location } from "@repo/contract"
-import useUpdateRentalLocation from "../../../Rentals/Rental/hooks/useUpdateRentalLocation"
 import Builder from "./Builder"
 import ToggleSwitch from "@/common/components/ui/Toggle"
+import { useSegmentsStore } from "./store/useSegmentsStore"
+import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
 
 type Prop = {
   pageType: "setup" | "edit"
 }
 
-const ListingLocation = ({ pageType }: Prop) => {
+const Itinerary = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { mutate, isPending } = useUpdateRentalLocation(listingId)
-  const { data } = useGetRentalById(listingId)
+  const { mutate, isPending } = useUpdateActivityItinerary(listingId)
+  const { data } = useGetRentalById(listingId) // update this for activity
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
+  const segments = useSegmentsStore((state) => state.segments)
   const { register, handleSubmit } = useForm<T_Listing_Location>({
     values: data?.item?.Location,
   })
@@ -76,9 +78,13 @@ const ListingLocation = ({ pageType }: Prop) => {
     }
     mutate(
       {
-        ...formData,
-        latitude: latitude as number,
-        longitude: longitude as number,
+        meetingPoint: {
+          ...formData,
+          latitude: latitude as number,
+          longitude: longitude as number,
+        },
+        isSegmentBuilderEnabled: isToggled,
+        segments
       },
       callBackReq
     )
@@ -237,4 +243,4 @@ const ListingLocation = ({ pageType }: Prop) => {
   )
 }
 
-export default ListingLocation
+export default Itinerary

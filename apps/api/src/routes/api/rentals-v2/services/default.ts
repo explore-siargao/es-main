@@ -2,7 +2,7 @@ import { ResponseService } from '@/common/service/response'
 import { Request, Response } from 'express'
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import {
-  dbAddresses,
+  dbLocations,
   dbPhotos,
   dbRentalAddOns,
   dbRentalDetails,
@@ -76,7 +76,7 @@ export const addRental = async (req: Request, res: Response) => {
       photos: null,
     })
 
-    const location = new dbAddresses({
+    const location = new dbLocations({
       streetAddress: null,
       barangay: null,
       city: null,

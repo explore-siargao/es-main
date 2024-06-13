@@ -1,7 +1,7 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideMapPin, LucidePlus } from "lucide-react"
 import React, { useState } from "react"
-import BuilderModals from "./modals/BuilderModal"
+import BuilderModal from "./modals/BuilderModal"
 import { useSegmentsStore } from "./store/useSegmentsStore"
 import TransferModal from "./modals/TransferModal"
 
@@ -47,7 +47,7 @@ const Builder = () => {
                 </p>
                 <p className="text-text-400 text-sm">
                   {segment.optional && "Optional"}
-                  {segment.fee && ", Extra Fee"}
+                  {segment.hasAdditionalFee && ", Extra Fee"}
                 </p>
               </div>
             </>
@@ -69,7 +69,7 @@ const Builder = () => {
           <LucidePlus className="h-4 w-4" /> Add new transfer
         </button>
       </div>
-      <BuilderModals isModalOpen={isModalOpen} onClose={setIsModalOpen} />
+      <BuilderModal isModalOpen={isModalOpen} onClose={setIsModalOpen} />
       <TransferModal
         isModalOpen={isModalTransferOpen}
         onClose={setIsModalTransferOpen}

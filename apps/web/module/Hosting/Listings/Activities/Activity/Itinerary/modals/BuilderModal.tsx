@@ -8,7 +8,6 @@ import ModalContainerFooter from "@/common/components/ModalContainer/ModalContai
 import { ACTIVITIES } from "../constants"
 import toast from "react-hot-toast"
 import { useSegmentsStore } from "../store/useSegmentsStore"
-import SpecificMap from "@/common/components/SpecificMap"
 import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
 import { useParams } from "next/navigation"
 import CustomSpecificMap from "@/common/components/CustomSpecificMap"
@@ -69,9 +68,9 @@ const BuilderModal = ({
         location,
         durationHour,
         durationMinute,
-        coordinates,
         optional: optional === "Yes",
-        fee: fee === "Yes",
+        hasAdditionalFee: fee === "Yes",
+        ...coordinates
       })
       toast.success("New segment was added")
       setActivities([])
@@ -146,11 +145,11 @@ const BuilderModal = ({
         </div>
         <div className="flex flex-col my-5 justify-center">
             <CustomSpecificMap
-            center={currentCoords}
-            mapHeight={"h-[200px]"}
-            mapWidth={"w-full"}
-            zoom={11}  
-            setCoordinates={updateCoordinates}  
+              center={currentCoords}
+              mapHeight={"h-[300px]"}
+              mapWidth={"w-full"}
+              zoom={11}  
+              setCoordinates={updateCoordinates}  
             />
           </div>
         <div>
@@ -285,7 +284,7 @@ const BuilderModal = ({
             </label>
             <input
               id="segment-fee-no"
-              name="isSegmentHasFee"
+              name="hasAdditionalFee"
               type="radio"
               className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
               onChange={(e) => setFee(e.target.value)}
