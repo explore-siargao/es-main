@@ -18,10 +18,10 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
   const setTags = usePhotoStore((state) => state.setTags)
   const setMainPhoto = usePhotoStore((state) => state.setMainPhoto)
   const removePhoto = usePhotoStore((state) => state.removePhoto)
-
-  // @ts-ignore
-  const currentPhoto = toEditPhotoIndex ? photos[toEditPhotoIndex] : null
-
+  const currentPhoto =
+    typeof toEditPhotoIndex === "number" && toEditPhotoIndex > -1
+      ? photos[toEditPhotoIndex]
+      : null
   const [description, editDescription] = useState(currentPhoto?.description)
   const [tags, editTags] = useState(currentPhoto?.tags)
   const [isMain, setIsMain] = useState(currentPhoto?.isMain || false)
@@ -80,7 +80,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
             type="checkbox"
             className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600"
             tabIndex={-1}
-            checked={isMain}
+            checked={isMain as boolean}
             onChange={() => {
               const mainPhotoExist = photos.some((photo) => photo.isMain)
 
@@ -89,7 +89,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
                   "One of your photos is already marked as the main photo. Unmark it to set a new one."
                 )
               } else {
-                setIsMain((state: boolean) => !state)
+                setIsMain((state: boolean | string) => !state)
               }
             }}
           />
@@ -107,7 +107,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
             onClick={() => {
               setDescription(description as string)
               setTags(tags as string)
-              setMainPhoto(isMain)
+              setMainPhoto(isMain as boolean)
               toast.success("Photo successfully updated")
             }}
           >

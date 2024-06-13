@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const ActivityItineraryPage = () => {
   return (
     <AuthGuard>
-      <Itinerary pageType="edit" />
+      <Itinerary pageType="setup" />
     </AuthGuard>
   )
 }

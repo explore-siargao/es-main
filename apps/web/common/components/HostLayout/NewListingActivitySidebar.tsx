@@ -4,6 +4,7 @@ import { Typography } from "../ui/Typography"
 import { WidthWrapper } from "../WidthWrapper"
 import {
   LucideGitBranchPlus,
+  LucideImage,
   LucideInfo,
   LucideListPlus,
   LucideScrollText,
@@ -20,7 +21,7 @@ interface HostSidebarProps {
 
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data } = useGetFinishedSections({ listingId, type: "activity" })
   const finishedSections = data?.item?.finishedSections || []
   const ACTIVITY_SETUP_BASE_PATH = "/hosting/listings/activities/setup"
@@ -52,6 +53,13 @@ const Sidebar = ({ children }: HostSidebarProps) => {
       icon: <LucideGitBranchPlus className="h-5 w-5" />,
       link: `${ACTIVITY_SETUP_BASE_PATH}/${listingId}/additional-info`,
       basePath: "/additional-info",
+    },
+    {
+      id: "photos",
+      title: "Photos",
+      icon: <LucideImage className="h-5 w-5" />,
+      link: `${ACTIVITY_SETUP_BASE_PATH}/${listingId}/photos`,
+      basePath: "/photos",
     },
     {
       id: "summary",

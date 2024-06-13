@@ -33,7 +33,7 @@ export const getActivities = async (req: Request, res: Response) => {
       highLights: JSON.parse(activitiesData.highLights),
       durationHour: activitiesData.durationHour,
       durationMinute: activitiesData.durationMinute,
-      language: JSON.parse(activitiesData.language),
+      languages: JSON.parse(activitiesData.languages),
     }
 
     return res.json(
@@ -60,7 +60,7 @@ export const updateActivities = async (req: Request, res: Response) => {
     description,
     durationHour,
     durationMinute,
-    language,
+    languages,
   }: T_Update_Activity_Basic_Info = req.body
   const isValidInput = Z_Update_Activity_Basic_Info.safeParse(req.body)
   if (!isHost) {
@@ -80,14 +80,14 @@ export const updateActivities = async (req: Request, res: Response) => {
         JSON.stringify(highLights) || getActivity.highLights
       getActivity.durationHour = durationHour || getActivity.durationHour
       getActivity.durationMinute = durationMinute || getActivity.durationMinute
-      getActivity.language = JSON.stringify(language) || getActivity.language
+      getActivity.languages = JSON.stringify(languages) || getActivity.languages
       const basicInfoData = {
         title: getActivity.title,
         description: getActivity.description,
         highLights: JSON.parse(getActivity.highLights),
         durationHour: getActivity.durationHour,
         durationMinute: getActivity.durationMinute,
-        language: JSON.parse(getActivity.language),
+        languages: JSON.parse(getActivity.languages),
       }
       getActivity.finishedSections = '["basicInfo"]'
       res.json(

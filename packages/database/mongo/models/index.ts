@@ -14,6 +14,8 @@ import dbRentalDetails from "./dbRentalDetails"
 import dbRentalRates from "./dbRentalRates"
 import dbRentalAddOns from "./dbRentalAddOns"
 import dbPhotos from "./dbPhotos"
+import dbActivities from "./dbActivities"
+import dbLocations from "./dbLocations"
 export {
   dbAddresses,
   dbEmergencyContacts,
@@ -31,4 +33,6 @@ export {
   dbRentalRates,
   dbRentalAddOns,
   dbPhotos,
+  dbActivities,
+  dbLocations,
 }

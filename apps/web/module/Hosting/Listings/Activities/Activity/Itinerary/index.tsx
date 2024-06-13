@@ -19,25 +19,33 @@ import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
 import useGetRentalById from "../../../hooks/useGetRentalById"
-import { T_Listing_Location } from "@repo/contract"
-import useUpdateRentalLocation from "../../../Rentals/Rental/hooks/useUpdateRentalLocation"
+import { T_Activity_Segment, T_Location } from "@repo/contract"
 import Builder from "./Builder"
 import ToggleSwitch from "@/common/components/ui/Toggle"
+import { useSegmentsStore } from "./store/useSegmentsStore"
+import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
 
 type Prop = {
   pageType: "setup" | "edit"
 }
 
-const ListingLocation = ({ pageType }: Prop) => {
+type T_Activity_Itinerary = {
+  meetingPoint: T_Location
+  isSegmentBuilderEnabled: boolean
+  segments: T_Activity_Segment[]
+}
+
+const Itinerary = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { mutate, isPending } = useUpdateRentalLocation(listingId)
-  const { data } = useGetRentalById(listingId)
+  const { mutate, isPending } = useUpdateActivityItinerary(listingId)
+  const { data } = useGetRentalById(listingId) // update this for activity
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit } = useForm<T_Listing_Location>({
+  const segments = useSegmentsStore((state) => state.segments)
+  const { register, handleSubmit } = useForm<T_Activity_Itinerary>({
     values: data?.item?.Location,
   })
 
@@ -51,8 +59,8 @@ const ListingLocation = ({ pageType }: Prop) => {
     setIsToggled(!isToggled)
   }
 
-  const onSubmit: SubmitHandler<T_Listing_Location> = (
-    formData: T_Listing_Location
+  const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
+    formData: T_Activity_Itinerary
   ) => {
     const callBackReq = {
       onSuccess: (data: any) => {
@@ -77,8 +85,6 @@ const ListingLocation = ({ pageType }: Prop) => {
     mutate(
       {
         ...formData,
-        latitude: latitude as number,
-        longitude: longitude as number,
       },
       callBackReq
     )
@@ -125,17 +131,17 @@ const ListingLocation = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="street"
+                id="streetAddress"
                 label="Street address"
                 required
-                {...register("street", { required: true })}
+                {...register("meetingPoint.street", { required: true })}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
                 value={selectedMunicipality}
                 required
-                {...register("city", { required: true })}
+                {...register("meetingPoint.city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
@@ -149,7 +155,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 label="Barangay / District"
                 id="barangaySelect"
                 required
-                {...register("barangay", { required: true })}
+                {...register("meetingPoint.barangay", { required: true })}
               >
                 <Option value="">Select barangay</Option>
                 {BARANGAYS.filter(
@@ -169,7 +175,9 @@ const ListingLocation = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
-                  {...register("howToGetThere", { required: true })}
+                  {...register("meetingPoint.howToGetThere", {
+                    required: true,
+                  })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
                   Accurately explain on how to get in your meeting point address
@@ -237,4 +245,4 @@ const ListingLocation = ({ pageType }: Prop) => {
   )
 }
 
-export default ListingLocation
+export default Itinerary

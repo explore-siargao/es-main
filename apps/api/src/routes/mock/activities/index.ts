@@ -24,12 +24,13 @@ import {
   updateAdditionalInfo,
 } from './service/additionalInfo'
 import { updateStatus } from './service/status'
+import { addActivity } from './service/default'
 
 const router = express.Router()
 
 // activity-info
 router.get(
-  '/:activityId/info',
+  '/:activityId',
   isUserLoggedIn,
   isOriginValid,
   isHostActivityOwner,
@@ -43,6 +44,7 @@ router.patch(
   isHostActivityOwner,
   updateActivities
 )
+router.post('/', isUserLoggedIn, isCsrfTokenValid, addActivity)
 
 // activity-inclusions
 router.get(

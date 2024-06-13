@@ -72,34 +72,34 @@ const RentalSummary = () => {
           <Typography variant="h4" fontWeight="semibold" className="leading-6">
             Add-Ons
           </Typography>
-          {rental?.AddOns.roofRack && (
+          {rental?.addOns.roofRack && (
             <Typography variant="h5" className="mt-2">
               Roof Rack
             </Typography>
           )}
-          {rental?.AddOns.babySeat && (
+          {rental?.addOns.babySeat && (
             <Typography variant="h5" className="mt-2">
               Baby Seat
             </Typography>
           )}
-          {rental?.AddOns.dashCam && (
+          {rental?.addOns?.dashCam && (
             <Typography variant="h5" className="mt-2">
               Dash Cam
             </Typography>
           )}
-          {rental?.AddOns.boardRack && (
+          {rental?.addOns.boardRack && (
             <Typography variant="h5" className="mt-2">
               Board Rack
             </Typography>
           )}
-          {rental?.AddOns.includesHelmet && (
+          {rental?.addOns.includesHelmet && (
             <Typography variant="h5" className="mt-2">
               Includes Helmet
             </Typography>
           )}
-          {rental?.AddOns.other !== "" && (
+          {rental?.addOns.others !== "" && (
             <Typography variant="h5" className="mt-2">
-              {rental?.AddOns.other}
+              {rental?.addOns.others}
             </Typography>
           )}
         </div>
@@ -108,7 +108,7 @@ const RentalSummary = () => {
             Photos
           </Typography>
           <div className="grid grid-cols-4 gap-6 mt-6">
-            {rental?.Photos.map((photo: T_Photo, index: number) => (
+            {rental?.photos.map((photo: T_Photo, index: number) => (
               <div key={index} className="h-full">
                 {photo.isMain && (
                   <div className="flex justify-center">
@@ -146,10 +146,12 @@ const RentalSummary = () => {
             Pricing
           </Typography>
           <Typography variant="h5" className="mt-2">
-            <span className="font-semibold">Day rate (24-hour):</span> ₱ 2,500
+            <span className="font-semibold">Day rate (24-hour):</span> ₱{" "}
+            {rental?.pricing?.dayRate}
           </Typography>
           <Typography variant="h5" className="mt-2">
-            <span className="font-semibold">Required Deposit:</span> ₱ 5,000
+            <span className="font-semibold">Required Deposit:</span> ₱{" "}
+            {rental?.pricing?.requiredDeposit}
           </Typography>
         </div>
         <div className="mt-3 border-b border-gray-200 pb-3">
@@ -158,19 +160,19 @@ const RentalSummary = () => {
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">Street Address:</span>{" "}
-            {rental?.Location.street}
+            {rental?.location?.street}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">City / Municipality:</span>{" "}
-            {rental?.Location.city}
+            {rental?.location?.city}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">Barangay / District:</span>{" "}
-            {rental?.Location.barangay}
+            {rental?.location?.barangay}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">How to get there:</span>{" "}
-            {rental?.Location.howToGetThere}
+            {rental?.location?.howToGetThere}
           </Typography>
         </div>
       </div>

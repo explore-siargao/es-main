@@ -2,7 +2,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { Input } from "@/common/components/ui/Input"
-import { LucideMinus, LucidePlus } from "lucide-react"
+import { LucideMinus, LucidePlus, LucideX } from "lucide-react"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import useGetActivityInclusionsById from "../../hooks/useGetActivityInclusionsById"
@@ -11,6 +11,7 @@ import useUpdateActivityInclusions from "../../hooks/useUpdateActivityInclusions
 import { T_Update_Activity_Inclusions } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useParams, useRouter } from "next/navigation"
 
 interface Item {
   id: number
@@ -103,7 +104,7 @@ type Prop = {
 
 const Inclusions = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
-  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
+  const router = useRouter()
   const [nonAlcoholicDrinksIncluded, setNonAlcoholicDrinksIncluded] =
     useState<boolean>(false)
   const [alcoholicDrinksIncluded, setAlcoholicDrinksIncluded] =
@@ -117,10 +118,12 @@ const Inclusions = ({ pageType }: Prop) => {
   const [selectedAlcoholOption, setSelectedAlcoholOption] = useState<string>("")
   const [isOpenFood, setIsOpenFood] = useState(false)
   const [isOpenAlcohol, setIsOpenAlcohol] = useState(false)
-
-  const { isPending, data } = useGetActivityInclusionsById(1)
-  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(1)
-
+  const params = useParams<{ listingId: string }>()
+  const activityId = String(params.listingId)
+  const { isPending, data } = useGetActivityInclusionsById(activityId)
+  const { isPending: updateInclusions, mutate } =
+    useUpdateActivityInclusions(activityId)
+  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
   const toggleDropdown = (dropdownId: string) => {
@@ -204,9 +207,11 @@ const Inclusions = ({ pageType }: Prop) => {
           name,
         }))
       )
-      setSelectedFoodOption(data?.item?.isFoodIncluded)
+      setFoodIncluded(data?.item?.isFoodIncluded)
+      setSelectedFoodOption(data?.item?.selectedFoodOptions[0])
       setAlcoholicDrinksIncluded(data?.item?.isAlcoholicDrinkIncluded)
       setNonAlcoholicDrinksIncluded(data?.item?.isNonAlcoholicDrinkIncluded)
+      setSelectedAlcoholOption(data?.item?.selectedAlcoholicDrinkOptions[0])
     }
   }, [data])
 
@@ -216,7 +221,6 @@ const Inclusions = ({ pageType }: Prop) => {
   const handleInputChange = (event: {
     target: { value: React.SetStateAction<string> }
   }) => {
-    console.log(event.target.value)
     setExclusionName(event.target.value)
   }
 
@@ -273,9 +277,14 @@ const Inclusions = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          queryClient.invalidateQueries({
-            queryKey: ["get-activities-inclusions"],
-          })
+          if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["activity-finished-sections", activityId],
+            })
+            router.push(
+              `/hosting/listings/activities/setup/${activityId}/additional-info`
+            )
+          }
         } else {
           toast.error(String(data.message))
         }
@@ -286,39 +295,37 @@ const Inclusions = ({ pageType }: Prop) => {
     }
 
     mutate(payload, callBackReq)
-    console.log("Food Included:", foodIncluded)
-    console.log("Non-Alcoholic Drinks Included:", nonAlcoholicDrinksIncluded)
-    console.log("Alcoholic Drinks Included:", alcoholicDrinksIncluded)
-    console.log("Selected Food Option After Reset:", selectedFoodOption)
-    console.log("Selected Alcohol Option After Reset:", selectedAlcoholOption)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mt-20 mb-32">
-        {isPending ? (
-          <Spinner>Loading...</Spinner>
-        ) : (
-          <>
+    <div className="mt-20 mb-32">
+      {isPending ? (
+        <Spinner>Loading...</Spinner>
+      ) : (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-6"
+        >
+          <div>
             <Typography variant="h1" fontWeight="semibold" className="mb-4">
               Inclusions
             </Typography>
 
             <div>
-              <Typography className="mb-2">
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Is food included in your activity?
               </Typography>
               <RadioInput
-                id="foodYes"
+                id="food"
                 value="yes"
-                checked={foodIncluded === true}
+                checked={foodIncluded}
                 onChange={(e) =>
                   handleOptionChange(e, setFoodIncluded, setSelectedFoodOption)
                 }
                 label="Yes"
               />
               <RadioInput
-                id="foodNo"
+                id="food"
                 value="no"
                 checked={!foodIncluded}
                 onChange={(e) =>
@@ -339,7 +346,7 @@ const Inclusions = ({ pageType }: Prop) => {
               )}
             </div>
             <div>
-              <Typography className="mb-2 mt-4">
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Are non-alcoholic drinks included in your activity?
               </Typography>
               <RadioInput
@@ -362,7 +369,7 @@ const Inclusions = ({ pageType }: Prop) => {
               />
             </div>
             <div>
-              <Typography className="mb-2 mt-4">
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Is alcoholic drinks included in your activity (18+)?
               </Typography>
               <RadioInput
@@ -404,108 +411,114 @@ const Inclusions = ({ pageType }: Prop) => {
               )}
             </div>
 
-            <div className="md:w-1/4 pt-8">
-              <Typography>What else is included in your activity?</Typography>
-              <Input
-                className="p-2 rounded-md mt-2"
-                value={inclusionName}
-                type="text"
-                label=""
-                {...register("otherInclusion")}
-                onChange={(event) => {
-                  const inputValue = event.target.value
-                  setInclusionName(inputValue)
-                  handleInput(inputValue)
-                }}
-              />
-
-              <ul className="mt-4">
-                {inclusions.map((item) => (
-                  <li
-                    key={item.id}
-                    className="mt-2 p-2 border border-gray-300 rounded-md flex justify-between items-center"
-                  >
-                    <p className="text-sm">{item.name}</p>
-                    <button
-                      className="hover:cursor-pointer"
-                      onClick={() =>
-                        removeItem(inclusions, setInclusions, item.id)
-                      }
-                      aria-label="Remove Item"
+            <div className="mt-4">
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                What else is included in your activity?
+              </Typography>
+              {inclusions.length > 0 && (
+                <ul>
+                  {inclusions.map((item) => (
+                    <li
+                      key={item.id}
+                      className="mt-2 p-2 border border-gray-100 rounded-md flex justify-between items-center"
                     >
-                      <LucideMinus
-                        color="white"
-                        className="bg-secondary-400 rounded-sm w-5 h-5"
-                      />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                className="flex hover:cursor-pointer my-4 gap-1"
-                onClick={() =>
-                  addItem(
-                    inclusions,
-                    setInclusions,
-                    inclusionName,
-                    setInclusionName
-                  )
-                }
-              >
-                <LucidePlus color="black" className="w-5 h-5" />
-                <Typography> Add inclusion</Typography>
-              </button>
+                      <p className="text-sm">{item.name}</p>
+                      <button
+                        className="hover:cursor-pointer"
+                        onClick={() =>
+                          removeItem(inclusions, setInclusions, item.id)
+                        }
+                        aria-label="Remove Item"
+                      >
+                        <LucideX className="w-5 h-5 hover:text-error-500 transition" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-2">
+                <Input
+                  className="p-2 rounded-md"
+                  type="text"
+                  label="Included"
+                  value={inclusionName}
+                  onChange={(event) => {
+                    const inputValue = event.target.value
+                    setInclusionName(inputValue)
+                    handleInput(inputValue)
+                  }}
+                />
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
+                    onClick={() => {
+                      addItem(
+                        inclusions,
+                        setInclusions,
+                        inclusionName,
+                        setInclusionName
+                      )
+                    }}
+                  >
+                    <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                    <Typography className="text-sm"> Add inclusion</Typography>
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div className="md:w-1/4 pt-4">
-              <Typography>What else is not included?</Typography>
-              <Input
-                className="p-2 rounded-md mt-2"
-                value={exclusionName}
-                type="text"
-                label=""
-                onChange={handleInputChange}
-              />
-
-              <ul className="mt-4">
-                {exclusions.map((item) => (
-                  <li
-                    key={item.id}
-                    className="mt-2 p-2 border border-gray-300 rounded-md flex justify-between items-center"
-                  >
-                    <p className="text-sm">{item.name}</p>
-                    <button
-                      type="button"
-                      className="hover:cursor-pointer"
-                      onClick={() =>
-                        removeItem(exclusions, setExclusions, item.id)
-                      }
-                      aria-label="Remove Item"
+            <div className="mt-4">
+              <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                What else is not included?
+              </Typography>
+              {exclusions.length > 0 && (
+                <ul>
+                  {exclusions.map((item) => (
+                    <li
+                      key={item.id}
+                      className="mt-2 p-2 border border-gray-100 rounded-md flex justify-between items-center"
                     >
-                      <LucideMinus
-                        color="white"
-                        className="bg-secondary-400 rounded-sm w-5 h-5"
-                      />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                className="flex hover:cursor-pointer my-4 gap-1"
-                onClick={() =>
-                  addItem(
-                    exclusions,
-                    setExclusions,
-                    exclusionName,
-                    setExclusionName
-                  )
-                }
-              >
-                <LucidePlus color="black" className=" w-5 h-5" />
-                <Typography> Add exclusion</Typography>
-              </button>
+                      <p className="text-sm">{item.name}</p>
+                      <button
+                        className="hover:cursor-pointer"
+                        onClick={() =>
+                          removeItem(exclusions, setExclusions, item.id)
+                        }
+                        aria-label="Remove Item"
+                      >
+                        <LucideX className="w-5 h-5 hover:text-error-500 transition" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-2">
+                <Input
+                  className="p-2 rounded-md"
+                  type="text"
+                  label="Excluded"
+                  value={exclusionName}
+                  onChange={handleInputChange}
+                />
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
+                    onClick={() =>
+                      addItem(
+                        exclusions,
+                        setExclusions,
+                        exclusionName,
+                        setExclusionName
+                      )
+                    }
+                  >
+                    <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                    <Typography className="text-sm"> Add exclusion</Typography>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
@@ -517,10 +530,10 @@ const Inclusions = ({ pageType }: Prop) => {
                 )}
               </Button>
             </div>
-          </>
-        )}
-      </div>
-    </form>
+          </div>
+        </form>
+      )}
+    </div>
   )
 }
 

@@ -1,13 +1,30 @@
 import mongoose, { Schema } from "mongoose"
 
 const photos = new Schema({
+  bookableUnitId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Users",
+  },
+  propertyId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Properties",
+  },
+  rentalId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Rentals",
+  },
+  activityId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Activities",
+  },
   key: String,
   thumbKey: String,
-  description: {
-    type: String,
-    required: false,
+  isMain: {
+    type: Boolean,
+    default: false,
   },
-  tag: String,
+  description: String,
+  tags: String,
   createdAt: {
     type: Date,
     default: Date.now(),

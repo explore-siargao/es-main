@@ -243,6 +243,9 @@ importers:
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lucide-react:
         specifier: ^0.319.0
         version: 0.319.0(react@18.3.1)
@@ -288,6 +291,9 @@ importers:
       tailwind-merge:
         specifier: ^2.0.0
         version: 2.3.0
+      xlsx:
+        specifier: https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz
+        version: '@cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz'
       zustand:
         specifier: ^4.4.6
         version: 4.5.2(@types/react@18.3.2)(react@18.3.1)
@@ -316,6 +322,9 @@ importers:
       '@types/leaflet':
         specifier: ^1.9.8
         version: 1.9.12
+      '@types/lodash':
+        specifier: ^4.14.201
+        version: 4.17.4
       '@types/node':
         specifier: ^17.0.12
         version: 17.0.45
@@ -10089,4 +10098,12 @@ packages:
       '@types/react': 18.3.2
       react: 18.3.1
       use-sync-external-store: 1.2.0(react@18.3.1)
+    dev: false
+
+  '@cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz':
+    resolution: {tarball: https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz}
+    name: xlsx
+    version: 0.20.2
+    engines: {node: '>=0.8'}
+    hasBin: true
     dev: false

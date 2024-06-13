@@ -51,13 +51,15 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
 export const updatePaymentMethod = async (req: Request, res: Response) => {
   let successDefault = null
   const { cardInfo, isDefault } = req.body
-  const userId = req.params.userId
+  const userId = res.locals.user?.id
   const paymentMethodId = req.params.paymentMethodId
+
   try {
     const getUser = await dbUsers.findOne({
       _id: userId,
-      deletedAt: null,
     })
+
+    console.log(userId)
     if (getUser) {
       const getPaymentMethod = await dbPaymentMethods.findOne({
         _id: paymentMethodId,
@@ -118,7 +120,7 @@ export const updatePaymentMethod = async (req: Request, res: Response) => {
 }
 
 export const getPaymentMethods = async (req: Request, res: Response) => {
-  const userId = req.params.userId
+  const userId = res.locals.user?.id
   try {
     const isUserExist =
       (await dbUsers.findOne({
@@ -127,12 +129,13 @@ export const getPaymentMethods = async (req: Request, res: Response) => {
       })) !== null
     if (isUserExist) {
       const getPaymentsMethod = await dbPaymentMethods
-        .find({ user: userId })
+        .find({ user: userId, deletedAt: null })
         .populate({
           path: 'user',
           populate: [{ path: 'guest' }],
         })
       const modifyResult = getPaymentsMethod.map((paymentMethod: any) => ({
+        id: paymentMethod._id,
         cardInfo: paymentMethod.cardInfo,
         cardType: paymentMethod.cardType,
         lastFour: paymentMethod.lastFour,
