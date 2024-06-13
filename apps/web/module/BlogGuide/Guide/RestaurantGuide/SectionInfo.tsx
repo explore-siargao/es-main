@@ -33,7 +33,11 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
         </div>
       </div>
       <div className="my-6">
-        <ImageGallery images={images} openModal={openModal} isViewModal={false} />
+        <ImageGallery
+          images={images}
+          openModal={openModal}
+          isViewModal={false}
+        />
       </div>
       <ImageGalleryModal
         images={images}
