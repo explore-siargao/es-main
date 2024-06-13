@@ -7,12 +7,15 @@ import { useState } from "react"
 import Link from "next/link"
 import { createColumnHelper } from "@tanstack/react-table"
 import Image from "next/image"
-import { LucideMessageCircleMore } from "lucide-react"
+import { Calendar, LucideMessageCircleMore } from "lucide-react"
 import Filter from "../components/Filter"
 import useGetReservations from "../hooks/useGetReservations"
 import { format } from "date-fns"
+import { Button } from "@/common/components/ui/Button"
+import { useRouter } from "next/navigation"
 
 const Upcoming = () => {
+  const router = useRouter()
   const { data } = useGetReservations({ status: "Upcoming" })
   const reservations = data?.items || []
   const columnHelper = createColumnHelper<any>()
@@ -167,9 +170,16 @@ const Upcoming = () => {
         >
           Reservations
         </Typography>
-        <div className="grid grid-cols-6 gap-4 my-6">
-          <Filter status="upcoming" />
+        <div className="flex w-full justify-between items-center">
+          <div className="grid grid-cols-3 gap-4 my-6 w-1/2">
+            <Filter status="upcoming" />
+          </div>
+          <Button onClick={() => router.push('/hosting/reservations/calendar')} variant={"primary"} className="flex gap-2">
+            <Calendar />
+            Calendar View
+          </Button>
         </div>
+        
         <Tabs tabs={TABS} includeSearchParams />
       </div>
       <Table

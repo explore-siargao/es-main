@@ -3,11 +3,18 @@ import { format, addDays, startOfMonth, getMonth, differenceInDays, isAfter, isB
 import Sidebar from './Sidebar';
 import sampleData from './SampleData.json';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import ReservationCalendarModal from './ReservationCalendarModal';
 
 export interface Booking {
   name: string;
   start_date: string;
   end_date: string;
+  guest_count: number;
+}
+
+export interface SelectedReservation {
+  room: string,
+  booking: Booking
 }
 
 export interface Room {
@@ -29,6 +36,9 @@ export interface SampleData {
 const CalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()));
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
+  const [selectedReservation, setSelectedReservation] = useState<SelectedReservation | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const closeModal = () => setIsModalOpen(false)
   const daysPerPage = 13;
 
   const toggleCollapse = (category: string) => {
@@ -176,7 +186,7 @@ const CalendarTable = () => {
                   <tr key={room.abbr} className="hover:bg-gray-100 relative">
                     <td className="border p-4 text-left border-l-0">{room.abbr}</td>
                     <td colSpan={daysPerPage} className={`border text-center relative ${(index + 1) !== daysPerPage && "border-r-0"}`}>
-                      {room.bookings.map(booking => {
+                      {room.bookings.map((booking: Booking) => {
                         const style = getBookingStyle(startDate, daysPerPage, booking);
                         if (!style) return null;
 
@@ -189,10 +199,10 @@ const CalendarTable = () => {
                               left: `${(startCol * 100 / daysPerPage) + 4}%`,
                               width: `${(colSpan * 100 / daysPerPage) - 8}%`,
                             }}
-                            onClick={() => console.log(booking)}
+                            onClick={() => {setIsModalOpen(true); setSelectedReservation({ room: room.abbr, booking: booking })}}
                             className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
                           >
-                            <span className='text-white'>{booking.name}</span>
+                            <span className='text-white text-sm'>{booking.name}</span>
                           </div>
                         );
                       })}
@@ -207,6 +217,11 @@ const CalendarTable = () => {
           </tbody>
         </table>
       </div>
+      {
+        selectedReservation &&
+        <ReservationCalendarModal isModalOpen={isModalOpen} onClose={closeModal} selectedReservation={selectedReservation} />
+      }
+      
     </div>
   );
 };
