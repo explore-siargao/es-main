@@ -441,6 +441,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   className="p-2 rounded-md"
                   type="text"
                   label="Included"
+                  value={inclusionName}
                   onChange={(event) => {
                     const inputValue = event.target.value
                     setInclusionName(inputValue)
@@ -451,14 +452,14 @@ const Inclusions = ({ pageType }: Prop) => {
                   <button
                     type="button"
                     className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
-                    onClick={() =>
+                    onClick={() => {
                       addItem(
                         inclusions,
                         setInclusions,
                         inclusionName,
                         setInclusionName
                       )
-                    }
+                    }}
                   >
                     <LucidePlus color="black" className="rounded-sm w-4 h-4" />
                     <Typography className="text-sm"> Add inclusion</Typography>
@@ -497,6 +498,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   className="p-2 rounded-md"
                   type="text"
                   label="Excluded"
+                  value={exclusionName}
                   onChange={handleInputChange}
                 />
                 <div className="flex justify-end">
