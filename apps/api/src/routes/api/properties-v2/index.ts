@@ -11,7 +11,11 @@ import {
   updatePhoto,
 } from './services/photos'
 
-import { getPropertiesByHostId, getPropertyById, addProperty } from './services/default'
+import {
+  getPropertiesByHostId,
+  getPropertyById,
+  addProperty,
+} from './services/default'
 
 const router = express.Router()
 //property
