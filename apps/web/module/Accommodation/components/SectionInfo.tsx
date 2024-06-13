@@ -22,7 +22,11 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
         <ShareSave />
       </div>
       <div className="my-6">
-        <ImageGallery images={images} openModal={openModal} />
+        <ImageGallery
+          images={images}
+          openModal={openModal}
+          isViewModal={false}
+        />
       </div>
       <ImageGalleryModal
         images={images}
