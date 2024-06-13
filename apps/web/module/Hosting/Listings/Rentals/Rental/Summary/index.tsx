@@ -146,10 +146,12 @@ const RentalSummary = () => {
             Pricing
           </Typography>
           <Typography variant="h5" className="mt-2">
-            <span className="font-semibold">Day rate (24-hour):</span> ₱ {rental?.pricing?.dayRate}
+            <span className="font-semibold">Day rate (24-hour):</span> ₱{" "}
+            {rental?.pricing?.dayRate}
           </Typography>
           <Typography variant="h5" className="mt-2">
-            <span className="font-semibold">Required Deposit:</span> ₱ {rental?.pricing?.requiredDeposit}
+            <span className="font-semibold">Required Deposit:</span> ₱{" "}
+            {rental?.pricing?.requiredDeposit}
           </Typography>
         </div>
         <div className="mt-3 border-b border-gray-200 pb-3">
