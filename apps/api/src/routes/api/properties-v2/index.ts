@@ -54,6 +54,4 @@ router.delete(
   deletePhoto
 )
 
-
-
 export default router

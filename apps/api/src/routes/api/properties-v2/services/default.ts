@@ -11,7 +11,7 @@ export const getPropertiesByHostId = async (req: Request, res: Response) => {
     const properties = await dbProperties.find({ host: hostId })
 
     const filteredProperties = properties.reverse()
-    console.log("properties", filteredProperties)
+    console.log('properties', filteredProperties)
     res.json(
       response.success({
         items: filteredProperties,
