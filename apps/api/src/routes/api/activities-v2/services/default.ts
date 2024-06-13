@@ -54,9 +54,9 @@ export const getActivity = async (req: Request, res: Response) => {
     const getActivity = await dbActivities
       .findOne({ _id: activityId, deletedAt: null })
       .populate('host')
-      .populate('address')
-      .populate('itineraries')
-      .populate('activityPhotos')
+      .populate('location')
+      .populate('segments')
+      .populate('photos')
     res.json(response.success({ item: getActivity }))
   } catch (err: any) {
     return res.json(
