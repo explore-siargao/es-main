@@ -6,7 +6,7 @@ import {
 import { ResponseService } from '@/common/service/response'
 import { Request, Response } from 'express'
 import { activities } from './jsons/activities'
-import { Z_UpdateActivityAdditionalInfo } from '@repo/contract'
+import { Z_Update_Activity_Additional_Info } from '@repo/contract'
 
 const response = new ResponseService()
 
@@ -14,7 +14,7 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const activityId = Number(req.params.activityId)
   const { whatToBring, notAllowed, policies, cancellationDays } = req.body
-  const isValidInput = Z_UpdateActivityAdditionalInfo.safeParse(req.body)
+  const isValidInput = Z_Update_Activity_Additional_Info.safeParse(req.body)
   if (isValidInput.success) {
     try {
       const getActivity = activities.find((item) => item.id === activityId)

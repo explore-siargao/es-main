@@ -1,6 +1,6 @@
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { Z_UpdateActivityAdditionalInfo } from '@repo/contract'
+import { Z_Update_Activity_Additional_Info } from '@repo/contract'
 import { dbActivities } from '@repo/database'
 import { Request, Response } from 'express'
 
@@ -10,7 +10,7 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const activityId = req.params.activityId
   const { whatToBring, notAllowed, policies, cancellationDays } = req.body
-  const isValidInput = Z_UpdateActivityAdditionalInfo.safeParse(req.body)
+  const isValidInput = Z_Update_Activity_Additional_Info.safeParse(req.body)
   if (isValidInput.success) {
     try {
       const updatedActivity = await dbActivities.findOneAndUpdate(
