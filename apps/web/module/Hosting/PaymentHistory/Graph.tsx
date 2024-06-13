@@ -26,7 +26,6 @@ const Graph: React.FC<GraphProps> = ({ graphData }) => {
   //   { name: "Cancelled", value: !isPending && graphData?.item?.cancelled },
   //   { name: "Completed", value: !isPending && graphData?.item?.completed },
   // ]
-
   return (
     <>
       <ResponsiveContainer width="100%" height={400}>

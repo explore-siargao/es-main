@@ -10,6 +10,7 @@ interface SummaryData {
 interface FilterData {
   labels: string[]
   values: (string | null)[][]
+  date: string[]
 }
 
 interface OverAllSummaryProps {
@@ -24,7 +25,9 @@ const OverAllSummary: React.FC<OverAllSummaryProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 sticky top-36">
       <Typography variant="h2" fontWeight="semibold" className="mb-2">
-        Overall Summary
+        Summary (
+        {filterData?.date[1] !== "all" ? `${filterData?.date[1]} ` : null}
+        {filterData?.date[0]})
       </Typography>
       <div className="flex flex-col">
         {filterData &&
