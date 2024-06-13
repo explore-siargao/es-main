@@ -2,30 +2,35 @@
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
 import Checkbox from "@/common/components/ui/InputCheckbox"
-import { Textarea } from "@/common/components/ui/Textarea"
 import { Typography } from "@/common/components/ui/Typography"
-import { LucideMinus, LucidePlus, MinusIcon, PlusIcon } from "lucide-react"
+import { LucidePlus, LucideX, MinusIcon, PlusIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
 import useUpdateActivityBasicInfo from "../../hooks/useUpdateActivityBasicInfo"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { T_Update_Activity_Basic_Info } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import { Spinner } from "@/common/components/ui/Spinner"
+import { useParams, useRouter } from "next/navigation"
+import { cn } from "@/common/helpers/cn"
 
 interface Item {
   id: number
   itemName: string
 }
 
-const languages = ["Visaya", "Tagalog", "English"]
+const languages = ["English", "Filipino", "Others"]
 
 type Prop = {
   pageType: "setup" | "edit"
 }
 
 const BasicInfo = ({ pageType }: Prop) => {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const params = useParams<{ listingId: string }>()
+  const listingId = Number(params.listingId)
+  const { isLoading, data } = useGetActivitiesById(listingId)
+  const { isPending, mutate } = useUpdateActivityBasicInfo(listingId)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [itemData, setItemData] = useState<Item[]>([])
@@ -37,19 +42,13 @@ const BasicInfo = ({ pageType }: Prop) => {
     (max, item) => (Number(item.id) > max ? Number(item.id) : max),
     0
   )
-  const { register, handleSubmit, setValue } =
-    useForm<T_Update_Activity_Basic_Info>({})
-
-  const queryClient = useQueryClient()
-  const { isPending, data } = useGetActivitiesById(1)
-  const { isPending: updatePending, mutate } = useUpdateActivityBasicInfo(1)
 
   const addButton = () => {
     if (itemData.length === 0) {
-      toast.error("Add item first")
+      toast.error("Please add phrase in the Highlight input")
       return
     } else if (itemList.length + itemData.length > 5) {
-      toast.error("Maximum 5 items allowed.")
+      toast.error("Maximum 5 items allowed")
       return
     } else {
       const newItems = itemData.map((item, index) => ({
@@ -80,19 +79,15 @@ const BasicInfo = ({ pageType }: Prop) => {
     if (data) {
       setDurationHour(data?.item?.durationHour || 0)
       setDurationMinute(data?.item?.durationMinute || 0)
-
-      setValue("durationHour", data?.item?.durationHour || 0)
-      setValue("durationMinute", data?.item?.durationMinute || 0)
-
       setItemList(
         data?.item?.highLights.map((itemName: string, index: number) => ({
           id: index + 1,
           itemName: itemName,
         })) || []
       )
-
-      setSelectedLanguages(data?.item?.language || [])
-      console.log("Selected:", data?.item?.language)
+      setTitle(data?.item?.title || "")
+      setDescription(data?.item?.description || "")
+      setSelectedLanguages(data?.item?.languages || [])
     }
   }, [data])
 
@@ -109,81 +104,90 @@ const BasicInfo = ({ pageType }: Prop) => {
     }
   }
 
-  const onSubmit: SubmitHandler<T_Update_Activity_Basic_Info> = (
-    formData: T_Update_Activity_Basic_Info
-  ) => {
-    const parsedDurationHour = parseInt(durationHour.toString(), 10)
+  const onSubmit = () => {
+    if (title && description) {
+      const parsedDurationHour = parseInt(durationHour.toString(), 10)
 
-    if (!isNaN(parsedDurationHour)) {
-      const numberOfHighlights = itemList.length
+      if (!isNaN(parsedDurationHour)) {
+        const numberOfHighlights = itemList.length
 
-      if (numberOfHighlights >= 3 && numberOfHighlights <= 5) {
-        const updatedFormData = {
-          ...formData,
-          title: title,
-          description: description,
-          language: selectedLanguages,
-          durationHour: durationHour,
-          durationMinute: durationMinute,
-          highLights: itemList.map((item) => item.itemName),
-        }
-
-        const callBackReq = {
-          onSuccess: (data: any) => {
-            if (!data.error) {
-              toast.success(data.message)
-              queryClient.invalidateQueries({
-                queryKey: ["get-activities-basic-info"],
-              })
-            } else {
-              toast.error(String(data.message))
-            }
-          },
-          onError: (err: any) => {
-            toast.error(String(err))
-          },
-        }
-
-        mutate(updatedFormData, callBackReq)
-      } else {
-        if (!isNaN(parsedDurationHour)) {
-          const numberOfHighlights = itemList.length
-
-          if (numberOfHighlights < 3) {
-            toast.error("Minimum of 3 entries required in highlights.")
-          } else {
-            toast.error("Maximum of 5 entries allowed in highlights.")
+        if (numberOfHighlights >= 3 && numberOfHighlights <= 5) {
+          const updatedFormData = {
+            title: title,
+            description: description,
+            languages: selectedLanguages,
+            durationHour: durationHour,
+            durationMinute: durationMinute,
+            highLights: itemList.map((item) => item.itemName),
           }
+
+          const callBackReq = {
+            onSuccess: (data: any) => {
+              if (!data.error) {
+                toast.success(data.message)
+                if (pageType === "setup") {
+                  queryClient.invalidateQueries({
+                    queryKey: ["activity-finished-sections", listingId],
+                  })
+                  router.push(
+                    `/hosting/listings/activities/setup/${listingId}/itinerary`
+                  )
+                }
+              } else {
+                toast.error(String(data.message))
+              }
+            },
+            onError: (err: any) => {
+              toast.error(String(err))
+            },
+          }
+          mutate(updatedFormData, callBackReq)
         } else {
-          toast.error("Duration hour must be a valid number.")
+          if (!isNaN(parsedDurationHour)) {
+            const numberOfHighlights = itemList.length
+
+            if (numberOfHighlights < 3) {
+              toast.error("Minimum of 3 entries required in highlights.")
+            } else {
+              toast.error("Maximum of 5 entries allowed in highlights.")
+            }
+          } else {
+            toast.error("Duration hour must be a valid number.")
+          }
         }
+      }
+    } else {
+      if (!title) {
+        toast.error("Please add the title for this activity")
+      }
+
+      if (!description) {
+        toast.error("Please add the description for this activity")
       }
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <>
       {isPending ? (
         <Spinner>Loading...</Spinner>
       ) : (
         <div className="mt-20 mb-28">
-          <div className="mb-8">
+          <div>
             <Typography
               variant="h1"
               fontWeight="semibold"
               className="flex justify-between items-center"
             >
-              Basics
+              Basic Information
             </Typography>
           </div>
-
-          <div className="grid grid-cols-3">
+          <form className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-6">
             <div className="col-span-1">
               <Input
                 type="text"
-                label="Activity title"
+                label="Title"
                 defaultValue={data?.item?.title}
-                {...register("title")}
                 onChange={(e) => setTitle(e.target.value)}
               />
               <div className="mt-2 relative rounded-md ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
@@ -197,60 +201,68 @@ const BasicInfo = ({ pageType }: Prop) => {
                   id="descriptionTextarea"
                   className="flex min-h-[80px] w-full px-3 pt-1 text-sm border-0 focus:ring-0 bg-transparent disabled:cursor-not-allowed disabled:opacity-50"
                   defaultValue={data?.item?.description}
-                  {...register("description")}
                   onChange={(e) => setDescription(e.target.value)}
                   maxLength={3000}
                 />
               </div>
-
               <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
-              <Input
-                className="p-2 rounded-md mt-2"
-                value={itemData.length > 0 ? itemData[0]?.itemName || "" : ""}
-                type="text"
-                label="Activity highlights"
-                {...register("highLights")}
-                onChange={(event) =>
-                  setItemData([
-                    { id: lastId + 1, itemName: event.target.value },
-                  ])
-                }
-              />
-              <ul className="mt-4">
-                {itemList.map((item) => (
-                  <li
-                    key={item.id}
-                    className="mt-2 p-2 border border-gray-300 rounded-md flex justify-between items-center"
-                  >
-                    <p className="text-sm">{item.itemName}</p>
-                    <button
-                      className="hover:cursor-pointer"
-                      onClick={() => removeItem(item.id)}
-                      aria-label="Remove Item"
-                    >
-                      <LucideMinus
-                        color="white"
-                        className="bg-secondary-400 rounded-sm w-5 h-5"
-                      />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button
-                type="button"
-                className="flex hover:cursor-pointer my-4 gap-1"
-                onClick={addButton}
-              >
-                <LucidePlus color="black" className=" rounded-sm w-5 h-5" />
-                <Typography> Add another highlight</Typography>
-              </button>
-
               <div className="mt-4">
-                <Typography
-                  variant="h4"
-                  fontWeight="semibold"
-                  className="mt-8 mb-4"
-                >
+                <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                  Highlights
+                </Typography>
+                {itemList.length > 0 && (
+                  <ul>
+                    {itemList.map((item) => (
+                      <li
+                        key={item.id}
+                        className="mt-2 p-2 border border-gray-100 rounded-md flex justify-between items-center"
+                      >
+                        <p className="text-sm">{item.itemName}</p>
+                        <button
+                          className="hover:cursor-pointer"
+                          onClick={() => removeItem(item.id)}
+                          aria-label="Remove Item"
+                        >
+                          <LucideX className="w-5 h-5 hover:text-error-500 transition" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="mt-2">
+                  <Input
+                    className="p-2 rounded-md"
+                    value={
+                      itemData.length > 0 ? itemData[0]?.itemName || "" : ""
+                    }
+                    type="text"
+                    label="Highlight"
+                    onChange={(event) =>
+                      setItemData([
+                        { id: lastId + 1, itemName: event.target.value },
+                      ])
+                    }
+                  />
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
+                      onClick={addButton}
+                    >
+                      <LucidePlus
+                        color="black"
+                        className="rounded-sm w-4 h-4"
+                      />
+                      <Typography className="text-sm">
+                        {" "}
+                        Add highlight
+                      </Typography>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <Typography variant="h4" fontWeight="semibold" className="mb-4">
                   Activity Duration
                 </Typography>
                 <div className="flex gap-12">
@@ -276,7 +288,6 @@ const BasicInfo = ({ pageType }: Prop) => {
                         className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                         value={durationHour}
                         min={0}
-                        {...register("durationHour")}
                         onChange={(e) => {
                           const val = parseInt(e.target.value, 10)
                           setDurationHour(isNaN(val) ? 0 : val)
@@ -316,7 +327,6 @@ const BasicInfo = ({ pageType }: Prop) => {
                         className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                         value={durationMinute}
                         min={0}
-                        {...register("durationMinute")}
                         onChange={(e) => {
                           const val = parseInt(e.target.value)
                           setDurationMinute(val)
@@ -361,14 +371,22 @@ const BasicInfo = ({ pageType }: Prop) => {
               </div>
             </div>
             <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
-              <Button size="sm" onClick={handleSaveChanges}>
-                {updatePending ? <Spinner>Loading...</Spinner> : "Save Changes"}
+              <Button
+                size="sm"
+                type="button"
+                onClick={() => onSubmit()}
+                className={cn(
+                  "disabled:bg-gray-600",
+                  isLoading || isPending ? "opacity-70 cursor-progress" : ""
+                )}
+              >
+                {pageType === "setup" ? "Save & Next" : "Save Changes"}
               </Button>
             </div>
-          </div>
+          </form>
         </div>
       )}
-    </form>
+    </>
   )
 }
 

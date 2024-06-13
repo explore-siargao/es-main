@@ -25,7 +25,7 @@ const PhoneNumber = ({ phoneNumber, userId }: IPersonalInfo) => {
     handleSubmit: handlePhoneNumberSubmit,
   } = useForm<IPersonalInfo>()
   const { mutate: mutatePhoneNumber, isPending: isPendingPhoneNumber } =
-    useUpdatePersonalInfo(userId as number)
+    useUpdatePersonalInfo(userId as string)
   const queryClient = useQueryClient()
 
   const onSubmitPhoneNumber = (formData: IPersonalInfo) => {

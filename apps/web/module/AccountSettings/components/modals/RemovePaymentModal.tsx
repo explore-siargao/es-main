@@ -6,8 +6,8 @@ import useRemovePaymentMethod from "../../hooks/useRemovePaymentMethod"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
 
 interface PaymentModalProps {
-  id: number
-  userId: number
+  id: string
+  userId: string
   isOpen: boolean
   onClose: () => void
 }

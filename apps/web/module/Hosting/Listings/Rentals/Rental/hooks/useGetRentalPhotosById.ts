@@ -2,17 +2,17 @@ import { API_URL_RENTALS } from "@/common/constants/api-routes"
 import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 
-export async function getRentalPhotosById(id: number | undefined) {
-  const apiService = new ApiService("mock")
-  return await apiService.get(`${API_URL_RENTALS}/${id}/photos`)
+export async function getRentalPhotosById(rentalId: string | undefined) {
+  const apiService = new ApiService("v2")
+  return await apiService.get(`${API_URL_RENTALS}/${rentalId}/photos`)
 }
 
-function useGetRentalPhotosById(id: number | undefined) {
+function useGetRentalPhotosById(rentalId: string | undefined) {
   const query = useQuery({
     queryKey: ["rental-photos"],
-    queryFn: () => getRentalPhotosById(id),
+    queryFn: () => getRentalPhotosById(rentalId),
     refetchOnWindowFocus: false,
-    enabled: !!id,
+    enabled: !!rentalId,
   })
   return query
 }

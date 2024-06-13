@@ -23,7 +23,7 @@ interface PricingContentProps {
 const Pricing = ({ pageType }: PricingContentProps) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetPropertyById(listingId)
   const { handleSubmit, control } = useForm()
 

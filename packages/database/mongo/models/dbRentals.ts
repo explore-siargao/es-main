@@ -61,6 +61,8 @@ const rentals = new Schema({
     {
       type: mongoose.Schema.ObjectId,
       ref: "Photos",
+      required: false,
+      default: null,
     },
   ],
   location: {
@@ -72,7 +74,10 @@ const rentals = new Schema({
     enum: statusEnum,
     default: "Pending",
   },
-  finishedSections: String,
+  finishedSections: {
+    type: [String],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

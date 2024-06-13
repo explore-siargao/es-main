@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Spinner } from "@/common/components/ui/Spinner"
 import toast from "react-hot-toast"
 import { Typography } from "@/common/components/ui/Typography"
 import Image from "next/image"
@@ -12,8 +11,11 @@ import { useQueryClient } from "@tanstack/react-query"
 import usePhotoStore from "../../../store/usePhotoStore"
 import EditPhotoModal from "../../../components/modals/EditPhotoModal"
 import useGetRentalById from "../../../hooks/useGetRentalById"
-import useUpdateRentalPhotos from "../hooks/useUpdateRentalPhotos"
+import useUpdateRentalPhotos from "../hooks/useUpdateRentalPhoto"
 import { E_Rental_Category } from "@repo/contract"
+import useAddRentalPhoto from "../hooks/useAddRentalPhoto"
+import useDeleteRentalPhoto from "../hooks/useDeleteRentalPhoto"
+import useUpdateRentalFinishedSections from "../hooks/useUpdateRentalFinishedSections"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -23,16 +25,19 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
   const { data, isLoading } = useGetRentalById(listingId)
-  const { mutate, isPending } = useUpdateRentalPhotos(listingId)
+  const { mutateAsync, isPending } = useUpdateRentalPhotos(listingId)
+  const { mutateAsync: addMutateAsync } = useAddRentalPhoto(listingId)
+  const { mutateAsync: deleteMutateAsync } = useDeleteRentalPhoto(listingId)
+  const { mutateAsync: updateFinishedSections } =
+    useUpdateRentalFinishedSections(listingId)
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setToEditPhotoIndex = usePhotoStore(
     (state) => state.setToEditPhotoIndex
   )
-  console.log("rrr", photos)
   const { getRootProps, getInputProps, isFocused } = useDropzone({
     accept: {
       "image/jpeg": [],
@@ -41,16 +46,15 @@ const RentalPhotos = ({ pageType }: Prop) => {
     },
     onDrop: (acceptedPhotos: FileWithPath[]) => {
       const updatedPhotos = acceptedPhotos.map((file, index) => ({
-        file: {
-          ...file,
+        file: Object.assign(file, {
           preview: URL.createObjectURL(file),
-        },
-        key: "sorrento1.jpg",
+        }),
+        key: "",
         description: "",
         tags: "",
-        isMain: index === 0 ? true : false,
+        isMain: (photos?.length === 0 || !photos) && index === 0 ? true : false,
       }))
-      setPhotos([...photos, ...updatedPhotos])
+      setPhotos([...(photos || []), ...updatedPhotos])
     },
     onDropRejected: () => {
       toast.error("Only images are allowed")
@@ -58,39 +62,74 @@ const RentalPhotos = ({ pageType }: Prop) => {
     disabled: isPending,
   })
 
-  const handleSave = () => {
+  const updatePhotosInDb = async () => {
+    const toAddPhotos =
+      photos
+        .filter((photo) => !photo._id)
+        .map(async (photo) => {
+          return await addMutateAsync(photo)
+        }) || []
+    const toEditPhotos =
+      photos
+        .filter((photo) => photo._id)
+        .map(async (photo) => {
+          return await mutateAsync(photo)
+        }) || []
+    const toDeletePhotos =
+      photos
+        .filter((photo) => photo.isDeleted)
+        .map(async (photo) => {
+          return await deleteMutateAsync(photo)
+        }) || []
+    await Promise.all([...toAddPhotos, ...toEditPhotos, ...toDeletePhotos])
+      .then((items) => {
+        items.forEach((item) => {
+          const message = String(item.message) as string
+          toast.success(message, { id: message })
+        })
+        if (
+          pageType === "setup" &&
+          !data?.item?.finishedSections?.includes("photos")
+        ) {
+          const callBackReq = {
+            onSuccess: (data: any) => {
+              if (data.error) {
+                toast.error(String(data.message))
+              }
+            },
+            onError: (err: any) => {
+              toast.error(String(err))
+            },
+          }
+          updateFinishedSections({ newFinishedSection: "photos" }, callBackReq)
+        }
+      })
+      .then(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["rental", listingId],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ["rental-finished-sections", listingId],
+        })
+        if (pageType === "setup") {
+          router.push(`/hosting/listings/rentals/setup/${listingId}/pricing`)
+        }
+      })
+      .catch((err) => {
+        toast.error(String(err))
+      })
+  }
+
+  const handleSave = async () => {
     if (
       data?.item?.category === E_Rental_Category.Car &&
-      (photos.length > 4 ||
-        (data?.item?.Photos && data?.item?.Photos.length > 4))
+      (photos?.length > 4 ||
+        (data?.item?.photos && data?.item?.photos.length > 4))
     ) {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            toast.success(data.message)
-            queryClient.invalidateQueries({
-              queryKey: ["rental", listingId],
-            })
-            queryClient.invalidateQueries({
-              queryKey: ["rental-finished-sections", listingId],
-            })
-            if (pageType === "setup") {
-              router.push(
-                `/hosting/listings/rentals/setup/${listingId}/pricing`
-              )
-            }
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
-      mutate({ photos }, callBackReq)
+      updatePhotosInDb()
     } else if (
       data?.item?.category === E_Rental_Category.Car &&
-      (photos.length < 5 ||
+      (photos?.length < 5 ||
         (data?.item?.Photos && data?.item?.Photos.length < 5))
     ) {
       toast.error("Please add at least 5 photos")
@@ -98,36 +137,13 @@ const RentalPhotos = ({ pageType }: Prop) => {
 
     if (
       data?.item?.category !== E_Rental_Category.Car &&
-      (photos.length > 2 ||
-        (data?.item?.Photos && data?.item?.Photos.length > 2))
+      (photos?.length > 2 ||
+        (data?.item?.photos && data?.item?.photos.length > 2))
     ) {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            toast.success(data.message)
-            queryClient.invalidateQueries({
-              queryKey: ["rental", listingId],
-            })
-            queryClient.invalidateQueries({
-              queryKey: ["rental-finished-sections", listingId],
-            })
-            if (pageType === "setup") {
-              router.push(
-                `/hosting/listings/rentals/setup/${listingId}/pricing`
-              )
-            }
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
-      mutate({ photos }, callBackReq)
+      updatePhotosInDb()
     } else if (
       data?.item?.category !== E_Rental_Category.Car &&
-      (photos.length < 3 ||
+      (photos?.length < 3 ||
         (data?.item?.Photos && data?.item?.Photos.length < 3))
     ) {
       toast.error("Please add at least 3 photos")
@@ -136,12 +152,12 @@ const RentalPhotos = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setPhotos(data?.item?.Photos)
+      setPhotos(data?.item?.photos)
     }
   }, [data, isPending])
 
   return (
-    <div className="mt-20 mb-14">
+    <div className={cn("mt-20 mb-14", isPending && "opacity-70")}>
       <div className="mb-3">
         <Typography
           variant="h1"
@@ -151,152 +167,148 @@ const RentalPhotos = ({ pageType }: Prop) => {
           Photos
         </Typography>
       </div>
-      {isPending ? (
-        <Spinner size="md">Loading...</Spinner>
-      ) : (
-        <>
-          <Typography
-            variant="h6"
-            fontWeight="semibold"
-            className="text-gray-500 mb-0.5 italic"
-          >
-            Please upload atleast 5 photos
-          </Typography>
-          <Typography
-            variant="h6"
-            fontWeight="semibold"
-            className="text-gray-500 mb-0.5 italic"
-          >
-            Minimum dimension is 800x600
-          </Typography>
-          <Typography
-            variant="h6"
-            fontWeight="semibold"
-            className="text-gray-500 mb-0.5 italic"
-          >
-            Maximum file size is 10mb
-          </Typography>
-          <Typography
-            variant="h6"
-            fontWeight="semibold"
-            className="text-gray-500 mb-0.5 italic"
-          >
-            No photographer watermarks, logos, or readable license plates
-          </Typography>
-          <Typography
-            variant="h6"
-            fontWeight="semibold"
-            className="text-gray-500 mb-0.5 italic"
-          >
-            Avoid screenshots/photos of printed maps or branded bus routes
-          </Typography>
-          <Typography
-            variant="h6"
-            fontWeight="semibold"
-            className="text-gray-500 mb-4 italic"
-          >
-            No portrait/vertical format, selfies, or black and white images
-          </Typography>
-          <div className="grid grid-cols-4 gap-6">
-            {isPending ? (
-              <Spinner size="md">Loading...</Spinner>
-            ) : (
-              <>
-                <div className="relative h-52 w-full overflow-hidden bg-primary-100 hover:bg-primary-200 flex justify-center items-center rounded-lg hover:cursor-pointer">
-                  <label
-                    {...getRootProps()}
-                    htmlFor="dropzone-file"
-                    className={cn(
-                      isPending && "opacity-50",
-                      isFocused && "opacity-80",
-                      "flex flex-col items-center justify-center w-full h-52 border-2 border-primary-300 border-dashed rounded-lg cursor-pointer bg-primary-50 hover:bg-primary-100"
-                    )}
+
+      <>
+        <Typography
+          variant="h6"
+          fontWeight="semibold"
+          className="text-gray-500 mb-0.5 italic"
+        >
+          Please upload at least{" "}
+          {data?.item?.category !== E_Rental_Category.Car ? "3" : "5"} photos
+        </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="semibold"
+          className="text-gray-500 mb-0.5 italic"
+        >
+          Minimum dimension is 800x600
+        </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="semibold"
+          className="text-gray-500 mb-0.5 italic"
+        >
+          Maximum file size is 10mb
+        </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="semibold"
+          className="text-gray-500 mb-0.5 italic"
+        >
+          No photographer watermarks, logos, or readable license plates
+        </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="semibold"
+          className="text-gray-500 mb-0.5 italic"
+        >
+          Avoid screenshots/photos of printed maps or branded bus routes
+        </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="semibold"
+          className="text-gray-500 mb-4 italic"
+        >
+          No portrait/vertical format, selfies, or black and white images
+        </Typography>
+        <div className="grid grid-cols-4 gap-6">
+          <>
+            <div className="relative h-52 w-full overflow-hidden bg-primary-100 hover:bg-primary-200 flex justify-center items-center rounded-lg hover:cursor-pointer">
+              <label
+                {...getRootProps()}
+                htmlFor="dropzone-file"
+                className={cn(
+                  isPending && "opacity-50",
+                  isFocused && "opacity-80",
+                  "flex flex-col items-center justify-center w-full h-52 border-2 border-primary-300 border-dashed rounded-lg cursor-pointer bg-primary-50 hover:bg-primary-100"
+                )}
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg
+                    className="w-8 h-8 mb-4 text-primary-500"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 16"
                   >
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <svg
-                        className="w-8 h-8 mb-4 text-primary-500"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 16"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                        />
-                      </svg>
-                      <Typography className="mb-2 text-text-500 px-2 text-center">
-                        <span className="font-semibold">Drop photos here</span>{" "}
-                        or click this
-                      </Typography>
-                      <Typography className="text-xs text-text-500">
-                        PNG, JPG or GIF
-                      </Typography>
-                    </div>
-                    <input {...getInputProps()} />
-                  </label>
+                    <path
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                    />
+                  </svg>
+                  <Typography className="mb-2 text-text-500 px-2 text-center">
+                    <span className="font-semibold">Drop photos here</span> or
+                    click this
+                  </Typography>
+                  <Typography className="text-xs text-text-500">
+                    PNG, JPG or GIF
+                  </Typography>
                 </div>
-                {photos.map((photo, index) => (
-                  <div key={index} className="h-full">
-                    {photo.isMain && (
-                      <div className="flex justify-center">
-                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
-                          Preferred main photo
-                        </span>
-                      </div>
+                <input {...getInputProps()} />
+              </label>
+            </div>
+            {photos?.map((photo, index) => {
+              return !photo.isDeleted ? (
+                <div key={index} className="h-full">
+                  {photo.isMain && (
+                    <div className="flex justify-center">
+                      <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
+                        Preferred main photo
+                      </span>
+                    </div>
+                  )}
+                  <button
+                    className={cn(
+                      `relative h-52 w-full bg-primary-50 rounded-lg`,
+                      photo.isMain && "border-2 border-secondary-500"
                     )}
-                    <button
-                      className={cn(
-                        `relative h-52 w-full bg-primary-50 rounded-lg`,
-                        photo.isMain && "border-2 border-secondary-500"
-                      )}
-                      type="button"
-                      onClick={() => {
-                        setToEditPhotoIndex(index)
-                        setEditPhotoModal(true)
-                      }}
-                    >
-                      <Image
-                        src={photo?.file?.preview ?? `/assets/${photo.key}`}
-                        alt={`preview-` + index}
-                        layout="fill"
-                        objectFit="cover"
-                        objectPosition="center"
-                        className="rounded-lg"
-                      />
-                    </button>
-                    <Typography
-                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
-                    >
-                      {photo.description || "No description"}
-                    </Typography>
-                  </div>
-                ))}
-              </>
+                    type="button"
+                    onClick={() => {
+                      setToEditPhotoIndex(index)
+                      setEditPhotoModal(true)
+                    }}
+                  >
+                    <Image
+                      src={photo?.file?.preview ?? `/assets/${photo.key}`}
+                      alt={`preview-` + index}
+                      layout="fill"
+                      objectFit="cover"
+                      objectPosition="center"
+                      className="rounded-lg"
+                    />
+                  </button>
+                  <Typography
+                    className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
+                  >
+                    {photo.description || "No description"}
+                  </Typography>
+                </div>
+              ) : null
+            })}
+          </>
+        </div>
+        <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
+          <Button
+            size="sm"
+            type="submit"
+            onClick={handleSave}
+            className={cn(
+              "disabled:bg-gray-600",
+              isLoading || isPending ? "opacity-70 cursor-progress" : ""
             )}
-          </div>
-          <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
-            <Button
-              size="sm"
-              type="submit"
-              onClick={handleSave}
-              className={cn(
-                "disabled:bg-gray-600",
-                isLoading || isPending ? "opacity-70 cursor-progress" : ""
-              )}
-            >
-              {pageType === "setup" ? "Save & Next" : "Save changes"}
-            </Button>
-          </div>
-          <EditPhotoModal
-            isOpen={editPhotoModal}
-            onClose={() => setEditPhotoModal(false)}
-          />
-        </>
-      )}
+          >
+            {pageType === "setup" ? "Save & Next" : "Save changes"}
+          </Button>
+        </div>
+        <EditPhotoModal
+          isOpen={editPhotoModal}
+          onClose={() => setEditPhotoModal(false)}
+        />
+      </>
     </div>
   )
 }

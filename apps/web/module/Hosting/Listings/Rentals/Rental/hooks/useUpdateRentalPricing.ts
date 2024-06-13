@@ -4,14 +4,14 @@ import { useMutation } from "@tanstack/react-query"
 import { T_Rental_Pricing } from "@repo/contract"
 
 export async function updateRentalPricing(
-  id: number | undefined,
+  id: string | undefined,
   props: T_Rental_Pricing
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_RENTALS}/${id}/pricing`, props)
 }
 
-function useUpdateRentalPricing(id: number | undefined) {
+function useUpdateRentalPricing(id: string | undefined) {
   const query = useMutation({
     mutationFn: (props: T_Rental_Pricing) => updateRentalPricing(id, props),
   })

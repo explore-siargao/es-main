@@ -8,7 +8,7 @@ import redisClient from '@/common/utils/redisClient'
 const response = new ResponseService()
 const csrfEncryption = new EncryptionService('csrf')
 
-const isCsrfTokenValid2 = async (
+const isCsrfTokenValid = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -51,4 +51,4 @@ const isCsrfTokenValid2 = async (
   }
 }
 
-export default isCsrfTokenValid2
+export default isCsrfTokenValid

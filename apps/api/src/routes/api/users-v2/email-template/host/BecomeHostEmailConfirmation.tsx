@@ -27,7 +27,7 @@ export const BecomeHostEmailConfirmation = () => {
   return (
     <Html>
       <Head />
-      <Preview>Payment Receipt for {APP_NAME}</Preview>
+      <Preview>Start adding your listing {APP_NAME}</Preview>
       <Body style={main}>
         <Container style={container}>
           <Img

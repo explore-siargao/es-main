@@ -21,7 +21,7 @@ const Address = ({
   stateProvince,
   zipCode,
   aptSuite,
-  id,
+  personalInfoId,
 }: T_Address) => {
   const [contentState, setContentState] = useState<PersonalInfoProps>({
     isButtonClicked: false,
@@ -38,7 +38,7 @@ const Address = ({
         aptSuite,
       },
     })
-  const { mutate, isPending } = useAddAddress(id as number)
+  const { mutate, isPending } = useAddAddress(personalInfoId)
   const queryClient = useQueryClient()
 
   const onSubmit = (formData: T_AddUpdateAddress) => {

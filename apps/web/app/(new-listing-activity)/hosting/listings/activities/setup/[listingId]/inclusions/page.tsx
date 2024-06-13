@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const RentalBasicInfoPage = () => {
   return (
     <AuthGuard>
-      <Inclusions pageType="edit" />
+      <Inclusions pageType="setup" />
     </AuthGuard>
   )
 }

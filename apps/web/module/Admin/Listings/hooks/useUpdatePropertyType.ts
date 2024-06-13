@@ -7,17 +7,17 @@ interface Props {
 }
 
 export async function updatePropertyType(
-  propertyId: number | undefined,
+  propertyId: string | undefined,
   props: Props
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/property-type`,
     props
   )
 }
 
-function useUpdatePropertyType(propertyId: number | undefined) {
+function useUpdatePropertyType(propertyId: string | undefined) {
   const query = useMutation({
     mutationFn: (props: Props) => updatePropertyType(propertyId, props),
   })

@@ -44,7 +44,6 @@ router.delete(
   isHostRentalOwner,
   deleteRentals
 )
-router.post('/', isUserLoggedIn, isCsrfTokenValid, addRental)
 
 //rentals basic-info
 router.get('/', isOriginValid, isUserLoggedIn, getAllRentalsByHostId)
