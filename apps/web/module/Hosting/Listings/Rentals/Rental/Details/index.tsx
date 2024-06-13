@@ -28,9 +28,10 @@ const Details = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalDetails(listingId)
-  const { register, handleSubmit, getValues } = useForm<T_Rental_Details>({
-    values: data?.item?.Details as T_Rental_Details,
-  })
+  const { register, handleSubmit, getValues, watch } =
+    useForm<T_Rental_Details>({
+      values: data?.item?.Details as T_Rental_Details,
+    })
 
   const onSubmit = (formData: T_Rental_Details) => {
     const dbCategory = data?.item?.category
@@ -46,6 +47,9 @@ const Details = ({ pageType }: Prop) => {
             if (pageType === "setup") {
               queryClient.invalidateQueries({
                 queryKey: ["rental-finished-sections", listingId],
+              })
+              queryClient.invalidateQueries({
+                queryKey: ["rental", listingId],
               })
               router.push(
                 `/hosting/listings/rentals/setup/${listingId}/add-ons`
@@ -79,6 +83,9 @@ const Details = ({ pageType }: Prop) => {
       toast.error("Sorry! We cannot proceed if this is not registered")
     }
   }
+
+  const isRegistered = watch("isRegistered", data?.item?.details?.isRegistered)
+  const currentCondition = watch("condition", data?.item?.details.condition)
   return (
     <div className="mt-20 mb-14">
       <Typography variant="h1" fontWeight="semibold">
@@ -122,10 +129,7 @@ const Details = ({ pageType }: Prop) => {
             <Option value="">Select</Option>
             {Object.keys(E_Rental_Condition).map((key) => {
               return (
-                <Option
-                  key={key}
-                  selected={key === data?.item?.details.condition}
-                >
+                <Option key={key} selected={key === currentCondition}>
                   {key}
                 </Option>
               )
@@ -203,7 +207,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="No"
                   required
-                  checked={data?.item?.details?.isRegistered === "No"}
+                  checked={isRegistered === "No"}
                 />
                 <label
                   htmlFor="registered-yes"
@@ -219,7 +223,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="Yes"
                   required
-                  checked={data?.item?.details?.isRegistered === "Yes"}
+                  checked={isRegistered === "Yes"}
                 />
               </div>
               <Typography

@@ -6,7 +6,7 @@ import { LucideEye } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { T_Activities, T_Photo } from "@repo/contract"
+import { T_Activity, T_Photo } from "@repo/contract"
 
 import toast from "react-hot-toast"
 import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
@@ -75,7 +75,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Highlights:</span>
                 <div className="flex flex-col">
-                  {data?.item?.highLights.map((highLights: T_Activities) => (
+                  {data?.item?.highLights.map((highLights: T_Activity) => (
                     <p className="mt-2" key={highLights.id}>
                       {" "}
                       {highLights as unknown as string}
@@ -93,7 +93,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Languages spoken:</span>
                 <div className="flex flex-col">
-                  {data?.item?.language.map((languages: T_Activities) => (
+                  {data?.item?.language.map((languages: T_Activity) => (
                     <p className="mt-2" key={languages.id}>
                       {" "}
                       {languages as unknown as string}
@@ -214,7 +214,7 @@ const ActivitySummary = () => {
                 </span>
                 <div className="flex flex-col">
                   {data?.item?.otherInclusion.map(
-                    (otherInclusion: T_Activities) => (
+                    (otherInclusion: T_Activity) => (
                       <p className="mt-2" key={otherInclusion.id}>
                         {" "}
                         {otherInclusion as unknown as string}
@@ -229,7 +229,7 @@ const ActivitySummary = () => {
                   What else is not included?:
                 </span>
                 <div className="flex flex-col">
-                  {data?.item?.notIncluded.map((notIncluded: T_Activities) => (
+                  {data?.item?.notIncluded.map((notIncluded: T_Activity) => (
                     <p className="mt-2" key={notIncluded.id}>
                       {" "}
                       {notIncluded as unknown as string}
@@ -250,7 +250,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">What to bring:</span>
                 <div className="flex flex-col">
-                  {data?.item?.whatToBring.map((whatToBring: T_Activities) => (
+                  {data?.item?.whatToBring.map((whatToBring: T_Activity) => (
                     <p className="mt-2" key={whatToBring.id}>
                       {" "}
                       {whatToBring as unknown as string}
@@ -261,7 +261,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Not allowed:</span>
                 <div className="flex flex-col">
-                  {data?.item?.notAllowed.map((notAllowed: T_Activities) => (
+                  {data?.item?.notAllowed.map((notAllowed: T_Activity) => (
                     <p className="mt-2" key={notAllowed.id}>
                       {" "}
                       {notAllowed as unknown as string}
@@ -272,7 +272,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Activity policies:</span>
                 <div className="flex flex-col">
-                  {data?.item?.policies.map((policies: T_Activities) => (
+                  {data?.item?.policies.map((policies: T_Activity) => (
                     <p className="mt-2" key={policies.id}>
                       {" "}
                       {policies as unknown as string}
