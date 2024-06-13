@@ -7,8 +7,6 @@ import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
-import Header from "@/common/components/HostLayout/NewListingRentalHeader"
-import Sidebar from "@/common/components/HostLayout/NewListingRentalSidebar"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import HeaderGuides from "@/common/components/HeaderGuides"
 
