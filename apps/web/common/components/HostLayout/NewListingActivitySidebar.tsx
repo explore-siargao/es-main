@@ -4,6 +4,7 @@ import { Typography } from "../ui/Typography"
 import { WidthWrapper } from "../WidthWrapper"
 import {
   LucideGitBranchPlus,
+  LucideImage,
   LucideInfo,
   LucideListPlus,
   LucideScrollText,
@@ -52,6 +53,13 @@ const Sidebar = ({ children }: HostSidebarProps) => {
       icon: <LucideGitBranchPlus className="h-5 w-5" />,
       link: `${ACTIVITY_SETUP_BASE_PATH}/${listingId}/additional-info`,
       basePath: "/additional-info",
+    },
+    {
+      id: "photos",
+      title: "Photos",
+      icon: <LucideImage className="h-5 w-5" />,
+      link: `${ACTIVITY_SETUP_BASE_PATH}/${listingId}/photos`,
+      basePath: "/photos",
     },
     {
       id: "summary",
