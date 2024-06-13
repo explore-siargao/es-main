@@ -13,7 +13,7 @@ function SurfingGuide() {
   const guideName = params.guideName
   return (
     <WidthWrapper width={"small"}>
-      <div className="py-8">
+      <div className="py-8 mt-32 ">
         <SurfGuide />
         <Separator
           orientation="horizontal"
