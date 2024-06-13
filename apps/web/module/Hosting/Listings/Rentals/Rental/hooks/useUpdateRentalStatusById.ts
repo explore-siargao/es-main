@@ -4,14 +4,14 @@ import { T_Rental_Status } from "@repo/contract"
 import { useMutation } from "@tanstack/react-query"
 
 export async function updateRentalStatus(
-  rentalId: number | undefined,
+  rentalId: string | undefined,
   props: T_Rental_Status
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_RENTALS}/${rentalId}/status`, props)
 }
 
-function useUpdateRentalStatusById(rentalId: number | undefined) {
+function useUpdateRentalStatusById(rentalId: string | undefined) {
   const query = useMutation({
     mutationFn: (props: T_Rental_Status) => updateRentalStatus(rentalId, props),
   })

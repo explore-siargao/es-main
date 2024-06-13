@@ -4,7 +4,7 @@ import { Z_EmergencyContact } from "../EmergencyContact"
 import { Z_GovernmentId } from ".."
 
 export const Z_PersonalInfo = z.object({
-  id: z.number(),
+  id: z.union([z.number(), z.string()]),
   userId: z.string(),
   firstName: z.string(),
   middleName: z.string(),

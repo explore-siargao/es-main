@@ -5,6 +5,7 @@ import Image from "next/image"
 import usePhotoStore from "../../store/usePhotoStore"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { cn } from "@/common/helpers/cn"
 
 type Props = {
   isOpen: boolean
@@ -12,16 +13,17 @@ type Props = {
 }
 
 const EditPhotoModal = ({ isOpen, onClose }: Props) => {
+  const setPhotos = usePhotoStore((state) => state.setPhotos)
   const photos = usePhotoStore((state) => state.photos)
   const toEditPhotoIndex = usePhotoStore((state) => state.toEditPhotoIndex)
   const setDescription = usePhotoStore((state) => state.setDescription)
   const setTags = usePhotoStore((state) => state.setTags)
   const setMainPhoto = usePhotoStore((state) => state.setMainPhoto)
   const removePhoto = usePhotoStore((state) => state.removePhoto)
-
-  // @ts-ignore
-  const currentPhoto = toEditPhotoIndex ? photos[toEditPhotoIndex] : null
-
+  const currentPhoto =
+    typeof toEditPhotoIndex === "number" && toEditPhotoIndex > -1
+      ? photos[toEditPhotoIndex]
+      : null
   const [description, editDescription] = useState(currentPhoto?.description)
   const [tags, editTags] = useState(currentPhoto?.tags)
   const [isMain, setIsMain] = useState(currentPhoto?.isMain || false)
@@ -78,41 +80,61 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
             id="main"
             aria-describedby="main"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600"
+            disabled={photos?.length < 2}
+            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600 disabled:opacity-70"
             tabIndex={-1}
-            checked={isMain}
+            checked={isMain as boolean}
             onChange={() => {
-              const mainPhotoExist = photos.some((photo) => photo.isMain)
-
-              if (mainPhotoExist && !isMain) {
-                toast.error(
-                  "One of your photos is already marked as the main photo. Unmark it to set a new one."
-                )
-              } else {
-                setIsMain((state: boolean) => !state)
-              }
+              setIsMain((state: boolean | string) => !state)
             }}
           />
-          <label htmlFor="main" className="text-sm ml-3">
+          <label
+            htmlFor="main"
+            className={cn(`text-sm ml-3`, photos?.length < 2 && "opacity-70")}
+          >
             Mark as main photo
           </label>
         </div>
 
-        <div className="flex space-x-3 mt-6">
-          <Button
-            variant="default"
-            size="sm"
-            type="button"
-            tabIndex={-1}
-            onClick={() => {
-              setDescription(description as string)
-              setTags(tags as string)
-              setMainPhoto(isMain)
-              toast.success("Photo successfully updated")
-            }}
-          >
-            Save
-          </Button>
+        <div className="flex justify-between mt-6">
+          <div className="flex space-x-3">
+            <Button
+              variant="default"
+              size="sm"
+              type="button"
+              tabIndex={-1}
+              onClick={() => {
+                if (isMain !== currentPhoto?.isMain) {
+                  const updatedIsMainPhotos = photos.map((photo, index) => {
+                    return {
+                      ...photo,
+                      isMain:
+                        typeof toEditPhotoIndex === "number" &&
+                        toEditPhotoIndex > -1 &&
+                        toEditPhotoIndex === index &&
+                        isMain,
+                    }
+                  })
+                  setPhotos([...updatedIsMainPhotos])
+                }
+                setDescription(description as string)
+                setTags(tags as string)
+                setMainPhoto(isMain as boolean)
+                toast.success("Photo successfully updated")
+              }}
+            >
+              Save Changes
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              tabIndex={-1}
+              onClick={() => onClose()}
+            >
+              Close
+            </Button>
+          </div>
           <Button
             variant="danger"
             size="sm"
@@ -124,7 +146,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
               toast.success("Photo successfully removed")
             }}
           >
-            Remove
+            Remove Photo
           </Button>
         </div>
       </div>

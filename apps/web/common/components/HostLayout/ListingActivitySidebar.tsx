@@ -4,6 +4,7 @@ import { Typography } from "../ui/Typography"
 import { WidthWrapper } from "../WidthWrapper"
 import {
   LucideGitBranchPlus,
+  LucideImage,
   LucideInfo,
   LucideListPlus,
   LucideTableProperties,
@@ -18,7 +19,7 @@ interface HostSidebarProps {
 
 const ListingActivitySidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const ACTIVITY_EDIT_BASE_PATH = "/hosting/listings/activities"
   const TOP_LINKS = [
     {
@@ -44,6 +45,12 @@ const ListingActivitySidebar = ({ children }: HostSidebarProps) => {
       icon: <LucideGitBranchPlus className="h-5 w-5" />,
       link: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/additional-info`,
       basePath: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/additional-info`,
+    },
+    {
+      title: "Photos",
+      icon: <LucideImage className="h-5 w-5" />,
+      link: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/photos`,
+      basePath: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/photos`,
     },
   ]
   return (

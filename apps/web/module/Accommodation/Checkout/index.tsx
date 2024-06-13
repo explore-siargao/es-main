@@ -2,7 +2,7 @@
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import valid from "card-validator"
+import valid, { number } from "card-validator"
 import { ChevronLeft, LucideChevronLeft } from "lucide-react"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
@@ -26,7 +26,7 @@ const encryptionService = new EncryptionService("card")
 const Checkout = () => {
   const paymentInfo = usePaymentInfoStore((state) => state)
   const session = useSessionStore((state) => state)
-  const { data: paymentMethods } = useGetPaymentMethods(session.id)
+  const { data: paymentMethods } = useGetPaymentMethods()
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )

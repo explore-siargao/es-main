@@ -23,7 +23,7 @@ const UpdatePassword = () => {
   })
   const { register, reset, handleSubmit } = useForm<T_ChangePassword>()
   const session = useSessionStore((state) => state)
-  const { mutate, isPending } = useUpdateAccountPassword(session.id)
+  const { mutate, isPending } = useUpdateAccountPassword(session.id as number)
   const onSubmitLegalName = (formData: T_ChangePassword) => {
     const callBackReq = {
       onSuccess: (data: T_BackendResponse) => {

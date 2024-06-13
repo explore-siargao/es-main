@@ -15,11 +15,11 @@ const HostListing = () => {
   const { data } = useGetHostRentals()
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("Photos", {
+    columnHelper.accessor("photos", {
       header: "Listing",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <div className="relative w-24 h-16 rounded-xl overflow-hidden">
@@ -48,7 +48,7 @@ const HostListing = () => {
       header: "Location",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <Typography variant="p">
@@ -66,7 +66,7 @@ const HostListing = () => {
       header: "Category",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <Typography variant="p">
@@ -79,7 +79,7 @@ const HostListing = () => {
       header: "Quantity",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <Typography variant="p">
@@ -92,7 +92,7 @@ const HostListing = () => {
       header: "Status",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
+          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center"
         >
           <StatusDot

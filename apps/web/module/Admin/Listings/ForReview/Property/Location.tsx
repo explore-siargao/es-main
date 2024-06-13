@@ -30,7 +30,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
   const { data } = useGetPropertyById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
@@ -115,10 +115,10 @@ const ListingLocation = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="street"
+                id="streetAddress"
                 label="Street address"
                 required
-                {...register("street", { required: true })}
+                {...register("streetAddress", { required: true })}
               />
               <Select
                 label="City / Municipality"

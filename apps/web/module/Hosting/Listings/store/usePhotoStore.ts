@@ -51,7 +51,8 @@ const usePhotoStore = create<T_PhotoStoreState>((set) => ({
     set((state) => {
       if (state.toEditPhotoIndex !== null) {
         const updatedPhotos = [...state.photos]
-        updatedPhotos.splice(state.toEditPhotoIndex, 1)
+        // @ts-expect-error
+        updatedPhotos[state.toEditPhotoIndex].isDeleted = true
         return { photos: updatedPhotos, toEditPhotoIndex: null }
       }
       return state

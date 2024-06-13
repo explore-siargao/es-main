@@ -1,8 +1,9 @@
 import { z } from "zod"
 
 export const Z_EmergencyContact = z.object({
-  id: z.number(),
-  peronalInfoId: z.number(),
+  id: z.number().optional(),
+  _id: z.string().optional(),
+  personalInfoId: z.string(),
   name: z.string(),
   relationship: z.string(),
   email: z.string(),

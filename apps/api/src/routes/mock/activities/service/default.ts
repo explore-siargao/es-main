@@ -13,7 +13,7 @@ export const addActivity = async (req: Request, res: Response) => {
       highLights: '[]',
       durationHour: '',
       durationMinute: '',
-      language: '',
+      languages: '',
       isFoodIncluded: false,
       isNonAlcoholicDrinkIncluded: false,
       isAlcoholicDrinkIncluded: false,

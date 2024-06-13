@@ -10,6 +10,7 @@ import { T_Rental_Pricing } from "@repo/contract"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import useUpdateRentalPricing from "../hooks/useUpdateRentalPricing"
+import useGetRentalPricing from "../hooks/useGetRentalPricing"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -19,8 +20,8 @@ const Pricing = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { data, isLoading } = useGetRentalById(listingId)
+  const listingId = String(params.listingId)
+  const { data, isLoading } = useGetRentalPricing(listingId)
   const { mutate, isPending } = useUpdateRentalPricing(listingId)
   const { register, handleSubmit } = useForm<T_Rental_Pricing>({
     values: data?.item?.Pricing as T_Rental_Pricing,
@@ -34,6 +35,9 @@ const Pricing = ({ pageType }: Prop) => {
           if (pageType === "setup") {
             queryClient.invalidateQueries({
               queryKey: ["rental-finished-sections", listingId],
+            })
+            queryClient.invalidateQueries({
+              queryKey: ["rental-pricing", listingId],
             })
             router.push(`/hosting/listings/rentals/setup/${listingId}/location`)
           }
@@ -61,6 +65,7 @@ const Pricing = ({ pageType }: Prop) => {
             label="Day Rate (24-hour)"
             step=".01"
             required
+            defaultValue={data?.item?.dayRate}
             {...register("dayRate", { required: true, valueAsNumber: true })}
             leftIcon={<span className="text-text-300">₱</span>}
           />
@@ -74,6 +79,7 @@ const Pricing = ({ pageType }: Prop) => {
               required: true,
               valueAsNumber: true,
             })}
+            defaultValue={data?.item?.requiredDeposit}
             leftIcon={<span className="text-text-300">₱</span>}
           />
           <Typography className="text-sm text-text-500">

@@ -17,7 +17,7 @@ export default function PaymentOptions() {
   const session = useSessionStore((state) => state)
   const [selected, setSelected] = useState<number | null>(null)
   const { data: paymentMethods, isPending: isPendingPaymentMethods } =
-    useGetPaymentMethods(session.id)
+    useGetPaymentMethods()
   const savedCreditDebitOptions =
     paymentMethods?.items?.map((paymentMethod) => {
       return {

@@ -6,10 +6,10 @@ import {
 import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 
-type Props = { listingId: number; type: "property" | "rental" | "activity" }
+type Props = { listingId: string; type: "property" | "rental" | "activity" }
 
 export async function getFinishedSections({ listingId, type }: Props) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   const baseUrl = {
     property: API_URL_PROPERTIES,
     rental: API_URL_RENTALS,

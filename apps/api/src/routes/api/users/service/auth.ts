@@ -15,12 +15,13 @@ import { E_RegistrationType, Z_UserRegister } from '@repo/contract'
 import { ResponseService } from '@/common/service/response'
 import randomNumber from '@/common/helpers/randomNumber'
 import { currencyByCountry } from '@/common/helpers/currencyByCountry'
-const response = new ResponseService()
 import { EncryptionService } from '@repo/services'
 import { WEB_URL } from '@/common/constants/ev'
 
+const response = new ResponseService()
 const decryptionService = new EncryptionService('password')
 const encryptionService = new EncryptionService('password')
+
 export const verifySignIn = async (req: Request, res: Response) => {
   const { type, email } = req.query
   if (type && email) {
@@ -125,19 +126,17 @@ export const register = async (req: Request, res: Response) => {
     try {
       const user = await prisma.user.findFirst({
         where: {
-          email: email as string,
-        },
-        include: {
-          guest: true,
+          email: email,
         },
       })
       if (!user) {
+        const encryptedPassword = encryptionService.encrypt(password)
         const newUser = await prisma.user.create({
           data: {
             email: email,
             registrationType: registrationType,
             role: 'User',
-            password: password,
+            password: encryptedPassword,
             canReceiveEmail,
           },
         })
@@ -164,6 +163,7 @@ export const register = async (req: Request, res: Response) => {
             }),
           },
         })
+
         res.json(
           response.success({
             item: {

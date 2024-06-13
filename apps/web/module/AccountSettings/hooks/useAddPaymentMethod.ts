@@ -4,16 +4,16 @@ import { useMutation } from "@tanstack/react-query"
 import { T_AddPaymentMethod } from "@repo/contract"
 
 export async function addPaymentMethod(
-  userId: number | undefined,
+  userId: string | undefined,
   props: T_AddPaymentMethod
 ) {
-  const apiService = new ApiService()
+  const apiService = new ApiService("v2")
   return await apiService.post(
     `${API_URL_PAYMENTS}/${userId}/payment-method`,
     props
   )
 }
-function useAddPaymentMethod(userId: number) {
+function useAddPaymentMethod(userId: string) {
   const query = useMutation({
     mutationFn: (props: T_AddPaymentMethod) => addPaymentMethod(userId, props),
   })

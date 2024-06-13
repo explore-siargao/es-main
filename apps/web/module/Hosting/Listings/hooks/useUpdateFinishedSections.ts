@@ -7,20 +7,20 @@ interface Section {
 }
 
 export async function updateFinishedSections(
-  propertyId: number | undefined,
+  propertyId: string | undefined,
   props: Section
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/finished-sections`,
     props
   )
 }
 
-function useUpdateFinishedSections(propertyId: number | undefined) {
+function useUpdateActivityFinishedSections(propertyId: string | undefined) {
   const query = useMutation({
     mutationFn: (props: Section) => updateFinishedSections(propertyId, props),
   })
   return query
 }
-export default useUpdateFinishedSections
+export default useUpdateActivityFinishedSections

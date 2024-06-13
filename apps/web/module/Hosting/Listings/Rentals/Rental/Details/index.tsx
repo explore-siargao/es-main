@@ -25,12 +25,13 @@ const Details = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalDetails(listingId)
-  const { register, handleSubmit } = useForm<T_Rental_Details>({
-    values: data?.item?.Details as T_Rental_Details,
-  })
+  const { register, handleSubmit, getValues, watch } =
+    useForm<T_Rental_Details>({
+      values: data?.item?.Details as T_Rental_Details,
+    })
 
   const onSubmit = (formData: T_Rental_Details) => {
     const dbCategory = data?.item?.category
@@ -47,6 +48,9 @@ const Details = ({ pageType }: Prop) => {
               queryClient.invalidateQueries({
                 queryKey: ["rental-finished-sections", listingId],
               })
+              queryClient.invalidateQueries({
+                queryKey: ["rental", listingId],
+              })
               router.push(
                 `/hosting/listings/rentals/setup/${listingId}/add-ons`
               )
@@ -59,11 +63,29 @@ const Details = ({ pageType }: Prop) => {
           toast.error(String(err))
         },
       }
-      mutate({ ...formData }, callBackReq)
+      mutate(
+        {
+          ...formData,
+          engineCapacityLiter:
+            typeof getValues("engineCapacityLiter") === "undefined" ||
+            getValues("engineCapacityLiter") === null
+              ? (getValues("engineCapacityCc") as number) / 1000
+              : getValues("engineCapacityLiter"),
+          engineCapacityCc:
+            typeof getValues("engineCapacityCc") === "undefined" ||
+            getValues("engineCapacityCc") === null
+              ? (getValues("engineCapacityLiter") as number) * 1000
+              : getValues("engineCapacityCc"),
+        },
+        callBackReq
+      )
     } else {
       toast.error("Sorry! We cannot proceed if this is not registered")
     }
   }
+
+  const isRegistered = watch("isRegistered", data?.item?.details?.isRegistered)
+  const currentCondition = watch("condition", data?.item?.details.condition)
   return (
     <div className="mt-20 mb-14">
       <Typography variant="h1" fontWeight="semibold">
@@ -75,6 +97,7 @@ const Details = ({ pageType }: Prop) => {
             <Input
               type="text"
               id="engineCapacity"
+              defaultValue={data.item?.details?.engineCapacityLiter}
               step=".01"
               label="Engine Capacity (L)"
               disabled={isPending || isLoading}
@@ -87,6 +110,7 @@ const Details = ({ pageType }: Prop) => {
             <Input
               type="text"
               id="engineCapacity"
+              defaultValue={data.item?.details?.engineCapacityCc}
               step=".01"
               label="Engine Capacity (CC)"
               disabled={isPending || isLoading}
@@ -104,7 +128,11 @@ const Details = ({ pageType }: Prop) => {
           >
             <Option value="">Select</Option>
             {Object.keys(E_Rental_Condition).map((key) => {
-              return <Option>{key}</Option>
+              return (
+                <Option key={key} selected={key === currentCondition}>
+                  {key}
+                </Option>
+              )
             })}
           </Select>
           <Input
@@ -112,6 +140,7 @@ const Details = ({ pageType }: Prop) => {
             id="exteriorColor"
             label="Exterior Color"
             disabled={isPending || isLoading}
+            defaultValue={data?.item?.details?.exteriorColor}
             {...register("exteriorColor")}
           />
           {data?.item?.category === E_Rental_Category.Car && (
@@ -121,6 +150,7 @@ const Details = ({ pageType }: Prop) => {
               label="Interior Color"
               disabled={isPending || isLoading}
               {...register("interiorColor")}
+              defaultValue={data?.item?.details?.interiorColor}
             />
           )}
           {data?.item?.category !== E_Rental_Category.Bicycle && (
@@ -130,6 +160,7 @@ const Details = ({ pageType }: Prop) => {
               label="Seating Capacity"
               required={data?.item?.category === E_Rental_Category.Car}
               disabled={isPending || isLoading}
+              defaultValue={data?.item?.details?.seatingCapacity}
               {...register("seatingCapacity", {
                 required: data?.item?.category === E_Rental_Category.Car,
                 valueAsNumber: true,
@@ -142,6 +173,7 @@ const Details = ({ pageType }: Prop) => {
             label="Weight Capacity (kg)"
             step=".01"
             disabled={isPending || isLoading}
+            defaultValue={data?.item?.details?.weightCapacityKg}
             {...register("weightCapacity", {
               valueAsNumber: true,
             })}
@@ -150,6 +182,7 @@ const Details = ({ pageType }: Prop) => {
             type="number"
             id="minAgeReq"
             disabled={isPending || isLoading}
+            defaultValue={data?.item?.details?.minAgeReq}
             label="Minimum Age Requirement"
             required
             {...register("minAgeReq", { required: true, valueAsNumber: true })}
@@ -174,6 +207,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="No"
                   required
+                  checked={isRegistered === "No"}
                 />
                 <label
                   htmlFor="registered-yes"
@@ -189,6 +223,7 @@ const Details = ({ pageType }: Prop) => {
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                   value="Yes"
                   required
+                  checked={isRegistered === "Yes"}
                 />
               </div>
               <Typography

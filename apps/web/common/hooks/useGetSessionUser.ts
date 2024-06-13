@@ -4,8 +4,8 @@ import { ApiService } from "@/common/service/api"
 import { FIFTEEN_MINUTES, TWELVE_MINUTES } from "../constants"
 
 export async function getSessionUser() {
-  const apiService = new ApiService()
-  return await apiService.get(`${API_URL_USERS}/auth/info2`)
+  const apiService = new ApiService("v2")
+  return await apiService.get(`${API_URL_USERS}/auth/info`)
 }
 
 function useGetSessionUser() {
