@@ -122,7 +122,7 @@ const ActivityPhotos = ({ pageType }: Prop) => {
   const handleSave = async () => {
     if (
       photos?.length > 2 ||
-        (data?.item?.photos && data?.item?.photos.length > 2)
+      (data?.item?.photos && data?.item?.photos.length > 2)
     ) {
       updatePhotosInDb()
     } else {
