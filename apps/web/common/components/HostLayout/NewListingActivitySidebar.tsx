@@ -21,7 +21,7 @@ interface HostSidebarProps {
 
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data } = useGetFinishedSections({ listingId, type: "activity" })
   const finishedSections = data?.item?.finishedSections || []
   const ACTIVITY_SETUP_BASE_PATH = "/hosting/listings/activities/setup"

@@ -11,6 +11,7 @@ import useUpdateActivityInclusions from "../../hooks/useUpdateActivityInclusions
 import { T_Update_Activity_Inclusions } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useParams, useRouter } from "next/navigation"
 
 interface Item {
   id: number
@@ -103,7 +104,7 @@ type Prop = {
 
 const Inclusions = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
-  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
+  const router = useRouter()
   const [nonAlcoholicDrinksIncluded, setNonAlcoholicDrinksIncluded] =
     useState<boolean>(false)
   const [alcoholicDrinksIncluded, setAlcoholicDrinksIncluded] =
@@ -117,10 +118,12 @@ const Inclusions = ({ pageType }: Prop) => {
   const [selectedAlcoholOption, setSelectedAlcoholOption] = useState<string>("")
   const [isOpenFood, setIsOpenFood] = useState(false)
   const [isOpenAlcohol, setIsOpenAlcohol] = useState(false)
-
-  const { isPending, data } = useGetActivityInclusionsById(1)
-  const { isPending: updateInclusions, mutate } = useUpdateActivityInclusions(1)
-
+  const params = useParams<{ listingId: string }>()
+  const activityId = String(params.listingId)
+  const { isPending, data } = useGetActivityInclusionsById(activityId)
+  const { isPending: updateInclusions, mutate } =
+    useUpdateActivityInclusions(activityId)
+  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
 
   const toggleDropdown = (dropdownId: string) => {
@@ -204,9 +207,11 @@ const Inclusions = ({ pageType }: Prop) => {
           name,
         }))
       )
-      setSelectedFoodOption(data?.item?.isFoodIncluded)
+      setFoodIncluded(data?.item?.isFoodIncluded)
+      setSelectedFoodOption(data?.item?.selectedFoodOptions[0])
       setAlcoholicDrinksIncluded(data?.item?.isAlcoholicDrinkIncluded)
       setNonAlcoholicDrinksIncluded(data?.item?.isNonAlcoholicDrinkIncluded)
+      setSelectedAlcoholOption(data?.item?.selectedAlcoholicDrinkOptions[0])
     }
   }, [data])
 
@@ -216,7 +221,6 @@ const Inclusions = ({ pageType }: Prop) => {
   const handleInputChange = (event: {
     target: { value: React.SetStateAction<string> }
   }) => {
-    console.log(event.target.value)
     setExclusionName(event.target.value)
   }
 
@@ -273,9 +277,14 @@ const Inclusions = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          queryClient.invalidateQueries({
-            queryKey: ["get-activities-inclusions"],
-          })
+          if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["activity-finished-sections", activityId],
+            })
+            router.push(
+              `/hosting/listings/activities/setup/${activityId}/additional-info`
+            )
+          }
         } else {
           toast.error(String(data.message))
         }
@@ -286,11 +295,6 @@ const Inclusions = ({ pageType }: Prop) => {
     }
 
     mutate(payload, callBackReq)
-    console.log("Food Included:", foodIncluded)
-    console.log("Non-Alcoholic Drinks Included:", nonAlcoholicDrinksIncluded)
-    console.log("Alcoholic Drinks Included:", alcoholicDrinksIncluded)
-    console.log("Selected Food Option After Reset:", selectedFoodOption)
-    console.log("Selected Alcohol Option After Reset:", selectedAlcoholOption)
   }
 
   return (
@@ -312,16 +316,16 @@ const Inclusions = ({ pageType }: Prop) => {
                 Is food included in your activity?
               </Typography>
               <RadioInput
-                id="foodYes"
+                id="food"
                 value="yes"
-                checked={foodIncluded === true}
+                checked={foodIncluded}
                 onChange={(e) =>
                   handleOptionChange(e, setFoodIncluded, setSelectedFoodOption)
                 }
                 label="Yes"
               />
               <RadioInput
-                id="foodNo"
+                id="food"
                 value="no"
                 checked={!foodIncluded}
                 onChange={(e) =>
@@ -437,6 +441,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   className="p-2 rounded-md"
                   type="text"
                   label="Included"
+                  value={inclusionName}
                   onChange={(event) => {
                     const inputValue = event.target.value
                     setInclusionName(inputValue)
@@ -447,14 +452,14 @@ const Inclusions = ({ pageType }: Prop) => {
                   <button
                     type="button"
                     className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
-                    onClick={() =>
+                    onClick={() => {
                       addItem(
                         inclusions,
                         setInclusions,
                         inclusionName,
                         setInclusionName
                       )
-                    }
+                    }}
                   >
                     <LucidePlus color="black" className="rounded-sm w-4 h-4" />
                     <Typography className="text-sm"> Add inclusion</Typography>
@@ -493,6 +498,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   className="p-2 rounded-md"
                   type="text"
                   label="Excluded"
+                  value={exclusionName}
                   onChange={handleInputChange}
                 />
                 <div className="flex justify-end">

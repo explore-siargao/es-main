@@ -194,6 +194,9 @@ export const getRental = async (req: Request, res: Response) => {
       .findOne({ _id: rentalId, host: hostId })
       .populate('details')
       .populate('photos')
+      .populate('addOns')
+      .populate('pricing')
+      .populate('location')
       .exec()
 
     if (!rental) {

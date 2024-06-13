@@ -28,9 +28,9 @@ const BasicInfo = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { isLoading, data } = useGetActivitiesById(listingId)
-  const { isPending, mutate } = useUpdateActivityBasicInfo(listingId)
+  const activityId = String(params.listingId)
+  const { isLoading, data } = useGetActivitiesById(activityId)
+  const { isPending, mutate } = useUpdateActivityBasicInfo(activityId)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [itemData, setItemData] = useState<Item[]>([])
@@ -80,14 +80,16 @@ const BasicInfo = ({ pageType }: Prop) => {
       setDurationHour(data?.item?.durationHour || 0)
       setDurationMinute(data?.item?.durationMinute || 0)
       setItemList(
-        data?.item?.highLights.map((itemName: string, index: number) => ({
+        data?.item?.highLights?.map((itemName: string, index: number) => ({
           id: index + 1,
           itemName: itemName,
         })) || []
       )
       setTitle(data?.item?.title || "")
       setDescription(data?.item?.description || "")
-      setSelectedLanguages(data?.item?.languages || [])
+      setSelectedLanguages(
+        (data?.item?.language || []).filter((lang: string) => lang != null)
+      )
     }
   }, [data])
 
@@ -115,11 +117,14 @@ const BasicInfo = ({ pageType }: Prop) => {
           const updatedFormData = {
             title: title,
             description: description,
-            languages: selectedLanguages,
+            languages: selectedLanguages.filter(
+              (lang) => lang != null && lang.trim() !== ""
+            ),
             durationHour: durationHour,
             durationMinute: durationMinute,
             highLights: itemList.map((item) => item.itemName),
           }
+          console.log("Test: ", updatedFormData.languages)
 
           const callBackReq = {
             onSuccess: (data: any) => {
@@ -127,10 +132,13 @@ const BasicInfo = ({ pageType }: Prop) => {
                 toast.success(data.message)
                 if (pageType === "setup") {
                   queryClient.invalidateQueries({
-                    queryKey: ["activity-finished-sections", listingId],
+                    queryKey: ["activity-finished-sections", activityId],
+                  })
+                  queryClient.invalidateQueries({
+                    queryKey: ["activity-basic-info", activityId],
                   })
                   router.push(
-                    `/hosting/listings/activities/setup/${listingId}/itinerary`
+                    `/hosting/listings/activities/setup/${activityId}/itinerary`
                   )
                 }
               } else {
@@ -356,8 +364,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 >
                   Language/s spoken by host
                 </Typography>
-
-                {languages.map((language, index) => (
+                {languages.map((language: string, index: number) => (
                   <div key={language} className="flex gap-2 my-2 ">
                     <Checkbox
                       id={index}

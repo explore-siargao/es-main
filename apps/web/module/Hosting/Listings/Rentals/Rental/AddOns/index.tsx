@@ -5,11 +5,12 @@ import { Input } from "@/common/components/ui/Input"
 import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useQueryClient } from "@tanstack/react-query"
-import useGetRentalById from "../../../hooks/useGetRentalById"
 import { E_Rental_Category, T_Rental_AddOns } from "@repo/contract"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import useUpdateRentalAddOns from "../hooks/useUpdateRentalAddOns"
+import useGetRentalAddOns from "../hooks/useGetRentalAddOns"
+import { useEffect, useState } from "react"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -20,11 +21,17 @@ const AddOns = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data, isLoading } = useGetRentalById(listingId)
+  const { data, isLoading } = useGetRentalAddOns(listingId)
   const { mutate, isPending } = useUpdateRentalAddOns(listingId)
   const { register, handleSubmit } = useForm<T_Rental_AddOns>({
     values: data?.item?.AddOns as T_Rental_AddOns,
   })
+  const [roofRackChecked, setRoofRackChecked] = useState<boolean>(false)
+  const [dashCamChecked, setDashCamChecked] = useState<boolean>(false)
+  const [boardRackChecked, setBoardRackChecked] = useState<boolean>(false)
+  const [babySeatChecked, setBabySeatChecked] = useState<boolean>(false)
+  const [includesHelmetChecked, setIncludesHelmetChecked] =
+    useState<boolean>(false)
 
   const onSubmit = (formData: T_Rental_AddOns) => {
     const callBackReq = {
@@ -34,6 +41,9 @@ const AddOns = ({ pageType }: Prop) => {
           if (pageType === "setup") {
             queryClient.invalidateQueries({
               queryKey: ["rental-finished-sections", listingId],
+            })
+            queryClient.invalidateQueries({
+              queryKey: ["rental-addOns", listingId],
             })
             router.push(`/hosting/listings/rentals/setup/${listingId}/photos`)
           }
@@ -45,8 +55,25 @@ const AddOns = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
-    mutate(formData, callBackReq)
+    mutate(
+      {
+        ...formData,
+        roofRack: roofRackChecked,
+        dashCam: dashCamChecked,
+        babySeat: babySeatChecked,
+        boardRack: boardRackChecked,
+      },
+      callBackReq
+    )
   }
+
+  useEffect(() => {
+    setRoofRackChecked(data?.item?.roofRack)
+    setDashCamChecked(data?.item?.dashCam)
+    setBabySeatChecked(data?.item?.babySeat)
+    setBoardRackChecked(data?.item?.boardRack)
+    setIncludesHelmetChecked(data?.item?.includesHelmet)
+  }, [data])
 
   return (
     <div className="mt-20">
@@ -63,6 +90,8 @@ const AddOns = ({ pageType }: Prop) => {
                     id="roofRack"
                     type="checkbox"
                     {...register("roofRack")}
+                    onChange={() => setRoofRackChecked(!roofRackChecked)}
+                    checked={roofRackChecked}
                     className="h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500"
                   />
                 </div>
@@ -76,6 +105,8 @@ const AddOns = ({ pageType }: Prop) => {
                     id="dashCam"
                     type="checkbox"
                     {...register("dashCam")}
+                    onChange={() => setDashCamChecked(!dashCamChecked)}
+                    checked={dashCamChecked}
                     className="h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500"
                   />
                 </div>
@@ -93,6 +124,8 @@ const AddOns = ({ pageType }: Prop) => {
                     id="boardRack"
                     type="checkbox"
                     {...register("boardRack")}
+                    onChange={() => setBoardRackChecked(!boardRackChecked)}
+                    checked={boardRackChecked}
                     className="h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500"
                   />
                 </div>
@@ -106,6 +139,8 @@ const AddOns = ({ pageType }: Prop) => {
                     id="babySeat"
                     type="checkbox"
                     {...register("babySeat")}
+                    checked={babySeatChecked}
+                    onChange={() => setBabySeatChecked(!babySeatChecked)}
                     className="h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500"
                   />
                 </div>
@@ -119,6 +154,10 @@ const AddOns = ({ pageType }: Prop) => {
                     id="includesHelmet"
                     type="checkbox"
                     {...register("includesHelmet")}
+                    checked={includesHelmetChecked}
+                    onChange={() =>
+                      setIncludesHelmetChecked(!includesHelmetChecked)
+                    }
                     className="h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500"
                   />
                 </div>
@@ -132,6 +171,7 @@ const AddOns = ({ pageType }: Prop) => {
             type="text"
             id="other"
             label="Other, please specify"
+            defaultValue={data?.item?.others}
             {...register("others")}
           />
         </div>

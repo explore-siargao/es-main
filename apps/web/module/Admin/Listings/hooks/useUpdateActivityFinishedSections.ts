@@ -1,5 +1,5 @@
 import { ApiService } from "@/common/service/api"
-import { API_URL_PROPERTIES } from "@/common/constants"
+import { API_URL_ACTIVITIES } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 interface Section {
@@ -7,19 +7,19 @@ interface Section {
 }
 
 export async function updateFinishedSections(
-  propertyId: string | undefined,
+  activityId: string | undefined,
   props: Section
 ) {
   const apiService = new ApiService("v2")
   return await apiService.patch(
-    `${API_URL_PROPERTIES}/${propertyId}/finished-sections`,
+    `${API_URL_ACTIVITIES}/${activityId}/finished-sections`,
     props
   )
 }
 
-function useUpdateActivityFinishedSections(propertyId: string | undefined) {
+function useUpdateActivityFinishedSections(activityId: string | undefined) {
   const query = useMutation({
-    mutationFn: (props: Section) => updateFinishedSections(propertyId, props),
+    mutationFn: (props: Section) => updateFinishedSections(activityId, props),
   })
   return query
 }

@@ -111,7 +111,7 @@ const ActivityPhotos = ({ pageType }: Prop) => {
           queryKey: ["activity-finished-sections", listingId],
         })
         if (pageType === "setup") {
-          router.push(`/hosting/listings/activities/setup/${listingId}/pricing`)
+          router.push(`/hosting/listings/activities/setup/${listingId}/summary`)
         }
       })
       .catch((err) => {
