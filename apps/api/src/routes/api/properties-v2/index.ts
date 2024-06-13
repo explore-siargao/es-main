@@ -1,7 +1,7 @@
 import express from 'express'
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn2'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
-import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid2'
+import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isHostPropertyOwner from './middlewares/isHostPropertyOwner'
 import {
   addPhoto,
@@ -10,8 +10,11 @@ import {
   getPhotosByPropertyId,
   updatePhoto,
 } from './services/photos'
+import { addProperty } from './services/default'
 
 const router = express.Router()
+
+router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 
 //photos
 router.get(

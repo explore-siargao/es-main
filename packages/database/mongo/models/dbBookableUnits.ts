@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose"
 
 const bookableUnits = new Schema({
-  bookableUnitType: {
+  bookableUnitTypes: {
     type: mongoose.Schema.ObjectId,
     ref: "BookableUnitTypes",
   },
