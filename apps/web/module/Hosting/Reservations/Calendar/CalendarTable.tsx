@@ -40,7 +40,7 @@ const CalendarTable = () => {
     for (let i = 0; i < daysPerPage; i++) {
       const date = addDays(startDate, i);
       headers.push(
-        <th key={i} className="border p-2 w-24">
+        <th key={i} className={`border p-2 w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
           {format(date, 'EEE dd')}
         </th>
       );
@@ -51,9 +51,8 @@ const CalendarTable = () => {
   const generateCalendarRowBorder = () => {
     const headers = [];
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i);
       headers.push(
-        <th key={i} className={`${(i + 1) !== daysPerPage && "border-r"} p-2 w-24`}>
+        <th key={i} className={`${(i + 1) !== daysPerPage && "border-r"} p-2 w-full max-w-24`}>
         </th>
       );
     }
@@ -72,8 +71,8 @@ const CalendarTable = () => {
         colspan++;
       } else {
         headers.push(
-          <td key={i} colSpan={colspan} className="border text-lg py-2 font-bold text-center">
-            {format(addDays(startDate, i - colspan), 'MMM yyyy')}
+          <td key={i} colSpan={colspan} className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center">
+            {format(addDays(startDate, i - colspan), 'MMMM yyyy')}
           </td>
         );
         currentMonth = month;
@@ -81,8 +80,8 @@ const CalendarTable = () => {
       }
     }
     headers.push(
-      <td key="last" colSpan={colspan} className="border text-lg py-2 font-bold text-center">
-        {format(addDays(startDate, daysPerPage - colspan), 'MMM yyyy')}
+      <td key="last" colSpan={colspan} className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center">
+        {format(addDays(startDate, daysPerPage - colspan), 'MMMM yyyy')}
       </td>
     );
 
@@ -113,12 +112,12 @@ const CalendarTable = () => {
   };
 
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-lg border">
+    <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
       <div className="overflow-auto">
         <table className="min-w-max w-full rounded-lg">
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
-              <td colSpan={1} rowSpan={2} className="border">
+              <td colSpan={1} rowSpan={2} className="">
                 <Sidebar nextPrevFunction={moveStartDateByOneDay} />
               </td>
               {generateMonthHeader()}
@@ -128,25 +127,25 @@ const CalendarTable = () => {
             </tr>
           </thead>
           <tbody>
-            {sampleData.categories.map(category => (
+            {sampleData.categories.map((category, index) => (
               <React.Fragment key={category.name}>
                 <tr className="hover:bg-gray-100 cursor-pointer" onClick={() => toggleCollapse(category.name)}>
-                  <td className="border p-4 text-left font-bold">
+                  <td className={`border p-4 text-left font-bold border-l-0`}>
                     <span className='flex gap-2 items-center'>
                       {!collapsed[category.name] ? <ChevronRight /> : <ChevronDown />}
                       {category.name}
                     </span>
                   </td>
                   {[...Array(daysPerPage)].map((_, i) => (
-                    <td key={i} className="border text-sm p-2 w-24 text-center text-gray-500 font-semibold">
+                    <td key={i} className={`border text-sm p-2 text-center text-gray-500 font-semibold max-w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
                       ${parseFloat(category.price).toFixed(2)}
                     </td>
                   ))}
                 </tr>
-                {!collapsed[category.name] && category.rooms.map(room => (
+                {!collapsed[category.name] && category.rooms.map((room, index) => (
                   <tr key={room.abbr} className="hover:bg-gray-100 relative">
-                    <td className="border p-4 text-left">{room.abbr}</td>
-                    <td colSpan={daysPerPage} className="border text-center relative">
+                    <td className="border p-4 text-left border-l-0">{room.abbr}</td>
+                    <td colSpan={daysPerPage} className={`border text-center relative ${(index + 1) !== daysPerPage && "border-r-0"}`}>
                       {room.bookings.map(booking => {
                         const style = getBookingStyle(startDate, daysPerPage, booking);
                         if (!style) return null;
