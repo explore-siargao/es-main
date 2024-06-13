@@ -11,7 +11,7 @@ const propertyTypeEnum = [
 const properties = new Schema({
   offerBy: {
     type: mongoose.Schema.ObjectId,
-    ret: "Users",
+    ref: "Users",
   },
   status: {
     type: String,
