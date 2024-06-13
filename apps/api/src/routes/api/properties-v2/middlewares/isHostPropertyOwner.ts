@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { ResponseService } from '@/common/service/response'
 import { USER_NOT_AUTHORIZED } from '@/common/constants'
 import { E_UserRole } from '@repo/contract'
+import { dbProperties } from '@repo/database'
 
 const response = new ResponseService()
 
@@ -19,9 +20,8 @@ const isHostPropertyOwner = async (
 
   let listing
   try {
-    //@ts-expect-error
     listing = await dbProperties.findOne({
-      host: loggedInUser.id,
+      offerBy: loggedInUser.id,
       _id: propertyId,
     })
   } catch (err: any) {

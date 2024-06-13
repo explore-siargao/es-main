@@ -9,9 +9,9 @@ const propertyTypeEnum = [
   "Villa",
 ]
 const properties = new Schema({
-  host: {
+  offerBy: {
     type: mongoose.Schema.ObjectId,
-    ret: "Users",
+    ref: "Users",
   },
   status: {
     type: String,

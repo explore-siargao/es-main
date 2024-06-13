@@ -25,3 +25,27 @@ export const getPropertiesByHostId = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getPropertyById = async (req: Request, res: Response) => {
+  try {
+    const propertyId = req.params.propertyId
+
+    const property = await dbProperties
+      .findOne({ _id: propertyId })
+      .populate('offerBy')
+      .populate('photos')
+      .populate('location')
+      .populate('facilities')
+      .populate('policies')
+      .populate('bookableUnits')
+      .populate('reservations')
+
+    res.json(response.success({ item: property }))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}

@@ -10,11 +10,18 @@ import {
   getPhotosByPropertyId,
   updatePhoto,
 } from './services/photos'
-import { getPropertiesByHostId } from './services/default'
+import { getPropertiesByHostId, getPropertyById } from './services/default'
 
 const router = express.Router()
 
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
+router.get(
+  '/:propertyId',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPropertyById
+)
 
 //photos
 router.get(
