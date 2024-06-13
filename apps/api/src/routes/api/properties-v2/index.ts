@@ -10,11 +10,13 @@ import {
   getPhotosByPropertyId,
   updatePhoto,
 } from './services/photos'
-import { addProperty } from './services/default'
+
+import { getPropertiesByHostId, addProperty } from './services/default'
 
 const router = express.Router()
-
+//property
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
+router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 
 //photos
 router.get(

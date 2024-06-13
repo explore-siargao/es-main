@@ -51,6 +51,28 @@ export const addProperty = async (req: Request, res: Response) => {
     )
   } catch (err: any) {
     return res.json(
+        response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+
+export const getPropertiesByHostId = async (req: Request, res: Response) => {
+  try {
+    const hostId = req.params.activityId
+    const properties = await dbProperties.find({ host: hostId })
+
+    const filteredProperties = properties.reverse()
+    console.log('properties', filteredProperties)
+    res.json(
+      response.success({
+        items: filteredProperties,
+      })
+    )
+  } catch (err: any) {
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
