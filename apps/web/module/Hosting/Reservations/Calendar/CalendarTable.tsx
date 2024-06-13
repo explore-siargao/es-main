@@ -111,6 +111,25 @@ const CalendarTable = () => {
     return { startCol, colSpan };
   };
 
+  const calculateRemainingQuantity = (category: Category, date: Date) => {
+    let bookedRooms = 0;
+
+    category.rooms.forEach(room => {
+      room.bookings.forEach(booking => {
+        const bookingStart = new Date(booking.start_date);
+        const bookingEnd = new Date(booking.end_date);
+
+        if (isBefore(date, bookingStart) || isAfter(date, bookingEnd)) {
+          return;
+        }
+
+        bookedRooms += 1;
+      });
+    });
+
+    return category.rooms.length - bookedRooms;
+  };
+
   return (
     <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
       <div className="overflow-auto">
@@ -136,11 +155,22 @@ const CalendarTable = () => {
                       {category.name}
                     </span>
                   </td>
-                  {[...Array(daysPerPage)].map((_, i) => (
-                    <td key={i} className={`border text-sm p-2 text-center text-gray-500 font-semibold max-w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
-                      ${parseFloat(category.price).toFixed(2)}
-                    </td>
-                  ))}
+                  {[...Array(daysPerPage)].map((_, i) => {
+                    const date = addDays(startDate, i);
+                    const remainingQuantity = calculateRemainingQuantity(category, date);
+                    return (
+                      <td key={i} className={`border gap-1 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
+                        <div className='flex flex-col'>
+                          <div>
+                            {remainingQuantity}
+                          </div>
+                          <div>
+                            ${parseFloat(category.price).toFixed(2)}
+                          </div>
+                        </div>
+                      </td>
+                    );
+                  })}
                 </tr>
                 {!collapsed[category.name] && category.rooms.map((room, index) => (
                   <tr key={room.abbr} className="hover:bg-gray-100 relative">
