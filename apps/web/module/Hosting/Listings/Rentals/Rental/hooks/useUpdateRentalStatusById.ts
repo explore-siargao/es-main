@@ -7,7 +7,7 @@ export async function updateRentalStatus(
   rentalId: string | undefined,
   props: T_Rental_Status
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_RENTALS}/${rentalId}/status`, props)
 }
 

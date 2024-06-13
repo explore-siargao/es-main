@@ -15,35 +15,35 @@ const Car = () => {
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Engine Capacity (L):</span>{" "}
-        {rental?.Details?.engineCapacityLiter}
+        {rental?.details?.engineCapacityLiter}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Condition:</span>{" "}
-        {rental?.Details?.condition}
+        {rental?.details?.condition}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Exterior Color:</span>{" "}
-        {rental?.Details?.exteriorColor}
+        {rental?.details?.exteriorColor}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Interior Color:</span>{" "}
-        {rental?.Details?.interiorColor}
+        {rental?.details?.interiorColor}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Seating Capacity:</span>{" "}
-        {rental?.Details?.seatingCapacity}
+        {rental?.details?.seatingCapacity}
       </Typography>
       <Typography variant="h5" className="mt-2">
-        <span className="font-semibold">Weight Capacity:</span>{" "}
-        {rental?.Details?.weightCapacity}
+        <span className="font-semibold">Weight Capacity(kg):</span>{" "}
+        {rental?.details?.weightCapacityKg}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Minimum Age Requirement:</span>{" "}
-        {rental?.Details?.minAgeReq}
+        {rental?.details?.minAgeReq}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Registered and lawful:</span>{" "}
-        {rental?.Details?.isRegistered}
+        {rental?.details?.isRegistered}
       </Typography>
     </>
   )
