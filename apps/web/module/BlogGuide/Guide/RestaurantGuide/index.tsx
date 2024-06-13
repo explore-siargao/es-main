@@ -208,7 +208,7 @@ export const userReviews = [
 
 export const RestaurantGuide = () => {
   return (
-    <WidthWrapper width="small" className="mt-4 lg:mt-8">
+    <WidthWrapper width="small" className="mt-36">
       <h1 className="text-2xl font-bold">RESTAURANT GUIDE</h1>
       <SectionInfo images={imageGallery} title="Kermit Siargao" />
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
