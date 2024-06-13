@@ -16,7 +16,7 @@ const properties = new Schema({
   status: {
     type: String,
     enum: statusEnum,
-    default: "Pending",
+    default: "Incomplete",
   },
   finishedSections: {
     type: [String],
