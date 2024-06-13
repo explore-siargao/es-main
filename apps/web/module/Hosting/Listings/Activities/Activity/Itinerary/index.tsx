@@ -84,7 +84,7 @@ const Itinerary = ({ pageType }: Prop) => {
     }
     mutate(
       {
-        ...formData
+        ...formData,
       },
       callBackReq
     )
@@ -175,7 +175,9 @@ const Itinerary = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
-                  {...register("meetingPoint.howToGetThere", { required: true })}
+                  {...register("meetingPoint.howToGetThere", {
+                    required: true,
+                  })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
                   Accurately explain on how to get in your meeting point address

@@ -28,9 +28,10 @@ const Details = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { data, isLoading } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalDetails(listingId)
-  const { register, handleSubmit, getValues, watch} = useForm<T_Rental_Details>({
-    values: data?.item?.Details as T_Rental_Details,
-  })
+  const { register, handleSubmit, getValues, watch } =
+    useForm<T_Rental_Details>({
+      values: data?.item?.Details as T_Rental_Details,
+    })
 
   const onSubmit = (formData: T_Rental_Details) => {
     const dbCategory = data?.item?.category
@@ -128,10 +129,7 @@ const Details = ({ pageType }: Prop) => {
             <Option value="">Select</Option>
             {Object.keys(E_Rental_Condition).map((key) => {
               return (
-                <Option
-                  key={key}
-                  selected={key === currentCondition}
-                >
+                <Option key={key} selected={key === currentCondition}>
                   {key}
                 </Option>
               )
