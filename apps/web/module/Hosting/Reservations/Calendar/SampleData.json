@@ -1,0 +1,103 @@
+{
+  "categories": [
+    {
+      "name": "Standard",
+      "rooms": [
+        {
+          "abbr": "STA(1)",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "Maria",
+              "start_date": "2024-06-03",
+              "end_date": "2024-07-07"
+            }
+          ]
+        },
+        {
+          "abbr": "STA(2)",
+          "status": "available",
+          "bookings": []
+        },
+        {
+          "abbr": "STA(3)",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "Big Chuck",
+              "start_date": "2024-06-08",
+              "end_date": "2024-06-09"
+            }
+          ]
+        },
+        {
+          "abbr": "STA(5)",
+          "status": "available",
+          "bookings": []
+        }
+      ]
+    },
+    {
+      "name": "Double Room",
+      "rooms": [
+        {
+          "abbr": "DR5(1)",
+          "status": "available",
+          "bookings": []
+        },
+        {
+          "abbr": "TWN 5/1",
+          "status": "available",
+          "bookings": []
+        },
+        {
+          "abbr": "TWN 8/1",
+          "status": "available",
+          "bookings": []
+        }
+      ]
+    },
+    {
+      "name": "Room",
+      "rooms": [
+        {
+          "abbr": "TWI 1/1",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "Laura Pulson",
+              "start_date": "2023-08-29",
+              "end_date": "2023-08-31"
+            },
+            {
+              "name": "Broken",
+              "start_date": "2023-08-29",
+              "end_date": "2023-08-31"
+            }
+          ]
+        },
+        {
+          "abbr": "TWI 1/2",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "George Common",
+              "start_date": "2023-08-29",
+              "end_date": "2023-09-02"
+            },
+            {
+              "name": "Katie Holmes",
+              "start_date": "2023-08-30",
+              "end_date": "2023-09-01"
+            }
+          ]
+        },
+        {
+          "abbr": "TWI 2/1",
+          "status": "available",
+          "bookings": []
+        }
+      ]
+    }
+  ]
+}

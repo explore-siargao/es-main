@@ -1,10 +1,39 @@
 import { useState } from 'react';
-import { format, addDays, startOfMonth, getMonth, getYear } from 'date-fns';
+import { format, addDays, startOfMonth, getMonth } from 'date-fns';
 import Sidebar from './Sidebar';
+import sampleData from './SampleData.json';
+import React from 'react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+
+export interface Booking {
+  name: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface Room {
+  abbr: string;
+  status: string;
+  bookings: Booking[];
+}
+
+export interface Category {
+  name: string;
+  rooms: Room[];
+}
+
+export interface SampleData {
+  categories: Category[];
+}
 
 const CalendarTable = () => {
-  const [startDate, setStartDate] = useState(startOfMonth(new Date()));
+  const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()));
+  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
   const daysPerPage = 15;
+
+  const toggleCollapse = (category: string) => {
+    setCollapsed(prev => ({ ...prev, [category]: !prev[category] }));
+  };
 
   const generateCalendarHeader = () => {
     const headers = [];
@@ -68,12 +97,21 @@ const CalendarTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="hover:bg-gray-100">
-              <td className="border p-4 text-center"> </td>
-              {Array.from({ length: daysPerPage }).map((_, index) => (
-                <td key={index} className="border p-4 text-center"> </td>
-              ))}
-            </tr>
+            {sampleData.categories.map(category => (
+              <React.Fragment key={category.name}>
+                <tr className="hover:bg-gray-100 cursor-pointer" onClick={() => toggleCollapse(category.name)}>
+                  <td className="border p-4 text-left font-bold" colSpan={daysPerPage + 1}><span className='flex gap-2'>{!collapsed[category.name] ? <ChevronRight /> : <ChevronDown />}{category.name}</span></td>
+                </tr>
+                {!collapsed[category.name] && category.rooms.map(room => (
+                  <tr key={room.abbr} className="hover:bg-gray-100">
+                    <td className="border p-4 text-left">{room.abbr}</td>
+                    {Array.from({ length: daysPerPage }).map((_, index) => (
+                      <td key={index} className="border p-4 text-center"> </td>
+                    ))}
+                  </tr>
+                ))}
+              </React.Fragment>
+            ))}
           </tbody>
         </table>
       </div>

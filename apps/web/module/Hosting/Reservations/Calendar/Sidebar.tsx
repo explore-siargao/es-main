@@ -1,6 +1,6 @@
 import { Button } from '@/common/components/ui/Button';
 import { Input } from '@/common/components/ui/Input';
-import { Calendar, ChevronDown, ChevronRight, LayoutList, Plus, Search } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronLeft, ChevronRight, LayoutList, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 
 type SideBarProps = {
@@ -19,7 +19,8 @@ const Sidebar = ({ nextPrevFunction }: SideBarProps) => {
         <Button size={"sm"} variant={"secondary"} className='rounded-full w-full'><Plus className='w-5' /></Button>
       </div>
       <div className="mb-4 flex gap-2">
-        <Button variant={"outline"} className="py-2 px-4 rounded-l-lg rounded-r-none w-full">TODAY</Button>
+        <Button variant={"outline"} onClick={() => nextPrevFunction(-1)} className="py-2 px-4 rounded w-max rounded-l-full"><ChevronLeft/></Button>
+        <Button variant={"outline"} className="py-2 px-4 rounded-none w-full">TODAY</Button>
         <Button variant={"outline"} onClick={() => nextPrevFunction(1)} className="py-2 px-4 rounded w-max rounded-r-full"><ChevronRight/></Button>
       </div>
       <div>
