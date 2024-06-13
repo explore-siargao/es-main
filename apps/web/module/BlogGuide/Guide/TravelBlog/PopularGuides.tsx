@@ -11,47 +11,35 @@ function PopularGuides() {
   const travelName = params.travelName
   const images = data.travelBlog.images
   return (
-      <div className="grid w-60">
+    <div className="grid w-60">
       <div>
-      <h1 className="mt-10 text-xl font-bold">POPULAR GUIDES</h1>
-      <Separator
-          orientation="horizontal"
-          className="mb-5 bg-gray-300"
-        />
+        <h1 className="mt-10 text-xl font-bold">POPULAR GUIDES</h1>
+        <Separator orientation="horizontal" className="mb-5 bg-gray-300" />
         <GridImage
-        src={images[0]?.fileKey}
-        alt={String(images[0]?.alt)}
-        text="Lorem ipsum dolor sit amet, consectetur"
-      />
-      <Separator
-          orientation="horizontal"
-          className="my-5 bg-gray-300"
+          src={images[0]?.fileKey}
+          alt={String(images[0]?.alt)}
+          text="Lorem ipsum dolor sit amet, consectetur"
         />
+        <Separator orientation="horizontal" className="my-5 bg-gray-300" />
         <GridImage
-        src={images[0]?.fileKey}
-        alt={String(images[0]?.alt)}
-        text="Lorem ipsum dolor sit amet, consectetur"
-      />
-      <Separator
-          orientation="horizontal"
-          className="my-5 bg-gray-300"
+          src={images[0]?.fileKey}
+          alt={String(images[0]?.alt)}
+          text="Lorem ipsum dolor sit amet, consectetur"
         />
+        <Separator orientation="horizontal" className="my-5 bg-gray-300" />
         <GridImage
-        src={images[0]?.fileKey}
-        alt={String(images[0]?.alt)}
-        text="Lorem ipsum dolor sit amet, consectetur"
-      />
-      <Separator
-          orientation="horizontal"
-          className="my-5 bg-gray-300"
+          src={images[0]?.fileKey}
+          alt={String(images[0]?.alt)}
+          text="Lorem ipsum dolor sit amet, consectetur"
         />
+        <Separator orientation="horizontal" className="my-5 bg-gray-300" />
         <GridImage
-        src={images[0]?.fileKey}
-        alt={String(images[0]?.alt)}
-        text="Lorem ipsum dolor sit amet, consectetur"
-      />
+          src={images[0]?.fileKey}
+          alt={String(images[0]?.alt)}
+          text="Lorem ipsum dolor sit amet, consectetur"
+        />
       </div>
-      </div>  
+    </div>
   )
 }
 

@@ -61,7 +61,6 @@ function Header({
               alt={APP_NAME}
             />
           </Link>
-
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
