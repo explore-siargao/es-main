@@ -3,10 +3,10 @@ import Image from "next/image"
 import { Grip } from "lucide-react"
 import { T_ImagesProps } from "../types/SectionInfo"
 
-const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
+const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
   return (
     <div className="relative">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-96">
+      <div className={`grid grid-cols-1 ${!isViewModal ? 'border border-primary-500 rounded-xl' : ''}  md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-96`}>
         <div
           className="relative bg-gray-200 
                      lg:rounded-tl-xl lg:rounded-bl-xl 
@@ -29,8 +29,8 @@ const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
             rounded-tl-xl rounded-tr-xl"
           />
         </div>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="relative bg-gray-200">
+        <div className={`grid ${!isViewModal ? 'grid-cols-1' : 'grid-cols-2'} gap-2`}>
+        {isViewModal ? <div className="relative bg-gray-200">
             <Image
               onClick={openModal}
               src={`/assets/${images[1]?.fileKey}`}
@@ -39,8 +39,8 @@ const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
               alt={String(images[1]?.alt)}
               className="cursor-pointer"
             />
-          </div>
-          <div className="relative bg-gray-200 rounded-tr-xl">
+          </div>: null }
+         <div className="relative bg-gray-200 rounded-tr-xl">
             <Image
               onClick={openModal}
               src={`/assets/${images[2]?.fileKey}`}
@@ -52,8 +52,8 @@ const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
               md:rounded-tr-xl md:rounded-bl-none
               "
             />
-          </div>
-          <div
+          </div> 
+          {isViewModal ? <div
             className="relative bg-gray-200
                           sm:rounded-bl-xl
                           rounded-bl-xl"
@@ -69,7 +69,7 @@ const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
               sm:rounded-bl-xl lg:rounded-bl-none
               rounded-bl-xl"
             />
-          </div>
+          </div> : null }
           <div
             className="relative bg-gray-200 
                           2xl:rounded-br-xl
@@ -78,10 +78,10 @@ const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
           >
             <Image
               onClick={openModal}
-              src={`/assets/${images[4]?.fileKey}`}
+              src={`/assets/${images[1]?.fileKey}`}
               layout="fill"
               objectFit="cover"
-              alt={String(images[4]?.alt)}
+              alt={String(images[1]?.alt)}
               className="cursor-pointer 
               2xl:rounded-br-xl 
               xl:rounded-br-xl 
@@ -92,14 +92,15 @@ const ImageGallery = ({ images, openModal }: T_ImagesProps) => {
           </div>
         </div>
       </div>
-      <Button
+      {isViewModal ?  <Button
         variant="shaded"
         className="absolute bottom-2 md:bottom-4 right-1 md:right-4 bg-white"
         onClick={() => openModal()}
       >
         <Grip className="h-4 w-4 mr-2 mb-0.5" />
         Show all photos
-      </Button>
+      </Button> : null}
+     
     </div>
   )
 }

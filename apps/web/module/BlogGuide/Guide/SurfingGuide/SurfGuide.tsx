@@ -16,7 +16,7 @@ function SurfGuide() {
     <div>
       <div className="flex flex-col gap-2 mb-8">
         <h1 className="text-2xl font-bold">SURF GUIDE</h1>
-        <ImageGallery images={images} openModal={openModal} />
+        <ImageGallery images={images} openModal={openModal} isViewModal={true} />
       </div>
       <h2 className="text-xl font-bold mb-2">GUIDE</h2>
       <p className="mb-8">{data.surfGuide.guide}</p>
