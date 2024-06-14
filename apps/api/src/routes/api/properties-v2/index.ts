@@ -16,9 +16,11 @@ import {
   getPropertyById,
   addProperty,
   deleteProperty,
+  getPropertyType,
 } from './services/default'
 
 const router = express.Router()
+
 //property
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
@@ -36,6 +38,15 @@ router.delete(
   isCsrfTokenValid,
   isHostPropertyOwner,
   deleteProperty
+)
+
+//propertyType
+router.get(
+  '/:propertyId/property-type',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPropertyType
 )
 
 //photos
