@@ -11,6 +11,7 @@ import { useSegmentsStore } from "../store/useSegmentsStore"
 import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
 import { useParams } from "next/navigation"
 import CustomSpecificMap from "@/common/components/CustomSpecificMap"
+import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -34,7 +35,7 @@ const BuilderModal = ({
   } | null>(null)
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data } = useGetRentalById(listingId)
+  const { data } = useGetActivitiesById(listingId)
   const updateCoordinates = (latitude: number, longitude: number) => {
     setCoordinates({ latitude, longitude })
   }
