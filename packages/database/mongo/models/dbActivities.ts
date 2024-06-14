@@ -100,7 +100,7 @@ const activities = new Schema({
   },
   meetingPoint: {
     type: mongoose.Schema.ObjectId,
-    ref: "Addresses",
+    ref: "Locations",
   },
   photos: {
     type: [mongoose.Schema.ObjectId],
