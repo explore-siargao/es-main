@@ -20,7 +20,7 @@ import { Typography } from "../ui/Typography"
 import { useParams } from "next/navigation"
 import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
 import transmissionAcronym from "@/module/Hosting/Listings/helpers/transmissionAcronym"
-import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
+import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
 
 const unAuthMenus = [
   {
@@ -57,7 +57,7 @@ function ListingActivityHeader({
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
   const listingId = String(params.listingId)
-  const { data } = useGetRentalById(listingId)
+  const { data } = useGetActivitiesById(listingId)
   const rental = data?.item
   const renderTransition = (children: React.ReactNode) => (
     <Transition

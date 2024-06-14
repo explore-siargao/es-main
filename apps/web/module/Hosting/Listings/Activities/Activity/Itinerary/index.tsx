@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -41,22 +41,16 @@ const Itinerary = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
-  const { data } = useGetActivitiesById(listingId) // update this for activity
+  const { data, isPending: activityIsLoading } = useGetActivitiesById(listingId) // update this for activity
   const { latitude, longitude } = useCoordinatesStore()
-  const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const segments = useSegmentsStore((state) => state.segments)
-  const { register, handleSubmit } = useForm<T_Activity_Itinerary>({
-    values: data?.item?.Location,
+  const updateSegment = useSegmentsStore((state) => state.updateSegments)
+  const { register, handleSubmit, watch } = useForm<T_Activity_Itinerary>({
+    values: data?.item?.meetingPoint,
   })
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
-  }
-  const [isToggled, setIsToggled] = useState(false)
-
-  const handleToggle = () => {
-    setIsToggled(!isToggled)
   }
 
   const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
@@ -90,10 +84,49 @@ const Itinerary = ({ pageType }: Prop) => {
     )
   }
   const currentCoords = (
-    data?.item?.Location?.latitude
-      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
+    data?.item?.meetingPoint?.latitude
+      ? [
+          data?.item?.meetingPoint?.longitude,
+          data?.item?.meetingPoint?.latitude,
+        ]
       : [9.913431, 126.049483]
   ) as [number, number]
+
+  const street = watch("meetingPoint.street", data?.item?.meetingPoint?.street)
+  const segments = watch("segments", data?.item?.segments)
+  const city = watch("meetingPoint.city", data?.item?.meetingPoint?.city)
+  const brgy = watch(
+    "meetingPoint.barangay",
+    data?.item?.meetingPoint?.barangay
+  )
+  const howToGetThere = watch(
+    "meetingPoint.barangay",
+    data?.item?.meetingPoint?.howToGetThere
+  )
+  const toggled = watch(
+    "isSegmentBuilderEnabled",
+    data?.item?.isSegmentBuilderEnabled
+  )
+  const [selectedMunicipality, setSelectedMunicipality] = useState(
+    activityIsLoading || !city ? "" : city
+  )
+  const [isToggled, setIsToggled] = useState(
+    activityIsLoading ? false : toggled
+  )
+
+  useEffect(() => {
+    if (!activityIsLoading) {
+      setIsToggled(toggled)
+      segments.forEach((segment) => {
+        updateSegment(segment)
+      })
+    }
+  }, [activityIsLoading, toggled])
+
+  const handleToggle = () => {
+    setIsToggled(!isToggled)
+  }
+
   return (
     <div className="mt-20 mb-36">
       {isPending ? (
@@ -134,19 +167,25 @@ const Itinerary = ({ pageType }: Prop) => {
                 id="streetAddress"
                 label="Street address"
                 required
+                defaultValue={street}
+                disabled={activityIsLoading}
                 {...register("meetingPoint.street", { required: true })}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                value={selectedMunicipality}
+                defaultValue={selectedMunicipality}
                 required
                 {...register("meetingPoint.city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
                 {MUNICIPALITIES.map((municipality) => (
-                  <Option key={municipality.name} value={municipality.name}>
+                  <Option
+                    key={municipality.name}
+                    value={municipality.name}
+                    selected={municipality.name === city}
+                  >
                     {municipality.name}
                   </Option>
                 ))}
@@ -161,9 +200,13 @@ const Itinerary = ({ pageType }: Prop) => {
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === city
                 ).map((barangay) => (
-                  <Option key={barangay.name} value={barangay.name}>
+                  <Option
+                    key={barangay.name}
+                    value={barangay.name}
+                    selected={brgy === barangay.name}
+                  >
                     {barangay.name}
                   </Option>
                 ))}
@@ -175,6 +218,8 @@ const Itinerary = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
+                  defaultValue={howToGetThere}
+                  disabled={activityIsLoading}
                   {...register("meetingPoint.howToGetThere", {
                     required: true,
                   })}
@@ -221,7 +266,7 @@ const Itinerary = ({ pageType }: Prop) => {
             <ToggleSwitch
               checked={isToggled}
               onChange={handleToggle}
-              disabled={isPending}
+              disabled={isPending || activityIsLoading}
             />
             <Typography>Enable itinerary builder</Typography>
           </div>
