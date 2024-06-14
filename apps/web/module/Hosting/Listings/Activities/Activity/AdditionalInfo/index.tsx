@@ -75,6 +75,9 @@ const AdditionalInfo = ({ pageType }: Prop) => {
             queryClient.invalidateQueries({
               queryKey: ["activity-finished-sections", activityId],
             })
+            queryClient.invalidateQueries({
+              queryKey: ["get-activities-additional-info", activityId],
+            })
             router.push(
               `/hosting/listings/activities/setup/${activityId}/photos`
             )

@@ -105,10 +105,10 @@ const ActivityPhotos = ({ pageType }: Prop) => {
       })
       .then(() => {
         queryClient.invalidateQueries({
-          queryKey: ["activity", listingId],
+          queryKey: ["activity-finished-sections", listingId],
         })
         queryClient.invalidateQueries({
-          queryKey: ["activity-finished-sections", listingId],
+          queryKey: ["activity", listingId],
         })
         if (pageType === "setup") {
           router.push(`/hosting/listings/activities/setup/${listingId}/summary`)

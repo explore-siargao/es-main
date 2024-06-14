@@ -153,6 +153,7 @@ export const updateItineraries = async (req: Request, res: Response) => {
             meetingPoint: updateMeetingPoint?._id || addMeetingPoint?._id,
             segments: segments,
             isSegmentBuilderEnabled: isSegmentBuilderEnabled,
+            finishedSections: ['basicInfo', 'itinerary'],
             updatedAt: Date.now(),
           },
         },

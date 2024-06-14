@@ -6,7 +6,7 @@ import { LucideEye } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { T_Activity, T_Photo } from "@repo/contract"
+import { T_Activity, T_Activity_Segment, T_Photo } from "@repo/contract"
 
 import toast from "react-hot-toast"
 import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
@@ -111,37 +111,33 @@ const ActivitySummary = () => {
                 Itinerary
               </Typography>
               <div className="grid grid-cols-4 gap-6 mt-6">
-                {data?.item?.photos?.map((photo: T_Photo, index: number) => (
-                  <div key={index} className="h-full">
-                    {photo.isMain && (
-                      <div className="flex justify-center">
-                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
-                          Preferred main photo
-                        </span>
+                {data?.item?.segments.map((segment: T_Activity_Segment) => {
+                  return (
+                    <>
+                      <div className="ml-4 w-[2px] h-12 bg-primary-600 mt-2"></div>
+                      <div
+                        className={`mt-2 shadow-md rounded-lg p-4 border ${segment.transfer ? "border-secondary-200" : "border-primary-500"} `}
+                      >
+                        <Typography variant="h4">
+                          {segment.transfer
+                            ? `Transfer via ${segment.transfer} 
+                  (${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? segment.durationMinute + "m" : ""})`
+                            : segment.location}
+                        </Typography>
+                        <p className="text-text-400 text-sm">
+                          {segment.activities?.join(", ")}{" "}
+                          {segment.activities
+                            ? `(${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? " " + segment.durationMinute + "m" : ""})`
+                            : ""}
+                        </p>
+                        <p className="text-text-400 text-sm">
+                          {segment.optional && "Optional"}
+                          {segment.hasAdditionalFee && ", Extra Fee"}
+                        </p>
                       </div>
-                    )}
-                    <div
-                      className={cn(
-                        `relative h-52 w-full bg-primary-50 rounded-lg`,
-                        photo.isMain && "border-2 border-secondary-500"
-                      )}
-                    >
-                      <Image
-                        src={"/assets/" + photo.key}
-                        alt={`preview-` + index}
-                        layout="fill"
-                        objectFit="cover"
-                        objectPosition="center"
-                        className="rounded-lg"
-                      />
-                    </div>
-                    <Typography
-                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
-                    >
-                      {photo.description || "No description"}
-                    </Typography>
-                  </div>
-                ))}
+                    </>
+                  )
+                })}
               </div>
             </div>
 

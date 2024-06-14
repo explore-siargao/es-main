@@ -61,7 +61,10 @@ const Itinerary = ({ pageType }: Prop) => {
         if (!data.error) {
           toast.success(data.message)
           queryClient.invalidateQueries({
-            queryKey: ["property-finished-sections", listingId],
+            queryKey: ["activity-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["get-activities", listingId],
           })
           if (pageType === "setup") {
             router.push(
@@ -110,7 +113,7 @@ const Itinerary = ({ pageType }: Prop) => {
     data?.item?.meetingPoint?.barangay
   )
   const howToGetThere = watch(
-    "meetingPoint.barangay",
+    "meetingPoint.howToGetThere",
     data?.item?.meetingPoint?.howToGetThere
   )
   const toggled = watch(
