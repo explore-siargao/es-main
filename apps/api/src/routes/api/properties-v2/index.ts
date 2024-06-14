@@ -15,6 +15,7 @@ import {
   getPropertiesByHostId,
   getPropertyById,
   addProperty,
+  deleteProperty,
 } from './services/default'
 
 const router = express.Router()
@@ -27,6 +28,14 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyById
+)
+router.delete(
+  '/:propertyId',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  deleteProperty
 )
 
 //photos
