@@ -18,12 +18,12 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
-import useGetRentalById from "../../../hooks/useGetRentalById"
 import { T_Activity_Segment, T_Location } from "@repo/contract"
 import Builder from "./Builder"
 import ToggleSwitch from "@/common/components/ui/Toggle"
 import { useSegmentsStore } from "./store/useSegmentsStore"
 import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
+import useGetActivitiesById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -41,7 +41,7 @@ const Itinerary = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
-  const { data } = useGetRentalById(listingId) // update this for activity
+  const { data } = useGetActivitiesById(listingId) // update this for activity
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const segments = useSegmentsStore((state) => state.segments)

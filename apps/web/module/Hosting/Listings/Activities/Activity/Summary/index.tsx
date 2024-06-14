@@ -286,6 +286,48 @@ const ActivitySummary = () => {
                 {data?.item?.cancellationDays} days
               </Typography>
             </div>
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Photos
+              </Typography>
+              <div className="grid grid-cols-4 gap-6 mt-3">
+                {data?.item?.photos?.map((photo: T_Photo, index: number) => (
+                  <div key={index} className="h-full">
+                    {photo.isMain && (
+                      <div className="flex justify-center">
+                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
+                          Preferred main photo
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        `relative h-52 w-full bg-primary-50 rounded-lg`,
+                        photo.isMain && "border-2 border-secondary-500"
+                      )}
+                    >
+                      <Image
+                        src={"/assets/" + photo.key}
+                        alt={`preview-` + index}
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition="center"
+                        className="rounded-lg"
+                      />
+                    </div>
+                    <Typography
+                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
+                    >
+                      {photo.description || "No description"}
+                    </Typography>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
           <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">
             <div className="flex gap-2">
