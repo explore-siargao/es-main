@@ -106,8 +106,10 @@ export const deleteProperty = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
   try {
-
-    const property = await dbProperties.findOne({ _id: propertyId, deletedAt: null })
+    const property = await dbProperties.findOne({
+      _id: propertyId,
+      deletedAt: null,
+    })
 
     if (!property) {
       return res.json(
