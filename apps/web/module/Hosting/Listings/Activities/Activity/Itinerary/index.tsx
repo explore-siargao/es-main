@@ -41,17 +41,27 @@ const Itinerary = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
+
+
+
   const { data, isPending: activityIsLoading } = useGetActivitiesById(listingId) // update this for activity
   const { latitude, longitude } = useCoordinatesStore()
   const updateSegment = useSegmentsStore((state) => state.updateSegments)
-  const { register, handleSubmit, watch } = useForm<T_Activity_Itinerary>({
-    values: data?.item?.meetingPoint,
-  })
-
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
+  const { register, handleSubmit, watch } = useForm<T_Activity_Itinerary>({
+    defaultValues: {
+      meetingPoint: data?.item?.meetingPoint,
+      isSegmentBuilderEnabled: data?.item?.isSegmentBuilderEnabled ?? false,
+      segments: data?.item?.segments ?? [],
+    },
+
+  const [isToggled, setIsToggled] = useState(
+    data?.item?.isSegmentBuilderEnabled ?? false
+  )
+
 
   const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
     formData: T_Activity_Itinerary
@@ -65,7 +75,7 @@ const Itinerary = ({ pageType }: Prop) => {
           })
           if (pageType === "setup") {
             router.push(
-              `/hosting/listings/properties/setup/${listingId}/facilities`
+              `/hosting/listings/activities/setup/${listingId}/inclusions`
             )
           }
         } else {
@@ -76,13 +86,24 @@ const Itinerary = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
+
+    const updatedMeetingPoint: T_Location = {
+      ...formData.meetingPoint,
+      latitude: latitude ?? 9.913431,
+      longitude: longitude ?? 126.049483,
+    }
+
     mutate(
       {
         ...formData,
+        meetingPoint: updatedMeetingPoint,
+        isSegmentBuilderEnabled: isToggled,
+        segments: segments,
       },
       callBackReq
     )
   }
+
   const currentCoords = (
     data?.item?.meetingPoint?.latitude
       ? [
@@ -164,7 +185,7 @@ const Itinerary = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="streetAddress"
+                id="street"
                 label="Street address"
                 required
                 defaultValue={street}
