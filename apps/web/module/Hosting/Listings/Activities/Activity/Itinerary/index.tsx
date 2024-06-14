@@ -41,27 +41,17 @@ const Itinerary = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
-
-
-
   const { data, isPending: activityIsLoading } = useGetActivitiesById(listingId) // update this for activity
   const { latitude, longitude } = useCoordinatesStore()
   const updateSegment = useSegmentsStore((state) => state.updateSegments)
+  const getSegments = useSegmentsStore((state) => state.segments)
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
   const { register, handleSubmit, watch } = useForm<T_Activity_Itinerary>({
-    defaultValues: {
-      meetingPoint: data?.item?.meetingPoint,
-      isSegmentBuilderEnabled: data?.item?.isSegmentBuilderEnabled ?? false,
-      segments: data?.item?.segments ?? [],
-    },
-
-  const [isToggled, setIsToggled] = useState(
-    data?.item?.isSegmentBuilderEnabled ?? false
-  )
-
+    values: data?.item?.meetingPoint,
+  })
 
   const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
     formData: T_Activity_Itinerary
@@ -95,10 +85,9 @@ const Itinerary = ({ pageType }: Prop) => {
 
     mutate(
       {
-        ...formData,
         meetingPoint: updatedMeetingPoint,
         isSegmentBuilderEnabled: isToggled,
-        segments: segments,
+        segments: getSegments,
       },
       callBackReq
     )
@@ -107,8 +96,8 @@ const Itinerary = ({ pageType }: Prop) => {
   const currentCoords = (
     data?.item?.meetingPoint?.latitude
       ? [
-          data?.item?.meetingPoint?.longitude,
           data?.item?.meetingPoint?.latitude,
+          data?.item?.meetingPoint?.longitude,
         ]
       : [9.913431, 126.049483]
   ) as [number, number]
