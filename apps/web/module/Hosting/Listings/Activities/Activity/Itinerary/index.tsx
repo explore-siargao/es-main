@@ -41,19 +41,25 @@ const Itinerary = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
-  const { data } = useGetActivitiesById(listingId) // update this for activity
+  const { data } = useGetActivitiesById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const segments = useSegmentsStore((state) => state.segments)
   const { register, handleSubmit } = useForm<T_Activity_Itinerary>({
-    values: data?.item?.Location,
+    defaultValues: {
+      meetingPoint: data?.item?.meetingPoint,
+      isSegmentBuilderEnabled: data?.item?.isSegmentBuilderEnabled ?? false,
+      segments: data?.item?.segments ?? [],
+    },
   })
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
-  const [isToggled, setIsToggled] = useState(false)
+  const [isToggled, setIsToggled] = useState(
+    data?.item?.isSegmentBuilderEnabled ?? false
+  )
 
   const handleToggle = () => {
     setIsToggled(!isToggled)
@@ -71,7 +77,7 @@ const Itinerary = ({ pageType }: Prop) => {
           })
           if (pageType === "setup") {
             router.push(
-              `/hosting/listings/properties/setup/${listingId}/facilities`
+              `/hosting/listings/activities/setup/${listingId}/inclusions`
             )
           }
         } else {
@@ -82,18 +88,28 @@ const Itinerary = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
+
+    const updatedMeetingPoint: T_Location = {
+      ...formData.meetingPoint,
+      latitude: latitude ?? 9.913431,
+      longitude: longitude ?? 126.049483,
+    }
+
     mutate(
       {
         ...formData,
+        meetingPoint: updatedMeetingPoint,
+        isSegmentBuilderEnabled: isToggled,
+        segments: segments,
       },
       callBackReq
     )
   }
-  const currentCoords = (
-    data?.item?.Location?.latitude
-      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
-      : [9.913431, 126.049483]
-  ) as [number, number]
+  const currentCoords = [
+    data?.item?.meetingPoint?.latitude ?? 9.913431,
+    data?.item?.meetingPoint?.longitude ?? 126.049483,
+  ] as [number, number]
+
   return (
     <div className="mt-20 mb-36">
       {isPending ? (
@@ -131,7 +147,7 @@ const Itinerary = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="streetAddress"
+                id="street"
                 label="Street address"
                 required
                 {...register("meetingPoint.street", { required: true })}
@@ -161,7 +177,7 @@ const Itinerary = ({ pageType }: Prop) => {
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === data?.item?.meetingPoint?.city
                 ).map((barangay) => (
                   <Option key={barangay.name} value={barangay.name}>
                     {barangay.name}

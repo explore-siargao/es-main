@@ -121,6 +121,12 @@ export const updateItineraries = async (req: Request, res: Response) => {
 
     const { meetingPoint, isSegmentBuilderEnabled, segments } = req.body
 
+    let addMeetingPoint
+    if (activity.meetingPoint === undefined) {
+      addMeetingPoint = new dbLocations(meetingPoint)
+      await addMeetingPoint.save()
+    }
+
     const updateMeetingPoint = await dbLocations.findByIdAndUpdate(
       activity.meetingPoint,
       {
@@ -143,7 +149,7 @@ export const updateItineraries = async (req: Request, res: Response) => {
         activityId,
         {
           $set: {
-            meetingPoint: updateMeetingPoint?._id,
+            meetingPoint: updateMeetingPoint?._id || addMeetingPoint?._id,
             segments: segments,
             isSegmentBuilderEnabled: isSegmentBuilderEnabled,
             updatedAt: Date.now(),
