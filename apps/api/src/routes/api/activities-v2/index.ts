@@ -22,6 +22,12 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSection'
+import {
+  addPhoto,
+  deletePhoto,
+  getPhotosByActivityId,
+  updatePhoto,
+} from './services/photos'
 
 const router = express.Router()
 
@@ -89,6 +95,37 @@ router.get(
   isOriginValid,
   isHostActivityOwner,
   getActivities
+)
+
+//photos
+router.get(
+  '/:activityId/photos',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  getPhotosByActivityId
+)
+router.patch(
+  '/:activityId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  updatePhoto
+)
+router.post(
+  '/:activityId/photo',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  addPhoto
+)
+router.delete(
+  '/:activityId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  deletePhoto
 )
 
 //status
