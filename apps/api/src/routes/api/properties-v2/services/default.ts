@@ -153,8 +153,10 @@ export const getPropertyType = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
 
   try {
-    const propertyType = await dbProperties
-      .findOne({ _id: propertyId, host: hostId }, 'type')
+    const propertyType = await dbProperties.findOne(
+      { _id: propertyId, host: hostId },
+      'type'
+    )
 
     res.json(response.success({ item: { propertyType: propertyType } }))
   } catch (err: any) {
