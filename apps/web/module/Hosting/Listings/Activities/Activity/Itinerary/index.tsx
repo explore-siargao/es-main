@@ -85,10 +85,10 @@ const Itinerary = ({ pageType }: Prop) => {
   }
   const currentCoords = (
     data?.item?.meetingPoint?.latitude
-      ? ([
+      ? [
           data?.item?.meetingPoint?.longitude,
           data?.item?.meetingPoint?.latitude,
-        ])
+        ]
       : [9.913431, 126.049483]
   ) as [number, number]
 
