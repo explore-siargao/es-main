@@ -172,7 +172,6 @@ export const updatePropertyType = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
   const { type } = req.body
 
-
   try {
     const updatePropertyType = await dbProperties
       .findOneAndUpdate(
@@ -194,8 +193,7 @@ export const updatePropertyType = async (req: Request, res: Response) => {
         item: { type: updatePropertyType.type },
         message: 'Property type updated successfully',
       })
-    );
-    
+    )
   } catch (err: any) {
     res.json(
       response.error({
