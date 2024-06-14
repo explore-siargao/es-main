@@ -147,3 +147,23 @@ export const deleteProperty = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getPropertyType = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
+  const propertyId = req.params.propertyId
+
+  try {
+    const propertyType = await dbProperties.findOne(
+      { _id: propertyId, host: hostId },
+      'type'
+    )
+
+    res.json(response.success({ item: { propertyType: propertyType } }))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
