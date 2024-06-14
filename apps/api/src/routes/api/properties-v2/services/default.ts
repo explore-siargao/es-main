@@ -102,3 +102,46 @@ export const getPropertyById = async (req: Request, res: Response) => {
     )
   }
 }
+export const deleteProperty = async (req: Request, res: Response) => {
+  const userId = res.locals.user?.id
+  const propertyId = req.params.propertyId
+  try {
+
+    const property = await dbProperties.findOne({ _id: propertyId, deletedAt: null })
+
+    if (!property) {
+      return res.json(
+        response.error({
+          message: 'Property not found or already deleted!',
+        })
+      )
+    }
+
+    if (property.offerBy?.toString() !== userId) {
+      return res.json(
+        response.error({
+          message: USER_NOT_AUTHORIZED,
+        })
+      )
+    }
+
+    const updateProperty = await dbProperties.findOneAndUpdate(
+      { _id: propertyId, offerBy: userId, deletedAt: null },
+      { deletedAt: Date.now() },
+      { new: true }
+    )
+
+    res.json(
+      response.success({
+        item: updateProperty,
+        message: 'Property successfully deleted!',
+      })
+    )
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
