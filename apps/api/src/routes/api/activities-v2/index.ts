@@ -22,7 +22,12 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSection'
-import { addPhoto, deletePhoto, getPhotosByActivityId, updatePhoto } from './services/photos'
+import {
+  addPhoto,
+  deletePhoto,
+  getPhotosByActivityId,
+  updatePhoto,
+} from './services/photos'
 
 const router = express.Router()
 
