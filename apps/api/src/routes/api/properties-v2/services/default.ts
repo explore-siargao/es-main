@@ -61,7 +61,7 @@ export const addProperty = async (req: Request, res: Response) => {
 export const getPropertiesByHostId = async (req: Request, res: Response) => {
   try {
     const hostId = req.params.activityId
-    const properties = await dbProperties.find({ host: hostId })
+    const properties = await dbProperties.find({ offerBy: hostId })
 
     const filteredProperties = properties.reverse()
     console.log('properties', filteredProperties)
@@ -154,11 +154,48 @@ export const getPropertyType = async (req: Request, res: Response) => {
 
   try {
     const propertyType = await dbProperties.findOne(
-      { _id: propertyId, host: hostId },
+      { _id: propertyId, host: hostId, deletedAt: null },
       'type'
     )
 
     res.json(response.success({ item: { propertyType: propertyType } }))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+export const updatePropertyType = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
+  const propertyId = req.params.propertyId
+  const { type } = req.body
+
+
+  try {
+    const updatePropertyType = await dbProperties
+      .findOneAndUpdate(
+        { _id: propertyId, offerBy: hostId },
+        { $set: { type: type } },
+        { new: true, fields: { type: 1 } }
+      )
+      .exec()
+
+    if (!updatePropertyType) {
+      return res.json(
+        response.error({
+          message: 'Property not found for the given host id and property id',
+        })
+      )
+    }
+    return res.json(
+      response.success({
+        item: { type: updatePropertyType.type },
+        message: 'Property type updated successfully',
+      })
+    );
+    
   } catch (err: any) {
     res.json(
       response.error({
