@@ -202,3 +202,31 @@ export const updatePropertyType = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getPropertyInfo = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
+  const id = req.params.propertyId
+
+  try {
+    const findPropertyInfo = await dbProperties.findById({
+      offerBy: hostId,
+      _id: id,
+    })
+
+    const getPropertyInfo = {
+      type: findPropertyInfo?.type,
+      title: findPropertyInfo?.title,
+      description: findPropertyInfo?.description,
+      phone: findPropertyInfo?.phone,
+      email: findPropertyInfo?.email,
+    }
+
+    res.json(response.success({ item: getPropertyInfo }))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
