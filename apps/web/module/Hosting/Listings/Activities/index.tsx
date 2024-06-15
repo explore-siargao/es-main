@@ -20,30 +20,33 @@ const HostListing = () => {
     columnHelper.accessor("photos", {
       header: "Listing",
       cell: (context) => {
-        const photo = context.getValue() && isArray(context.getValue()) ? context.getValue().find((photo: T_Photo) => photo.isMain) : null
+        const photo =
+          context.getValue() && isArray(context.getValue())
+            ? context.getValue().find((photo: T_Photo) => photo.isMain)
+            : null
         return (
-        <Link
-          href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
-          className="flex items-center gap-5"
-        >
-          <div className="relative w-24 h-16 rounded-xl overflow-hidden">
-            {photo ? (
-              <Image
-                src={`/assets/${photo.key}`}
-                alt="Image"
-                layout="fill"
-                objectFit="cover"
-              />
-            ) : (
-              <div className="h-full w-full bg-primary-100"></div>
-            )}
-          </div>
-          <span>
-            <Typography variant="p">{context.row.original.title}</Typography>
-          </span>
-        </Link>
-      )
-    },
+          <Link
+            href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
+            className="flex items-center gap-5"
+          >
+            <div className="relative w-24 h-16 rounded-xl overflow-hidden">
+              {photo ? (
+                <Image
+                  src={`/assets/${photo.key}`}
+                  alt="Image"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              ) : (
+                <div className="h-full w-full bg-primary-100"></div>
+              )}
+            </div>
+            <span>
+              <Typography variant="p">{context.row.original.title}</Typography>
+            </span>
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor("meetingPoint", {
       header: "Meeting Point",

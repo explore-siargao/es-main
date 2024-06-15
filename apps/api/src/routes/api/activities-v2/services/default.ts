@@ -40,7 +40,7 @@ export const addActivity = async (req: Request, res: Response) => {
       isSegmentBuilderEnabled: false,
       segments: [],
       meetingPoint: location._id,
-      status: "Incomplete"
+      status: 'Incomplete',
     }
 
     const newActivity = new dbActivities(value)
@@ -152,7 +152,11 @@ export const updateItinerary = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    if(!activity.isSegmentBuilderEnabled && isSegmentBuilderEnabled && segments.length > 1) {
+    if (
+      !activity.isSegmentBuilderEnabled &&
+      isSegmentBuilderEnabled &&
+      segments.length > 1
+    ) {
       await dbActivities.findByIdAndUpdate(
         activityId,
         {
@@ -164,13 +168,17 @@ export const updateItinerary = async (req: Request, res: Response) => {
         },
         { new: true }
       )
-    } else if(!activity.isSegmentBuilderEnabled && isSegmentBuilderEnabled && segments.length < 2) {
+    } else if (
+      !activity.isSegmentBuilderEnabled &&
+      isSegmentBuilderEnabled &&
+      segments.length < 2
+    ) {
       return res.json(
         response.error({
           message: 'Please add at least 2 item in the itinerary builder',
         })
       )
-    } else if(activity.isSegmentBuilderEnabled && !isSegmentBuilderEnabled) {
+    } else if (activity.isSegmentBuilderEnabled && !isSegmentBuilderEnabled) {
       await dbActivities.findByIdAndUpdate(
         activityId,
         {
@@ -183,7 +191,10 @@ export const updateItinerary = async (req: Request, res: Response) => {
       )
     }
 
-    if(activity.status === "Incomplete" && !activity.finishedSections.includes("itinerary")) {
+    if (
+      activity.status === 'Incomplete' &&
+      !activity.finishedSections.includes('itinerary')
+    ) {
       await dbActivities.findByIdAndUpdate(
         activityId,
         {
@@ -201,7 +212,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
         item: {
           meetingPoint: updateMeetingPoint,
           isSegmentBuilderEnabled,
-          segments
+          segments,
         },
         message: 'Itinerary successfully updated',
       })

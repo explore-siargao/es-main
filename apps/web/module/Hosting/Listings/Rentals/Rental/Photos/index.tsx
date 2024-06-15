@@ -104,7 +104,9 @@ const RentalPhotos = ({ pageType }: Prop) => {
                 queryClient.invalidateQueries({
                   queryKey: ["rental-finished-sections", listingId],
                 })
-                router.push(`/hosting/listings/rentals/setup/${listingId}/pricing`)
+                router.push(
+                  `/hosting/listings/rentals/setup/${listingId}/pricing`
+                )
               }
             },
             onError: (err: any) => {
