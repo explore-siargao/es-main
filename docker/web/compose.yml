@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   es-web:
-    image: jpmadrigal/es-web-dev:latest
+    image: jepoyyy0225/es-web-dev:latest
     container_name: es-web-dev
     restart: unless-stopped
     ports:
