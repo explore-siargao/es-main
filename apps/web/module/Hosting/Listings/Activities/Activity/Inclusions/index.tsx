@@ -142,8 +142,12 @@ const Inclusions = ({ pageType }: Prop) => {
         }))
       )
       setFoodIncluded(data?.item?.isFoodIncluded ? "Yes" : "No")
-      setAlcoholicDrinksIncluded(data?.item?.isAlcoholicDrinkIncluded ? "Yes" : "No")
-      setNonAlcoholicDrinksIncluded(data?.item?.isNonAlcoholicDrinkIncluded ? "Yes" : "No")
+      setAlcoholicDrinksIncluded(
+        data?.item?.isAlcoholicDrinkIncluded ? "Yes" : "No"
+      )
+      setNonAlcoholicDrinksIncluded(
+        data?.item?.isNonAlcoholicDrinkIncluded ? "Yes" : "No"
+      )
       setSelectedFoods(data?.item?.includedFoods)
       setSelectedAlcohols(data?.item?.includedAlcoholicDrinks)
     }
@@ -197,8 +201,10 @@ const Inclusions = ({ pageType }: Prop) => {
 
     const payload = {
       isFoodIncluded: foodIncluded === "Yes" ? true : false,
-      isNonAlcoholicDrinkIncluded: nonAlcoholicDrinksIncluded === "Yes" ? true : false,
-      isAlcoholicDrinkIncluded: alcoholicDrinksIncluded === "Yes" ? true : false,
+      isNonAlcoholicDrinkIncluded:
+        nonAlcoholicDrinksIncluded === "Yes" ? true : false,
+      isAlcoholicDrinkIncluded:
+        alcoholicDrinksIncluded === "Yes" ? true : false,
       otherInclusion: updatedInclusions.map((item) => item.name),
       notIncluded: updatedExclusions.map((item) => item.name),
       includedAlcoholicDrinks: selectedAlcohols,
@@ -253,18 +259,14 @@ const Inclusions = ({ pageType }: Prop) => {
                 id="food"
                 value="yes"
                 checked={foodIncluded === "Yes"}
-                onChange={() =>
-                  setFoodIncluded("Yes")
-                }
+                onChange={() => setFoodIncluded("Yes")}
                 label="Yes"
               />
               <RadioInput
                 id="food"
                 value="no"
                 checked={foodIncluded === "No"}
-                onChange={() =>
-                  setFoodIncluded("No")
-                }
+                onChange={() => setFoodIncluded("No")}
                 label="No"
               />
               {foodIncluded === "Yes" && (
@@ -275,7 +277,9 @@ const Inclusions = ({ pageType }: Prop) => {
                   disabled={isPending}
                   className="mt-4"
                   onChange={(e) => {
-                    const exist = selectedFoods.find((item) => item === e.target.value)
+                    const exist = selectedFoods.find(
+                      (item) => item === e.target.value
+                    )
                     if (!exist) {
                       setSelectedFoods([...selectedFoods, e.target.value])
                     }
@@ -292,10 +296,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   {selectedFoods.map((food) => (
                     <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-lg text-xs flex gap-2 items-center">
                       {food}
-                      <button
-                        type="button"
-                        onClick={() => removeFood(food)}
-                      >
+                      <button type="button" onClick={() => removeFood(food)}>
                         <LucideX className="h-4 w-4" />
                       </button>
                     </div>
@@ -311,18 +312,14 @@ const Inclusions = ({ pageType }: Prop) => {
                 id="nonAlcoholYes"
                 value="yes"
                 checked={nonAlcoholicDrinksIncluded === "Yes"}
-                onChange={() =>
-                  setNonAlcoholicDrinksIncluded("Yes")
-                }
+                onChange={() => setNonAlcoholicDrinksIncluded("Yes")}
                 label="Yes"
               />
               <RadioInput
                 id="nonAlcoholNo"
                 value="no"
                 checked={nonAlcoholicDrinksIncluded === "No"}
-                onChange={() =>
-                  setNonAlcoholicDrinksIncluded("No")
-                }
+                onChange={() => setNonAlcoholicDrinksIncluded("No")}
                 label="No"
               />
             </div>
@@ -334,18 +331,14 @@ const Inclusions = ({ pageType }: Prop) => {
                 id="alcoholYes"
                 value="yes"
                 checked={alcoholicDrinksIncluded === "Yes"}
-                onChange={() =>
-                  setAlcoholicDrinksIncluded("Yes")
-                }
+                onChange={() => setAlcoholicDrinksIncluded("Yes")}
                 label="Yes"
               />
               <RadioInput
                 id="alcoholNo"
                 value="no"
                 checked={alcoholicDrinksIncluded === "No"}
-                onChange={() =>
-                  setAlcoholicDrinksIncluded("No")
-                }
+                onChange={() => setAlcoholicDrinksIncluded("No")}
                 label="No"
               />
               {alcoholicDrinksIncluded === "Yes" && (
@@ -356,7 +349,9 @@ const Inclusions = ({ pageType }: Prop) => {
                   disabled={isPending}
                   className="mt-4"
                   onChange={(e) => {
-                    const exist = selectedAlcohols.find((item) => item === e.target.value)
+                    const exist = selectedAlcohols.find(
+                      (item) => item === e.target.value
+                    )
                     if (!exist) {
                       setSelectedAlcohols([...selectedAlcohols, e.target.value])
                     }

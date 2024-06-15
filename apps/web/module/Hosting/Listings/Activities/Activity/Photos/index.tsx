@@ -103,7 +103,9 @@ const ActivityPhotos = ({ pageType }: Prop) => {
                 queryClient.invalidateQueries({
                   queryKey: ["activity", listingId],
                 })
-                router.push(`/hosting/listings/activities/setup/${listingId}/summary`)
+                router.push(
+                  `/hosting/listings/activities/setup/${listingId}/summary`
+                )
               }
             },
             onError: (err: any) => {
@@ -116,7 +118,9 @@ const ActivityPhotos = ({ pageType }: Prop) => {
             queryKey: ["activity", listingId],
           })
           if (pageType === "setup") {
-            router.push(`/hosting/listings/activities/setup/${listingId}/summary`)
+            router.push(
+              `/hosting/listings/activities/setup/${listingId}/summary`
+            )
           }
         }
       })

@@ -51,18 +51,24 @@ const AdditionalInfo = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setWhatToBring((data.item?.whatToBring || []).map((name: string, index: number) => ({
-        id: index + 1,
-        name,
-      })))
-      setNotAllowed((data.item?.notAllowed || []).map((name: string, index: number) => ({
-        id: index + 1,
-        name,
-      })))
-      setPolicies((data.item?.policies || []).map((name: string, index: number) => ({
-        id: index + 1,
-        name,
-      })))
+      setWhatToBring(
+        (data.item?.whatToBring || []).map((name: string, index: number) => ({
+          id: index + 1,
+          name,
+        }))
+      )
+      setNotAllowed(
+        (data.item?.notAllowed || []).map((name: string, index: number) => ({
+          id: index + 1,
+          name,
+        }))
+      )
+      setPolicies(
+        (data.item?.policies || []).map((name: string, index: number) => ({
+          id: index + 1,
+          name,
+        }))
+      )
       setCancellationDays(data?.item?.cancellationDays || null)
     }
   }, [data, isPending])
@@ -89,7 +95,6 @@ const AdditionalInfo = ({ pageType }: Prop) => {
     setList([...list, newItem])
     setName("")
   }
-
 
   const onSubmit: SubmitHandler<T_Update_Activity_Additional_Info> = () => {
     const payload = {
@@ -153,9 +158,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                         <p className="text-sm">{item.name}</p>
                         <button
                           className="hover:cursor-pointer"
-                          onClick={() =>
-                            removeItem(setWhatToBring, item.id)
-                          }
+                          onClick={() => removeItem(setWhatToBring, item.id)}
                           aria-label="Remove Item"
                         >
                           <LucideX className="w-5 h-5 hover:text-error-500 transition" />
@@ -188,7 +191,10 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                         )
                       }}
                     >
-                      <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                      <LucidePlus
+                        color="black"
+                        className="rounded-sm w-4 h-4"
+                      />
                       <Typography className="text-sm"> Add item</Typography>
                     </button>
                   </div>
@@ -209,9 +215,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                         <p className="text-sm">{item.name}</p>
                         <button
                           className="hover:cursor-pointer"
-                          onClick={() =>
-                            removeItem(setNotAllowed, item.id)
-                          }
+                          onClick={() => removeItem(setNotAllowed, item.id)}
                           aria-label="Remove Item"
                         >
                           <LucideX className="w-5 h-5 hover:text-error-500 transition" />
@@ -244,7 +248,10 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                         )
                       }}
                     >
-                      <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                      <LucidePlus
+                        color="black"
+                        className="rounded-sm w-4 h-4"
+                      />
                       <Typography className="text-sm"> Add item</Typography>
                     </button>
                   </div>
@@ -265,9 +272,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                         <p className="text-sm">{item.name}</p>
                         <button
                           className="hover:cursor-pointer"
-                          onClick={() =>
-                            removeItem(setPolicies, item.id)
-                          }
+                          onClick={() => removeItem(setPolicies, item.id)}
                           aria-label="Remove Item"
                         >
                           <LucideX className="w-5 h-5 hover:text-error-500 transition" />
@@ -300,7 +305,10 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                         )
                       }}
                     >
-                      <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                      <LucidePlus
+                        color="black"
+                        className="rounded-sm w-4 h-4"
+                      />
                       <Typography className="text-sm"> Add item</Typography>
                     </button>
                   </div>
@@ -308,7 +316,11 @@ const AdditionalInfo = ({ pageType }: Prop) => {
               </div>
 
               <div>
-                <Typography variant="h4" fontWeight="semibold" className="mt-4 mb-2">
+                <Typography
+                  variant="h4"
+                  fontWeight="semibold"
+                  className="mt-4 mb-2"
+                >
                   Cancellation Policy
                 </Typography>
                 <div className="mt-2">
@@ -336,7 +348,9 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       type="radio"
                       name="cancellationDays"
                       disabled={isPending}
-                      defaultChecked={data?.item?.cancellationDays === "10 Days"}
+                      defaultChecked={
+                        data?.item?.cancellationDays === "10 Days"
+                      }
                       className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                       onChange={(e) => setCancellationDays(e.target.value)}
                       value="10 Days"
@@ -354,7 +368,9 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       type="radio"
                       name="cancellationDays"
                       disabled={isPending}
-                      defaultChecked={data?.item?.cancellationDays === "Non-refundable"}
+                      defaultChecked={
+                        data?.item?.cancellationDays === "Non-refundable"
+                      }
                       className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
                       onChange={(e) => setCancellationDays(e.target.value)}
                       value="Non-refundable"

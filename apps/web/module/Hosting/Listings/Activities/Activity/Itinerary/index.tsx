@@ -106,7 +106,10 @@ const Itinerary = ({ pageType }: Prop) => {
     )
   }
 
-  const street = watch("meetingPoint.streetAddress", data?.item?.meetingPoint?.streetAddress)
+  const street = watch(
+    "meetingPoint.streetAddress",
+    data?.item?.meetingPoint?.streetAddress
+  )
   const city = watch("meetingPoint.city", data?.item?.meetingPoint?.city)
   const brgy = watch(
     "meetingPoint.barangay",
