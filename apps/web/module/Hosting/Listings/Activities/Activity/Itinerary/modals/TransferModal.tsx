@@ -33,6 +33,7 @@ const TransferModal = ({
       toast.error("Please add duration for this segment")
     } else {
       updateSegments({
+        transfer,
         durationHour,
         durationMinute,
         optional: optional === "Yes",

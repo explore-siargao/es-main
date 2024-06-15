@@ -20,6 +20,7 @@ export const getAllRentals = async (req: Request, res: Response) => {
       .find({ host: hostId })
       .sort({ _id: -1 })
       .populate('photos')
+      .populate('location')
 
     return res.json(
       response.success({

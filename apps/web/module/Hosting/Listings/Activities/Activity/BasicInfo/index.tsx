@@ -6,12 +6,12 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucidePlus, LucideX, MinusIcon, PlusIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
 import useUpdateActivityBasicInfo from "../../hooks/useUpdateActivityBasicInfo"
 import { useQueryClient } from "@tanstack/react-query"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { useParams, useRouter } from "next/navigation"
 import { cn } from "@/common/helpers/cn"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 interface Item {
   id: number
@@ -29,7 +29,7 @@ const BasicInfo = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const activityId = String(params.listingId)
-  const { isLoading, data } = useGetActivitiesById(activityId)
+  const { isLoading, data } = useGetActivityById(activityId)
   const { isPending, mutate } = useUpdateActivityBasicInfo(activityId)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -88,7 +88,7 @@ const BasicInfo = ({ pageType }: Prop) => {
       setTitle(data?.item?.title || "")
       setDescription(data?.item?.description || "")
       setSelectedLanguages(
-        (data?.item?.language || []).filter((lang: string) => lang != null)
+        (data?.item?.languages || []).filter((lang: string) => lang != null)
       )
     }
   }, [data])
@@ -117,9 +117,7 @@ const BasicInfo = ({ pageType }: Prop) => {
           const updatedFormData = {
             title: title,
             description: description,
-            languages: selectedLanguages.filter(
-              (lang) => lang != null && lang.trim() !== ""
-            ),
+            languages: selectedLanguages,
             durationHour: durationHour,
             durationMinute: durationMinute,
             highLights: itemList.map((item) => item.itemName),
@@ -130,12 +128,12 @@ const BasicInfo = ({ pageType }: Prop) => {
             onSuccess: (data: any) => {
               if (!data.error) {
                 toast.success(data.message)
+                queryClient.invalidateQueries({
+                  queryKey: ["activity-basic-info", activityId],
+                })
                 if (pageType === "setup") {
                   queryClient.invalidateQueries({
                     queryKey: ["activity-finished-sections", activityId],
-                  })
-                  queryClient.invalidateQueries({
-                    queryKey: ["activity-basic-info", activityId],
                   })
                   router.push(
                     `/hosting/listings/activities/setup/${activityId}/itinerary`

@@ -41,27 +41,27 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
       }
 
       if (rental.category === 'Car') {
-        if ((engineCapacityLiter ?? 0) < 1) {
-          return res.json(
-            response.error({
-              message: 'Minimum engine capacity is 1000 in (cc) 1 in (liter)',
-            })
-          )
-        } else if ((engineCapacityLiter ?? 0) > 8) {
-          return res.json(
-            response.error({
-              message: 'Maximum engine capacity is 8000 in (cc) 8 in (liter)',
-            })
-          )
-        }
-        if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
-          return res.json(
-            response.error({
-              message:
-                'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
-            })
-          )
-        }
+        // if ((engineCapacityLiter ?? 0) < 1) {
+        //   return res.json(
+        //     response.error({
+        //       message: 'Minimum engine capacity is 1000 in (cc) 1 in (liter)',
+        //     })
+        //   )
+        // } else if ((engineCapacityLiter ?? 0) > 8) {
+        //   return res.json(
+        //     response.error({
+        //       message: 'Maximum engine capacity is 8000 in (cc) 8 in (liter)',
+        //     })
+        //   )
+        // }
+        // if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
+        //   return res.json(
+        //     response.error({
+        //       message:
+        //         'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
+        //     })
+        //   )
+        // }
         details.condition = condition || details.condition
         details.engineCapacityLiter =
           engineCapacityLiter || details.engineCapacityLiter
@@ -73,28 +73,28 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         details.minAgeReq = minAgeReq || details.minAgeReq
         details.isRegistered = isRegistered || details.isRegistered
       } else if (rental.category === 'Motorbike') {
-        if ((engineCapacityLiter ?? 0) < 0.11) {
-          return res.json(
-            response.error({
-              message: 'Minimum engine capacity is 110 in (cc) 0.11 in (liter)',
-            })
-          )
-        } else if ((engineCapacityLiter ?? 0) > 6.5) {
-          return res.json(
-            response.error({
-              message:
-                'Maximum engine capacity is 65000 in (cc) 6.5 in (liter)',
-            })
-          )
-        }
-        if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
-          return res.json(
-            response.error({
-              message:
-                'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
-            })
-          )
-        }
+        // if ((engineCapacityLiter ?? 0) < 0.11) {
+        //   return res.json(
+        //     response.error({
+        //       message: 'Minimum engine capacity is 110 in (cc) 0.11 in (liter)',
+        //     })
+        //   )
+        // } else if ((engineCapacityLiter ?? 0) > 6.5) {
+        //   return res.json(
+        //     response.error({
+        //       message:
+        //         'Maximum engine capacity is 65000 in (cc) 6.5 in (liter)',
+        //     })
+        //   )
+        // }
+        // if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
+        //   return res.json(
+        //     response.error({
+        //       message:
+        //         'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
+        //     })
+        //   )
+        // }
         details.condition = condition || details.condition
         details.engineCapacityLiter =
           engineCapacityLiter || details.engineCapacityLiter

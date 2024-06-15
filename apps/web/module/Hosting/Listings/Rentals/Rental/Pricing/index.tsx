@@ -32,12 +32,12 @@ const Pricing = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
+          queryClient.invalidateQueries({
+            queryKey: ["rental-pricing", listingId],
+          })
           if (pageType === "setup") {
             queryClient.invalidateQueries({
               queryKey: ["rental-finished-sections", listingId],
-            })
-            queryClient.invalidateQueries({
-              queryKey: ["rental-pricing", listingId],
             })
             router.push(`/hosting/listings/rentals/setup/${listingId}/location`)
           }

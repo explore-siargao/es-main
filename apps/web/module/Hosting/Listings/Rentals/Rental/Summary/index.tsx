@@ -160,7 +160,7 @@ const RentalSummary = () => {
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">Street Address:</span>{" "}
-            {rental?.location?.street}
+            {rental?.location?.streetAddress}
           </Typography>
           <Typography variant="h5" className="mt-2">
             <span className="font-semibold">City / Municipality:</span>{" "}

@@ -4,30 +4,43 @@ import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { dbActivities, dbLocations } from '@repo/database'
 
 const response = new ResponseService()
+
 export const addActivity = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
 
   try {
+    const location = new dbLocations({
+      streetAddress: null,
+      barangay: null,
+      city: null,
+      latitude: null,
+      longitude: null,
+      howToGetThere: '',
+    })
+    await location.save()
     const value = {
       host: userId,
       title: '',
-      meetingPointDescription: '',
       description: '',
       highLights: [],
       durationHour: null,
       durationMinute: null,
-      language: [],
+      languages: [],
       isFoodIncluded: false,
       isNonAlcoholicDrinkIncluded: false,
       isAlcoholicDrinkIncluded: false,
       otherInclusion: [],
       notIncluded: [],
       whatToBrings: [],
-      cancellationDays: 0,
+      cancellationDays: null,
       notAllowed: [],
-      activityPolicies: [],
+      policies: [],
       cancellationPolicies: [],
-      activityPhotos: [],
+      photos: [],
+      isSegmentBuilderEnabled: false,
+      segments: [],
+      meetingPoint: location._id,
+      status: "Incomplete"
     }
 
     const newActivity = new dbActivities(value)
@@ -81,7 +94,8 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
     const filteredActivities = await dbActivities
       .find({ host: hostId })
       .populate('host', 'email isHost')
-      .populate({ path: 'photos', options: { limit: 1, skip: 0 } })
+      .populate('meetingPoint')
+      .populate('photos')
       .select('title description status')
     res.json(
       response.success({
@@ -97,7 +111,7 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
   }
 }
 
-export const updateItineraries = async (req: Request, res: Response) => {
+export const updateItinerary = async (req: Request, res: Response) => {
   const activityId = req.params.activityId
   const isHost = res.locals.user?.isHost
 
@@ -110,7 +124,7 @@ export const updateItineraries = async (req: Request, res: Response) => {
   }
 
   try {
-    const activity = await dbActivities.findById(activityId)
+    const activity = await dbActivities.findOne({ _id: activityId })
 
     if (!activity) {
       return res.json(
@@ -122,17 +136,11 @@ export const updateItineraries = async (req: Request, res: Response) => {
 
     const { meetingPoint, isSegmentBuilderEnabled, segments } = req.body
 
-    let addMeetingPoint
-    if (activity.meetingPoint === undefined) {
-      addMeetingPoint = new dbLocations(meetingPoint)
-      await addMeetingPoint.save()
-    }
-
     const updateMeetingPoint = await dbLocations.findByIdAndUpdate(
       activity.meetingPoint,
       {
         $set: {
-          street: meetingPoint.street,
+          streetAddress: meetingPoint.streetAddress,
           barangay: meetingPoint.barangay,
           city: meetingPoint.city,
           howToGetThere: meetingPoint.howToGetThere,
@@ -144,29 +152,43 @@ export const updateItineraries = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    let updateSegment
-    if (isSegmentBuilderEnabled) {
-      updateSegment = await dbActivities.findByIdAndUpdate(
+    if(!activity.isSegmentBuilderEnabled && isSegmentBuilderEnabled && segments.length > 1) {
+      await dbActivities.findByIdAndUpdate(
         activityId,
         {
           $set: {
-            meetingPoint: updateMeetingPoint?._id || addMeetingPoint?._id,
             segments: segments,
             isSegmentBuilderEnabled: isSegmentBuilderEnabled,
-            finishedSections: ['basicInfo', 'itinerary'],
             updatedAt: Date.now(),
           },
         },
         { new: true }
       )
-    } else {
-      updateSegment = await dbActivities.findByIdAndUpdate(
+    } else if(!activity.isSegmentBuilderEnabled && isSegmentBuilderEnabled && segments.length < 2) {
+      return res.json(
+        response.error({
+          message: 'Please add at least 2 item in the itinerary builder',
+        })
+      )
+    } else if(activity.isSegmentBuilderEnabled && !isSegmentBuilderEnabled) {
+      await dbActivities.findByIdAndUpdate(
         activityId,
         {
           $set: {
-            meetingPoint: updateMeetingPoint?._id,
-            segments: [],
             isSegmentBuilderEnabled: isSegmentBuilderEnabled,
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+    }
+
+    if(activity.status === "Incomplete" && !activity.finishedSections.includes("itinerary")) {
+      await dbActivities.findByIdAndUpdate(
+        activityId,
+        {
+          $set: {
+            finishedSections: ['basicInfo', 'itinerary'],
             updatedAt: Date.now(),
           },
         },
@@ -176,8 +198,12 @@ export const updateItineraries = async (req: Request, res: Response) => {
 
     res.json(
       response.success({
-        item: updateSegment,
-        message: 'Activity successfully updated with new itinerary!',
+        item: {
+          meetingPoint: updateMeetingPoint,
+          isSegmentBuilderEnabled,
+          segments
+        },
+        message: 'Itinerary successfully updated',
       })
     )
   } catch (err: any) {

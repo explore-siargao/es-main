@@ -60,7 +60,7 @@ const ActivitySummary = () => {
                 fontWeight="semibold"
                 className="leading-6"
               >
-                Basic Info
+                Basic Information
               </Typography>
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Title:</span>{" "}
@@ -93,7 +93,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Languages spoken:</span>
                 <div className="flex flex-col">
-                  {data?.item?.language.map((languages: T_Activity) => (
+                  {data?.item?.languages.map((languages: T_Activity) => (
                     <p className="mt-2" key={languages.id}>
                       {" "}
                       {languages as unknown as string}
@@ -102,7 +102,7 @@ const ActivitySummary = () => {
                 </div>
               </Typography>
             </div>
-            <div className="mt-3 border-b border-gray-200 pb-3">
+            {/* <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
                 variant="h4"
                 fontWeight="semibold"
@@ -139,7 +139,7 @@ const ActivitySummary = () => {
                   )
                 })}
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
@@ -279,10 +279,10 @@ const ActivitySummary = () => {
 
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Cancellation policy:</span>{" "}
-                {data?.item?.cancellationDays} days
+                {data?.item?.cancellationDays}
               </Typography>
             </div>
-            <div className="mt-3 border-b border-gray-200 pb-3">
+            <div className="mt-3 pb-3">
               <Typography
                 variant="h4"
                 fontWeight="semibold"

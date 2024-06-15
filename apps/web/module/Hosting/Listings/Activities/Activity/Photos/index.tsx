@@ -86,6 +86,8 @@ const ActivityPhotos = ({ pageType }: Prop) => {
           const message = String(item.message) as string
           toast.success(message, { id: message })
         })
+      })
+      .then(() => {
         if (
           pageType === "setup" &&
           !data?.item?.finishedSections?.includes("photos")
@@ -94,6 +96,14 @@ const ActivityPhotos = ({ pageType }: Prop) => {
             onSuccess: (data: any) => {
               if (data.error) {
                 toast.error(String(data.message))
+              } else {
+                queryClient.invalidateQueries({
+                  queryKey: ["activity-finished-sections", listingId],
+                })
+                queryClient.invalidateQueries({
+                  queryKey: ["activity", listingId],
+                })
+                router.push(`/hosting/listings/activities/setup/${listingId}/summary`)
               }
             },
             onError: (err: any) => {
@@ -101,17 +111,13 @@ const ActivityPhotos = ({ pageType }: Prop) => {
             },
           }
           updateFinishedSections({ newFinishedSection: "photos" }, callBackReq)
-        }
-      })
-      .then(() => {
-        queryClient.invalidateQueries({
-          queryKey: ["activity-finished-sections", listingId],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ["activity", listingId],
-        })
-        if (pageType === "setup") {
-          router.push(`/hosting/listings/activities/setup/${listingId}/summary`)
+        } else {
+          queryClient.invalidateQueries({
+            queryKey: ["activity", listingId],
+          })
+          if (pageType === "setup") {
+            router.push(`/hosting/listings/activities/setup/${listingId}/summary`)
+          }
         }
       })
       .catch((err) => {

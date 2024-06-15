@@ -10,7 +10,8 @@ import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
 import useActivitiesByHost from "../../Activity/hooks/useGetActivitiesByHost"
 import { Spinner } from "@/common/components/ui/Spinner"
-// import useGetHostProperties from "../hooks/useGetHostProperties"
+import { isArray } from "lodash"
+import { T_Photo } from "@repo/contract"
 
 const HostListing = () => {
   const { data, isPending } = useActivitiesByHost()
@@ -18,34 +19,46 @@ const HostListing = () => {
   const columns = [
     columnHelper.accessor("photos", {
       header: "Listing",
-      cell: (context) => (
+      cell: (context) => {
+        const photo = context.getValue() && isArray(context.getValue()) ? context.getValue().find((photo: T_Photo) => photo.isMain) : null
+        return (
         <Link
           href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <div className="relative w-24 h-16 rounded-xl overflow-hidden">
-            <Image
-              src={`/assets/${context.getValue()?.length !== 0 ? context.getValue()[0]?.key : "1.jpg"}`}
-              alt="Image"
-              layout="fill"
-              objectFit="cover"
-            />
+            {photo ? (
+              <Image
+                src={`/assets/${photo.key}`}
+                alt="Image"
+                layout="fill"
+                objectFit="cover"
+              />
+            ) : (
+              <div className="h-full w-full bg-primary-100"></div>
+            )}
           </div>
           <span>
             <Typography variant="p">{context.row.original.title}</Typography>
           </span>
         </Link>
-      ),
+      )
+    },
     }),
-    columnHelper.accessor("description", {
-      header: "Meet-up Point",
+    columnHelper.accessor("meetingPoint", {
+      header: "Meeting Point",
       cell: (context) => (
         <Link
           href={`/hosting/listings/activities${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <Typography variant="p">
-            {context.getValue() ? context.row.original?.description : ""},{" "}
+            {context.getValue() && context.getValue().streetAddress
+              ? `${context.getValue().streetAddress}, `
+              : ""}
+            {context.getValue() && context.getValue().city
+              ? context.getValue().city
+              : ""}
           </Typography>
         </Link>
       ),
@@ -109,7 +122,7 @@ const HostListing = () => {
               fontWeight="semibold"
               className="flex justify-between items-center mb-2"
             >
-              Your listings 2
+              Your listings
             </Typography>
             <Tabs tabs={listingTabs} />
           </div>

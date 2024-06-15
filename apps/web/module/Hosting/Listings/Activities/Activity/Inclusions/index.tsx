@@ -12,6 +12,7 @@ import { T_Update_Activity_Inclusions } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
+import { Option, Select } from "@/common/components/ui/Select"
 
 interface Item {
   id: number
@@ -48,127 +49,44 @@ const RadioInput: React.FC<RadioProps> = ({
   </div>
 )
 
-interface DropdownProps {
-  isOpen: boolean
-  toggleDropdown: () => void
-  selectedItem: string
-  handleOptionSelect: (value: string) => void
-  items: { value: string; label: string }[]
-}
-
-const Dropdown: React.FC<DropdownProps> = ({
-  isOpen,
-  toggleDropdown,
-  selectedItem,
-  handleOptionSelect,
-  items,
-}) => (
-  <div className="relative">
-    <button
-      type="button"
-      onClick={toggleDropdown}
-      className="cursor-pointer appearance-none w-1/4 mt-2 bg-primary-500 border-white text-white py-2 px-3 pr-8 rounded-md flex justify-between items-center focus:outline-none focus:bg-primary-300 focus:border-primary-500 focus:ring-primary-500"
-    >
-      {selectedItem || "Select option"}
-      <svg
-        className="h-5 w-5 text-white"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          fillRule="evenodd"
-          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-          clipRule="evenodd"
-        ></path>
-      </svg>
-    </button>
-    {isOpen && (
-      <div className="text-start absolute z-10 left-0 mt-2 w-1/4 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-        {items.map((item) => (
-          <button
-            key={item.value}
-            className="hover:bg-primary-500 text-gray-800 cursor-pointer px-4 py-2 flex w-full"
-            onClick={() => handleOptionSelect(item.value)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-    )}
-  </div>
-)
-
 type Prop = {
   pageType: "setup" | "edit"
 }
+
+const foodOptions = [
+  { value: "Beverage", label: "Beverage" },
+  { value: "Lunch", label: "Lunch" },
+  { value: "Dinner", label: "Dinner" },
+  { value: "Snacks", label: "Snacks" },
+]
+
+const alcoholOptions = [
+  { value: "Beer", label: "Beer" },
+  { value: "Wine", label: "Wine" },
+  { value: "Spirits", label: "Spirits" },
+]
 
 const Inclusions = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const [nonAlcoholicDrinksIncluded, setNonAlcoholicDrinksIncluded] =
-    useState<boolean>(false)
+    useState<string>("No")
   const [alcoholicDrinksIncluded, setAlcoholicDrinksIncluded] =
-    useState<boolean>(false)
+    useState<string>("No")
 
   const [inclusions, setInclusions] = useState<Item[]>([])
   const [exclusions, setExclusions] = useState<Item[]>([])
   const [inclusionName, setInclusionName] = useState<string>("")
   const [exclusionName, setExclusionName] = useState<string>("")
-  const [selectedFoodOption, setSelectedFoodOption] = useState<string>("")
-  const [selectedAlcoholOption, setSelectedAlcoholOption] = useState<string>("")
-  const [isOpenFood, setIsOpenFood] = useState(false)
-  const [isOpenAlcohol, setIsOpenAlcohol] = useState(false)
+  const [selectedFoods, setSelectedFoods] = useState<string[]>([])
+  const [selectedAlcohols, setSelectedAlcohols] = useState<string[]>([])
   const params = useParams<{ listingId: string }>()
   const activityId = String(params.listingId)
   const { isPending, data } = useGetActivityInclusionsById(activityId)
   const { isPending: updateInclusions, mutate } =
     useUpdateActivityInclusions(activityId)
-  const [foodIncluded, setFoodIncluded] = useState<boolean>(false)
+  const [foodIncluded, setFoodIncluded] = useState<string>("No")
   const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
-
-  const toggleDropdown = (dropdownId: string) => {
-    if (dropdownId === "food") {
-      setIsOpenFood(!isOpenFood)
-    } else if (dropdownId === "alcohol") {
-      setIsOpenAlcohol(!isOpenAlcohol)
-    }
-  }
-
-  const mergedFoodOptions = [
-    ...(data?.item?.selectedFoodOptions || []),
-    { value: "Beverage", label: "Beverage" },
-    { value: "Lunch", label: "Lunch" },
-    { value: "Dinner", label: "Dinner" },
-    { value: "Snacks", label: "Snacks" },
-  ]
-
-  const mergedAlcoholOptions = [
-    ...(data?.item?.selectedAlcoholicDrinkOptions || []),
-    { value: "Beer", label: "Beer" },
-    { value: "Wine", label: "Wine" },
-    { value: "Spirits", label: "Spirits" },
-  ]
-
-  const handleOptionSelect = (value: string, dropdownId: string) => {
-    if (dropdownId === "food") {
-      setSelectedFoodOption(value)
-      setIsOpenFood(false)
-    } else if (dropdownId === "alcohol") {
-      setSelectedAlcoholOption(value)
-      setIsOpenAlcohol(false)
-    }
-  }
-
-  const handleOptionChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<boolean>>,
-    setOption: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    setState(event.target.value === "yes")
-    if (event.target.value === "no") {
-      setOption("")
-    }
-  }
 
   const addItem = (
     list: Item[],
@@ -178,7 +96,7 @@ const Inclusions = ({ pageType }: Prop) => {
   ) => {
     const itemName = name.trim()
     if (!itemName) {
-      toast.error("Add item first.")
+      toast.error("Add item first")
       return
     }
     const newItem = { id: Date.now(), name: itemName }
@@ -194,8 +112,24 @@ const Inclusions = ({ pageType }: Prop) => {
     setList((prevItems) => prevItems.filter((item) => item.id !== idToRemove))
   }
 
+  const removeAlcohol = (alcohol: string) => {
+    const isExist = selectedAlcohols.find((item) => item === alcohol)
+    if (isExist) {
+      const updated = selectedAlcohols.filter((e) => e !== alcohol)
+      setSelectedAlcohols([...updated])
+    }
+  }
+
+  const removeFood = (food: string) => {
+    const isExist = selectedFoods.find((item) => item === food)
+    if (isExist) {
+      const updated = selectedFoods.filter((e) => e !== food)
+      setSelectedFoods([...updated])
+    }
+  }
+
   useEffect(() => {
-    if (data) {
+    if (!isPending && data && data.item) {
       setInclusions(
         (data.item?.otherInclusion || []).map(
           (name: string, index: number) => ({ id: index + 1, name })
@@ -207,13 +141,13 @@ const Inclusions = ({ pageType }: Prop) => {
           name,
         }))
       )
-      setFoodIncluded(data?.item?.isFoodIncluded)
-      setSelectedFoodOption(data?.item?.selectedFoodOptions[0])
-      setAlcoholicDrinksIncluded(data?.item?.isAlcoholicDrinkIncluded)
-      setNonAlcoholicDrinksIncluded(data?.item?.isNonAlcoholicDrinkIncluded)
-      setSelectedAlcoholOption(data?.item?.selectedAlcoholicDrinkOptions[0])
+      setFoodIncluded(data?.item?.isFoodIncluded ? "Yes" : "No")
+      setAlcoholicDrinksIncluded(data?.item?.isAlcoholicDrinkIncluded ? "Yes" : "No")
+      setNonAlcoholicDrinksIncluded(data?.item?.isNonAlcoholicDrinkIncluded ? "Yes" : "No")
+      setSelectedFoods(data?.item?.includedFoods)
+      setSelectedAlcohols(data?.item?.includedAlcoholicDrinks)
     }
-  }, [data])
+  }, [data, isPending])
 
   const handleInput = (inputValue: string) => {
     setInclusionName(inputValue)
@@ -262,21 +196,22 @@ const Inclusions = ({ pageType }: Prop) => {
     }
 
     const payload = {
-      isFoodIncluded: foodIncluded,
-      isNonAlcoholicDrinkIncluded: nonAlcoholicDrinksIncluded,
-      isAlcoholicDrinkIncluded: alcoholicDrinksIncluded,
+      isFoodIncluded: foodIncluded === "Yes" ? true : false,
+      isNonAlcoholicDrinkIncluded: nonAlcoholicDrinksIncluded === "Yes" ? true : false,
+      isAlcoholicDrinkIncluded: alcoholicDrinksIncluded === "Yes" ? true : false,
       otherInclusion: updatedInclusions.map((item) => item.name),
       notIncluded: updatedExclusions.map((item) => item.name),
-      selectedAlcoholicDrinkOptions: selectedAlcoholOption
-        ? [selectedAlcoholOption]
-        : [],
-      selectedFoodOptions: selectedFoodOption ? [selectedFoodOption] : [],
+      includedAlcoholicDrinks: selectedAlcohols,
+      includedFoods: selectedFoods,
     }
 
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
+          queryClient.invalidateQueries({
+            queryKey: ["activity", activityId],
+          })
           if (pageType === "setup") {
             queryClient.invalidateQueries({
               queryKey: ["activity-finished-sections", activityId],
@@ -293,7 +228,6 @@ const Inclusions = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
-
     mutate(payload, callBackReq)
   }
 
@@ -318,96 +252,136 @@ const Inclusions = ({ pageType }: Prop) => {
               <RadioInput
                 id="food"
                 value="yes"
-                checked={foodIncluded}
-                onChange={(e) =>
-                  handleOptionChange(e, setFoodIncluded, setSelectedFoodOption)
+                checked={foodIncluded === "Yes"}
+                onChange={() =>
+                  setFoodIncluded("Yes")
                 }
                 label="Yes"
               />
               <RadioInput
                 id="food"
                 value="no"
-                checked={!foodIncluded}
-                onChange={(e) =>
-                  handleOptionChange(e, setFoodIncluded, setSelectedFoodOption)
+                checked={foodIncluded === "No"}
+                onChange={() =>
+                  setFoodIncluded("No")
                 }
                 label="No"
               />
-              {foodIncluded && (
-                <Dropdown
-                  isOpen={isOpenFood}
-                  toggleDropdown={() => toggleDropdown("food")}
-                  selectedItem={selectedFoodOption || "Select Meal"}
-                  handleOptionSelect={(value) =>
-                    handleOptionSelect(value, "food")
-                  }
-                  items={mergedFoodOptions}
-                />
+              {foodIncluded === "Yes" && (
+                <Select
+                  label="Select Food"
+                  id="foodIncluded"
+                  required
+                  disabled={isPending}
+                  className="mt-4"
+                  onChange={(e) => {
+                    const exist = selectedFoods.find((item) => item === e.target.value)
+                    if (!exist) {
+                      setSelectedFoods([...selectedFoods, e.target.value])
+                    }
+                  }}
+                >
+                  <Option value="">Select</Option>
+                  {foodOptions.map((key) => {
+                    return <Option value={key.value}>{key.label}</Option>
+                  })}
+                </Select>
+              )}
+              {selectedFoods.length > 0 && (
+                <div className="flex gap-4 pt-4">
+                  {selectedFoods.map((food) => (
+                    <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-lg text-xs flex gap-2 items-center">
+                      {food}
+                      <button
+                        type="button"
+                        onClick={() => removeFood(food)}
+                      >
+                        <LucideX className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-            <div>
+            <div className="mt-6">
               <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Are non-alcoholic drinks included in your activity?
               </Typography>
               <RadioInput
                 id="nonAlcoholYes"
                 value="yes"
-                checked={nonAlcoholicDrinksIncluded === true}
-                onChange={(e) =>
-                  handleOptionChange(e, setNonAlcoholicDrinksIncluded, () => {})
+                checked={nonAlcoholicDrinksIncluded === "Yes"}
+                onChange={() =>
+                  setNonAlcoholicDrinksIncluded("Yes")
                 }
                 label="Yes"
               />
               <RadioInput
                 id="nonAlcoholNo"
                 value="no"
-                checked={!nonAlcoholicDrinksIncluded}
-                onChange={(e) =>
-                  handleOptionChange(e, setNonAlcoholicDrinksIncluded, () => {})
+                checked={nonAlcoholicDrinksIncluded === "No"}
+                onChange={() =>
+                  setNonAlcoholicDrinksIncluded("No")
                 }
                 label="No"
               />
             </div>
-            <div>
+            <div className="mt-6">
               <Typography variant="h4" fontWeight="semibold" className="mb-4">
                 Is alcoholic drinks included in your activity (18+)?
               </Typography>
               <RadioInput
                 id="alcoholYes"
                 value="yes"
-                checked={alcoholicDrinksIncluded === true}
-                onChange={(e) =>
-                  handleOptionChange(
-                    e,
-                    setAlcoholicDrinksIncluded,
-                    setSelectedAlcoholOption
-                  )
+                checked={alcoholicDrinksIncluded === "Yes"}
+                onChange={() =>
+                  setAlcoholicDrinksIncluded("Yes")
                 }
                 label="Yes"
               />
               <RadioInput
                 id="alcoholNo"
                 value="no"
-                checked={!alcoholicDrinksIncluded}
-                onChange={(e) =>
-                  handleOptionChange(
-                    e,
-                    setAlcoholicDrinksIncluded,
-                    setSelectedAlcoholOption
-                  )
+                checked={alcoholicDrinksIncluded === "No"}
+                onChange={() =>
+                  setAlcoholicDrinksIncluded("No")
                 }
                 label="No"
               />
-              {alcoholicDrinksIncluded && (
-                <Dropdown
-                  isOpen={isOpenAlcohol}
-                  toggleDropdown={() => toggleDropdown("alcohol")}
-                  selectedItem={selectedAlcoholOption || "Select Beverage"}
-                  handleOptionSelect={(value) =>
-                    handleOptionSelect(value, "alcohol")
-                  }
-                  items={mergedAlcoholOptions}
-                />
+              {alcoholicDrinksIncluded === "Yes" && (
+                <Select
+                  label="Select Drinks"
+                  id="beverageIncluded"
+                  required
+                  disabled={isPending}
+                  className="mt-4"
+                  onChange={(e) => {
+                    const exist = selectedAlcohols.find((item) => item === e.target.value)
+                    if (!exist) {
+                      setSelectedAlcohols([...selectedAlcohols, e.target.value])
+                    }
+                  }}
+                >
+                  <Option value="">Select</Option>
+                  {alcoholOptions.map((key) => {
+                    return <Option value={key.value}>{key.label}</Option>
+                  })}
+                </Select>
+              )}
+              {selectedAlcohols.length > 0 && (
+                <div className="flex gap-4 pt-4">
+                  {selectedAlcohols.map((alcohol) => (
+                    <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-lg text-xs flex gap-2 items-center">
+                      {alcohol}
+                      <button
+                        type="button"
+                        onClick={() => removeAlcohol(alcohol)}
+                      >
+                        <LucideX className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
 

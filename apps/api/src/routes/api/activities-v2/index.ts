@@ -7,7 +7,7 @@ import {
   addActivity,
   getActivity,
   getAllActivitiesByHostId,
-  updateItineraries,
+  updateItinerary,
 } from './services/default'
 import { getActivities, updateActivities } from './services/basic-info'
 import {
@@ -65,12 +65,12 @@ router.get(
 
 //itinerary
 router.patch(
-  '/:activityId/itineraries',
+  '/:activityId/itinerary',
   isUserLoggedIn,
   isCsrfTokenValid,
   isOriginValid,
   isHostActivityOwner,
-  updateItineraries
+  updateItinerary
 )
 
 //Additional info

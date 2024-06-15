@@ -10,6 +10,8 @@ import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
 import transmissionAcronym from "../helpers/transmissionAcronym"
 import useGetHostRentals from "../hooks/useGetHostRentals"
+import { isArray } from "lodash"
+import { T_Photo } from "@repo/contract"
 
 const HostListing = () => {
   const { data } = useGetHostRentals()
@@ -17,15 +19,17 @@ const HostListing = () => {
   const columns = [
     columnHelper.accessor("photos", {
       header: "Listing",
-      cell: (context) => (
+      cell: (context) => {
+        const photo = context.getValue() && isArray(context.getValue()) ? context.getValue().find((photo: T_Photo) => photo.isMain) : null
+        return (
         <Link
           href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
           className="flex items-center gap-5"
         >
           <div className="relative w-24 h-16 rounded-xl overflow-hidden">
-            {context.getValue() && context.getValue()[0] ? (
+            {photo ? (
               <Image
-                src={`/assets/${context.getValue() && context.getValue()[0] ? context.getValue()[0]?.key : "1.jpg"}`}
+                src={`/assets/${photo.key}`}
                 alt="Image"
                 layout="fill"
                 objectFit="cover"
@@ -42,9 +46,10 @@ const HostListing = () => {
             </Typography>
           </span>
         </Link>
-      ),
+      )
+    },
     }),
-    columnHelper.accessor("Location", {
+    columnHelper.accessor("location", {
       header: "Location",
       cell: (context) => (
         <Link
@@ -52,8 +57,8 @@ const HostListing = () => {
           className="flex items-center gap-5"
         >
           <Typography variant="p">
-            {context.getValue() && context.getValue().street
-              ? `${context.getValue().street}, `
+            {context.getValue() && context.getValue().streetAddress
+              ? `${context.getValue().streetAddress}, `
               : ""}
             {context.getValue() && context.getValue().city
               ? context.getValue().city
@@ -64,19 +69,6 @@ const HostListing = () => {
     }),
     columnHelper.accessor("category", {
       header: "Category",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}
-          className="flex items-center gap-5"
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
-    }),
-    columnHelper.accessor("qty", {
-      header: "Quantity",
       cell: (context) => (
         <Link
           href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/basic-info`}

@@ -23,7 +23,7 @@ import Builder from "./Builder"
 import ToggleSwitch from "@/common/components/ui/Toggle"
 import { useSegmentsStore } from "./store/useSegmentsStore"
 import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
-import useGetActivitiesById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
+import useGetActivityById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -41,8 +41,9 @@ const Itinerary = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
-  const { data, isPending: activityIsLoading } = useGetActivitiesById(listingId) // update this for activity
+  const { data, isPending: activityIsLoading } = useGetActivityById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
+  const initialSegment = useSegmentsStore((state) => state.initialSegments)
   const updateSegment = useSegmentsStore((state) => state.updateSegments)
   const getSegments = useSegmentsStore((state) => state.segments)
   const updateBarangayOptions = (e: { target: { value: string } }) => {
@@ -53,6 +54,15 @@ const Itinerary = ({ pageType }: Prop) => {
     values: data?.item?.meetingPoint,
   })
 
+  const currentCoords = (
+    data?.item?.meetingPoint?.latitude
+      ? [
+          data?.item?.meetingPoint?.latitude,
+          data?.item?.meetingPoint?.longitude,
+        ]
+      : [9.913431, 126.049483]
+  ) as [number, number]
+
   const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
     formData: T_Activity_Itinerary
   ) => {
@@ -61,12 +71,12 @@ const Itinerary = ({ pageType }: Prop) => {
         if (!data.error) {
           toast.success(data.message)
           queryClient.invalidateQueries({
-            queryKey: ["activity-finished-sections", listingId],
-          })
-          queryClient.invalidateQueries({
-            queryKey: ["get-activities", listingId],
+            queryKey: ["activity", listingId],
           })
           if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["activity-finished-sections", listingId],
+            })
             router.push(
               `/hosting/listings/activities/setup/${listingId}/inclusions`
             )
@@ -96,17 +106,7 @@ const Itinerary = ({ pageType }: Prop) => {
     )
   }
 
-  const currentCoords = (
-    data?.item?.meetingPoint?.latitude
-      ? [
-          data?.item?.meetingPoint?.latitude,
-          data?.item?.meetingPoint?.longitude,
-        ]
-      : [9.913431, 126.049483]
-  ) as [number, number]
-
-  const street = watch("meetingPoint.street", data?.item?.meetingPoint?.street)
-  const segments = watch("segments", data?.item?.segments)
+  const street = watch("meetingPoint.streetAddress", data?.item?.meetingPoint?.streetAddress)
   const city = watch("meetingPoint.city", data?.item?.meetingPoint?.city)
   const brgy = watch(
     "meetingPoint.barangay",
@@ -128,13 +128,11 @@ const Itinerary = ({ pageType }: Prop) => {
   )
 
   useEffect(() => {
-    if (!activityIsLoading) {
-      setIsToggled(toggled)
-      segments.forEach((segment) => {
-        updateSegment(segment)
-      })
+    if (!activityIsLoading && data && data.item) {
+      setIsToggled(data?.item?.isSegmentBuilderEnabled)
+      initialSegment(data?.item?.segments)
     }
-  }, [activityIsLoading, toggled])
+  }, [data, activityIsLoading])
 
   const handleToggle = () => {
     setIsToggled(!isToggled)
@@ -182,7 +180,7 @@ const Itinerary = ({ pageType }: Prop) => {
                 required
                 defaultValue={street}
                 disabled={activityIsLoading}
-                {...register("meetingPoint.street", { required: true })}
+                {...register("meetingPoint.streetAddress", { required: true })}
               />
               <Select
                 label="City / Municipality"

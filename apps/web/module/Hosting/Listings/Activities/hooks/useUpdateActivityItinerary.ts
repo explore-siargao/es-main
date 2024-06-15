@@ -15,7 +15,7 @@ export async function updateActivityItinerary(
 ) {
   const apiService = new ApiService("v2")
   return await apiService.patch(
-    `${API_URL_ACTIVITIES}/${id}/itineraries`,
+    `${API_URL_ACTIVITIES}/${id}/itinerary`,
     props
   )
 }
