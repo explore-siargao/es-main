@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   es-api:
-    image: jepoyyy0225/es-api-dev-arm:latest
+    image: jpmadrigal/es-api-dev-arm:latest
     container_name: es-api-dev-arm
     restart: unless-stopped
     env_file:
