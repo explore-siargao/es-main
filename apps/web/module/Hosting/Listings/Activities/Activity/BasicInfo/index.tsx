@@ -129,7 +129,7 @@ const BasicInfo = ({ pageType }: Prop) => {
               if (!data.error) {
                 toast.success(data.message)
                 queryClient.invalidateQueries({
-                  queryKey: ["activity-basic-info", activityId],
+                  queryKey: ["activity", activityId],
                 })
                 if (pageType === "setup") {
                   queryClient.invalidateQueries({

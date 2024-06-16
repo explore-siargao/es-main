@@ -9,16 +9,16 @@ import { useParams, useRouter } from "next/navigation"
 import { T_Activity, T_Activity_Segment, T_Photo } from "@repo/contract"
 
 import toast from "react-hot-toast"
-import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
-import useUpdateActivityStatus from "@/module/Hosting/Activity/hooks/useUpdateActivityStatus"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { E_Activity_Status } from "@repo/contract/build/Activities/enum"
+import useUpdateActivityStatus from "../../hooks/useUpdateActivityStatus"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 const ActivitySummary = () => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId as string)
-  const { data, isPending } = useGetActivitiesById(listingId)
+  const { data, isPending } = useGetActivityById(listingId)
   const activity = data?.item
   const { mutate } = useUpdateActivityStatus(listingId as string)
 

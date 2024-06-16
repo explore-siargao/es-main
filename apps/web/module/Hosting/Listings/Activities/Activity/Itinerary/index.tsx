@@ -23,7 +23,7 @@ import Builder from "./Builder"
 import ToggleSwitch from "@/common/components/ui/Toggle"
 import { useSegmentsStore } from "./store/useSegmentsStore"
 import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
-import useGetActivityById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -44,7 +44,6 @@ const Itinerary = ({ pageType }: Prop) => {
   const { data, isPending: activityIsLoading } = useGetActivityById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const initialSegment = useSegmentsStore((state) => state.initialSegments)
-  const updateSegment = useSegmentsStore((state) => state.updateSegments)
   const getSegments = useSegmentsStore((state) => state.segments)
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value

@@ -8,13 +8,13 @@ import { useState } from "react"
 import Tabs from "@/common/components/Tabs"
 import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
-import useActivitiesByHost from "../../Activity/hooks/useGetActivitiesByHost"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { isArray } from "lodash"
 import { T_Photo } from "@repo/contract"
+import useGetHostActivities from "./hooks/useGetHostActivities"
 
 const HostListing = () => {
-  const { data, isPending } = useActivitiesByHost()
+  const { data, isPending } = useGetHostActivities()
   const columnHelper = createColumnHelper<any>()
   const columns = [
     columnHelper.accessor("photos", {

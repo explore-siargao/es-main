@@ -10,8 +10,8 @@ import { T_Update_Activity_Additional_Info } from "@repo/contract"
 import { useParams, useRouter } from "next/navigation"
 import { Input } from "@/common/components/ui/Input"
 import { LucidePlus, LucideX } from "lucide-react"
-import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
 import { useQueryClient } from "@tanstack/react-query"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 const radioItems = [
   { id: "1", value: 5, label: "5 days" },
@@ -44,7 +44,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
   const [policyName, setPolicyName] = useState<string>("")
 
   const [cancellationDays, setCancellationDays] = useState<string | null>(null)
-  const { data, isPending } = useGetActivitiesById(activityId)
+  const { data, isPending } = useGetActivityById(activityId)
   const { mutate, isPending: updateActivityAdditionalInfo } =
     useUpdateActivityAdditionalInfo(activityId)
   const { handleSubmit } = useForm<T_Update_Activity_Additional_Info>({})

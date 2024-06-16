@@ -2,10 +2,9 @@
 import React, { useState, ChangeEvent, useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { Input } from "@/common/components/ui/Input"
-import { LucideMinus, LucidePlus, LucideX } from "lucide-react"
+import { LucidePlus, LucideX } from "lucide-react"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
-import useGetActivityInclusionsById from "../../hooks/useGetActivityInclusionsById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateActivityInclusions from "../../hooks/useUpdateActivityInclusions"
 import { T_Update_Activity_Inclusions } from "@repo/contract"
@@ -13,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
 import { Option, Select } from "@/common/components/ui/Select"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 interface Item {
   id: number
@@ -82,11 +82,11 @@ const Inclusions = ({ pageType }: Prop) => {
   const [selectedAlcohols, setSelectedAlcohols] = useState<string[]>([])
   const params = useParams<{ listingId: string }>()
   const activityId = String(params.listingId)
-  const { isPending, data } = useGetActivityInclusionsById(activityId)
+  const { isPending, data } = useGetActivityById(activityId)
   const { isPending: updateInclusions, mutate } =
     useUpdateActivityInclusions(activityId)
   const [foodIncluded, setFoodIncluded] = useState<string>("No")
-  const { handleSubmit, register } = useForm<T_Update_Activity_Inclusions>({})
+  const { handleSubmit } = useForm<T_Update_Activity_Inclusions>({})
 
   const addItem = (
     list: Item[],
