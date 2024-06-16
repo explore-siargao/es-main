@@ -100,9 +100,7 @@ function ListingActivityHeader({
                 <Typography>Hosting Account</Typography>
               </Link>
               <span className="text-gray-400">/</span>
-              <Typography className="px-2">
-                {activity?.title}
-              </Typography>
+              <Typography className="px-2">{activity?.title}</Typography>
             </div>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 gap-3 items-center relative">
