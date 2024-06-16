@@ -47,7 +47,7 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
             policies: updatedActivity.policies,
             cancellationDays: updatedActivity.cancellationDays,
           },
-          message: 'Activity additional info successfully updated!',
+          message: 'Activity updated',
         })
       )
     } catch (err: any) {

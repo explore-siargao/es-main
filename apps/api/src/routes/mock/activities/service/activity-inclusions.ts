@@ -71,7 +71,7 @@ export const updateActivityInclusions = (req: Request, res: Response) => {
     selectedAlcoholicDrinkOptions,
     notIncluded,
     otherInclusion,
-  }: T_Update_Activity_Inclusions = req.body
+  } = req.body
   const isInputValid = Z_Update_Activity_Inclusions.safeParse(req.body)
   if (!isHost) {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))

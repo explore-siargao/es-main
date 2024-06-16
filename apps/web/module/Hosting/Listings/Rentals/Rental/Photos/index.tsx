@@ -87,6 +87,8 @@ const RentalPhotos = ({ pageType }: Prop) => {
           const message = String(item.message) as string
           toast.success(message, { id: message })
         })
+      })
+      .then(() => {
         if (
           pageType === "setup" &&
           !data?.item?.finishedSections?.includes("photos")
@@ -95,6 +97,16 @@ const RentalPhotos = ({ pageType }: Prop) => {
             onSuccess: (data: any) => {
               if (data.error) {
                 toast.error(String(data.message))
+              } else {
+                queryClient.invalidateQueries({
+                  queryKey: ["rental", listingId],
+                })
+                queryClient.invalidateQueries({
+                  queryKey: ["rental-finished-sections", listingId],
+                })
+                router.push(
+                  `/hosting/listings/rentals/setup/${listingId}/pricing`
+                )
               }
             },
             onError: (err: any) => {
@@ -102,17 +114,13 @@ const RentalPhotos = ({ pageType }: Prop) => {
             },
           }
           updateFinishedSections({ newFinishedSection: "photos" }, callBackReq)
-        }
-      })
-      .then(() => {
-        queryClient.invalidateQueries({
-          queryKey: ["rental", listingId],
-        })
-        queryClient.invalidateQueries({
-          queryKey: ["rental-finished-sections", listingId],
-        })
-        if (pageType === "setup") {
-          router.push(`/hosting/listings/rentals/setup/${listingId}/pricing`)
+        } else {
+          queryClient.invalidateQueries({
+            queryKey: ["rental", listingId],
+          })
+          if (pageType === "setup") {
+            router.push(`/hosting/listings/rentals/setup/${listingId}/pricing`)
+          }
         }
       })
       .catch((err) => {

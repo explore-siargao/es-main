@@ -7,13 +7,13 @@ export async function getActivitiesByHost() {
   return await apiService.get(`${API_URL_ACTIVITIES}/host`)
 }
 
-function useActivitiesByHost() {
+function useGetHostActivities() {
   const query = useQuery({
-    queryKey: ["activity-host"],
+    queryKey: ["host-activities"],
     queryFn: () => getActivitiesByHost(),
     refetchOnWindowFocus: false,
   })
   return query
 }
 
-export default useActivitiesByHost
+export default useGetHostActivities

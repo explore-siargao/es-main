@@ -40,12 +40,12 @@ const Builder = () => {
                 <Typography variant="h4">
                   {segment.transfer
                     ? `Transfer via ${segment.transfer} 
-                  (${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? segment.durationMinute + "m" : ""})`
+                  (${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? " " + segment.durationMinute + "m" : ""})`
                     : segment.location}
                 </Typography>
                 <p className="text-text-400 text-sm">
                   {segment.activities?.join(", ")}{" "}
-                  {segment.activities
+                  {!segment.transfer && segment.activities
                     ? `(${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? " " + segment.durationMinute + "m" : ""})`
                     : ""}
                 </p>

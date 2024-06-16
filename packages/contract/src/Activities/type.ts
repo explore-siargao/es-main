@@ -10,7 +10,8 @@ import {
 
 export type T_Activity_Segment = z.infer<typeof Z_Activity_Segment>
 export type T_Activity = z.infer<typeof Z_Activity>
-export type T_UpdateActivityAdditionalInfo = z.infer<
+
+export type T_Update_Activity_Additional_Info = z.infer<
   typeof Z_Update_Activity_Additional_Info
 >
 export type T_Update_Activity_Inclusions = z.infer<

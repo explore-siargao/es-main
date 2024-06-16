@@ -2,7 +2,7 @@ import { z } from "zod"
 
 export const Z_Location = z.object({
   _id: z.string().optional(),
-  street: z.string(),
+  streetAddress: z.string(),
   barangay: z.string(),
   city: z.string(),
   howToGetThere: z.string(),

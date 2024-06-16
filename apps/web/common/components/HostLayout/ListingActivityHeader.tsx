@@ -19,8 +19,7 @@ import { Button } from "@/common/components/ui/Button"
 import { Typography } from "../ui/Typography"
 import { useParams } from "next/navigation"
 import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
-import transmissionAcronym from "@/module/Hosting/Listings/helpers/transmissionAcronym"
-import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
+import useGetActivityById from "@/module/Hosting/Listings/Activities/hooks/useGetActivityById"
 
 const unAuthMenus = [
   {
@@ -57,8 +56,8 @@ function ListingActivityHeader({
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
   const listingId = String(params.listingId)
-  const { data } = useGetRentalById(listingId)
-  const rental = data?.item
+  const { data } = useGetActivityById(listingId)
+  const activity = data?.item
   const renderTransition = (children: React.ReactNode) => (
     <Transition
       as={Fragment}
@@ -101,11 +100,7 @@ function ListingActivityHeader({
                 <Typography>Hosting Account</Typography>
               </Link>
               <span className="text-gray-400">/</span>
-              <Typography className="px-2">
-                {/* {rental?.year} {rental?.make} {rental?.modelBadge}{" "} */}
-                {/* {transmissionAcronym(rental?.transmission)} */}
-                Test Activity (activity)
-              </Typography>
+              <Typography className="px-2">{activity?.title}</Typography>
             </div>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 gap-3 items-center relative">

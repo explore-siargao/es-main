@@ -69,7 +69,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
     }
     const location = await dbLocations.findById(rental.location)
     if (location) {
-      location.street = streetAddress || location.street
+      location.streetAddress = streetAddress || location.streetAddress
       location.city = city || location.city
       location.barangay = barangay || location.barangay
       location.longitude = longitude || location.longitude
