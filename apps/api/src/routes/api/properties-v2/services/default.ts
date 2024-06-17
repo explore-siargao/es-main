@@ -230,3 +230,23 @@ export const getPropertyInfo = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getPropertyLocation = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
+
+  try {
+    const findPropertyInfo = await dbProperties
+      .find({ offerBy: hostId })
+      .populate('location')
+
+    const location = findPropertyInfo.map((property) => property.location)
+
+    res.json(response.success({ item: location }))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}

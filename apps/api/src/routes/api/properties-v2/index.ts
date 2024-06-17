@@ -19,6 +19,7 @@ import {
   getPropertyType,
   updatePropertyType,
   getPropertyInfo,
+  getPropertyLocation,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
@@ -76,6 +77,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyInfo
+)
+
+//location
+router.get(
+  '/:propertyId/location',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPropertyLocation
 )
 
 //photos
