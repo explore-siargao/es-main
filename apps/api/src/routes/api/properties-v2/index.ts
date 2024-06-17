@@ -25,8 +25,14 @@ import {
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
 import { updateStatus } from './services/status'
-import { getFinishedSections } from './services/finishedSections'
-import { updatePolicyByProperty } from './services/policies'
+import {
+  getFinishedSections,
+  updateFinishedSections,
+} from './services/finishedSections'
+import {
+  updatePolicyByProperty,
+  getPoliciesByProperty,
+} from './services/policies'
 
 const router = express.Router()
 
@@ -158,6 +164,15 @@ router.get(
   getPropertyFacilities
 )
 
+//policies
+router.get(
+  '/:propertyId/policies',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPoliciesByProperty
+)
+
 //finsish sections
 router.get(
   '/:propertyId/finished-sections',
@@ -165,6 +180,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getFinishedSections
+)
+
+router.patch(
+  '/:propertyId/finished-sections',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  updateFinishedSections
 )
 
 //status
