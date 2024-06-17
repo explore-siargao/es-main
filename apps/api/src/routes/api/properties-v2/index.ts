@@ -19,6 +19,7 @@ import {
   getPropertyType,
   updatePropertyType,
   getPropertyInfo,
+  getPropertyLocation,
 } from './services/default'
 
 const router = express.Router()
@@ -66,6 +67,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyInfo
+)
+
+//location
+router.get(
+  '/:propertyId/location',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPropertyLocation
 )
 
 //photos
