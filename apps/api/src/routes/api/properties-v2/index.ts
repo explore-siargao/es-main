@@ -19,6 +19,7 @@ import {
   getPropertyType,
   updatePropertyType,
   getPropertyInfo,
+  updatePropertyBasicInfo,
 } from './services/default'
 
 const router = express.Router()
@@ -66,6 +67,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyInfo
+)
+
+router.patch(
+  '/:propertyId/basic-info',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyBasicInfo
 )
 
 //photos

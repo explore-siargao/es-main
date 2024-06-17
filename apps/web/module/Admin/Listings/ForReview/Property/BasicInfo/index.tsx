@@ -68,11 +68,11 @@ const BasicInfo = ({ pageType }: Prop) => {
           <div className="col-span-1">
             <Input
               type="text"
-              label="Name"
+              label="Title"
               disabled={isLoading || isPending}
               required
-              defaultValue={data?.item?.name}
-              {...register("name", { required: true })}
+              defaultValue={data?.item?.title}
+              {...register("title", { required: true })}
             />
             <div className="mt-2">
               <Textarea

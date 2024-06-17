@@ -6,7 +6,7 @@ import { E_PropertyStatus, E_Property_Type } from "./enum"
 import { Z_Listing_Location } from "../ListingLocation/zod"
 
 export const Z_Property_Basic_Info = z.object({
-  name: z.string(),
+  title: z.string(),
   description: z.string(),
 })
 
