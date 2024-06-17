@@ -24,6 +24,7 @@ import {
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
 import { updateStatus } from './services/status'
+import { getFinishedSections } from './services/finishedSections'
 
 const router = express.Router()
 
@@ -134,6 +135,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyFacilities
+)
+
+//finsish sections
+router.get(
+  '/:propertyId/finished-sections',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getFinishedSections
 )
 
 //status
