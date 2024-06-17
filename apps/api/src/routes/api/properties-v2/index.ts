@@ -26,6 +26,7 @@ import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
 import { updateStatus } from './services/status'
 import { getFinishedSections } from './services/finishedSections'
+import { updatePolicyByProperty } from './services/policies'
 
 const router = express.Router()
 
@@ -136,6 +137,16 @@ router.delete(
   isCsrfTokenValid,
   isUserLoggedIn,
   deletePhoto
+)
+
+//policies
+router.patch(
+  '/:propertyId/policies',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  updatePolicyByProperty
 )
 
 //facilities

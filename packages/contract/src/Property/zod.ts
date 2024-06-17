@@ -12,7 +12,7 @@ export const Z_Property_Basic_Info = z.object({
 
 export const Z_Property_Policy = z.object({
   index: z.number(),
-  id: z.number().optional().nullable(),
+  _id: z.string().optional(),
   category: z.string().optional(),
   reason: z.string().optional().nullable(),
   policy: z.string().optional(),
