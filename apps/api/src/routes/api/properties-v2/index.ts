@@ -20,6 +20,7 @@ import {
   updatePropertyType,
   getPropertyInfo,
   getPropertyLocation,
+  updatePropertyBasicInfo,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
@@ -88,6 +89,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyLocation
+)
+
+router.patch(
+  '/:propertyId/basic-info',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyBasicInfo
 )
 
 //photos
