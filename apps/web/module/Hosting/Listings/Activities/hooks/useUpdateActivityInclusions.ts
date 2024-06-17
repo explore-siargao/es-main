@@ -4,17 +4,20 @@ import { useMutation } from "@tanstack/react-query"
 import { T_Update_Activity_Inclusions } from "@repo/contract"
 
 export async function updateActivityInclusions(
-  id: number | undefined,
+  activityId: string | undefined,
   props: T_Update_Activity_Inclusions
 ) {
-  const apiService = new ApiService("mock")
-  return await apiService.patch(`${API_URL_ACTIVITIES}/${id}/inclusions`, props)
+  const apiService = new ApiService("v2")
+  return await apiService.patch(
+    `${API_URL_ACTIVITIES}/${activityId}/inclusions`,
+    props
+  )
 }
 
-function useUpdateActivityInclusions(id: number | undefined) {
+function useUpdateActivityInclusions(activityId: string | undefined) {
   const query = useMutation({
     mutationFn: (props: T_Update_Activity_Inclusions) =>
-      updateActivityInclusions(id, props),
+      updateActivityInclusions(activityId, props),
   })
   return query
 }

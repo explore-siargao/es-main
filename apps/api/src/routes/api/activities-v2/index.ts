@@ -3,7 +3,12 @@ import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import { addActivity, getActivity } from './services/default'
+import {
+  addActivity,
+  getActivity,
+  getAllActivitiesByHostId,
+  updateItinerary,
+} from './services/default'
 import { getActivities, updateActivities } from './services/basic-info'
 import {
   getActivityInclusions,
@@ -18,10 +23,18 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSection'
+import {
+  addPhoto,
+  deletePhoto,
+  getPhotosByActivityId,
+  updatePhoto,
+} from './services/photos'
 
 const router = express.Router()
 
 //activity
+router.get('/host', isOriginValid, isUserLoggedIn, getAllActivitiesByHostId)
+
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
 
 router.get(
@@ -48,6 +61,16 @@ router.get(
   isOriginValid,
   isHostActivityOwner,
   getActivityInclusions
+)
+
+//itinerary
+router.patch(
+  '/:activityId/itinerary',
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isOriginValid,
+  isHostActivityOwner,
+  updateItinerary
 )
 
 //Additional info
@@ -83,6 +106,37 @@ router.get(
   isOriginValid,
   isHostActivityOwner,
   getActivities
+)
+
+//photos
+router.get(
+  '/:activityId/photos',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  getPhotosByActivityId
+)
+router.patch(
+  '/:activityId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  updatePhoto
+)
+router.post(
+  '/:activityId/photo',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  addPhoto
+)
+router.delete(
+  '/:activityId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  deletePhoto
 )
 
 //status

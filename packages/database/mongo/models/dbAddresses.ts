@@ -6,15 +6,8 @@ const addresses = new Schema({
   city: String,
   stateProvince: String,
   streetAddress: String,
-  barangay: String,
   aptSuite: String,
   zipCode: Number,
-  longitude: Number,
-  latitude: Number,
-  howToGetThere: {
-    type: String,
-    required: false,
-  },
   createdAt: {
     type: Date,
     default: Date.now(),

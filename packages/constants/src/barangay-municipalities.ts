@@ -19,7 +19,6 @@ export const BARANGAYS = [
   { name: "Purok 2", municipality: "Burgos" },
   { name: "Purok 3", municipality: "Dapa" },
   { name: "Purok 3", municipality: "General Luna" },
-  { name: "Purok 3", municipality: "General Luna" },
   { name: "Purok 4", municipality: "Dapa" },
   { name: "Purok 4", municipality: "General Luna" },
   { name: "Purok 5", municipality: "Dapa" },

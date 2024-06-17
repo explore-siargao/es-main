@@ -1,9 +1,14 @@
 import type { Metadata } from "next"
 
 import "@/app/globals.css"
+import QueryClientWrapper from "@/common/components/QueryClientWrapper"
+import GlobalModalWrapper from "@/common/components/GlobalModalWrapper"
+import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
+import AuthStateProvider from "@/common/components/AuthStateProvider"
+import HeaderGuides from "@/common/components/HeaderGuides"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -16,11 +21,18 @@ export default async function BlogGuideLayout({
   readonly children: React.ReactNode
 }) {
   return (
-    <html lang="en" id="cart-layout">
+    <html lang="en">
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
-        {/* <GuideBlogHeader /> */}
-        <div className="min-h-screen">{children}</div>
+        <Toaster />
+        <QueryClientWrapper>
+          <AuthStateProvider>
+            <GlobalModalWrapper>
+              <HeaderGuides />
+              {children}
+            </GlobalModalWrapper>
+          </AuthStateProvider>
+        </QueryClientWrapper>
       </body>
     </html>
   )

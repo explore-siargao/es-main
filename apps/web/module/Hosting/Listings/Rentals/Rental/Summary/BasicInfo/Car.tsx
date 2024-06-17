@@ -20,10 +20,11 @@ const Car = () => {
         <span className="font-semibold">Make:</span> {rental?.make}
       </Typography>
       <Typography variant="h5" className="mt-2">
-        <span className="font-semibold">Model / Badge:</span> {rental?.model}
+        <span className="font-semibold">Model / Badge:</span>{" "}
+        {rental?.modelBadge}
       </Typography>
       <Typography variant="h5" className="mt-2">
-        <span className="font-semibold">Body:</span> {rental?.body}
+        <span className="font-semibold">Body:</span> {rental?.bodyType}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Fuel Type:</span> {rental?.fuel}

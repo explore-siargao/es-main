@@ -4,14 +4,14 @@ import { useMutation } from "@tanstack/react-query"
 import { T_Update_Activity_Basic_Info } from "@repo/contract"
 
 export async function updateActivityBasicInfo(
-  id: number | undefined,
+  id: string | undefined,
   props: T_Update_Activity_Basic_Info
 ) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.patch(`${API_URL_ACTIVITIES}/${id}/info`, props)
 }
 
-function useUpdateActivityBasicInfo(id: number | undefined) {
+function useUpdateActivityBasicInfo(id: string | undefined) {
   const query = useMutation({
     mutationFn: (props: T_Update_Activity_Basic_Info) =>
       updateActivityBasicInfo(id, props),

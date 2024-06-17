@@ -8,6 +8,7 @@ import { dbActivities } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
+
 export const updateActivities = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
   const activityId = req.params.activityId
@@ -17,7 +18,7 @@ export const updateActivities = async (req: Request, res: Response) => {
     description,
     durationHour,
     durationMinute,
-    language,
+    languages,
   }: T_Update_Activity_Basic_Info = req.body
   const isValidInput = Z_Update_Activity_Basic_Info.safeParse(req.body)
   if (!isHost) {
@@ -41,7 +42,7 @@ export const updateActivities = async (req: Request, res: Response) => {
             highLights: highLights,
             durationHour: durationHour,
             durationMinute: durationMinute,
-            language: language,
+            languages: languages,
             finishedSections: ['basicInfo'],
             updatedAt: Date.now(),
           },
@@ -92,7 +93,7 @@ export const getActivities = async (req: Request, res: Response) => {
       highLights: activitiesData.highLights,
       durationHour: activitiesData.durationHour,
       durationMinute: activitiesData.durationMinute,
-      language: activitiesData.language,
+      languages: activitiesData.languages,
     }
 
     return res.json(

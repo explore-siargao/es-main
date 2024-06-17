@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -18,52 +18,66 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
-import useGetRentalById from "../../../hooks/useGetRentalById"
-import { T_Listing_Location } from "@repo/contract"
-import useUpdateRentalLocation from "../../../Rentals/Rental/hooks/useUpdateRentalLocation"
+import { T_Activity_Segment, T_Location } from "@repo/contract"
 import Builder from "./Builder"
 import ToggleSwitch from "@/common/components/ui/Toggle"
+import { useSegmentsStore } from "./store/useSegmentsStore"
+import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 type Prop = {
   pageType: "setup" | "edit"
 }
 
-const ListingLocation = ({ pageType }: Prop) => {
+type T_Activity_Itinerary = {
+  meetingPoint: T_Location
+  isSegmentBuilderEnabled: boolean
+  segments: T_Activity_Segment[]
+}
+
+const Itinerary = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { mutate, isPending } = useUpdateRentalLocation(listingId)
-  const { data } = useGetRentalById(listingId)
+  const { mutate, isPending } = useUpdateActivityItinerary(listingId)
+  const { data, isPending: activityIsLoading } = useGetActivityById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
-  const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit } = useForm<T_Listing_Location>({
-    values: data?.item?.Location,
-  })
-
+  const initialSegment = useSegmentsStore((state) => state.initialSegments)
+  const getSegments = useSegmentsStore((state) => state.segments)
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
-  const [isToggled, setIsToggled] = useState(false)
+  const { register, handleSubmit, watch } = useForm<T_Activity_Itinerary>({
+    values: data?.item?.meetingPoint,
+  })
 
-  const handleToggle = () => {
-    setIsToggled(!isToggled)
-  }
+  const currentCoords = (
+    data?.item?.meetingPoint?.latitude
+      ? [
+          data?.item?.meetingPoint?.latitude,
+          data?.item?.meetingPoint?.longitude,
+        ]
+      : [9.913431, 126.049483]
+  ) as [number, number]
 
-  const onSubmit: SubmitHandler<T_Listing_Location> = (
-    formData: T_Listing_Location
+  const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
+    formData: T_Activity_Itinerary
   ) => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
           queryClient.invalidateQueries({
-            queryKey: ["property-finished-sections", listingId],
+            queryKey: ["activity", listingId],
           })
           if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["activity-finished-sections", listingId],
+            })
             router.push(
-              `/hosting/listings/properties/setup/${listingId}/facilities`
+              `/hosting/listings/activities/setup/${listingId}/inclusions`
             )
           }
         } else {
@@ -74,20 +88,58 @@ const ListingLocation = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
+
+    const updatedMeetingPoint: T_Location = {
+      ...formData.meetingPoint,
+      latitude: latitude ?? 9.913431,
+      longitude: longitude ?? 126.049483,
+    }
+
     mutate(
       {
-        ...formData,
-        latitude: latitude as number,
-        longitude: longitude as number,
+        meetingPoint: updatedMeetingPoint,
+        isSegmentBuilderEnabled: isToggled,
+        segments: getSegments,
       },
       callBackReq
     )
   }
-  const currentCoords = (
-    data?.item?.Location?.latitude
-      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
-      : [9.913431, 126.049483]
-  ) as [number, number]
+
+  const street = watch(
+    "meetingPoint.streetAddress",
+    data?.item?.meetingPoint?.streetAddress
+  )
+  const city = watch("meetingPoint.city", data?.item?.meetingPoint?.city)
+  const brgy = watch(
+    "meetingPoint.barangay",
+    data?.item?.meetingPoint?.barangay
+  )
+  const howToGetThere = watch(
+    "meetingPoint.howToGetThere",
+    data?.item?.meetingPoint?.howToGetThere
+  )
+  const toggled = watch(
+    "isSegmentBuilderEnabled",
+    data?.item?.isSegmentBuilderEnabled
+  )
+  const [selectedMunicipality, setSelectedMunicipality] = useState(
+    activityIsLoading || !city ? "" : city
+  )
+  const [isToggled, setIsToggled] = useState(
+    activityIsLoading ? false : toggled
+  )
+
+  useEffect(() => {
+    if (!activityIsLoading && data && data.item) {
+      setIsToggled(data?.item?.isSegmentBuilderEnabled)
+      initialSegment(data?.item?.segments)
+    }
+  }, [data, activityIsLoading])
+
+  const handleToggle = () => {
+    setIsToggled(!isToggled)
+  }
+
   return (
     <div className="mt-20 mb-36">
       {isPending ? (
@@ -128,19 +180,25 @@ const ListingLocation = ({ pageType }: Prop) => {
                 id="street"
                 label="Street address"
                 required
-                {...register("street", { required: true })}
+                defaultValue={street}
+                disabled={activityIsLoading}
+                {...register("meetingPoint.streetAddress", { required: true })}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                value={selectedMunicipality}
+                defaultValue={selectedMunicipality}
                 required
-                {...register("city", { required: true })}
+                {...register("meetingPoint.city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
                 {MUNICIPALITIES.map((municipality) => (
-                  <Option key={municipality.name} value={municipality.name}>
+                  <Option
+                    key={municipality.name}
+                    value={municipality.name}
+                    selected={municipality.name === city}
+                  >
                     {municipality.name}
                   </Option>
                 ))}
@@ -149,15 +207,19 @@ const ListingLocation = ({ pageType }: Prop) => {
                 label="Barangay / District"
                 id="barangaySelect"
                 required
-                {...register("barangay", { required: true })}
+                {...register("meetingPoint.barangay", { required: true })}
               >
                 <Option value="">Select barangay</Option>
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === city
                 ).map((barangay) => (
-                  <Option key={barangay.name} value={barangay.name}>
+                  <Option
+                    key={barangay.name}
+                    value={barangay.name}
+                    selected={brgy === barangay.name}
+                  >
                     {barangay.name}
                   </Option>
                 ))}
@@ -169,7 +231,11 @@ const ListingLocation = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
-                  {...register("howToGetThere", { required: true })}
+                  defaultValue={howToGetThere}
+                  disabled={activityIsLoading}
+                  {...register("meetingPoint.howToGetThere", {
+                    required: true,
+                  })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
                   Accurately explain on how to get in your meeting point address
@@ -213,7 +279,7 @@ const ListingLocation = ({ pageType }: Prop) => {
             <ToggleSwitch
               checked={isToggled}
               onChange={handleToggle}
-              disabled={isPending}
+              disabled={isPending || activityIsLoading}
             />
             <Typography>Enable itinerary builder</Typography>
           </div>
@@ -237,4 +303,4 @@ const ListingLocation = ({ pageType }: Prop) => {
   )
 }
 
-export default ListingLocation
+export default Itinerary

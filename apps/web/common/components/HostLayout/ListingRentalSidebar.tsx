@@ -21,7 +21,7 @@ interface HostSidebarProps {
 
 const ListingRentalSidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const PROPERTY_EDIT_BASE_PATH = "/hosting/listings/rentals"
   const TOP_LINKS = [
     {

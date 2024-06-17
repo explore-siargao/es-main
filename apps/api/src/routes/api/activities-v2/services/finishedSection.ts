@@ -30,13 +30,15 @@ export const getFinishedSections = async (req: Request, res: Response) => {
 export const updateFinishedSections = async (req: Request, res: Response) => {
   const activityId = req.params.activityId
   const userId = res.locals.user?.id
-  const finishedSections = req.body.finishedSections
+  const newFinishedSection = req.body.newFinishedSection
   try {
     const updatedFinishedSections = await dbActivities.findOneAndUpdate(
       { _id: activityId, host: userId },
       {
+        $push: {
+          finishedSections: newFinishedSection,
+        },
         $set: {
-          finishedSections: finishedSections,
           updatedAt: Date.now(),
         },
       },
@@ -47,7 +49,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
         item: {
           finishedSections: updatedFinishedSections?.finishedSections,
         },
-        message: 'Finished sections saved!',
+        message: 'Updated activity',
       })
     )
   } catch (err: any) {

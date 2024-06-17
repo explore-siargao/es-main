@@ -2,14 +2,14 @@ import { useMutation } from "@tanstack/react-query"
 import { API_URL_ACTIVITIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 
-export async function addActivities() {
+export async function addActivity() {
   const apiService = new ApiService("mock")
   return await apiService.post(`${API_URL_ACTIVITIES}`, {})
 }
-function useAddActivities() {
+function useAddActivity() {
   const query = useMutation({
-    mutationFn: () => addActivities(),
+    mutationFn: () => addActivity(),
   })
   return query
 }
-export default useAddActivities
+export default useAddActivity
