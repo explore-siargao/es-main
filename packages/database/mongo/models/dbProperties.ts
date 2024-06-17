@@ -1,12 +1,12 @@
 import mongoose, { Schema } from "mongoose"
 const statusEnum = ["Pending", "Incomplete", "Live"]
 const propertyTypeEnum = [
-  "Hostel",
-  "Homestay",
-  "Hotel",
-  "Apartment",
-  "Resort",
-  "Villa",
+  "HOSTEL",
+  "HOMESTAY",
+  "HOTEL",
+  "APARTMENT",
+  "RESORT",
+  "VILLA",
 ]
 const properties = new Schema({
   offerBy: {

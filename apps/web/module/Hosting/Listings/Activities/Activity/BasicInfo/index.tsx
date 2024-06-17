@@ -6,12 +6,12 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucidePlus, LucideX, MinusIcon, PlusIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
 import useUpdateActivityBasicInfo from "../../hooks/useUpdateActivityBasicInfo"
 import { useQueryClient } from "@tanstack/react-query"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { useParams, useRouter } from "next/navigation"
 import { cn } from "@/common/helpers/cn"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 interface Item {
   id: number
@@ -28,9 +28,9 @@ const BasicInfo = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { isLoading, data } = useGetActivitiesById(listingId)
-  const { isPending, mutate } = useUpdateActivityBasicInfo(listingId)
+  const activityId = String(params.listingId)
+  const { isLoading, data } = useGetActivityById(activityId)
+  const { isPending, mutate } = useUpdateActivityBasicInfo(activityId)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [itemData, setItemData] = useState<Item[]>([])
@@ -80,14 +80,16 @@ const BasicInfo = ({ pageType }: Prop) => {
       setDurationHour(data?.item?.durationHour || 0)
       setDurationMinute(data?.item?.durationMinute || 0)
       setItemList(
-        data?.item?.highLights.map((itemName: string, index: number) => ({
+        data?.item?.highLights?.map((itemName: string, index: number) => ({
           id: index + 1,
           itemName: itemName,
         })) || []
       )
       setTitle(data?.item?.title || "")
       setDescription(data?.item?.description || "")
-      setSelectedLanguages(data?.item?.languages || [])
+      setSelectedLanguages(
+        (data?.item?.languages || []).filter((lang: string) => lang != null)
+      )
     }
   }, [data])
 
@@ -120,17 +122,21 @@ const BasicInfo = ({ pageType }: Prop) => {
             durationMinute: durationMinute,
             highLights: itemList.map((item) => item.itemName),
           }
+          console.log("Test: ", updatedFormData.languages)
 
           const callBackReq = {
             onSuccess: (data: any) => {
               if (!data.error) {
                 toast.success(data.message)
+                queryClient.invalidateQueries({
+                  queryKey: ["activity", activityId],
+                })
                 if (pageType === "setup") {
                   queryClient.invalidateQueries({
-                    queryKey: ["activity-finished-sections", listingId],
+                    queryKey: ["activity-finished-sections", activityId],
                   })
                   router.push(
-                    `/hosting/listings/activities/setup/${listingId}/itinerary`
+                    `/hosting/listings/activities/setup/${activityId}/itinerary`
                   )
                 }
               } else {
@@ -356,8 +362,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 >
                   Language/s spoken by host
                 </Typography>
-
-                {languages.map((language, index) => (
+                {languages.map((language: string, index: number) => (
                   <div key={language} className="flex gap-2 my-2 ">
                     <Checkbox
                       id={index}

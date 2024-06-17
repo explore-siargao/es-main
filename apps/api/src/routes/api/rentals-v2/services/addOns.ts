@@ -9,7 +9,7 @@ const response = new ResponseService()
 export const getAddOns = async (req: Request, res: Response) => {
   const id = req.params.rentalId
   const hostId = res.locals.user?.id
-  let addOns: T_Rental_AddOns | null = null
+  let addOns: any
   try {
     const getRental = await dbRentals
       .findOne({
@@ -29,6 +29,7 @@ export const getAddOns = async (req: Request, res: Response) => {
 
     if (getRental.category === 'Car') {
       addOns = {
+        category: getRental.category,
         roofRack: addOns.roofRack,
         dashCam: addOns.dashCam,
         others: addOns.others,
@@ -38,6 +39,7 @@ export const getAddOns = async (req: Request, res: Response) => {
       getRental.category === 'Bicycle'
     ) {
       addOns = {
+        category: getRental.category,
         boardRack: addOns.boardRack,
         babySeat: addOns.babySeat,
         includesHelmet: addOns.includesHelmet,
@@ -71,12 +73,10 @@ export const updateAddOns = async (req: Request, res: Response) => {
   const isValidInput = Z_Rental_AddOns.safeParse(req.body as T_Rental_AddOns)
   if (isValidInput.success) {
     try {
-      const getRental = await dbRentals
-        .findOne({
-          _id: rentalId,
-          host: userId,
-        })
-        .populate('addOns')
+      const getRental = await dbRentals.findOne({
+        _id: rentalId,
+        host: userId,
+      })
 
       if (!getRental) {
         return res.json(response.error({ message: 'Rental not found' }))
@@ -112,12 +112,12 @@ export const updateAddOns = async (req: Request, res: Response) => {
         getRental.addOns,
         {
           $set: {
-            roofRack: addOns.roofRack,
-            boardRack: addOns.boardRack,
-            babySeat: addOns.babySeat,
-            dashCam: addOns.dashCam,
-            includesHelmet: addOns.includesHelmet,
-            others: addOns.others,
+            roofRack: roofRack,
+            boardRack: boardRack,
+            babySeat: babySeat,
+            dashCam: dashCam,
+            includesHelmet: includesHelmet,
+            others: others,
           },
         },
         {
@@ -130,7 +130,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
         {
           $set: {
             AddOns: addOns,
-            finishedSections: '["basicInfo", "details", "addOns"]',
+            finishedSections: ['basicInfo', 'details', 'addOns'],
           },
         }
       )

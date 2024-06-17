@@ -1,102 +1,64 @@
 import z from "zod"
 import { Z_Photo } from "../Photo"
-import { Z_Address } from "../Address"
-import { Z_Itineraries } from "../Itineraries"
 import { Z_User } from "../User"
 import { E_Activity_Status } from "./enum"
+import { Z_Location } from "../Location"
 
-export const Z_Activities = z.object({
-  id: z.number().optional(),
+export const Z_Activity_Segment = z.object({
+  index: z.number().optional(),
+  activities: z.array(z.string()).optional(),
+  durationHour: z.number(),
+  durationMinute: z.number(),
+  location: z.string().optional(),
+  longitude: z.number().optional(),
+  latitude: z.number().optional(),
+  optional: z.boolean(),
+  hasAdditionalFee: z.boolean(),
+  transfer: z.string().optional(),
+})
+
+export const Z_Activity = z.object({
+  id: z.string().optional(),
   host: Z_User.optional(),
-  finishedSections: z.string().optional(),
-  meetingPointDescription: z.string().optional(),
+  finishedSections: z.array(z.string()).optional(),
   title: z.string().optional(),
   description: z.string().optional(),
   highLights: z.string().optional(),
   durationHour: z.number().optional(),
   durationMinute: z.number().optional(),
-  language: z.string().optional(),
+  languages: z.array(z.string()).optional(),
   isFoodIncluded: z.boolean().optional(),
   isNonAlcoholicDrinkIncluded: z.boolean().optional(),
   isAlcoholicDrinkIncluded: z.boolean().optional(),
   otherInclusion: z.string().optional(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
-  address: z.array(Z_Address).optional(),
-  howToGetThere: z.string().optional(),
-  isBuilderEnabled: z.boolean().optional(),
-  itineraries: z.array(Z_Itineraries).optional().nullable(),
+  isSegmentBuilderEnabled: z.boolean(),
+  segments: z.array(Z_Activity_Segment).optional(),
+  meetingPoint: Z_Location.optional(),
   notIncluded: z.string().optional(),
   whatToBrings: z.string().optional(),
   notAllowed: z.string().optional(),
-  activityPolicies: z.string().optional(),
+  policies: z.string().optional(),
   cancellationPolicies: z.string().optional(),
-  activityPhotos: z.array(Z_Photo).optional(),
+  photos: z.array(Z_Photo).optional(),
   status: z.nativeEnum(E_Activity_Status).optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),
 })
 
-export const Z_ActivitiesAdd = z.object({
-  id: z.number().optional().nullable(),
-  host: Z_User.optional().nullable(),
-  finishedSections: z.string().optional().nullable(),
-  meetingPointDescription: z.string().optional().nullable(),
-  title: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  highLights: z.string().optional().nullable(),
-  durationHour: z.number().optional().nullable(),
-  durationMinute: z.number().optional().nullable(),
-  language: z.string().optional().nullable(),
-  isFoodIncluded: z.boolean().optional().nullable(),
-  isNonAlcoholicDrinkIncluded: z.boolean().optional().nullable(),
-  isAlcoholicDrinkIncluded: z.boolean().optional().nullable(),
-  otherInclusion: z.string().optional().nullable(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
-  address: z.array(Z_Address).optional().nullable(),
-  howToGetThere: z.string().optional().nullable(),
-  isBuilderEnabled: z.boolean(),
-  itineraries: z.array(Z_Itineraries).optional().nullable(),
-  notIncluded: z.string().optional().nullable(),
-  whatToBrings: z.string().optional().nullable(),
-  notAllowed: z.string().optional().nullable(),
-  activityPolicies: z.string().optional().nullable(),
-  cancellationPolicies: z.string().optional().nullable(),
-  activityPhotos: z.array(Z_Photo).optional().nullable(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().nullable().optional(),
-  deletedAt: z.date().nullable().optional(),
-})
-
-export const Z_UpdateActivities = z.object({
-  id: z.number().optional().nullable(),
-  meetingPointDescription: z.string().optional().nullable(),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
-  address: z.array(Z_Address).optional().nullable(),
-  howToGetThere: z.string().optional().nullable(),
-  isBuilderEnabled: z.boolean(),
-  itineraries: z.array(Z_Itineraries).optional().nullable(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().nullable().optional(),
-  deletedAt: z.date().nullable().optional(),
-})
-
-export const Z_UpdateActivityAdditionalInfo = z.object({
+export const Z_Update_Activity_Additional_Info = z.object({
   whatToBring: z.array(z.string()).optional(),
   notAllowed: z.array(z.string()).optional(),
   policies: z.array(z.string()).optional(),
-  cancellationDays: z.number().optional(),
+  cancellationDays: z.string().nullable().optional(),
 })
 
 export const Z_Update_Activity_Inclusions = z.object({
   isFoodIncluded: z.boolean(),
-  selectedFoodOptions: z.array(z.string()).optional().nullable(),
+  includedFoods: z.array(z.string()).optional().nullable(),
   isNonAlcoholicDrinkIncluded: z.boolean(),
   isAlcoholicDrinkIncluded: z.boolean(),
-  selectedAlcoholicDrinkOptions: z.array(z.string()),
+  includedAlcoholicDrinks: z.array(z.string()),
   otherInclusion: z.array(z.string()),
   notIncluded: z.array(z.string()),
 })
@@ -107,7 +69,7 @@ export const Z_Update_Activity_Basic_Info = z.object({
   highLights: z.array(z.string()).optional(),
   durationHour: z.number().optional(),
   durationMinute: z.number().optional(),
-  language: z.array(z.string()).optional(),
+  languages: z.array(z.string()).optional(),
 })
 
 export const Z_Activity_Status = z.object({

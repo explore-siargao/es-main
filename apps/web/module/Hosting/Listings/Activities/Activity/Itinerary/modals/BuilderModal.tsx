@@ -8,6 +8,9 @@ import ModalContainerFooter from "@/common/components/ModalContainer/ModalContai
 import { ACTIVITIES } from "../constants"
 import toast from "react-hot-toast"
 import { useSegmentsStore } from "../store/useSegmentsStore"
+import { useParams } from "next/navigation"
+import CustomSpecificMap from "@/common/components/CustomSpecificMap"
+import useGetActivityById from "../../../hooks/useGetActivityById"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -25,10 +28,20 @@ const BuilderModal = ({
   const [durationMinute, setDurationMinute] = useState(0)
   const [optional, setOptional] = useState("No")
   const [fee, setFee] = useState("No")
+  const [coordinates, setCoordinates] = useState<{
+    latitude: number
+    longitude: number
+  } | null>(null)
+  const params = useParams<{ listingId: string }>()
+  const listingId = String(params.listingId)
+  const { data } = useGetActivityById(listingId)
+  const updateCoordinates = (latitude: number, longitude: number) => {
+    setCoordinates({ latitude, longitude })
+  }
 
   const updateActivities = (activity: string) => {
     const isExist = activities.find((item) => item === activity)
-    if (!isExist) {
+    if (!isExist && activities.length < 3) {
       const data = [...activities, activity]
       setActivities([...data])
     }
@@ -49,6 +62,8 @@ const BuilderModal = ({
       toast.error("Location is needed for this segment")
     } else if (!durationHour && !durationMinute) {
       toast.error("Please add duration for this segment")
+    } else if (!coordinates) {
+      toast.error("Please add coordinates for this segment")
     } else {
       updateSegments({
         activities,
@@ -56,7 +71,8 @@ const BuilderModal = ({
         durationHour,
         durationMinute,
         optional: optional === "Yes",
-        fee: fee === "Yes",
+        hasAdditionalFee: fee === "Yes",
+        ...coordinates,
       })
       toast.success("New segment was added")
       setActivities([])
@@ -64,6 +80,11 @@ const BuilderModal = ({
     }
   }
 
+  const currentCoords = (
+    data?.item?.Location?.latitude
+      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
+      : [9.913431, 126.049483]
+  ) as [number, number]
   return (
     <ModalContainer
       onClose={() => onClose(!isModalOpen)}
@@ -81,6 +102,7 @@ const BuilderModal = ({
               label="Activity"
               required
               className="col-span-1"
+              disabled={activities.length > 2}
               onChange={(e) => updateActivities(e.target.value)}
             >
               <Option value={""}>Select Activity</Option>
@@ -90,6 +112,9 @@ const BuilderModal = ({
                 </Option>
               ))}
             </Select>
+            <Typography className="text-xs text-text-300 italic mt-1">
+              You can select up to 3 activity
+            </Typography>
             {activities.length > 0 && (
               <div className="flex gap-4 pt-4">
                 {activities.map((activity) => (
@@ -120,7 +145,16 @@ const BuilderModal = ({
             />
           </div>
         </div>
-        <div className="mt-6">
+        <div className="flex flex-col my-5 justify-center">
+          <CustomSpecificMap
+            center={currentCoords}
+            mapHeight={"h-[300px]"}
+            mapWidth={"w-full"}
+            zoom={11}
+            setCoordinates={updateCoordinates}
+          />
+        </div>
+        <div>
           <Typography variant="h4" fontWeight="semibold" className="mb-4">
             How long does this segment last?
           </Typography>
@@ -252,7 +286,7 @@ const BuilderModal = ({
             </label>
             <input
               id="segment-fee-no"
-              name="isSegmentHasFee"
+              name="hasAdditionalFee"
               type="radio"
               className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
               onChange={(e) => setFee(e.target.value)}

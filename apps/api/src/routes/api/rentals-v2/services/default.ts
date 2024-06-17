@@ -2,7 +2,7 @@ import { ResponseService } from '@/common/service/response'
 import { Request, Response } from 'express'
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import {
-  dbAddresses,
+  dbLocations,
   dbPhotos,
   dbRentalAddOns,
   dbRentalDetails,
@@ -20,6 +20,7 @@ export const getAllRentals = async (req: Request, res: Response) => {
       .find({ host: hostId })
       .sort({ _id: -1 })
       .populate('photos')
+      .populate('location')
 
     return res.json(
       response.success({
@@ -76,7 +77,7 @@ export const addRental = async (req: Request, res: Response) => {
       photos: null,
     })
 
-    const location = new dbAddresses({
+    const location = new dbLocations({
       streetAddress: null,
       barangay: null,
       city: null,
@@ -194,6 +195,9 @@ export const getRental = async (req: Request, res: Response) => {
       .findOne({ _id: rentalId, host: hostId })
       .populate('details')
       .populate('photos')
+      .populate('addOns')
+      .populate('pricing')
+      .populate('location')
       .exec()
 
     if (!rental) {

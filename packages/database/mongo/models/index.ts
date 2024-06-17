@@ -15,7 +15,6 @@ import dbRentalRates from "./dbRentalRates"
 import dbRentalAddOns from "./dbRentalAddOns"
 import dbPhotos from "./dbPhotos"
 import dbActivities from "./dbActivities"
-import dbActivityItineraries from "./dbActivityItineraries"
 import dbProperties from "./dbProperties"
 import dbFacilities from "./dbFacilities"
 import dbPolicies from "./dbPolicies"
@@ -25,6 +24,7 @@ import dbAmenities from "./dbAmenities"
 import dbUnitPrices from "./dbUnitPrices"
 import dbBedConfigs from "./dbBedConfigs"
 import dbReservations from "./dbReservations"
+import dbLocations from "./dbLocations"
 export {
   dbAddresses,
   dbEmergencyContacts,
@@ -43,7 +43,6 @@ export {
   dbRentalAddOns,
   dbPhotos,
   dbActivities,
-  dbActivityItineraries,
   dbProperties,
   dbFacilities,
   dbPolicies,
@@ -53,4 +52,5 @@ export {
   dbUnitPrices,
   dbBedConfigs,
   dbReservations,
+  dbLocations,
 }

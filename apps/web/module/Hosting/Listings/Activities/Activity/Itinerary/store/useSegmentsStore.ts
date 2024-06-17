@@ -1,24 +1,19 @@
+import { T_Activity_Segment } from "@repo/contract"
 import { create } from "zustand"
 
-type T_Segment = {
-  index?: number
-  transfer?: string
-  activities?: string[]
-  location: string
-  durationHour: number
-  durationMinute: number
-  optional: boolean
-  fee: boolean
-}
-
 type T_Segments = {
-  segments: T_Segment[]
-  updateSegments: (segment: T_Segment) => void
+  segments: T_Activity_Segment[]
+  initialSegments: (segment: T_Activity_Segment[]) => void
+  updateSegments: (segment: T_Activity_Segment) => void
   deleteSegment: (index: number) => void
 }
 
 export const useSegmentsStore = create<T_Segments>((set) => ({
   segments: [],
+  initialSegments: (segments) =>
+    set(() => ({
+      segments: [...segments],
+    })),
   updateSegments: (segment) =>
     set((state) => ({
       segments: [

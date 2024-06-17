@@ -11,6 +11,7 @@ export type T_SectionInfoProps = {
 export type T_ImagesProps = {
   openModal: () => void
   images: T_Image[]
+  isViewModal: boolean
 }
 
 export type T_ImageGalleryModalProps = {

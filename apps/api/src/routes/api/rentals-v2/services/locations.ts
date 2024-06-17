@@ -5,7 +5,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { T_UpdateRentalLocation } from '@repo/contract'
-import { dbAddresses, dbRentals } from '@repo/database'
+import { dbLocations, dbRentals } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -67,7 +67,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
         })
       )
     }
-    const location = await dbAddresses.findById(rental.location)
+    const location = await dbLocations.findById(rental.location)
     if (location) {
       location.streetAddress = streetAddress || location.streetAddress
       location.city = city || location.city

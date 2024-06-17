@@ -103,6 +103,7 @@ export const getPropertyById = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const deleteProperty = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
@@ -168,6 +169,7 @@ export const getPropertyType = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const updatePropertyType = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const propertyId = req.params.propertyId
@@ -232,6 +234,26 @@ export const getPropertyInfo = async (req: Request, res: Response) => {
   }
 }
 
+export const getPropertyLocation = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
+
+  try {
+    const findPropertyInfo = await dbProperties
+      .find({ offerBy: hostId })
+      .populate('location')
+
+    const location = findPropertyInfo.map((property) => property.location)
+
+    res.json(response.success({ item: location }))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
 export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
   const { title, description }: T_Property_Basic_Info = req.body
@@ -277,4 +299,3 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
     )
   }
 }
-

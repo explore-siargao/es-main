@@ -1,11 +1,39 @@
 import mongoose, { Schema } from "mongoose"
+
 const statusEnum = ["Pending", "Incomplete", "Live"]
+
+const segments = new Schema({
+  index: Number,
+  activities: {
+    type: [String],
+    default: [],
+  },
+  durationHour: Number,
+  durationMinute: Number,
+  location: String,
+  longitude: Number,
+  latitude: Number,
+  optional: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
+  hasAdditionalFee: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
+  transfer: {
+    type: String,
+    default: null,
+  },
+})
+
 const activities = new Schema({
   host: {
     type: mongoose.Schema.ObjectId,
     ref: "Users",
   },
-  meetingPointDescription: String,
   title: String,
   description: String,
   highLights: {
@@ -14,7 +42,7 @@ const activities = new Schema({
   },
   durationHour: Number,
   durationMinute: Number,
-  language: {
+  languages: {
     type: [String],
     default: [],
   },
@@ -22,7 +50,7 @@ const activities = new Schema({
     type: Boolean,
     default: false,
   },
-  selectedFoodOptions: {
+  includedFoods: {
     type: [String],
     default: [],
   },
@@ -34,7 +62,7 @@ const activities = new Schema({
     type: Boolean,
     default: false,
   },
-  selectedAlcoholicDrinkOptions: {
+  includedAlcoholicDrinks: {
     type: [String],
     default: [],
   },
@@ -58,32 +86,28 @@ const activities = new Schema({
     type: [String],
     default: [],
   },
-  cancellationDays: {
-    type: Number,
-    required: false,
-  },
-  address: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Addresses",
-  },
-  isBuilderEnabled: {
+  cancellationDays: String,
+  isSegmentBuilderEnabled: {
     type: Boolean,
     default: false,
   },
-  itineraries: {
-    type: [mongoose.Schema.ObjectId],
-    ref: "ActivityItineraries",
+  segments: {
+    type: [segments],
+    default: [],
   },
-  activityPhotos: {
+  meetingPoint: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Locations",
+  },
+  photos: {
     type: [mongoose.Schema.ObjectId],
     ref: "Photos",
-    required: false,
-    default: null,
+    default: [],
   },
   status: {
     type: String,
     enum: statusEnum,
-    default: "Pending",
+    default: "Incomplete",
   },
   finishedSections: {
     type: [String],

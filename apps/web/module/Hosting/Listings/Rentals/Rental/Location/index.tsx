@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -18,9 +18,9 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
-import useGetRentalById from "../../../hooks/useGetRentalById"
 import useUpdateRentalLocation from "../hooks/useUpdateRentalLocation"
 import { T_Listing_Location } from "@repo/contract"
+import useGetRentalById from "../../../hooks/useGetRentalById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -36,8 +36,16 @@ const ListingLocation = ({ pageType }: Prop) => {
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
-    values: data?.item?.Location,
+    values: data?.item?.location,
   })
+
+  const [streetAddress, setStreet] = useState<string>()
+  const [howToGetThere, setHowToGetThere] = useState<string>()
+
+  useEffect(() => {
+    setStreet(data?.item?.location?.streetAddress)
+    setHowToGetThere(data?.item?.location?.howToGetThere)
+  }, [data])
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
@@ -52,9 +60,12 @@ const ListingLocation = ({ pageType }: Prop) => {
         if (!data.error) {
           toast.success(data.message)
           queryClient.invalidateQueries({
-            queryKey: ["rental-finished-sections", listingId],
+            queryKey: ["rental", listingId],
           })
           if (pageType === "setup") {
+            queryClient.invalidateQueries({
+              queryKey: ["rental-finished-sections", listingId],
+            })
             router.push(`/hosting/listings/rentals/setup/${listingId}/summary`)
           }
         } else {
@@ -75,10 +86,11 @@ const ListingLocation = ({ pageType }: Prop) => {
     )
   }
   const currentCoords = (
-    data?.item?.Location?.latitude
-      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
+    data?.item?.location?.latitude
+      ? [data?.item?.location?.latitude, data?.item?.location?.longitude]
       : [9.913431, 126.049483]
   ) as [number, number]
+
   return (
     <div className="mt-20 mb-14">
       {isPending ? (
@@ -113,25 +125,32 @@ const ListingLocation = ({ pageType }: Prop) => {
               </Typography>
               <Input
                 type="text"
-                id="street"
+                id="streetAddress"
                 label="Street address"
                 required
-                {...register("street", { required: true })}
+                {...register("streetAddress", { required: true })}
+                defaultValue={data?.item?.location?.streetAddress}
+                onChange={() => setStreet(streetAddress)}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                value={selectedMunicipality}
                 required
                 {...register("city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
-                {MUNICIPALITIES.map((municipality) => (
-                  <Option key={municipality.name} value={municipality.name}>
-                    {municipality.name}
-                  </Option>
-                ))}
+                {MUNICIPALITIES.map((key) => {
+                  return (
+                    <Option
+                      value={key.name}
+                      key={key.name}
+                      selected={key.name === data?.item?.location?.city}
+                    >
+                      {key.name}
+                    </Option>
+                  )
+                })}
               </Select>
               <Select
                 label="Barangay / District"
@@ -143,9 +162,13 @@ const ListingLocation = ({ pageType }: Prop) => {
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === data?.item?.location?.city
                 ).map((barangay) => (
-                  <Option key={barangay.name} value={barangay.name}>
+                  <Option
+                    key={barangay.name}
+                    value={barangay.name}
+                    selected={barangay.name === data?.item?.location?.barangay}
+                  >
                     {barangay.name}
                   </Option>
                 ))}
@@ -158,9 +181,11 @@ const ListingLocation = ({ pageType }: Prop) => {
                   className="mt-1"
                   required
                   {...register("howToGetThere", { required: true })}
+                  defaultValue={data?.item?.location?.howToGetThere}
+                  onChange={() => setHowToGetThere(howToGetThere)}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
-                  Accurately explain on how to get in your property address
+                  Accurately explain on how to get in your property addressasd
                 </Typography>
               </div>
             </div>
