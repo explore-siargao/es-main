@@ -250,3 +250,4 @@ export const getPropertyLocation = async (req: Request, res: Response) => {
     )
   }
 }
+
