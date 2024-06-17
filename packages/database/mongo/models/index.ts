@@ -52,5 +52,5 @@ export {
   dbUnitPrices,
   dbBedConfigs,
   dbReservations,
-  dbLocations
+  dbLocations,
 }
