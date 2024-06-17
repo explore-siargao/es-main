@@ -29,6 +29,7 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSections'
+import { getPoliciesByProperty } from './services/policies'
 
 const router = express.Router()
 
@@ -148,6 +149,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyFacilities
+)
+
+//policies
+router.get(
+  '/:propertyId/policies',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPoliciesByProperty
 )
 
 //finsish sections
