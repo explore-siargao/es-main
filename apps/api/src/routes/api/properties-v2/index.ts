@@ -23,6 +23,7 @@ import {
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
+import { updateStatus } from './services/status'
 
 const router = express.Router()
 
@@ -133,6 +134,16 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyFacilities
+)
+
+//status
+router.patch(
+  '/:propertyId/status',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updateStatus
 )
 
 export default router
