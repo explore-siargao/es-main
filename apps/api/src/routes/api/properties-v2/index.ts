@@ -21,6 +21,7 @@ import {
   getPropertyInfo,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
+import { getPropertyFacilities } from './services/facilities'
 
 const router = express.Router()
 
@@ -113,6 +114,15 @@ router.delete(
   isCsrfTokenValid,
   isUserLoggedIn,
   deletePhoto
+)
+
+//facilities
+router.get(
+  '/:propertyId/facilities',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPropertyFacilities
 )
 
 export default router
