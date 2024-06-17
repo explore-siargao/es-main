@@ -20,6 +20,7 @@ import {
   updatePropertyType,
   getPropertyInfo,
 } from './services/default'
+import { addPropertyType } from './services/propertyType'
 
 const router = express.Router()
 
@@ -43,6 +44,14 @@ router.delete(
 )
 
 //propertyType
+router.post(
+  '/add/property-type',
+  isUserLoggedIn,
+  isOriginValid,
+  isCsrfTokenValid,
+  addPropertyType
+)
+
 router.get(
   '/:propertyId/property-type',
   isOriginValid,
