@@ -87,3 +87,44 @@ export const addRoomUnit = async (req: Request, res: Response) => {
     })
   )
 }
+
+//add Bed
+export const addBedUnit = async (req: Request, res: Response) => {
+  const propertyId = req.params.propertyId
+
+  const newBookableUnitType = new dbBookableUnitTypes({
+    category: 'Bed',
+    title: '',
+    description: '',
+    bedConfigs: [],
+    amenities: [],
+    totalSize: null,
+    photos: [],
+    isPrivate: false,
+    maxGuests: 0,
+    adultsIncluded: 0,
+    childrenIncluded: 0,
+    isMultiRoomUnit: false,
+    qty: 0,
+  })
+  await newBookableUnitType.save()
+  await dbProperties.findByIdAndUpdate(
+    propertyId,
+    {
+      $push: {
+        bookableUnits: newBookableUnitType._id,
+      },
+      $set: {
+        updatedAt: Date.now(),
+      },
+    },
+    { new: true }
+  )
+
+  res.json(
+    response.success({
+      item: newBookableUnitType,
+      message: 'BookableUnit Bed Successfully added',
+    })
+  )
+}
