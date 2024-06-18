@@ -50,7 +50,7 @@ const properties = new Schema({
   email: String,
   location: {
     type: mongoose.Schema.ObjectId,
-    ref: "Addresses",
+    ref: "Locations",
   },
   checkInTime: Date,
   checkOutTime: Date,

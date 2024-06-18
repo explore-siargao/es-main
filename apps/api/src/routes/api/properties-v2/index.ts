@@ -20,6 +20,7 @@ import {
   updatePropertyType,
   getPropertyInfo,
   getPropertyLocation,
+  updatePropertyLocation,
   updatePropertyBasicInfo,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
@@ -43,6 +44,7 @@ import {
 const router = express.Router()
 
 //property
+
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 router.get(
@@ -60,7 +62,22 @@ router.delete(
   isHostPropertyOwner,
   deleteProperty
 )
-
+//location
+router.get(
+  '/:propertyId/location',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPropertyLocation
+)
+router.patch(
+  '/:propertyId/location',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyLocation
+)
 //propertyType
 router.post(
   '/add/property-type',
@@ -93,15 +110,6 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyInfo
-)
-
-//location
-router.get(
-  '/:propertyId/location',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostPropertyOwner,
-  getPropertyLocation
 )
 
 router.patch(

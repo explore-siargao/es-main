@@ -8,7 +8,6 @@ import { dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
-
 export const getPoliciesByProperty = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
