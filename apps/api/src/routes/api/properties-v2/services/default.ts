@@ -1,6 +1,10 @@
-import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
+import {
+  UNKNOWN_ERROR_OCCURRED,
+  USER_NOT_AUTHORIZED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { dbProperties } from '@repo/database'
+import { T_Location } from '@repo/contract'
+import { dbLocations, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -246,6 +250,88 @@ export const getPropertyLocation = async (req: Request, res: Response) => {
     res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const updatePropertyLocation = async (req: Request, res: Response) => {
+  const propertyId = req.params.propertyId
+  const {
+    streetAddress,
+    barangay,
+    city,
+    longitude,
+    latitude,
+    howToGetThere,
+  }: Partial<T_Location> = req.body
+
+  if (
+    !streetAddress &&
+    !barangay &&
+    !city &&
+    !longitude &&
+    !latitude &&
+    !howToGetThere
+  ) {
+    return res.json(response.error({ message: 'Required value is empty' }))
+  }
+
+  try {
+    const property = await dbProperties
+      .findById(propertyId)
+      .populate('location')
+
+    if (!property) {
+      return res.json(response.error({ message: 'Property not found' }))
+    }
+
+    if (property.location === null) {
+      console.log('hello')
+      const newLocation = new dbLocations({
+        streetAddress: streetAddress,
+        barangay: barangay,
+        city: city,
+        longitude: longitude,
+        latitude: latitude,
+        howToGetThere: howToGetThere,
+      })
+      await newLocation.save()
+      await dbProperties.findByIdAndUpdate(
+        propertyId,
+        {
+          $set: {
+            location: newLocation._id,
+          },
+        },
+        { new: true }
+      )
+    } else {
+      await dbLocations.findByIdAndUpdate(property?.location, {
+        $set: {
+          streetAddress: streetAddress,
+          barangay: barangay,
+          city: city,
+          longitude: longitude,
+          latitude: latitude,
+          howToGetThere: howToGetThere,
+        },
+      })
+    }
+
+    property.finishedSections = ['type', 'basicInfo', 'location']
+
+    res.json(
+      response.success({
+        item: property,
+        message: 'Property location updated',
+      })
+    )
+  } catch (err: any) {
+    console.error(err)
+    res.json(
+      response.error({
+        message: err.message ? err.message : 'Unknown error occurred',
       })
     )
   }
