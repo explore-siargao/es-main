@@ -29,7 +29,12 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSections'
-import { addBedUnit, addRoomUnit, addWholePlaceUnit } from './services/units'
+import {
+  addBedUnit,
+  addRoomUnit,
+  addWholePlaceUnit,
+  getPropertiesBookableUnits,
+} from './services/units'
 import {
   updatePolicyByProperty,
   getPoliciesByProperty,
@@ -200,6 +205,14 @@ router.post(
   isCsrfTokenValid,
   isHostPropertyOwner,
   addBedUnit
+)
+
+router.get(
+  '/:propertyId/units/:category',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostPropertyOwner,
+  getPropertiesBookableUnits
 )
 
 //finsish sections
