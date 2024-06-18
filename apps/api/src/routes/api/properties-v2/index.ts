@@ -29,8 +29,11 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSections'
-import { getPoliciesByProperty } from './services/policies'
 import { addWholePlaceUnit } from './services/units'
+import {
+  updatePolicyByProperty,
+  getPoliciesByProperty,
+} from './services/policies'
 
 const router = express.Router()
 
@@ -141,6 +144,16 @@ router.delete(
   isCsrfTokenValid,
   isUserLoggedIn,
   deletePhoto
+)
+
+//policies
+router.patch(
+  '/:propertyId/policies',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  updatePolicyByProperty
 )
 
 //facilities
