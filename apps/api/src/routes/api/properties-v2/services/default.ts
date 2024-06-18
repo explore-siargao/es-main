@@ -1,10 +1,7 @@
-import {
-  UNKNOWN_ERROR_OCCURRED,
-  USER_NOT_AUTHORIZED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { T_Location } from '@repo/contract'
-import { dbLocations, dbProperties } from '@repo/database'
+import { T_Property_Basic_Info, Z_Property_Basic_Info, T_Location } from '@repo/contract'
+import { dbProperties, dbLocations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -106,6 +103,7 @@ export const getPropertyById = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const deleteProperty = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
@@ -171,6 +169,7 @@ export const getPropertyType = async (req: Request, res: Response) => {
     )
   }
 }
+
 export const updatePropertyType = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const propertyId = req.params.propertyId
@@ -250,6 +249,52 @@ export const getPropertyLocation = async (req: Request, res: Response) => {
     res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
+  const propertyId = req.params.propertyId
+  const { title, description }: T_Property_Basic_Info = req.body
+  const isValidInput = Z_Property_Basic_Info.safeParse(req.body)
+  if (isValidInput.success) {
+    try {
+      const updatedProperty = await dbProperties.findByIdAndUpdate(
+        { _id: propertyId },
+        {
+          $set: {
+            title,
+            description,
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+      if (!updatedProperty) {
+        return res.json(
+          response.error({
+            message: 'Property not found!',
+          })
+        )
+      }
+      res.json(
+        response.success({
+          item: updatedProperty,
+          message: 'Property basic info successfully updated',
+        })
+      )
+    } catch (err: any) {
+      return res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  } else {
+    return res.json(
+      response.error({
+        message: JSON.parse(isValidInput.error.message),
       })
     )
   }

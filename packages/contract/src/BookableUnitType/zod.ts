@@ -5,28 +5,19 @@ import { Z_Feature } from "../Feature"
 import { Z_BookableUnitBedConfig } from "../BookableUnitBedConfig"
 import { Z_Property_Amenity } from "../Property"
 export const Z_BookableUnitTypes = z.object({
-  id: z.number().optional(),
-  hostId: z.number().optional(),
-  Host: z
-    .object({
-      id: z.number(),
-      firstName: z.string(),
-      lastName: z.string(),
-    })
-    .optional(),
+  _id: z.string().optional(),
   category: z.string(),
-  name: z.string(),
+  title: z.string(),
   description: z.string(),
   isPrivate: z.boolean().optional(),
   maxGuests: z.number(),
   adultsIncluded: z.number(),
   childrenIncluded: z.number(),
   isMultiRoomUnit: z.boolean(),
-  Amenities: z.array(Z_Property_Amenity).optional(),
-  Photos: z.array(Z_Photo).optional(),
-  Features: z.array(Z_Feature).optional(),
-  BedConfigs: z.array(Z_BookableUnitBedConfig).optional(),
-  BookableUnit: z.array(Z_BookableUnit).optional(),
+  amenities: z.array(Z_Property_Amenity).optional(),
+  photos: z.array(Z_Photo).optional(),
+  features: z.array(Z_Feature).optional(),
+  bedConfigs: z.array(Z_BookableUnitBedConfig).optional(),
   numBedrooms: z.number().optional(),
   numBathrooms: z.number().optional(),
   minNightlyRate: z.number(),

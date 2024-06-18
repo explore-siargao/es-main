@@ -6,13 +6,13 @@ import { E_PropertyStatus, E_Property_Type } from "./enum"
 import { Z_Listing_Location } from "../ListingLocation/zod"
 
 export const Z_Property_Basic_Info = z.object({
-  name: z.string(),
+  title: z.string(),
   description: z.string(),
 })
 
 export const Z_Property_Policy = z.object({
   index: z.number(),
-  id: z.number().optional().nullable(),
+  _id: z.string().optional(),
   category: z.string().optional(),
   reason: z.string().optional().nullable(),
   policy: z.string().optional(),

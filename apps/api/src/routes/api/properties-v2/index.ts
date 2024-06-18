@@ -21,6 +21,8 @@ import {
   getPropertyInfo,
   getPropertyLocation,
   updatePropertyLocation,
+  updatePropertyBasicInfo,
+
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'
@@ -29,8 +31,16 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSections'
-import { getPoliciesByProperty } from './services/policies'
-import { addWholePlaceUnit } from './services/units'
+import {
+  addBedUnit,
+  addRoomUnit,
+  addWholePlaceUnit,
+  getPropertiesBookableUnits,
+} from './services/units'
+import {
+  updatePolicyByProperty,
+  getPoliciesByProperty,
+} from './services/policies'
 
 const router = express.Router()
 
@@ -103,7 +113,14 @@ router.get(
   getPropertyInfo
 )
 
-
+router.patch(
+  '/:propertyId/basic-info',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyBasicInfo
+)
 
 //photos
 router.get(
@@ -143,6 +160,16 @@ router.delete(
   deletePhoto
 )
 
+//policies
+router.patch(
+  '/:propertyId/policies',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  updatePolicyByProperty
+)
+
 //facilities
 router.get(
   '/:propertyId/facilities',
@@ -169,6 +196,32 @@ router.post(
   isCsrfTokenValid,
   isHostPropertyOwner,
   addWholePlaceUnit
+)
+
+router.post(
+  '/:propertyId/units/room',
+  isUserLoggedIn,
+  isOriginValid,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  addRoomUnit
+)
+
+router.post(
+  '/:propertyId/units/bed',
+  isUserLoggedIn,
+  isOriginValid,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  addBedUnit
+)
+
+router.get(
+  '/:propertyId/units/:category',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostPropertyOwner,
+  getPropertiesBookableUnits
 )
 
 //finsish sections

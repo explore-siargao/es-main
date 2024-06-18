@@ -17,7 +17,6 @@ import dbPhotos from "./dbPhotos"
 import dbActivities from "./dbActivities"
 import dbProperties from "./dbProperties"
 import dbFacilities from "./dbFacilities"
-import dbPolicies from "./dbPolicies"
 import dbBookableUnits from "./dbBookableUnits"
 import dbBookableUnitTypes from "./dbBookableUnitTypes"
 import dbAmenities from "./dbAmenities"
@@ -45,7 +44,6 @@ export {
   dbActivities,
   dbProperties,
   dbFacilities,
-  dbPolicies,
   dbBookableUnits,
   dbBookableUnitTypes,
   dbAmenities,
