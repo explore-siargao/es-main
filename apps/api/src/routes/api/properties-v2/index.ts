@@ -29,6 +29,7 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSections'
+import { addWholePlaceUnit } from './services/units'
 import {
   updatePolicyByProperty,
   getPoliciesByProperty,
@@ -171,6 +172,16 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPoliciesByProperty
+)
+
+//units
+router.post(
+  '/:propertyId/units/whole-place',
+  isUserLoggedIn,
+  isOriginValid,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  addWholePlaceUnit
 )
 
 //finsish sections

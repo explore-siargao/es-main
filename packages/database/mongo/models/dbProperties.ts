@@ -81,7 +81,7 @@ const properties = new Schema({
   bookableUnits: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: "BookableUnits",
+      ref: "BookableUnitTypes",
     },
   ],
   reservations: [
