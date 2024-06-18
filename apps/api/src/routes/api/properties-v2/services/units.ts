@@ -12,7 +12,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     title: '',
     numBedRooms: 0,
     numBathRooms: 0,
-    bedConfigs: null,
+    bedConfigs: [],
     amenities: [],
     totalSize: 0,
     photos: [],
@@ -43,6 +43,47 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     response.success({
       item: newBookableUnitType,
       message: 'BookableUnit Whole Place Successfully added',
+    })
+  )
+}
+
+//add Room
+export const addRoomUnit = async (req: Request, res: Response) => {
+  const propertyId = req.params.propertyId
+  const newBookableUnitType = new dbBookableUnitTypes({
+    category: 'Room',
+    title: '',
+    description: '',
+    bedConfigs: [],
+    amenities: [],
+    totalSize: 0,
+    photos: [],
+    isPrivate: false,
+    maxGuests: 0,
+    adultsIncluded: 0,
+    childrenIncluded: 0,
+    isMultiRoomUnit: false,
+    qty: 0,
+  })
+
+  await newBookableUnitType.save()
+  await dbProperties.findByIdAndUpdate(
+    propertyId,
+    {
+      $push: {
+        bookableUnits: newBookableUnitType._id,
+      },
+      $set: {
+        updatedAt: Date.now(),
+      },
+    },
+    { new: true }
+  )
+
+  res.json(
+    response.success({
+      item: newBookableUnitType,
+      message: 'BookableUnit Room Successfully added',
     })
   )
 }
