@@ -3,6 +3,13 @@ import { dbBookableUnitTypes, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
+
+const categoryEnum = {
+  BED: 'Bed',
+  ROOM: 'Room',
+  WHOLEPLACE: 'Whole-Place',
+}
+
 //Add whole place
 export const addWholePlaceUnit = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
@@ -127,4 +134,47 @@ export const addBedUnit = async (req: Request, res: Response) => {
       message: 'BookableUnit Bed Successfully added',
     })
   )
+}
+
+export const getPropertiesBookableUnits = async (
+  req: Request,
+  res: Response
+) => {
+  const hostId = res.locals.user?.id
+  const category = String(req.params.category)
+  const propertyId = req.params.propertyId
+
+  const findProperty = await dbProperties
+    .findOne({
+      _id: propertyId,
+      offerBy: hostId,
+      deletedAt: null,
+    })
+    .populate('bookableUnits')
+
+  const getPropertyBookableunits = findProperty?.bookableUnits
+
+  const filterByCategory = (category: string) => {
+    return getPropertyBookableunits?.filter(
+      (item) =>
+        //@ts-ignore
+        item?.category.toLocaleLowerCase() === category.toLocaleLowerCase()
+    )
+  }
+
+  if (
+    category.toLowerCase() !== categoryEnum.BED.toLowerCase() &&
+    category.toLowerCase() !== categoryEnum.ROOM.toLowerCase() &&
+    category.toLowerCase() !== categoryEnum.WHOLEPLACE.toLowerCase()
+  ) {
+    return res.json(response.error({ message: 'Not valid category' }))
+  }
+
+  const filterUnits = filterByCategory(category)?.map((item: any) =>
+    item.toObject()
+  )
+
+  const units = filterUnits?.filter((item) => ({ ...item }))
+
+  res.json(response.success({ items: units, allItemCount: units?.length }))
 }
