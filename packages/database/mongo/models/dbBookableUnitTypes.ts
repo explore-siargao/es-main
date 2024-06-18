@@ -46,6 +46,7 @@ const bookableUnitTypes = new Schema({
       ref: "BedConfigs",
     },
   ],
+  qty: Number,
   createdAt: {
     type: Date,
     default: Date.now(),

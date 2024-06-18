@@ -30,6 +30,7 @@ import {
   updateFinishedSections,
 } from './services/finishedSections'
 import { getPoliciesByProperty } from './services/policies'
+import { addWholePlaceUnit } from './services/units'
 
 const router = express.Router()
 
@@ -158,6 +159,16 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPoliciesByProperty
+)
+
+//units
+router.post(
+  '/:propertyId/units/whole-place',
+  isUserLoggedIn,
+  isOriginValid,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  addWholePlaceUnit
 )
 
 //finsish sections
