@@ -22,7 +22,6 @@ import {
   getPropertyLocation,
   updatePropertyLocation,
   updatePropertyBasicInfo,
-
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import { getPropertyFacilities } from './services/facilities'

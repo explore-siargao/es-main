@@ -178,4 +178,3 @@ export const getPropertiesBookableUnits = async (
 
   res.json(response.success({ items: units, allItemCount: units?.length }))
 }
-

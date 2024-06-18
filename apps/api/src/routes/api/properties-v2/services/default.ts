@@ -1,6 +1,10 @@
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { T_Property_Basic_Info, Z_Property_Basic_Info, T_Location } from '@repo/contract'
+import {
+  T_Property_Basic_Info,
+  Z_Property_Basic_Info,
+  T_Location,
+} from '@repo/contract'
 import { dbProperties, dbLocations } from '@repo/database'
 import { Request, Response } from 'express'
 
