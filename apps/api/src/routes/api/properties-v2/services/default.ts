@@ -275,6 +275,7 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
           $set: {
             title,
             description,
+            finishedSections: ['type', 'basicInfo'],
             updatedAt: Date.now(),
           },
         },
