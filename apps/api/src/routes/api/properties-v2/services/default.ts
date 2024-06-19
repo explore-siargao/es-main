@@ -183,7 +183,12 @@ export const updatePropertyType = async (req: Request, res: Response) => {
     const updatePropertyType = await dbProperties
       .findOneAndUpdate(
         { _id: propertyId, offerBy: hostId },
-        { $set: { type: type } },
+        {
+          $set: {
+            type: type,
+            finishedSections: ['type'],
+          },
+        },
         { new: true, fields: { type: 1 } }
       )
       .exec()

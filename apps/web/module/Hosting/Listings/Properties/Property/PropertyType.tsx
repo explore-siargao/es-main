@@ -13,9 +13,9 @@ import {
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import useGetPropertyById from "../../hooks/useGetPropertyById"
-import useUpdatePropertyType from "../../hooks/useUpdatePropertyType"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
+import useUpdatePropertyType from "../hooks/useUpdatePropertyType"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -25,9 +25,9 @@ const PropertyType = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
-  const { data } = useGetPropertyById(listingId)
+  const { data } = useGetPropertyById(listingId as unknown as number)
   const [selectedProperty, setSelectedProperty] = useState("")
 
   const handleSave = () => {
