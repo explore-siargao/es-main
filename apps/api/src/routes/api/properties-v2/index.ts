@@ -40,6 +40,7 @@ import {
   updatePolicyByProperty,
   getPoliciesByProperty,
 } from './services/policies'
+import { updateBookableUnitTypeAmenities } from './services/amenities'
 
 const router = express.Router()
 
@@ -239,6 +240,15 @@ router.patch(
   isCsrfTokenValid,
   isHostPropertyOwner,
   updateFinishedSections
+)
+
+//bookable amenities
+router.patch(
+  '/:propertyId/:bookableUnitTypeId/amenities',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  updateBookableUnitTypeAmenities
 )
 
 //status

@@ -1,12 +1,10 @@
 import mongoose, { Schema } from "mongoose"
 
 const amenities = new Schema({
+  index: Number,
   category: String,
   amenity: String,
-  bookableUnitTypeId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "BookableUnitTypes",
-  },
+  isSelected: Boolean,
   createdAt: {
     type: Date,
     default: Date.now(),
