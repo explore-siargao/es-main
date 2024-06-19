@@ -16,11 +16,11 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { MUNICIPALITIES, BARANGAYS } from "@repo/constants"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../hooks/useGetPropertyById"
-import useUpdatePropertyLocation from "../../hooks/useUpdatePropertyLocation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
 import { T_Listing_Location } from "@repo/contract"
+import useUpdatePropertyLocation from "../hooks/useUpdatePropertyLocation"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -30,9 +30,9 @@ const ListingLocation = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
-  const { data } = useGetPropertyById(listingId)
+  const { data } = useGetPropertyById(listingId as unknown as number)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
@@ -53,6 +53,9 @@ const ListingLocation = ({ pageType }: Prop) => {
           toast.success(data.message)
           queryClient.invalidateQueries({
             queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property", listingId],
           })
           if (pageType === "setup") {
             router.push(
