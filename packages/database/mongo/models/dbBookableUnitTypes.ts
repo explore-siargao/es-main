@@ -9,12 +9,10 @@ const bookableUnitTypes = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "UnitPrices",
   },
-  amenities: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Amenities",
-    },
-  ],
+  amenities: {
+    type: [mongoose.Schema.ObjectId],
+    ref: "Amenities",
+  },
   photos: [
     {
       type: mongoose.Schema.ObjectId,
