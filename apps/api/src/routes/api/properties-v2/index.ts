@@ -44,7 +44,7 @@ import {
   getAmenitiesByBookableUnitTypeId,
   updateBookableUnitTypeAmenities,
 } from './services/amenities'
-import { updateUnitPrice } from './services/unitPrice'
+import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
 
 const router = express.Router()
 
@@ -263,6 +263,13 @@ router.get(
 )
 
 //unitPrices
+router.get(
+  '/:propertyId/units/pricing/list',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getUnitPrice
+)
 router.patch(
   '/:propertyId/units/pricing',
   isOriginValid,
