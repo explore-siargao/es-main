@@ -1,6 +1,6 @@
 import { REQUIRED_VALUE_EMPTY } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { T_UnitPrice } from '@repo/contract'
+import { T_BookableUnitType, T_UnitPrice } from '@repo/contract'
 import { dbBookableUnitTypes, dbProperties, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
@@ -94,4 +94,37 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
       message: 'Unit Prices successfully updated',
     })
   )
+}
+
+export const getUnitPrice = async (req: Request, res: Response) => {
+  const propertyId = req.params.propertyId
+  const getProperty = await dbProperties
+    .findOne({ _id: propertyId, deletedAt: null })
+    .populate({
+      path: 'bookableUnits',
+      populate: {
+        path: 'unitPrice',
+        model: 'UnitPrice',
+      },
+    })
+  if (!getProperty) {
+    return res.json(response.error({ message: 'This property not exist' }))
+  }
+
+  const bookableUnits = getProperty.bookableUnits
+
+  if (bookableUnits.length === 0) {
+    return res.json(
+      response.error({
+        message: 'Bookable unit not found for this property',
+      })
+    )
+  }
+  const units = bookableUnits.map((item: T_BookableUnitType) => ({
+    _id: item?._id,
+    unitName: item?.title,
+    unitPrice: item.unitPrice,
+  }))
+
+  res.json(response.success({ items: units, allItemCount: units.length }))
 }
