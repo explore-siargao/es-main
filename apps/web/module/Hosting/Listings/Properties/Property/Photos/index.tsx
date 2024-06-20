@@ -11,8 +11,8 @@ import { cn } from "@/common/helpers/cn"
 import { Button } from "@/common/components/ui/Button"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import useUpdatePropertyPhotos from "../../../hooks/useUpdatePropertyPhotos"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -23,8 +23,9 @@ const ListingPhotos = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = Number(params.listingId)
+  const propertyId = params.listingId
   const [editPhotoModal, setEditPhotoModal] = useState(false)
-  const { data, isLoading } = useGetPropertyById(listingId)
+  const { data, isLoading } = useGetPropertyById(propertyId)
   const { mutate, isPending } = useUpdatePropertyPhotos(listingId)
 
   const photos = usePhotoStore((state) => state.photos)
@@ -95,7 +96,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
   useEffect(() => {
     if (!isPending && data && data.item) {
       // @ts-ignore
-      setPhotos(data?.item?.Photos)
+      setPhotos(data?.item?.photos)
     }
   }, [data, isPending])
 

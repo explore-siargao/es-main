@@ -52,7 +52,6 @@ import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
 const router = express.Router()
 
 //property
-
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 router.get(

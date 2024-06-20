@@ -6,7 +6,7 @@ import { Button } from "@/common/components/ui/Button"
 import SelectUnitTypeModal from "./modals/SelectUnitTypeModal"
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -15,8 +15,8 @@ type Prop = {
 const Units = ({ pageType }: Prop) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { data, isLoading } = useGetPropertyById(listingId)
+  const propertyId = params.listingId
+  const { data, isLoading } = useGetPropertyById(propertyId)
   const [isSelectUnitTypeModalOpen, setIsSelectUnitTypeModalOpen] =
     useState(false)
 

@@ -12,7 +12,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
@@ -23,8 +23,8 @@ interface PricingContentProps {
 const Pricing = ({ pageType }: PricingContentProps) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { data, isLoading } = useGetPropertyById(listingId)
+  const propertyId = params.listingId
+  const { data, isLoading } = useGetPropertyById(propertyId)
   const { handleSubmit, control } = useForm()
 
   const { fields, append, update } = useFieldArray({
@@ -34,8 +34,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   })
 
   const onSubmit = (data: any) => {
-    console.log(data)
-    router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
+    router.push(`/hosting/listings/properties/setup/${propertyId}/policies`)
   }
 
   useEffect(() => {

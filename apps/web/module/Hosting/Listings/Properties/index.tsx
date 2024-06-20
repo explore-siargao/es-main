@@ -8,17 +8,17 @@ import { useState } from "react"
 import Tabs from "@/common/components/Tabs"
 import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
-import useGetHostProperties from "../hooks/useGetHostProperties"
+import useGetPropertyByHost from "./hooks/useGetPropertyByHost"
 
 const HostListing = () => {
-  const { data } = useGetHostProperties()
+  const { data } = useGetPropertyByHost()
   const columnHelper = createColumnHelper<any>()
   const columns = [
     columnHelper.accessor("Photos", {
       header: "Listing",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/property-type`}
+          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
           className="flex items-center gap-5"
         >
           <div className="relative w-24 h-16 rounded-xl overflow-hidden">
@@ -58,7 +58,7 @@ const HostListing = () => {
       cell: (context) => (
         <Link
           href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
-          className="flex items-center gap-5"
+          className="flex items-center gap-4"
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
