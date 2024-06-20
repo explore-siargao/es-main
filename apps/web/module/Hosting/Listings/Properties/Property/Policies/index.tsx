@@ -12,11 +12,11 @@ import {
 } from "lucide-react"
 import AdditionalRules from "./AdditionalRules"
 import useSelectPoliciesStore from "./hooks/useSelectPoliciesStore"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
-import useUpdatePropertyPolicies from "../../../hooks/useUpdatePropertyPolicies"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
+import useUpdatePropertyPolicies from "../../hooks/useUpdatePropertyPolicies"
+import useGetPropertyById from "../../../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -30,8 +30,8 @@ const Policies = ({ pageType }: Prop) => {
     (state) => state.setDefaultPolicies
   )
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { data, isLoading } = useGetPropertyById(listingId)
+  const listingId = String(params.listingId)
+  const { data, isLoading } = useGetPropertyById(listingId as unknown as number)
   const { mutate, isPending } = useUpdatePropertyPolicies(listingId)
   const handleSave = () => {
     const addedPoliciesCount = policies.filter((policy) => policy.isSelected)
@@ -45,6 +45,9 @@ const Policies = ({ pageType }: Prop) => {
             toast.success(data.message)
             queryClient.invalidateQueries({
               queryKey: ["property-finished-sections", listingId],
+            })
+            queryClient.invalidateQueries({
+              queryKey: ["property", listingId],
             })
             if (pageType === "setup") {
               router.push(
