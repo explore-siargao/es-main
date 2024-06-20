@@ -17,6 +17,7 @@ import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import useGetPropertyById from "../hooks/useGetPropertyById"
 
+
 type Prop = {
   pageType: "setup" | "edit"
 }
@@ -29,7 +30,6 @@ const PropertyType = ({ pageType }: Prop) => {
   const { mutate, isPending } = useUpdatePropertyType(listingId)
 
   const { data } = useGetPropertyById(listingId)
-
   const [selectedProperty, setSelectedProperty] = useState("")
 
   useEffect(() => {}, [params, listingId])

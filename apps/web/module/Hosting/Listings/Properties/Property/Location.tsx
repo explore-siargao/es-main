@@ -22,6 +22,7 @@ import { cn } from "@/common/helpers/cn"
 import { T_Listing_Location } from "@repo/contract"
 import useGetPropertyById from "../hooks/useGetPropertyById"
 
+
 type Prop = {
   pageType: "setup" | "edit"
 }
@@ -32,7 +33,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
-  const { data } = useGetPropertyById(listingId)
+  const { data } = useGetPropertyById(listingId as unknown as number)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
