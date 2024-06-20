@@ -22,6 +22,7 @@ export const Z_Property_Policy = z.object({
 
 export const Z_Property_Facility = z.object({
   id: z.number().optional().nullable(),
+  _id: z.string().optional().nullable(),
   index: z.number(),
   category: z.string(),
   propertyId: z.number().optional().nullable(),

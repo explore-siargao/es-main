@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose"
 
 const facilities = new Schema({
+  index: Number,
   category: String,
   facility: String,
   isSelected: {

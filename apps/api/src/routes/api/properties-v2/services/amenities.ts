@@ -88,7 +88,7 @@ export const updateBookableUnitTypeAmenities = async (
   if (amenitiesWithId.length > 0) {
     return res.json(
       response.success({
-        items: amenitiesWithOutId,
+        items: amenitiesWithId,
         message: 'Bookable unit amenities successfully updated',
       })
     )
