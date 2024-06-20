@@ -17,7 +17,6 @@ import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import useGetPropertyById from "../hooks/useGetPropertyById"
 
-
 type Prop = {
   pageType: "setup" | "edit"
 }

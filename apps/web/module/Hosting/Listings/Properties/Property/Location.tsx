@@ -22,7 +22,6 @@ import { cn } from "@/common/helpers/cn"
 import { T_Listing_Location } from "@repo/contract"
 import useGetPropertyById from "../hooks/useGetPropertyById"
 
-
 type Prop = {
   pageType: "setup" | "edit"
 }
