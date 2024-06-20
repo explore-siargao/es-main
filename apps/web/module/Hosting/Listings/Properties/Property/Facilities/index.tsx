@@ -7,7 +7,6 @@ import { cn } from "@/common/helpers/cn"
 import useSelectFacilityStore from "./store/useSelectFacilityStore"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import useUpdatePropertyFacilities from "../../../hooks/useUpdatePropertyFacilities"
 import FacilitiesCheckboxes from "./FacilitiesCheckboxes"
 import {
   LucideBike,
@@ -28,6 +27,7 @@ import {
   LucideWifi,
 } from "lucide-react"
 import useGetPropertyById from "../../hooks/useGetPropertyById"
+import useUpdatePropertyFacilities from "../../hooks/useUpdatePropertyFacilities"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -37,7 +37,7 @@ const Facilities = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const propertyId = params.listingId
   const { data, isLoading } = useGetPropertyById(propertyId)
   const { mutate, isPending } = useUpdatePropertyFacilities(listingId)
