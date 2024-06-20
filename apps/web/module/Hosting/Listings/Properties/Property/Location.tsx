@@ -32,11 +32,11 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
-  const { data } = useGetPropertyById(listingId as unknown as number)
+  const { data } = useGetPropertyById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
-    defaultValues: data?.item?.Location,
+    defaultValues: data?.item?.location,
   })
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
@@ -80,7 +80,7 @@ const ListingLocation = ({ pageType }: Prop) => {
     )
   }
   const currentCoords = (
-    data?.item?.Location?.latitude
+    data?.item?.location?.latitude
       ? [data?.item?.location.latitude, data?.item?.location.longitude]
       : [9.913431, 126.049483]
   ) as [number, number]
