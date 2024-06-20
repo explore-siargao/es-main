@@ -35,7 +35,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const { data } = useGetPropertyById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit, watch } = useForm<T_Listing_Location>({
+  const { register, handleSubmit } = useForm<T_Listing_Location>({
     defaultValues: data?.item?.Location,
   })
 
@@ -84,7 +84,7 @@ const ListingLocation = ({ pageType }: Prop) => {
       ? [data?.item?.location.latitude, data?.item?.location.longitude]
       : [9.913431, 126.049483]
   ) as [number, number]
-  
+
   return (
     <div className="mt-20 mb-14">
       {isPending ? (
