@@ -4,8 +4,11 @@ import { Z_Photo } from "../Photo"
 import { Z_Feature } from "../Feature"
 import { Z_BookableUnitBedConfig } from "../BookableUnitBedConfig"
 import { Z_Property_Amenity } from "../Property"
-export const Z_BookableUnitTypes = z.object({
+import { Z_UnitPrice } from "../UnitPrice"
+
+export const Z_BookableUnitTypes: any = z.object({
   _id: z.string().optional(),
+  unitPrice: z.union([z.string(), Z_UnitPrice]).optional(),
   category: z.string(),
   title: z.string(),
   description: z.string(),

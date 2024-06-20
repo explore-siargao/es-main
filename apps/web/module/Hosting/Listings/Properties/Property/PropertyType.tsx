@@ -11,11 +11,11 @@ import {
   Building2,
 } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
-import { useState } from "react"
-import useGetPropertyById from "../../hooks/useGetPropertyById"
-import useUpdatePropertyType from "../../hooks/useUpdatePropertyType"
+import { useEffect, useState } from "react"
+import useUpdatePropertyType from "../hooks/useUpdatePropertyType"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
+import useGetPropertyById from "../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -25,10 +25,14 @@ const PropertyType = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
+
   const { data } = useGetPropertyById(listingId)
+
   const [selectedProperty, setSelectedProperty] = useState("")
+
+  useEffect(() => {}, [params, listingId])
 
   const handleSave = () => {
     if (selectedProperty) {

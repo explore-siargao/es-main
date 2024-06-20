@@ -16,11 +16,11 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { MUNICIPALITIES, BARANGAYS } from "@repo/constants"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../hooks/useGetPropertyById"
-import useUpdatePropertyLocation from "../../hooks/useUpdatePropertyLocation"
+import useUpdatePropertyLocation from "../hooks/useUpdatePropertyLocation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
 import { T_Listing_Location } from "@repo/contract"
+import useGetPropertyById from "../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -30,13 +30,13 @@ const ListingLocation = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
   const { data } = useGetPropertyById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit } = useForm<T_Listing_Location>({
-    values: data?.item?.Location,
+  const { register, handleSubmit, watch } = useForm<T_Listing_Location>({
+    defaultValues: data?.item?.Location,
   })
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
@@ -53,6 +53,9 @@ const ListingLocation = ({ pageType }: Prop) => {
           toast.success(data.message)
           queryClient.invalidateQueries({
             queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property", listingId],
           })
           if (pageType === "setup") {
             router.push(
@@ -78,9 +81,10 @@ const ListingLocation = ({ pageType }: Prop) => {
   }
   const currentCoords = (
     data?.item?.Location?.latitude
-      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
+      ? [data?.item?.location.latitude, data?.item?.location.longitude]
       : [9.913431, 126.049483]
   ) as [number, number]
+  
   return (
     <div className="mt-20 mb-14">
       {isPending ? (
@@ -117,24 +121,30 @@ const ListingLocation = ({ pageType }: Prop) => {
                 type="text"
                 id="streetAddress"
                 label="Street address"
+                defaultValue={data?.item?.location.streetAddress}
                 required
                 {...register("streetAddress", { required: true })}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                value={selectedMunicipality}
+                defaultValue={selectedMunicipality}
                 required
                 {...register("city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
                 {MUNICIPALITIES.map((municipality) => (
-                  <Option key={municipality.name} value={municipality.name}>
+                  <Option
+                    key={municipality.name}
+                    value={municipality.name}
+                    selected={municipality.name === data?.item?.location?.city}
+                  >
                     {municipality.name}
                   </Option>
                 ))}
               </Select>
+
               <Select
                 label="Barangay / District"
                 id="barangaySelect"
@@ -145,13 +155,18 @@ const ListingLocation = ({ pageType }: Prop) => {
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === data?.item?.location?.city
                 ).map((barangay) => (
-                  <Option key={barangay.name} value={barangay.name}>
+                  <Option
+                    key={barangay.name}
+                    value={barangay.name}
+                    selected={barangay.name === data?.item?.location?.barangay}
+                  >
                     {barangay.name}
                   </Option>
                 ))}
               </Select>
+
               <div className="mt-2">
                 <Typography variant="h3" fontWeight="semibold">
                   How to get there
@@ -159,6 +174,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
+                  defaultValue={data?.item?.location.howToGetThere}
                   {...register("howToGetThere", { required: true })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">

@@ -24,7 +24,10 @@ import {
   updatePropertyBasicInfo,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
-import { getPropertyFacilities } from './services/facilities'
+import {
+  getPropertyFacilities,
+  updatePropertyFacilities,
+} from './services/facilities'
 import { updateStatus } from './services/status'
 import {
   getFinishedSections,
@@ -40,12 +43,15 @@ import {
   updatePolicyByProperty,
   getPoliciesByProperty,
 } from './services/policies'
-import { updateBookableUnitTypeAmenities } from './services/amenities'
+import {
+  getAmenitiesByBookableUnitTypeId,
+  updateBookableUnitTypeAmenities,
+} from './services/amenities'
+import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
 
 const router = express.Router()
 
 //property
-
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 router.get(
@@ -179,6 +185,15 @@ router.get(
   getPropertyFacilities
 )
 
+router.patch(
+  '/:propertyId/facilities',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyFacilities
+)
+
 //policies
 router.get(
   '/:propertyId/policies',
@@ -249,6 +264,30 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   updateBookableUnitTypeAmenities
+)
+router.get(
+  '/:propertyId/:bookableUnitTypeId/amenities',
+  isUserLoggedIn,
+  isOriginValid,
+  isHostPropertyOwner,
+  getAmenitiesByBookableUnitTypeId
+)
+
+//unitPrices
+router.get(
+  '/:propertyId/units/pricing/list',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getUnitPrice
+)
+router.patch(
+  '/:propertyId/units/pricing',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  updateUnitPrice
 )
 
 //status

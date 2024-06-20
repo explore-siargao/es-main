@@ -5,7 +5,7 @@ const bookableUnitTypes = new Schema({
   title: String,
   description: String,
   totalSize: Number,
-  unitPrices: {
+  unitPrice: {
     type: mongoose.Schema.ObjectId,
     ref: "UnitPrices",
   },

@@ -12,8 +12,8 @@ import {
 } from "lucide-react"
 import AdditionalRules from "./AdditionalRules"
 import useSelectPoliciesStore from "./hooks/useSelectPoliciesStore"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
-import useUpdatePropertyPolicies from "../../../hooks/useUpdatePropertyPolicies"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
+import useUpdatePropertyPolicies from "../../hooks/useUpdatePropertyPolicies"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
@@ -30,14 +30,14 @@ const Policies = ({ pageType }: Prop) => {
     (state) => state.setDefaultPolicies
   )
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data, isLoading } = useGetPropertyById(listingId)
   const { mutate, isPending } = useUpdatePropertyPolicies(listingId)
   const handleSave = () => {
     const addedPoliciesCount = policies.filter((policy) => policy.isSelected)
     if (
       addedPoliciesCount.length > 1 ||
-      (data?.item?.Policies && data?.item?.Policies.length > 0)
+      (data?.item?.Policies && data?.item?.policies.length > 0)
     ) {
       const callBackReq = {
         onSuccess: (data: any) => {
@@ -45,6 +45,9 @@ const Policies = ({ pageType }: Prop) => {
             toast.success(data.message)
             queryClient.invalidateQueries({
               queryKey: ["property-finished-sections", listingId],
+            })
+            queryClient.invalidateQueries({
+              queryKey: ["property", listingId],
             })
             if (pageType === "setup") {
               router.push(
@@ -65,8 +68,11 @@ const Policies = ({ pageType }: Prop) => {
     }
   }
   useEffect(() => {
-    setDefaultPolicies(data?.item?.Policies)
-  }, [data?.item?.Policies])
+    if (data?.item?.policies) {
+      setDefaultPolicies(data?.item?.policies)
+    }
+  }, [data?.item?.policies, setDefaultPolicies])
+
   return (
     <div>
       <div className="mt-20">

@@ -65,11 +65,10 @@ export const addProperty = async (req: Request, res: Response) => {
 
 export const getPropertiesByHostId = async (req: Request, res: Response) => {
   try {
-    const hostId = req.params.activityId
+    const hostId = res.locals.user?.id
     const properties = await dbProperties.find({ offerBy: hostId })
 
     const filteredProperties = properties.reverse()
-    console.log('properties', filteredProperties)
     res.json(
       response.success({
         items: filteredProperties,
@@ -183,7 +182,12 @@ export const updatePropertyType = async (req: Request, res: Response) => {
     const updatePropertyType = await dbProperties
       .findOneAndUpdate(
         { _id: propertyId, offerBy: hostId },
-        { $set: { type: type } },
+        {
+          $set: {
+            type: type,
+            finishedSections: ['type'],
+          },
+        },
         { new: true, fields: { type: 1 } }
       )
       .exec()
@@ -270,6 +274,7 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
           $set: {
             title,
             description,
+            finishedSections: ['type', 'basicInfo'],
             updatedAt: Date.now(),
           },
         },
@@ -336,7 +341,6 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
     }
 
     if (property.location === null) {
-      console.log('hello')
       const newLocation = new dbLocations({
         streetAddress: streetAddress,
         barangay: barangay,
@@ -351,6 +355,7 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
         {
           $set: {
             location: newLocation._id,
+            finishedSections: ['type', 'basicInfo', 'location'],
           },
         },
         { new: true }

@@ -1,7 +1,11 @@
-import { REQUIRED_VALUE_EMPTY } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { dbAmenities, dbBookableUnitTypes, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
+import mongoose from 'mongoose'
 
 const response = new ResponseService()
 
@@ -84,7 +88,7 @@ export const updateBookableUnitTypeAmenities = async (
   if (amenitiesWithId.length > 0) {
     return res.json(
       response.success({
-        items: amenitiesWithOutId,
+        items: amenitiesWithId,
         message: 'Bookable unit amenities successfully updated',
       })
     )
@@ -94,6 +98,58 @@ export const updateBookableUnitTypeAmenities = async (
       response.success({
         items: amenitiesWithOutId,
         message: 'Bookable unit amenities successfully updated',
+      })
+    )
+  }
+}
+
+//get amenities by bookable unit type id
+export const getAmenitiesByBookableUnitTypeId = async (
+  req: Request,
+  res: Response
+) => {
+  const hostId = res.locals.user?.id
+  const bookableUnitTypeId = req.params.bookableUnitTypeId
+  const propertyId = req.params.propertyId
+
+  // Convert bookableUnitTypeId to ObjectId
+  const bookableUnitTypeObjectId = new mongoose.Types.ObjectId(
+    bookableUnitTypeId
+  )
+
+  try {
+    const getProperty = await dbProperties
+      .findOne({
+        _id: propertyId,
+        offerBy: hostId,
+        deletedAt: null,
+      })
+      .populate({
+        path: 'bookableUnits',
+        populate: {
+          path: 'amenities',
+          model: 'Amenities',
+        },
+      })
+
+    if (!getProperty) {
+      return res.json(response.error({ message: 'Property not found' }))
+    }
+
+    const getBookableUnits = getProperty.bookableUnits
+
+    // Use .some() to find the matching bookable unit by ObjectId comparison
+    const getBookableUnit: any = getBookableUnits.find((item: any) =>
+      item?._id.equals(bookableUnitTypeObjectId)
+    )
+
+    const amenities = getBookableUnit?.amenities
+
+    return res.json(response.success({ item: amenities }))
+  } catch (err: any) {
+    return res.status(500).json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }

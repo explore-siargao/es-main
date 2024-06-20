@@ -47,7 +47,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     return res.json(response.error({ message: 'This property not exist' }))
   }
 
-  const bookableUnit = getProperty.BookableUnit.find(
+  const bookableUnit: any = getProperty.BookableUnit.find(
     (unit) => unit.id === bookableUnitId
   )
 
@@ -65,8 +65,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   unitPrices?.forEach((item, index) => {
-    if (item.id === bookableUnit.BookableUnitType?.unitPrice.id) {
-      //@ts-ignore
+    if (item._id === bookableUnit.unitPrice._id) {
       bookableUnit.BookableUnitType.unitPrice.baseRate = item?.baseRate
       //@ts-ignore
       bookableUnit.BookableUnitType.unitPrice.baseRateMaxcapacity =
