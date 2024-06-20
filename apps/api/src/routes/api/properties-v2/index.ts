@@ -136,18 +136,12 @@ router.get(
   isHostPropertyOwner,
   getPhotosByPropertyId
 )
-router.get(
-  '/:propertyId/photos/:bookableUnitId',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostPropertyOwner,
-  getPhotosByBookableUnitId
-)
 router.patch(
-  '/photo/:photoId',
+  '/:propertyId/photo/:photoId',
   isOriginValid,
   isCsrfTokenValid,
   isUserLoggedIn,
+  isHostPropertyOwner,
   updatePhoto
 )
 router.post(
@@ -159,11 +153,19 @@ router.post(
   addPhoto
 )
 router.delete(
-  '/photo/:photoId',
+  '/:propertyId/photo/:photoId',
   isOriginValid,
   isCsrfTokenValid,
   isUserLoggedIn,
+  isHostPropertyOwner,
   deletePhoto
+)
+router.get(
+  '/:propertyId/photos/:bookableUnitId',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPhotosByBookableUnitId
 )
 
 //policies
