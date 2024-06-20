@@ -24,7 +24,10 @@ import {
   updatePropertyBasicInfo,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
-import { getPropertyFacilities } from './services/facilities'
+import {
+  getPropertyFacilities,
+  updatePropertyFacilities,
+} from './services/facilities'
 import { updateStatus } from './services/status'
 import {
   getFinishedSections,
@@ -181,6 +184,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyFacilities
+)
+
+router.patch(
+  '/:propertyId/facilities',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyFacilities
 )
 
 //policies
