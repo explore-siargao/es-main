@@ -310,8 +310,7 @@ const Summary = () => {
                 <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
                   {data?.item?.policies
                     .filter(
-                      (policy: T_Property_Policy) =>
-                        policy.isSelected === true
+                      (policy: T_Property_Policy) => policy.isSelected === true
                     )
                     .map((policy: T_Property_Policy) => (
                       <li key={policy._id}>
