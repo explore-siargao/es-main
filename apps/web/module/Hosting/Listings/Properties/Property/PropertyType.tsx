@@ -28,12 +28,17 @@ const PropertyType = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
 
-  const { data } = useGetPropertyById(listingId)
+  const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
   const [selectedProperty, setSelectedProperty] = useState("")
 
-  useEffect(() => {}, [params, listingId])
+  useEffect(() => {
+    if (!typeIsPending && data?.item?.type) {
+      setSelectedProperty(data.item.type)
+    }
+  }, [typeIsPending, data])
 
   const handleSave = () => {
+    console.log(selectedProperty)
     if (selectedProperty) {
       const callBackReq = {
         onSuccess: (data: any) => {
