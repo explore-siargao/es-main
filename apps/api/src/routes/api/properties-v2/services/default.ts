@@ -373,7 +373,7 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
       })
     }
 
-    property.finishedSections = ['type', 'basicInfo', 'location']
+    // property.finishedSections = ['type', 'basicInfo', 'location']
 
     res.json(
       response.success({

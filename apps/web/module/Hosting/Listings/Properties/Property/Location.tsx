@@ -19,8 +19,8 @@ import { useParams, useRouter } from "next/navigation"
 import useUpdatePropertyLocation from "../hooks/useUpdatePropertyLocation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
-import { T_Listing_Location } from "@repo/contract"
 import useGetPropertyById from "../hooks/useGetPropertyById"
+import { T_Listing_Location } from "@repo/contract"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -32,7 +32,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
-  const { data } = useGetPropertyById(listingId as unknown as number)
+  const { data } = useGetPropertyById(listingId)
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
@@ -121,7 +121,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 type="text"
                 id="streetAddress"
                 label="Street address"
-                defaultValue={data?.item?.location.streetAddress}
+                defaultValue={data?.item?.location?.streetAddress}
                 required
                 {...register("streetAddress", { required: true })}
               />
@@ -174,7 +174,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
-                  defaultValue={data?.item?.location.howToGetThere}
+                  defaultValue={data?.item?.location?.howToGetThere}
                   {...register("howToGetThere", { required: true })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
