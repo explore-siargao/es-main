@@ -62,7 +62,7 @@ const Facilities = ({ pageType }: Prop) => {
             })
             if (pageType === "setup") {
               router.push(
-                `/hosting/listings/properties/setup/${listingId}/policies`
+                `/hosting/listings/properties/setup/${listingId}/units`
               )
             }
           } else {

@@ -21,7 +21,7 @@ const Units = ({ pageType }: Prop) => {
     useState(false)
 
   const handleSave = () => {
-    router.push("/hosting/listings/setup/1/photos")
+    router.push(`/hosting/listings/properties/setup/${propertyId}/photos`)
   }
   const propertyType = data?.item?.type
   return (
