@@ -6,7 +6,7 @@ import { LucideEye } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { T_Activity, T_Activity_Segment, T_Photo } from "@repo/contract"
+import { T_Activity, T_Photo } from "@repo/contract"
 
 import toast from "react-hot-toast"
 import { Spinner } from "@/common/components/ui/Spinner"

@@ -19,8 +19,8 @@ import { useParams, useRouter } from "next/navigation"
 import useUpdatePropertyLocation from "../hooks/useUpdatePropertyLocation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
-import { T_Listing_Location } from "@repo/contract"
 import useGetPropertyById from "../hooks/useGetPropertyById"
+import { T_Listing_Location } from "@repo/contract"
 
 type Prop = {
   pageType: "setup" | "edit"
