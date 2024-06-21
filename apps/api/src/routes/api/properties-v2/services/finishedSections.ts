@@ -30,7 +30,7 @@ export const getFinishedSections = async (req: Request, res: Response) => {
 export const updateFinishedSections = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const propertyId = req.params.propertyId
-  const finishedSections = req.body.finishedSections
+  const finishedSections = req.body.newFinishedSection
   if (!finishedSections) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
