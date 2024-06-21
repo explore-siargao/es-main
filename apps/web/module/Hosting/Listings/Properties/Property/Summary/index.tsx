@@ -9,7 +9,15 @@ import { E_Property_Status } from "@repo/contract/build/Property/enum"
 import toast from "react-hot-toast"
 import useUpdatePropertyStatusById from "../../hooks/useUpdatePropertyStatusById"
 import { Spinner } from "@/common/components/ui/Spinner"
-import { T_Property_Policy } from "@repo/contract"
+import {
+  T_Photo,
+  T_Property,
+  T_Property_Amenity,
+  T_Property_Facility,
+  T_Property_Policy,
+} from "@repo/contract"
+import Image from "next/image"
+import { cn } from "@/common/helpers/cn"
 
 const Summary = () => {
   const router = useRouter()
@@ -17,7 +25,7 @@ const Summary = () => {
   const listingId = String(params.listingId)
   const { data, isPending } = useGetPropertyById(listingId)
   const { mutate } = useUpdatePropertyStatusById(listingId)
-
+  const property = data?.item
   const handleSubmit = async () => {
     const newStatus = { status: E_Property_Status.pending }
     const callBackReq = {
@@ -129,30 +137,49 @@ const Summary = () => {
               )}
             </div>
 
-            {/* <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Property Facilities
-            </Typography>
-            {Array.from(
-              new Set(
-                item.propertyFacilities.map((facility) => facility.category)
-              )
-            ).map((category) => (
-              <div key={category}>
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Property Facilities
+              </Typography>
+              {data?.item?.facilities.length > 0 ? (
+                <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
+                  {data?.item?.facilities
+                    .filter(
+                      (facility: T_Property_Facility) =>
+                        facility.isSelected === true
+                    )
+                    .map((facility: T_Property_Facility) => (
+                      <li key={facility._id}>
+                        <Typography variant="h5">
+                          <span className="font-semibold">Category:</span>{" "}
+                          {facility.category}
+                        </Typography>
+                        <Typography variant="h5" className="mt-1">
+                          <span className="font-semibold">Facility:</span>{" "}
+                          {facility.facility}
+                        </Typography>
+                      </li>
+                    ))
+                    .sort((a: T_Property_Facility, b: T_Property_Facility) => {
+                      if (a.category < b.category) {
+                        return -1
+                      }
+                      if (a.category > b.category) {
+                        return 1
+                      }
+                      return 0
+                    })}
+                </ol>
+              ) : (
                 <Typography variant="h5" className="mt-2">
-                  <span className="font-semibold">{category}: </span>
-                  {item.propertyFacilities
-                    .filter((facility) => facility.category === category)
-                    .map((facility) => facility.amenity)
-                    .join(", ")}
+                  No data available.
                 </Typography>
-              </div>
-            ))}
-          </div> */}
+              )}
+            </div>
 
             {/* <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
@@ -182,48 +209,48 @@ const Summary = () => {
               </ol>
             </div> */}
 
-            {/* <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Photos
-            </Typography>
-            <div className="grid grid-cols-4 gap-6 mt-6">
-              {item.photos.map((photo, index) => (
-                <div key={index} className="h-full">
-                  {photo.isMain && (
-                    <div className="flex justify-center">
-                      <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
-                        Preferred main photo
-                      </span>
-                    </div>
-                  )}
-                  <div
-                    className={cn(
-                      `relative h-52 w-full bg-primary-50 rounded-lg`,
-                      photo.isMain && "border-2 border-secondary-500"
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Photos
+              </Typography>
+              <div className="grid grid-cols-4 gap-6 mt-6">
+                {property?.photos.map((photo: T_Photo, index: number) => (
+                  <div key={index} className="h-full">
+                    {photo.isMain && (
+                      <div className="flex justify-center">
+                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
+                          Preferred main photo
+                        </span>
+                      </div>
                     )}
-                  >
-                    <Image
-                      src={"/assets/" + photo.key}
-                      alt={`preview-` + index}
-                      layout="fill"
-                      objectFit="cover"
-                      objectPosition="center"
-                      className="rounded-lg"
-                    />
+                    <div
+                      className={cn(
+                        `relative h-52 w-full bg-primary-50 rounded-lg`,
+                        photo.isMain && "border-2 border-secondary-500"
+                      )}
+                    >
+                      <Image
+                        src={"/assets/" + photo.key}
+                        alt={`preview-` + index}
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition="center"
+                        className="rounded-lg"
+                      />
+                    </div>
+                    <Typography
+                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
+                    >
+                      {photo.description || "No description"}
+                    </Typography>
                   </div>
-                  <Typography
-                    className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
-                  >
-                    {photo.description || "No description"}
-                  </Typography>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div> */}
 
             {/* <div className="mt-3 border-b border-gray-200 pb-3">
             <Typography
@@ -281,24 +308,36 @@ const Summary = () => {
               </Typography>
               {data?.item?.policies.length > 0 ? (
                 <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
-                  {data?.item?.policies.map((policy: T_Property_Policy) => (
-                    <li key={policy._id}>
-                      <Typography variant="h5">
-                        <span className="font-semibold">Category:</span>{" "}
-                        {policy.category}
-                      </Typography>
-                      <Typography variant="h5" className="mt-1">
-                        <span className="font-semibold">Policy:</span>{" "}
-                        {policy.policy}
-                      </Typography>
-                      {policy.reason && (
+                  {data?.item?.policies
+                    .filter(
+                      (policy: T_Property_Policy) =>
+                        policy.isSelected === true
+                    )
+                    .map((policy: T_Property_Policy) => (
+                      <li key={policy._id}>
+                        <Typography variant="h5">
+                          <span className="font-semibold">Category:</span>{" "}
+                          {policy.category}
+                        </Typography>
                         <Typography variant="h5" className="mt-1">
+                          <span className="font-semibold">Policy:</span>{" "}
+                          {policy.policy}
+                        </Typography>
+                        <Typography variant="h5">
                           <span className="font-semibold">Reason:</span>{" "}
                           {policy.reason}
                         </Typography>
-                      )}
-                    </li>
-                  ))}
+                      </li>
+                    ))
+                    .sort((a: T_Property_Facility, b: T_Property_Facility) => {
+                      if (a.category < b.category) {
+                        return -1
+                      }
+                      if (a.category > b.category) {
+                        return 1
+                      }
+                      return 0
+                    })}
                 </ol>
               ) : (
                 <Typography variant="h5" className="mt-2">
