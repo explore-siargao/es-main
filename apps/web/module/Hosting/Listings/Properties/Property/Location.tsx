@@ -121,7 +121,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 type="text"
                 id="streetAddress"
                 label="Street address"
-                defaultValue={data?.item?.location.streetAddress}
+                defaultValue={data?.item?.location?.street}
                 required
                 {...register("streetAddress", { required: true })}
               />
@@ -174,7 +174,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
-                  defaultValue={data?.item?.location.howToGetThere}
+                  defaultValue={data?.item?.location?.howToGetThere}
                   {...register("howToGetThere", { required: true })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
