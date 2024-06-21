@@ -24,7 +24,7 @@ const Summary = () => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success("Property submitted for review")
-          router.push(`/hosting/listings/properties/${listingId}/basic-info`)
+          router.push(`/hosting/listings/properties/${listingId}/property-type`)
         } else {
           toast.error(String(data.message))
         }

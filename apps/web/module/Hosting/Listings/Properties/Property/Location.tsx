@@ -45,6 +45,8 @@ const ListingLocation = ({ pageType }: Prop) => {
   useEffect(() => {
     if (data && !isFetching) {
       const location = data?.item?.location
+        ? data?.item?.location
+        : { city: "", street: "" }
       reset(location)
       setSelectedMunicipality(location.city)
       setCoordinates(location.latitude, location.longitude)
