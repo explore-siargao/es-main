@@ -43,7 +43,8 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
       )
     }
     const updatedAddedPolicies = updatedPolicies.filter(
-      (updatedPolicy) => updatedPolicy._id || updatedPolicy.isSelected
+      (updatedPolicy) =>
+        updatedPolicy._id || updatedPolicy.isSelected || updatedPolicy.policy
     )
     const property = await dbProperties.findByIdAndUpdate(
       { _id: propertyId },
