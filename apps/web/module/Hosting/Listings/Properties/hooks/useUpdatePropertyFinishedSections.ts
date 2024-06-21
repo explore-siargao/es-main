@@ -2,13 +2,13 @@ import { API_URL_PROPERTIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 import { useMutation } from "@tanstack/react-query"
 
-interface Section {
-  finishedSections: string
+type T_Finished_Sections = {
+  newFinishedSection: string
 }
 
 export async function updatePropertyFinishedSections(
   propertyId: string | undefined,
-  props: Section
+  props: T_Finished_Sections
 ) {
   const apiService = new ApiService("v2")
   return await apiService.patch(
@@ -17,12 +17,12 @@ export async function updatePropertyFinishedSections(
   )
 }
 
-function useUpdatePropertyFinishedSections(propertyId: string | undefined) {
+function useUpdatePropertyFinishedSection(propertyId: string | undefined) {
   const query = useMutation({
-    mutationFn: (props: Section) =>
+    mutationFn: (props: T_Finished_Sections) =>
       updatePropertyFinishedSections(propertyId, props),
   })
   return query
 }
 
-export default useUpdatePropertyFinishedSections
+export default useUpdatePropertyFinishedSection

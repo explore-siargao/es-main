@@ -66,7 +66,10 @@ export const addProperty = async (req: Request, res: Response) => {
 export const getPropertiesByHostId = async (req: Request, res: Response) => {
   try {
     const hostId = res.locals.user?.id
-    const properties = await dbProperties.find({ offerBy: hostId })
+    const properties = await dbProperties
+      .find({ offerBy: hostId, deletedAt: null })
+      .populate('photos')
+      .populate('location')
 
     const filteredProperties = properties.reverse()
     res.json(

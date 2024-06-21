@@ -36,7 +36,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const { latitude, longitude } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { register, handleSubmit } = useForm<T_Listing_Location>({
-    defaultValues: data?.item?.Location,
+    defaultValues: data?.item?.location,
   })
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
@@ -80,7 +80,7 @@ const ListingLocation = ({ pageType }: Prop) => {
     )
   }
   const currentCoords = (
-    data?.item?.Location?.latitude
+    data?.item?.location?.latitude
       ? [data?.item?.location.latitude, data?.item?.location.longitude]
       : [9.913431, 126.049483]
   ) as [number, number]
@@ -121,7 +121,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 type="text"
                 id="streetAddress"
                 label="Street address"
-                defaultValue={data?.item?.location?.streetAddress}
+                defaultValue={data?.item?.location?.street}
                 required
                 {...register("streetAddress", { required: true })}
               />
