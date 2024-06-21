@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -32,12 +32,26 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
-  const { data } = useGetPropertyById(listingId)
-  const { latitude, longitude } = useCoordinatesStore()
+  const { data, isFetching } = useGetPropertyById(listingId)
+  const { latitude, longitude, setCoordinates } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit } = useForm<T_Listing_Location>({
-    defaultValues: data?.item?.location,
-  })
+
+  const { register, handleSubmit, reset, setValue } =
+    useForm<T_Listing_Location>()
+
+  useEffect(() => {
+    if (data && !isFetching) {
+      const location = data?.item?.location
+      reset(location)
+      setSelectedMunicipality(location.city)
+      setCoordinates(location.latitude, location.longitude)
+    }
+  }, [data, isFetching, reset, setCoordinates])
+
+  useEffect(() => {
+    setValue("latitude", latitude as number)
+    setValue("longitude", longitude as number)
+  }, [latitude, longitude, setValue])
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
@@ -70,15 +84,9 @@ const ListingLocation = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
-    mutate(
-      {
-        ...formData,
-        latitude: latitude as number,
-        longitude: longitude as number,
-      },
-      callBackReq
-    )
+    mutate(formData, callBackReq)
   }
+
   const currentCoords = (
     data?.item?.location?.latitude
       ? [data?.item?.location.latitude, data?.item?.location.longitude]
@@ -121,14 +129,12 @@ const ListingLocation = ({ pageType }: Prop) => {
                 type="text"
                 id="streetAddress"
                 label="Street address"
-                defaultValue={data?.item?.location?.street}
                 required
                 {...register("streetAddress", { required: true })}
               />
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                defaultValue={selectedMunicipality}
                 required
                 {...register("city", { required: true })}
                 onChange={updateBarangayOptions}
@@ -138,7 +144,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                   <Option
                     key={municipality.name}
                     value={municipality.name}
-                    selected={municipality.name === data?.item?.location?.city}
+                    selected={municipality.name === selectedMunicipality}
                   >
                     {municipality.name}
                   </Option>
@@ -174,7 +180,6 @@ const ListingLocation = ({ pageType }: Prop) => {
                 <Textarea
                   className="mt-1"
                   required
-                  defaultValue={data?.item?.location?.howToGetThere}
                   {...register("howToGetThere", { required: true })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
@@ -215,6 +220,8 @@ const ListingLocation = ({ pageType }: Prop) => {
               </div>
             </div>
           </div>
+          <Input label={""} type="hidden" {...register("latitude")} />
+          <Input label={""} type="hidden" {...register("longitude")} />
           <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
             <Button
               size="sm"
