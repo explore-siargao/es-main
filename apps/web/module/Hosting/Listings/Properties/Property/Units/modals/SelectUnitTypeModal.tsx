@@ -1,7 +1,7 @@
 "use client"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
-import { E_Property_Type } from "@repo/contract"
+import { E_Property_Type } from "@repo/contract/build/Property/enum"
 import Link from "next/link"
 
 type Props = {

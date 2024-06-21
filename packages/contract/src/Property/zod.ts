@@ -2,7 +2,7 @@ import { z } from "zod"
 import { Z_Photo } from "../Photo"
 import { Z_BookableUnit } from "../BookableUnit"
 import { Z_User } from "../User"
-import { E_PropertyStatus, E_Property_Type } from "./enum"
+import { E_Property_Status, E_Property_Type } from "./enum"
 import { Z_Listing_Location } from "../ListingLocation/zod"
 
 export const Z_Property_Basic_Info = z.object({
@@ -76,5 +76,5 @@ export const Z_Property = z.object({
 })
 
 export const Z_Property_Status = z.object({
-  status: z.nativeEnum(E_PropertyStatus),
+  status: z.nativeEnum(E_Property_Status),
 })
