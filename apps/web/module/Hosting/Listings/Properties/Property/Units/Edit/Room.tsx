@@ -118,7 +118,7 @@ const Room = () => {
 
   return (
     <div className="mt-20 mb-28">
-      <div className="mb-16">
+      <div className="mb-8">
         <Link href={`/hosting/listings/properties/${listingId}/units`}>
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>

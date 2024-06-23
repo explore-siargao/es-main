@@ -24,7 +24,10 @@ import {
   updatePropertyBasicInfo,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
-import { getPropertyFacilities } from './services/facilities'
+import {
+  getPropertyFacilities,
+  updatePropertyFacilities,
+} from './services/facilities'
 import { updateStatus } from './services/status'
 import {
   getFinishedSections,
@@ -49,7 +52,6 @@ import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
 const router = express.Router()
 
 //property
-
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 router.get(
@@ -134,18 +136,12 @@ router.get(
   isHostPropertyOwner,
   getPhotosByPropertyId
 )
-router.get(
-  '/:propertyId/photos/:bookableUnitId',
-  isOriginValid,
-  isUserLoggedIn,
-  isHostPropertyOwner,
-  getPhotosByBookableUnitId
-)
 router.patch(
-  '/photo/:photoId',
+  '/:propertyId/photo/:photoId',
   isOriginValid,
   isCsrfTokenValid,
   isUserLoggedIn,
+  isHostPropertyOwner,
   updatePhoto
 )
 router.post(
@@ -157,11 +153,19 @@ router.post(
   addPhoto
 )
 router.delete(
-  '/photo/:photoId',
+  '/:propertyId/photo/:photoId',
   isOriginValid,
   isCsrfTokenValid,
   isUserLoggedIn,
+  isHostPropertyOwner,
   deletePhoto
+)
+router.get(
+  '/:propertyId/photos/:bookableUnitId',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  getPhotosByBookableUnitId
 )
 
 //policies
@@ -181,6 +185,15 @@ router.get(
   isUserLoggedIn,
   isHostPropertyOwner,
   getPropertyFacilities
+)
+
+router.patch(
+  '/:propertyId/facilities',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updatePropertyFacilities
 )
 
 //policies

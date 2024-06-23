@@ -1,274 +1,258 @@
+"use client"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { cn } from "@/common/helpers/cn"
 import { LucideEye } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
-
-const summary = [
-  {
-    type: "Hostel",
-    basicInfo: {
-      name: "Mountain top house",
-      description: "House in the top of the mountain",
-      phoneNumber: "09492622242",
-      email: "supermario@gmail.com",
-    },
-    location: {
-      streetAddress: "General Luna Road",
-      city: "Burgos",
-      barangay: "Poblacion",
-      howToGetThere: "Take jeepney",
-    },
-    propertyFacilities: [
-      {
-        category: "Most Popular",
-        amenity: "Bar",
-      },
-      {
-        category: "Most Popular",
-        amenity: "Sauna",
-      },
-      {
-        category: "Services",
-        amenity: "Tour desk",
-      },
-    ],
-    units: [
-      {
-        name: "1-person bed",
-        description: "1x1 bed with spacious alley",
-        type: "Bed",
-        qty: 1,
-      },
-      {
-        name: "Small room",
-        description: "Room for 1 person",
-        type: "Room",
-        qty: 1,
-      },
-    ],
-    photos: [
-      {
-        key: "2.jpg",
-        description: "Outside view",
-        tag: "#outside",
-        isMain: true,
-      },
-      {
-        key: "4.jpg",
-        description: "Interior view",
-        tag: "#interior",
-        isMain: false,
-      },
-    ],
-    pricing: [
-      {
-        unit: "1-person bed",
-        baseRate: 1200,
-        baseRateMaxCapacity: 3,
-        maxAddPerson: 1,
-        priceAddPerson: 300,
-        weeklyDiscountPercent: 10,
-        weeklyRateDiscount: 1080,
-      },
-      {
-        unit: "Small room",
-        baseRate: 3000,
-        baseRateMaxCapacity: 5,
-        maxAddPerson: 2,
-        priceAddPerson: 500,
-        weeklyDiscountPercent: 5,
-        weeklyRateDiscount: 2850,
-      },
-    ],
-    policies: [
-      {
-        category: "Things To Know",
-        title: "No commercial photography",
-      },
-      {
-        title: "Carbon Monoxide installed",
-      },
-      {
-        category: "Additional Rules",
-        title: "Sample additional rule",
-      },
-    ],
-  },
-]
+import { useParams, useRouter } from "next/navigation"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
+import { E_Property_Status } from "@repo/contract/build/Property/enum"
+import toast from "react-hot-toast"
+import useUpdatePropertyStatusById from "../../hooks/useUpdatePropertyStatusById"
+import { Spinner } from "@/common/components/ui/Spinner"
+import {
+  T_Photo,
+  T_Property,
+  T_Property_Amenity,
+  T_Property_Facility,
+  T_Property_Policy,
+} from "@repo/contract"
+import Image from "next/image"
+import { cn } from "@/common/helpers/cn"
 
 const Summary = () => {
+  const router = useRouter()
+  const params = useParams<{ listingId: string }>()
+  const listingId = String(params.listingId)
+  const { data, isPending } = useGetPropertyById(listingId)
+  const { mutate } = useUpdatePropertyStatusById(listingId)
+  const property = data?.item
+  const handleSubmit = async () => {
+    const newStatus = { status: E_Property_Status.pending }
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          toast.success("Property submitted for review")
+          router.push(`/hosting/listings/properties/${listingId}/property-type`)
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    await mutate(newStatus, callBackReq)
+  }
+
   return (
     <div className="mt-20 mb-28">
-      <Typography
-        variant="h1"
-        fontWeight="semibold"
-        className="flex justify-between items-center pb-4"
-      >
-        Summary
-      </Typography>
-      {summary.map((item, index) => (
-        <div className="mt-4" key={index}>
-          <div className="border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Property Type
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              {item.type}
-            </Typography>
-          </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Basic info
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">Name:</span> {item.basicInfo.name}
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">Description:</span>{" "}
-              {item.basicInfo.description}
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">Phone number:</span>{" "}
-              {item.basicInfo.phoneNumber}
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">Email:</span>{" "}
-              {item.basicInfo.email}
-            </Typography>
-          </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Location
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">Street Address:</span>{" "}
-              {item.location.streetAddress}
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">City / Municipality:</span>{" "}
-              {item.location.city}
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">Barangay / District:</span>{" "}
-              {item.location.barangay}
-            </Typography>
-            <Typography variant="h5" className="mt-2">
-              <span className="font-semibold">How to get there:</span>{" "}
-              {item.location.howToGetThere}
-            </Typography>
-          </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Property Facilities
-            </Typography>
-            {Array.from(
-              new Set(
-                item.propertyFacilities.map((facility) => facility.category)
-              )
-            ).map((category) => (
-              <div key={category}>
+      {isPending ? (
+        <Spinner>Loading...</Spinner>
+      ) : (
+        <>
+          <Typography
+            variant="h1"
+            fontWeight="semibold"
+            className="flex justify-between items-center pb-4"
+          >
+            Summary
+          </Typography>
+          <div className="mt-4">
+            <div className="border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Property Type
+              </Typography>
+              {data?.item ? (
                 <Typography variant="h5" className="mt-2">
-                  <span className="font-semibold">{category}: </span>
-                  {item.propertyFacilities
-                    .filter((facility) => facility.category === category)
-                    .map((facility) => facility.amenity)
-                    .join(", ")}
+                  {data?.item?.type}
                 </Typography>
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Units
-            </Typography>
-            <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
-              {item.units.map((unit, unitIndex) => (
-                <li key={unitIndex}>
+              ) : (
+                <Typography variant="h5" className="mt-2">
+                  No data available.
+                </Typography>
+              )}
+            </div>
+
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Basic info
+              </Typography>
+              {data?.item ? (
+                <>
+                  <Typography variant="h5" className="mt-2">
+                    <span className="font-semibold">Title:</span>{" "}
+                    {data?.item?.title}
+                  </Typography>
+                  <Typography variant="h5" className="mt-2">
+                    <span className="font-semibold">Description:</span>{" "}
+                    {data?.item?.description}
+                  </Typography>
+                </>
+              ) : (
+                <Typography variant="h5" className="mt-2">
+                  No data found
+                </Typography>
+              )}
+            </div>
+
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Location
+              </Typography>
+              {data?.item?.location ? (
+                <>
+                  <Typography variant="h5" className="mt-2">
+                    <span className="font-semibold">Street Address:</span>{" "}
+                    {data?.item?.location?.streetAddress}
+                  </Typography>
+                  <Typography variant="h5" className="mt-2">
+                    <span className="font-semibold">City / Municipality:</span>{" "}
+                    {data?.item?.location?.city}
+                  </Typography>
+                  <Typography variant="h5" className="mt-2">
+                    <span className="font-semibold">Barangay / District:</span>{" "}
+                    {data?.item?.location?.barangay}
+                  </Typography>
+                  <Typography variant="h5" className="mt-2">
+                    <span className="font-semibold">How to get there:</span>{" "}
+                    {data?.item?.location?.howToGetThere}
+                  </Typography>
+                </>
+              ) : (
+                <Typography variant="h5" className="mt-2">
+                  No data available.
+                </Typography>
+              )}
+            </div>
+
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Property Facilities
+              </Typography>
+              {data?.item?.facilities.length > 0 ? (
+                <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
+                  {data?.item?.facilities
+                    .filter(
+                      (facility: T_Property_Facility) =>
+                        facility.isSelected === true
+                    )
+                    .map((facility: T_Property_Facility) => (
+                      <li key={facility._id}>
+                        <Typography variant="h5">
+                          <span className="font-semibold">Category:</span>{" "}
+                          {facility.category}
+                        </Typography>
+                        <Typography variant="h5" className="mt-1">
+                          <span className="font-semibold">Facility:</span>{" "}
+                          {facility.facility}
+                        </Typography>
+                      </li>
+                    ))
+                    .sort((a: T_Property_Facility, b: T_Property_Facility) => {
+                      if (a.category < b.category) {
+                        return -1
+                      }
+                      if (a.category > b.category) {
+                        return 1
+                      }
+                      return 0
+                    })}
+                </ol>
+              ) : (
+                <Typography variant="h5" className="mt-2">
+                  No data available.
+                </Typography>
+              )}
+            </div>
+
+            {/* <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Units
+              </Typography>
+              <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
+                <li>
                   <div className="flex space-x-14">
                     <Typography variant="h5" className="w-40 truncate">
-                      <span className="font-semibold">Name:</span> {unit.name}
+                      <span className="font-semibold">Name:</span> {}
                     </Typography>
                     <Typography variant="h5" className="w-72 truncate">
-                      <span className="font-semibold">Description:</span>{" "}
-                      {unit.description}
+                      <span className="font-semibold">Description:</span> {}
                     </Typography>
                     <Typography variant="h5" className="w-32 truncate">
-                      <span className="font-semibold">Type:</span> {unit.type}
+                      <span className="font-semibold">Type:</span> {}
                     </Typography>
                     <Typography variant="h5" className="w-32 truncate">
-                      <span className="font-semibold">Quantity:</span>{" "}
-                      {unit.qty}
+                      <span className="font-semibold">Quantity:</span> {}
                     </Typography>
                   </div>
                 </li>
-              ))}
-            </ol>
-          </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Photos
-            </Typography>
-            <div className="grid grid-cols-4 gap-6 mt-6">
-              {item.photos.map((photo, index) => (
-                <div key={index} className="h-full">
-                  {photo.isMain && (
-                    <div className="flex justify-center">
-                      <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
-                        Preferred main photo
-                      </span>
-                    </div>
-                  )}
-                  <div
-                    className={cn(
-                      `relative h-52 w-full bg-primary-50 rounded-lg`,
-                      photo.isMain && "border-2 border-secondary-500"
+              </ol>
+            </div> */}
+
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Photos
+              </Typography>
+              <div className="grid grid-cols-4 gap-6 mt-6">
+                {property?.photos.map((photo: T_Photo, index: number) => (
+                  <div key={index} className="h-full">
+                    {photo.isMain && (
+                      <div className="flex justify-center">
+                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
+                          Preferred main photo
+                        </span>
+                      </div>
                     )}
-                  >
-                    <Image
-                      src={"/assets/" + photo.key}
-                      alt={`preview-` + index}
-                      layout="fill"
-                      objectFit="cover"
-                      objectPosition="center"
-                      className="rounded-lg"
-                    />
+                    <div
+                      className={cn(
+                        `relative h-52 w-full bg-primary-50 rounded-lg`,
+                        photo.isMain && "border-2 border-secondary-500"
+                      )}
+                    >
+                      <Image
+                        src={"/assets/" + photo.key}
+                        alt={`preview-` + index}
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition="center"
+                        className="rounded-lg"
+                      />
+                    </div>
+                    <Typography
+                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
+                    >
+                      {photo.description || "No description"}
+                    </Typography>
                   </div>
-                  <Typography
-                    className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
-                  >
-                    {photo.description || "No description"}
-                  </Typography>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
+
+            {/* <div className="mt-3 border-b border-gray-200 pb-3">
             <Typography
               variant="h4"
               fontWeight="semibold"
@@ -312,42 +296,74 @@ const Summary = () => {
                 </div>
               ))}
             </div>
+          </div> */}
+
+            <div className="mt-3 border-b border-gray-200 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Policies
+              </Typography>
+              {data?.item?.policies.length > 0 ? (
+                <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
+                  {data?.item?.policies
+                    .filter(
+                      (policy: T_Property_Policy) => policy.isSelected === true
+                    )
+                    .map((policy: T_Property_Policy) => (
+                      <li key={policy._id}>
+                        <Typography variant="h5">
+                          <span className="font-semibold">Category:</span>{" "}
+                          {policy.category}
+                        </Typography>
+                        <Typography variant="h5" className="mt-1">
+                          <span className="font-semibold">Policy:</span>{" "}
+                          {policy.policy}
+                        </Typography>
+                        <Typography variant="h5">
+                          <span className="font-semibold">Reason:</span>{" "}
+                          {policy.reason}
+                        </Typography>
+                      </li>
+                    ))
+                    .sort((a: T_Property_Facility, b: T_Property_Facility) => {
+                      if (a.category < b.category) {
+                        return -1
+                      }
+                      if (a.category > b.category) {
+                        return 1
+                      }
+                      return 0
+                    })}
+                </ol>
+              ) : (
+                <Typography variant="h5" className="mt-2">
+                  No data available.
+                </Typography>
+              )}
+            </div>
           </div>
-          <div className="mt-3 border-b border-gray-200 pb-3">
-            <Typography
-              variant="h4"
-              fontWeight="semibold"
-              className="leading-6"
-            >
-              Policies
-            </Typography>
-            <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
-              {item.policies.map((policy, policyIndex) => (
-                <li key={policyIndex}>
-                  <Typography variant="h5">{policy.title}</Typography>
-                </li>
-              ))}
-            </ol>
+          <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">
+            <div className="flex gap-2">
+              <Button size="sm" type="submit" onClick={handleSubmit}>
+                Submit for review
+              </Button>
+              <Link href="/accommodation/1" target="_blank">
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  type="submit"
+                  className="flex gap-2"
+                >
+                  <LucideEye className="h-4 w-4" /> Preview listing
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      ))}
-      <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">
-        <div className="flex gap-2">
-          <Button size="sm" type="submit">
-            Submit for review
-          </Button>
-          <Link href="/accommodation/1" target="_blank">
-            <Button
-              size="sm"
-              variant="secondary"
-              type="submit"
-              className="flex gap-2"
-            >
-              <LucideEye className="h-4 w-4" /> Preview listing
-            </Button>
-          </Link>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   )
 }

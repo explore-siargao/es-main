@@ -65,11 +65,13 @@ export const addProperty = async (req: Request, res: Response) => {
 
 export const getPropertiesByHostId = async (req: Request, res: Response) => {
   try {
-    const hostId = req.params.activityId
-    const properties = await dbProperties.find({ offerBy: hostId })
+    const hostId = res.locals.user?.id
+    const properties = await dbProperties
+      .find({ offerBy: hostId, deletedAt: null })
+      .populate('photos')
+      .populate('location')
 
     const filteredProperties = properties.reverse()
-    console.log('properties', filteredProperties)
     res.json(
       response.success({
         items: filteredProperties,
@@ -342,7 +344,6 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
     }
 
     if (property.location === null) {
-      console.log('hello')
       const newLocation = new dbLocations({
         streetAddress: streetAddress,
         barangay: barangay,
@@ -375,7 +376,7 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
       })
     }
 
-    property.finishedSections = ['type', 'basicInfo', 'location']
+    // property.finishedSections = ['type', 'basicInfo', 'location']
 
     res.json(
       response.success({

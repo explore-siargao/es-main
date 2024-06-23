@@ -12,7 +12,10 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
+import toast from "react-hot-toast"
+import { useQueryClient } from "@tanstack/react-query"
+import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
@@ -22,11 +25,13 @@ interface PricingContentProps {
 
 const Pricing = ({ pageType }: PricingContentProps) => {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
   const { handleSubmit, control } = useForm()
-
+  const { mutateAsync: updateFinishedSection } =
+    useUpdatePropertyFinishedSection(listingId)
   const { fields, append, update } = useFieldArray({
     control,
     name: "unitPrices",
@@ -34,7 +39,30 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   })
 
   const onSubmit = (data: any) => {
-    console.log(data)
+    if (
+      pageType === "setup" &&
+      !data?.item?.finishedSections?.includes("pricing")
+    ) {
+      const callBackReq = {
+        onSuccess: (data: any) => {
+          if (!data.error) {
+            queryClient.invalidateQueries({
+              queryKey: ["property-finished-sections", listingId],
+            })
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err: any) => {
+          toast.error(String(err))
+        },
+      }
+      updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ["property", listingId],
+      })
+    }
     router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
   }
 

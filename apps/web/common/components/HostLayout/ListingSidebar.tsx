@@ -23,7 +23,7 @@ interface HostSidebarProps {
 
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const PROPERTY_EDIT_BASE_PATH = "/hosting/listings/properties"
   const TOP_LINKS = [
     {
