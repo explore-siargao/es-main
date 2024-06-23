@@ -33,7 +33,7 @@ export const Z_Property_Facility = z.object({
 })
 
 export const Z_Property_Amenity = z.object({
-  id: z.number().optional(),
+  id: z.number().optional().nullable(),
   index: z.number(),
   category: z.string(),
   bookableUnitTypeId: z.number().optional().nullable(),

@@ -1,14 +1,22 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import { LucideChevronLeft, MinusIcon, PlusIcon } from "lucide-react"
+import { LucideArmchair, LucideBath, LucideChevronLeft, LucideCookingPot, LucideLayoutList, LucidePalmtree, LucideSparkles, MinusIcon, PlusIcon } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
-import AmenitiesCheckbox from "../AmenitiesCheckbox"
 import { useEffect, useState } from "react"
-import useAmenitySelectStore from "@/common/store/useAmenitySelectStore"
+import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useParams } from "next/navigation"
+import { Option, Select } from "@/common/components/ui/Select"
+import { Input } from "@/common/components/ui/Input"
+import AmenitiesCheckboxes from "../components/AmenitiesCheckboxes"
+import usePhotoStore from "@/module/Admin/Listings/store/usePhotoStore"
+import useDeleteUnitPhoto from "../hooks/useDeleteUnitPhoto"
+import useAddUnitPhoto from "../hooks/useAddUnitPhoto"
+import useUpdateUnitPhoto from "../hooks/useUpdateUnitPhoto"
+import { useQueryClient } from "@tanstack/react-query"
+import Photos from "./components/Photos"
 
 type T_Beds = {
   bedName: string
@@ -25,115 +33,87 @@ type T_WholePlaceUnit = {
   amenities: {}[]
 }
 
-const dummy = [
-  {
-    id: 1,
-    name: "Amazing Villa",
-    type: "Whole Place",
-    bedCount: 2,
-    beds: [
-      {
-        bedName: "Small bed",
-        bedType: "Single bed",
-      },
-      {
-        bedName: "Large bed",
-        bedType: "Queen bed",
-      },
-    ],
-    bathrooms: 4,
-    qty: 1,
-    size: 300,
-    amenities: [
-      {
-        category: "Outdoors",
-        amenity: "Pool view",
-      },
-      {
-        category: "Outdoors",
-        amenity: "Garden view",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Big Apartment",
-    type: "Whole Place",
-    bedCount: 1,
-    beds: [
-      {
-        bedName: "Large bed",
-        bedType: "Queen bed",
-      },
-    ],
-    bathrooms: 6,
-    qty: 3,
-    size: 400,
-    amenities: [
-      {
-        category: "Most popular",
-        amenity: "Air Conditioning",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Villa Ippa",
-    type: "Whole Place",
-    bedCount: 3,
-    beds: [
-      {
-        bedName: "Small bed",
-        bedType: "Single bed",
-      },
-      {
-        bedName: "Medium bed",
-        bedType: "Double bed",
-      },
-      {
-        bedName: "Large bed",
-        bedType: "Queen bed",
-      },
-    ],
-    bathrooms: 5,
-    qty: 2,
-    size: 500,
-    amenities: [
-      {
-        category: "General",
-        amenity: "iPad",
-      },
-      {
-        category: "Kitchen",
-        amenity: "Microwave",
-      },
-    ],
-  },
-]
+type Prop = {
+  pageType: "setup" | "edit"
+}
 
-const WholePlace = () => {
+const WholePlace = ({ pageType }: Prop) => {
   const params = useParams()
-  const listingId = Number(params.listingId)
-  const { wholePlaceId } = params
-  // @ts-ignore
-  const data = dummy.find((x) => x.id === parseInt(wholePlaceId))
+  const listingId = params.listingId
+  const unitId = params.unitId
+  const queryClient = useQueryClient()
+
+  const data: any = {} // change this to useGetPropertyUnitById
+  const isPending: boolean = false
 
   const [bedCount, setBedCount] = useState(data?.bedCount || 0)
   const [bedInputs, setBedInputs] = useState(data?.beds || [])
   const [bathroomCount, setBathroomCount] = useState(data?.bathrooms || 0)
-  const [typeCount, setTypeCount] = useState(data?.qty || 0)
+  const [typeCount, setTypeCount] = useState((data?.qty || 0) as number)
 
-  const selectedAmenities = useAmenitySelectStore((state) => state.amenities)
-  const setCurrentAmenities = useAmenitySelectStore(
-    (state) => state.setCurrentAmenities
-  )
+  const { mutateAsync, } = useUpdateUnitPhoto(listingId as string)
+  const { mutateAsync: addMutateAsync } = useAddUnitPhoto(listingId as string, unitId as string)
+  const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(listingId as string)
+
+  const photos = usePhotoStore((state) => state.photos)
+  const setPhotos = usePhotoStore((state) => state.setPhotos)
+
+  const amenities = useSelectAmenityStore((state) => state.amenities)
 
   const { register, unregister, handleSubmit, setValue } =
     useForm<T_WholePlaceUnit>()
 
+  const updatePhotosInDb = async () => {
+    const toAddPhotos =
+      photos
+        .filter((photo) => !photo._id)
+        .map(async (photo) => {
+          return await addMutateAsync(photo)
+        }) || []
+    const toEditPhotos =
+      photos
+        .filter((photo) => photo._id)
+        .map(async (photo) => {
+          return await mutateAsync(photo)
+        }) || []
+    const toDeletePhotos =
+      photos
+        .filter((photo) => photo.isDeleted)
+        .map(async (photo) => {
+          return await deleteMutateAsync(photo)
+        }) || []
+    await Promise.all([...toAddPhotos, ...toEditPhotos, ...toDeletePhotos])
+      .then((items) => {
+        items.forEach((item) => {
+          const message = String(item.message) as string
+          toast.success(message, { id: message })
+        })
+        queryClient.invalidateQueries({
+          queryKey: ["property", listingId],
+        })
+      })
+      .catch((err) => {
+        toast.error(String(err))
+      })
+  }
+
+  const handleSavePhotos = async () => {
+    if (
+      (photos?.length > 4 ||
+        (data?.item?.photos && data?.item?.photos.length > 4))
+    ) {
+      updatePhotosInDb()
+    } else if (
+      (photos?.length < 5 ||
+        (data?.item?.Photos && data?.item?.Photos.length < 5))
+    ) {
+      toast.error("Please add at least 5 photos")
+    }
+  }
+
   const onSubmit = (formData: T_WholePlaceUnit) => {
     if (bedCount > 0) {
-      formData.amenities = selectedAmenities
+      formData.amenities = amenities
       formData.bedCount = bedCount
       console.log(formData)
     } else {
@@ -143,8 +123,8 @@ const WholePlace = () => {
 
   const addBedInput = () => {
     // @ts-ignore
-    setBedInputs((prevBedInput) => [...prevBedInput, bedCount])
-    setBedCount((prevBedCount) => prevBedCount + 1)
+    setBedInputs((prevBedInput: any) => [...prevBedInput, bedCount])
+    setBedCount((prevBedCount: any) => prevBedCount + 1)
   }
 
   const removeBedInput = () => {
@@ -152,8 +132,8 @@ const WholePlace = () => {
       // @ts-ignore
       unregister(`beds[${bedInputs.length - 1}]`)
 
-      setBedInputs((prevBedInputs) => prevBedInputs.slice(0, -1))
-      setBedCount((prevBedCount) => prevBedCount - 1)
+      setBedInputs((prevBedInputs: any) => prevBedInputs.slice(0, -1))
+      setBedCount((prevBedCount: any) => prevBedCount - 1)
     }
   }
 
@@ -164,17 +144,15 @@ const WholePlace = () => {
   }, [bedCount, bathroomCount, typeCount])
 
   useEffect(() => {
-    setValue("typeCount", typeCount)
-  }, [typeCount])
-
-  useEffect(() => {
-    data?.amenities?.forEach((amenity) => setCurrentAmenities(amenity))
-  }, [])
+    if (!isPending && data && data.item) {
+      setPhotos(data?.item?.photos)
+    }
+  }, [data, isPending])
 
   return (
     <div className="mt-20 mb-28">
-      <div className="mb-16">
-        <Link href={`/hosting/listings/properties/${listingId}/units`}>
+      <div className="mb-8">
+        <Link href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`}>
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
         <Typography variant="h1" fontWeight="semibold" className="mt-4">
@@ -184,29 +162,28 @@ const WholePlace = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
-            <Typography variant="h4" fontWeight="semibold" className="mb-2">
-              Name
-            </Typography>
-            <select
-              id="name"
-              {...register("name")}
-              className="block w-60 rounded-md border-gray-300 py-2 pl-3 pr-10 focus:border-primary-500 focus:outline-none focus:ring-primary-500 text-sm"
+            <Select
+              {...register("name", {
+                required: "This field is required",
+              })}
+              label="Name"
+              required
             >
-              <option>{data?.name}</option>
-              <option>Double Room</option>
-            </select>
+              <>
+                <Option value={""}>Select Name</Option>
+                <Option>Double Room</Option>
+              </>
+            </Select>
           </div>
           <div>
-            <Typography variant="h4" fontWeight="semibold" className="mb-2">
-              Total Size (sqm)
-            </Typography>
-            <input
-              type="number"
+            <Input
+              label="Total Size (sqm)"
               id="size"
-              {...register("size", { required: true })}
-              className="block w-60 rounded-md px-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-              placeholder="0"
-              defaultValue={data?.size}
+              type="number"
+              disabled={false}
+              {...register("size", {
+                required: "This field is required",
+              })}
               required
             />
           </div>
@@ -244,27 +221,25 @@ const WholePlace = () => {
                 <PlusIcon className="h-3 w-3" />
               </button>
             </div>
-            {bedInputs.map((bedInput, index) => (
+            {bedInputs.map((bedInput: any, index: number) => (
               <div className="grid grid-cols-2 my-3 gap-x-3" key={index}>
-                <input
+                <Input
+                  label="Bed name"
                   type="text"
                   id={`bed-name-${index}`}
+                  disabled={false}
                   // @ts-ignore
                   {...register(`beds[${index}].bedName`, { register: true })}
-                  className="block w-full rounded-md px-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  placeholder={`Enter bed name here`}
-                  //   @ts-ignore
                   defaultValue={bedInput.bedName}
                   required
                 />
-                <input
+                <Input
+                  label="Bed type"
                   type="text"
-                  id={`bed-type-${index}`}
+                  id={`bed-name-${index}`}
+                  disabled={false}
                   // @ts-ignore
                   {...register(`beds[${index}].bedType`, { register: true })}
-                  className="block w-full rounded-md px-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-                  placeholder={`Enter bed type here`}
-                  //   @ts-ignore
                   defaultValue={bedInput.bedType}
                   required
                 />
@@ -281,7 +256,7 @@ const WholePlace = () => {
                 type="button"
                 onClick={() => {
                   bathroomCount > 0 &&
-                    setBathroomCount((bathroomCount) => bathroomCount - 1)
+                    setBathroomCount((bathroomCount: any) => bathroomCount - 1)
                 }}
               >
                 <MinusIcon className="h-3 w-3" />
@@ -302,7 +277,7 @@ const WholePlace = () => {
                 className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() =>
-                  setBathroomCount((bathroomCount) => bathroomCount + 1)
+                  setBathroomCount((bathroomCount: any) => bathroomCount + 1)
                 }
               >
                 <PlusIcon className="h-3 w-3" />
@@ -318,7 +293,7 @@ const WholePlace = () => {
                 className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => {
-                  typeCount > 0 && setTypeCount((typeCount) => typeCount - 1)
+                  typeCount > 0 && setTypeCount((typeCount: any) => typeCount - 1)
                 }}
               >
                 <MinusIcon className="h-3 w-3" />
@@ -338,24 +313,44 @@ const WholePlace = () => {
               <button
                 className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
-                onClick={() => setTypeCount((typeCount) => typeCount + 1)}
+                onClick={() => setTypeCount((typeCount: any) => typeCount + 1)}
               >
                 <PlusIcon className="h-3 w-3" />
               </button>
             </div>
           </div>
         </div>
-        <hr className="mb-4" />
+        <hr className="mt-6 mb-4" />
+        <Photos/>
+        <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
           Amenities and Facilities (for the whole place itself)
         </Typography>
         <div className="grid grid-cols-2 gap-3 mb-3">
-          <AmenitiesCheckbox category="Most popular" level="unit" />
-          <AmenitiesCheckbox category="Bathroom" level="unit" />
-          <AmenitiesCheckbox category="Living area" level="unit" />
-          <AmenitiesCheckbox category="Kitchen" level="unit" />
-          <AmenitiesCheckbox category="General" level="unit" />
-          <AmenitiesCheckbox category="Outdoors" level="unit" />
+        <AmenitiesCheckboxes
+            title="Most Popular"
+            icon={<LucideSparkles className="h-4 w-4" />}
+          />
+          <AmenitiesCheckboxes
+            title="Bathroom"
+            icon={<LucideBath className="h-4 w-4" />}
+          />
+          <AmenitiesCheckboxes
+            title="Living Area"
+            icon={<LucideArmchair className="h-4 w-4" />}
+          />
+          <AmenitiesCheckboxes
+            title="Kitchen"
+            icon={<LucideCookingPot className="h-4 w-4" />}
+          />
+          <AmenitiesCheckboxes
+            title="General"
+            icon={<LucideLayoutList className="h-4 w-4" />}
+          />
+          <AmenitiesCheckboxes
+            title="Outdoors"
+            icon={<LucidePalmtree className="h-4 w-4" />}
+          />
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button size="sm" type="submit">

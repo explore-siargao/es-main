@@ -1,12 +1,12 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import UnitsTable from "./UnitsTable"
 import { LucidePlus } from "lucide-react"
 import { Button } from "@/common/components/ui/Button"
 import SelectUnitTypeModal from "./modals/SelectUnitTypeModal"
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import useGetPropertyById from "../../../hooks/useGetPropertyById"
+import UnitsTable from "./components/UnitsTable"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -67,6 +67,7 @@ const Units = ({ pageType }: Prop) => {
         onClose={() => setIsSelectUnitTypeModalOpen(!isSelectUnitTypeModalOpen)}
         propertyType={propertyType}
         propertyId={data?.item?.id}
+        pageType={pageType}
       />
     </div>
   )
