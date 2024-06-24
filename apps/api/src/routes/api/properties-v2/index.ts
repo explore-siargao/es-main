@@ -5,6 +5,7 @@ import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isHostPropertyOwner from './middlewares/isHostPropertyOwner'
 import {
   addPhoto,
+  addUnitPhoto,
   deletePhoto,
   getPhotosByBookableUnitId,
   getPhotosByPropertyId,
@@ -152,6 +153,16 @@ router.post(
   isHostPropertyOwner,
   addPhoto
 )
+
+router.post(
+  '/:propertyId/:bookableUnitId/photo',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  addUnitPhoto
+)
+
 router.delete(
   '/:propertyId/photo/:photoId',
   isOriginValid,

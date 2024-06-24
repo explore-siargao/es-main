@@ -5,7 +5,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { Z_Photo, Z_Update_Photo } from '@repo/contract'
-import { dbPhotos, dbProperties } from '@repo/database'
+import { dbBookableUnitTypes, dbPhotos, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 import { FileService } from '@/common/service/file'
 
@@ -13,7 +13,7 @@ const response = new ResponseService()
 const fileService = new FileService()
 
 export const addPhoto = async (req: Request, res: Response) => {
-  const isHost = true
+  const isHost = res.locals.user?.isHost
   const propertyId = req.params.propertyId
   const files = req.files
   const { description, tags, isMain } = req.body
@@ -39,6 +39,65 @@ export const addPhoto = async (req: Request, res: Response) => {
       const uploadedPhoto = await newPhoto.save()
       const updatePhotos = await dbProperties.findByIdAndUpdate(
         propertyId,
+        {
+          $push: {
+            photos: uploadedPhoto._id,
+          },
+          $set: {
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+      res.json(
+        response.success({
+          item: updatePhotos,
+          message: 'Photos was updated',
+        })
+      )
+    } catch (err: any) {
+      return res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  } else {
+    return res.json(
+      response.error({ message: JSON.parse(isValidInput.error.message) })
+    )
+  }
+}
+
+export const addUnitPhoto = async (req: Request, res: Response) => {
+  const isHost = res.locals.user?.isHost
+  const propertyId = req.params.propertyId
+  const bookableUnitId = req.params.bookableUnitId
+  const files = req.files
+  const { description, tags, isMain } = req.body
+  const isValidInput = Z_Photo.safeParse(req.body)
+  if (!isHost) {
+    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+  }
+  if (!files || !propertyId || !bookableUnitId) {
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  }
+  if (isValidInput.success) {
+    try {
+      const upload = await fileService.upload({ files })
+      const values = {
+        propertyId,
+        bookableUnitId,
+        key: upload.key,
+        thumbKey: upload.key,
+        description,
+        tags,
+        isMain,
+      }
+      const newPhoto = new dbPhotos(values)
+      const uploadedPhoto = await newPhoto.save()
+      const updatePhotos = await dbBookableUnitTypes.findByIdAndUpdate(
+        bookableUnitId,
         {
           $push: {
             photos: uploadedPhoto._id,
@@ -169,6 +228,8 @@ export const getPhotosByPropertyId = async (req: Request, res: Response) => {
     )
   }
 }
+
+
 
 export const deletePhoto = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
