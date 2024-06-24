@@ -255,11 +255,11 @@ const CalendarTable = () => {
                         )}
                         {editingRoom === room.abbr ? (
                           <Button size={"icon"} variant={"link"} onClick={() => handleSaveRoom(category.name, roomIndex)}>
-                            <Save className='text-gray-500' />
+                            <Save className='text-gray-500 w-5' />
                           </Button>
                         ) : (
                           <Button size={"icon"} variant={"link"} onClick={() => handleEditRoom(room.abbr)}>
-                            <Edit3 className='text-gray-500' />
+                            <Edit3 className='text-gray-500 w-5' />
                           </Button>
                         )}
                       </div>

@@ -93,7 +93,7 @@ const RoomQuantityEdit = ({
                 }
               }}
               placeholder='Room quantity'
-              label={`Set room quantity for ${selectedDate}`}
+              label={`${selectedDate}`}
               className='w-[50%]'
             />
           </div>
