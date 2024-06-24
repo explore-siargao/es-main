@@ -12,12 +12,14 @@ export const Z_Property_Basic_Info = z.object({
 
 export const Z_Property_Policy = z.object({
   index: z.number(),
-  _id: z.string().optional(),
-  category: z.string().optional(),
+  _id: z.string().optional().nullable(),
+  category: z.string(),
   reason: z.string().optional().nullable(),
-  policy: z.string().optional(),
-  propertyId: z.number().optional().nullable(),
+  policy: z.string(),
   isSelected: z.boolean().optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().nullable().optional(),
+  deletedAt: z.date().nullable().optional(),
 })
 
 export const Z_Property_Facility = z.object({
@@ -34,12 +36,13 @@ export const Z_Property_Facility = z.object({
 })
 
 export const Z_Property_Amenity = z.object({
-  id: z.number().optional().nullable(),
+  id: z.number().optional(),
+  _id: z.string().optional().nullable(),
   index: z.number(),
   category: z.string(),
   bookableUnitTypeId: z.number().optional().nullable(),
   amenity: z.string(),
-  isSelected: z.boolean(),
+  isSelected: z.boolean().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),

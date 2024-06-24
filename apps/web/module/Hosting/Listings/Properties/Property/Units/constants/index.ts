@@ -8,7 +8,6 @@ const LIVING_AREA = "Living Area"
 export const AMENITIES = [
   {
     index: 0,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Bar",
     propertyId: null,
@@ -16,7 +15,6 @@ export const AMENITIES = [
   },
   {
     index: 1,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Sauna",
     propertyId: null,
@@ -24,7 +22,6 @@ export const AMENITIES = [
   },
   {
     index: 2,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Garden",
     propertyId: null,
@@ -32,7 +29,6 @@ export const AMENITIES = [
   },
   {
     index: 3,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Terrace",
     propertyId: null,
@@ -40,7 +36,6 @@ export const AMENITIES = [
   },
   {
     index: 4,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Hot tub/Jacuzzi",
     propertyId: null,
@@ -48,7 +43,6 @@ export const AMENITIES = [
   },
   {
     index: 5,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Heating",
     propertyId: null,
@@ -56,7 +50,6 @@ export const AMENITIES = [
   },
   {
     index: 6,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Free WiFi",
     propertyId: null,
@@ -64,7 +57,6 @@ export const AMENITIES = [
   },
   {
     index: 7,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Air conditioning",
     propertyId: null,
@@ -72,7 +64,6 @@ export const AMENITIES = [
   },
   {
     index: 8,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Swimming pool",
     propertyId: null,
@@ -80,7 +71,6 @@ export const AMENITIES = [
   },
   {
     index: 9,
-    id: null,
     category: MOST_POPULAR,
     amenity: "Beach",
     propertyId: null,
@@ -88,7 +78,6 @@ export const AMENITIES = [
   },
   {
     index: 10,
-    id: null,
     category: BATHROOM,
     amenity: "Free toiletries",
     propertyId: null,
@@ -96,7 +85,6 @@ export const AMENITIES = [
   },
   {
     index: 11,
-    id: null,
     category: BATHROOM,
     amenity: "Bidet",
     propertyId: null,
@@ -104,7 +92,6 @@ export const AMENITIES = [
   },
   {
     index: 12,
-    id: null,
     category: BATHROOM,
     amenity: "Toilet",
     propertyId: null,
@@ -112,7 +99,6 @@ export const AMENITIES = [
   },
   {
     index: 13,
-    id: null,
     category: BATHROOM,
     amenity: "Bath or shower",
     propertyId: null,
@@ -120,7 +106,6 @@ export const AMENITIES = [
   },
   {
     index: 14,
-    id: null,
     category: BATHROOM,
     amenity: "Towels",
     propertyId: null,
@@ -128,7 +113,6 @@ export const AMENITIES = [
   },
   {
     index: 15,
-    id: null,
     category: BATHROOM,
     amenity: "Linen",
     propertyId: null,
@@ -136,7 +120,6 @@ export const AMENITIES = [
   },
   {
     index: 16,
-    id: null,
     category: BATHROOM,
     amenity: "Tile/marble floor",
     propertyId: null,
@@ -144,7 +127,6 @@ export const AMENITIES = [
   },
   {
     index: 17,
-    id: null,
     category: BATHROOM,
     amenity: "Bathrobe",
     propertyId: null,
@@ -152,7 +134,6 @@ export const AMENITIES = [
   },
   {
     index: 18,
-    id: null,
     category: BATHROOM,
     amenity: "Toilet paper",
     propertyId: null,
@@ -160,7 +141,6 @@ export const AMENITIES = [
   },
   {
     index: 19,
-    id: null,
     category: BATHROOM,
     amenity: "Hairdryer",
     propertyId: null,
@@ -168,7 +148,6 @@ export const AMENITIES = [
   },
   {
     index: 20,
-    id: null,
     category: BATHROOM,
     amenity: "Hand sanitiser",
     propertyId: null,
@@ -176,7 +155,6 @@ export const AMENITIES = [
   },
   {
     index: 21,
-    id: null,
     category: BATHROOM,
     amenity: "Spa bath",
     propertyId: null,
@@ -184,7 +162,6 @@ export const AMENITIES = [
   },
   {
     index: 22,
-    id: null,
     category: OUTDOORS,
     amenity: "Beachfront",
     propertyId: null,
@@ -192,7 +169,6 @@ export const AMENITIES = [
   },
   {
     index: 23,
-    id: null,
     category: KITCHEN,
     amenity: "Tea/Coffee maker",
     propertyId: null,
@@ -200,7 +176,6 @@ export const AMENITIES = [
   },
   {
     index: 24,
-    id: null,
     category: KITCHEN,
     amenity: "Microwave",
     propertyId: null,
@@ -208,7 +183,6 @@ export const AMENITIES = [
   },
   {
     index: 25,
-    id: null,
     category: KITCHEN,
     amenity: "Kitchenware",
     propertyId: null,
@@ -216,7 +190,6 @@ export const AMENITIES = [
   },
   {
     index: 26,
-    id: null,
     category: KITCHEN,
     amenity: "Hot/cold water dispenser",
     propertyId: null,
@@ -224,7 +197,6 @@ export const AMENITIES = [
   },
   {
     index: 27,
-    id: null,
     category: KITCHEN,
     amenity: "Electric kettle",
     propertyId: null,
@@ -232,7 +204,6 @@ export const AMENITIES = [
   },
   {
     index: 28,
-    id: null,
     category: KITCHEN,
     amenity: "Stovetop",
     propertyId: null,
@@ -240,7 +211,6 @@ export const AMENITIES = [
   },
   {
     index: 29,
-    id: null,
     category: KITCHEN,
     amenity: "Dining area",
     propertyId: null,
@@ -248,7 +218,6 @@ export const AMENITIES = [
   },
   {
     index: 30,
-    id: null,
     category: KITCHEN,
     amenity: "Dining table",
     propertyId: null,
@@ -256,7 +225,6 @@ export const AMENITIES = [
   },
   {
     index: 31,
-    id: null,
     category: KITCHEN,
     amenity: "Coffee machine",
     propertyId: null,
@@ -264,7 +232,6 @@ export const AMENITIES = [
   },
   {
     index: 32,
-    id: null,
     category: KITCHEN,
     amenity: "Minibar",
     propertyId: null,
@@ -272,7 +239,6 @@ export const AMENITIES = [
   },
   {
     index: 33,
-    id: null,
     category: KITCHEN,
     amenity: "Kitchenette",
     propertyId: null,
@@ -280,7 +246,6 @@ export const AMENITIES = [
   },
   {
     index: 34,
-    id: null,
     category: LIVING_AREA,
     amenity: "Seating Area",
     propertyId: null,
@@ -288,7 +253,6 @@ export const AMENITIES = [
   },
   {
     index: 35,
-    id: null,
     category: LIVING_AREA,
     amenity: "Sofa bed",
     propertyId: null,
@@ -296,7 +260,6 @@ export const AMENITIES = [
   },
   {
     index: 36,
-    id: null,
     category: LIVING_AREA,
     amenity: "Hardwood or parquet floors",
     propertyId: null,
@@ -304,7 +267,6 @@ export const AMENITIES = [
   },
   {
     index: 37,
-    id: null,
     category: LIVING_AREA,
     amenity: "Wardrobe or closet",
     propertyId: null,
@@ -312,7 +274,6 @@ export const AMENITIES = [
   },
   {
     index: 38,
-    id: null,
     category: LIVING_AREA,
     amenity: "Clothes rack",
     propertyId: null,
@@ -320,7 +281,6 @@ export const AMENITIES = [
   },
   {
     index: 39,
-    id: null,
     category: LIVING_AREA,
     amenity: "iPod dock",
     propertyId: null,
@@ -328,7 +288,6 @@ export const AMENITIES = [
   },
   {
     index: 40,
-    id: null,
     category: LIVING_AREA,
     amenity: "Dressing room",
     propertyId: null,
@@ -336,7 +295,6 @@ export const AMENITIES = [
   },
   {
     index: 41,
-    id: null,
     category: LIVING_AREA,
     amenity: "Board games/puzzles",
     propertyId: null,
@@ -344,7 +302,6 @@ export const AMENITIES = [
   },
   {
     index: 42,
-    id: null,
     category: LIVING_AREA,
     amenity: "Books, DVDs, or music for children",
     propertyId: null,
@@ -352,7 +309,6 @@ export const AMENITIES = [
   },
   {
     index: 43,
-    id: null,
     category: LIVING_AREA,
     amenity: "Balcony",
     propertyId: null,
@@ -360,7 +316,6 @@ export const AMENITIES = [
   },
   {
     index: 44,
-    id: null,
     category: LIVING_AREA,
     amenity: "Terrace",
     propertyId: null,
@@ -368,7 +323,6 @@ export const AMENITIES = [
   },
   {
     index: 45,
-    id: null,
     category: LIVING_AREA,
     amenity: "View",
     propertyId: null,
@@ -376,7 +330,6 @@ export const AMENITIES = [
   },
   {
     index: 46,
-    id: null,
     category: LIVING_AREA,
     amenity: "Garden view",
     propertyId: null,
@@ -384,7 +337,6 @@ export const AMENITIES = [
   },
   {
     index: 47,
-    id: null,
     category: LIVING_AREA,
     amenity: "Pool view",
     propertyId: null,
@@ -392,7 +344,6 @@ export const AMENITIES = [
   },
   {
     index: 48,
-    id: null,
     category: GENERAL,
     amenity: "Designated smoking area",
     propertyId: null,
@@ -400,7 +351,6 @@ export const AMENITIES = [
   },
   {
     index: 49,
-    id: null,
     category: GENERAL,
     amenity: "Air conditioning",
     propertyId: null,
@@ -408,7 +358,6 @@ export const AMENITIES = [
   },
   {
     index: 50,
-    id: null,
     category: GENERAL,
     amenity: "Soundproof rooms",
     propertyId: null,
@@ -416,7 +365,6 @@ export const AMENITIES = [
   },
   {
     index: 51,
-    id: null,
     category: GENERAL,
     amenity: "Family rooms",
     propertyId: null,
@@ -424,7 +372,6 @@ export const AMENITIES = [
   },
   {
     index: 52,
-    id: null,
     category: GENERAL,
     amenity: "Non-smoking rooms",
     propertyId: null,
@@ -432,7 +379,6 @@ export const AMENITIES = [
   },
   {
     index: 53,
-    id: null,
     category: GENERAL,
     amenity: "Outdoor swimming pool",
     propertyId: null,
@@ -440,7 +386,6 @@ export const AMENITIES = [
   },
   {
     index: 54,
-    id: null,
     category: GENERAL,
     amenity: "Indoor swimming pool",
     propertyId: null,
@@ -448,7 +393,6 @@ export const AMENITIES = [
   },
   {
     index: 55,
-    id: null,
     category: GENERAL,
     amenity: "Plunge pool",
     propertyId: null,
@@ -456,7 +400,6 @@ export const AMENITIES = [
   },
   {
     index: 56,
-    id: null,
     category: GENERAL,
     amenity: "Spa",
     propertyId: null,
@@ -464,7 +407,6 @@ export const AMENITIES = [
   },
   {
     index: 57,
-    id: null,
     category: GENERAL,
     amenity: "Open all year",
     propertyId: null,
@@ -472,7 +414,6 @@ export const AMENITIES = [
   },
   {
     index: 58,
-    id: null,
     category: GENERAL,
     amenity: "Free pool/beach towels",
     propertyId: null,
@@ -480,7 +421,6 @@ export const AMENITIES = [
   },
   {
     index: 59,
-    id: null,
     category: GENERAL,
     amenity: "Pool/beach towels (additional charge)",
     propertyId: null,
@@ -488,7 +428,6 @@ export const AMENITIES = [
   },
   {
     index: 60,
-    id: null,
     category: GENERAL,
     amenity: "Sun loungers or beach chairs",
     propertyId: null,
@@ -496,7 +435,6 @@ export const AMENITIES = [
   },
   {
     index: 61,
-    id: null,
     category: GENERAL,
     amenity: "Swim up bar",
     propertyId: null,
@@ -504,7 +442,6 @@ export const AMENITIES = [
   },
   {
     index: 62,
-    id: null,
     category: GENERAL,
     amenity: "Pool Bar",
     propertyId: null,
@@ -512,7 +449,6 @@ export const AMENITIES = [
   },
   {
     index: 63,
-    id: null,
     category: GENERAL,
     amenity: "Sun umbrellas",
     propertyId: null,
@@ -520,7 +456,6 @@ export const AMENITIES = [
   },
   {
     index: 64,
-    id: null,
     category: GENERAL,
     amenity: "Hot tub/Jacuzzi",
     propertyId: null,
@@ -528,7 +463,6 @@ export const AMENITIES = [
   },
   {
     index: 65,
-    id: null,
     category: GENERAL,
     amenity: "Non-smoking throughout",
     propertyId: null,
@@ -536,7 +470,6 @@ export const AMENITIES = [
   },
   {
     index: 66,
-    id: null,
     category: GENERAL,
     amenity: "Wake up service",
     propertyId: null,
@@ -544,7 +477,6 @@ export const AMENITIES = [
   },
   {
     index: 67,
-    id: null,
     category: GENERAL,
     amenity: "All ages welcome",
     propertyId: null,
@@ -552,7 +484,6 @@ export const AMENITIES = [
   },
   {
     index: 68,
-    id: null,
     category: GENERAL,
     amenity: "Pool with view",
     propertyId: null,
@@ -560,7 +491,6 @@ export const AMENITIES = [
   },
   {
     index: 69,
-    id: null,
     category: OUTDOORS,
     amenity: "Outdoor furniture",
     propertyId: null,
@@ -568,7 +498,6 @@ export const AMENITIES = [
   },
   {
     index: 70,
-    id: null,
     category: OUTDOORS,
     amenity: "Sun terrace",
     propertyId: null,
@@ -576,7 +505,6 @@ export const AMENITIES = [
   },
   {
     index: 71,
-    id: null,
     category: OUTDOORS,
     amenity: "Private beach area",
     propertyId: null,
@@ -584,7 +512,6 @@ export const AMENITIES = [
   },
   {
     index: 72,
-    id: null,
     category: OUTDOORS,
     amenity: "BBQ facilities",
     propertyId: null,
@@ -592,7 +519,6 @@ export const AMENITIES = [
   },
   {
     index: 73,
-    id: null,
     category: OUTDOORS,
     amenity: "Parking",
     propertyId: null,
@@ -600,7 +526,6 @@ export const AMENITIES = [
   },
   {
     index: 74,
-    id: null,
     category: OUTDOORS,
     amenity: "Shared kitchen",
     propertyId: null,
@@ -608,7 +533,6 @@ export const AMENITIES = [
   },
   {
     index: 75,
-    id: null,
     category: OUTDOORS,
     amenity: "Smoking area",
     propertyId: null,
@@ -616,7 +540,6 @@ export const AMENITIES = [
   },
   {
     index: 76,
-    id: null,
     category: OUTDOORS,
     amenity: "Garden",
     propertyId: null,
@@ -624,7 +547,6 @@ export const AMENITIES = [
   },
   {
     index: 77,
-    id: null,
     category: OUTDOORS,
     amenity: "Common area",
     propertyId: null,

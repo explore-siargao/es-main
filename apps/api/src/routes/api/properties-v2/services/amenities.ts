@@ -3,6 +3,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
+import { T_Property_Amenity } from '@repo/contract'
 import { dbAmenities, dbBookableUnitTypes, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
@@ -47,7 +48,7 @@ export const updateBookableUnitTypeAmenities = async (
   const amenitiesWithOutId = amenities.filter((item) => !('_id' in item))
   const amenitiesWithId = amenities.filter((item) => '_id' in item)
   if (amenitiesWithOutId.length > 0) {
-    amenitiesWithOutId.forEach(async (item) => {
+    amenitiesWithOutId.forEach(async (item: T_Property_Amenity) => {
       const newAmenities = new dbAmenities({
         index: item.index,
         category: item.category,

@@ -304,7 +304,7 @@ const Summary = () => {
                 fontWeight="semibold"
                 className="leading-6"
               >
-                Policies
+                Property Policies
               </Typography>
               {data?.item?.policies.length > 0 ? (
                 <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
@@ -312,6 +312,16 @@ const Summary = () => {
                     .filter(
                       (policy: T_Property_Policy) => policy.isSelected === true
                     )
+                    .sort((a: any, b: any) => {
+                      console.log(a.category, b.category)
+                      if (a.category < b.category) {
+                        return -1
+                      }
+                      if (a.category > b.category) {
+                        return 1
+                      }
+                      return 0
+                    })
                     .map((policy: T_Property_Policy) => (
                       <li key={policy._id}>
                         <Typography variant="h5">
@@ -322,21 +332,12 @@ const Summary = () => {
                           <span className="font-semibold">Policy:</span>{" "}
                           {policy.policy}
                         </Typography>
-                        <Typography variant="h5">
+                        <Typography variant="h5" className="mt-1">
                           <span className="font-semibold">Reason:</span>{" "}
                           {policy.reason}
                         </Typography>
                       </li>
-                    ))
-                    .sort((a: T_Property_Facility, b: T_Property_Facility) => {
-                      if (a.category < b.category) {
-                        return -1
-                      }
-                      if (a.category > b.category) {
-                        return 1
-                      }
-                      return 0
-                    })}
+                    ))}
                 </ol>
               ) : (
                 <Typography variant="h5" className="mt-2">

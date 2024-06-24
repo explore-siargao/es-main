@@ -4,7 +4,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { T_Property_Policy } from '@repo/contract'
-import { dbProperties } from '@repo/database'
+import { dbPolicies, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -34,54 +34,102 @@ export const getPoliciesByProperty = async (req: Request, res: Response) => {
 }
 
 export const updatePolicyByProperty = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
   const propertyId = req.params.propertyId
-  const updatedPolicies: T_Property_Policy = req.body.policies
-  try {
-    if (!Array.isArray(updatedPolicies)) {
-      return res.json(
-        response.error({ message: 'Invalid type of data in policies' })
-      )
-    }
-    const updatedAddedPolicies = updatedPolicies.filter(
-      (updatedPolicy) =>
-        updatedPolicy._id || updatedPolicy.isSelected || updatedPolicy.policy
-    )
-    const property = await dbProperties.findByIdAndUpdate(
-      { _id: propertyId },
-      {
-        $push: {
-          policies: updatedAddedPolicies,
-          finishedSections: [
-            'type',
-            'basicInfo',
-            'location',
-            'facilities',
-            'units',
-            'photos',
-            'pricing',
-            'policies',
-          ],
-        },
-        $set: {
-          updatedAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
-    if (!property) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
-    res.json(
-      response.success({
-        item: property.policies,
-        message: 'Policies successfully updated',
-      })
-    )
-  } catch (err: any) {
-    res.json(
+  const policies: T_Property_Policy[] = req.body.policies
+  const getProperty = await dbProperties.findOne({
+    _id: propertyId,
+    offerBy: hostId,
+    deletedAt: null,
+  })
+  if (!getProperty) {
+    return res.json(response.error({ message: 'Property not found' }))
+  }
+
+  if (!policies || !Array.isArray(policies)) {
+    return res.json(
       response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
       })
     )
   }
+
+  const policiesWithoutId = policies.filter((item) => item._id === null)
+  const policiesWithId = policies.filter((item) => item._id !== null)
+
+  if (policiesWithoutId.length > 0) {
+    policies.forEach(async (item) => {
+      if (!item._id) {
+        const newPolicies = new dbPolicies({
+          index: item.index,
+          category: item.category,
+          policy: item.policy,
+          reason: item.reason,
+          isSelected: item.isSelected,
+          createdAt: Date.now(),
+          updatedAt: null,
+          deletedAt: null,
+        })
+
+        await newPolicies.save()
+        await dbProperties.findByIdAndUpdate(
+          propertyId,
+          {
+            $push: {
+              policies: newPolicies._id,
+            },
+          },
+          { new: true }
+        )
+      }
+    })
+  }
+
+  if (policiesWithId.length > 0) {
+    policiesWithId.forEach(async (item) => {
+      if (item._id) {
+        await dbPolicies.findByIdAndUpdate(
+          item._id,
+          {
+            $set: {
+              index: item.index,
+              category: item.category,
+              policy: item.policy,
+              reason: item.reason,
+              isSelected: item.isSelected,
+              updatedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
+      }
+    })
+  }
+
+  await dbProperties.findByIdAndUpdate(
+    propertyId,
+    {
+      $set: {
+        finishedSections: [
+          'type',
+          'basicInfo',
+          'location',
+          'facilities',
+          'units',
+          'photos',
+          'pricing',
+          'policies',
+        ],
+        updatedAt: Date.now(),
+      },
+    },
+    { new: true }
+  )
+
+  res.json(
+    response.success({
+      items: policies,
+      message: 'Property facilities successfully updated',
+    })
+  )
 }
