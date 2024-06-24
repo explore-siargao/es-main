@@ -5,21 +5,20 @@ import Table from "@/common/components/Table"
 import { Typography } from "@/common/components/ui/Typography"
 import { useMemo, useState } from "react"
 import { useParams } from "next/navigation"
-// import useGetPaginatedBookableUnitTypes from "../../../hooks/useGetPaginatedBookableUnitTypes"
+import useGetPropertyById from "../../../hooks/useGetPropertyById"
+import { Spinner } from "@/common/components/ui/Spinner"
 
 const UnitsTable = () => {
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  // const { data } = useGetPaginatedBookableUnitTypes(listingId)
-  const data: any = {}
+  const listingId = String(params.listingId)
+  const { data, isPending } = useGetPropertyById(listingId)
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("BookableUnitType.Photo", {
+    columnHelper.accessor("bookableUnits.photo", {
       header: "Unit",
       cell: (context) => (
-        // /hosting/listings/properties/1/units/beds/1/edit
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.BookableUnitType.category.toLowerCase()}/${context.row.original.BookableUnitType.id}/edit`}
+          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
         >
           <div className="flex items-center gap-5">
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
@@ -38,43 +37,51 @@ const UnitsTable = () => {
         </Link>
       ),
     }),
-    columnHelper.accessor("BookableUnitType.name", {
+    columnHelper.accessor("title", {
       header: "Name",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.BookableUnitType.category.toLowerCase()}/${context.row.original.BookableUnitType.id}/edit`}
+          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
         >
-          <Typography variant="p">{context.getValue()}</Typography>
+          <Typography variant="p">
+            {context.getValue() ? context.getValue() : ""}
+          </Typography>
         </Link>
       ),
     }),
-    columnHelper.accessor("BookableUnitType.description", {
+    columnHelper.accessor("description", {
       header: "Description",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.BookableUnitType.category.toLowerCase()}/${context.row.original.BookableUnitType.id}/edit`}
+          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
         >
-          <Typography variant="p">{context.getValue()}</Typography>
+          <Typography variant="p">
+            {context.getValue() ? context.getValue() : ""}
+          </Typography>
         </Link>
       ),
     }),
-    columnHelper.accessor("BookableUnitType.category", {
+    columnHelper.accessor("category", {
       header: "Type",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.BookableUnitType.category.toLowerCase()}/${context.row.original.BookableUnitType.id}/edit`}
+          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
         >
-          <Typography variant="p">{context.getValue()}</Typography>
+          <Typography variant="p">
+            {context.getValue() ? context.getValue() : ""}
+          </Typography>
         </Link>
       ),
     }),
-    columnHelper.accessor("BookableUnitType.qty", {
+    columnHelper.accessor("qty", {
       header: "Quantity",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.BookableUnitType.category.toLowerCase()}/${context.row.original.BookableUnitType.id}/edit`}
+          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
         >
-          <Typography variant="p">{context.getValue()}</Typography>
+          <Typography variant="p">
+            {context.getValue() ? context.getValue() : 0}
+          </Typography>
         </Link>
       ),
     }),
@@ -86,7 +93,7 @@ const UnitsTable = () => {
   const paginatedData = useMemo(() => {
     const startIndex = pageIndex * pageSize
     const endIndex = startIndex + pageSize
-    return data?.item?.BookableUnit?.slice(startIndex, endIndex)
+    return data?.item?.bookableUnits?.slice(startIndex, endIndex)
   }, [pageIndex, data])
 
   const gotoPage = (pageIndex: number) => {
@@ -96,7 +103,7 @@ const UnitsTable = () => {
   const nextPage = () => {
     if (
       pageIndex <
-      Math.ceil(data?.item?.BookableUnit?.length / pageSize) - 1
+      Math.ceil(data?.item?.bookableUnits?.length / pageSize) - 1
     ) {
       setPageIndex(pageIndex + 1)
     }
@@ -109,22 +116,29 @@ const UnitsTable = () => {
   }
 
   return (
-    <div className="mt-5">
-      <Table
-        data={paginatedData || []}
-        columns={columns}
-        pageIndex={pageIndex}
-        pageCount={Math.ceil(data?.item?.BookableUnit?.length / pageSize)}
-        canPreviousPage={pageIndex > 0}
-        canNextPage={
-          pageIndex < Math.ceil(data?.item?.BookableUnit?.length / pageSize) - 1
-        }
-        gotoPage={gotoPage}
-        previousPage={previousPage}
-        nextPage={nextPage}
-        pageSize={pageSize}
-      />
-    </div>
+    <>
+      {isPending ? (
+        <Spinner>Loading...</Spinner>
+      ) : (
+        <div className="mt-5">
+          <Table
+            data={paginatedData || []}
+            columns={columns}
+            pageIndex={pageIndex}
+            pageCount={Math.ceil(data?.item?.bookableUnits?.length / pageSize)}
+            canPreviousPage={pageIndex > 0}
+            canNextPage={
+              pageIndex <
+              Math.ceil(data?.item?.bookableUnits?.length / pageSize) - 1
+            }
+            gotoPage={gotoPage}
+            previousPage={previousPage}
+            nextPage={nextPage}
+            pageSize={pageSize}
+          />
+        </div>
+      )}
+    </>
   )
 }
 
