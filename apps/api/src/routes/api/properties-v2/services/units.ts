@@ -1,6 +1,11 @@
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { dbBookableUnitTypes, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
+import mongoose from 'mongoose'
 
 const response = new ResponseService()
 
@@ -134,6 +139,64 @@ export const addBedUnit = async (req: Request, res: Response) => {
       message: 'BookableUnit Bed Successfully added',
     })
   )
+}
+
+export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
+  const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
+  const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
+  const { title, description, qty } = req.body
+
+  if (!title || !description || !qty) {
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  }
+
+  try {
+    const getBookableUnitBed = await dbBookableUnitTypes.findOne({
+      _id: bookableUnitId,
+      category: 'Bed',
+    })
+    if (!getBookableUnitBed) {
+      return res.json(response.error({ message: 'Bookable unit not found' }))
+    }
+
+    const getProperty = await dbProperties.findOne({
+      _id: propertyId,
+      deletedAt: null,
+    })
+    const findUnitInProperty =
+      getProperty?.bookableUnits.includes(bookableUnitId)
+    if (!findUnitInProperty) {
+      return res.json(
+        response.error({ message: 'Bookable unit not found in property' })
+      )
+    }
+
+    const updateBedBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
+      { _id: bookableUnitId, category: 'Bed', deletedAt: null },
+      {
+        $set: {
+          title: title,
+          description: description,
+          qty: qty,
+          updatedAt: Date.now(),
+        },
+      },
+      { new: true }
+    )
+
+    return res.json(
+      response.success({
+        item: updateBedBasicInfo,
+        message: 'Bookable Unit basic info saved',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
 }
 
 export const getPropertiesBookableUnits = async (
