@@ -19,7 +19,6 @@ const PhotosModal = ({
   onClose,
   selectedPhoto,
 }: ISetUpProfileAboutYouModalProps) => {
-
   const { register, handleSubmit } = useForm<T_Photo>()
 
   const onSubmit: SubmitHandler<T_Photo> = async (formData) => {

@@ -4,7 +4,10 @@ import { ApiService } from "@/common/service/api"
 
 export async function addBlankUnitRoom(propertyId: string) {
   const apiService = new ApiService("v2")
-  return await apiService.post(`${API_URL_PROPERTIES}/${propertyId}/units/room`, {})
+  return await apiService.post(
+    `${API_URL_PROPERTIES}/${propertyId}/units/room`,
+    {}
+  )
 }
 
 function useAddBlankUnitRoom(propertyId: string) {

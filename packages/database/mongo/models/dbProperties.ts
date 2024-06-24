@@ -9,17 +9,6 @@ const propertyTypeEnum = [
   "VILLA",
 ]
 
-const policies = new Schema({
-  index: Number,
-  category: String,
-  reason: String,
-  policy: String,
-  isSelected: {
-    type: Boolean,
-    default: false,
-  },
-})
-
 const properties = new Schema({
   offerBy: {
     type: mongoose.Schema.ObjectId,
@@ -74,10 +63,12 @@ const properties = new Schema({
       ref: "Facilities",
     },
   ],
-  policies: {
-    type: [policies],
-    default: [],
-  },
+  policies: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Policies",
+    },
+  ],
   bookableUnits: [
     {
       type: mongoose.Schema.ObjectId,

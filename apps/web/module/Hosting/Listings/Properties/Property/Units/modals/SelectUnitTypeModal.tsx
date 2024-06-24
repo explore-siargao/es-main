@@ -21,7 +21,7 @@ const SelectUnitTypeModal = ({
   isOpen,
   onClose,
   propertyType,
-  pageType
+  pageType,
 }: Props) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
@@ -30,59 +30,61 @@ const SelectUnitTypeModal = ({
     useAddBlankUnitBed(listingId)
   const { mutate: addBlankUnitRoom, isPending: isAddBlankUnitRoomPending } =
     useAddBlankUnitRoom(listingId)
-  const { mutate: addBlankUnitWholePlace, isPending: isAddBlankUnitWholePlacePending } =
-    useAddBlankUnitWholePlace(listingId)
-    const addUnitBed = () => {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            router.push(
-              `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/beds/${data.item._id}/edit`
-            )
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
-      addBlankUnitBed(undefined, callBackReq)
+  const {
+    mutate: addBlankUnitWholePlace,
+    isPending: isAddBlankUnitWholePlacePending,
+  } = useAddBlankUnitWholePlace(listingId)
+  const addUnitBed = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/beds/${data.item._id}/edit`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
     }
-    const addUnitRoom = () => {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            router.push(
-              `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/rooms/${data.item._id}/edit`
-            )
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
-      addBlankUnitRoom(undefined, callBackReq)
+    addBlankUnitBed(undefined, callBackReq)
+  }
+  const addUnitRoom = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/rooms/${data.item._id}/edit`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
     }
-    const addUnitWholePlace = () => {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            router.push(
-              `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit`
-            )
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
-      addBlankUnitWholePlace(undefined, callBackReq)
+    addBlankUnitRoom(undefined, callBackReq)
+  }
+  const addUnitWholePlace = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
     }
+    addBlankUnitWholePlace(undefined, callBackReq)
+  }
   return (
     <ModalContainer
       size="sm"
@@ -98,7 +100,9 @@ const SelectUnitTypeModal = ({
             <>
               <button
                 type="button"
-                onClick={isAddBlankUnitBedPending ? () => null : () => addUnitBed()}
+                onClick={
+                  isAddBlankUnitBedPending ? () => null : () => addUnitBed()
+                }
                 className={cn(
                   "text-left flex-1",
                   isAddBlankUnitBedPending ? "cursor-progress opacity-70" : ""
@@ -112,12 +116,17 @@ const SelectUnitTypeModal = ({
                   >
                     New Bed
                   </Typography>
-                  <Typography variant="h5">Bed in a room. Sleeping space, bathroom and kitchen are shared.</Typography>
+                  <Typography variant="h5">
+                    Bed in a room. Sleeping space, bathroom and kitchen are
+                    shared.
+                  </Typography>
                 </div>
               </button>
               <button
                 type="button"
-                onClick={isAddBlankUnitRoomPending ? () => null : () => addUnitRoom()}
+                onClick={
+                  isAddBlankUnitRoomPending ? () => null : () => addUnitRoom()
+                }
                 className={cn(
                   "text-left flex-1",
                   isAddBlankUnitRoomPending ? "cursor-progress opacity-70" : ""
@@ -131,7 +140,9 @@ const SelectUnitTypeModal = ({
                   >
                     New Room
                   </Typography>
-                  <Typography variant="h5">Room in a place. Sleeping space is private.</Typography>
+                  <Typography variant="h5">
+                    Room in a place. Sleeping space is private.
+                  </Typography>
                 </div>
               </button>
             </>
@@ -142,7 +153,9 @@ const SelectUnitTypeModal = ({
             <>
               <button
                 type="button"
-                onClick={isAddBlankUnitRoomPending ? () => null : () => addUnitRoom()}
+                onClick={
+                  isAddBlankUnitRoomPending ? () => null : () => addUnitRoom()
+                }
                 className={cn(
                   "text-left flex-1",
                   isAddBlankUnitRoomPending ? "cursor-progress opacity-70" : ""
@@ -156,7 +169,9 @@ const SelectUnitTypeModal = ({
                   >
                     New Room
                   </Typography>
-                  <Typography variant="h5">Room in a place. Sleeping space is private.</Typography>
+                  <Typography variant="h5">
+                    Room in a place. Sleeping space is private.
+                  </Typography>
                 </div>
               </button>
             </>
@@ -167,10 +182,16 @@ const SelectUnitTypeModal = ({
             <>
               <button
                 type="button"
-                onClick={isAddBlankUnitWholePlacePending ? () => null : () => addUnitWholePlace()}
+                onClick={
+                  isAddBlankUnitWholePlacePending
+                    ? () => null
+                    : () => addUnitWholePlace()
+                }
                 className={cn(
                   "text-left flex-1",
-                  isAddBlankUnitWholePlacePending ? "cursor-progress opacity-70" : ""
+                  isAddBlankUnitWholePlacePending
+                    ? "cursor-progress opacity-70"
+                    : ""
                 )}
               >
                 <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
@@ -181,7 +202,9 @@ const SelectUnitTypeModal = ({
                   >
                     New Whole Place
                   </Typography>
-                  <Typography variant="h5">Whole place in a Property, everything here is private.</Typography>
+                  <Typography variant="h5">
+                    Whole place in a Property, everything here is private.
+                  </Typography>
                 </div>
               </button>
             </>
