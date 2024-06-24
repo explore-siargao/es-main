@@ -202,9 +202,9 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
 export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, description, size, qty } = req.body
+  const { title, description, totalSize, qty } = req.body
 
-  if (!title || !description || !size || !qty) {
+  if (!title || !description || !totalSize || !qty) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -235,7 +235,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
         $set: {
           title: title,
           description: description,
-          totalSize: size,
+          totalSize: totalSize,
           qty: qty,
           updatedAt: Date.now(),
         },
@@ -246,6 +246,70 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
     return res.json(
       response.success({
         item: updateRoomBasicInfo,
+        message: 'Bookable Unit basic info saved',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const updateWholePlaceUnitBasicInfo = async (
+  req: Request,
+  res: Response
+) => {
+  const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
+  const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
+  const { title, totalSize, numBedRooms, numBathRooms, qty } = req.body
+
+  if (!title || !numBedRooms || !numBathRooms || !totalSize || !qty) {
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  }
+
+  try {
+    const getBookableUnitWholePlace = await dbBookableUnitTypes.findOne({
+      _id: bookableUnitId,
+      category: 'Whole-Place',
+    })
+    if (!getBookableUnitWholePlace) {
+      return res.json(response.error({ message: 'Bookable unit not found' }))
+    }
+
+    const getProperty = await dbProperties.findOne({
+      _id: propertyId,
+      deletedAt: null,
+    })
+    const findUnitInProperty =
+      getProperty?.bookableUnits.includes(bookableUnitId)
+    if (!findUnitInProperty) {
+      return res.json(
+        response.error({ message: 'Bookable unit not found in property' })
+      )
+    }
+
+    const updateWholePlaceBasicInfo =
+      await dbBookableUnitTypes.findOneAndUpdate(
+        { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
+        {
+          $set: {
+            title: title,
+            totalSize: totalSize,
+            numBedRooms: numBedRooms,
+            numBathRooms: numBathRooms,
+            qty: qty,
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+
+    return res.json(
+      response.success({
+        item: updateWholePlaceBasicInfo,
         message: 'Bookable Unit basic info saved',
       })
     )
