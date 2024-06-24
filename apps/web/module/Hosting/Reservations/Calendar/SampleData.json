@@ -3,7 +3,6 @@
     {
       "name": "Standard",
       "price": "800",
-      "quantity": 4,
       "rooms": [
         {
           "abbr": "Standard 1",
@@ -50,7 +49,6 @@
     {
       "name": "Double Room",
       "price": "1200",
-      "quantity": 4,
       "rooms": [
         {
           "abbr": "Room 1",
@@ -79,7 +77,6 @@
     {
       "name": "Room",
       "price": "400",
-      "quantity": 4,
       "rooms": [
         {
           "abbr": "Room 1",
