@@ -229,8 +229,6 @@ export const getPhotosByPropertyId = async (req: Request, res: Response) => {
   }
 }
 
-
-
 export const deletePhoto = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
   const propertyId = req.params.propertyId

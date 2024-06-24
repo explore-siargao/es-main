@@ -1,6 +1,16 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import { LucideArmchair, LucideBath, LucideChevronLeft, LucideCookingPot, LucideLayoutList, LucidePalmtree, LucideSparkles, MinusIcon, PlusIcon } from "lucide-react"
+import {
+  LucideArmchair,
+  LucideBath,
+  LucideChevronLeft,
+  LucideCookingPot,
+  LucideLayoutList,
+  LucidePalmtree,
+  LucideSparkles,
+  MinusIcon,
+  PlusIcon,
+} from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
 import { useEffect, useState } from "react"
@@ -51,9 +61,14 @@ const WholePlace = ({ pageType }: Prop) => {
   const [bathroomCount, setBathroomCount] = useState(data?.bathrooms || 0)
   const [typeCount, setTypeCount] = useState((data?.qty || 0) as number)
 
-  const { mutateAsync, } = useUpdateUnitPhoto(listingId as string)
-  const { mutateAsync: addMutateAsync } = useAddUnitPhoto(listingId as string, unitId as string)
-  const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(listingId as string)
+  const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
+  const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
+    listingId as string,
+    unitId as string
+  )
+  const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
+    listingId as string
+  )
 
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
@@ -99,13 +114,13 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const handleSavePhotos = async () => {
     if (
-      (photos?.length > 4 ||
-        (data?.item?.photos && data?.item?.photos.length > 4))
+      photos?.length > 4 ||
+      (data?.item?.photos && data?.item?.photos.length > 4)
     ) {
       updatePhotosInDb()
     } else if (
-      (photos?.length < 5 ||
-        (data?.item?.Photos && data?.item?.Photos.length < 5))
+      photos?.length < 5 ||
+      (data?.item?.Photos && data?.item?.Photos.length < 5)
     ) {
       toast.error("Please add at least 5 photos")
     }
@@ -152,7 +167,9 @@ const WholePlace = ({ pageType }: Prop) => {
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
-        <Link href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`}>
+        <Link
+          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`}
+        >
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
         <Typography variant="h1" fontWeight="semibold" className="mt-4">
@@ -293,7 +310,8 @@ const WholePlace = ({ pageType }: Prop) => {
                 className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => {
-                  typeCount > 0 && setTypeCount((typeCount: any) => typeCount - 1)
+                  typeCount > 0 &&
+                    setTypeCount((typeCount: any) => typeCount - 1)
                 }}
               >
                 <MinusIcon className="h-3 w-3" />
@@ -321,13 +339,13 @@ const WholePlace = ({ pageType }: Prop) => {
           </div>
         </div>
         <hr className="mt-6 mb-4" />
-        <Photos/>
+        <Photos />
         <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
           Amenities and Facilities (for the whole place itself)
         </Typography>
         <div className="grid grid-cols-2 gap-3 mb-3">
-        <AmenitiesCheckboxes
+          <AmenitiesCheckboxes
             title="Most Popular"
             icon={<LucideSparkles className="h-4 w-4" />}
           />

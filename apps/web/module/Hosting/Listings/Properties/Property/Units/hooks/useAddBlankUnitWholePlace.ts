@@ -4,7 +4,10 @@ import { ApiService } from "@/common/service/api"
 
 export async function addBlankUnitWholePlace(propertyId: string) {
   const apiService = new ApiService("v2")
-  return await apiService.post(`${API_URL_PROPERTIES}/${propertyId}/units/whole-place`, {})
+  return await apiService.post(
+    `${API_URL_PROPERTIES}/${propertyId}/units/whole-place`,
+    {}
+  )
 }
 
 function useAddBlankUnitWholePlace(propertyId: string) {
