@@ -41,6 +41,7 @@ import {
   getPropertiesBookableUnits,
   updateBedUnitBasicInfo,
   updateRoomUnitBasicInfo,
+  updateWholePlaceUnitBasicInfo,
 } from './services/units'
 import {
   updatePolicyByProperty,
@@ -262,6 +263,15 @@ router.patch(
   isCsrfTokenValid,
   isHostPropertyOwner,
   updateRoomUnitBasicInfo
+)
+
+router.patch(
+  '/:propertyId/:bookableUnitId/whole-place/basic-info',
+  isUserLoggedIn,
+  isOriginValid,
+  isCsrfTokenValid,
+  isHostPropertyOwner,
+  updateWholePlaceUnitBasicInfo
 )
 
 router.get(
