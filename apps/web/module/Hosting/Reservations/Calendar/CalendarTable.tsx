@@ -44,6 +44,7 @@ const CalendarTable = () => {
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
   const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData);
   const [editingRoom, setEditingRoom] = useState<string | null>(null);
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>('');
@@ -61,9 +62,10 @@ const CalendarTable = () => {
   const closeReservationModal = () => setIsReservationModalOpen(false);
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false);
 
-  const handleOpenRoomQuantityEditModal = (date: string) => {
+  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
     setIsRoomQuantityEditOpen(true);
     setSelectedDate(date)
+    setSelectedCategory(category)
   };
 
   useEffect(() => {
@@ -223,7 +225,7 @@ const CalendarTable = () => {
                     const customQuantity = roomQuantity.customQuantity.find(item => item.date === date);
                     return (
                       <td key={i} className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
-                        <div onClick={(e) => {handleOpenRoomQuantityEditModal(date); e.stopPropagation()}} className='flex flex-col'>
+                        <div onClick={(e) => {handleOpenRoomQuantityEditModal(date, category.name); e.stopPropagation()}} className='flex flex-col'>
                           <div>
                             {customQuantity ? customQuantity.quantity : roomQuantity.defaultQuantity}
                           </div>
@@ -303,7 +305,8 @@ const CalendarTable = () => {
         onClose={closeRoomQuantityEditModal} 
         selectedDate={selectedDate} 
         roomQuantity={roomQuantity}
-        setRoomQuantity={setRoomQuantity}   
+        setRoomQuantity={setRoomQuantity} 
+        category={selectedCategory}  
       />
     </div>
   );

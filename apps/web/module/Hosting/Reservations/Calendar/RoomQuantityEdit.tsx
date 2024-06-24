@@ -19,6 +19,7 @@ interface IRoomQuantityEditModalProps {
   selectedDate: string;
   roomQuantity: IRoomQuantity;
   setRoomQuantity: Function;
+  category: string;
 }
 
 const RoomQuantityEdit = ({
@@ -26,7 +27,8 @@ const RoomQuantityEdit = ({
   onClose,
   selectedDate,
   roomQuantity,
-  setRoomQuantity
+  setRoomQuantity,
+  category
 }: IRoomQuantityEditModalProps) => {
   const [quantity, setQuantity] = useState(roomQuantity.defaultQuantity);
 
@@ -60,7 +62,7 @@ const RoomQuantityEdit = ({
       customQuantity: updatedCustomQuantity
     }));
     toast.success("Custom room quantity has been saved.")
-    onClose(); // Close the modal after saving
+    onClose();
   };
 
   return (
@@ -78,7 +80,7 @@ const RoomQuantityEdit = ({
               fontWeight="semibold"
               className="flex justify-between items-center"
             >
-              Set room quantity for {selectedDate}
+              Room quantity for {category}
             </Typography>
             <Input
               type="number"
@@ -91,7 +93,7 @@ const RoomQuantityEdit = ({
                 }
               }}
               placeholder='Room quantity'
-              label={''}
+              label={`Set room quantity for ${selectedDate}`}
               className='w-[50%]'
             />
           </div>
