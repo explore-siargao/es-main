@@ -2,7 +2,17 @@
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
-import { LucideArmchair, LucideBath, LucideChevronLeft, LucideCookingPot, LucideLayoutList, LucidePalmtree, LucideSparkles, MinusIcon, PlusIcon } from "lucide-react"
+import {
+  LucideArmchair,
+  LucideBath,
+  LucideChevronLeft,
+  LucideCookingPot,
+  LucideLayoutList,
+  LucidePalmtree,
+  LucideSparkles,
+  MinusIcon,
+  PlusIcon,
+} from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
@@ -39,9 +49,14 @@ const Room = () => {
   const [typeCount, setTypeCount] = useState((data?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
 
-  const { mutateAsync, } = useUpdateUnitPhoto(listingId as string)
-  const { mutateAsync: addMutateAsync } = useAddUnitPhoto(listingId as string, unitId as string)
-  const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(listingId as string)
+  const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
+  const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
+    listingId as string,
+    unitId as string
+  )
+  const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
+    listingId as string
+  )
 
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
@@ -88,13 +103,13 @@ const Room = () => {
 
   const handleSavePhotos = async () => {
     if (
-      (photos?.length > 4 ||
-        (data?.item?.photos && data?.item?.photos.length > 4))
+      photos?.length > 4 ||
+      (data?.item?.photos && data?.item?.photos.length > 4)
     ) {
       updatePhotosInDb()
     } else if (
-      (photos?.length < 5 ||
-        (data?.item?.Photos && data?.item?.Photos.length < 5))
+      photos?.length < 5 ||
+      (data?.item?.Photos && data?.item?.Photos.length < 5)
     ) {
       toast.error("Please add at least 5 photos")
     }
@@ -207,7 +222,7 @@ const Room = () => {
           </div>
         </div>
         <hr className="mt-6 mb-4" />
-        <Photos/>
+        <Photos />
         <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
           Amenities and Facilities (for the room itself)

@@ -9,12 +9,10 @@ type Props = {
 }
 
 const AmenitiesCheckboxes = ({ title, icon }: Props) => {
-  const facilities = useSelectAmenityStore(
-    (state) => state.amenities
-  ).filter((facility) => facility.category === title)
-  const updateFacility = useSelectAmenityStore(
-    (state) => state.updateAmenity
+  const facilities = useSelectAmenityStore((state) => state.amenities).filter(
+    (facility) => facility.category === title
   )
+  const updateFacility = useSelectAmenityStore((state) => state.updateAmenity)
   return (
     <div>
       <div className="flex items-center space-x-2.5">
