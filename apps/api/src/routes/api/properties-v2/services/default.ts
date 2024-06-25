@@ -97,7 +97,12 @@ export const getPropertyById = async (req: Request, res: Response) => {
       .populate('location')
       .populate('facilities')
       .populate('policies')
-      .populate('bookableUnits')
+      .populate({
+        path: 'bookableUnits',
+        populate: {
+          path: 'photos',
+        },
+      })
       .populate('reservations')
 
     res.json(response.success({ item: property }))
