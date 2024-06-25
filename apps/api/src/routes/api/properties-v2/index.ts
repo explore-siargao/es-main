@@ -39,6 +39,7 @@ import {
   addRoomUnit,
   addWholePlaceUnit,
   getPropertiesBookableUnits,
+  getUnitById,
   updateBedUnitBasicInfo,
   updateRoomUnitBasicInfo,
   updateWholePlaceUnitBasicInfo,
@@ -220,6 +221,8 @@ router.get(
 )
 
 //units
+router.get('/unit/:unitId', isUserLoggedIn, isOriginValid, getUnitById)
+
 router.post(
   '/:propertyId/units/whole-place',
   isUserLoggedIn,

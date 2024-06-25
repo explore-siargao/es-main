@@ -21,12 +21,16 @@ import { useParams } from "next/navigation"
 import { Option, Select } from "@/common/components/ui/Select"
 import { Input } from "@/common/components/ui/Input"
 import AmenitiesCheckboxes from "../components/AmenitiesCheckboxes"
-import usePhotoStore from "@/module/Admin/Listings/store/usePhotoStore"
+import usePhotoStore from "@/module/Hosting/Listings/store/usePhotoStore"
 import useDeleteUnitPhoto from "../hooks/useDeleteUnitPhoto"
 import useAddUnitPhoto from "../hooks/useAddUnitPhoto"
 import useUpdateUnitPhoto from "../hooks/useUpdateUnitPhoto"
 import { useQueryClient } from "@tanstack/react-query"
 import Photos from "./components/Photos"
+import useUpdateWholePlaceBasicInfo from "../../../hooks/useUpdateWholePlaceBasicInfo"
+import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
+import { T_Property_Amenity } from "@repo/contract"
+import useGetUnitById from "../hooks/useGetUnitById"
 
 type T_Beds = {
   bedName: string
@@ -34,13 +38,13 @@ type T_Beds = {
 }
 
 type T_WholePlaceUnit = {
-  name: string
+  title: string
   bedCount: number
   beds: T_Beds[]
   size: number
   bathrooms: number
   typeCount: number
-  amenities: {}[]
+  amenities: T_Property_Amenity[]
 }
 
 type Prop = {
@@ -49,22 +53,28 @@ type Prop = {
 
 const WholePlace = ({ pageType }: Prop) => {
   const params = useParams()
-  const listingId = params.listingId
-  const unitId = params.unitId
+  const listingId = String(params.listingId)
+  const wholePlaceId = String(params.wholePlaceId)
   const queryClient = useQueryClient()
 
-  const data: any = {} // change this to useGetPropertyUnitById
-  const isPending: boolean = false
+  const { data, isPending } = useGetUnitById(wholePlaceId)
 
-  const [bedCount, setBedCount] = useState(data?.bedCount || 0)
-  const [bedInputs, setBedInputs] = useState(data?.beds || [])
-  const [bathroomCount, setBathroomCount] = useState(data?.bathrooms || 0)
-  const [typeCount, setTypeCount] = useState((data?.qty || 0) as number)
-
-  const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
+  const [bedCount, setBedCount] = useState(data?.item?.numBedRooms || 0)
+  const [bedInputs, setBedInputs] = useState(data?.item?.bedConfigs || [])
+  const [bathroomCount, setBathroomCount] = useState(
+    data?.item?.numBathRooms || 0
+  )
+  const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
+  const { mutateAsync: updateWholePlaceBasicInfo } =
+    useUpdateWholePlaceBasicInfo(listingId)
+  const { mutateAsync: updateAmenties } = useUpdateAmenities(
+    listingId,
+    wholePlaceId
+  )
+  const { mutateAsync } = useUpdateUnitPhoto(listingId)
   const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
-    listingId as string,
-    unitId as string
+    listingId,
+    wholePlaceId
   )
   const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
     listingId as string
@@ -72,7 +82,9 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
-
+  const setAmenties = useSelectAmenityStore(
+    (state) => state.setDefaultAmenities
+  )
   const amenities = useSelectAmenityStore((state) => state.amenities)
 
   const { register, unregister, handleSubmit, setValue } =
@@ -113,27 +125,28 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   const handleSavePhotos = async () => {
-    if (
-      photos?.length > 4 ||
-      (data?.item?.photos && data?.item?.photos.length > 4)
-    ) {
-      updatePhotosInDb()
-    } else if (
-      photos?.length < 5 ||
-      (data?.item?.Photos && data?.item?.Photos.length < 5)
-    ) {
-      toast.error("Please add at least 5 photos")
-    }
+    updatePhotosInDb()
   }
 
-  const onSubmit = (formData: T_WholePlaceUnit) => {
+  const onSubmit = async (formData: T_WholePlaceUnit) => {
     if (bedCount > 0) {
       formData.amenities = amenities
       formData.bedCount = bedCount
-      console.log(formData)
     } else {
       toast.error("Must have at least 1 bedroom or sleeping space.")
     }
+    const saveBasicInfo = updateWholePlaceBasicInfo({
+      _id: wholePlaceId,
+      title: formData.title,
+      totalSize: Number(formData.size),
+      numBedRooms: Number(formData.bedCount),
+      numBathRooms: Number(formData.bathrooms),
+      qty: formData.typeCount,
+    })
+    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+      updatePhotosInDb()
+    })
   }
 
   const addBedInput = () => {
@@ -153,14 +166,18 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   useEffect(() => {
-    setValue("bedCount", bedCount)
+    setValue("bedCount", data?.item?.numBedRooms)
     setValue("bathrooms", bathroomCount)
     setValue("typeCount", typeCount)
   }, [bedCount, bathroomCount, typeCount])
 
   useEffect(() => {
     if (!isPending && data && data.item) {
+      setBedCount(data?.item.numBedRooms)
+      setBathroomCount(data?.item.numBathRooms)
+      setTypeCount(data?.item.qty)
       setPhotos(data?.item?.photos)
+      setAmenties(data.item?.amenities)
     }
   }, [data, isPending])
 
@@ -180,7 +197,9 @@ const WholePlace = ({ pageType }: Prop) => {
         <div className="grid grid-cols-4 gap-x-6">
           <div>
             <Select
-              {...register("name", {
+              disabled={isPending}
+              defaultValue={data?.item?.title}
+              {...register("title", {
                 required: "This field is required",
               })}
               label="Name"
@@ -188,7 +207,7 @@ const WholePlace = ({ pageType }: Prop) => {
             >
               <>
                 <Option value={""}>Select Name</Option>
-                <Option>Double Room</Option>
+                <Option selected={data?.item?.title}>Double Room</Option>
               </>
             </Select>
           </div>
@@ -197,7 +216,8 @@ const WholePlace = ({ pageType }: Prop) => {
               label="Total Size (sqm)"
               id="size"
               type="number"
-              disabled={false}
+              disabled={isPending}
+              defaultValue={data?.item?.totalSize}
               {...register("size", {
                 required: "This field is required",
               })}

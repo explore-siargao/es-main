@@ -14,11 +14,11 @@ const UnitsTable = () => {
   const { data, isPending } = useGetPropertyById(listingId)
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("bookableUnits.photo", {
+    columnHelper.accessor("photos", {
       header: "Unit",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
+          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <div className="flex items-center gap-5">
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
@@ -41,7 +41,7 @@ const UnitsTable = () => {
       header: "Name",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
+          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
@@ -53,7 +53,7 @@ const UnitsTable = () => {
       header: "Description",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
+          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original?.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
@@ -65,7 +65,7 @@ const UnitsTable = () => {
       header: "Type",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
+          href={`/hosting/listings/properties/setup/${listingId}/units/${context.getValue().toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
@@ -77,7 +77,7 @@ const UnitsTable = () => {
       header: "Quantity",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/${listingId}/units/${context.row.original.bookableUnits?.category.toLowerCase()}/${context.row.original.bookableUnits?._id}/edit`}
+          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original?.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : 0}

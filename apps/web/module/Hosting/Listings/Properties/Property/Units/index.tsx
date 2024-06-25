@@ -100,7 +100,7 @@ const Units = ({ pageType }: Prop) => {
         isOpen={isSelectUnitTypeModalOpen}
         onClose={() => setIsSelectUnitTypeModalOpen(!isSelectUnitTypeModalOpen)}
         propertyType={propertyType}
-        propertyId={data?.item?.id}
+        propertyId={data?.item?._id}
         pageType={pageType}
       />
     </div>

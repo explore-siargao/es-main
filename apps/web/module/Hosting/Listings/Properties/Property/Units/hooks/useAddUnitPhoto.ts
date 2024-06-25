@@ -15,7 +15,7 @@ export async function addRentalPhotos(
   formData.append("tags", props.tags)
   const apiService = new ApiService("v2")
   return await apiService.post(
-    `${API_URL_PROPERTIES}/${propertyId}/photo/${unitId}`,
+    `${API_URL_PROPERTIES}/${propertyId}/${unitId}/photo`,
     formData,
     true, // raw form data
     true // remove content type

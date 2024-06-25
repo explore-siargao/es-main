@@ -364,3 +364,23 @@ export const getPropertiesBookableUnits = async (
 
   res.json(response.success({ items: units, allItemCount: units?.length }))
 }
+
+export const getUnitById = async (req: Request, res: Response) => {
+  const unitId = req.params.unitId
+  try {
+    const getUnit = await dbBookableUnitTypes
+      .findOne({ _id: unitId, deletedAt: null })
+      .populate('amenities')
+      .populate('photos')
+    if (!getUnit) {
+      return res.json(response.error({ message: 'No bookable unit found' }))
+    }
+    res.json(response.success({ item: getUnit }))
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
