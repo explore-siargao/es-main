@@ -13,7 +13,7 @@ interface OtherPoliciesModalProps {
 const OtherPolicies = ({
   isOpen,
   onClose,
-  otherPolicies
+  otherPolicies,
 }: OtherPoliciesModalProps) => {
   return (
     <ModalContainer onClose={onClose} isOpen={isOpen} size="sm">
@@ -23,12 +23,9 @@ const OtherPolicies = ({
         </Typography>
         <div className="flex flex-col my-4 max-h-full overflow-auto">
           {otherPolicies.map((policy) => (
-            <div className="border-b py-4">
-              {policy}
-            </div>
+            <div className="border-b py-4">{policy}</div>
           ))}
         </div>
-        
       </div>
     </ModalContainer>
   )

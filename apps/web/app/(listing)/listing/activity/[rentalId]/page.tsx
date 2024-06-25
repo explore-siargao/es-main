@@ -14,7 +14,7 @@ const ListingPage = () => {
     <AuthGuard>
       <ActivitySingleView />
     </AuthGuard>
-  ) 
+  )
 }
 
 export default ListingPage

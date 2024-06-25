@@ -1,4 +1,3 @@
-
 import { TitleSection } from "@/module/Accommodation/components/TitleSection"
 import { X } from "lucide-react"
 

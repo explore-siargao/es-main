@@ -17,19 +17,22 @@ const InclusionsModal = ({ isOpen, onClose, group }: InclusionModalProps) => {
         <TitleSection title="Other inclusion information">
           {group.map((item) => (
             <div className="py-2" key={item.title}>
-              {item.offers.length > 0 && 
+              {item.offers.length > 0 && (
                 <TitleSection title={item.title}>
                   <div className="flex flex-col">
                     {item.offers.map((offer) => (
                       <div className="py-4 border-b flex gap-2">
-                        { item.title === "Not Included" ? <X className=" text-error-500" /> : <Check className="text-primary-500" /> }
+                        {item.title === "Not Included" ? (
+                          <X className=" text-error-500" />
+                        ) : (
+                          <Check className="text-primary-500" />
+                        )}
                         {offer}
                       </div>
                     ))}
                   </div>
-                  
                 </TitleSection>
-              }
+              )}
             </div>
           ))}
         </TitleSection>

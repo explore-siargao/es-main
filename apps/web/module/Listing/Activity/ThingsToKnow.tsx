@@ -13,7 +13,8 @@ const ThingsToKnow = ({
   cancellationModalData,
 }: T_ThingsToKnowProps) => {
   const [isHouseRulesModalOpen, setIsHouseRulesModalOpen] = useState(false)
-  const [isCancellationPolicyModalOpen, setIsCancellationPolicyModalOpen] = useState(false)
+  const [isCancellationPolicyModalOpen, setIsCancellationPolicyModalOpen] =
+    useState(false)
 
   const openCancellationPolicyModal = () => {
     setIsCancellationPolicyModalOpen(true)
@@ -36,7 +37,7 @@ const ThingsToKnow = ({
       <div className="flex w-full mt-4 mb-6">
         <div className="w-full flex flex-col items-start">
           <TitleLists title="Other Policies" rules={otherPolicies} />
-          { otherPolicies.length > 3 && (
+          {otherPolicies.length > 3 && (
             <Button
               className="underline mt-2"
               variant="link"
@@ -53,7 +54,7 @@ const ThingsToKnow = ({
             title="Cancellation policy"
             rules={cancellationPolicies}
           />
-          { cancellationPolicies.length > 3 && (
+          {cancellationPolicies.length > 3 && (
             <Button
               className="underline mt-2"
               variant="link"

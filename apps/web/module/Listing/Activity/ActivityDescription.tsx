@@ -1,9 +1,7 @@
 import { Button } from "@/common/components/ui/Button"
 import { useState } from "react"
 
-const ActivityDescription = ({
-  description,
-}: { description: string }) => {
+const ActivityDescription = ({ description }: { description: string }) => {
   const [descriptionModalOpen, setDescriptionModalOpen] = useState(false)
   const maximumLength = 600
   const slicedDescription =

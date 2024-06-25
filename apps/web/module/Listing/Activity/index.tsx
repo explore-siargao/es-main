@@ -129,136 +129,131 @@ export const userReviews = [
 ]
 
 const value = {
-  host: '66622c6d14e35b280af399fa',
-  title: 'Island Hopping Adventure',
-  description: 'Join us for an exciting island hopping adventure in Siargao. Explore pristine beaches, crystal-clear waters, and vibrant marine life.',
+  host: "66622c6d14e35b280af399fa",
+  title: "Island Hopping Adventure",
+  description:
+    "Join us for an exciting island hopping adventure in Siargao. Explore pristine beaches, crystal-clear waters, and vibrant marine life.",
   highLights: [
-    'Visit three beautiful islands: Naked Island, Daku Island, and Guyam Island',
-    'Snorkeling in crystal-clear waters',
-    'Delicious lunch on Daku Island',
-    'Professional guide with local knowledge'
+    "Visit three beautiful islands: Naked Island, Daku Island, and Guyam Island",
+    "Snorkeling in crystal-clear waters",
+    "Delicious lunch on Daku Island",
+    "Professional guide with local knowledge",
   ],
   durationHour: 6,
   durationMinute: 30,
-  languages: ['English', 'Filipino'],
+  languages: ["English", "Filipino"],
   isFoodIncluded: true,
   isNonAlcoholicDrinkIncluded: true,
   isAlcoholicDrinkIncluded: false,
   otherInclusion: [
-    'Snorkeling gear',
-    'Island entrance fees',
-    'Round-trip transportation from the meeting point'
+    "Snorkeling gear",
+    "Island entrance fees",
+    "Round-trip transportation from the meeting point",
   ],
-  notIncluded: [
-    'Personal expenses',
-    'Gratuities'
-  ],
+  notIncluded: ["Personal expenses", "Gratuities"],
   whatToBrings: [
-    'Sunscreen',
-    'Swimwear',
-    'Towel',
-    'Camera',
-    'Extra cash for souvenirs'
+    "Sunscreen",
+    "Swimwear",
+    "Towel",
+    "Camera",
+    "Extra cash for souvenirs",
   ],
   cancellationDays: 3,
-  notAllowed: [
-    'Pets',
-    'Smoking',
-    'Littering'
-  ],
+  notAllowed: ["Pets", "Smoking", "Littering"],
   policies: [
-    'Respect marine life and local culture',
-    'Follow the guide’s instructions at all times',
-    'No littering on the islands or in the water',
-    'Wear a life jacket while snorkeling for safety',
-    'Be punctual at the meeting point to ensure timely departure',
-    'Respect marine life and local culture',
-    'Follow the guide’s instructions at all times',
-    'No littering on the islands or in the water',
-    'Wear a life jacket while snorkeling for safety',
-    'Be punctual at the meeting point to ensure timely departure'
+    "Respect marine life and local culture",
+    "Follow the guide’s instructions at all times",
+    "No littering on the islands or in the water",
+    "Wear a life jacket while snorkeling for safety",
+    "Be punctual at the meeting point to ensure timely departure",
+    "Respect marine life and local culture",
+    "Follow the guide’s instructions at all times",
+    "No littering on the islands or in the water",
+    "Wear a life jacket while snorkeling for safety",
+    "Be punctual at the meeting point to ensure timely departure",
   ],
   cancellationPolicies: [
-    'Full refund if canceled at least 3 days before the activity',
-    'No refund if canceled within 3 days of the activity'
+    "Full refund if canceled at least 3 days before the activity",
+    "No refund if canceled within 3 days of the activity",
   ],
   photos: [
     {
-      "_id": "66684a5db5c3e8b967c89853",
-      "rentalId": "66658c520c9477ca42bad2c7",
-      "key": "1.jpg",
-      "thumbKey": "eed38095-0a20-4a10-aece-73558e34b497",
-      "isMain": false,
-      "description": "Mio kia car",
-      "tags": "",
-      "createdAt": "2024-06-11T12:58:22.123Z",
-      "__v": 0,
-      "updatedAt": "2024-06-11T23:32:37.833Z"
+      _id: "66684a5db5c3e8b967c89853",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "1.jpg",
+      thumbKey: "eed38095-0a20-4a10-aece-73558e34b497",
+      isMain: false,
+      description: "Mio kia car",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.833Z",
     },
     {
-      "_id": "66684a5db5c3e8b967c89856",
-      "rentalId": "66658c520c9477ca42bad2c7",
-      "key": "2.jpg",
-      "thumbKey": "1401dc9c-2414-4261-a5fe-eccd781d3ac3",
-      "isMain": false,
-      "description": "",
-      "tags": "",
-      "createdAt": "2024-06-11T12:58:22.123Z",
-      "__v": 0,
-      "updatedAt": "2024-06-11T23:32:37.823Z"
+      _id: "66684a5db5c3e8b967c89856",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "2.jpg",
+      thumbKey: "1401dc9c-2414-4261-a5fe-eccd781d3ac3",
+      isMain: false,
+      description: "",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.823Z",
     },
     {
-      "_id": "66684a5db5c3e8b967c89858",
-      "rentalId": "66658c520c9477ca42bad2c7",
-      "key": "3.jpg",
-      "thumbKey": "f6dc04db-237f-46da-8e6a-d1c0e219a518",
-      "isMain": false,
-      "description": "Test baby",
-      "tags": "",
-      "createdAt": "2024-06-11T12:58:22.123Z",
-      "__v": 0,
-      "updatedAt": "2024-06-11T23:32:37.838Z"
+      _id: "66684a5db5c3e8b967c89858",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "3.jpg",
+      thumbKey: "f6dc04db-237f-46da-8e6a-d1c0e219a518",
+      isMain: false,
+      description: "Test baby",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.838Z",
     },
     {
-      "_id": "66684a5eb5c3e8b967c8985c",
-      "rentalId": "66658c520c9477ca42bad2c7",
-      "key": "4.jpg",
-      "thumbKey": "963669f9-d5eb-405d-8a7a-9c9cee49af56",
-      "isMain": true,
-      "description": "",
-      "tags": "",
-      "createdAt": "2024-06-11T12:58:22.123Z",
-      "__v": 0,
-      "updatedAt": "2024-06-11T23:32:37.832Z"
+      _id: "66684a5eb5c3e8b967c8985c",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "4.jpg",
+      thumbKey: "963669f9-d5eb-405d-8a7a-9c9cee49af56",
+      isMain: true,
+      description: "",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.832Z",
     },
     {
-      "_id": "66684a5eb5c3e8b967c8985f",
-      "rentalId": "66658c520c9477ca42bad2c7",
-      "key": "5.jpg",
-      "thumbKey": "1e5d5cb5-3a63-43a3-a1d3-3476df3526d8",
-      "isMain": false,
-      "description": "Baby love",
-      "tags": "",
-      "createdAt": "2024-06-11T12:58:22.123Z",
-      "__v": 0,
-      "updatedAt": "2024-06-11T23:42:21.255Z"
-    }
+      _id: "66684a5eb5c3e8b967c8985f",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "5.jpg",
+      thumbKey: "1e5d5cb5-3a63-43a3-a1d3-3476df3526d8",
+      isMain: false,
+      description: "Baby love",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:42:21.255Z",
+    },
   ],
   isSegmentBuilderEnabled: true,
   segments: [],
-  meetingPoint: 'General Luna Pier, General Luna, Siargao Island, Surigao del Norte, Philippines',
-  status: 'Incomplete',
+  meetingPoint:
+    "General Luna Pier, General Luna, Siargao Island, Surigao del Norte, Philippines",
+  status: "Incomplete",
   location: {
     city: "General Luna",
     streetAddress: "Purok 1, Tourism Road",
     barangay: "Catangnan",
     longitude: 126.1174,
     latitude: 9.8432,
-    howToGetThere: "From General Luna, head north on Tourism Road towards Cloud 9. The location is a 10-minute drive from the town center.",
-    createdAt: "2024-06-11T12:58:22.123Z"
-  }
+    howToGetThere:
+      "From General Luna, head north on Tourism Road towards Cloud 9. The location is a 10-minute drive from the town center.",
+    createdAt: "2024-06-11T12:58:22.123Z",
+  },
 }
-
 
 export const ActivitySingleView = () => {
   const [showModal, setShowModal] = useState(false)
@@ -272,10 +267,7 @@ export const ActivitySingleView = () => {
 
   return (
     <WidthWrapper width="small" className="mt-10">
-      <SectionInfo
-        images={value.photos}
-        title={value.title}
-      />
+      <SectionInfo images={value.photos} title={value.title} />
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
@@ -287,17 +279,21 @@ export const ActivitySingleView = () => {
               />
             </div>
             <div className="py-6">
-              <ActivityDescription description={"Embark on a thrilling Island Hopping Adventure in the tropical paradise of Siargao! This full-day tour is perfect for those seeking to explore the natural beauty and vibrant marine life of the Philippines. Our journey will take you to three of the most picturesque islands: Naked Island, Daku Island, and Guyam Island."} />
+              <ActivityDescription
+                description={
+                  "Embark on a thrilling Island Hopping Adventure in the tropical paradise of Siargao! This full-day tour is perfect for those seeking to explore the natural beauty and vibrant marine life of the Philippines. Our journey will take you to three of the most picturesque islands: Naked Island, Daku Island, and Guyam Island."
+                }
+              />
             </div>
             <div className="py-6">
               <Highlights highlights={value.highLights} />
             </div>
             <div className="py-6 ">
-              <PlaceOffers 
-                isFoodIncluded={value.isFoodIncluded} 
-                isNonAlcoholicDrinkIncluded={value.isNonAlcoholicDrinkIncluded} 
-                isAlcoholicDrinkIncluded={value.isAlcoholicDrinkIncluded} 
-                otherInclusion={value.otherInclusion} 
+              <PlaceOffers
+                isFoodIncluded={value.isFoodIncluded}
+                isNonAlcoholicDrinkIncluded={value.isNonAlcoholicDrinkIncluded}
+                isAlcoholicDrinkIncluded={value.isAlcoholicDrinkIncluded}
+                otherInclusion={value.otherInclusion}
                 notIncluded={value.notIncluded}
               />
             </div>
@@ -305,7 +301,10 @@ export const ActivitySingleView = () => {
               <Languages languages={value.languages} />
             </div>
             <div className="py-6 ">
-              <Duration durationHour={value.durationHour} durationMinute={value.durationMinute} />
+              <Duration
+                durationHour={value.durationHour}
+                durationMinute={value.durationMinute}
+              />
             </div>
             <div className="py-6">
               <WhatToBrings whatToBrings={value.whatToBrings} />
@@ -355,10 +354,10 @@ export const ActivitySingleView = () => {
           <UserReviews reviews={userReviews} />
         </div>
         <div className="py-8">
-          <MeetingPoint 
-            location={`${value.location.streetAddress}, ${value.location.barangay}, ${value.location.city}`} 
-            coordinates={[value.location.latitude, value.location.longitude]} 
-            desc={value.location.howToGetThere} 
+          <MeetingPoint
+            location={`${value.location.streetAddress}, ${value.location.barangay}, ${value.location.city}`}
+            coordinates={[value.location.latitude, value.location.longitude]}
+            desc={value.location.howToGetThere}
           />
         </div>
         <div className="py-8">

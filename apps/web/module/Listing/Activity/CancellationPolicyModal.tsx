@@ -4,7 +4,6 @@ import { Typography } from "@/common/components/ui/Typography"
 import { Scroll } from "lucide-react"
 import React from "react"
 
-
 interface CancellationPolicyProps {
   isOpen: boolean
   onClose: () => void
@@ -24,9 +23,7 @@ const CancellationPolicyModal = ({
         </Typography>
         <div className="flex flex-col my-4 max-h-full overflow-auto">
           {cancellationPolicy.map((policy) => (
-            <div className="border-b py-4">
-              {policy}
-            </div>
+            <div className="border-b py-4">{policy}</div>
           ))}
         </div>
       </div>

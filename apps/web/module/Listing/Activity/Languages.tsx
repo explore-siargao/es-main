@@ -1,4 +1,3 @@
-
 import { TitleSection } from "@/module/Accommodation/components/TitleSection"
 import { LanguagesIcon } from "lucide-react"
 
