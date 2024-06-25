@@ -1,10 +1,10 @@
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import TitleLists from "@/module/Accommodation/components/ThingsToKnow/TitleLists"
 import { useState } from "react"
 import { T_ThingsToKnowProps } from "../types/ThingsToKnow"
-import HouseRulesModal from "./ModalHouseRules"
+import HouseRulesModal from "./OtherPoliciesModal"
 import CancellationPolicyModal from "./CancellationPolicyModal"
+import TitleLists from "./ThingsToKnow/TitleLists"
 
 const ThingsToKnow = ({
   otherPolicies,
@@ -34,31 +34,35 @@ const ThingsToKnow = ({
         Things to know
       </Typography>
       <div className="flex w-full mt-4 mb-6">
-        <div className="w-full md:w-1/3">
+        <div className="w-full flex flex-col items-start">
           <TitleLists title="Other Policies" rules={otherPolicies} />
-          { otherPolicies.length > 2 && <Button
-            className="underline mt-2"
-            variant="link"
-            size="link"
-            onClick={openHouseRulesModal}
-          >
-            Show more &gt;
-          </Button> }
-          
+          { otherPolicies.length > 3 && (
+            <Button
+              className="underline mt-2"
+              variant="link"
+              size="link"
+              onClick={openHouseRulesModal}
+            >
+              Show more &gt;
+            </Button>
+          )}
         </div>
-        <div className="w-full md:w-1/3">
+
+        <div className="w-full flex flex-col items-start">
           <TitleLists
             title="Cancellation policy"
             rules={cancellationPolicies}
           />
-          <Button
-            className="underline mt-2"
-            variant="link"
-            size="link"
-            onClick={openCancellationPolicyModal}
-          >
-            Show more &gt;
-          </Button>
+          { cancellationPolicies.length > 3 && (
+            <Button
+              className="underline mt-2"
+              variant="link"
+              size="link"
+              onClick={openCancellationPolicyModal}
+            >
+              Show more &gt;
+            </Button>
+          )}
         </div>
       </div>
       <HouseRulesModal

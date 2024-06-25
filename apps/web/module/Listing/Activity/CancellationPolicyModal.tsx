@@ -1,6 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
+import { Scroll } from "lucide-react"
 import React from "react"
 
 
@@ -21,27 +22,12 @@ const CancellationPolicyModal = ({
         <Typography variant="h2" fontWeight="semibold" className="flex mb-5">
           Cancellation policy
         </Typography>
-        <Typography variant="h5" fontWeight="normal" className="mb-5">
-          Before you book, make sure you're comfortable with this Host's
-          cancellation policy. Keep in mind that Explore Siargao's{" "}
-          <button className="font-semibold underline">
-            Extenuating Circumstances policy{" "}
-          </button>{" "}
-          doesn't cover cancellations due to illness or travel disruptions
-          caused by COVID-19.
-        </Typography>
-
-        <Typography variant="h4" fontWeight="semibold">
-          Cancel by
-        </Typography>
-
-        <div className="flex mt-6 w-full">
-          <Button
-            className="text-sm font-semibold underline mx-0 px-0"
-            variant="ghost"
-          >
-            Learn more about cancellation policies
-          </Button>
+        <div className="flex flex-col my-4 max-h-full overflow-auto">
+          {cancellationPolicy.map((policy) => (
+            <div className="border-b py-4">
+              {policy}
+            </div>
+          ))}
         </div>
       </div>
     </ModalContainer>

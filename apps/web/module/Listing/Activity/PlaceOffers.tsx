@@ -2,7 +2,7 @@
 import { TitleSection } from "@/module/Accommodation/components/TitleSection"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
-import { Check } from "lucide-react"
+import { Check, X } from "lucide-react"
 import InclusionsModal from "../components/modals/InclusionsModal"
 
 const PlaceOffers = (
@@ -21,13 +21,6 @@ const PlaceOffers = (
     notIncluded: string[]
   }
 ) => {
-  const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
-  const grouped = [
-    {
-      title: "Not Included",
-      offers: notIncluded
-    }
-  ]
   return (
     <>
       <TitleSection size="lg" title="Inclusions">
@@ -61,20 +54,14 @@ const PlaceOffers = (
               {item}
             </div>
           ))}
+          {notIncluded.map((item) => (
+            <div className="flex gap-2">
+              <X className="text-error-500 shrink-0" />
+              {item}
+            </div>
+          ))}
         </div>
-        <Button
-          className="mt-5"
-          variant="outline"
-          onClick={() => setShowMoreModalOpen(!showMoreModalOpen)}
-        >
-          Show other inclusions
-        </Button>
       </TitleSection>
-      <InclusionsModal
-        isOpen={showMoreModalOpen}
-        onClose={() => setShowMoreModalOpen(!showMoreModalOpen)}
-        group={grouped}
-      />
     </>
   )
 }

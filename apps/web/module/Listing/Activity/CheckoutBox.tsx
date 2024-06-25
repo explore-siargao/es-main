@@ -2,18 +2,18 @@
 import PesoSign from "@/common/components/PesoSign"
 import { Button } from "@/common/components/ui/Button"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import CheckoutBreakdownModal from "./modals/CheckoutBreakdownModal"
 import { useState } from "react"
-import CheckoutMoreInfoModal from "./modals/CheckoutMoreInfoModal"
-import CheckInOutModal from "./modals/CheckInOutModal"
 import useCheckInOutDateStore from "@/module/Accommodation/store/useCheckInOutDateStore"
 import Asterisk from "@/common/components/ui/Asterisk"
 import { format } from "date-fns"
 import { useParams, useRouter } from "next/navigation"
-import GuestAddModal from "./modals/GuestAddModal"
 import useGuestAdd from "@/module/Accommodation/store/useGuestsStore"
 import { APP_NAME } from "@repo/constants"
 import { Typography } from "@/common/components/ui/Typography"
+import CheckoutBreakdownModal from "@/module/Accommodation/components/modals/CheckoutBreakdownModal"
+import CheckInOutModal from "@/module/Accommodation/components/modals/CheckInOutModal"
+import CheckoutMoreInfoModal from "@/module/Accommodation/components/modals/CheckoutMoreInfoModal"
+import GuestAddModal from "@/module/Accommodation/components/modals/GuestAddModal"
 
 interface ICheckout {
   id?: number
@@ -43,7 +43,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
         {formatCurrency(checkoutDesc.titlePrice, "Philippines")}
-        <small className="font-light"> night</small>
+        <small className="font-light"> person</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
         <div className="grid grid-cols-2 gap-3">
@@ -55,7 +55,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
               htmlFor="check-in"
               className="block text-xs font-medium text-text-900 hover:cursor-pointer"
             >
-              Check-in <Asterisk />
+              Date <Asterisk />
             </label>
             <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
               {dateRange.from
@@ -71,10 +71,10 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
               htmlFor="checkout"
               className="block text-xs font-medium text-text-900 hover:cursor-pointer"
             >
-              Checkout <Asterisk />
+              Start time <Asterisk />
             </label>
             <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-              {dateRange.to ? format(dateRange.to, "MM/dd/yyyy") : "Add date"}
+              {dateRange.to ? format(dateRange.to, "hh:mm:ss a") : "Add time"}
             </span>
           </div>
         </div>
@@ -102,19 +102,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         </Button>
       </div>
       <div>
-        <div className="flex justify-between items-center mt-4">
-          <Button
-            variant={"ghost"}
-            className="underline pl-0"
-            onClick={() => setIsBreakdownModalOpen(true)}
-          >
-            <PesoSign />
-            25,000 x 5 nights
-          </Button>
-          <div>{formatCurrency(checkoutDesc.durationCost, "Philippines")}</div>
-        </div>
-
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-2">
           <Button
             variant={"ghost"}
             className="underline pl-0"

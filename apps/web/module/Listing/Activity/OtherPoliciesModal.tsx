@@ -1,6 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import IconTitleDescription from "@/module/Accommodation/components/IconTitleDescription"
+import { Scroll } from "lucide-react"
 import React from "react"
 
 interface OtherPoliciesModalProps {
@@ -12,6 +13,7 @@ interface OtherPoliciesModalProps {
 const OtherPolicies = ({
   isOpen,
   onClose,
+  otherPolicies
 }: OtherPoliciesModalProps) => {
   return (
     <ModalContainer onClose={onClose} isOpen={isOpen} size="sm">
@@ -19,9 +21,13 @@ const OtherPolicies = ({
         <Typography variant="h2" fontWeight="semibold" className="flex">
           Other Policies
         </Typography>
-        <Typography variant="h5" className="mb-5">
-          You'll be staying in someone's home so treat it like a home.
-        </Typography>
+        <div className="flex flex-col my-4 max-h-full overflow-auto">
+          {otherPolicies.map((policy) => (
+            <div className="border-b py-4">
+              {policy}
+            </div>
+          ))}
+        </div>
         
       </div>
     </ModalContainer>

@@ -6,7 +6,6 @@ import { useState } from "react"
 import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import AvatarTitleDescription from "@/module/Accommodation/components/AvatarTitleDescription"
 import BookingDescription from "@/module/Accommodation/components/BookingDescription"
-import CheckoutBox from "@/module/Accommodation/components/CheckoutBox"
 import HostInformation from "@/module/Accommodation/components/HostInformation"
 import ListingDateRangePicker from "@/module/Accommodation/components/ListingDateRangePicker"
 import WhereYoullBeDescription from "@/module/Accommodation/components/Map"
@@ -23,6 +22,8 @@ import WhatToBrings from "./WhatToBrings"
 import NotAllowed from "./NotAllowed"
 import PoliciesModal from "../components/modals/PoliciesModal"
 import ThingsToKnow from "./ThingsToKnow"
+import MeetingPoint from "./MeetingPoint"
+import CheckoutBox from "./CheckoutBox"
 
 export const ratingSummary = {
   ratings: 5,
@@ -63,7 +64,7 @@ export const ratingSummary = {
 
 const whereYouWillBeDesc = {
   location: "General Luna, Caraga, Philippines",
-  coordinates: [14.5129, 21.4342] as [number, number],
+  coordinates: [9.8015, 126.1635] as [number, number],
   desc: "Mantaray Siargao is located in Purok 1, General Luna. A quiet residential area close to the heart of town. The property is nestled between the beach and the main road, allowing guests like you to easily drive or hail a tricycle to town.",
 }
 
@@ -127,142 +128,6 @@ export const userReviews = [
   },
 ]
 
-const houseRulesDummy = [
-  { id: 1, icon: "wifi", rule: "Check-in: 12:00 PM - 7:00 PM" },
-  { id: 2, icon: "wifi", rule: "Checkout before 10:00 AM" },
-  { id: 3, icon: "wifi", rule: "8 guests maximum" },
-]
-
-const safetyPropertiesDummy = [
-  { id: 1, rule: "Pool/hot tub without a gate or lock" },
-  { id: 2, rule: "Nearby lake, river, other body of water" },
-  { id: 3, rule: "Carbon monoxide alarm" },
-]
-
-const cancellationPoliciesDummy = [
-  { id: 1, rule: "This reservation is non-refundable." },
-  {
-    id: 2,
-    rule: "Review the Host’s full cancellation policy which applies even if you cancel for illness or disruptions caused by COVID-19.",
-  },
-]
-
-const houseRulesModalData = [
-  {
-    id: 1,
-    title: "Checking in and out",
-    iconDesc: [
-      { id: 1, icon: "wifi", rule: "Check-in: 12:00 PM - 7:00 PM" },
-      { id: 2, icon: "wifi", rule: "Checkout before 10:00 AM" },
-      { id: 3, icon: "wifi", rule: "8 guests maximum" },
-    ],
-  },
-  {
-    id: 2,
-    title: "During your stay",
-    iconDesc: [
-      { id: 1, icon: "wifi", rule: "Pets allowed" },
-      {
-        id: 2,
-        icon: "wifi",
-        rule: "Quiet hours",
-        otherDescription: "11:00 PM - 6:00 AM",
-      },
-      { id: 3, icon: "wifi", rule: "8 guests maximum" },
-      { id: 4, icon: "wifi", rule: "Commercial photography is allowed" },
-      { id: 5, icon: "wifi", rule: "No smoking" },
-    ],
-  },
-]
-
-const safetyPropertiesModalData = [
-  {
-    id: 1,
-    title: "Safety considerations",
-    iconDesc: [
-      {
-        id: 1,
-        icon: "wifi",
-        safetyProperty: "Not suitable for fishing",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Safety devices",
-    iconDesc: [
-      {
-        id: 1,
-        icon: "wifi",
-        safetyProperty: "Security camera/recording device",
-        otherDescription:
-          "CCTV cameras around the building and within the shared common areas like lobby, corridors, and elevator area.",
-      },
-      {
-        id: 2,
-        icon: "wifi",
-        safetyProperty: "Smoke alarm installed",
-      },
-      {
-        id: 3,
-        icon: "wifi",
-        safetyProperty: "Fire extinguisher available",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "Property info",
-    iconDesc: [
-      {
-        id: 1,
-        icon: "wifi",
-        safetyProperty: "10 story building",
-        otherDescription: "The building itself have 100th floor",
-      },
-      { id: 2, icon: "wifi", safetyProperty: "Potential noise" },
-      { id: 3, icon: "wifi", safetyProperty: "Free beer" },
-    ],
-  },
-]
-
-const cancellationPolicyModalData = [
-  {
-    id: 1,
-    title: "Feb 17",
-    desc: [
-      {
-        id: 1,
-        cancellationPolicy: "12:00 PM",
-        otherDescription: "Full refund: Get back 100% of what you paid.",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "Feb 18",
-    desc: [
-      {
-        id: 1,
-        cancellationPolicy: "12:00 PM (check-in)",
-        otherDescription:
-          "Partial refund: Get back every night but the first one. No refund of the first night or the service fee.",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "March 12",
-    desc: [
-      {
-        id: 1,
-        cancellationPolicy: "2:00 PM (check-in)",
-        otherDescription: "No refund",
-      },
-    ],
-  },
-]
-
 const value = {
   host: '66622c6d14e35b280af399fa',
   title: 'Island Hopping Adventure',
@@ -303,7 +168,15 @@ const value = {
   ],
   policies: [
     'Respect marine life and local culture',
-    'Follow the guide’s instructions at all times'
+    'Follow the guide’s instructions at all times',
+    'No littering on the islands or in the water',
+    'Wear a life jacket while snorkeling for safety',
+    'Be punctual at the meeting point to ensure timely departure',
+    'Respect marine life and local culture',
+    'Follow the guide’s instructions at all times',
+    'No littering on the islands or in the water',
+    'Wear a life jacket while snorkeling for safety',
+    'Be punctual at the meeting point to ensure timely departure'
   ],
   cancellationPolicies: [
     'Full refund if canceled at least 3 days before the activity',
@@ -372,45 +245,29 @@ const value = {
     }
   ],
   isSegmentBuilderEnabled: true,
-  segments: [
-    {
-      segmentTitle: 'Introduction and Departure',
-      segmentDescription: 'Meet at the designated meeting point and depart for the first island.'
-    },
-    {
-      segmentTitle: 'First Island: Naked Island',
-      segmentDescription: 'Enjoy swimming and snorkeling in the clear waters of Naked Island.'
-    },
-    {
-      segmentTitle: 'Second Island: Daku Island',
-      segmentDescription: 'Lunch and relaxation on Daku Island, with time for beach activities.'
-    },
-    {
-      segmentTitle: 'Third Island: Guyam Island',
-      segmentDescription: 'Explore the small, picturesque Guyam Island before heading back.'
-    }
-  ],
+  segments: [],
   meetingPoint: 'General Luna Pier, General Luna, Siargao Island, Surigao del Norte, Philippines',
-  status: 'Incomplete'
+  status: 'Incomplete',
+  location: {
+    city: "General Luna",
+    streetAddress: "Purok 1, Tourism Road",
+    barangay: "Catangnan",
+    longitude: 126.1174,
+    latitude: 9.8432,
+    howToGetThere: "From General Luna, head north on Tourism Road towards Cloud 9. The location is a 10-minute drive from the town center.",
+    createdAt: "2024-06-11T12:58:22.123Z"
+  }
 }
 
 
 export const ActivitySingleView = () => {
   const [showModal, setShowModal] = useState(false)
-  const [showPolicyModal, setShowPolicyModal] = useState(false)
 
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
-  }
-
-  const handleOpenPolicyModal = () => {
-    setShowPolicyModal(true)
-  } 
-  const handleClosePolicyModal = () => {
-    setShowPolicyModal(false)
   }
 
   return (
@@ -450,6 +307,12 @@ export const ActivitySingleView = () => {
             <div className="py-6 ">
               <Duration durationHour={value.durationHour} durationMinute={value.durationMinute} />
             </div>
+            <div className="py-6">
+              <WhatToBrings whatToBrings={value.whatToBrings} />
+            </div>
+            <div className="py-6">
+              <NotAllowed notAllowed={value.notAllowed} />
+            </div>
           </div>
         </div>
         <div className="md:w-96 md:relative">
@@ -463,13 +326,6 @@ export const ActivitySingleView = () => {
                 titlePrice: 1000,
               }}
             />
-            <div>
-              <ListingMark
-                icon={<Tag />}
-                title="Lower Price"
-                desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-              />
-            </div>
 
             <div className="flex justify-center">
               <div className="justify-items-center">
@@ -489,31 +345,35 @@ export const ActivitySingleView = () => {
       </div>
       <div className="divide-y border-t">
         <div className="py-8">
-          <WhatToBrings whatToBrings={value.whatToBrings} />
-        </div>
-        <div className="py-8">
-          <NotAllowed notAllowed={value.notAllowed} />
+          <RatingSummary
+            ratings={ratingSummary.ratings}
+            reviews={ratingSummary.reviews}
+            categories={ratingSummary.categories}
+          />
         </div>
         <div className="py-8">
           <UserReviews reviews={userReviews} />
         </div>
         <div className="py-8">
-          <WhereYoullBeDescription {...whereYouWillBeDesc} />
+          <MeetingPoint 
+            location={`${value.location.streetAddress}, ${value.location.barangay}, ${value.location.city}`} 
+            coordinates={[value.location.latitude, value.location.longitude]} 
+            desc={value.location.howToGetThere} 
+          />
         </div>
         <div className="py-8">
           <HostInformation {...hostDummy} />
         </div>
         <div className="pt-8">
           <ThingsToKnow
-            otherPolicies={houseRulesDummy}
+            otherPolicies={value.policies}
             otherPoliciesModalData={value.policies}
-            cancellationPolicies={cancellationPoliciesDummy}
+            cancellationPolicies={value.cancellationPolicies}
             cancellationModalData={value.cancellationPolicies}
           />
         </div>
       </div>
       <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-      <PoliciesModal isOpen={showPolicyModal} onClose={handleClosePolicyModal} policies={value.policies} />
     </WidthWrapper>
   )
 }
