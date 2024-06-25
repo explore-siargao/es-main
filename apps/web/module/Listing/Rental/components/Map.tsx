@@ -6,9 +6,6 @@ import { useState } from "react"
 import { MapProps } from "../types/Map"
 import { Typography } from "@/common/components/ui/Typography"
 
-
-
-
 const WhereYoullBeDescription = ({ mapData }: MapProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const maxLength = 600
@@ -28,7 +25,9 @@ const WhereYoullBeDescription = ({ mapData }: MapProps) => {
         </div>
 
         {mapData.city && (
-          <div className="text-md font-semibold mb-5">{mapData.city}, Philippines</div>
+          <div className="text-md font-semibold mb-5">
+            {mapData.city}, Philippines
+          </div>
         )}
         {mapData.howToGetThere && (
           <div className="flex text-sm mb-4">

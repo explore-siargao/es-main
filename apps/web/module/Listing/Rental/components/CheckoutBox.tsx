@@ -64,10 +64,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
                 : "Add date"}
             </span>
           </div>
-          <div
-            className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-        
-          >
+          <div className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer">
             <label
               htmlFor="pick-up"
               className="block text-xs font-medium text-text-900 hover:cursor-pointer"
@@ -75,13 +72,12 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
               Pick-up Time <Asterisk />
             </label>
             <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-                8:00 AM
+              8:00 AM
             </span>
           </div>
-         
         </div>
         <div className="grid grid-cols-2 gap-3">
-        <div
+          <div
             className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
             onClick={() => setCheckInOutCalendarModalIsOpen(true)}
           >
@@ -95,10 +91,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
               {dateRange.to ? format(dateRange.to, "MM/dd/yyyy") : "Add date"}
             </span>
           </div>
-          <div
-            className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-         
-          >
+          <div className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer">
             <label
               htmlFor="drop-off"
               className="block text-xs font-medium text-text-900 hover:cursor-pointer"
@@ -129,7 +122,12 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
             <PesoSign />
             {checkoutDesc.titlePrice} x {durationDays} days
           </Button>
-          <div>{formatCurrency(checkoutDesc.titlePrice * durationDays, "Philippines")}</div>
+          <div>
+            {formatCurrency(
+              checkoutDesc.titlePrice * durationDays,
+              "Philippines"
+            )}
+          </div>
         </div>
 
         <div className="flex justify-between items-center">
@@ -143,7 +141,6 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           <div>{formatCurrency(checkoutDesc.serviceFee, "Philippines")}</div>
         </div>
 
-        
         <div className="flex justify-between items-center">
           <Button
             variant={"ghost"}
@@ -155,12 +152,16 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           <div>{formatCurrency(checkoutDesc.downPayment, "Philippines")}</div>
         </div>
 
-
         <div className="border-b mt-5 mb-5"></div>
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
           <div>
-            {formatCurrency((checkoutDesc.titlePrice * durationDays) + checkoutDesc.downPayment + checkoutDesc.serviceFee, "Philippines")}
+            {formatCurrency(
+              checkoutDesc.titlePrice * durationDays +
+                checkoutDesc.downPayment +
+                checkoutDesc.serviceFee,
+              "Philippines"
+            )}
           </div>
         </div>
       </div>

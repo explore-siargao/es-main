@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 }
 
 const AccommodationPage = async () => {
-
   return <Rental />
 }
 

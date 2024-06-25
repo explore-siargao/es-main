@@ -18,7 +18,6 @@ import Requirements from "./components/Requirements"
 import Inclusions from "./components/Inclusions"
 import SimilarRentals from "./components/SimilarRentals"
 
-
 export const ratingSummary = {
   ratings: 5,
   reviews: 3,
@@ -116,7 +115,6 @@ export const userReviews = [
   },
 ]
 
-
 export const RentalSingleView = () => {
   const [showModal, setShowModal] = useState(false)
   const handleOpenModal = () => {
@@ -127,7 +125,7 @@ export const RentalSingleView = () => {
   }
   const requirementData = {
     minAgeReq: rentalData.details.minAgeReq,
-    requiredDeposit: rentalData.pricing.requiredDeposit
+    requiredDeposit: rentalData.pricing.requiredDeposit,
   }
   const aboutData = {
     category: rentalData.category,
@@ -145,12 +143,12 @@ export const RentalSingleView = () => {
   }
   return (
     <WidthWrapper width="small" className="mt-4 lg:mt-8">
-           <div>
-           <SectionInfo
-        images={rentalData.photos}
-        title= {`${rentalData.year} ${rentalData.make} ${rentalData.modelBadge}`} 
-      />
-    </div>
+      <div>
+        <SectionInfo
+          images={rentalData.photos}
+          title={`${rentalData.year} ${rentalData.make} ${rentalData.modelBadge}`}
+        />
+      </div>
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
@@ -165,16 +163,14 @@ export const RentalSingleView = () => {
               <BookingDescription aboutData={aboutData} />
             </div>
             <div className="py-6 ">
-            <Inclusions rentalData={rentalData.addOns} />
+              <Inclusions rentalData={rentalData.addOns} />
             </div>
             <div className="py-6 ">
               <Requirements requirementData={requirementData} />
             </div>
-           
-           
           </div>
         </div>
-        
+
         <div className="md:w-96 md:relative">
           <div className="md:sticky md:top-6">
             <CheckoutBox
@@ -184,7 +180,7 @@ export const RentalSingleView = () => {
                 descTotalBeforeTaxes: 300,
                 totalBeforeTaxes: 1800,
                 titlePrice: rentalData.pricing.dayRate,
-                downPayment: rentalData.pricing.requiredDeposit
+                downPayment: rentalData.pricing.requiredDeposit,
               }}
             />
             <div>
@@ -212,10 +208,10 @@ export const RentalSingleView = () => {
         </div>
       </div>
       <div className="divide-y border-t">
-      <div className="py-8">
+        <div className="py-8">
           <WhereYoullBeDescription mapData={rentalData.location} />
         </div>
-      
+
         <div className="py-8">
           <RatingSummary
             ratings={ratingSummary.ratings}
@@ -230,8 +226,8 @@ export const RentalSingleView = () => {
           <HostInformation {...hostDummy} />
         </div>
         <div className="py-8">
-              <SimilarRentals />
-            </div>
+          <SimilarRentals />
+        </div>
       </div>
       <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
     </WidthWrapper>

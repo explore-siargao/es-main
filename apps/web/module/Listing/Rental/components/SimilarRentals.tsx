@@ -7,12 +7,11 @@ function SimilarRentals() {
         <div>
           <h2 className="text-xl font-bold mb-2">Similar Rentals</h2>
           <div className="grid grid-flow-col space-x-16 mt-5">
-          <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
-          <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
-          <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
-          <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
-          <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
-
+            <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
+            <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
+            <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
+            <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
+            <div className="bg-primary-200 h-40 flex items-center justify-center rounded-md"></div>
           </div>
         </div>
       </div>
