@@ -202,9 +202,9 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
 export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, description, totalSize, qty } = req.body
+  const { title, bed, totalSize, qty } = req.body
 
-  if (!title || !description || !totalSize || !qty) {
+  if (!title || !bed || !totalSize || !qty) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -234,7 +234,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       {
         $set: {
           title: title,
-          description: description,
+          bed: bed,
           totalSize: totalSize,
           qty: qty,
           updatedAt: Date.now(),

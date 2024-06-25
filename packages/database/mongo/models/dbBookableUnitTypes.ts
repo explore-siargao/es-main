@@ -5,6 +5,7 @@ const bookableUnitTypes = new Schema({
   title: String,
   description: String,
   totalSize: Number,
+  bed: String,
   unitPrice: {
     type: mongoose.Schema.ObjectId,
     ref: "UnitPrices",

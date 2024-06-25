@@ -7,6 +7,8 @@ import { useMemo, useState } from "react"
 import { useParams } from "next/navigation"
 import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import { Spinner } from "@/common/components/ui/Spinner"
+import { T_Photo } from "@repo/contract"
+import { isArray } from "lodash"
 
 const UnitsTable = () => {
   const params = useParams<{ listingId: string }>()
@@ -15,16 +17,21 @@ const UnitsTable = () => {
   const columnHelper = createColumnHelper<any>()
   const columns = [
     columnHelper.accessor("photos", {
-      header: "Unit",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-        >
-          <div className="flex items-center gap-5">
+      header: "Units",
+      cell: (context) => {
+        const photo =
+          context.getValue() && isArray(context.getValue())
+            ? context.getValue().find((photo: T_Photo) => photo.isMain)
+            : null
+        return (
+          <Link
+            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+            className="flex items-center gap-5"
+          >
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
-              {context.getValue()?.key ? (
+              {photo ? (
                 <Image
-                  src={`/assets/${context.getValue()?.key}`}
+                  src={`/assets/${photo.key}`}
                   alt="Image"
                   layout="fill"
                   objectFit="cover"
@@ -33,9 +40,9 @@ const UnitsTable = () => {
                 <div className="h-full w-full bg-primary-100"></div>
               )}
             </div>
-          </div>
-        </Link>
-      ),
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor("title", {
       header: "Name",
