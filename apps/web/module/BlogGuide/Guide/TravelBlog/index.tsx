@@ -14,8 +14,8 @@ function TravelBlog() {
   const travelName = params.travelName
   const images = data.travelBlog.images
   return (
-    <WidthWrapper width={"medium"}>
-      <div className="py-8 lg:mt-32 mt-16 grid lg:grid-cols-5">
+    <WidthWrapper width="small" className="mt-32">
+      <div className="py-8 grid lg:grid-cols-5">
         <div className="lg:col-span-4 lg:mx-20 mx-10 space-y-10">
           <TravelImages />
           <Separator orientation="horizontal" className="my-10 bg-gray-300" />

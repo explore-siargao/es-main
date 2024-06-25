@@ -37,6 +37,9 @@ const BasicInfo = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
+          queryClient.invalidateQueries({
+            queryKey: ["rental", listingId],
+          })
           if (pageType === "setup") {
             queryClient.invalidateQueries({
               queryKey: ["rental-finished-sections", listingId],
@@ -65,7 +68,7 @@ const BasicInfo = ({ pageType }: Prop) => {
             label="Category"
             id="rental-category"
             required
-            disabled={isPending || isLoading}
+            disabled={isPending || isLoading || pageType === "edit"}
             {...register("category", { required: true })}
           >
             <Option value="">Select</Option>

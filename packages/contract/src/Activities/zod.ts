@@ -26,7 +26,7 @@ export const Z_Activity = z.object({
   highLights: z.string().optional(),
   durationHour: z.number().optional(),
   durationMinute: z.number().optional(),
-  language: z.string().optional(),
+  languages: z.array(z.string()).optional(),
   isFoodIncluded: z.boolean().optional(),
   isNonAlcoholicDrinkIncluded: z.boolean().optional(),
   isAlcoholicDrinkIncluded: z.boolean().optional(),
@@ -50,15 +50,15 @@ export const Z_Update_Activity_Additional_Info = z.object({
   whatToBring: z.array(z.string()).optional(),
   notAllowed: z.array(z.string()).optional(),
   policies: z.array(z.string()).optional(),
-  cancellationDays: z.number().optional(),
+  cancellationDays: z.string().nullable().optional(),
 })
 
 export const Z_Update_Activity_Inclusions = z.object({
   isFoodIncluded: z.boolean(),
-  selectedFoodOptions: z.array(z.string()).optional().nullable(),
+  includedFoods: z.array(z.string()).optional().nullable(),
   isNonAlcoholicDrinkIncluded: z.boolean(),
   isAlcoholicDrinkIncluded: z.boolean(),
-  selectedAlcoholicDrinkOptions: z.array(z.string()),
+  includedAlcoholicDrinks: z.array(z.string()),
   otherInclusion: z.array(z.string()),
   notIncluded: z.array(z.string()),
 })

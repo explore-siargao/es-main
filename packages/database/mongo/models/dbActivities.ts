@@ -42,7 +42,7 @@ const activities = new Schema({
   },
   durationHour: Number,
   durationMinute: Number,
-  language: {
+  languages: {
     type: [String],
     default: [],
   },
@@ -50,7 +50,7 @@ const activities = new Schema({
     type: Boolean,
     default: false,
   },
-  selectedFoodOptions: {
+  includedFoods: {
     type: [String],
     default: [],
   },
@@ -62,7 +62,7 @@ const activities = new Schema({
     type: Boolean,
     default: false,
   },
-  selectedAlcoholicDrinkOptions: {
+  includedAlcoholicDrinks: {
     type: [String],
     default: [],
   },
@@ -86,10 +86,7 @@ const activities = new Schema({
     type: [String],
     default: [],
   },
-  cancellationDays: {
-    type: Number,
-    required: false,
-  },
+  cancellationDays: String,
   isSegmentBuilderEnabled: {
     type: Boolean,
     default: false,
@@ -100,7 +97,7 @@ const activities = new Schema({
   },
   meetingPoint: {
     type: mongoose.Schema.ObjectId,
-    ref: "Addresses",
+    ref: "Locations",
   },
   photos: {
     type: [mongoose.Schema.ObjectId],

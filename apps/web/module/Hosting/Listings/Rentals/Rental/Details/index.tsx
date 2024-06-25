@@ -44,12 +44,12 @@ const Details = ({ pageType }: Prop) => {
         onSuccess: (data: any) => {
           if (!data.error) {
             toast.success(data.message)
+            queryClient.invalidateQueries({
+              queryKey: ["rental", listingId],
+            })
             if (pageType === "setup") {
               queryClient.invalidateQueries({
                 queryKey: ["rental-finished-sections", listingId],
-              })
-              queryClient.invalidateQueries({
-                queryKey: ["rental", listingId],
               })
               router.push(
                 `/hosting/listings/rentals/setup/${listingId}/add-ons`

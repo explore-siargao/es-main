@@ -1,11 +1,6 @@
-import { API_URL_RENTALS } from "@/common/constants"
+import { API_URL_ACTIVITIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
-import {
-  T_Activity,
-  T_Activity_Segment,
-  T_Listing_Location,
-  T_Location,
-} from "@repo/contract"
+import { T_Activity_Segment, T_Location } from "@repo/contract"
 import { useMutation } from "@tanstack/react-query"
 
 type T_Activity_Itinerary = {
@@ -19,7 +14,7 @@ export async function updateActivityItinerary(
   props: T_Activity_Itinerary
 ) {
   const apiService = new ApiService("v2")
-  return await apiService.patch(`${API_URL_RENTALS}/${id}/itinerary`, props)
+  return await apiService.patch(`${API_URL_ACTIVITIES}/${id}/itinerary`, props)
 }
 
 function useUpdateActivityItinerary(id: string | undefined) {

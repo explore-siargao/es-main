@@ -8,9 +8,9 @@ import ModalContainerFooter from "@/common/components/ModalContainer/ModalContai
 import { ACTIVITIES } from "../constants"
 import toast from "react-hot-toast"
 import { useSegmentsStore } from "../store/useSegmentsStore"
-import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
 import { useParams } from "next/navigation"
 import CustomSpecificMap from "@/common/components/CustomSpecificMap"
+import useGetActivityById from "../../../hooks/useGetActivityById"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -34,7 +34,7 @@ const BuilderModal = ({
   } | null>(null)
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data } = useGetRentalById(listingId)
+  const { data } = useGetActivityById(listingId)
   const updateCoordinates = (latitude: number, longitude: number) => {
     setCoordinates({ latitude, longitude })
   }

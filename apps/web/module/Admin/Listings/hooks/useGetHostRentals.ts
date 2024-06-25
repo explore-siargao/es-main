@@ -9,7 +9,7 @@ export async function getHostRentals() {
 
 function useGetHostRentals() {
   const query = useQuery({
-    queryKey: ["host-rentals"],
+    queryKey: ["rentals"],
     queryFn: () => getHostRentals(),
   })
   return query

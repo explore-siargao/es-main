@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
 import { Icon, LatLngTuple } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
-import { API_URL } from "../constants/ev"
+import { WEB_URL } from "../constants/ev"
 interface SpecificMapProps {
   center: [number, number]
   mapHeight: string
@@ -14,7 +14,7 @@ interface SpecificMapProps {
 }
 
 const markerIcon = new Icon({
-  iconUrl: `${API_URL}/assets/new.png`,
+  iconUrl: `${WEB_URL}/marker.png`,
   iconSize: [35, 35],
   iconAnchor: [18, 18],
   popupAnchor: [-3, -76],
