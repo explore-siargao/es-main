@@ -14,11 +14,11 @@ import {
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import EditPhotoModal from "../../../../components/modals/EditPhotoModal"
 import usePhotoStore from "../../../../store/usePhotoStore"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import useSelectAmenityStore from "../store/useSelectAmenityStore"
 import AmenitiesCheckboxes from "../components/AmenitiesCheckboxes"
 import { useQueryClient } from "@tanstack/react-query"
@@ -27,44 +27,46 @@ import useAddUnitPhoto from "../hooks/useAddUnitPhoto"
 import useDeleteUnitPhoto from "../hooks/useDeleteUnitPhoto"
 import Photos from "./components/Photos"
 import { Option, Select } from "@/common/components/ui/Select"
+import useUpdateBedBasicInfo from "../../../hooks/useUpdateBedBasicInfo"
+import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
+import { T_Property_Amenity } from "@repo/contract"
+import useGetUnitById from "../hooks/useGetUnitById"
 
 type T_BedUnit = {
-  name: string
-  bed: string
-  typeCount: number
-  photos: {}[]
-  amenities: {}[]
+  title: string
+  description: string
+  qty: number
+  amenities: T_Property_Amenity[]
 }
 
 const Bed = () => {
   const params = useParams()
-  const listingId = params.listingId
-  const unitId = params.unitId
+  const listingId = String(params.listingId)
+  const bedId = String(params.bedId)
   const queryClient = useQueryClient()
 
-  const data: any = {} // change this to useGetPropertyUnitById
-
-  const [typeCount, setTypeCount] = useState((data?.qty || 0) as number)
+  const { data, isPending } = useGetUnitById(bedId)
+  const { mutateAsync: updateBedBasicInfo } = useUpdateBedBasicInfo(listingId)
+  const { mutateAsync: updateAmenities } = useUpdateAmenities(listingId, bedId)
+  const router = useRouter()
+  const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
 
   const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
   const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
     listingId as string,
-    unitId as string
+    bedId
+  )
+  const setAmenities = useSelectAmenityStore(
+    (state) => state.setDefaultAmenities
   )
   const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
     listingId as string
   )
-
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
-
   const amenities = useSelectAmenityStore((state) => state.amenities)
-
-  const { register, handleSubmit, setValue } = useForm<T_BedUnit>()
-
-  const isPending = false
-
+  const { control, register, handleSubmit, setValue } = useForm<T_BedUnit>()
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
@@ -87,12 +89,13 @@ const Bed = () => {
     await Promise.all([...toAddPhotos, ...toEditPhotos, ...toDeletePhotos])
       .then((items) => {
         items.forEach((item) => {
-          const message = String(item.message) as string
+          const message = String("New bed unit successfully added")
           toast.success(message, { id: message })
         })
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
         })
+        router.push(`/hosting/listings/properties/setup/${listingId}/units`)
       })
       .catch((err) => {
         toast.error(String(err))
@@ -113,19 +116,28 @@ const Bed = () => {
     }
   }
 
-  const onSubmit = (formData: T_BedUnit) => {
+  const onSubmit = async (formData: T_BedUnit) => {
     formData.amenities = amenities
-    formData.photos = photos
     console.log(formData)
+    const saveBasicInfo = updateBedBasicInfo({
+      _id: bedId,
+      title: formData.title,
+      description: formData.description,
+      qty: Number(typeCount),
+    })
+    const saveAmenities = updateAmenities({ amenities: formData?.amenities })
+    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+      updatePhotosInDb()
+    })
   }
 
   useEffect(() => {
-    setValue("typeCount", typeCount)
-  }, [typeCount])
-
-  useEffect(() => {
     if (!isPending && data && data.item) {
+      setValue("title", data?.item?.title)
+      setValue("description", data?.item?.description)
+      setTypeCount(data?.item?.qty)
       setPhotos(data?.item?.photos)
+      setAmenities(data.item?.amenities)
     }
   }, [data, isPending])
 
@@ -143,7 +155,7 @@ const Bed = () => {
         <div className="grid grid-cols-4 gap-x-6">
           <div>
             <Select
-              {...register("name", {
+              {...register("title", {
                 required: "This field is required",
               })}
               label="Name"
@@ -151,23 +163,31 @@ const Bed = () => {
             >
               <>
                 <Option value={""}>Select Name</Option>
-                <Option>Bed in 8-Bed Mixed Dorm</Option>
+                <Option selected={data?.item?.title}>
+                  Bed in 8-Bed Mixed Dorm
+                </Option>
               </>
             </Select>
           </div>
           <div>
-            <Select
-              {...register("bed", {
-                required: "This field is required",
-              })}
-              label="Bed"
-              required
-            >
-              <>
-                <Option value={""}>Select Bed</Option>
-                <Option>Single Bunk Bed</Option>
-              </>
-            </Select>
+            <Controller
+              control={control}
+              name="description"
+              defaultValue={data?.item?.description || ""}
+              rules={{ required: "This field is required" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  label="Bed"
+                  required
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                >
+                  <Option selected={data?.item?.description}>Select Bed</Option>
+                  <Option value="Single Bunk Bed">Single Bunk Bed</Option>
+                </Select>
+              )}
+            />
           </div>
         </div>
         <div className="grid grid-cols-4 mt-4">
@@ -188,7 +208,7 @@ const Bed = () => {
               <input
                 type="number"
                 id="type-count"
-                {...register("typeCount")}
+                {...register("qty")}
                 className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                 value={typeCount}
                 min={0}
