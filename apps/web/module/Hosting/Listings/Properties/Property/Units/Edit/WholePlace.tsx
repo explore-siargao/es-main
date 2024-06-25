@@ -17,7 +17,7 @@ import { useEffect, useState } from "react"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { Option, Select } from "@/common/components/ui/Select"
 import { Input } from "@/common/components/ui/Input"
 import AmenitiesCheckboxes from "../components/AmenitiesCheckboxes"
@@ -52,13 +52,12 @@ type Prop = {
 }
 
 const WholePlace = ({ pageType }: Prop) => {
+  const router = useRouter()
   const params = useParams()
   const listingId = String(params.listingId)
   const wholePlaceId = String(params.wholePlaceId)
   const queryClient = useQueryClient()
-
   const { data, isPending } = useGetUnitById(wholePlaceId)
-
   const [bedCount, setBedCount] = useState(data?.item?.numBedRooms || 0)
   const [bedInputs, setBedInputs] = useState(data?.item?.bedConfigs || [])
   const [bathroomCount, setBathroomCount] = useState(
@@ -79,14 +78,12 @@ const WholePlace = ({ pageType }: Prop) => {
   const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
     listingId as string
   )
-
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
   const amenities = useSelectAmenityStore((state) => state.amenities)
-
   const { register, unregister, handleSubmit, setValue } =
     useForm<T_WholePlaceUnit>()
 
@@ -112,12 +109,15 @@ const WholePlace = ({ pageType }: Prop) => {
     await Promise.all([...toAddPhotos, ...toEditPhotos, ...toDeletePhotos])
       .then((items) => {
         items.forEach((item) => {
-          const message = String(item.message) as string
+          const message = String("New whole place unit successfully updated")
           toast.success(message, { id: message })
         })
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
         })
+        router.push(
+          `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
+        )
       })
       .catch((err) => {
         toast.error(String(err))
@@ -166,13 +166,9 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   useEffect(() => {
-    setValue("bedCount", data?.item?.numBedRooms)
-    setValue("bathrooms", bathroomCount)
-    setValue("typeCount", typeCount)
-  }, [bedCount, bathroomCount, typeCount])
-
-  useEffect(() => {
     if (!isPending && data && data.item) {
+      setValue("title", data?.item?.title)
+      setValue("size", data?.item?.totalSize)
       setBedCount(data?.item.numBedRooms)
       setBathroomCount(data?.item.numBathRooms)
       setTypeCount(data?.item.qty)

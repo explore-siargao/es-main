@@ -17,7 +17,7 @@ interface IAmenity {
   amenity: string
   isSelected: boolean
 }
-//update bookable unit type
+
 export const updateBookableUnitTypeAmenities = async (
   req: Request,
   res: Response
@@ -44,33 +44,29 @@ export const updateBookableUnitTypeAmenities = async (
       response.error({ message: REQUIRED_VALUE_EMPTY + ' or invalid data' })
     )
   }
-
   const amenitiesWithOutId = amenities.filter((item) => !('_id' in item))
   const amenitiesWithId = amenities.filter((item) => '_id' in item)
-  if (amenitiesWithOutId.length > 0) {
-    amenitiesWithOutId.forEach(async (item: T_Property_Amenity) => {
-      const newAmenities = new dbAmenities({
+  try {
+    for (const item of amenitiesWithOutId as T_Property_Amenity[]) {
+      const newAmenity = new dbAmenities({
         index: item.index,
         category: item.category,
         amenity: item.amenity,
         isSelected: item.isSelected,
         createdAt: Date.now(),
       })
-      await newAmenities.save()
+      await newAmenity.save()
       await dbBookableUnitTypes.findByIdAndUpdate(
         bookableUnitTypeId,
         {
           $push: {
-            amenities: newAmenities._id,
+            amenities: newAmenity._id,
           },
         },
         { new: true }
       )
-    })
-  }
-
-  if (amenitiesWithId.length > 0) {
-    amenitiesWithId.forEach(async (item) => {
+    }
+    for (const item of amenitiesWithId) {
       await dbAmenities.findByIdAndUpdate(
         item._id,
         {
@@ -84,21 +80,17 @@ export const updateBookableUnitTypeAmenities = async (
         },
         { new: true }
       )
-    })
-  }
-  if (amenitiesWithId.length > 0) {
+    }
     return res.json(
       response.success({
-        items: amenitiesWithId,
+        items: amenities,
         message: 'Bookable unit amenities successfully updated',
       })
     )
-  }
-  if (amenitiesWithOutId.length > 0) {
+  } catch (err: any) {
     return res.json(
-      response.success({
-        items: amenitiesWithOutId,
-        message: 'Bookable unit amenities successfully updated',
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
