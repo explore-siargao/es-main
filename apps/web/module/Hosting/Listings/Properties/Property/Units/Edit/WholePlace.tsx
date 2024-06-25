@@ -52,6 +52,7 @@ type Prop = {
 }
 
 const WholePlace = ({ pageType }: Prop) => {
+  console.log(pageType)
   const router = useRouter()
   const params = useParams()
   const listingId = String(params.listingId)
@@ -141,7 +142,7 @@ const WholePlace = ({ pageType }: Prop) => {
       totalSize: Number(formData.size),
       numBedRooms: Number(formData.bedCount),
       numBathRooms: Number(formData.bathrooms),
-      qty: formData.typeCount,
+      qty: Number(typeCount),
     })
     const saveAmenities = updateAmenties({ amenities: formData?.amenities })
     await Promise.all([saveBasicInfo, saveAmenities]).then(() => {

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const EditWholePlaceUnitPage = () => {
   return (
     <AuthGuard>
-      <WholePlace pageType="edit" />
+      <WholePlace pageType="setup" />
     </AuthGuard>
   )
 }
