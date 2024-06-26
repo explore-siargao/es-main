@@ -132,10 +132,35 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   const handleSavePhotos = async () => {
-    updatePhotosInDb()
+    const activePhotos = photos.filter((photo) => !photo.isDeleted)
+    if (activePhotos.length >= 3) {
+      await updatePhotosInDb()
+    } else {
+      toast.error("Please add at least 3 photos")
+    }
   }
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
+    formData.amenities = amenities
+    if (formData.size <= 0) {
+      toast.error("Please fill total size count field")
+      return
+    }
+
+    if (bedCount <= 0) {
+      toast.error("Please fill out bedroom/space count field")
+      return
+    }
+    if (bathroomCount <= 0) {
+      toast.error("Please fill out bathroom count field")
+      return
+    }
+    if (typeCount <= 0) {
+      toast.error("Please fill out type count field")
+      return
+    }
+
+    try {
     if ((bedCount as number) > 0) {
       formData.amenities = amenities
       formData.bedCount = bedCount
@@ -156,10 +181,13 @@ const WholePlace = ({ pageType }: Prop) => {
     )
     if (filterSelectedAmenities.length > 0) {
       await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-        updatePhotosInDb()
+       handleSavePhotos()
       })
     } else {
       toast.error("Please select at least one amenity")
+    }
+       } catch (error) {
+      toast.error("An error occurred while saving data")
     }
   }
 
