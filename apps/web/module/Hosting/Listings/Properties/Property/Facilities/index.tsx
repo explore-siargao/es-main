@@ -50,7 +50,7 @@ const Facilities = ({ pageType }: Prop) => {
       (facility) => facility.isSelected
     )
     if (
-      addedFacilityCount.length > 1 ||
+      addedFacilityCount.length > 0 ||
       (data?.item?.Facilities && data?.item?.Facilities.length > 0)
     ) {
       const callBackReq = {
