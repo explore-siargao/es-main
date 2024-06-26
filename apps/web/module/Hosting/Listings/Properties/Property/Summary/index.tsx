@@ -44,6 +44,12 @@ const Summary = () => {
     await mutate(newStatus, callBackReq)
   }
 
+  const filteredPolicies = data?.item?.policies.filter(
+    (policy: T_Property_Policy) =>
+      policy.isSelected === true &&
+      !(policy.category === "Additional Rules" && !policy.policy)
+  )
+
   return (
     <div className="mt-20 mb-28">
       {isPending ? (
@@ -306,14 +312,10 @@ const Summary = () => {
               >
                 Property Policies
               </Typography>
-              {data?.item?.policies.length > 0 ? (
+              {filteredPolicies.length > 0 ? (
                 <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
-                  {data?.item?.policies
-                    .filter(
-                      (policy: T_Property_Policy) => policy.isSelected === true
-                    )
-                    .sort((a: any, b: any) => {
-                      console.log(a.category, b.category)
+                  {filteredPolicies
+                    .sort((a: T_Property_Policy, b: T_Property_Policy) => {
                       if (a.category < b.category) {
                         return -1
                       }
