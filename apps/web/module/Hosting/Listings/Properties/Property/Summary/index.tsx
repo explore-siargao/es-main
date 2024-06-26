@@ -10,9 +10,8 @@ import toast from "react-hot-toast"
 import useUpdatePropertyStatusById from "../../hooks/useUpdatePropertyStatusById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import {
+  T_BookableUnitType,
   T_Photo,
-  T_Property,
-  T_Property_Amenity,
   T_Property_Facility,
   T_Property_Policy,
 } from "@repo/contract"
@@ -187,7 +186,7 @@ const Summary = () => {
               )}
             </div>
 
-            {/* <div className="mt-3 border-b border-gray-200 pb-3">
+            <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
                 variant="h4"
                 fontWeight="semibold"
@@ -195,25 +194,37 @@ const Summary = () => {
               >
                 Units
               </Typography>
-              <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
-                <li>
-                  <div className="flex space-x-14">
-                    <Typography variant="h5" className="w-40 truncate">
-                      <span className="font-semibold">Name:</span> {}
-                    </Typography>
-                    <Typography variant="h5" className="w-72 truncate">
-                      <span className="font-semibold">Description:</span> {}
-                    </Typography>
-                    <Typography variant="h5" className="w-32 truncate">
-                      <span className="font-semibold">Type:</span> {}
-                    </Typography>
-                    <Typography variant="h5" className="w-32 truncate">
-                      <span className="font-semibold">Quantity:</span> {}
-                    </Typography>
-                  </div>
-                </li>
-              </ol>
-            </div> */}
+              {data?.item?.bookableUnits?.length > 0 ? (
+                <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
+                  {data?.item?.bookableUnits
+                    .filter((unit: T_BookableUnitType) => unit.title !== "")
+                    .sort((a: T_BookableUnitType, b: T_BookableUnitType) => {
+                      if (a.category < b.category) {
+                        return -1
+                      }
+                      if (a.category > b.category) {
+                        return 1
+                      }
+                      return 0
+                    })
+                    .map((unit: T_BookableUnitType) => (
+                      <li key={unit?._id}>
+                        <Typography variant="h5">
+                          {unit.category === "Bed"
+                            ? `${unit.title} - ${unit.description}`
+                            : unit.category === "Room"
+                              ? `${unit.title} - ${unit.bed}`
+                              : `${unit.title} - ${unit.totalSize}(sqm)`}
+                        </Typography>
+                      </li>
+                    ))}
+                </ol>
+              ) : (
+                <Typography variant="h5" className="mt-2">
+                  No data available.
+                </Typography>
+              )}
+            </div>
 
             <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
