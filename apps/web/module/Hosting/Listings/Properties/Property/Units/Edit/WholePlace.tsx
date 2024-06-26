@@ -118,6 +118,9 @@ const WholePlace = ({ pageType }: Prop) => {
         router.push(
           `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
         )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))

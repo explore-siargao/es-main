@@ -41,7 +41,11 @@ type T_RoomUnit = {
   amenities: T_Property_Amenity[]
 }
 
-const Room = () => {
+type Prop = {
+  pageType: "setup" | "edit"
+}
+
+const Room = ({ pageType }: Prop) => {
   const params = useParams()
   const listingId = String(params.listingId)
   const unitId = String(params.roomId)
@@ -99,7 +103,12 @@ const Room = () => {
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
         })
-        router.push(`/hosting/listings/properties/setup/${listingId}/units`)
+        router.push(
+          `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
+        )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))
@@ -158,7 +167,9 @@ const Room = () => {
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
-        <Link href={`/hosting/listings/properties/${listingId}/units`}>
+        <Link
+          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`}
+        >
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
         <Typography variant="h1" fontWeight="semibold" className="mt-4">
