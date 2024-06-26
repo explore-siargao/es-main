@@ -41,7 +41,11 @@ type T_RoomUnit = {
   amenities: T_Property_Amenity[]
 }
 
-const Room = () => {
+type Prop = {
+  pageType: "setup" | "edit"
+}
+
+const Room = ({ pageType }: Prop) => {
   const params = useParams()
   const listingId = String(params.listingId)
   const unitId = String(params.roomId)
@@ -99,7 +103,12 @@ const Room = () => {
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
         })
-        router.push(`/hosting/listings/properties/setup/${listingId}/units`)
+        router.push(
+          `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
+        )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))
@@ -130,9 +139,16 @@ const Room = () => {
       qty: Number(typeCount),
     })
     const saveAmenities = updateAmenties({ amenities: formData?.amenities })
-    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-      updatePhotosInDb()
-    })
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
+    )
+    if (filterSelectedAmenities.length > 0) {
+      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+        updatePhotosInDb()
+      })
+    } else {
+      toast.error("Please select at least one amenity")
+    }
   }
 
   useEffect(() => {

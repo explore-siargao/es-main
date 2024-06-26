@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const EditBedUnitPage = () => {
   return (
     <AuthGuard>
-      <Bed />
+      <Bed pageType="edit" />
     </AuthGuard>
   )
 }
