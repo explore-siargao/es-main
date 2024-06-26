@@ -125,28 +125,54 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   const handleSavePhotos = async () => {
-    updatePhotosInDb()
+    const activePhotos = photos.filter((photo) => !photo.isDeleted)
+    if (activePhotos.length >= 3) {
+      await updatePhotosInDb()
+    } else {
+      toast.error("Please add at least 3 photos")
+    }
   }
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
-    if (bedCount > 0) {
-      formData.amenities = amenities
-      formData.bedCount = bedCount
-    } else {
-      toast.error("Must have at least 1 bedroom or sleeping space.")
+    formData.amenities = amenities
+
+    if (formData.size <= 0) {
+      toast.error("Please fill total size count field")
+      return
     }
-    const saveBasicInfo = updateWholePlaceBasicInfo({
-      _id: wholePlaceId,
-      title: formData.title,
-      totalSize: Number(formData.size),
-      numBedRooms: Number(formData.bedCount),
-      numBathRooms: Number(formData.bathrooms),
-      qty: formData.typeCount,
-    })
-    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
-    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-      updatePhotosInDb()
-    })
+
+    if (bedCount <= 0) {
+      toast.error("Please fill out bedroom/space count field")
+      return
+    }
+    if (bathroomCount <= 0) {
+      toast.error("Please fill out bathroom count field")
+      return
+    }
+    if (typeCount <= 0) {
+      toast.error("Please fill out type count field")
+      return
+    }
+
+    try {
+      const saveBasicInfo = updateWholePlaceBasicInfo({
+        _id: wholePlaceId,
+        title: formData.title,
+        totalSize: Number(formData.size),
+        numBedRooms: Number(formData.bedCount),
+        numBathRooms: Number(formData.bathrooms),
+        qty: formData.typeCount,
+      })
+
+      const saveAmenities = updateAmenties({ amenities: formData.amenities })
+
+      await Promise.all([saveBasicInfo, saveAmenities])
+
+      await handleSavePhotos()
+    } catch (error) {
+      console.error("Error saving data:", error)
+      toast.error("An error occurred while saving data")
+    }
   }
 
   const addBedInput = () => {

@@ -105,34 +105,43 @@ const Room = () => {
         toast.error(String(err))
       })
   }
-
   const handleSavePhotos = async () => {
-    if (
-      photos?.length > 4 ||
-      (data?.item?.photos && data?.item?.photos.length > 4)
-    ) {
-      updatePhotosInDb()
-    } else if (
-      photos?.length < 5 ||
-      (data?.item?.Photos && data?.item?.Photos.length < 5)
-    ) {
-      toast.error("Please add at least 5 photos")
+    const activePhotos = photos.filter((photo) => !photo.isDeleted)
+    if (activePhotos.length >= 3) {
+      await updatePhotosInDb()
+    } else {
+      toast.error("Please add at least 3 photos")
     }
   }
 
   const onSubmit = async (formData: T_RoomUnit) => {
     formData.amenities = amenities
-    const saveBasicInfo = updateRoomBasicInfo({
-      _id: unitId,
-      title: formData.title,
-      totalSize: Number(formData.size),
-      bed: formData.bed,
-      qty: Number(typeCount),
-    })
-    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
-    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-      updatePhotosInDb()
-    })
+
+    if (!formData.size) {
+      toast.error("Please fill out size field")
+      return
+    }
+    if (typeCount <= 0) {
+      toast.error("Please fill out quantity field")
+      return
+    }
+
+    try {
+      const saveBasicInfo = updateRoomBasicInfo({
+        _id: unitId,
+        title: formData.title,
+        totalSize: Number(formData.size),
+        bed: formData.bed,
+        qty: Number(typeCount),
+      })
+      const saveAmenities = updateAmenties({ amenities: formData.amenities })
+
+      await Promise.all([saveBasicInfo, saveAmenities])
+
+      await handleSavePhotos()
+    } catch (error) {
+      toast.error("An error occurred while saving data")
+    }
   }
 
   useEffect(() => {
@@ -194,9 +203,7 @@ const Room = () => {
               aria-disabled={isPending}
               defaultValue={data?.item?.totalSize}
               disabled={isPending}
-              {...register("size", {
-                required: "This field is required",
-              })}
+              {...register("size", { required: "Size is required" })}
               required
             />
           </div>
@@ -227,6 +234,7 @@ const Room = () => {
                   const val = parseInt(e.target.value)
                   setTypeCount(val)
                 }}
+                required
               />
               <button
                 className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"

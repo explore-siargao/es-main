@@ -103,32 +103,38 @@ const Bed = () => {
   }
 
   const handleSavePhotos = async () => {
-    if (
-      photos?.length > 4 ||
-      (data?.item?.photos && data?.item?.photos.length > 4)
-    ) {
-      updatePhotosInDb()
-    } else if (
-      photos?.length < 5 ||
-      (data?.item?.Photos && data?.item?.Photos.length < 5)
-    ) {
-      toast.error("Please add at least 5 photos")
+    const activePhotos = photos.filter((photo) => !photo.isDeleted)
+    if (activePhotos.length >= 3) {
+      await updatePhotosInDb()
+    } else {
+      toast.error("Please add at least 3 photos")
     }
   }
 
   const onSubmit = async (formData: T_BedUnit) => {
     formData.amenities = amenities
-    console.log(formData)
-    const saveBasicInfo = updateBedBasicInfo({
-      _id: bedId,
-      title: formData.title,
-      description: formData.description,
-      qty: Number(typeCount),
-    })
-    const saveAmenities = updateAmenities({ amenities: formData?.amenities })
-    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-      updatePhotosInDb()
-    })
+
+    if (!formData.title || !formData.description) {
+      toast.error("Please fill out all required fields")
+      return
+    }
+    if (typeCount <= 0) {
+      toast.error("Please fill out quantity")
+      return
+    }
+    try {
+      const saveBasicInfo = updateBedBasicInfo({
+        _id: bedId,
+        title: formData.title,
+        description: formData.description,
+        qty: Number(typeCount),
+      })
+      const saveAmenities = updateAmenities({ amenities: formData.amenities })
+      await Promise.all([saveBasicInfo, saveAmenities])
+      await handleSavePhotos()
+    } catch (error) {
+      toast.error("An error occurred while saving data")
+    }
   }
 
   useEffect(() => {
@@ -179,12 +185,17 @@ const Bed = () => {
                 <Select
                   {...field}
                   label="Bed"
-                  required
                   value={field.value}
                   onChange={(value) => field.onChange(value)}
+                  required
                 >
-                  <Option selected={data?.item?.description}>Select Bed</Option>
-                  <Option value="Single Bunk Bed">Single Bunk Bed</Option>
+                  <Option value={""}>Select Bed</Option>
+                  <Option
+                    value="Single Bunk Bed"
+                    selected={data?.item?.description}
+                  >
+                    Single Bunk Bed
+                  </Option>
                 </Select>
               )}
             />
@@ -208,6 +219,7 @@ const Bed = () => {
               <input
                 type="number"
                 id="type-count"
+                required
                 {...register("qty")}
                 className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                 value={typeCount}
