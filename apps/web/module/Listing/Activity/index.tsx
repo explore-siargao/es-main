@@ -24,6 +24,7 @@ import PoliciesModal from "../components/modals/PoliciesModal"
 import ThingsToKnow from "./ThingsToKnow"
 import MeetingPoint from "./MeetingPoint"
 import CheckoutBox from "./CheckoutBox"
+import Builder from "./Itinerary/Builder"
 
 export const ratingSummary = {
   ratings: 5,
@@ -128,7 +129,7 @@ export const userReviews = [
   },
 ]
 
-const value = {
+export const value = {
   host: "66622c6d14e35b280af399fa",
   title: "Island Hopping Adventure",
   description:
@@ -239,7 +240,47 @@ const value = {
     },
   ],
   isSegmentBuilderEnabled: true,
-  segments: [],
+  segments: [
+    {
+      index: 1,
+      activities: ["Safety briefing", "Scenic views", "Camp activities"],
+      durationHour: 2,
+      durationMinute: 4,
+      location: "Test test location yes",
+      longitude: 126.11343553773443,
+      latitude: 9.884304859312676,
+      optional: true,
+      hasAdditionalFee: true,
+      transfer: null,
+      _id: {
+        $oid: "666cfa8f600be3ff237e9b29",
+      },
+    },
+    {
+      index: 2,
+      activities: [],
+      durationHour: 1,
+      durationMinute: 0,
+      optional: true,
+      hasAdditionalFee: true,
+      transfer: "Motorbike",
+      _id: {
+        $oid: "666cfa8f600be3ff237e9b2a",
+      },
+    },
+    {
+      index: 3,
+      activities: [],
+      durationHour: 1,
+      durationMinute: 1,
+      optional: false,
+      hasAdditionalFee: false,
+      transfer: "Local pump boat",
+      _id: {
+        $oid: "666cfb4b600be3ff237e9bb5",
+      },
+    },
+  ],
   meetingPoint:
     "General Luna Pier, General Luna, Siargao Island, Surigao del Norte, Philippines",
   status: "Incomplete",
@@ -285,6 +326,12 @@ export const ActivitySingleView = () => {
                 }
               />
             </div>
+            {value.isSegmentBuilderEnabled ? (
+              <div className="py-6">
+                <Builder />
+              </div>
+            ) : null}
+
             <div className="py-6">
               <Highlights highlights={value.highLights} />
             </div>
