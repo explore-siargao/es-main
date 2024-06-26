@@ -39,7 +39,11 @@ type T_BedUnit = {
   amenities: T_Property_Amenity[]
 }
 
-const Bed = () => {
+type Prop = {
+  pageType: "setup" | "edit"
+}
+
+const Bed = ({ pageType }: Prop) => {
   const params = useParams()
   const listingId = String(params.listingId)
   const bedId = String(params.bedId)
@@ -95,7 +99,12 @@ const Bed = () => {
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
         })
-        router.push(`/hosting/listings/properties/setup/${listingId}/units`)
+        router.push(
+          `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
+        )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))
@@ -113,7 +122,6 @@ const Bed = () => {
 
   const onSubmit = async (formData: T_BedUnit) => {
     formData.amenities = amenities
-
     if (!formData.title || !formData.description) {
       toast.error("Please fill out all required fields")
       return
@@ -129,12 +137,20 @@ const Bed = () => {
         description: formData.description,
         qty: Number(typeCount),
       })
-      const saveAmenities = updateAmenities({ amenities: formData.amenities })
-      await Promise.all([saveBasicInfo, saveAmenities])
-      await handleSavePhotos()
-    } catch (error) {
-      toast.error("An error occurred while saving data")
+   
+    const saveAmenities = updateAmenities({ amenities: formData?.amenities })
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
+    )
+    if (filterSelectedAmenities.length > 0) {
+      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+        handleSavePhotos()
+      })
+    } else {
+      toast.error("Please select at least one amenity")
     }
+       } catch (error) {
+      toast.error("An error occurred while saving data")
   }
 
   useEffect(() => {

@@ -41,7 +41,11 @@ type T_RoomUnit = {
   amenities: T_Property_Amenity[]
 }
 
-const Room = () => {
+type Prop = {
+  pageType: "setup" | "edit"
+}
+
+const Room = ({ pageType }: Prop) => {
   const params = useParams()
   const listingId = String(params.listingId)
   const unitId = String(params.roomId)
@@ -99,7 +103,12 @@ const Room = () => {
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
         })
-        router.push(`/hosting/listings/properties/setup/${listingId}/units`)
+        router.push(
+          `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
+        )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))
@@ -116,7 +125,6 @@ const Room = () => {
 
   const onSubmit = async (formData: T_RoomUnit) => {
     formData.amenities = amenities
-
     if (!formData.size) {
       toast.error("Please fill out size field")
       return
@@ -127,21 +135,27 @@ const Room = () => {
     }
 
     try {
-      const saveBasicInfo = updateRoomBasicInfo({
-        _id: unitId,
-        title: formData.title,
-        totalSize: Number(formData.size),
-        bed: formData.bed,
-        qty: Number(typeCount),
+    const saveBasicInfo = updateRoomBasicInfo({
+      _id: unitId,
+      title: formData.title,
+      totalSize: Number(formData.size),
+      bed: formData.bed,
+      qty: Number(typeCount),
+    })
+    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
+    )
+    if (filterSelectedAmenities.length > 0) {
+      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+       handleSavePhotos()
       })
-      const saveAmenities = updateAmenties({ amenities: formData.amenities })
-
-      await Promise.all([saveBasicInfo, saveAmenities])
-
-      await handleSavePhotos()
-    } catch (error) {
-      toast.error("An error occurred while saving data")
+    } else {
+      toast.error("Please select at least one amenity")
     }
+       } catch (error) {
+      toast.error("An error occurred while saving data")
+       }
   }
 
   useEffect(() => {

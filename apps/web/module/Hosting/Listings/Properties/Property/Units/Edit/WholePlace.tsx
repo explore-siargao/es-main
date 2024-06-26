@@ -58,11 +58,15 @@ const WholePlace = ({ pageType }: Prop) => {
   const wholePlaceId = String(params.wholePlaceId)
   const queryClient = useQueryClient()
   const { data, isPending } = useGetUnitById(wholePlaceId)
-  const [bedCount, setBedCount] = useState(data?.item?.numBedRooms || 0)
-  const [bedInputs, setBedInputs] = useState(data?.item?.bedConfigs || [])
-  const [bathroomCount, setBathroomCount] = useState(
-    data?.item?.numBathRooms || 0
+  const [bedCount, setBedCount] = useState<number>(
+    (data?.item?.numBedRooms as number) || 0
   )
+  const [bedInputs, setBedInputs] = useState(data?.item?.bedConfigs || [])
+
+  const [bathroomCount, setBathroomCount] = useState<number>(
+    Number(data?.item?.numBathRooms) || 0
+  )
+
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const { mutateAsync: updateWholePlaceBasicInfo } =
     useUpdateWholePlaceBasicInfo(listingId)
@@ -118,6 +122,9 @@ const WholePlace = ({ pageType }: Prop) => {
         router.push(
           `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
         )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))
@@ -135,7 +142,6 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
-
     if (formData.size <= 0) {
       toast.error("Please fill total size count field")
       return
@@ -155,36 +161,45 @@ const WholePlace = ({ pageType }: Prop) => {
     }
 
     try {
-      const saveBasicInfo = updateWholePlaceBasicInfo({
-        _id: wholePlaceId,
-        title: formData.title,
-        totalSize: Number(formData.size),
-        numBedRooms: Number(formData.bedCount),
-        numBathRooms: Number(formData.bathrooms),
-        qty: formData.typeCount,
+    if ((bedCount as number) > 0) {
+      formData.amenities = amenities
+      formData.bedCount = bedCount
+    } else {
+      toast.error("Must have at least 1 bedroom or sleeping space.")
+    }
+    const saveBasicInfo = updateWholePlaceBasicInfo({
+      _id: wholePlaceId,
+      title: formData.title,
+      totalSize: Number(formData.size),
+      numBedRooms: bedCount,
+      numBathRooms: bathroomCount,
+      qty: Number(typeCount),
+    })
+    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
+    )
+    if (filterSelectedAmenities.length > 0) {
+      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+       handleSavePhotos()
       })
-
-      const saveAmenities = updateAmenties({ amenities: formData.amenities })
-
-      await Promise.all([saveBasicInfo, saveAmenities])
-
-      await handleSavePhotos()
-    } catch (error) {
+    } else {
+      toast.error("Please select at least one amenity")
+    }
+       } catch (error) {
       toast.error("An error occurred while saving data")
     }
   }
 
   const addBedInput = () => {
-    // @ts-ignore
-    setBedInputs((prevBedInput: any) => [...prevBedInput, bedCount])
-    setBedCount((prevBedCount: any) => prevBedCount + 1)
+    setBedInputs((prevBedInput: any) => [...prevBedInput, bedCount as number])
+    setBedCount((prevBedCount: number) => prevBedCount + 1)
   }
 
   const removeBedInput = () => {
     if (bedInputs.length > 0) {
-      // @ts-ignore
+      //@ts-ignore
       unregister(`beds[${bedInputs.length - 1}]`)
-
       setBedInputs((prevBedInputs: any) => prevBedInputs.slice(0, -1))
       setBedCount((prevBedCount: any) => prevBedCount - 1)
     }
@@ -194,8 +209,8 @@ const WholePlace = ({ pageType }: Prop) => {
     if (!isPending && data && data.item) {
       setValue("title", data?.item?.title)
       setValue("size", data?.item?.totalSize)
-      setBedCount(data?.item.numBedRooms)
-      setBathroomCount(data?.item.numBathRooms)
+      setBedCount(Number(data?.item.numBedRooms))
+      setBathroomCount(Number(data?.item.numBathRooms))
       setTypeCount(data?.item.qty)
       setPhotos(data?.item?.photos)
       setAmenties(data.item?.amenities)
@@ -264,10 +279,10 @@ const WholePlace = ({ pageType }: Prop) => {
                 id="beds"
                 {...register("bedCount")}
                 className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                value={bedCount}
+                value={bedCount as number}
                 min={0}
                 onChange={(e) => {
-                  const val = parseInt(e.target.value)
+                  const val: number = Number(e.target.value)
                   setBedCount(val)
                 }}
               />
@@ -327,7 +342,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 value={bathroomCount}
                 min={0}
                 onChange={(e) => {
-                  const val = parseInt(e.target.value)
+                  const val = Number(e.target.value)
                   setBathroomCount(val)
                 }}
               />
@@ -335,7 +350,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() =>
-                  setBathroomCount((bathroomCount: any) => bathroomCount + 1)
+                  setBathroomCount((bathroomCount: number) => bathroomCount + 1)
                 }
               >
                 <PlusIcon className="h-3 w-3" />
