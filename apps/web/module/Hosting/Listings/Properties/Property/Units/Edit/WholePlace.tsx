@@ -170,7 +170,6 @@ const WholePlace = ({ pageType }: Prop) => {
 
       await handleSavePhotos()
     } catch (error) {
-      console.error("Error saving data:", error)
       toast.error("An error occurred while saving data")
     }
   }
