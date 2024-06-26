@@ -52,7 +52,6 @@ type Prop = {
 }
 
 const WholePlace = ({ pageType }: Prop) => {
-  console.log(pageType)
   const router = useRouter()
   const params = useParams()
   const listingId = String(params.listingId)
@@ -119,6 +118,9 @@ const WholePlace = ({ pageType }: Prop) => {
         router.push(
           `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`
         )
+        amenities.forEach((amenity) => {
+          amenity.isSelected = false
+        })
       })
       .catch((err) => {
         toast.error(String(err))
@@ -145,9 +147,16 @@ const WholePlace = ({ pageType }: Prop) => {
       qty: Number(typeCount),
     })
     const saveAmenities = updateAmenties({ amenities: formData?.amenities })
-    await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-      updatePhotosInDb()
-    })
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
+    )
+    if (filterSelectedAmenities.length > 0) {
+      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+        updatePhotosInDb()
+      })
+    } else {
+      toast.error("Please select at least one amenity")
+    }
   }
 
   const addBedInput = () => {
