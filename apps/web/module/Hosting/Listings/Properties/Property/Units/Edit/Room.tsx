@@ -165,7 +165,9 @@ const Room = ({ pageType }: Prop) => {
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
-        <Link href={`/hosting/listings/properties/${listingId}/units`}>
+        <Link
+          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units`}
+        >
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
         <Typography variant="h1" fontWeight="semibold" className="mt-4">
