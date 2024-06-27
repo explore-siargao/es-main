@@ -151,18 +151,20 @@ const PropertyType = ({ pageType }: Prop) => {
           </div>
         ))}
       </div>
-      <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
-        <Button
-          size="sm"
-          className={cn(
-            "disabled:bg-gray-600",
-            isPending ? "opacity-70 cursor-progress" : ""
-          )}
-          onClick={isPending ? () => null : handleSave}
-        >
-          {pageType === "setup" ? "Save & Next" : "Save Changes"}
-        </Button>
-      </div>
+      {pageType === "setup" && (
+        <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
+          <Button
+            size="sm"
+            className={cn(
+              "disabled:bg-gray-600",
+              isPending ? "opacity-70 cursor-progress" : ""
+            )}
+            onClick={isPending ? () => null : handleSave}
+          >
+            {pageType === "setup" ? "Save & Next" : "Save Changes"}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
