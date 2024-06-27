@@ -6,9 +6,7 @@ import { useParams, useRouter } from "next/navigation"
 import { cn } from "@/common/helpers/cn"
 import useSelectFacilityStore from "./store/useSelectFacilityStore"
 import { useQueryClient } from "@tanstack/react-query"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import toast from "react-hot-toast"
-import useUpdatePropertyFacilities from "../../../hooks/useUpdatePropertyFacilities"
 import FacilitiesCheckboxes from "./FacilitiesCheckboxes"
 import {
   LucideBike,
@@ -28,6 +26,8 @@ import {
   LucideUtensilsCrossed,
   LucideWifi,
 } from "lucide-react"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
+import useUpdatePropertyFacilities from "../../hooks/useUpdatePropertyFacilities"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -37,8 +37,9 @@ const Facilities = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { data, isLoading } = useGetPropertyById(listingId)
+  const listingId = String(params.listingId)
+  const propertyId = params.listingId
+  const { data, isLoading } = useGetPropertyById(propertyId)
   const { mutate, isPending } = useUpdatePropertyFacilities(listingId)
   const facilities = useSelectFacilityStore((state) => state.facilities)
   const setDefaultFacilities = useSelectFacilityStore(
@@ -49,7 +50,7 @@ const Facilities = ({ pageType }: Prop) => {
       (facility) => facility.isSelected
     )
     if (
-      addedFacilityCount.length > 1 ||
+      addedFacilityCount.length > 0 ||
       (data?.item?.Facilities && data?.item?.Facilities.length > 0)
     ) {
       const callBackReq = {
@@ -61,7 +62,7 @@ const Facilities = ({ pageType }: Prop) => {
             })
             if (pageType === "setup") {
               router.push(
-                `/hosting/listings/properties/setup/${listingId}/photos`
+                `/hosting/listings/properties/setup/${listingId}/units`
               )
             }
           } else {
@@ -78,8 +79,8 @@ const Facilities = ({ pageType }: Prop) => {
     }
   }
   useEffect(() => {
-    setDefaultFacilities(data?.item?.Facilities)
-  }, [data?.item?.Facilities])
+    setDefaultFacilities(data?.item?.facilities)
+  }, [data?.item?.facilities])
   return (
     <div className="mt-20 mb-24">
       <Typography variant="h1" fontWeight="semibold">

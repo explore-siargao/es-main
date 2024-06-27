@@ -1,3 +1,3 @@
 export * from "./zod"
+export * from "./enum"
 export type * from "./type"
-export type * from "./enum"
