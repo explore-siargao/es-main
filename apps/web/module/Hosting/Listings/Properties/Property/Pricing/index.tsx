@@ -63,7 +63,9 @@ const Pricing = ({ pageType }: PricingContentProps) => {
         queryKey: ["property", listingId],
       })
     }
-    router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
+    if (pageType === "setup") {
+      router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
+    }
   }
 
   useEffect(() => {

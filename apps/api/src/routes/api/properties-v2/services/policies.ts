@@ -129,7 +129,7 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
   res.json(
     response.success({
       items: policies,
-      message: 'Property facilities successfully updated',
+      message: 'Property policies successfully updated',
     })
   )
 }

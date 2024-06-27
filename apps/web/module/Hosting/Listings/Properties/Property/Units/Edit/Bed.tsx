@@ -152,6 +152,7 @@ const Bed = ({ pageType }: Prop) => {
        } catch (error) {
       toast.error("An error occurred while saving data")
   }
+}
 
   useEffect(() => {
     if (!isPending && data && data.item) {
@@ -162,6 +163,8 @@ const Bed = ({ pageType }: Prop) => {
       setAmenities(data.item?.amenities)
     }
   }, [data, isPending])
+
+
 
   return (
     <div className="mt-20 mb-28">
@@ -302,5 +305,6 @@ const Bed = ({ pageType }: Prop) => {
     </div>
   )
 }
+
 
 export default Bed
