@@ -135,27 +135,27 @@ const Room = ({ pageType }: Prop) => {
     }
 
     try {
-    const saveBasicInfo = updateRoomBasicInfo({
-      _id: unitId,
-      title: formData.title,
-      totalSize: Number(formData.size),
-      bed: formData.bed,
-      qty: Number(typeCount),
-    })
-    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
-    const filterSelectedAmenities = amenities.filter(
-      (amenity) => amenity.isSelected
-    )
-    if (filterSelectedAmenities.length > 0) {
-      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-       handleSavePhotos()
+      const saveBasicInfo = updateRoomBasicInfo({
+        _id: unitId,
+        title: formData.title,
+        totalSize: Number(formData.size),
+        bed: formData.bed,
+        qty: Number(typeCount),
       })
-    } else {
-      toast.error("Please select at least one amenity")
-    }
-       } catch (error) {
+      const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+      const filterSelectedAmenities = amenities.filter(
+        (amenity) => amenity.isSelected
+      )
+      if (filterSelectedAmenities.length > 0) {
+        await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+          handleSavePhotos()
+        })
+      } else {
+        toast.error("Please select at least one amenity")
+      }
+    } catch (error) {
       toast.error("An error occurred while saving data")
-       }
+    }
   }
 
   useEffect(() => {

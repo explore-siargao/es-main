@@ -137,22 +137,22 @@ const Bed = ({ pageType }: Prop) => {
         description: formData.description,
         qty: Number(typeCount),
       })
-   
-    const saveAmenities = updateAmenities({ amenities: formData?.amenities })
-    const filterSelectedAmenities = amenities.filter(
-      (amenity) => amenity.isSelected
-    )
-    if (filterSelectedAmenities.length > 0) {
-      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-        handleSavePhotos()
-      })
-    } else {
-      toast.error("Please select at least one amenity")
-    }
-       } catch (error) {
+
+      const saveAmenities = updateAmenities({ amenities: formData?.amenities })
+      const filterSelectedAmenities = amenities.filter(
+        (amenity) => amenity.isSelected
+      )
+      if (filterSelectedAmenities.length > 0) {
+        await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+          handleSavePhotos()
+        })
+      } else {
+        toast.error("Please select at least one amenity")
+      }
+    } catch (error) {
       toast.error("An error occurred while saving data")
+    }
   }
-}
 
   useEffect(() => {
     if (!isPending && data && data.item) {
@@ -163,8 +163,6 @@ const Bed = ({ pageType }: Prop) => {
       setAmenities(data.item?.amenities)
     }
   }, [data, isPending])
-
-
 
   return (
     <div className="mt-20 mb-28">
@@ -305,6 +303,5 @@ const Bed = ({ pageType }: Prop) => {
     </div>
   )
 }
-
 
 export default Bed

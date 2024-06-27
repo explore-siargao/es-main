@@ -161,32 +161,32 @@ const WholePlace = ({ pageType }: Prop) => {
     }
 
     try {
-    if ((bedCount as number) > 0) {
-      formData.amenities = amenities
-      formData.bedCount = bedCount
-    } else {
-      toast.error("Must have at least 1 bedroom or sleeping space.")
-    }
-    const saveBasicInfo = updateWholePlaceBasicInfo({
-      _id: wholePlaceId,
-      title: formData.title,
-      totalSize: Number(formData.size),
-      numBedRooms: bedCount,
-      numBathRooms: bathroomCount,
-      qty: Number(typeCount),
-    })
-    const saveAmenities = updateAmenties({ amenities: formData?.amenities })
-    const filterSelectedAmenities = amenities.filter(
-      (amenity) => amenity.isSelected
-    )
-    if (filterSelectedAmenities.length > 0) {
-      await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-       handleSavePhotos()
+      if ((bedCount as number) > 0) {
+        formData.amenities = amenities
+        formData.bedCount = bedCount
+      } else {
+        toast.error("Must have at least 1 bedroom or sleeping space.")
+      }
+      const saveBasicInfo = updateWholePlaceBasicInfo({
+        _id: wholePlaceId,
+        title: formData.title,
+        totalSize: Number(formData.size),
+        numBedRooms: bedCount,
+        numBathRooms: bathroomCount,
+        qty: Number(typeCount),
       })
-    } else {
-      toast.error("Please select at least one amenity")
-    }
-       } catch (error) {
+      const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+      const filterSelectedAmenities = amenities.filter(
+        (amenity) => amenity.isSelected
+      )
+      if (filterSelectedAmenities.length > 0) {
+        await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
+          handleSavePhotos()
+        })
+      } else {
+        toast.error("Please select at least one amenity")
+      }
+    } catch (error) {
       toast.error("An error occurred while saving data")
     }
   }
