@@ -5,7 +5,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { Z_Photo, Z_Update_Photo } from '@repo/contract'
-import { dbPhotos } from '@repo/database'
+import { dbBookableUnitTypes, dbPhotos, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 import { FileService } from '@/common/service/file'
 
@@ -13,10 +13,10 @@ const response = new ResponseService()
 const fileService = new FileService()
 
 export const addPhoto = async (req: Request, res: Response) => {
-  const isHost = true
+  const isHost = res.locals.user?.isHost
   const propertyId = req.params.propertyId
   const files = req.files
-  const { bookableUnitTypeId, description, tags, isMain } = req.body
+  const { description, tags, isMain } = req.body
   const isValidInput = Z_Photo.safeParse(req.body)
   if (!isHost) {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
@@ -26,10 +26,8 @@ export const addPhoto = async (req: Request, res: Response) => {
   }
   if (isValidInput.success) {
     try {
-      // ADD UPLOAD HERE
       const upload = await fileService.upload({ files })
       const values = {
-        ...(bookableUnitTypeId ? { bookableUnitTypeId } : {}),
         propertyId,
         key: upload.key,
         thumbKey: upload.key,
@@ -39,20 +37,81 @@ export const addPhoto = async (req: Request, res: Response) => {
       }
       const newPhoto = new dbPhotos(values)
       const uploadedPhoto = await newPhoto.save()
-      // const updatePhotos = await dbProperties.findByIdAndUpdate(
-      //   propertyId,
-      //   {
-      //     $set: {
-      //       photos: [...photosIds, uploadedPhoto._id] // new photo here
-      //       updatedAt: Date.now(),
-      //     },
-      //   },
-      //   { new: true }
-      // )
+      const updatePhotos = await dbProperties.findByIdAndUpdate(
+        propertyId,
+        {
+          $push: {
+            photos: uploadedPhoto._id,
+          },
+          $set: {
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
       res.json(
         response.success({
-          item: uploadedPhoto,
-          message: 'Photo was added',
+          item: updatePhotos,
+          message: 'Photos was updated',
+        })
+      )
+    } catch (err: any) {
+      return res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  } else {
+    return res.json(
+      response.error({ message: JSON.parse(isValidInput.error.message) })
+    )
+  }
+}
+
+export const addUnitPhoto = async (req: Request, res: Response) => {
+  const isHost = res.locals.user?.isHost
+  const propertyId = req.params.propertyId
+  const bookableUnitId = req.params.bookableUnitId
+  const files = req.files
+  const { description, tags, isMain } = req.body
+  const isValidInput = Z_Photo.safeParse(req.body)
+  if (!isHost) {
+    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+  }
+  if (!files || !propertyId || !bookableUnitId) {
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  }
+  if (isValidInput.success) {
+    try {
+      const upload = await fileService.upload({ files })
+      const values = {
+        propertyId,
+        bookableUnitId,
+        key: upload.key,
+        thumbKey: upload.key,
+        description,
+        tags,
+        isMain,
+      }
+      const newPhoto = new dbPhotos(values)
+      const uploadedPhoto = await newPhoto.save()
+      const updatePhotos = await dbBookableUnitTypes.findByIdAndUpdate(
+        bookableUnitId,
+        {
+          $push: {
+            photos: uploadedPhoto._id,
+          },
+          $set: {
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+      res.json(
+        response.success({
+          item: updatePhotos,
+          message: 'Photos was updated',
         })
       )
     } catch (err: any) {
@@ -71,6 +130,7 @@ export const addPhoto = async (req: Request, res: Response) => {
 
 export const updatePhoto = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
+  const propertyId = req.params.propertyId
   const photoId = req.params.photoId
   const { description, tags, isMain } = req.body
   const isValidInput = Z_Update_Photo.safeParse(req.body)
@@ -81,10 +141,29 @@ export const updatePhoto = async (req: Request, res: Response) => {
     try {
       const getPhoto = await dbPhotos.findOne({
         _id: photoId,
+        propertyId,
         deletedAt: null,
       })
       if (!getPhoto) {
         return res.json(response.error({ message: 'Photo not found' }))
+      }
+      const {
+        description: dbDescription,
+        tags: dbTags,
+        isMain: dbIsMain,
+      } = getPhoto
+      // Needed this to not update if nothing changes
+      if (
+        dbDescription === description &&
+        dbTags === tags &&
+        dbIsMain === isMain
+      ) {
+        return res.json(
+          response.success({
+            item: getPhoto,
+            message: 'Photos was updated',
+          })
+        )
       }
       const updatePhoto = await dbPhotos.findByIdAndUpdate(
         photoId,
@@ -101,7 +180,7 @@ export const updatePhoto = async (req: Request, res: Response) => {
       res.json(
         response.success({
           item: updatePhoto,
-          message: 'Photo was updated',
+          message: 'Photos was updated',
         })
       )
     } catch (err: any) {
@@ -125,17 +204,66 @@ export const getPhotosByPropertyId = async (req: Request, res: Response) => {
     return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   try {
-    const photosData = await dbPhotos.find({ propertyId })
+    const photosData = await dbPhotos
+      .find({ propertyId })
+      .populate('photos')
+      .exec()
     if (!photosData) {
       return res.json(
         response.error({
-          message: 'Photos with the given property does not exist',
+          message: 'Photos with the given rental does not exist',
         })
       )
     }
     return res.json(
       response.success({
         items: photosData,
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const deletePhoto = async (req: Request, res: Response) => {
+  const isHost = res.locals.user?.isHost
+  const propertyId = req.params.propertyId
+  const photoId = req.params.photoId
+  if (!isHost) {
+    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+  }
+  if (!propertyId || !photoId) {
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  }
+  try {
+    const getPhoto = await dbPhotos.findOne({
+      _id: photoId,
+      deletedAt: null,
+    })
+    if (!getPhoto) {
+      return res.json(response.error({ message: 'Photo not found' }))
+    }
+    const deletePhoto = await dbPhotos.findByIdAndDelete(photoId)
+    await dbProperties.findByIdAndUpdate(
+      getPhoto.propertyId,
+      {
+        $pull: {
+          photos: photoId,
+        },
+        $set: {
+          updatedAt: Date.now(),
+        },
+      },
+      { new: true }
+    )
+    res.json(
+      response.success({
+        item: deletePhoto,
+        message: 'Photos was updated',
       })
     )
   } catch (err: any) {
@@ -175,53 +303,6 @@ export const getPhotosByBookableUnitId = async (
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
-    )
-  }
-}
-
-export const deletePhoto = async (req: Request, res: Response) => {
-  const isHost = res.locals.user?.isHost
-  const photoId = req.params.photoId
-  const isValidInput = Z_Photo.safeParse(req.body)
-  if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-  }
-  if (isValidInput.success) {
-    try {
-      const getPhoto = await dbPhotos.findOne({
-        _id: photoId,
-        deletedAt: null,
-      })
-      if (!getPhoto) {
-        return res.json(response.error({ message: 'Photo not found' }))
-      }
-      const deletePhoto = await dbPhotos.findByIdAndDelete(photoId)
-      // const updatePhotos = await dbProperties.findByIdAndUpdate(
-      //   propertyId,
-      //   {
-      //     $set: {
-      //       photos: // remove photo _id from this value
-      //       updatedAt: Date.now(),
-      //     },
-      //   },
-      //   { new: true }
-      // )
-      res.json(
-        response.success({
-          item: deletePhoto,
-          message: 'Photo was deleted',
-        })
-      )
-    } catch (err: any) {
-      return res.json(
-        response.error({
-          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-        })
-      )
-    }
-  } else {
-    return res.json(
-      response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
 }

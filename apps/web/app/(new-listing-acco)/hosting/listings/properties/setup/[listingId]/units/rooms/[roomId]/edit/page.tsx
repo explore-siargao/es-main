@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const EditRoomUnitPage = () => {
   return (
     <AuthGuard>
-      <Room />
+      <Room pageType="setup" />
     </AuthGuard>
   )
 }

@@ -8,38 +8,52 @@ import { useState } from "react"
 import Tabs from "@/common/components/Tabs"
 import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
-import useGetHostProperties from "../hooks/useGetHostProperties"
+import useGetPropertyByHost from "./hooks/useGetPropertyByHost"
+import { isArray } from "lodash"
+import { T_Photo } from "@repo/contract"
 
 const HostListing = () => {
-  const { data } = useGetHostProperties()
+  const { data } = useGetPropertyByHost()
   const columnHelper = createColumnHelper<any>()
   const columns = [
-    columnHelper.accessor("Photos", {
+    columnHelper.accessor("photos", {
       header: "Listing",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/property-type`}
-          className="flex items-center gap-5"
-        >
-          <div className="relative w-24 h-16 rounded-xl overflow-hidden">
-            <Image
-              src={`/assets/${context.getValue() ? context.getValue()[0]?.key : "1.jpg"}`}
-              alt="Image"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-          <span>
-            <Typography variant="p">{context.row.original.name}</Typography>
-          </span>
-        </Link>
-      ),
+      cell: (context) => {
+        const photo =
+          context.getValue() && isArray(context.getValue())
+            ? context.getValue().find((photo: T_Photo) => photo.isMain)
+            : null
+        return (
+          <Link
+            href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
+            className="flex items-center gap-5"
+          >
+            <div className="relative w-24 h-16 rounded-xl overflow-hidden">
+              {photo ? (
+                <Image
+                  src={`/assets/${photo.key}`}
+                  alt="Image"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              ) : (
+                <div className="h-full w-full bg-primary-100"></div>
+              )}
+            </div>
+            <span>
+              <Typography variant="p">
+                {context.row.original.year} {context.row.original.title}{" "}
+              </Typography>
+            </span>
+          </Link>
+        )
+      },
     }),
-    columnHelper.accessor("Location", {
+    columnHelper.accessor("location", {
       header: "Location",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/property-type`}
+          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
           className="flex items-center gap-5"
         >
           <Typography variant="p">
@@ -57,8 +71,8 @@ const HostListing = () => {
       header: "Type",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/rentals${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/basic-info`}
-          className="flex items-center gap-5"
+          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
+          className="flex items-center gap-4"
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
@@ -70,7 +84,7 @@ const HostListing = () => {
       header: "Status",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original.id}/property-type`}
+          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
           className="flex items-center"
         >
           <StatusDot

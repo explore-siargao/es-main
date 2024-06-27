@@ -1,12 +1,15 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import UnitsTable from "./UnitsTable"
 import { LucidePlus } from "lucide-react"
 import { Button } from "@/common/components/ui/Button"
 import SelectUnitTypeModal from "./modals/SelectUnitTypeModal"
 import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
+import UnitsTable from "./components/UnitsTable"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
+import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
+import { useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -14,14 +17,45 @@ type Prop = {
 
 const Units = ({ pageType }: Prop) => {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
   const [isSelectUnitTypeModalOpen, setIsSelectUnitTypeModalOpen] =
     useState(false)
+  const { mutateAsync: updateFinishedSection } =
+    useUpdatePropertyFinishedSection(listingId)
 
   const handleSave = () => {
-    router.push("/hosting/listings/setup/1/photos")
+    if (
+      pageType === "setup" &&
+      !data?.item?.finishedSections?.includes("units")
+    ) {
+      const callBackReq = {
+        onSuccess: (data: any) => {
+          if (!data.error) {
+            queryClient.invalidateQueries({
+              queryKey: ["property-finished-sections", listingId],
+            })
+            queryClient.invalidateQueries({
+              queryKey: ["property", listingId],
+            })
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err: any) => {
+          toast.error(String(err))
+        },
+      }
+      updateFinishedSection({ newFinishedSection: "units" }, callBackReq)
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ["property", listingId],
+      })
+    }
+
+    router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
   }
   const propertyType = data?.item?.type
   return (
@@ -66,7 +100,8 @@ const Units = ({ pageType }: Prop) => {
         isOpen={isSelectUnitTypeModalOpen}
         onClose={() => setIsSelectUnitTypeModalOpen(!isSelectUnitTypeModalOpen)}
         propertyType={propertyType}
-        propertyId={data?.item?.id}
+        propertyId={data?.item?._id}
+        pageType={pageType}
       />
     </div>
   )

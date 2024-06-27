@@ -11,11 +11,11 @@ import {
   Building2,
 } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
-import { useState } from "react"
-import useGetPropertyById from "../../hooks/useGetPropertyById"
-import useUpdatePropertyType from "../../hooks/useUpdatePropertyType"
+import { useEffect, useState } from "react"
+import useUpdatePropertyType from "../hooks/useUpdatePropertyType"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
+import useGetPropertyById from "../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -25,12 +25,20 @@ const PropertyType = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
-  const { data } = useGetPropertyById(listingId)
+
+  const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
   const [selectedProperty, setSelectedProperty] = useState("")
 
+  useEffect(() => {
+    if (!typeIsPending && data?.item?.type) {
+      setSelectedProperty(data.item.type)
+    }
+  }, [typeIsPending, data])
+
   const handleSave = () => {
+    console.log(selectedProperty)
     if (selectedProperty) {
       const callBackReq = {
         onSuccess: (data: any) => {
@@ -118,8 +126,10 @@ const PropertyType = ({ pageType }: Prop) => {
         {PROPERTY_TYPES.map((property) => (
           <div
             key={property.description}
-            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-lg p-4 hover:cursor-pointer hover:bg-gray-50 select-none`}
-            onClick={() => setSelectedProperty(property.type)}
+            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-lg p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
+            onClick={() =>
+              pageType === "setup" && setSelectedProperty(property.type)
+            }
           >
             {(property.isSelected && selectedProperty === "") ||
             selectedProperty === property.type ? (
@@ -143,18 +153,20 @@ const PropertyType = ({ pageType }: Prop) => {
           </div>
         ))}
       </div>
-      <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
-        <Button
-          size="sm"
-          className={cn(
-            "disabled:bg-gray-600",
-            isPending ? "opacity-70 cursor-progress" : ""
-          )}
-          onClick={isPending ? () => null : handleSave}
-        >
-          {pageType === "setup" ? "Save & Next" : "Save Changes"}
-        </Button>
-      </div>
+      {pageType === "setup" && (
+        <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
+          <Button
+            size="sm"
+            className={cn(
+              "disabled:bg-gray-600",
+              isPending ? "opacity-70 cursor-progress" : ""
+            )}
+            onClick={isPending ? () => null : handleSave}
+          >
+            {pageType === "setup" ? "Save & Next" : "Save Changes"}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

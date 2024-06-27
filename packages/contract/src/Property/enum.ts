@@ -7,7 +7,7 @@ export enum E_Property_Type {
   Villa = "Villa",
 }
 
-export enum E_PropertyStatus {
+export enum E_Property_Status {
   incomplete = "Incomplete",
   pending = "Pending",
   live = "Live",

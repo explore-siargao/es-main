@@ -15,31 +15,31 @@ const Motorbike = () => {
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Engine Capacity (CC):</span>{" "}
-        {rental?.Details.engineCapacityCc}
+        {rental?.details.engineCapacityCc}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Condition:</span>{" "}
-        {rental?.Details.condition}
+        {rental?.details.condition}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Exterior Color:</span>{" "}
-        {rental?.Details.exteriorColor}
+        {rental?.details.exteriorColor}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Seating Capacity:</span>{" "}
-        {rental?.Details.seatingCapacity}
+        {rental?.details.seatingCapacity}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Weight Capacity:</span>{" "}
-        {rental?.Details.weightCapacity}
+        {rental?.details.weightCapacity}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Minimum Age Requirement:</span>{" "}
-        {rental?.Details.minAgeReq}
+        {rental?.details.minAgeReq}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Registered and lawful:</span>{" "}
-        {rental?.Details.isRegistered}
+        {rental?.details.isRegistered}
       </Typography>
     </>
   )

@@ -44,7 +44,7 @@ const PoliciesCheckboxes = ({ title, icon, showReason = false }: Props) => {
                 Reason (optional)
               </label>
               <Textarea
-                value={policy.reason || ""}
+                defaultValue={policy.reason || ""}
                 onChange={(e) =>
                   updatePolicy({ ...policy, reason: e.target.value })
                 }

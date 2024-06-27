@@ -4,14 +4,14 @@ import { Input } from "@/common/components/ui/Input"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { Typography } from "@/common/components/ui/Typography"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useUpdatePropertyBasicInfo from "../../../hooks/useUpdatePropertyBasicInfo"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useQueryClient } from "@tanstack/react-query"
 import { T_Property_Basic_Info } from "@repo/contract"
 import toast from "react-hot-toast"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import { cn } from "@/common/helpers/cn"
+import useUpdatePropertyBasicInfo from "../../hooks/useUpdatePropertyBasicInfo"
+import useGetPropertyById from "../../../hooks/useGetPropertyById"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -21,8 +21,8 @@ const BasicInfo = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
-  const { data, isLoading } = useGetPropertyById(listingId)
+  const listingId = String(params.listingId)
+  const { data, isLoading } = useGetPropertyById(listingId as unknown as number)
   const { mutate, isPending } = useUpdatePropertyBasicInfo(listingId)
   const { register, handleSubmit } = useForm<T_Property_Basic_Info>()
 
@@ -33,6 +33,9 @@ const BasicInfo = ({ pageType }: Prop) => {
           toast.success(data.message)
           queryClient.invalidateQueries({
             queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property", listingId],
           })
           if (pageType === "setup") {
             router.push(
@@ -68,11 +71,11 @@ const BasicInfo = ({ pageType }: Prop) => {
           <div className="col-span-1">
             <Input
               type="text"
-              label="Name"
+              label="Title"
               disabled={isLoading || isPending}
               required
-              defaultValue={data?.item?.name}
-              {...register("name", { required: true })}
+              defaultValue={data?.item?.title}
+              {...register("title", { required: true })}
             />
             <div className="mt-2">
               <Textarea

@@ -2,26 +2,29 @@ import { z } from "zod"
 import { Z_Photo } from "../Photo"
 import { Z_BookableUnit } from "../BookableUnit"
 import { Z_User } from "../User"
-import { E_PropertyStatus, E_Property_Type } from "./enum"
+import { E_Property_Status, E_Property_Type } from "./enum"
 import { Z_Listing_Location } from "../ListingLocation/zod"
 
 export const Z_Property_Basic_Info = z.object({
-  name: z.string(),
+  title: z.string(),
   description: z.string(),
 })
 
 export const Z_Property_Policy = z.object({
   index: z.number(),
-  id: z.number().optional().nullable(),
-  category: z.string().optional(),
+  _id: z.string().optional().nullable(),
+  category: z.string(),
   reason: z.string().optional().nullable(),
-  policy: z.string().optional(),
-  propertyId: z.number().optional().nullable(),
+  policy: z.string(),
   isSelected: z.boolean().optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().nullable().optional(),
+  deletedAt: z.date().nullable().optional(),
 })
 
 export const Z_Property_Facility = z.object({
   id: z.number().optional().nullable(),
+  _id: z.string().optional().nullable(),
   index: z.number(),
   category: z.string(),
   propertyId: z.number().optional().nullable(),
@@ -33,12 +36,13 @@ export const Z_Property_Facility = z.object({
 })
 
 export const Z_Property_Amenity = z.object({
-  id: z.number().optional(),
+  id: z.number().optional().nullable(),
+  _id: z.string().optional().nullable(),
   index: z.number(),
   category: z.string(),
   bookableUnitTypeId: z.number().optional().nullable(),
   amenity: z.string(),
-  isSelected: z.boolean(),
+  isSelected: z.boolean().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),
@@ -75,5 +79,5 @@ export const Z_Property = z.object({
 })
 
 export const Z_Property_Status = z.object({
-  status: z.nativeEnum(E_PropertyStatus),
+  status: z.nativeEnum(E_Property_Status),
 })

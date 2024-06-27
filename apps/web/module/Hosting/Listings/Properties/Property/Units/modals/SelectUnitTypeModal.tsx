@@ -2,21 +2,89 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import { E_Property_Type } from "@repo/contract"
-import Link from "next/link"
+import { useParams, useRouter } from "next/navigation"
+import toast from "react-hot-toast"
+import useAddBlankUnitBed from "../hooks/useAddBlankUnitBed"
+import useAddBlankUnitRoom from "../hooks/useAddBlankUnitRoom"
+import useAddBlankUnitWholePlace from "../hooks/useAddBlankUnitWholePlace"
+import { cn } from "@/common/helpers/cn"
 
 type Props = {
   isOpen: boolean
   onClose: () => void
   propertyType: E_Property_Type
   propertyId: string
+  pageType: "setup" | "edit"
 }
 
 const SelectUnitTypeModal = ({
   isOpen,
   onClose,
   propertyType,
-  propertyId,
+  pageType,
 }: Props) => {
+  const router = useRouter()
+  const params = useParams<{ listingId: string }>()
+  const listingId = params.listingId
+  const { mutate: addBlankUnitBed, isPending: isAddBlankUnitBedPending } =
+    useAddBlankUnitBed(listingId)
+  const { mutate: addBlankUnitRoom, isPending: isAddBlankUnitRoomPending } =
+    useAddBlankUnitRoom(listingId)
+  const {
+    mutate: addBlankUnitWholePlace,
+    isPending: isAddBlankUnitWholePlacePending,
+  } = useAddBlankUnitWholePlace(listingId)
+  const addUnitBed = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/beds/${data.item._id}/edit`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    addBlankUnitBed(undefined, callBackReq)
+  }
+  const addUnitRoom = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/rooms/${data.item._id}/edit`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    addBlankUnitRoom(undefined, callBackReq)
+  }
+  const addUnitWholePlace = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    addBlankUnitWholePlace(undefined, callBackReq)
+  }
   return (
     <ModalContainer
       size="sm"
@@ -30,87 +98,115 @@ const SelectUnitTypeModal = ({
           propertyType === "Homestay" ||
           propertyType === "Resort" ? (
             <>
-              <Link
-                href={`/hosting/listings/properties/${propertyId}/units/bed/add`}
-                className="flex-1"
+              <button
+                type="button"
+                onClick={
+                  isAddBlankUnitBedPending ? () => null : () => addUnitBed()
+                }
+                className={cn(
+                  "text-left flex-1",
+                  isAddBlankUnitBedPending ? "cursor-progress opacity-70" : ""
+                )}
               >
-                <div className="border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
+                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
                   <Typography
                     variant="h4"
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    Bed
+                    New Bed
                   </Typography>
                   <Typography variant="h5">
                     Bed in a room. Sleeping space, bathroom and kitchen are
                     shared.
                   </Typography>
                 </div>
-              </Link>
-              <Link
-                href={`/hosting/listings/properties/${propertyId}/units/room/add`}
-                className="flex-1"
+              </button>
+              <button
+                type="button"
+                onClick={
+                  isAddBlankUnitRoomPending ? () => null : () => addUnitRoom()
+                }
+                className={cn(
+                  "text-left flex-1",
+                  isAddBlankUnitRoomPending ? "cursor-progress opacity-70" : ""
+                )}
               >
-                <div className="border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
+                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
                   <Typography
                     variant="h4"
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    Room
+                    New Room
                   </Typography>
                   <Typography variant="h5">
                     Room in a place. Sleeping space is private.
                   </Typography>
                 </div>
-              </Link>
+              </button>
             </>
           ) : (
             ""
           )}
           {propertyType === "Hotel" && (
             <>
-              <Link
-                href={`/hosting/listings/properties/${propertyId}/units/room/add`}
-                className="flex-1"
+              <button
+                type="button"
+                onClick={
+                  isAddBlankUnitRoomPending ? () => null : () => addUnitRoom()
+                }
+                className={cn(
+                  "text-left flex-1",
+                  isAddBlankUnitRoomPending ? "cursor-progress opacity-70" : ""
+                )}
               >
-                <div className="border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
+                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
                   <Typography
                     variant="h4"
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    Room
+                    New Room
                   </Typography>
                   <Typography variant="h5">
                     Room in a place. Sleeping space is private.
                   </Typography>
                 </div>
-              </Link>
+              </button>
             </>
           )}
           {propertyType === "Resort" ||
           propertyType === "Apartment" ||
           propertyType === "Villa" ? (
             <>
-              <Link
-                href={`/hosting/listings/properties/${propertyId}/units/whole-place/add`}
-                className="flex-1"
+              <button
+                type="button"
+                onClick={
+                  isAddBlankUnitWholePlacePending
+                    ? () => null
+                    : () => addUnitWholePlace()
+                }
+                className={cn(
+                  "text-left flex-1",
+                  isAddBlankUnitWholePlacePending
+                    ? "cursor-progress opacity-70"
+                    : ""
+                )}
               >
-                <div className="border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
+                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
                   <Typography
                     variant="h4"
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    Whole Place
+                    New Whole Place
                   </Typography>
                   <Typography variant="h5">
                     Whole place in a Property, everything here is private.
                   </Typography>
                 </div>
-              </Link>
+              </button>
             </>
           ) : (
             ""

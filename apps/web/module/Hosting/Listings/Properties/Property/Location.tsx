@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -16,11 +16,12 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { MUNICIPALITIES, BARANGAYS } from "@repo/constants"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
-import useGetPropertyById from "../../hooks/useGetPropertyById"
-import useUpdatePropertyLocation from "../../hooks/useUpdatePropertyLocation"
+import useUpdatePropertyLocation from "../hooks/useUpdatePropertyLocation"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
+import useGetPropertyById from "../hooks/useGetPropertyById"
 import { T_Listing_Location } from "@repo/contract"
+import useUpdatePropertyFinishedSection from "../hooks/useUpdatePropertyFinishedSections"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -30,14 +31,32 @@ const ListingLocation = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyLocation(listingId)
-  const { data } = useGetPropertyById(listingId)
-  const { latitude, longitude } = useCoordinatesStore()
+  const { data, isPending: isFetching } = useGetPropertyById(listingId)
+  const { latitude, longitude, setCoordinates } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit } = useForm<T_Listing_Location>({
-    values: data?.item?.Location,
-  })
+  const { mutateAsync: updateFinishedSection } =
+    useUpdatePropertyFinishedSection(listingId)
+
+  const { register, handleSubmit, reset, setValue } =
+    useForm<T_Listing_Location>()
+
+  useEffect(() => {
+    if (data && !isFetching) {
+      const location = data?.item?.location
+        ? data?.item?.location
+        : { city: "", street: "" }
+      reset(location)
+      setSelectedMunicipality(location.city)
+      setCoordinates(location.latitude, location.longitude)
+    }
+  }, [data, isFetching, reset, setCoordinates])
+
+  useEffect(() => {
+    setValue("latitude", latitude as number)
+    setValue("longitude", longitude as number)
+  }, [latitude, longitude, setValue])
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
@@ -51,9 +70,30 @@ const ListingLocation = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          queryClient.invalidateQueries({
-            queryKey: ["property-finished-sections", listingId],
-          })
+          if (
+            pageType === "setup" &&
+            !data?.item?.finishedSections?.includes("location")
+          ) {
+            const callBack2 = {
+              onSuccess: (data: any) => {
+                if (!data.error) {
+                  queryClient.invalidateQueries({
+                    queryKey: ["property-finished-sections", listingId],
+                  })
+                } else {
+                  toast.error(String(data.message))
+                }
+              },
+              onError: (err: any) => {
+                toast.error(String(err))
+              },
+            }
+            updateFinishedSection({ newFinishedSection: "location" }, callBack2)
+          } else {
+            queryClient.invalidateQueries({
+              queryKey: ["property", listingId],
+            })
+          }
           if (pageType === "setup") {
             router.push(
               `/hosting/listings/properties/setup/${listingId}/facilities`
@@ -67,23 +107,18 @@ const ListingLocation = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
-    mutate(
-      {
-        ...formData,
-        latitude: latitude as number,
-        longitude: longitude as number,
-      },
-      callBackReq
-    )
+    mutate(formData, callBackReq)
   }
+
   const currentCoords = (
-    data?.item?.Location?.latitude
-      ? [data?.item?.Location.latitude, data?.item?.Location.longitude]
+    data?.item?.location?.latitude
+      ? [data?.item?.location.latitude, data?.item?.location.longitude]
       : [9.913431, 126.049483]
   ) as [number, number]
+
   return (
     <div className="mt-20 mb-14">
-      {isPending ? (
+      {isPending || isFetching ? (
         <Spinner size="md">Loading...</Spinner>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -123,18 +158,22 @@ const ListingLocation = ({ pageType }: Prop) => {
               <Select
                 label="City / Municipality"
                 id="municipalitySelect"
-                value={selectedMunicipality}
                 required
                 {...register("city", { required: true })}
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
                 {MUNICIPALITIES.map((municipality) => (
-                  <Option key={municipality.name} value={municipality.name}>
+                  <Option
+                    key={municipality.name}
+                    value={municipality.name}
+                    selected={municipality.name === selectedMunicipality}
+                  >
                     {municipality.name}
                   </Option>
                 ))}
               </Select>
+
               <Select
                 label="Barangay / District"
                 id="barangaySelect"
@@ -145,13 +184,18 @@ const ListingLocation = ({ pageType }: Prop) => {
                 {BARANGAYS.filter(
                   (barangay) =>
                     barangay.municipality === selectedMunicipality ||
-                    barangay.municipality === data?.item?.Location?.city
+                    barangay.municipality === data?.item?.location?.city
                 ).map((barangay) => (
-                  <Option key={barangay.name} value={barangay.name}>
+                  <Option
+                    key={barangay.name}
+                    value={barangay.name}
+                    selected={barangay.name === data?.item?.location?.barangay}
+                  >
                     {barangay.name}
                   </Option>
                 ))}
               </Select>
+
               <div className="mt-2">
                 <Typography variant="h3" fontWeight="semibold">
                   How to get there
