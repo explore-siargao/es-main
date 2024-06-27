@@ -126,8 +126,10 @@ const PropertyType = ({ pageType }: Prop) => {
         {PROPERTY_TYPES.map((property) => (
           <div
             key={property.description}
-            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-lg p-4 hover:cursor-pointer hover:bg-gray-50 select-none`}
-            onClick={() => setSelectedProperty(property.type)}
+            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-lg p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
+            onClick={() =>
+              pageType === "setup" && setSelectedProperty(property.type)
+            }
           >
             {(property.isSelected && selectedProperty === "") ||
             selectedProperty === property.type ? (
