@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { format, addDays, startOfMonth, getMonth, differenceInDays, isAfter, isBefore } from 'date-fns';
-import Sidebar from './Sidebar';
 import sampleData from './SampleData.json';
 import { ChevronDown, ChevronRight, Edit3, Save } from 'lucide-react';
-import ReservationCalendarModal from './ReservationCalendarModal';
 import { Input } from '@/common/components/ui/Input';
 import toast from 'react-hot-toast';
 import { Button } from '@/common/components/ui/Button';
-import RoomQuantityEdit from './RoomQuantityEdit';
+import Sidebar from '../Sidebar';
+import ReservationCalendarModal from '../ReservationCalendarModal';
+import RoomQuantityEdit from '../RoomQuantityEdit';
 
 export interface Booking {
   name: string;
@@ -37,7 +37,7 @@ export interface SampleData {
   categories: Category[];
 }
 
-const CalendarTable = () => {
+const ActivitiesCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()));
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
   const [selectedReservation, setSelectedReservation] = useState<SelectedReservation | null>(null);
@@ -184,12 +184,12 @@ const CalendarTable = () => {
       if (room) {
         room.abbr = tempRoomAbbr;
         setFilteredData(newFilteredData);
-        toast.success("Successfully changed room name");
+        toast.success("Successfully changed activity name");
       } else {
-        toast.error("Room not found in category");
+        toast.error("Activity not found in category");
       }
     } else {
-      toast.error("Category not found");
+      toast.error("Activity not found");
     }
   
     setEditingRoom(null);
@@ -312,4 +312,4 @@ const CalendarTable = () => {
   );
 };
 
-export default CalendarTable;
+export default ActivitiesCalendarTable;
