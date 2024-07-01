@@ -27,6 +27,7 @@ import {
 import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
+import { getCalendarRentals } from './services/calendar'
 
 const router = express.Router()
 
@@ -208,5 +209,7 @@ router.patch(
   isHostRentalOwner,
   updateStatus
 )
+//calendar
+router.get("/:rentalId/:category/:fromDate/:toDate", isUserLoggedIn, isHostRentalOwner ,getCalendarRentals)
 
 export default router
