@@ -33,12 +33,6 @@ const topLinks = [
     basePath: "/hosting/listings",
   },
   {
-    title: "Calendar",
-    icon: <LucideCalendar className="h-5 w-5" />,
-    link: "/hosting/calendar",
-    basePath: "/hosting/calendar",
-  },
-  {
     title: "Messages",
     icon: <LucideMessagesSquare className="h-5 w-5" />,
     link: "/conversation",
@@ -48,7 +42,7 @@ const topLinks = [
   {
     title: "Reservations",
     icon: <LucideListChecks className="h-5 w-5" />,
-    link: "/hosting/reservations/upcoming",
+    link: "/hosting/reservations/calendar/properties",
     basePath: "/hosting/reservations",
   },
   {
