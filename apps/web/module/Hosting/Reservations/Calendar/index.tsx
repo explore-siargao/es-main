@@ -30,7 +30,7 @@ const ReservationCalendar = () => {
         </div>
         
         
-        <div className="flex mt-6">
+        <div className="flex mt-2">
           <CalendarTable />
         </div>
       </div>
