@@ -48,9 +48,9 @@ const WindMap = () => {
   return (
     <div>
       <Map
-        className="leaflet-container"
+        className="leaflet-container rounded-2xl"
         style={{ width: "100%", height: "50vh", zIndex: "-2" }}
-        windyKey={"lRWg63O6I7IV6ol2XUEiEEIPYLzyKQDS"}
+        windyKey={process.env.WINDY_KEY}
         windyLabels={false}
         windyControls={false}
         overlay={state.overlay}

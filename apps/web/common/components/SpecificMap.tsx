@@ -49,13 +49,14 @@ const SpecificMap = ({
   }, [HandleResize])
 
   return (
-    <div className="flex-1 block bg-primary-200">
-      <div className={`${mapHeight} ${mapWidth} relative`}>
+    <div className="flex-1 block bg-primary-200 rounded-2xl">
+      <div className={`${mapHeight} ${mapWidth} relative rounded-2xl`}>
         {showMap ? (
           <MapContainer
             center={center}
             zoom={zoom ? zoom : 13}
             scrollWheelZoom={true}
+            className="rounded-2xl"
             style={{
               height: "100%",
               width: "100%",

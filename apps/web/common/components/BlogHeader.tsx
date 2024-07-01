@@ -15,7 +15,7 @@ import ApplyToHostModal from "../../module/LandingPage/components/ApplyToHostMod
 import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
 
-function Header({
+function BlogHeader({
   contentWidth = "wide",
   isFixed = true,
 }: {
@@ -68,4 +68,4 @@ function Header({
   )
 }
 
-export default Header
+export default BlogHeader

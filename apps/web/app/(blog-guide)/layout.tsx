@@ -8,7 +8,7 @@ import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
-import HeaderGuides from "@/common/components/HeaderGuides"
+import BlogHeader from "@/common/components/BlogHeader"
 import Footer from "@/common/components/Footer"
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default async function BlogGuideLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <HeaderGuides />
+              <BlogHeader contentWidth="small" isFixed={false} />
               {children}
               <Footer contentWidth="small" />
             </GlobalModalWrapper>

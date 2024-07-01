@@ -16,7 +16,7 @@ const WhereYoullBeDescription = ({ mapData }: MapProps) => {
         <Typography variant="h2" fontWeight="semibold" className="mb-5">
           Pick-up location
         </Typography>
-        <div className="w-12/12 h-[450px] bg-primary-200 mb-5">
+        <div className="w-12/12 h-[450px] mb-5">
           <SpecificMap
             center={[mapData.longitude, mapData.latitude]}
             mapHeight="h-[450px]"

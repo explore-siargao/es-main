@@ -14,7 +14,7 @@ function Directions() {
           zoom={11}
         />
         <div>
-          <h2 className="text-xl font-bold mb-2">HOW TO GET THERE</h2>
+          <h2 className="text-xl font-bold mb-2">How to get there</h2>
           <p>{data.howToGetThere.description}</p>
         </div>
       </div>

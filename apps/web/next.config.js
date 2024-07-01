@@ -38,5 +38,6 @@ module.exports = {
     FACEBOOK_SECRET_ID: process.env.FACEBOOK_SECRET_ID,
     CARD_ENCRYPT_KEY: process.env.CARD_ENCRYPT_KEY,
     PASSWORD_ENCRYPT_KEY: process.env.PASSWORD_ENCRYPT_KEY,
+    WINDY_KEY: process.env.WINDY_KEY,
   },
 }

@@ -4,7 +4,7 @@ import WindMap from "./WindMap"
 function Forecast() {
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">SIARGAO SURF FORECAST</h2>
+      <h2 className="text-xl font-bold mb-4">Surf Forecast</h2>
       <div className="grid grid-cols-1 gap-4">
         <div>
           <WindMap />

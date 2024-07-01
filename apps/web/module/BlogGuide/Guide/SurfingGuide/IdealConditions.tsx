@@ -6,15 +6,15 @@ import data from "../../data.json"
 function IdealConditions() {
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">IDEAL CONDITIONS</h2>
+      <h2 className="text-xl font-bold mb-4">Ideal Conditions</h2>
       <div className="grid grid-cols-3 gap-4 mb-8">
         <div>
           <h3 className="text-lg font-bold mb-2 flex gap-2">
             <Rainbow />
-            SWELL DIRECTION
+            Swell Direction
           </h3>
           <p className="mb-4">{data.idealConditions.swellDirection}</p>
-          <h3 className="text-lg font-bold mb-2">WAVE DIFFICULTY</h3>
+          <h3 className="text-lg font-bold mb-2">Wave Difficulty</h3>
           <div className="flex gap-2 mb-8">
             <ProgressBar progress={data.idealConditions.waveDifficulty.level} />
           </div>
@@ -24,10 +24,10 @@ function IdealConditions() {
         <div>
           <h3 className="text-lg font-bold mb-2 flex gap-2">
             <Wind />
-            WIND DIRECTION
+            Wind Direction
           </h3>
           <p className="mb-4">{data.idealConditions.windDirection}</p>
-          <h3 className="text-lg font-bold mb-2">WAVE QUALITY</h3>
+          <h3 className="text-lg font-bold mb-2">Wave Quality</h3>
           <div className="flex gap-2 mb-8">
             <ProgressBar progress={data.idealConditions.waveQuality.level} />
           </div>
@@ -37,10 +37,10 @@ function IdealConditions() {
         <div>
           <h3 className="text-lg font-bold mb-2 flex gap-2">
             <Waves />
-            TIDE
+            Tide
           </h3>
           <p className="mb-4">{data.idealConditions.tide}</p>
-          <h3 className="text-lg font-bold mb-2">CROWD FACTOR</h3>
+          <h3 className="text-lg font-bold mb-2">Crowd Factor</h3>
           <div className="flex gap-2 mb-8">
             <ProgressBar progress={data.idealConditions.crowdFactor.level} />
           </div>
