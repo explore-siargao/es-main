@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { format, addDays, startOfMonth, getMonth, differenceInDays, isAfter, isBefore } from 'date-fns';
-import Sidebar from './Sidebar';
-import sampleData from './SampleData.json';
+import Sidebar from '../Sidebar';
+import sampleData from '../SampleData.json';
 import { ChevronDown, ChevronRight, Edit3, Save } from 'lucide-react';
-import ReservationCalendarModal from './ReservationCalendarModal';
+import ReservationCalendarModal from '../ReservationCalendarModal';
 import { Input } from '@/common/components/ui/Input';
 import toast from 'react-hot-toast';
 import { Button } from '@/common/components/ui/Button';
-import RoomQuantityEdit from './RoomQuantityEdit';
+import RoomQuantityEdit from '../RoomQuantityEdit';
 
 export interface Booking {
   name: string;

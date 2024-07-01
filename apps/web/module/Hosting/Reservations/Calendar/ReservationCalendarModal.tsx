@@ -1,13 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { Spinner } from "@/common/components/ui/Spinner"
-import { useQueryClient } from "@tanstack/react-query"
-import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import useSessionStore from "@/common/store/useSessionStore"
-import { LINK_LOGIN } from "@/common/constants/links"
-import { SelectedReservation } from "./CalendarTable"
+import { SelectedReservation } from "./Property/CalendarTable"
 import { format } from 'date-fns';
 
 interface IReservationCalendarModalProps {

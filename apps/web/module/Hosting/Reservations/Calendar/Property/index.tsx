@@ -5,7 +5,7 @@ import { Table } from "lucide-react"
 import { Button } from "@/common/components/ui/Button"
 import { useRouter } from "next/navigation"
 import Tabs from "@/common/components/Tabs"
-import reservationCalendarTabs from "../helpers/reservationCalendarTabs"
+import reservationCalendarTabs from "../../helpers/reservationCalendarTabs"
 
 const ReservationCalendar = () => {
   const router = useRouter()
