@@ -9,16 +9,16 @@ import { useParams, useRouter } from "next/navigation"
 import { T_Activity, T_Photo } from "@repo/contract"
 
 import toast from "react-hot-toast"
-import useGetActivitiesById from "@/module/Hosting/Activity/hooks/useGetActivitiesById"
-import useUpdateActivityStatus from "@/module/Hosting/Activity/hooks/useUpdateActivityStatus"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { E_Activity_Status } from "@repo/contract/build/Activities/enum"
+import useUpdateActivityStatus from "../../hooks/useUpdateActivityStatus"
+import useGetActivityById from "../../hooks/useGetActivityById"
 
 const ActivitySummary = () => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId as string)
-  const { data, isPending } = useGetActivitiesById(listingId)
+  const { data, isPending } = useGetActivityById(listingId)
   const activity = data?.item
   const { mutate } = useUpdateActivityStatus(listingId as string)
 
@@ -60,7 +60,7 @@ const ActivitySummary = () => {
                 fontWeight="semibold"
                 className="leading-6"
               >
-                Basic Info
+                Basic Information
               </Typography>
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Title:</span>{" "}
@@ -93,7 +93,7 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Languages spoken:</span>
                 <div className="flex flex-col">
-                  {data?.item?.language.map((languages: T_Activity) => (
+                  {data?.item?.languages.map((languages: T_Activity) => (
                     <p className="mt-2" key={languages.id}>
                       {" "}
                       {languages as unknown as string}
@@ -102,7 +102,7 @@ const ActivitySummary = () => {
                 </div>
               </Typography>
             </div>
-            <div className="mt-3 border-b border-gray-200 pb-3">
+            {/* <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
                 variant="h4"
                 fontWeight="semibold"
@@ -111,39 +111,35 @@ const ActivitySummary = () => {
                 Itinerary
               </Typography>
               <div className="grid grid-cols-4 gap-6 mt-6">
-                {data?.item?.photos?.map((photo: T_Photo, index: number) => (
-                  <div key={index} className="h-full">
-                    {photo.isMain && (
-                      <div className="flex justify-center">
-                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
-                          Preferred main photo
-                        </span>
+                {data?.item?.segments.map((segment: T_Activity_Segment) => {
+                  return (
+                    <>
+                      <div className="ml-4 w-[2px] h-12 bg-primary-600 mt-2"></div>
+                      <div
+                        className={`mt-2 shadow-md rounded-lg p-4 border ${segment.transfer ? "border-secondary-200" : "border-primary-500"} `}
+                      >
+                        <Typography variant="h4">
+                          {segment.transfer
+                            ? `Transfer via ${segment.transfer} 
+                  (${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? segment.durationMinute + "m" : ""})`
+                            : segment.location}
+                        </Typography>
+                        <p className="text-text-400 text-sm">
+                          {segment.activities?.join(", ")}{" "}
+                          {segment.activities
+                            ? `(${segment.durationHour > 0 ? segment.durationHour + "h" : ""}${segment.durationMinute > 0 ? " " + segment.durationMinute + "m" : ""})`
+                            : ""}
+                        </p>
+                        <p className="text-text-400 text-sm">
+                          {segment.optional && "Optional"}
+                          {segment.hasAdditionalFee && ", Extra Fee"}
+                        </p>
                       </div>
-                    )}
-                    <div
-                      className={cn(
-                        `relative h-52 w-full bg-primary-50 rounded-lg`,
-                        photo.isMain && "border-2 border-secondary-500"
-                      )}
-                    >
-                      <Image
-                        src={"/assets/" + photo.key}
-                        alt={`preview-` + index}
-                        layout="fill"
-                        objectFit="cover"
-                        objectPosition="center"
-                        className="rounded-lg"
-                      />
-                    </div>
-                    <Typography
-                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
-                    >
-                      {photo.description || "No description"}
-                    </Typography>
-                  </div>
-                ))}
+                    </>
+                  )
+                })}
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
@@ -283,8 +279,50 @@ const ActivitySummary = () => {
 
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Cancellation policy:</span>{" "}
-                {data?.item?.cancellationDays} days
+                {data?.item?.cancellationDays}
               </Typography>
+            </div>
+            <div className="mt-3 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Photos
+              </Typography>
+              <div className="grid grid-cols-4 gap-6 mt-3">
+                {data?.item?.photos?.map((photo: T_Photo, index: number) => (
+                  <div key={index} className="h-full">
+                    {photo.isMain && (
+                      <div className="flex justify-center">
+                        <span className="absolute mt-[-16px] z-10 rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
+                          Preferred main photo
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        `relative h-52 w-full bg-primary-50 rounded-lg`,
+                        photo.isMain && "border-2 border-secondary-500"
+                      )}
+                    >
+                      <Image
+                        src={"/assets/" + photo.key}
+                        alt={`preview-` + index}
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition="center"
+                        className="rounded-lg"
+                      />
+                    </div>
+                    <Typography
+                      className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
+                    >
+                      {photo.description || "No description"}
+                    </Typography>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">

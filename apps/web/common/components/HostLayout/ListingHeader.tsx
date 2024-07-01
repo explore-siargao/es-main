@@ -18,8 +18,8 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "../ui/Typography"
 import { useParams } from "next/navigation"
-import useGetPropertyById from "@/module/Hosting/Listings/hooks/useGetPropertyById"
 import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
+import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
 
 const unAuthMenus = [
   {
@@ -55,7 +55,7 @@ function ListingHeader({
   const params = useParams<{ listingId: string }>()
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
-  const listingId = Number(params.listingId)
+  const listingId = String(params.listingId)
   const { data } = useGetPropertyById(listingId)
 
   const renderTransition = (children: React.ReactNode) => (
@@ -100,7 +100,7 @@ function ListingHeader({
                 <Typography>Hosting Account</Typography>
               </Link>
               <span className="text-gray-400">/</span>
-              <Typography className="px-2">{data?.item?.name}</Typography>
+              <Typography className="px-2">{data?.item?.title}</Typography>
             </div>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 gap-3 items-center relative">

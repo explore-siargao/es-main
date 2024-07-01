@@ -7,6 +7,7 @@ import {
   addActivity,
   getActivity,
   getAllActivitiesByHostId,
+  updateItinerary,
 } from './services/default'
 import { getActivities, updateActivities } from './services/basic-info'
 import {
@@ -22,6 +23,12 @@ import {
   getFinishedSections,
   updateFinishedSections,
 } from './services/finishedSection'
+import {
+  addPhoto,
+  deletePhoto,
+  getPhotosByActivityId,
+  updatePhoto,
+} from './services/photos'
 
 const router = express.Router()
 
@@ -54,6 +61,16 @@ router.get(
   isOriginValid,
   isHostActivityOwner,
   getActivityInclusions
+)
+
+//itinerary
+router.patch(
+  '/:activityId/itinerary',
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isOriginValid,
+  isHostActivityOwner,
+  updateItinerary
 )
 
 //Additional info
@@ -89,6 +106,37 @@ router.get(
   isOriginValid,
   isHostActivityOwner,
   getActivities
+)
+
+//photos
+router.get(
+  '/:activityId/photos',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  getPhotosByActivityId
+)
+router.patch(
+  '/:activityId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  updatePhoto
+)
+router.post(
+  '/:activityId/photo',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  addPhoto
+)
+router.delete(
+  '/:activityId/photo/:photoId',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  deletePhoto
 )
 
 //status

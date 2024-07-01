@@ -1,12 +1,12 @@
 "use client"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
-import useAddBlankProperty from "../../hooks/useAddBlankProperty"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { cn } from "@/common/helpers/cn"
 import useAddBlankRental from "../../hooks/useAddBlankRental"
 import useAddBlankActivity from "../../hooks/useAddBlankActivity"
+import useAddBlankProperty from "../../Properties/hooks/useAddBlankProperty"
 
 type Props = {
   isOpen: boolean
@@ -26,7 +26,7 @@ const SelectListingTypeModal = ({ isOpen, onClose }: Props) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           router.push(
-            `/hosting/listings/properties/setup/${data.item.id}/property-type`
+            `/hosting/listings/properties/setup/${data.item._id}/property-type`
           )
         } else {
           toast.error(String(data.message))

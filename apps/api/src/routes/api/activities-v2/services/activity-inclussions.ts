@@ -28,12 +28,12 @@ export const getActivityInclusions = async (req: Request, res: Response) => {
     const data = {
       _id: activityInclusionData._id,
       isFoodIncluded: activityInclusionData.isFoodIncluded,
-      selectedFoodOptions: activityInclusionData.selectedFoodOptions || [],
+      includedFoods: activityInclusionData.includedFoods || [],
       isNonAlcoholicDrinkIncluded:
         activityInclusionData.isNonAlcoholicDrinkIncluded,
       isAlcoholicDrinkIncluded: activityInclusionData.isAlcoholicDrinkIncluded,
-      selectedAlcoholicDrinkOptions:
-        activityInclusionData.selectedAlcoholicDrinkOptions || [],
+      includedAlcoholicDrinks:
+        activityInclusionData.includedAlcoholicDrinks || [],
       otherInclusion: activityInclusionData.otherInclusion || [],
       notIncluded: activityInclusionData.notIncluded || [],
     }
@@ -57,10 +57,10 @@ export const updateActivityInclusions = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const {
     isFoodIncluded,
-    selectedFoodOptions,
+    includedFoods,
     isNonAlcoholicDrinkIncluded,
     isAlcoholicDrinkIncluded,
-    selectedAlcoholicDrinkOptions,
+    includedAlcoholicDrinks,
     notIncluded,
     otherInclusion,
   } = req.body
@@ -72,11 +72,11 @@ export const updateActivityInclusions = async (req: Request, res: Response) => {
         {
           $set: {
             isFoodIncluded: isFoodIncluded,
-            selectedFoodOptions: isFoodIncluded ? selectedFoodOptions : [],
+            includedFoods: isFoodIncluded ? includedFoods : [],
             isNonAlcoholicDrinkIncluded: isNonAlcoholicDrinkIncluded,
             isAlcoholicDrinkIncluded: isAlcoholicDrinkIncluded,
-            selectedAlcoholicDrinkOptions: isAlcoholicDrinkIncluded
-              ? selectedAlcoholicDrinkOptions
+            includedAlcoholicDrinks: isAlcoholicDrinkIncluded
+              ? includedAlcoholicDrinks
               : [],
             notIncluded: notIncluded,
             otherInclusion: otherInclusion,
@@ -97,17 +97,17 @@ export const updateActivityInclusions = async (req: Request, res: Response) => {
         response.success({
           item: {
             isFoodIncluded: updatedActivityInclusions.isFoodIncluded,
-            selectedFoodOptions: updatedActivityInclusions.selectedFoodOptions,
+            includedFoods: updatedActivityInclusions.includedFoods,
             isNonAlcoholicDrinkIncluded:
               updatedActivityInclusions.isNonAlcoholicDrinkIncluded,
             isAlcoholicDrinkIncluded:
               updatedActivityInclusions.isAlcoholicDrinkIncluded,
-            selectedAlcoholicDrinkOptions:
-              updatedActivityInclusions.selectedAlcoholicDrinkOptions,
+            includedAlcoholicDrinks:
+              updatedActivityInclusions.includedAlcoholicDrinks,
             otherInclusion: updatedActivityInclusions.otherInclusion,
             notIncluded: updatedActivityInclusions.notIncluded,
           },
-          message: 'Activity inclusions successfully updated!',
+          message: 'Activity updated',
         })
       )
     } catch (err: any) {

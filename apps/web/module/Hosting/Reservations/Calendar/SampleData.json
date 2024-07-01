@@ -1,0 +1,125 @@
+{
+  "categories": [
+    {
+      "name": "Standard",
+      "price": "800",
+      "rooms": [
+        {
+          "abbr": "Standard 1",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "Maria",
+              "start_date": "2024-06-03",
+              "end_date": "2024-06-07",
+              "guest_count": 4
+            },
+            {
+              "name": "Mario",
+              "start_date": "2024-06-07",
+              "end_date": "2024-06-10",
+              "guest_count": 2
+            }
+          ]
+        },
+        {
+          "abbr": "Standard 2",
+          "status": "available",
+          "bookings": []
+        },
+        {
+          "abbr": "Standard 3",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "Big Chuck",
+              "start_date": "2024-06-08",
+              "end_date": "2024-06-10",
+              "guest_count": 3
+            }
+          ]
+        },
+        {
+          "abbr": "Standard 4",
+          "status": "available",
+          "bookings": []
+        }
+      ]
+    },
+    {
+      "name": "Double Room",
+      "price": "1200",
+      "rooms": [
+        {
+          "abbr": "Room 1",
+          "status": "available",
+          "bookings": [
+            {
+              "name": "John",
+              "start_date": "2024-06-12",
+              "end_date": "2024-06-14",
+              "guest_count": 1
+            }
+          ]
+        },
+        {
+          "abbr": "Room 2",
+          "status": "available",
+          "bookings": []
+        },
+        {
+          "abbr": "Room 3",
+          "status": "available",
+          "bookings": []
+        }
+      ]
+    },
+    {
+      "name": "Room",
+      "price": "400",
+      "rooms": [
+        {
+          "abbr": "Room 1",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "Laura Pulson",
+              "start_date": "2024-05-29",
+              "end_date": "2024-06-02",
+              "guest_count": 1
+            },
+            {
+              "name": "Dennis",
+              "start_date": "2024-07-06",
+              "end_date": "2024-07-10",
+              "guest_count": 1
+            }
+          ]
+        },
+        {
+          "abbr": "Room 2",
+          "status": "occupied",
+          "bookings": [
+            {
+              "name": "George Common",
+              "start_date": "2024-06-29",
+              "end_date": "2024-07-02",
+              "guest_count": 1
+            },
+            {
+              "name": "Katie Holmes",
+              "start_date": "2024-06-01",
+              "end_date": "2024-06-04",
+              "guest_count": 1
+            }
+          ]
+        },
+        {
+          "abbr": "Room 3",
+          "status": "available",
+          "bookings": []
+        }
+      ]
+    }
+  ]
+}

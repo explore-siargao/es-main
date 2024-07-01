@@ -3,12 +3,17 @@ import { create } from "zustand"
 
 type T_Segments = {
   segments: T_Activity_Segment[]
+  initialSegments: (segment: T_Activity_Segment[]) => void
   updateSegments: (segment: T_Activity_Segment) => void
   deleteSegment: (index: number) => void
 }
 
 export const useSegmentsStore = create<T_Segments>((set) => ({
   segments: [],
+  initialSegments: (segments) =>
+    set(() => ({
+      segments: [...segments],
+    })),
   updateSegments: (segment) =>
     set((state) => ({
       segments: [
