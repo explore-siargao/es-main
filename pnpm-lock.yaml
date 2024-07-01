@@ -8540,7 +8540,7 @@ packages:
       react: ^16.8.0
       react-dom: ^16.8.0
     dependencies:
-      '@babel/runtime': 7.24.5
+      '@babel/runtime': 7.24.7
       fast-deep-equal: 2.0.1
       hoist-non-react-statics: 3.3.2
       leaflet: 1.4.0
