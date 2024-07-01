@@ -7,7 +7,12 @@ import { useState } from "react"
 import Link from "next/link"
 import { createColumnHelper } from "@tanstack/react-table"
 import Image from "next/image"
-import { Calendar, ChevronLeft, LucideChevronLeft, LucideMessageCircleMore } from "lucide-react"
+import {
+  Calendar,
+  ChevronLeft,
+  LucideChevronLeft,
+  LucideMessageCircleMore,
+} from "lucide-react"
 import Filter from "../components/Filter"
 import useGetReservations from "../hooks/useGetReservations"
 import { format } from "date-fns"
@@ -175,13 +180,13 @@ const Upcoming = () => {
             Reservations
           </Typography>
         </div>
-        
+
         <div className="flex w-full justify-between items-center">
           <div className="grid grid-cols-3 gap-4 my-6 w-1/2">
             <Filter status="upcoming" />
           </div>
         </div>
-        
+
         <Tabs tabs={TABS} includeSearchParams />
       </div>
       <Table

@@ -1,4 +1,9 @@
-import { DoorOpen, LucideBuilding2, LucideCarFront, LucidePalmtree } from "lucide-react"
+import {
+  DoorOpen,
+  LucideBuilding2,
+  LucideCarFront,
+  LucidePalmtree,
+} from "lucide-react"
 
 const reservationCalendarTabs = [
   {

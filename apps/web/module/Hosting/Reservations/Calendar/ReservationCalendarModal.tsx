@@ -2,7 +2,7 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { SelectedReservation } from "./Property/CalendarTable"
-import { format } from 'date-fns';
+import { format } from "date-fns"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
@@ -13,9 +13,8 @@ interface IReservationCalendarModalProps {
 const ReservationCalendarModal = ({
   isModalOpen,
   onClose,
-  selectedReservation
+  selectedReservation,
 }: IReservationCalendarModalProps) => {
-
   return (
     <ModalContainer
       onClose={onClose}
@@ -47,7 +46,7 @@ const ReservationCalendarModal = ({
                 Start date
               </Typography>
               <Typography variant="h3" className="text-gray-500">
-                {format(selectedReservation.booking.start_date, 'PPPP')}
+                {format(selectedReservation.booking.start_date, "PPPP")}
               </Typography>
             </div>
             <div className="flex flex-col w-full">
@@ -55,11 +54,11 @@ const ReservationCalendarModal = ({
                 End date
               </Typography>
               <Typography variant="h3" className="text-gray-500">
-                {format(selectedReservation.booking.end_date, 'PPPP')}
+                {format(selectedReservation.booking.end_date, "PPPP")}
               </Typography>
             </div>
           </div>
-          
+
           <div className="flex flex-col">
             <Typography variant="h4" className="font-semibold">
               Guest count
@@ -71,16 +70,8 @@ const ReservationCalendarModal = ({
         </div>
         <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
           <div className="flex justify-end gap-2 w-full">
-            <Button
-              variant="danger"
-            >
-              Request to Cancel
-            </Button>
-            <Button
-              variant="primary"
-            >
-              Change Date
-            </Button>
+            <Button variant="danger">Request to Cancel</Button>
+            <Button variant="primary">Change Date</Button>
           </div>
         </div>
       </div>

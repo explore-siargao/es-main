@@ -21,15 +21,18 @@ const ReservationCalendar = () => {
             >
               Reservations
             </Typography>
-            <Button onClick={() => router.push('/hosting/reservations/upcoming')} variant={"primary"} className="flex gap-2">
+            <Button
+              onClick={() => router.push("/hosting/reservations/upcoming")}
+              variant={"primary"}
+              className="flex gap-2"
+            >
               <Table />
               Table View
             </Button>
           </div>
           <Tabs tabs={reservationCalendarTabs} />
         </div>
-        
-        
+
         <div className="flex mt-2">
           <CalendarTable />
         </div>

@@ -1,199 +1,230 @@
-import React, { useState, useEffect } from 'react';
-import { format, addDays, startOfMonth, getMonth, differenceInDays, isAfter, isBefore } from 'date-fns';
-import sampleData from './SampleData.json';
-import { ChevronDown, ChevronRight, Edit3, Save } from 'lucide-react';
-import { Input } from '@/common/components/ui/Input';
-import toast from 'react-hot-toast';
-import { Button } from '@/common/components/ui/Button';
-import Sidebar from '../Sidebar';
-import ReservationCalendarModal from '../ReservationCalendarModal';
-import RoomQuantityEdit from '../RoomQuantityEdit';
+import React, { useState, useEffect } from "react"
+import {
+  format,
+  addDays,
+  startOfMonth,
+  getMonth,
+  differenceInDays,
+  isAfter,
+  isBefore,
+} from "date-fns"
+import sampleData from "./SampleData.json"
+import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
+import { Input } from "@/common/components/ui/Input"
+import toast from "react-hot-toast"
+import { Button } from "@/common/components/ui/Button"
+import Sidebar from "../Sidebar"
+import ReservationCalendarModal from "../ReservationCalendarModal"
+import RoomQuantityEdit from "../RoomQuantityEdit"
 
 export interface Booking {
-  name: string;
-  start_date: string;
-  end_date: string;
-  guest_count: number;
+  name: string
+  start_date: string
+  end_date: string
+  guest_count: number
 }
 
 export interface SelectedReservation {
-  room: string;
-  booking: Booking;
+  room: string
+  booking: Booking
 }
 
 export interface Room {
-  abbr: string;
-  status: string;
-  bookings: Booking[];
+  abbr: string
+  status: string
+  bookings: Booking[]
 }
 
 export interface Category {
-  name: string;
-  price: string;
-  rooms: Room[];
+  name: string
+  price: string
+  rooms: Room[]
 }
 
 export interface SampleData {
-  categories: Category[];
+  categories: Category[]
 }
 
 const ActivitiesCalendarTable = () => {
-  const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()));
-  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
-  const [selectedReservation, setSelectedReservation] = useState<SelectedReservation | null>(null);
-  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<SampleData>(sampleData);
-  const [editingRoom, setEditingRoom] = useState<string | null>(null);
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>('');
+  const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
+  const [selectedReservation, setSelectedReservation] =
+    useState<SelectedReservation | null>(null)
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
+  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<string>("")
+  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
+  const [editingRoom, setEditingRoom] = useState<string | null>(null)
+  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
       {
         date: "2024-06-03",
-        quantity: 4
-      }
-    ]
-  });
-  const daysPerPage = 13;
+        quantity: 4,
+      },
+    ],
+  })
+  const daysPerPage = 13
 
-  const closeReservationModal = () => setIsReservationModalOpen(false);
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false);
+  const closeReservationModal = () => setIsReservationModalOpen(false)
+  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true);
+    setIsRoomQuantityEditOpen(true)
     setSelectedDate(date)
     setSelectedCategory(category)
-  };
+  }
 
   useEffect(() => {
     const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1);
+      const calendarEnd = addDays(startDate, daysPerPage - 1)
       const newFilteredData = {
-        categories: sampleData.categories.map(category => ({
+        categories: sampleData.categories.map((category) => ({
           ...category,
-          rooms: category.rooms.map(room => ({
+          rooms: category.rooms.map((room) => ({
             ...room,
-            bookings: room.bookings.filter(booking => {
-              const bookingStart = new Date(booking.start_date);
-              const bookingEnd = new Date(booking.end_date);
-              return !(isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate));
-            })
-          }))
-        }))
-      };
-      setFilteredData(newFilteredData);
-    };
+            bookings: room.bookings.filter((booking) => {
+              const bookingStart = new Date(booking.start_date)
+              const bookingEnd = new Date(booking.end_date)
+              return !(
+                isAfter(bookingStart, calendarEnd) ||
+                isBefore(bookingEnd, startDate)
+              )
+            }),
+          })),
+        })),
+      }
+      setFilteredData(newFilteredData)
+    }
 
-    filterDataByDate();
-  }, [startDate]);
+    filterDataByDate()
+  }, [startDate])
 
   const toggleCollapse = (category: string) => {
-    setCollapsed(prev => ({ ...prev, [category]: !prev[category] }));
-  };
+    setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
+  }
 
   const generateCalendarHeader = () => {
-    const headers = [];
+    const headers = []
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i);
+      const date = addDays(startDate, i)
       headers.push(
-        <th key={i} className={`border p-2 w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
-          {format(date, 'EEE dd')}
+        <th
+          key={i}
+          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+        >
+          {format(date, "EEE dd")}
         </th>
-      );
+      )
     }
-    return headers;
-  };
+    return headers
+  }
 
   const generateCalendarRowBorder = () => {
-    const headers = [];
+    const headers = []
     for (let i = 0; i < daysPerPage; i++) {
       headers.push(
-        <th key={i} className={`${(i + 1) !== daysPerPage && "border-r"} p-2 w-full max-w-24`}>
-        </th>
-      );
+        <th
+          key={i}
+          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24`}
+        ></th>
+      )
     }
-    return headers;
-  };
+    return headers
+  }
 
   const generateMonthHeader = () => {
-    const headers = [];
-    let currentMonth = getMonth(startDate);
-    let colspan = 0;
+    const headers = []
+    let currentMonth = getMonth(startDate)
+    let colspan = 0
 
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i);
-      const month = getMonth(date);
+      const date = addDays(startDate, i)
+      const month = getMonth(date)
       if (month === currentMonth) {
-        colspan++;
+        colspan++
       } else {
         headers.push(
-          <td key={i} colSpan={colspan} className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center">
-            {format(addDays(startDate, i - colspan), 'MMMM yyyy')}
+          <td
+            key={i}
+            colSpan={colspan}
+            className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center"
+          >
+            {format(addDays(startDate, i - colspan), "MMMM yyyy")}
           </td>
-        );
-        currentMonth = month;
-        colspan = 1;
+        )
+        currentMonth = month
+        colspan = 1
       }
     }
     headers.push(
-      <td key="last" colSpan={colspan} className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center">
-        {format(addDays(startDate, daysPerPage - colspan), 'MMMM yyyy')}
+      <td
+        key="last"
+        colSpan={colspan}
+        className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center"
+      >
+        {format(addDays(startDate, daysPerPage - colspan), "MMMM yyyy")}
       </td>
-    );
+    )
 
-    return headers;
-  };
+    return headers
+  }
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate(addDays(startDate, direction));
-  };
+    setStartDate(addDays(startDate, direction))
+  }
 
-  const getBookingStyle = (startDate: Date, daysPerPage: number, booking: Booking) => {
-    const bookingStart = new Date(booking.start_date);
-    const bookingEnd = new Date(booking.end_date);
-    const calendarEnd = addDays(startDate, daysPerPage - 1);
+  const getBookingStyle = (
+    startDate: Date,
+    daysPerPage: number,
+    booking: Booking
+  ) => {
+    const bookingStart = new Date(booking.start_date)
+    const bookingEnd = new Date(booking.end_date)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
 
     if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
-      return null;
+      return null
     }
 
-    const startOffset = differenceInDays(bookingStart, startDate);
-    const endOffset = differenceInDays(bookingEnd, startDate);
+    const startOffset = differenceInDays(bookingStart, startDate)
+    const endOffset = differenceInDays(bookingEnd, startDate)
 
-    const startCol = Math.max(startOffset, 0);
-    const endCol = Math.min(endOffset, daysPerPage - 1);
-    
-    const colSpan = endCol - startCol + 1;
-    return { startCol, colSpan };
-  };
+    const startCol = Math.max(startOffset, 0)
+    const endCol = Math.min(endOffset, daysPerPage - 1)
+
+    const colSpan = endCol - startCol + 1
+    return { startCol, colSpan }
+  }
 
   const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr);
-    setTempRoomAbbr(abbr);
-  };
+    setEditingRoom(abbr)
+    setTempRoomAbbr(abbr)
+  }
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
-    const newFilteredData = { ...filteredData };
-    const category = newFilteredData.categories.find(category => category.name === categoryName);
-    
+    const newFilteredData = { ...filteredData }
+    const category = newFilteredData.categories.find(
+      (category) => category.name === categoryName
+    )
+
     if (category) {
-      const room = category.rooms[roomIndex];
+      const room = category.rooms[roomIndex]
       if (room) {
-        room.abbr = tempRoomAbbr;
-        setFilteredData(newFilteredData);
-        toast.success("Successfully changed activity name");
+        room.abbr = tempRoomAbbr
+        setFilteredData(newFilteredData)
+        toast.success("Successfully changed activity name")
       } else {
-        toast.error("Activity not found in category");
+        toast.error("Activity not found in category")
       }
     } else {
-      toast.error("Activity not found");
+      toast.error("Activity not found")
     }
-  
-    setEditingRoom(null);
-  };
+
+    setEditingRoom(null)
+  }
 
   return (
     <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
@@ -213,103 +244,150 @@ const ActivitiesCalendarTable = () => {
           <tbody>
             {filteredData.categories.map((category, index) => (
               <React.Fragment key={category.name}>
-                <tr className="hover:bg-gray-100 cursor-pointer" onClick={() => toggleCollapse(category.name)}>
+                <tr
+                  className="hover:bg-gray-100 cursor-pointer"
+                  onClick={() => toggleCollapse(category.name)}
+                >
                   <td className={`border p-4 text-left font-bold border-l-0`}>
-                    <span className='flex gap-2 items-center'>
-                      {!collapsed[category.name] ? <ChevronRight /> : <ChevronDown />}
+                    <span className="flex gap-2 items-center">
+                      {!collapsed[category.name] ? (
+                        <ChevronRight />
+                      ) : (
+                        <ChevronDown />
+                      )}
                       {category.name}
                     </span>
                   </td>
                   {[...Array(daysPerPage)].map((_, i) => {
-                    const date = format(addDays(startDate, i), 'yyyy-MM-dd');
-                    const customQuantity = roomQuantity.customQuantity.find(item => item.date === date);
+                    const date = format(addDays(startDate, i), "yyyy-MM-dd")
+                    const customQuantity = roomQuantity.customQuantity.find(
+                      (item) => item.date === date
+                    )
                     return (
-                      <td key={i} className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${(i + 1) === daysPerPage && "border-r-0"}`}>
-                        <div onClick={(e) => {handleOpenRoomQuantityEditModal(date, category.name); e.stopPropagation()}} className='flex flex-col'>
+                      <td
+                        key={i}
+                        className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                      >
+                        <div
+                          onClick={(e) => {
+                            handleOpenRoomQuantityEditModal(date, category.name)
+                            e.stopPropagation()
+                          }}
+                          className="flex flex-col"
+                        >
                           <div>
-                            {customQuantity ? customQuantity.quantity : roomQuantity.defaultQuantity}
+                            {customQuantity
+                              ? customQuantity.quantity
+                              : roomQuantity.defaultQuantity}
                           </div>
-                          <div>
-                            ${parseFloat(category.price).toFixed(2)}
-                          </div>
+                          <div>${parseFloat(category.price).toFixed(2)}</div>
                         </div>
                       </td>
-                    );
+                    )
                   })}
                 </tr>
-                {!collapsed[category.name] && category.rooms.map((room, roomIndex) => (
-                  <tr key={room.abbr} className="hover:bg-gray-100 relative">
-                    <td className="border p-4 text-left border-l-0">
-                      <div className='flex justify-between items-center'>
-                        {editingRoom === room.abbr ? (
-                          <Input
-                            type="text"
-                            value={tempRoomAbbr}
-                            onChange={(e) => setTempRoomAbbr(e.target.value)}
-                            autoFocus
-                            className="mr-2" 
-                            label={''}                        
-                          />
-                        ) : (
-                          <span>{room.abbr}</span>
-                        )}
-                        {editingRoom === room.abbr ? (
-                          <Button size={"icon"} variant={"link"} onClick={() => handleSaveRoom(category.name, roomIndex)}>
-                            <Save className='text-gray-500 w-5' />
-                          </Button>
-                        ) : (
-                          <Button size={"icon"} variant={"link"} onClick={() => handleEditRoom(room.abbr)}>
-                            <Edit3 className='text-gray-500 w-5' />
-                          </Button>
-                        )}
-                      </div>
-                    </td>
-                    <td colSpan={daysPerPage} className={`border text-center relative ${(index + 1) !== daysPerPage && "border-r-0"}`}>
-                      {room.bookings.map((booking: Booking) => {
-                        const style = getBookingStyle(startDate, daysPerPage, booking);
-                        if (!style) return null;
+                {!collapsed[category.name] &&
+                  category.rooms.map((room, roomIndex) => (
+                    <tr key={room.abbr} className="hover:bg-gray-100 relative">
+                      <td className="border p-4 text-left border-l-0">
+                        <div className="flex justify-between items-center">
+                          {editingRoom === room.abbr ? (
+                            <Input
+                              type="text"
+                              value={tempRoomAbbr}
+                              onChange={(e) => setTempRoomAbbr(e.target.value)}
+                              autoFocus
+                              className="mr-2"
+                              label={""}
+                            />
+                          ) : (
+                            <span>{room.abbr}</span>
+                          )}
+                          {editingRoom === room.abbr ? (
+                            <Button
+                              size={"icon"}
+                              variant={"link"}
+                              onClick={() =>
+                                handleSaveRoom(category.name, roomIndex)
+                              }
+                            >
+                              <Save className="text-gray-500 w-5" />
+                            </Button>
+                          ) : (
+                            <Button
+                              size={"icon"}
+                              variant={"link"}
+                              onClick={() => handleEditRoom(room.abbr)}
+                            >
+                              <Edit3 className="text-gray-500 w-5" />
+                            </Button>
+                          )}
+                        </div>
+                      </td>
+                      <td
+                        colSpan={daysPerPage}
+                        className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                      >
+                        {room.bookings.map((booking: Booking) => {
+                          const style = getBookingStyle(
+                            startDate,
+                            daysPerPage,
+                            booking
+                          )
+                          if (!style) return null
 
-                        const { startCol, colSpan } = style;
+                          const { startCol, colSpan } = style
 
-                        return (
-                          <div
-                            key={booking.name}
-                            style={{
-                              left: `${(startCol * 100 / daysPerPage) + 4}%`,
-                              width: `${(colSpan * 100 / daysPerPage) - 8}%`,
-                            }}
-                            onClick={() => { setIsReservationModalOpen(true); setSelectedReservation({ room: room.abbr, booking: booking }); }}
-                            className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
-                          >
-                            <span className='text-white text-sm truncate px-2'>{booking.name}</span>
-                          </div>
-                        );
-                      })}
-                      <div className="absolute inset-0 z-10 flex h-full">
-                        {generateCalendarRowBorder()}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          return (
+                            <div
+                              key={booking.name}
+                              style={{
+                                left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                              }}
+                              onClick={() => {
+                                setIsReservationModalOpen(true)
+                                setSelectedReservation({
+                                  room: room.abbr,
+                                  booking: booking,
+                                })
+                              }}
+                              className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                            >
+                              <span className="text-white text-sm truncate px-2">
+                                {booking.name}
+                              </span>
+                            </div>
+                          )
+                        })}
+                        <div className="absolute inset-0 z-10 flex h-full">
+                          {generateCalendarRowBorder()}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </React.Fragment>
             ))}
           </tbody>
         </table>
       </div>
-      {
-        selectedReservation &&
-        <ReservationCalendarModal isModalOpen={isReservationModalOpen} onClose={closeReservationModal} selectedReservation={selectedReservation} />
-      }
+      {selectedReservation && (
+        <ReservationCalendarModal
+          isModalOpen={isReservationModalOpen}
+          onClose={closeReservationModal}
+          selectedReservation={selectedReservation}
+        />
+      )}
       <RoomQuantityEdit
         isModalOpen={isRoomQuantityEditOpen}
-        onClose={closeRoomQuantityEditModal} 
-        selectedDate={selectedDate} 
+        onClose={closeRoomQuantityEditModal}
+        selectedDate={selectedDate}
         roomQuantity={roomQuantity}
-        setRoomQuantity={setRoomQuantity} 
-        category={selectedCategory}  
+        setRoomQuantity={setRoomQuantity}
+        category={selectedCategory}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ActivitiesCalendarTable;
+export default ActivitiesCalendarTable
