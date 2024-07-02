@@ -190,28 +190,42 @@ const BasicInfo = ({ pageType }: Prop) => {
           </div>
           <form className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-6">
             <div className="col-span-1">
-              <Input
-                type="text"
-                label="Title"
-                defaultValue={data?.item?.title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <div className="mt-2 relative rounded-md ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
-                <label
-                  htmlFor="descriptionTextarea"
-                  className="block text-xs font-medium text-text-900 px-3 pt-2"
-                >
-                  Description
-                </label>
-                <textarea
-                  id="descriptionTextarea"
-                  className="flex min-h-[80px] w-full px-3 pt-1 text-sm border-0 focus:ring-0 bg-transparent disabled:cursor-not-allowed disabled:opacity-50"
-                  defaultValue={data?.item?.description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  maxLength={3000}
+              <div>
+                <Input
+                  type="text"
+                  label="Title"
+                  defaultValue={data?.item?.title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
+                <Typography className="text-xs text-gray-500 italic mt-2">
+                  This is the name that will appear as the title of your listing
+                  on our site.
+                </Typography>
               </div>
-              <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
+              <div>
+                <div className="mt-2 relative rounded-md ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
+                  <label
+                    htmlFor="descriptionTextarea"
+                    className="block text-xs font-medium text-text-900 px-3 pt-2"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id="descriptionTextarea"
+                    className="flex min-h-[80px] w-full px-3 pt-1 text-sm border-0 focus:ring-0 bg-transparent disabled:cursor-not-allowed disabled:opacity-50"
+                    defaultValue={data?.item?.description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    maxLength={3000}
+                  />
+                </div>
+                <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
+                <Typography className="text-xs text-gray-500 italic mt-2">
+                  Provide a full description about what customers will
+                  experience during the activity, in the correct order. Bring
+                  the activity to life and write at least 500 characters.
+                </Typography>
+              </div>
+
               <div className="mt-4">
                 <Typography variant="h4" fontWeight="semibold" className="mb-4">
                   Highlights
@@ -266,6 +280,11 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                 </div>
+                <Typography className="text-xs text-gray-500 italic mt-2">
+                  Provide 3 to 5 of the most memorable experiences that make
+                  your activity special and stand out from the competition.
+                  Customers will compare your highlights to other activities.
+                </Typography>
               </div>
               <div className="mt-4">
                 <Typography variant="h4" fontWeight="semibold" className="mb-4">
@@ -352,6 +371,10 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </div>
                   </div>
                 </div>
+                <Typography className="text-xs text-gray-500 italic mt-2">
+                  How long does your activity last from start to finish? Try to
+                  be as accurate as possible.
+                </Typography>
               </div>
 
               <div className="mt-4">
@@ -373,6 +396,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                     <label className="pt-0.5">{language}</label>
                   </div>
                 ))}
+                <Typography className="text-xs text-gray-500 italic mt-2">
+                  What languages does the activity guide speak?
+                </Typography>
               </div>
             </div>
             <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
