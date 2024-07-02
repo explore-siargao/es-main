@@ -69,14 +69,20 @@ const BasicInfo = ({ pageType }: Prop) => {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3">
           <div className="col-span-1">
-            <Input
-              type="text"
-              label="Title"
-              disabled={isLoading || isPending}
-              required
-              defaultValue={data?.item?.title}
-              {...register("title", { required: true })}
-            />
+            <div>
+              <Input
+                type="text"
+                label="Title"
+                disabled={isLoading || isPending}
+                required
+                defaultValue={data?.item?.title}
+                {...register("title", { required: true })}
+              />
+              <Typography className="text-xs text-gray-500 italic mt-2">
+                This is the name that will appear as the title of your listing on our site.
+              </Typography>
+            </div>
+            
             <div className="mt-2">
               <Textarea
                 className="mt-1"
