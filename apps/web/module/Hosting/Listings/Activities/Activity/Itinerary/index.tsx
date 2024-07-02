@@ -167,7 +167,8 @@ const Itinerary = ({ pageType }: Prop) => {
             />
           </div>
           <Typography className="text-xs text-gray-500 italic mt-2">
-            Where will you meet your customers to begin the activity? Our website doesn't support pickup location yet.
+            Where will you meet your customers to begin the activity? Our
+            website doesn't support pickup location yet.
           </Typography>
           <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
             You can drag and drop the yellow marker above to set your exact
@@ -241,7 +242,8 @@ const Itinerary = ({ pageType }: Prop) => {
                   })}
                 />
                 <Typography className="text-xs text-gray-500 italic mt-2">
-                  Provide a detailed desription on how to get to the meeting point.
+                  Provide a detailed desription on how to get to the meeting
+                  point.
                 </Typography>
               </div>
             </div>

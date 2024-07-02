@@ -79,10 +79,11 @@ const BasicInfo = ({ pageType }: Prop) => {
                 {...register("title", { required: true })}
               />
               <Typography className="text-xs text-gray-500 italic mt-2">
-                This is the name that will appear as the title of your listing on our site.
+                This is the name that will appear as the title of your listing
+                on our site.
               </Typography>
             </div>
-            
+
             <div className="mt-2">
               <Textarea
                 className="mt-1"

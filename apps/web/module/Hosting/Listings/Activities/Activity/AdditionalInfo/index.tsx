@@ -199,7 +199,8 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                   <Typography className="text-xs text-gray-500 italic mt-2">
-                    Such as a swimmers or a towel for water activities, or comfortable shoes for a hike. Add a new item for each one.
+                    Such as a swimmers or a towel for water activities, or
+                    comfortable shoes for a hike. Add a new item for each one.
                   </Typography>
                 </div>
               </div>
@@ -259,7 +260,10 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                   <Typography className="text-xs text-gray-500 italic mt-2">
-                    List any object, clothing, or action that's not allowed on your activity. You should include types of travelers who should not join this activity, like under 18s or pregnant women. Add a new item for each one.
+                    List any object, clothing, or action that's not allowed on
+                    your activity. You should include types of travelers who
+                    should not join this activity, like under 18s or pregnant
+                    women. Add a new item for each one.
                   </Typography>
                 </div>
               </div>
@@ -319,7 +323,9 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                   <Typography className="text-xs text-gray-500 italic mt-2">
-                    List any activity policies, such as prerequisites, valid ID required, weather retalated cancellation policy. Add a new policy for each one.
+                    List any activity policies, such as prerequisites, valid ID
+                    required, weather retalated cancellation policy. Add a new
+                    policy for each one.
                   </Typography>
                 </div>
               </div>
