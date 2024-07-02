@@ -5,24 +5,24 @@ import React, { useEffect, useState } from "react"
 type Props = {
   index: number
   field: {
-    id: number
+    _id: number
     unitName: string
     unitPrice: {
-      id: number
+      _id: number
       baseRate: number
       baseRateMaxCapacity: number
       maximumCapacity: number
       pricePerAdditionalPerson: number
       discountedWeeklyRate: number
-      discountMonthlyRate: number
+      discountedMonthlyRate: number
     }
   }
   update: Function
 }
 
 const PricingContent: React.FC<Props> = ({ index, field, update }) => {
-  const { id, unitName, unitPrice } = field
-
+  const { _id, unitName, unitPrice } = field
+  
   const [baseRatePrice, setBaseRatePrice] = useState(unitPrice.baseRate ?? null)
   const [baseRateMax, setBaseRateMax] = useState(
     unitPrice.baseRateMaxCapacity ?? 1
@@ -37,16 +37,16 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
 
   useEffect(() => {
     update(index, {
-      id: id,
+      id: _id,
       unitName: unitName,
       unitPrice: {
-        id: unitPrice.id,
+        _id: unitPrice._id,
         baseRate: baseRatePrice,
         baseRateMaxCapacity: baseRateMax,
         maximumCapacity: maxCapacity,
         pricePerAdditionalPerson: pricePerAddPerson,
         discountedWeeklyRate: weeklyDiscountRate,
-        discountMonthlyRate: unitPrice.discountMonthlyRate, // static value inputted, just change the value to dynamic using state value
+        discountedMonthlyRate: unitPrice.discountedMonthlyRate, // static value inputted, just change the value to dynamic using state value
       },
     })
   }, [

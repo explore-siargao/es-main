@@ -8,8 +8,10 @@ const response = new ResponseService()
 export const updateUnitPrice = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
-  const unitPrices: T_UnitPrice[] = req.body.unitPrices
+  const unitPrices: T_UnitPrice[] = req.body
+  console.log(unitPrices)
   const getProperty = await dbProperties
+
     .findOne({ _id: propertyId, offerBy: userId, deletedAt: null })
     .populate({
       path: 'bookableUnits',
