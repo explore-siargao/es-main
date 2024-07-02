@@ -16,6 +16,8 @@ import useGetPropertyById from "../../hooks/useGetPropertyById"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
 import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
+import useGetPropertyUnitPricesById from "../../hooks/useGetPropertyUnitPricesById"
+import useUpdatePropertyUnitPriceById from "../../hooks/useUpdatePropertyUnitPriceById"
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
@@ -30,6 +32,8 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
   const { handleSubmit, control } = useForm()
+  const { mutate, isPending } = useUpdatePropertyUnitPriceById(listingId)
+  const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId);
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
   const { fields, append, update } = useFieldArray({
@@ -37,7 +41,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     name: "unitPrices",
     keyName: "key",
   })
-
+  console.log(fields)
   const onSubmit = (data: any) => {
     if (
       pageType === "setup" &&
@@ -59,28 +63,45 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       }
       updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
     } else {
-      queryClient.invalidateQueries({
+      const callBackReq = {
+        onSuccess: (data: any) => {
+          if (!data.error) {
+            queryClient.invalidateQueries({
+              queryKey: ["property-unit-pricing", listingId],
+            })
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err: any) => {
+          toast.error(String(err))
+        },
+      }
+      const unitPrices = fields.map(field => field.unitPrice)
+      mutate(unitPrices, callBackReq)
+      queryClient.invalidateQueries({ 
         queryKey: ["property", listingId],
       })
     }
     if (pageType === "setup") {
       router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
     }
-  }
+  } 
+  console.log(unitPriceData)
 
   useEffect(() => {
     if (!isLoading && !data?.error && data?.item && fields.length === 0) {
-      const items = data?.item?.bookableUnits.map((item: any, index: number) => ({
-        id: item._id,
-        unitName: "Unit " + index,
+      const items = unitPriceData?.items?.map((item: any, index: number) => ({
+        _id: item._id,
+        unitName: item.unitName + " " + index,
         unitPrice: {
-          id: "asdasd",
-          baseRate: 200,
-          baseRateMaxCapacity: 200,
-          maximumCapacity: 10,
-          pricePerAdditionalPerson: 200,
-          discountedWeeklyRate: 200,
-          discountMonthlyRate: 200,
+          _id: item.unitPrice._id,
+          baseRate: item.unitPrice.baseRate,
+          baseRateMaxCapacity: item.unitPrice.baseRateMaxCapacity,
+          maximumCapacity: item.unitPrice.baseRateMaxCapacity,
+          pricePerAdditionalPerson: item.unitPrice.pricePerAdditionalPerson,
+          discountedWeeklyRate: item.unitPrice.discountedWeeklyRate,
+          discountedMonthlyRate: item.unitPrice.discountedMonthlyRate,
         },
       }))
 
