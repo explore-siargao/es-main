@@ -69,24 +69,24 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   }
 
   useEffect(() => {
-    if (!isLoading && !data?.error && data?.item) {
-      // const items = data?.item?.BookableUnit.map((item) => ({
-      //   id: item.id,
-      //   unitName: item.unitName,
-      //   unitPrice: {
-      //     id: item.unitPrice.id,
-      //     baseRate: item.unitPrice.baseRate,
-      //     baseRateMaxCapacity: item.unitPrice.baseRateMaxcapacity,
-      //     maximumCapacity: item.unitPrice.maximumCapacity,
-      //     pricePerAdditionalPerson: item.unitPrice.pricePerAdditionalPerson,
-      //     discountedWeeklyRate: item.unitPrice.discountedWeekLyRate,
-      //     discountMonthlyRate: item.unitPrice.discountMonthlyRate,
-      //   },
-      // }))
+    if (!isLoading && !data?.error && data?.item && fields.length === 0) {
+      const items = data?.item?.bookableUnits.map((item: any, index: number) => ({
+        id: item._id,
+        unitName: "Unit " + index,
+        unitPrice: {
+          id: "asdasd",
+          baseRate: 200,
+          baseRateMaxCapacity: 200,
+          maximumCapacity: 10,
+          pricePerAdditionalPerson: 200,
+          discountedWeeklyRate: 200,
+          discountMonthlyRate: 200,
+        },
+      }))
 
-      append([])
+      append(items)
     }
-  }, [])
+  }, [data])
 
   return (
     <div className="my-20">
