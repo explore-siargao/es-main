@@ -31,52 +31,48 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
-  const { handleSubmit, control } = useForm()
+  const { handleSubmit, control, reset  } = useForm()
   const { mutate, isPending } = useUpdatePropertyUnitPriceById(listingId)
   const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId);
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
-  const { fields, append, update } = useFieldArray({
+  const { fields, update } = useFieldArray({
     control,
     name: "unitPrices",
     keyName: "key",
   })
-  console.log(fields)
+
+  
   const onSubmit = (data: any) => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          toast.success(data.message)
+          queryClient.invalidateQueries({
+            queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property-unit-pricing", listingId],})
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
     if (
       pageType === "setup" &&
       !data?.item?.finishedSections?.includes("pricing")
     ) {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            queryClient.invalidateQueries({
-              queryKey: ["property-finished-sections", listingId],
-            })
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
+       // @ts-ignore
+      const unitPrices = fields.map(field => field.unitPrice)
+      mutate(unitPrices, callBackReq)
       updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
     } else {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            queryClient.invalidateQueries({
-              queryKey: ["property-unit-pricing", listingId],
-            })
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
+    
+      
+       // @ts-ignore
       const unitPrices = fields.map(field => field.unitPrice)
       mutate(unitPrices, callBackReq)
       queryClient.invalidateQueries({ 
@@ -84,30 +80,22 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       })
     }
     if (pageType === "setup") {
-      router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
+      router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
     }
   } 
-  console.log(unitPriceData)
-
   useEffect(() => {
-    if (!isLoading && !data?.error && data?.item && fields.length === 0) {
+    if (!isLoading && !isPending && !data?.error && data?.item) {
       const items = unitPriceData?.items?.map((item: any, index: number) => ({
         _id: item._id,
         unitName: item.unitName + " " + index,
         unitPrice: {
-          _id: item.unitPrice._id,
-          baseRate: item.unitPrice.baseRate,
-          baseRateMaxCapacity: item.unitPrice.baseRateMaxCapacity,
-          maximumCapacity: item.unitPrice.baseRateMaxCapacity,
-          pricePerAdditionalPerson: item.unitPrice.pricePerAdditionalPerson,
-          discountedWeeklyRate: item.unitPrice.discountedWeeklyRate,
-          discountedMonthlyRate: item.unitPrice.discountedMonthlyRate,
+          ...item.unitPrice,
         },
-      }))
+      }));
 
-      append(items)
+      reset({ unitPrices: items }); 
     }
-  }, [data])
+  }, [data, isLoading, unitPriceData]);
 
   return (
     <div className="my-20">

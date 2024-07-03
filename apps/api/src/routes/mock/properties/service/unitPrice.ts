@@ -68,8 +68,8 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     if (item._id === bookableUnit.unitPrice._id) {
       bookableUnit.BookableUnitType.unitPrice.baseRate = item?.baseRate
       //@ts-ignore
-      bookableUnit.BookableUnitType.unitPrice.baseRateMaxcapacity =
-        item?.baseRateMaxcapacity
+      bookableUnit.BookableUnitType.unitPrice.baseRateMaxCapacity =
+        item?.baseRateMaxCapacity
       //@ts-ignore
       bookableUnit.BookableUnitType.unitPrice.discountMonthlyRate =
         item?.discountMonthlyRate
