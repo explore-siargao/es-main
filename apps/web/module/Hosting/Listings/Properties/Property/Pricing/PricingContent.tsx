@@ -37,7 +37,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
 
   useEffect(() => {
     update(index, {
-      id: _id,
+      _id: _id,
       unitName: unitName,
       unitPrice: {
         _id: unitPrice._id,
@@ -46,7 +46,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         maximumCapacity: maxCapacity,
         pricePerAdditionalPerson: pricePerAddPerson,
         discountedWeeklyRate: weeklyDiscountRate,
-        discountedMonthlyRate: unitPrice.discountedMonthlyRate, // static value inputted, just change the value to dynamic using state value
+        discountedMonthlyRate: unitPrice.discountedMonthlyRate,
       },
     })
   }, [

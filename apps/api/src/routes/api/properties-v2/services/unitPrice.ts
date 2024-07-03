@@ -9,7 +9,6 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
   const unitPrices: T_UnitPrice[] = req.body
-  console.log(unitPrices)
   const getProperty = await dbProperties
 
     .findOne({ _id: propertyId, offerBy: userId, deletedAt: null })
@@ -42,7 +41,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
         {
           $set: {
             baseRate: item.baseRate,
-            baseRateMaxCapacity: item.baseRateMaxcapacity,
+            baseRateMaxCapacity: item.baseRateMaxCapacity,
             maximumCapacity: item.maximumCapacity,
             pricePerAdditionalPerson: item.pricePerAdditionalPerson,
             discountedMonthlyRate: item.discountMonthlyRate,
@@ -59,7 +58,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     getProperty.bookableUnits.forEach(async (item, index) => {
       const newUnitPrice = new dbUnitPrices({
         baseRate: unitPriceWithoutId[index]?.baseRate,
-        baseRateMaxCapacity: unitPrices[index]?.baseRateMaxcapacity,
+        baseRateMaxCapacity: unitPrices[index]?.baseRateMaxCapacity,
         maximumCapacity: unitPriceWithoutId[index]?.maximumCapacity,
         pricePerAdditionalPerson:
           unitPriceWithoutId[index]?.pricePerAdditionalPerson,
