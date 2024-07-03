@@ -65,19 +65,20 @@ const Sidebar = ({ children }: HostSidebarProps) => {
       basePath: "/units",
     },
     {
-      id: "photos",
-      title: "Photos",
-      icon: <LucideImage className="h-5 w-5" />,
-      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/photos`,
-      basePath: "/photos",
-    },
-    {
       id: "pricing",
       title: "Pricing",
       icon: <LucideCoins className="h-5 w-5" />,
       link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/pricing`,
       basePath: "/pricing",
     },
+    {
+      id: "photos",
+      title: "Photos",
+      icon: <LucideImage className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/photos`,
+      basePath: "/photos",
+    },
+
     {
       id: "policies",
       title: "Policies",
