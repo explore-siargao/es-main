@@ -1,6 +1,14 @@
 export type T_Image = {
-  fileKey: string
-  alt: string
+  _id: string
+  rentalId: string
+  key: string
+  thumbKey: string
+  isMain: boolean
+  description: string
+  tags: string
+  createdAt: string
+  __v: number
+  updatedAt: string
 }
 
 export type T_SectionInfoProps = {
