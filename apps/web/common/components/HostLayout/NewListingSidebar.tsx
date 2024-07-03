@@ -78,7 +78,7 @@ const Sidebar = ({ children }: HostSidebarProps) => {
       link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/photos`,
       basePath: "/photos",
     },
-   
+
     {
       id: "policies",
       title: "Policies",
