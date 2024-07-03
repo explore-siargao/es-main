@@ -22,7 +22,7 @@ type Props = {
 
 const PricingContent: React.FC<Props> = ({ index, field, update }) => {
   const { _id, unitName, unitPrice } = field
-  
+
   const [baseRatePrice, setBaseRatePrice] = useState(unitPrice.baseRate ?? null)
   const [baseRateMax, setBaseRateMax] = useState(
     unitPrice.baseRateMaxCapacity ?? 1

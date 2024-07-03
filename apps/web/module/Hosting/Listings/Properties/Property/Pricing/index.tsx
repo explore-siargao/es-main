@@ -31,9 +31,9 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
-  const { handleSubmit, control, reset  } = useForm()
+  const { handleSubmit, control, reset } = useForm()
   const { mutate, isPending } = useUpdatePropertyUnitPriceById(listingId)
-  const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId);
+  const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId)
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
   const { fields, update } = useFieldArray({
@@ -42,7 +42,6 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     keyName: "key",
   })
 
-  
   const onSubmit = (data: any) => {
     const callBackReq = {
       onSuccess: (data: any) => {
@@ -52,7 +51,8 @@ const Pricing = ({ pageType }: PricingContentProps) => {
             queryKey: ["property-finished-sections", listingId],
           })
           queryClient.invalidateQueries({
-            queryKey: ["property-unit-pricing", listingId],})
+            queryKey: ["property-unit-pricing", listingId],
+          })
         } else {
           toast.error(String(data.message))
         }
@@ -65,24 +65,22 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       pageType === "setup" &&
       !data?.item?.finishedSections?.includes("pricing")
     ) {
-       // @ts-ignore
-      const unitPrices = fields.map(field => field.unitPrice)
+      // @ts-ignore
+      const unitPrices = fields.map((field) => field.unitPrice)
       mutate(unitPrices, callBackReq)
       updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
     } else {
-    
-      
-       // @ts-ignore
-      const unitPrices = fields.map(field => field.unitPrice)
+      // @ts-ignore
+      const unitPrices = fields.map((field) => field.unitPrice)
       mutate(unitPrices, callBackReq)
-      queryClient.invalidateQueries({ 
+      queryClient.invalidateQueries({
         queryKey: ["property", listingId],
       })
     }
     if (pageType === "setup") {
       router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
     }
-  } 
+  }
   useEffect(() => {
     if (!isLoading && !isPending && !data?.error && data?.item) {
       const items = unitPriceData?.items?.map((item: any, index: number) => ({
@@ -91,11 +89,11 @@ const Pricing = ({ pageType }: PricingContentProps) => {
         unitPrice: {
           ...item.unitPrice,
         },
-      }));
+      }))
 
-      reset({ unitPrices: items }); 
+      reset({ unitPrices: items })
     }
-  }, [data, isLoading, unitPriceData]);
+  }, [data, isLoading, unitPriceData])
 
   return (
     <div className="my-20">

@@ -68,7 +68,7 @@ const Sidebar = ({ children }: HostSidebarProps) => {
       link: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/photos`,
       basePath: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/photos`,
     },
-  
+
     {
       title: "Policies",
       icon: <LucideGavel className="h-5 w-5" />,
