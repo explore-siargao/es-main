@@ -22,7 +22,6 @@ function TravelBlog() {
           <TravelChecklist />
           <Separator orientation="horizontal" className="my-10 bg-gray-300" />
           <TopThingsToDo />
-        
         </div>
 
         <div>

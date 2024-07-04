@@ -17,7 +17,7 @@ function TravelBlog() {
       <div className="justify-between md:flex text-start items-center">
         <div>
           <Typography variant="h1" fontWeight="semibold">
-          Magpupungko Rock Pools 
+            Magpupungko Rock Pools
           </Typography>
         </div>
         <ShareSave />
