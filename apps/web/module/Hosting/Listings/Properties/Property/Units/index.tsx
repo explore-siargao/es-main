@@ -55,7 +55,7 @@ const Units = ({ pageType }: Prop) => {
       })
     }
 
-    router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
+    router.push(`/hosting/listings/properties/setup/${listingId}/pricing`)
   }
   const propertyType = data?.item?.type
   return (

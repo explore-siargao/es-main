@@ -57,17 +57,18 @@ const Sidebar = ({ children }: HostSidebarProps) => {
       basePath: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/units`,
     },
     {
-      title: "Photos",
-      icon: <LucideImage className="h-5 w-5" />,
-      link: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/photos`,
-      basePath: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/photos`,
-    },
-    {
       title: "Pricing",
       icon: <LucideCoins className="h-5 w-5" />,
       link: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/pricing`,
       basePath: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/pricing`,
     },
+    {
+      title: "Photos",
+      icon: <LucideImage className="h-5 w-5" />,
+      link: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/photos`,
+      basePath: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/photos`,
+    },
+
     {
       title: "Policies",
       icon: <LucideGavel className="h-5 w-5" />,
