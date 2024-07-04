@@ -8,7 +8,7 @@ import CheckoutMoreInfoModal from "./modals/CheckoutMoreInfoModal"
 import CheckInOutModal from "./modals/CheckInOutModal"
 import useCheckInOutDateStore from "@/module/Accommodation/store/useCheckInOutDateStore"
 import Asterisk from "@/common/components/ui/Asterisk"
-import { format } from "date-fns"
+import { differenceInDays, format } from "date-fns"
 import { useParams, useRouter } from "next/navigation"
 import GuestAddModal from "./modals/GuestAddModal"
 import useGuestAdd from "@/module/Accommodation/store/useGuestsStore"
@@ -22,13 +22,15 @@ interface ICheckout {
   descTotalBeforeTaxes: number
   totalBeforeTaxes: number
   titlePrice: number
+  pricePerAdditionalPerson: number
 }
 
 interface CheckoutProcessProps {
   checkoutDesc: ICheckout
+  isSelectedBookableUnit: boolean
 }
 
-const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
+const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessProps) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
@@ -38,9 +40,13 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
     useState(false)
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
+  const nights = differenceInDays(
+    dateRange.to ?? new Date(),
+    dateRange.from ?? new Date()
+  )
   const totalGuest = adults + children + infants
   return (
-    <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
+    <div className={`border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col ${!isSelectedBookableUnit ? "opacity-70" : ""} divide-text-100 overflow-y-auto mb-5`}>
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
         {formatCurrency(checkoutDesc.titlePrice, "Philippines")}
         <small className="font-light"> night</small>
@@ -49,7 +55,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         <div className="grid grid-cols-2 gap-3">
           <div
             className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() => setCheckInOutCalendarModalIsOpen(true)}
+            onClick={() => isSelectedBookableUnit ? setCheckInOutCalendarModalIsOpen(true) : null}
           >
             <label
               htmlFor="check-in"
@@ -65,7 +71,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           </div>
           <div
             className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() => setCheckInOutCalendarModalIsOpen(true)}
+            onClick={() => isSelectedBookableUnit ? setCheckInOutCalendarModalIsOpen(true) : null}
           >
             <label
               htmlFor="checkout"
@@ -80,7 +86,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         </div>
         <div
           className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-          onClick={() => setIsGuestsModalOpen(true)}
+          onClick={() => isSelectedBookableUnit ? setIsGuestsModalOpen(true) : null}
         >
           <label
             htmlFor="checkout"
@@ -93,9 +99,10 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           </span>
         </div>
         <Button
+   
           variant="primary"
-          onClick={() =>
-            router.push(`/accommodation/${params.listingId}/checkout`)
+          onClick={() => isSelectedBookableUnit ?
+            router.push(`/accommodation/${params.listingId}/checkout`) : null
           }
         >
           Book Now
@@ -104,14 +111,15 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
       <div>
         <div className="flex justify-between items-center mt-4">
           <Button
+          
             variant={"ghost"}
             className="underline pl-0"
-            onClick={() => setIsBreakdownModalOpen(true)}
+            onClick={() => isSelectedBookableUnit ? setIsBreakdownModalOpen(true) : null}
           >
             <PesoSign />
-            25,000 x 5 nights
+            {checkoutDesc.titlePrice} x {nights}
           </Button>
-          <div>{formatCurrency(checkoutDesc.durationCost, "Philippines")}</div>
+          <div>{formatCurrency(checkoutDesc.titlePrice * nights, "Philippines")}</div>
         </div>
 
         <div className="flex justify-between items-center">
@@ -129,7 +137,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
           <div>
-            {formatCurrency(checkoutDesc.totalBeforeTaxes, "Philippines")}
+            {formatCurrency( ((checkoutDesc.titlePrice * nights) + checkoutDesc.serviceFee) + (checkoutDesc.pricePerAdditionalPerson * totalGuest), "Philippines")}
           </div>
         </div>
       </div>

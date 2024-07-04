@@ -19,6 +19,7 @@ import { useState } from "react"
 import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import AvailableBooking from "./components/AvailableBooking"
+import { T_BookableUnitType } from "@repo/contract"
 
 const reportListingArr = [
   {
@@ -436,6 +437,7 @@ const cancellationPolicyModalData = [
 export const value = {
   host: "66622c6d14e35b280af399fa",
   title: "Villa Manao · Private Pool | Bathtub | Sky shower",
+  type: "Hostel",
   description:
     "Join us for an exciting island hopping adventure in Siargao. Explore pristine beaches, crystal-clear waters, and vibrant marine life.",
   highLights: [
@@ -443,25 +445,6 @@ export const value = {
     "Snorkeling in crystal-clear waters",
     "Delicious lunch on Daku Island",
     "Professional guide with local knowledge",
-  ],
-  durationHour: 6,
-  durationMinute: 30,
-  languages: ["English", "Filipino"],
-  isFoodIncluded: true,
-  isNonAlcoholicDrinkIncluded: true,
-  isAlcoholicDrinkIncluded: false,
-  otherInclusion: [
-    "Snorkeling gear",
-    "Island entrance fees",
-    "Round-trip transportation from the meeting point",
-  ],
-  notIncluded: ["Personal expenses", "Gratuities"],
-  whatToBrings: [
-    "Sunscreen",
-    "Swimwear",
-    "Towel",
-    "Camera",
-    "Extra cash for souvenirs",
   ],
   cancellationDays: 3,
   notAllowed: ["Pets", "Smoking", "Littering"],
@@ -544,49 +527,133 @@ export const value = {
     },
   ],
   isSegmentBuilderEnabled: true,
-  segments: [
+  bookableUnits: [
     {
-      index: 1,
-      activities: ["Safety briefing", "Scenic views", "Camp activities"],
-      durationHour: 2,
-      durationMinute: 4,
-      location: "Test test location yes",
-      longitude: 126.11343553773443,
-      latitude: 9.884304859312676,
-      optional: true,
-      hasAdditionalFee: true,
-      transfer: null,
-      _id: {
-        $oid: "666cfa8f600be3ff237e9b29",
+      "_id": {
+        "$oid": "668398cc18ec71fe8081105a"
       },
-    },
+      "category": "Room",
+      "title": "Double Room",
+      "description": "Short description sample",
+      "totalSize": 5,
+      "photos": [
     {
-      index: 2,
-      activities: [],
-      durationHour: 1,
-      durationMinute: 0,
-      optional: true,
-      hasAdditionalFee: true,
-      transfer: "Motorbike",
-      _id: {
-        $oid: "666cfa8f600be3ff237e9b2a",
-      },
-    },
-    {
-      index: 3,
-      activities: [],
-      durationHour: 1,
-      durationMinute: 1,
-      optional: false,
-      hasAdditionalFee: false,
-      transfer: "Local pump boat",
-      _id: {
-        $oid: "666cfb4b600be3ff237e9bb5",
-      },
+      _id: "66684a5db5c3e8b967c89853",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "1.jpg",
+      thumbKey: "eed38095-0a20-4a10-aece-73558e34b497",
+      isMain: false,
+      description: "Mio kia car",
+      tags: "",
     },
   ],
-  meetingPoint:
-    "General Luna Pier, General Luna, Siargao Island, Surigao del Norte, Philippines",
+      "isPrivate": false,
+      "maxGuests": 8,
+      "adultsIncluded": 0,
+      "childrenIncluded": 0,
+      "isMultiRoomUnit": false,
+      "bedConfigs": [],
+      "qty": 3,
+      "bed": "1 Queen Bed",
+      "unitPrice": {
+        "_id": {
+          "$oid": "6672818bf2b99ad949c9cf5e"
+        },
+        "baseRate": 1800,
+        "baseRateMaxCapacity": 10,
+        "maximumCapacity": 15,
+        "pricePerAdditionalPerson": 50,
+        "discountedWeeklyRate": 10,
+        "discountedMonthlyRate": 10,
+      }
+    
+  },
+  {
+    "_id": {
+      "$oid": "667cb18c28b343835a128ca7"
+    },
+    "category": "Bed",
+    "title": "Bed in 8-Bed Mixed Dorm",
+    "description": "Single Bunk Bed",
+    "totalSize": null,
+    "amenities": [],
+    "photos": [
+      {
+        _id: "66684a5eb5c3e8b967c8985c",
+        rentalId: "66658c520c9477ca42bad2c7",
+        key: "4.jpg",
+        thumbKey: "963669f9-d5eb-405d-8a7a-9c9cee49af56",
+        isMain: true,
+        description: "",
+        tags: "",
+        createdAt: "2024-06-11T12:58:22.123Z",
+        __v: 0,
+        updatedAt: "2024-06-11T23:32:37.832Z",
+      },
+    ],
+    "isPrivate": false,
+    "maxGuests": 3,
+    "adultsIncluded": 0,
+    "childrenIncluded": 0,
+    "isMultiRoomUnit": false,
+    "bedConfigs": [],
+    "qty": 1,
+    "unitPrice": {
+      "_id": {
+        "$oid": "6672818bf2b99ad949c9cf5e"
+      },
+      "baseRate": 800,
+      "baseRateMaxCapacity": 10,
+      "maximumCapacity": 15,
+      "pricePerAdditionalPerson": 20,
+      "discountedWeeklyRate": 10,
+      "discountedMonthlyRate": 10,
+    }
+  },
+  {
+    "_id": {
+      "$oid": "667bd82c1b32c84d421c6d26"
+    },
+    "category": "Whole-Place",
+    "title": "Double Room",
+    "description": "",
+    "totalSize": 25,
+    "amenities": [],
+    "photos": [
+    
+{
+  _id: "66684a5db5c3e8b967c89858",
+  rentalId: "66658c520c9477ca42bad2c7",
+  key: "3.jpg",
+  thumbKey: "f6dc04db-237f-46da-8e6a-d1c0e219a518",
+  isMain: false,
+  description: "Test baby",
+  tags: "",
+  __v: 0,
+},
+    ],
+    "isPrivate": false,
+    "maxGuests": 50,
+    "adultsIncluded": 0,
+    "childrenIncluded": 0,
+    "isMultiRoomUnit": false,
+    "numBedRooms": "2",
+    "numBathRooms": "2",
+    "bedConfigs": [],
+    "qty": 2,
+    "unitPrice": {
+      "_id": {
+        "$oid": "6672818bf2b99ad949c9cf5e"
+      },
+      "baseRate": 15000,
+      "baseRateMaxCapacity": 10,
+      "maximumCapacity": 15,
+      "pricePerAdditionalPerson": 100,
+      "discountedWeeklyRate": 10,
+      "discountedMonthlyRate": 10,
+    }
+  }
+],
   status: "Incomplete",
   location: {
     city: "General Luna",
@@ -602,17 +669,17 @@ export const value = {
 
 export const SingleView = () => {
   const [showModal, setShowModal] = useState(false)
+  const [selectedBookableUnit, setSelectedBookableUnit] = useState<T_BookableUnitType>();
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
   }
-
+  
   return (
     <WidthWrapper width="small" className="mt-4 lg:mt-8">
       <SectionInfo images={value.photos} title={value.title} />
-
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
@@ -633,21 +700,20 @@ export const SingleView = () => {
                 title="Hosted by Simon"
                 subTitle="4 months hosting"
               />
-            </div>
+            </div> 
             <div className="py-6">
               <Highlights highlights={highlights} />
             </div>
             <div className="py-6">
               <BookingDescription {...description} />
             </div>
-            <div className="py-6">
-              <AvailableBooking {...description} />
-            </div>
+           
             <div className="py-6 ">
               <PlaceOffers offers={offers} group={group} />
             </div>
             <div className="py-6">
-              <ListingDateRangePicker title="Villa Manao · Private Pool | Bathtub | Sky shower" />
+              <AvailableBooking bookableUnits={value.bookableUnits} propertyType={value.type} 
+              onSelectBookableUnit={(unit: T_BookableUnitType)=> setSelectedBookableUnit(unit)} />
             </div>
           </div>
         </div>
@@ -655,13 +721,13 @@ export const SingleView = () => {
           <div className="md:sticky md:top-6">
             <CheckoutBox
               checkoutDesc={{
-                serviceFee: 1000,
-                durationCost: 125000,
+                pricePerAdditionalPerson: selectedBookableUnit ? selectedBookableUnit.unitPrice.pricePerAdditionalPerson : 0,
+                serviceFee: selectedBookableUnit ? 1000 : 0,
+                durationCost: selectedBookableUnit ? selectedBookableUnit.unitPrice.baseRate * 5 : 0,
                 descTotalBeforeTaxes: 3000,
                 totalBeforeTaxes: 126000,
-                titlePrice: 25000,
-              }}
-            />
+                titlePrice: selectedBookableUnit ? selectedBookableUnit.unitPrice.baseRate : 0,
+              }} isSelectedBookableUnit={selectedBookableUnit}  />
             <div>
               <ListingMark
                 icon={<Tag />}
