@@ -94,7 +94,7 @@ export const rentals = [
       interiorColor: 'Black',
       seatingCapacity: 5,
       weightCapacity: 200.5,
-      minAgeReq: 15,
+      haveDriverLicense: 'Yes',
       isRegistered: 'Yes',
     },
     AddOns: {
@@ -156,7 +156,7 @@ export const rentals = [
       interiorColor: null,
       seatingCapacity: 3,
       weightCapacity: 100.5,
-      minAgeReq: 10,
+      haveDriverLicense: 'Yes',
       isRegistered: 'Yes',
     },
     AddOns: {
