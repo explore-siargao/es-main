@@ -18,7 +18,7 @@ export const Z_Rental_Details = z.object({
   interiorColor: z.string().optional().nullable(),
   seatingCapacity: z.number().optional().nullable(),
   weightCapacity: z.number(),
-  minAgeReq: z.number(),
+  haveDriverLicense: z.enum(["Yes", "No"]).optional().nullable(),
   isRegistered: z.enum(["Yes", "No"]).optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
