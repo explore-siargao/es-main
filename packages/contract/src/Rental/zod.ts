@@ -32,7 +32,7 @@ export const Z_Rental_AddOns = z.object({
   babySeat: z.boolean().optional(),
   dashCam: z.boolean().optional(),
   includesHelmet: z.boolean().optional(),
-  others: z.string().optional(),
+  others: z.array(z.string()),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),

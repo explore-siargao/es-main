@@ -103,7 +103,7 @@ export const rentals = [
       babySeat: false,
       dashCam: false,
       includesHelmet: false,
-      others: '',
+      others: [],
     },
     Pricing: {
       id: 1,
@@ -165,7 +165,7 @@ export const rentals = [
       babySeat: false,
       dashCam: false,
       includesHelmet: true,
-      others: '',
+      others: [],
     },
     Pricing: {
       id: 1,
