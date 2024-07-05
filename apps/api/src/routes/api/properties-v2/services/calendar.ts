@@ -1,106 +1,167 @@
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
-import { ResponseService } from '@/common/service/response'
-import { dbProperties, dbReservations } from '@repo/database'
-import { Request, Response } from 'express'
+import { UNKNOWN_ERROR_OCCURRED } from "@/common/constants";
+import { ResponseService } from "@/common/service/response";
+import { dbProperties } from "@repo/database";
+import { Request, Response } from "express";
+import mongoose from "mongoose";
 
-const response = new ResponseService()
+const response = new ResponseService();
 
-export const get = async (req: Request, res: Response) => {
-  const propertyId = req.params.propertyId
-  const category = req.params.category
-  //@ts-expect-error
-  const [startDate, endDate] = req.params.dateRange.split(',')
+export const getPropertyCalendarData = async (req: Request, res: Response) => {
+    const propertyId = new mongoose.Types.ObjectId(req.params.propertyId);
+    const category = String(req.params.category);
+    const fromDate = new Date(req.params.fromDate as string);
+    const toDate = new Date(req.params.toDate as string);
 
-  try {
-    const property = await dbProperties
-      .findById(propertyId)
-      .populate({
-        path: 'bookableUnits',
-        populate: {
-          path: 'unitPrice amenities photos bedConfigs',
-          select: 'baseRate bedType name',
-        },
-      })
-      .exec()
+    try {
+        const pipeline = [
+            {
+                $match: {
+                    _id: propertyId,
+                },
+            },
+            {
+                $lookup: {
+                    from: "bookableunittypes",
+                    localField: "bookableUnits",
+                    foreignField: "_id",
+                    as: "bookableUnits",
+                },
+            },
+            {
+                $unwind: "$bookableUnits",
+            },
+            {
+                $replaceRoot: { newRoot: "$bookableUnits" },
+            },
+            {
+                $match: {
+                    category: category,
+                },
+            },
+            {
+                $lookup: {
+                    from: "unitprices",
+                    localField: "unitPrice",
+                    foreignField: "_id",
+                    as: "unitPrice",
+                },
+            },
+            {
+                $addFields: {
+                    name: "$title",
+                    price: { $ifNull: [{ $arrayElemAt: ["$unitPrice.baseRate", 0] }, 0] },
+                    [`${category.toLowerCase()}s`]: {
+                        $map: {
+                            input: { $range: [0, "$qty"] },
+                            as: "index",
+                            in: {
+                                abbr: { $concat: ["$title", " ", { $toString: { $add: ["$$index", 1] } }] },
+                                status: "available",
+                                reservations: [],
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "reservations",
+                    let: { unitId: "$_id", fromDate: fromDate, toDate: toDate },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$unitId", "$$unitId"] },
+                                        {
+                                            $or: [
+                                                { $and: [{ $gte: ["$startDate", "$$fromDate"] }, { $lt: ["$startDate", "$$toDate"] }] },
+                                                { $and: [{ $gte: ["$endDate", "$$fromDate"] }, { $lt: ["$endDate", "$$toDate"] }] },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "guests",
+                                localField: "guest",
+                                foreignField: "_id",
+                                as: "guest",
+                            },
+                        },
+                        {
+                            $unwind: "$guest",
+                        },
+                        {
+                            $project: {
+                                unitId:1,
+                                name: {$concat:["$guest.firstName"," ","$guest.lastName"]},
+                                startDate: 1,
+                                endDate: 1,
+                                guestCount: 1,
+                            },
+                        },
+                       
+                    ],
+                    as: "reservations",
+                },
+                
+            },
+            
+            {
+                $addFields: {
+                    [`${category.toLowerCase()}s`]: {
+                        $map: {
+                            input: { $range: [0, { $size: `$${category.toLowerCase()}s` }] },
+                            as: "index",
+                            in: {
+                                $cond: {
+                                    if: { $eq: ["$$index", 0] }, // Apply this condition if index is 0
+                                    then: {
+                                        $mergeObjects: [
+                                            { $arrayElemAt: [`$${category.toLowerCase()}s`, "$$index"] },
+                                            {
+                                                status: {
+                                                    $cond: {
+                                                        if: { $gt: [{ $size: "$reservations" }, 0] },
+                                                        then: "occupied",
+                                                        else: "available"
+                                                    }
+                                                },
+                                            },
+                                            {
+                                                reservations: {
+                                                    $filter: {
+                                                        input: "$reservations",
+                                                        as: "reservation",
+                                                        cond: { $eq: ["$$reservation.unitId", "$_id"] },
+                                                    },
+                                                },
+                                            },
+                                        ],
+                                    },
+                                    else: { $arrayElemAt: [`$${category.toLowerCase()}s`, "$$index"] },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    name: 1,
+                    price: 1,
+                    [`${category.toLowerCase()}s`]: 1,
+                },
+            },
+        ];
 
-    if (!property) {
-      return res.json(response.error({ message: 'Property not found' }))
+        const result = await dbProperties.aggregate(pipeline);
+        return res.json(response.success({ items: result }));
+    } catch (err: any) {
+        console.error(err);
+        return res.json(response.error({ message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED }));
     }
-
-    const filteredUnits = property.bookableUnits.filter(
-      //@ts-expect-error
-      (unit) => unit.category === category
-    )
-
-    let items = []
-
-    for (const unit of filteredUnits) {
-      const reservations = await dbReservations
-        .find({
-          unitId: unit._id,
-          //@ts-expect-error
-          startDate: { $gte: new Date(startDate) },
-          //@ts-expect-error
-          endDate: { $lte: new Date(endDate) },
-        })
-        .populate('guest', 'name')
-        .exec()
-
-      const reservationsMap = reservations.map((reservation) => ({
-        //@ts-expect-error
-        name: reservation.guest.name,
-        start_date: reservation.startDate,
-        end_date: reservation.endDate,
-        guest_count: reservation.guestCount,
-      }))
-
-      //@ts-expect-error
-      for (let i = 1; i <= unit.qty; i++) {
-        items.push({
-          //@ts-expect-error
-          name: unit.title,
-          //@ts-expect-error
-          price: unit.unitPrice.baseRate,
-          //@ts-expect-error
-          abbr: `${unit.title} ${i}`,
-          status: reservationsMap.length > 0 ? 'occupied' : 'available',
-          reservations: reservationsMap.sort(
-            //@ts-expect-error
-            (a, b) => new Date(a.start_date) - new Date(b.start_date)
-          ),
-        })
-      }
-    }
-
-    const groupedItems = items.reduce((acc, item) => {
-      const categoryKey =
-        category === 'room'
-          ? 'rooms'
-          : category === 'bed'
-            ? 'beds'
-            : 'whole-places'
-      //@ts-expect-error
-      const existingCategory = acc.find((group) => group.name === item.name)
-      if (existingCategory) {
-        //@ts-expect-error
-        existingCategory[categoryKey].push(item)
-      } else {
-        //@ts-expect-error
-        acc.push({
-          name: item.name,
-          price: item.price,
-          [categoryKey]: [item],
-        })
-      }
-      return acc
-    }, [])
-
-    return res.json(response.success({ items: groupedItems }))
-  } catch (err: any) {
-    return res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
-  }
-}
+};

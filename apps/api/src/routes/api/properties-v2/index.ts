@@ -53,6 +53,7 @@ import {
   updateBookableUnitTypeAmenities,
 } from './services/amenities'
 import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
+import { getPropertyCalendarData } from './services/calendar'
 
 const router = express.Router()
 
@@ -334,6 +335,14 @@ router.patch(
   isCsrfTokenValid,
   isHostPropertyOwner,
   updateUnitPrice
+)
+
+//calendar
+router.get("/:propertyId/:category/:fromDate/:toDate",
+  isOriginValid,
+isUserLoggedIn,
+isHostPropertyOwner,
+getPropertyCalendarData
 )
 
 //status
