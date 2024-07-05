@@ -31,7 +31,7 @@ const segments = new Schema({
 
 const price = new Schema({
   basePrice: Number,
-  exceedingPerPersonPrice: Number,
+  exceedPerPersonPrice: Number,
 })
 
 const slots = new Schema({
