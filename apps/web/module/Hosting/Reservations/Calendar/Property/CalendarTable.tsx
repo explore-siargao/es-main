@@ -17,34 +17,8 @@ import { Input } from "@/common/components/ui/Input";
 import toast from "react-hot-toast";
 import { Button } from "@/common/components/ui/Button";
 import RoomQuantityEdit from "../RoomQuantityEdit";
+import { SelectedReservation, SampleData, Booking } from "../Rental/CalendarTable";
 
-export interface Booking {
-  name: string;
-  start_date: string;
-  end_date: string;
-  guest_count: number;
-}
-
-export interface SelectedReservation {
-  room: string;
-  booking: Booking;
-}
-
-export interface Room {
-  abbr: string;
-  status: string;
-  bookings: Booking[];
-}
-
-export interface Category {
-  name: string;
-  price: string;
-  rooms: Room[];
-}
-
-export interface SampleData {
-  categories: Category[];
-}
 
 const CalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()));
@@ -80,25 +54,27 @@ const CalendarTable = () => {
     setSelectedCategory(category);
   };
 
-  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true); // Function to open AddReservationModal
+  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true);
 
-  const handleSaveNewReservation = (newReservation: SelectedReservation) => {
-    // Logic to save the new reservation
+  const handleSaveNewReservation = (newReservation: any, reset: Function) => {
     const updatedData = { ...filteredData };
-    const category = updatedData.categories.find(
-      (cat) => cat.name === selectedCategory
+    const category = updatedData.categories.filter(
+      (category) => category.name === newReservation.category
     );
-    if (category) {
-      const room = category.rooms.find((rm) => rm.abbr === newReservation.room);
-      if (room) {
-        room.bookings.push(newReservation.booking);
-        setFilteredData(updatedData);
-        toast.success("Reservation added successfully");
-      } else {
-        toast.error("Room not found");
+
+    if (category.length > 0) {
+      const selectedCategory = category[0]
+      if(selectedCategory) {
+        const room = selectedCategory.rooms.find((rm) => rm.abbr === newReservation.room);
+        if (room) {
+          room.bookings.push(newReservation);
+          setFilteredData(updatedData);
+          toast.success("Reservation added successfully");
+          reset()
+        } else {
+          toast.error("Room not found");
+        }
       }
-    } else {
-      toast.error("Category not found");
     }
     closeAddReservationModal();
   };
@@ -259,7 +235,10 @@ const CalendarTable = () => {
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
-                <Sidebar nextPrevFunction={moveStartDateByOneDay} />
+                <Sidebar 
+                nextPrevFunction={moveStartDateByOneDay} 
+                addReservationFunction={() => {}} 
+                openAddReservationModal={handleOpenAddReservationModal} />
               </td>
               {generateMonthHeader()}
             </tr>
@@ -412,10 +391,11 @@ const CalendarTable = () => {
         setRoomQuantity={setRoomQuantity}
         category={selectedCategory}
       />
-      <AddReservationModal // Add the AddReservationModal component
+      <AddReservationModal
         isModalOpen={isAddReservationModalOpen}
         onClose={closeAddReservationModal}
         onSave={handleSaveNewReservation}
+        data={filteredData}
       />
     </div>
   );
