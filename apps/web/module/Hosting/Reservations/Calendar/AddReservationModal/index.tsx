@@ -48,9 +48,9 @@ const AddReservationModal = ({
       const category = data.categories.find((category: Category) => category.name === selectedCategory);
       setFilteredRooms(category ? category.rooms : []);
     } else {
-      setFilteredRooms([]);
+      setFilteredRooms([])
     }
-  }, [selectedCategory, data]);
+  }, [selectedCategory, data])
 
   return (
     <ModalContainer
