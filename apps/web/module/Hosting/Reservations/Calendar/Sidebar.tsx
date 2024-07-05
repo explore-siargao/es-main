@@ -17,7 +17,11 @@ type SideBarProps = {
   openAddReservationModal: Function
 }
 
-const Sidebar = ({ nextPrevFunction, addReservationFunction, openAddReservationModal }: SideBarProps) => {
+const Sidebar = ({
+  nextPrevFunction,
+  addReservationFunction,
+  openAddReservationModal,
+}: SideBarProps) => {
   const [isShowAllRoomTypes, setIsShowAllRoomTypes] = useState(false)
 
   return (
