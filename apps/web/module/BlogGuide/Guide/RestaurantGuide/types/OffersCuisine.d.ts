@@ -4,4 +4,4 @@ export type T_OffersCuisineProps = {
     description: string
     isNotIncluded: boolean
   }[]
-} 
+}

@@ -212,10 +212,7 @@ export const userReviews = [
   },
 ]
 
-const coordinates = [
-  9.8020,
-  126.1366
-]
+const coordinates = [9.802, 126.1366]
 
 const sampleSchedules = [
   { day: "Monday", open: "09:00 AM", close: "06:00 PM" },
@@ -225,13 +222,28 @@ const sampleSchedules = [
   { day: "Friday", open: "09:00 AM", close: "08:00 PM" },
   { day: "Saturday", open: "10:00 AM", close: "08:00 PM" },
   { day: "Sunday", open: "10:00 AM", close: "06:00 PM" },
-];
+]
 
 const sampleSocialMediaData = [
-  { icon: "facebook", description: "Facebook", isNotIncluded: false, link: "https://facebook.com" },
-  { icon: "twitter", description: "Twitter", isNotIncluded: false, link: "https://twitter.com" },
-  { icon: "instagram", description: "Instagram", isNotIncluded: false, link: "https://instagram.com" },
-];
+  {
+    icon: "facebook",
+    description: "Facebook",
+    isNotIncluded: false,
+    link: "https://facebook.com",
+  },
+  {
+    icon: "twitter",
+    description: "Twitter",
+    isNotIncluded: false,
+    link: "https://twitter.com",
+  },
+  {
+    icon: "instagram",
+    description: "Instagram",
+    isNotIncluded: false,
+    link: "https://instagram.com",
+  },
+]
 
 const priceLevel = [
   { level: 2, product: "Matcha Latte" },
@@ -240,7 +252,7 @@ const priceLevel = [
   { level: 3, product: "Cappuccino" },
   { level: 2, product: "Americano" },
   { level: 4, product: "Flat White" },
-];
+]
 
 const offersCuisine = [
   { icon: "check", description: "Vegetarian options", isNotIncluded: false },
@@ -271,7 +283,7 @@ export const RestaurantGuide = () => {
             </div>
             <Separator orientation="horizontal" className="bg-gray-300" />
             <div className="py-6 ">
-              <PriceLevel priceLevel={priceLevel}  />
+              <PriceLevel priceLevel={priceLevel} />
             </div>
             <Separator orientation="horizontal" className="bg-gray-300" />
             <div className="py-6 ">
@@ -279,7 +291,7 @@ export const RestaurantGuide = () => {
             </div>
             <Separator orientation="horizontal" className="bg-gray-300" />
             <div className="py-6 ">
-              <OpeningHours schedules={sampleSchedules}  />
+              <OpeningHours schedules={sampleSchedules} />
             </div>
             <Separator orientation="horizontal" className="bg-gray-300" />
             <div className="py-6 ">

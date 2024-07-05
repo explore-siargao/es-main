@@ -1,7 +1,7 @@
-import { T_SocialMediaProps } from "../types/Contacts";
-import { TitleSection } from "@/module/Accommodation/components/TitleSection";
-import IconDescription from "@/module/Listing/Rental/components/IconDescription";
-import Link from "next/link";
+import { T_SocialMediaProps } from "../types/Contacts"
+import { TitleSection } from "@/module/Accommodation/components/TitleSection"
+import IconDescription from "@/module/Listing/Rental/components/IconDescription"
+import Link from "next/link"
 
 const SocialMediaContacts = ({ contacts }: T_SocialMediaProps) => {
   return (
@@ -10,14 +10,18 @@ const SocialMediaContacts = ({ contacts }: T_SocialMediaProps) => {
         <div className="mb-5"></div>
         <div className="grid grid-cols-2">
           {contacts.map((item) => (
-            <Link href={item.link} target="_blank" className="hover:underline hover:underline-offset-4">
+            <Link
+              href={item.link}
+              target="_blank"
+              className="hover:underline hover:underline-offset-4"
+            >
               <IconDescription {...item} />
             </Link>
           ))}
         </div>
       </TitleSection>
     </>
-  );
-};
+  )
+}
 
-export default SocialMediaContacts;
+export default SocialMediaContacts

@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { TitleSection } from "@/module/Listing/Rental/components/TitleSection"
 import { DollarSign } from "lucide-react"
@@ -12,15 +11,13 @@ const PriceLevel = ({ priceLevel }: T_PriceLevelProps) => {
         <div className="mb-5"></div>
         <div className="grid grid-cols-2">
           {priceLevel.map((item, index) => (
-            <div  key={index} className="flex items-center mb-5 gap-5">
+            <div key={index} className="flex items-center mb-5 gap-5">
               <div className="flex">
                 {Array.from({ length: item.level }, (_, i) => (
                   <DollarSign width={16} key={i} />
                 ))}
               </div>
-              <div className="flex">
-                {item.product}
-              </div>
+              <div className="flex">{item.product}</div>
             </div>
           ))}
         </div>

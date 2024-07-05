@@ -1,4 +1,3 @@
-
 import IconDescription from "@/module/Listing/Rental/components/IconDescription"
 import { TitleSection } from "@/module/Listing/Rental/components/TitleSection"
 import { T_OffersCuisineProps } from "../types/OffersCuisine"

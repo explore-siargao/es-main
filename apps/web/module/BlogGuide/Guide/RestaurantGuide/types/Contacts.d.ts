@@ -4,5 +4,5 @@ export type T_SocialMediaProps = {
     description: string
     isNotIncluded: boolean
     link: string
-  }[];
-};
+  }[]
+}
