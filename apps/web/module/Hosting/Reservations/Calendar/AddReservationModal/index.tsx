@@ -1,11 +1,10 @@
-import { AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ModalContainer from "@/common/components/ModalContainer";
 import { Button } from "@/common/components/ui/Button";
-import { SelectedReservation } from "../Rental/CalendarTable";
 import { Input } from "@/common/components/ui/Input";
 import { useForm } from 'react-hook-form'
 import { Option, Select } from "@/common/components/ui/Select"
-import { Category, Room } from "../../types/CalendarTable";
+import { Category, Room, SelectedReservation } from "../../types/CalendarTable";
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean;
@@ -31,7 +30,7 @@ const AddReservationModal = ({
     onSave(data, resetform);
   };
 
-  const { register, reset, handleSubmit, getValues } = useForm()
+  const { register, reset, handleSubmit } = useForm()
 
   useEffect(() => {
     if (data && selectedCategory) {
@@ -74,7 +73,7 @@ const AddReservationModal = ({
               </div>
               <div className="flex flex-col w-full">
                 <Select
-                  label="Room"
+                  label="Subcategory"
                   id="room"
                   required
                   disabled={selectedCategory ? false : true}

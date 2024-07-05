@@ -17,7 +17,7 @@ import { Input } from "@/common/components/ui/Input";
 import toast from "react-hot-toast";
 import { Button } from "@/common/components/ui/Button";
 import RoomQuantityEdit from "../RoomQuantityEdit";
-import { SelectedReservation, SampleData, Booking } from "../Rental/CalendarTable";
+import { SelectedReservation, SampleData, Booking } from "../../types/CalendarTable";
 
 
 const CalendarTable = () => {
@@ -26,7 +26,7 @@ const CalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null);
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
-  const [isAddReservationModalOpen, setIsAddReservationModalOpen] = useState(false); // State for AddReservationModal
+  const [isAddReservationModalOpen, setIsAddReservationModalOpen] = useState(false);
   const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -45,7 +45,7 @@ const CalendarTable = () => {
   const daysPerPage = 13;
 
   const closeReservationModal = () => setIsReservationModalOpen(false);
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false); // Function to close AddReservationModal
+  const closeAddReservationModal = () => setIsAddReservationModalOpen(false);
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false);
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
@@ -236,9 +236,9 @@ const CalendarTable = () => {
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
                 <Sidebar 
-                nextPrevFunction={moveStartDateByOneDay} 
-                addReservationFunction={() => {}} 
-                openAddReservationModal={handleOpenAddReservationModal} />
+                  nextPrevFunction={moveStartDateByOneDay}
+                  openAddReservationModal={handleOpenAddReservationModal} 
+                />
               </td>
               {generateMonthHeader()}
             </tr>

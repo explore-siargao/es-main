@@ -13,11 +13,10 @@ import { useState } from "react"
 
 type SideBarProps = {
   nextPrevFunction: Function
-  addReservationFunction: Function
   openAddReservationModal: Function
 }
 
-const Sidebar = ({ nextPrevFunction, addReservationFunction, openAddReservationModal }: SideBarProps) => {
+const Sidebar = ({ nextPrevFunction, openAddReservationModal }: SideBarProps) => {
   const [isShowAllRoomTypes, setIsShowAllRoomTypes] = useState(false)
 
   return (
