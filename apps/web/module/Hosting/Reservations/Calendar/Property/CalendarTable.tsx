@@ -12,38 +12,16 @@ import Sidebar from "../Sidebar"
 import sampleData from "../SampleData.json"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import ReservationCalendarModal from "../ReservationCalendarModal"
+import AddReservationModal from "../AddReservationModal" // Import the AddReservationModal component
 import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import RoomQuantityEdit from "../RoomQuantityEdit"
-
-export interface Booking {
-  name: string
-  start_date: string
-  end_date: string
-  guest_count: number
-}
-
-export interface SelectedReservation {
-  room: string
-  booking: Booking
-}
-
-export interface Room {
-  abbr: string
-  status: string
-  bookings: Booking[]
-}
-
-export interface Category {
-  name: string
-  price: string
-  rooms: Room[]
-}
-
-export interface SampleData {
-  categories: Category[]
-}
+import {
+  SelectedReservation,
+  SampleData,
+  Booking,
+} from "../../types/CalendarTable"
 
 const CalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -51,6 +29,8 @@ const CalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
+  const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
+    useState(false)
   const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
@@ -69,12 +49,40 @@ const CalendarTable = () => {
   const daysPerPage = 13
 
   const closeReservationModal = () => setIsReservationModalOpen(false)
+  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
     setIsRoomQuantityEditOpen(true)
     setSelectedDate(date)
     setSelectedCategory(category)
+  }
+
+  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
+
+  const handleSaveNewReservation = (newReservation: any, reset: Function) => {
+    const updatedData = { ...filteredData }
+    const category = updatedData.categories.filter(
+      (category) => category.name === newReservation.category
+    )
+
+    if (category.length > 0) {
+      const selectedCategory = category[0]
+      if (selectedCategory) {
+        const room = selectedCategory.rooms.find(
+          (rm) => rm.abbr === newReservation.room
+        )
+        if (room) {
+          room.bookings.push(newReservation)
+          setFilteredData(updatedData)
+          toast.success("Reservation added successfully")
+          reset()
+        } else {
+          toast.error("Room not found")
+        }
+      }
+    }
+    closeAddReservationModal()
   }
 
   useEffect(() => {
@@ -233,7 +241,10 @@ const CalendarTable = () => {
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
-                <Sidebar nextPrevFunction={moveStartDateByOneDay} />
+                <Sidebar
+                  nextPrevFunction={moveStartDateByOneDay}
+                  openAddReservationModal={handleOpenAddReservationModal}
+                />
               </td>
               {generateMonthHeader()}
             </tr>
@@ -385,6 +396,12 @@ const CalendarTable = () => {
         roomQuantity={roomQuantity}
         setRoomQuantity={setRoomQuantity}
         category={selectedCategory}
+      />
+      <AddReservationModal
+        isModalOpen={isAddReservationModalOpen}
+        onClose={closeAddReservationModal}
+        onSave={handleSaveNewReservation}
+        data={filteredData}
       />
     </div>
   )
