@@ -7,9 +7,9 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { Category, Room, SelectedReservation } from "../../types/CalendarTable";
 
 interface IReservationCalendarModalProps {
-  isModalOpen: boolean;
-  onClose: () => void;
-  onSave: (reservation: SelectedReservation, reset: Function) => void;
+  isModalOpen: boolean
+  onClose: () => void
+  onSave: (reservation: SelectedReservation, reset: Function) => void
   data: any
 }
 
@@ -17,29 +17,31 @@ const AddReservationModal = ({
   isModalOpen,
   onClose,
   onSave,
-  data
+  data,
 }: IReservationCalendarModalProps) => {
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [filteredRooms, setFilteredRooms] = useState<Room[]>([]);
+  const [filteredRooms, setFilteredRooms] = useState<Room[]>([])
 
   const handleSave = (data: any) => {
     const resetform = () => {
       reset()
       setSelectedCategory("")
     }
-    onSave(data, resetform);
-  };
+    onSave(data, resetform)
+  }
 
   const { register, reset, handleSubmit } = useForm()
 
   useEffect(() => {
     if (data && selectedCategory) {
-      const category = data.categories.find((category: Category) => category.name === selectedCategory);
-      setFilteredRooms(category ? category.rooms : []);
+      const category = data.categories.find(
+        (category: Category) => category.name === selectedCategory
+      )
+      setFilteredRooms(category ? category.rooms : [])
     } else {
-      setFilteredRooms([]);
+      setFilteredRooms([])
     }
-  }, [selectedCategory, data]);
+  }, [selectedCategory, data])
 
   return (
     <ModalContainer
@@ -63,12 +65,12 @@ const AddReservationModal = ({
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 >
                   <Option value="">Select</Option>
-                  {
-                    data && 
+                  {data &&
                     data.categories.map((category: Category) => (
-                      <Option key={category.name} value={category.name}>{category.name}</Option>
-                    ))
-                  }
+                      <Option key={category.name} value={category.name}>
+                        {category.name}
+                      </Option>
+                    ))}
                 </Select>
               </div>
               <div className="flex flex-col w-full">
@@ -82,11 +84,11 @@ const AddReservationModal = ({
                   })}
                 >
                   <Option value="">Select</Option>
-                  {
-                    filteredRooms.map((room: Room) => (
-                      <Option key={room.abbr} value={room.abbr}>{room.abbr}</Option>
-                    ))
-                  }
+                  {filteredRooms.map((room: Room) => (
+                    <Option key={room.abbr} value={room.abbr}>
+                      {room.abbr}
+                    </Option>
+                  ))}
                 </Select>
               </div>
             </div>
@@ -152,7 +154,7 @@ const AddReservationModal = ({
         </div>
       </form>
     </ModalContainer>
-  );
-};
+  )
+}
 
-export default AddReservationModal;
+export default AddReservationModal
