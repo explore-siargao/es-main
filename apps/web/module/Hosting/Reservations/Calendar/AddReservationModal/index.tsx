@@ -45,8 +45,10 @@ const AddReservationModal = ({
 
   useEffect(() => {
     if (data && selectedCategory) {
-      const category = data.categories.find((category: Category) => category.name === selectedCategory);
-      setFilteredRooms(category ? category.rooms : []);
+      const category = data.categories.find(
+        (category: Category) => category.name === selectedCategory
+      )
+      setFilteredRooms(category ? category.rooms : [])
     } else {
       setFilteredRooms([])
     }
