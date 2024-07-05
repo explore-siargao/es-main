@@ -7,32 +7,36 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
-} from "date-fns";
-import Sidebar from "../Sidebar";
-import sampleData from "../SampleData.json";
-import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react";
-import ReservationCalendarModal from "../ReservationCalendarModal";
-import AddReservationModal from "../AddReservationModal"; // Import the AddReservationModal component
-import { Input } from "@/common/components/ui/Input";
-import toast from "react-hot-toast";
-import { Button } from "@/common/components/ui/Button";
-import RoomQuantityEdit from "../RoomQuantityEdit";
-import { SelectedReservation, SampleData, Booking } from "../../types/CalendarTable";
-
+} from "date-fns"
+import Sidebar from "../Sidebar"
+import sampleData from "../SampleData.json"
+import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
+import ReservationCalendarModal from "../ReservationCalendarModal"
+import AddReservationModal from "../AddReservationModal" // Import the AddReservationModal component
+import { Input } from "@/common/components/ui/Input"
+import toast from "react-hot-toast"
+import { Button } from "@/common/components/ui/Button"
+import RoomQuantityEdit from "../RoomQuantityEdit"
+import {
+  SelectedReservation,
+  SampleData,
+  Booking,
+} from "../../types/CalendarTable"
 
 const CalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
-    useState<SelectedReservation | null>(null);
-  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
-  const [isAddReservationModalOpen, setIsAddReservationModalOpen] = useState(false);
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<SampleData>(sampleData);
-  const [editingRoom, setEditingRoom] = useState<string | null>(null);
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("");
+    useState<SelectedReservation | null>(null)
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
+  const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
+    useState(false)
+  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<string>("")
+  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
+  const [editingRoom, setEditingRoom] = useState<string | null>(null)
+  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -44,9 +48,9 @@ const CalendarTable = () => {
   })
   const daysPerPage = 13
 
-  const closeReservationModal = () => setIsReservationModalOpen(false);
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false);
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false);
+  const closeReservationModal = () => setIsReservationModalOpen(false)
+  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
+  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
     setIsRoomQuantityEditOpen(true)
@@ -237,9 +241,9 @@ const CalendarTable = () => {
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
-                <Sidebar 
+                <Sidebar
                   nextPrevFunction={moveStartDateByOneDay}
-                  openAddReservationModal={handleOpenAddReservationModal} 
+                  openAddReservationModal={handleOpenAddReservationModal}
                 />
               </td>
               {generateMonthHeader()}

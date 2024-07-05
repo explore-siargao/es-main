@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import ModalContainer from "@/common/components/ModalContainer";
-import { Button } from "@/common/components/ui/Button";
-import { Input } from "@/common/components/ui/Input";
-import { useForm } from 'react-hook-form'
+import { useEffect, useState } from "react"
+import ModalContainer from "@/common/components/ModalContainer"
+import { Button } from "@/common/components/ui/Button"
+import { Input } from "@/common/components/ui/Input"
+import { useForm } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
-import { Category, Room, SelectedReservation } from "../../types/CalendarTable";
+import { Category, Room, SelectedReservation } from "../../types/CalendarTable"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean

@@ -16,7 +16,11 @@ import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
 import ReservationCalendarModal from "../ReservationCalendarModal"
 import RoomQuantityEdit from "../RoomQuantityEdit"
-import { SelectedReservation, SampleData, Booking } from "../../types/CalendarTable";
+import {
+  SelectedReservation,
+  SampleData,
+  Booking,
+} from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
 
 const RentalsCalendarTable = () => {
@@ -26,7 +30,8 @@ const RentalsCalendarTable = () => {
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
   const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
-  const [isAddReservationModalOpen, setIsAddReservationModalOpen] = useState(false);
+  const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
+    useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
@@ -44,7 +49,7 @@ const RentalsCalendarTable = () => {
   const daysPerPage = 13
 
   const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false);
+  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
@@ -53,30 +58,32 @@ const RentalsCalendarTable = () => {
     setSelectedCategory(category)
   }
 
-  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true);
+  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
 
   const handleSaveNewReservation = (newReservation: any, reset: Function) => {
-    const updatedData = { ...filteredData };
+    const updatedData = { ...filteredData }
     const category = updatedData.categories.filter(
       (category) => category.name === newReservation.category
-    );
+    )
 
     if (category.length > 0) {
       const selectedCategory = category[0]
-      if(selectedCategory) {
-        const room = selectedCategory.rooms.find((rm) => rm.abbr === newReservation.room);
+      if (selectedCategory) {
+        const room = selectedCategory.rooms.find(
+          (rm) => rm.abbr === newReservation.room
+        )
         if (room) {
-          room.bookings.push(newReservation);
-          setFilteredData(updatedData);
-          toast.success("Reservation added successfully");
+          room.bookings.push(newReservation)
+          setFilteredData(updatedData)
+          toast.success("Reservation added successfully")
           reset()
         } else {
-          toast.error("Room not found");
+          toast.error("Room not found")
         }
       }
     }
-    closeAddReservationModal();
-  };
+    closeAddReservationModal()
+  }
 
   useEffect(() => {
     const filterDataByDate = () => {
@@ -234,9 +241,9 @@ const RentalsCalendarTable = () => {
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
-                <Sidebar 
+                <Sidebar
                   nextPrevFunction={moveStartDateByOneDay}
-                  openAddReservationModal={handleOpenAddReservationModal} 
+                  openAddReservationModal={handleOpenAddReservationModal}
                 />
               </td>
               {generateMonthHeader()}
