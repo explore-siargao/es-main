@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 import {
   format,
   addDays,
@@ -7,56 +7,58 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
-} from "date-fns"
-import Sidebar from "../Sidebar"
-import sampleData from "../SampleData.json"
-import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
-import ReservationCalendarModal from "../ReservationCalendarModal"
-import { Input } from "@/common/components/ui/Input"
-import toast from "react-hot-toast"
-import { Button } from "@/common/components/ui/Button"
-import RoomQuantityEdit from "../RoomQuantityEdit"
+} from "date-fns";
+import Sidebar from "../Sidebar";
+import sampleData from "../SampleData.json";
+import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react";
+import ReservationCalendarModal from "../ReservationCalendarModal";
+import AddReservationModal from "../AddReservationModal"; // Import the AddReservationModal component
+import { Input } from "@/common/components/ui/Input";
+import toast from "react-hot-toast";
+import { Button } from "@/common/components/ui/Button";
+import RoomQuantityEdit from "../RoomQuantityEdit";
 
 export interface Booking {
-  name: string
-  start_date: string
-  end_date: string
-  guest_count: number
+  name: string;
+  start_date: string;
+  end_date: string;
+  guest_count: number;
 }
 
 export interface SelectedReservation {
-  room: string
-  booking: Booking
+  room: string;
+  booking: Booking;
 }
 
 export interface Room {
-  abbr: string
-  status: string
-  bookings: Booking[]
+  abbr: string;
+  status: string;
+  bookings: Booking[];
 }
 
 export interface Category {
-  name: string
-  price: string
-  rooms: Room[]
+  name: string;
+  price: string;
+  rooms: Room[];
 }
 
 export interface SampleData {
-  categories: Category[]
+  categories: Category[];
 }
 
 const CalendarTable = () => {
-  const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
-  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
+  const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()));
+  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
   const [selectedReservation, setSelectedReservation] =
-    useState<SelectedReservation | null>(null)
-  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
-  const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
-  const [editingRoom, setEditingRoom] = useState<string | null>(null)
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
+    useState<SelectedReservation | null>(null);
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
+  const [isAddReservationModalOpen, setIsAddReservationModalOpen] = useState(false); // State for AddReservationModal
+  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<SampleData>(sampleData);
+  const [editingRoom, setEditingRoom] = useState<string | null>(null);
+  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("");
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -65,51 +67,75 @@ const CalendarTable = () => {
         quantity: 4,
       },
     ],
-  })
-  const daysPerPage = 13
+  });
+  const daysPerPage = 13;
 
-  const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
+  const closeReservationModal = () => setIsReservationModalOpen(false);
+  const closeAddReservationModal = () => setIsAddReservationModalOpen(false); // Function to close AddReservationModal
+  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false);
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
-    setSelectedDate(date)
-    setSelectedCategory(category)
-  }
+    setIsRoomQuantityEditOpen(true);
+    setSelectedDate(date);
+    setSelectedCategory(category);
+  };
+
+  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true); // Function to open AddReservationModal
+
+  const handleSaveNewReservation = (newReservation: SelectedReservation) => {
+    // Logic to save the new reservation
+    const updatedData = { ...filteredData };
+    const category = updatedData.categories.find(
+      (cat) => cat.name === selectedCategory
+    );
+    if (category) {
+      const room = category.rooms.find((rm) => rm.abbr === newReservation.room);
+      if (room) {
+        room.bookings.push(newReservation.booking);
+        setFilteredData(updatedData);
+        toast.success("Reservation added successfully");
+      } else {
+        toast.error("Room not found");
+      }
+    } else {
+      toast.error("Category not found");
+    }
+    closeAddReservationModal();
+  };
 
   useEffect(() => {
     const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
+      const calendarEnd = addDays(startDate, daysPerPage - 1);
       const newFilteredData = {
         categories: sampleData.categories.map((category) => ({
           ...category,
           rooms: category.rooms.map((room) => ({
             ...room,
             bookings: room.bookings.filter((booking) => {
-              const bookingStart = new Date(booking.start_date)
-              const bookingEnd = new Date(booking.end_date)
+              const bookingStart = new Date(booking.start_date);
+              const bookingEnd = new Date(booking.end_date);
               return !(
                 isAfter(bookingStart, calendarEnd) ||
                 isBefore(bookingEnd, startDate)
-              )
+              );
             }),
           })),
         })),
-      }
-      setFilteredData(newFilteredData)
-    }
+      };
+      setFilteredData(newFilteredData);
+    };
 
-    filterDataByDate()
-  }, [startDate])
+    filterDataByDate();
+  }, [startDate]);
 
   const toggleCollapse = (category: string) => {
-    setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
-  }
+    setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }));
+  };
 
   const generateCalendarHeader = () => {
-    const headers = []
+    const headers = [];
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i)
+      const date = addDays(startDate, i);
       headers.push(
         <th
           key={i}
@@ -117,34 +143,34 @@ const CalendarTable = () => {
         >
           {format(date, "EEE dd")}
         </th>
-      )
+      );
     }
-    return headers
-  }
+    return headers;
+  };
 
   const generateCalendarRowBorder = () => {
-    const headers = []
+    const headers = [];
     for (let i = 0; i < daysPerPage; i++) {
       headers.push(
         <th
           key={i}
           className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24`}
         ></th>
-      )
+      );
     }
-    return headers
-  }
+    return headers;
+  };
 
   const generateMonthHeader = () => {
-    const headers = []
-    let currentMonth = getMonth(startDate)
-    let colspan = 0
+    const headers = [];
+    let currentMonth = getMonth(startDate);
+    let colspan = 0;
 
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i)
-      const month = getMonth(date)
+      const date = addDays(startDate, i);
+      const month = getMonth(date);
       if (month === currentMonth) {
-        colspan++
+        colspan++;
       } else {
         headers.push(
           <td
@@ -154,9 +180,9 @@ const CalendarTable = () => {
           >
             {format(addDays(startDate, i - colspan), "MMMM yyyy")}
           </td>
-        )
-        currentMonth = month
-        colspan = 1
+        );
+        currentMonth = month;
+        colspan = 1;
       }
     }
     headers.push(
@@ -167,64 +193,64 @@ const CalendarTable = () => {
       >
         {format(addDays(startDate, daysPerPage - colspan), "MMMM yyyy")}
       </td>
-    )
+    );
 
-    return headers
-  }
+    return headers;
+  };
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate(addDays(startDate, direction))
-  }
+    setStartDate(addDays(startDate, direction));
+  };
 
   const getBookingStyle = (
     startDate: Date,
     daysPerPage: number,
     booking: Booking
   ) => {
-    const bookingStart = new Date(booking.start_date)
-    const bookingEnd = new Date(booking.end_date)
-    const calendarEnd = addDays(startDate, daysPerPage - 1)
+    const bookingStart = new Date(booking.start_date);
+    const bookingEnd = new Date(booking.end_date);
+    const calendarEnd = addDays(startDate, daysPerPage - 1);
 
     if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
-      return null
+      return null;
     }
 
-    const startOffset = differenceInDays(bookingStart, startDate)
-    const endOffset = differenceInDays(bookingEnd, startDate)
+    const startOffset = differenceInDays(bookingStart, startDate);
+    const endOffset = differenceInDays(bookingEnd, startDate);
 
-    const startCol = Math.max(startOffset, 0)
-    const endCol = Math.min(endOffset, daysPerPage - 1)
+    const startCol = Math.max(startOffset, 0);
+    const endCol = Math.min(endOffset, daysPerPage - 1);
 
-    const colSpan = endCol - startCol + 1
-    return { startCol, colSpan }
-  }
+    const colSpan = endCol - startCol + 1;
+    return { startCol, colSpan };
+  };
 
   const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
-  }
+    setEditingRoom(abbr);
+    setTempRoomAbbr(abbr);
+  };
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
-    const newFilteredData = { ...filteredData }
+    const newFilteredData = { ...filteredData };
     const category = newFilteredData.categories.find(
       (category) => category.name === categoryName
-    )
+    );
 
     if (category) {
-      const room = category.rooms[roomIndex]
+      const room = category.rooms[roomIndex];
       if (room) {
-        room.abbr = tempRoomAbbr
-        setFilteredData(newFilteredData)
-        toast.success("Successfully changed room name")
+        room.abbr = tempRoomAbbr;
+        setFilteredData(newFilteredData);
+        toast.success("Successfully changed room name");
       } else {
-        toast.error("Room not found in category")
+        toast.error("Room not found in category");
       }
     } else {
-      toast.error("Category not found")
+      toast.error("Category not found");
     }
 
-    setEditingRoom(null)
-  }
+    setEditingRoom(null);
+  };
 
   return (
     <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
@@ -259,10 +285,10 @@ const CalendarTable = () => {
                     </span>
                   </td>
                   {[...Array(daysPerPage)].map((_, i) => {
-                    const date = format(addDays(startDate, i), "yyyy-MM-dd")
+                    const date = format(addDays(startDate, i), "yyyy-MM-dd");
                     const customQuantity = roomQuantity.customQuantity.find(
                       (item) => item.date === date
-                    )
+                    );
                     return (
                       <td
                         key={i}
@@ -270,8 +296,8 @@ const CalendarTable = () => {
                       >
                         <div
                           onClick={(e) => {
-                            handleOpenRoomQuantityEditModal(date, category.name)
-                            e.stopPropagation()
+                            handleOpenRoomQuantityEditModal(date, category.name);
+                            e.stopPropagation();
                           }}
                           className="flex flex-col"
                         >
@@ -283,7 +309,7 @@ const CalendarTable = () => {
                           <div>${parseFloat(category.price).toFixed(2)}</div>
                         </div>
                       </td>
-                    )
+                    );
                   })}
                 </tr>
                 {!collapsed[category.name] &&
@@ -333,10 +359,10 @@ const CalendarTable = () => {
                             startDate,
                             daysPerPage,
                             booking
-                          )
-                          if (!style) return null
+                          );
+                          if (!style) return null;
 
-                          const { startCol, colSpan } = style
+                          const { startCol, colSpan } = style;
 
                           return (
                             <div
@@ -346,11 +372,11 @@ const CalendarTable = () => {
                                 width: `${(colSpan * 100) / daysPerPage - 8}%`,
                               }}
                               onClick={() => {
-                                setIsReservationModalOpen(true)
+                                setIsReservationModalOpen(true);
                                 setSelectedReservation({
                                   room: room.abbr,
                                   booking: booking,
-                                })
+                                });
                               }}
                               className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
                             >
@@ -358,7 +384,7 @@ const CalendarTable = () => {
                                 {booking.name}
                               </span>
                             </div>
-                          )
+                          );
                         })}
                         <div className="absolute inset-0 z-10 flex h-full">
                           {generateCalendarRowBorder()}
@@ -386,8 +412,13 @@ const CalendarTable = () => {
         setRoomQuantity={setRoomQuantity}
         category={selectedCategory}
       />
+      <AddReservationModal // Add the AddReservationModal component
+        isModalOpen={isAddReservationModalOpen}
+        onClose={closeAddReservationModal}
+        onSave={handleSaveNewReservation}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default CalendarTable
+export default CalendarTable;
