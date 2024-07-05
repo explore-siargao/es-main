@@ -210,6 +210,6 @@ router.patch(
   updateStatus
 )
 //calendar
-router.get("/:rentalId/:category/:fromDate/:toDate", isUserLoggedIn, isHostRentalOwner ,getCalendarRentals)
+router.get("/:rentalId/:category/:fromDate/:toDate", isUserLoggedIn, isHostRentalOwner,getCalendarRentals)
 
 export default router
