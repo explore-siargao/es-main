@@ -40,6 +40,11 @@ export const addActivity = async (req: Request, res: Response) => {
       isSegmentBuilderEnabled: false,
       segments: [],
       meetingPoint: location._id,
+      price: {
+        basePrice: 0,
+        exceedingPerPersonPrice: 0,
+      },
+      slots: [],
       status: 'Incomplete',
     }
 
