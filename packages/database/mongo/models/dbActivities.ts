@@ -29,6 +29,16 @@ const segments = new Schema({
   },
 })
 
+const price = new Schema({
+  basePrice: Number,
+  exceedingPerPersonPrice: Number,
+})
+
+const slots = new Schema({
+  time: String,
+  minimumGuestCount: Number,
+})
+
 const activities = new Schema({
   host: {
     type: mongoose.Schema.ObjectId,
@@ -102,6 +112,13 @@ const activities = new Schema({
   photos: {
     type: [mongoose.Schema.ObjectId],
     ref: "Photos",
+    default: [],
+  },
+  price: {
+    type: price,
+  },
+  slots: {
+    type: [slots],
     default: [],
   },
   status: {
