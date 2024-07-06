@@ -9,6 +9,12 @@ import RestaurantLocation from "./CheckoutBox"
 import Image from "next/image"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
+import OpeningHours from "./components/OpeningHours"
+import SocialMediaContacts from "./components/Contacts"
+import PriceLevel from "./components/PriceLevel"
+import OffersCuisine from "./components/OffersCuisine"
+import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
+import ChefsNote from "./components/ChefsNote"
 
 const imageGallery = [
   {
@@ -206,10 +212,61 @@ export const userReviews = [
   },
 ]
 
+const coordinates = [9.802, 126.1366]
+
+const sampleSchedules = [
+  { day: "Monday", open: "09:00 AM", close: "06:00 PM" },
+  { day: "Tuesday", open: "09:00 AM", close: "06:00 PM" },
+  { day: "Wednesday", open: "09:00 AM", close: "06:00 PM" },
+  { day: "Thursday", open: "09:00 AM", close: "06:00 PM" },
+  { day: "Friday", open: "09:00 AM", close: "08:00 PM" },
+  { day: "Saturday", open: "10:00 AM", close: "08:00 PM" },
+  { day: "Sunday", open: "10:00 AM", close: "06:00 PM" },
+]
+
+const sampleSocialMediaData = [
+  {
+    icon: "facebook",
+    description: "Facebook",
+    isNotIncluded: false,
+    link: "https://facebook.com",
+  },
+  {
+    icon: "twitter",
+    description: "Twitter",
+    isNotIncluded: false,
+    link: "https://twitter.com",
+  },
+  {
+    icon: "instagram",
+    description: "Instagram",
+    isNotIncluded: false,
+    link: "https://instagram.com",
+  },
+]
+
+const priceLevel = [
+  { level: 2, product: "Matcha Latte" },
+  { level: 4, product: "Mocha Latte" },
+  { level: 1, product: "Espresso" },
+  { level: 3, product: "Cappuccino" },
+  { level: 2, product: "Americano" },
+  { level: 4, product: "Flat White" },
+]
+
+const offersCuisine = [
+  { icon: "check", description: "Vegetarian options", isNotIncluded: false },
+  { icon: "check", description: "Vegan options", isNotIncluded: false },
+  { icon: "check", description: "Gluten-free options", isNotIncluded: false },
+  { icon: "check", description: "Dairy-free options", isNotIncluded: false },
+  { icon: "check", description: "Halal options", isNotIncluded: false },
+  { icon: "check", description: "Kosher options", isNotIncluded: false },
+]
+
 export const RestaurantGuide = () => {
   return (
-    <WidthWrapper width="small" className="mt-36">
-      <h1 className="text-2xl font-bold">RESTAURANT GUIDE</h1>
+    <WidthWrapper width="small" className="mt-10">
+      <h1 className="text-2xl font-bold mb-4">RESTAURANT GUIDE</h1>
       <SectionInfo images={imageGallery} title="Kermit Siargao" />
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
@@ -225,27 +282,35 @@ export const RestaurantGuide = () => {
               <PlaceOffers offers={offers} group={group} />
             </div>
             <Separator orientation="horizontal" className="bg-gray-300" />
-            <div>
-              <div className="py-8">
-                <div className="pb-4">
-                  <div className="flex space-x-2">
-                    <StarIcon className="h-6 w-6" />
-                    <Typography variant="h3" fontWeight="semibold">
-                      5 &middot; 4 reviews
-                    </Typography>
-                  </div>
-                </div>
-                <UserReviews reviews={userReviews} />
-              </div>
+            <div className="py-6 ">
+              <PriceLevel priceLevel={priceLevel} />
+            </div>
+            <Separator orientation="horizontal" className="bg-gray-300" />
+            <div className="py-6 ">
+              <SocialMediaContacts contacts={sampleSocialMediaData} />
+            </div>
+            <Separator orientation="horizontal" className="bg-gray-300" />
+            <div className="py-6 ">
+              <OpeningHours schedules={sampleSchedules} />
+            </div>
+            <Separator orientation="horizontal" className="bg-gray-300" />
+            <div className="py-6 ">
+              <OffersCuisine offers={offersCuisine} />
             </div>
           </div>
         </div>
         <div className="md:w-96 md:relative">
           <div className="md:sticky md:top-6">
-            <RestaurantLocation />
+            <RestaurantLocation coordinates={coordinates} />
           </div>
         </div>
       </div>
+
+      <Separator orientation="horizontal" className="bg-gray-300" />
+      <ListingReviews />
+
+      <Separator orientation="horizontal" className="bg-gray-300" />
+      <ChefsNote />
 
       <Separator orientation="horizontal" className="bg-gray-300" />
       <div>
