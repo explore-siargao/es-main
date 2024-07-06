@@ -1,8 +1,8 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { SelectedReservation } from "./Property/CalendarTable"
 import { format } from "date-fns"
+import { SelectedReservation } from "../types/CalendarTable"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
