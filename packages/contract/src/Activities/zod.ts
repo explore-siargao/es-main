@@ -19,7 +19,7 @@ export const Z_Activity_Segment = z.object({
 
 export const Z_Activity_Price = z.object({
   basePrice: z.number().optional(),
-  exceedPerPersonPrice: z.number().optional(),
+  exceedPersonPrice: z.number().optional(),
 })
 
 export const Z_Activity_Slots = z.object({
