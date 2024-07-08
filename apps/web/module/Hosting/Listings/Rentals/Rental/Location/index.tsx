@@ -150,13 +150,14 @@ const ListingLocation = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data?.item) {
-      const { streetAddress, city, barangay, howToGetThere } = data.item.location;
-      setValue("streetAddress", streetAddress);
-      setValue("city", city);
-      setValue("barangay", barangay);
-      setValue("howToGetThere", howToGetThere);
+      const { streetAddress, city, barangay, howToGetThere } =
+        data.item.location
+      setValue("streetAddress", streetAddress)
+      setValue("city", city)
+      setValue("barangay", barangay)
+      setValue("howToGetThere", howToGetThere)
     }
-  }, [data, isPending, setValue]);
+  }, [data, isPending, setValue])
 
   return (
     <div className="mt-20 mb-14">
