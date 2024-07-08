@@ -22,12 +22,12 @@ interface ICheckout {
   descTotalBeforeTaxes: number
   totalBeforeTaxes: number
   titlePrice: number
-  pricePerAdditionalPerson: number
+  pricePerAdditionalPerson?: number
 }
 
 interface CheckoutProcessProps {
   checkoutDesc: ICheckout
-  isSelectedBookableUnit: boolean
+  isSelectedBookableUnit?: boolean
 }
 
 const CheckoutBox = ({
@@ -159,7 +159,10 @@ const CheckoutBox = ({
             {formatCurrency(
               checkoutDesc.titlePrice * nights +
                 checkoutDesc.serviceFee +
-                checkoutDesc.pricePerAdditionalPerson * totalGuest,
+                (checkoutDesc.pricePerAdditionalPerson
+                  ? checkoutDesc.pricePerAdditionalPerson
+                  : 0) *
+                  totalGuest,
               "Philippines"
             )}
           </div>
