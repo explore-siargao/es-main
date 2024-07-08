@@ -29,7 +29,10 @@ import {
   getPhotosByActivityId,
   updatePhoto,
 } from './services/photos'
-import { updatePriceAndSlots } from './services/price-slots'
+import {
+  getPriceAndSlotsById,
+  updatePriceAndSlots,
+} from './services/price-slots'
 
 const router = express.Router()
 
@@ -148,6 +151,15 @@ router.patch(
   isUserLoggedIn,
   isHostActivityOwner,
   updatePriceAndSlots
+)
+
+router.get(
+  '/:activityId/price-slots',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  getPriceAndSlotsById
 )
 
 //status

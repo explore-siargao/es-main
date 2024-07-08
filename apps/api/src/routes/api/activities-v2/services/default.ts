@@ -42,7 +42,7 @@ export const addActivity = async (req: Request, res: Response) => {
       meetingPoint: location._id,
       price: {
         basePrice: 0,
-        exceedingPerPersonPrice: 0,
+        exceedPerPersonPrice: 0,
       },
       slots: [],
       status: 'Incomplete',
