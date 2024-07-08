@@ -433,7 +433,6 @@ const cancellationPolicyModalData = [
   },
 ]
 
-
 export const value = {
   host: "66622c6d14e35b280af399fa",
   title: "Villa Manao · Private Pool | Bathtub | Sky shower",
@@ -529,131 +528,129 @@ export const value = {
   isSegmentBuilderEnabled: true,
   bookableUnits: [
     {
-      "_id": {
-        "$oid": "668398cc18ec71fe8081105a"
+      _id: {
+        $oid: "668398cc18ec71fe8081105a",
       },
-      "category": "Room",
-      "title": "Double Room",
-      "description": "Short description sample",
-      "totalSize": 5,
-      "photos": [
+      category: "Room",
+      title: "Double Room",
+      description: "Short description sample",
+      totalSize: 5,
+      photos: [
+        {
+          _id: "66684a5db5c3e8b967c89853",
+          rentalId: "66658c520c9477ca42bad2c7",
+          key: "1.jpg",
+          thumbKey: "eed38095-0a20-4a10-aece-73558e34b497",
+          isMain: false,
+          description: "Mio kia car",
+          tags: "",
+        },
+      ],
+      isPrivate: false,
+      maxGuests: 8,
+      adultsIncluded: 0,
+      childrenIncluded: 0,
+      isMultiRoomUnit: false,
+      bedConfigs: [],
+      qty: 3,
+      bed: "1 Queen Bed",
+      unitPrice: {
+        _id: {
+          $oid: "6672818bf2b99ad949c9cf5e",
+        },
+        baseRate: 1800,
+        baseRateMaxCapacity: 10,
+        maximumCapacity: 15,
+        pricePerAdditionalPerson: 50,
+        discountedWeeklyRate: 10,
+        discountedMonthlyRate: 10,
+      },
+    },
     {
-      _id: "66684a5db5c3e8b967c89853",
-      rentalId: "66658c520c9477ca42bad2c7",
-      key: "1.jpg",
-      thumbKey: "eed38095-0a20-4a10-aece-73558e34b497",
-      isMain: false,
-      description: "Mio kia car",
-      tags: "",
+      _id: {
+        $oid: "667cb18c28b343835a128ca7",
+      },
+      category: "Bed",
+      title: "Bed in 8-Bed Mixed Dorm",
+      description: "Single Bunk Bed",
+      totalSize: null,
+      amenities: [],
+      photos: [
+        {
+          _id: "66684a5eb5c3e8b967c8985c",
+          rentalId: "66658c520c9477ca42bad2c7",
+          key: "4.jpg",
+          thumbKey: "963669f9-d5eb-405d-8a7a-9c9cee49af56",
+          isMain: true,
+          description: "",
+          tags: "",
+          createdAt: "2024-06-11T12:58:22.123Z",
+          __v: 0,
+          updatedAt: "2024-06-11T23:32:37.832Z",
+        },
+      ],
+      isPrivate: false,
+      maxGuests: 3,
+      adultsIncluded: 0,
+      childrenIncluded: 0,
+      isMultiRoomUnit: false,
+      bedConfigs: [],
+      qty: 1,
+      unitPrice: {
+        _id: {
+          $oid: "6672818bf2b99ad949c9cf5e",
+        },
+        baseRate: 800,
+        baseRateMaxCapacity: 10,
+        maximumCapacity: 15,
+        pricePerAdditionalPerson: 20,
+        discountedWeeklyRate: 10,
+        discountedMonthlyRate: 10,
+      },
+    },
+    {
+      _id: {
+        $oid: "667bd82c1b32c84d421c6d26",
+      },
+      category: "Whole-Place",
+      title: "Double Room",
+      description: "",
+      totalSize: 25,
+      amenities: [],
+      photos: [
+        {
+          _id: "66684a5db5c3e8b967c89858",
+          rentalId: "66658c520c9477ca42bad2c7",
+          key: "3.jpg",
+          thumbKey: "f6dc04db-237f-46da-8e6a-d1c0e219a518",
+          isMain: false,
+          description: "Test baby",
+          tags: "",
+          __v: 0,
+        },
+      ],
+      isPrivate: false,
+      maxGuests: 50,
+      adultsIncluded: 0,
+      childrenIncluded: 0,
+      isMultiRoomUnit: false,
+      numBedRooms: "2",
+      numBathRooms: "2",
+      bedConfigs: [],
+      qty: 2,
+      unitPrice: {
+        _id: {
+          $oid: "6672818bf2b99ad949c9cf5e",
+        },
+        baseRate: 15000,
+        baseRateMaxCapacity: 10,
+        maximumCapacity: 15,
+        pricePerAdditionalPerson: 100,
+        discountedWeeklyRate: 10,
+        discountedMonthlyRate: 10,
+      },
     },
   ],
-      "isPrivate": false,
-      "maxGuests": 8,
-      "adultsIncluded": 0,
-      "childrenIncluded": 0,
-      "isMultiRoomUnit": false,
-      "bedConfigs": [],
-      "qty": 3,
-      "bed": "1 Queen Bed",
-      "unitPrice": {
-        "_id": {
-          "$oid": "6672818bf2b99ad949c9cf5e"
-        },
-        "baseRate": 1800,
-        "baseRateMaxCapacity": 10,
-        "maximumCapacity": 15,
-        "pricePerAdditionalPerson": 50,
-        "discountedWeeklyRate": 10,
-        "discountedMonthlyRate": 10,
-      }
-    
-  },
-  {
-    "_id": {
-      "$oid": "667cb18c28b343835a128ca7"
-    },
-    "category": "Bed",
-    "title": "Bed in 8-Bed Mixed Dorm",
-    "description": "Single Bunk Bed",
-    "totalSize": null,
-    "amenities": [],
-    "photos": [
-      {
-        _id: "66684a5eb5c3e8b967c8985c",
-        rentalId: "66658c520c9477ca42bad2c7",
-        key: "4.jpg",
-        thumbKey: "963669f9-d5eb-405d-8a7a-9c9cee49af56",
-        isMain: true,
-        description: "",
-        tags: "",
-        createdAt: "2024-06-11T12:58:22.123Z",
-        __v: 0,
-        updatedAt: "2024-06-11T23:32:37.832Z",
-      },
-    ],
-    "isPrivate": false,
-    "maxGuests": 3,
-    "adultsIncluded": 0,
-    "childrenIncluded": 0,
-    "isMultiRoomUnit": false,
-    "bedConfigs": [],
-    "qty": 1,
-    "unitPrice": {
-      "_id": {
-        "$oid": "6672818bf2b99ad949c9cf5e"
-      },
-      "baseRate": 800,
-      "baseRateMaxCapacity": 10,
-      "maximumCapacity": 15,
-      "pricePerAdditionalPerson": 20,
-      "discountedWeeklyRate": 10,
-      "discountedMonthlyRate": 10,
-    }
-  },
-  {
-    "_id": {
-      "$oid": "667bd82c1b32c84d421c6d26"
-    },
-    "category": "Whole-Place",
-    "title": "Double Room",
-    "description": "",
-    "totalSize": 25,
-    "amenities": [],
-    "photos": [
-    
-{
-  _id: "66684a5db5c3e8b967c89858",
-  rentalId: "66658c520c9477ca42bad2c7",
-  key: "3.jpg",
-  thumbKey: "f6dc04db-237f-46da-8e6a-d1c0e219a518",
-  isMain: false,
-  description: "Test baby",
-  tags: "",
-  __v: 0,
-},
-    ],
-    "isPrivate": false,
-    "maxGuests": 50,
-    "adultsIncluded": 0,
-    "childrenIncluded": 0,
-    "isMultiRoomUnit": false,
-    "numBedRooms": "2",
-    "numBathRooms": "2",
-    "bedConfigs": [],
-    "qty": 2,
-    "unitPrice": {
-      "_id": {
-        "$oid": "6672818bf2b99ad949c9cf5e"
-      },
-      "baseRate": 15000,
-      "baseRateMaxCapacity": 10,
-      "maximumCapacity": 15,
-      "pricePerAdditionalPerson": 100,
-      "discountedWeeklyRate": 10,
-      "discountedMonthlyRate": 10,
-    }
-  }
-],
   status: "Incomplete",
   location: {
     city: "General Luna",
@@ -669,14 +666,15 @@ export const value = {
 
 export const SingleView = () => {
   const [showModal, setShowModal] = useState(false)
-  const [selectedBookableUnit, setSelectedBookableUnit] = useState<T_BookableUnitType>();
+  const [selectedBookableUnit, setSelectedBookableUnit] =
+    useState<T_BookableUnitType>()
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
   }
-  
+
   return (
     <WidthWrapper width="small" className="mt-4 lg:mt-8">
       <SectionInfo images={value.photos} title={value.title} />
@@ -700,20 +698,25 @@ export const SingleView = () => {
                 title="Hosted by Simon"
                 subTitle="4 months hosting"
               />
-            </div> 
+            </div>
             <div className="py-6">
               <Highlights highlights={highlights} />
             </div>
             <div className="py-6">
               <BookingDescription {...description} />
             </div>
-           
+
             <div className="py-6 ">
               <PlaceOffers offers={offers} group={group} />
             </div>
             <div className="py-6">
-              <AvailableBooking bookableUnits={value.bookableUnits} propertyType={value.type} 
-              onSelectBookableUnit={(unit: T_BookableUnitType)=> setSelectedBookableUnit(unit)} />
+              <AvailableBooking
+                bookableUnits={value.bookableUnits}
+                propertyType={value.type}
+                onSelectBookableUnit={(unit: T_BookableUnitType) =>
+                  setSelectedBookableUnit(unit)
+                }
+              />
             </div>
           </div>
         </div>
@@ -721,13 +724,21 @@ export const SingleView = () => {
           <div className="md:sticky md:top-6">
             <CheckoutBox
               checkoutDesc={{
-                pricePerAdditionalPerson: selectedBookableUnit ? selectedBookableUnit.unitPrice.pricePerAdditionalPerson : 0,
+                pricePerAdditionalPerson: selectedBookableUnit
+                  ? selectedBookableUnit.unitPrice.pricePerAdditionalPerson
+                  : 0,
                 serviceFee: selectedBookableUnit ? 1000 : 0,
-                durationCost: selectedBookableUnit ? selectedBookableUnit.unitPrice.baseRate * 5 : 0,
+                durationCost: selectedBookableUnit
+                  ? selectedBookableUnit.unitPrice.baseRate * 5
+                  : 0,
                 descTotalBeforeTaxes: 3000,
                 totalBeforeTaxes: 126000,
-                titlePrice: selectedBookableUnit ? selectedBookableUnit.unitPrice.baseRate : 0,
-              }} isSelectedBookableUnit={selectedBookableUnit}  />
+                titlePrice: selectedBookableUnit
+                  ? selectedBookableUnit.unitPrice.baseRate
+                  : 0,
+              }}
+              isSelectedBookableUnit={selectedBookableUnit}
+            />
             <div>
               <ListingMark
                 icon={<Tag />}

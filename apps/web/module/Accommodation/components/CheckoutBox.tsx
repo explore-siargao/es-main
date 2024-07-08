@@ -30,7 +30,10 @@ interface CheckoutProcessProps {
   isSelectedBookableUnit: boolean
 }
 
-const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessProps) => {
+const CheckoutBox = ({
+  checkoutDesc,
+  isSelectedBookableUnit,
+}: CheckoutProcessProps) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
@@ -46,7 +49,9 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
   )
   const totalGuest = adults + children + infants
   return (
-    <div className={`border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col ${!isSelectedBookableUnit ? "opacity-70" : ""} divide-text-100 overflow-y-auto mb-5`}>
+    <div
+      className={`border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col ${!isSelectedBookableUnit ? "opacity-70" : ""} divide-text-100 overflow-y-auto mb-5`}
+    >
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
         {formatCurrency(checkoutDesc.titlePrice, "Philippines")}
         <small className="font-light"> night</small>
@@ -55,7 +60,11 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
         <div className="grid grid-cols-2 gap-3">
           <div
             className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() => isSelectedBookableUnit ? setCheckInOutCalendarModalIsOpen(true) : null}
+            onClick={() =>
+              isSelectedBookableUnit
+                ? setCheckInOutCalendarModalIsOpen(true)
+                : null
+            }
           >
             <label
               htmlFor="check-in"
@@ -71,7 +80,11 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
           </div>
           <div
             className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() => isSelectedBookableUnit ? setCheckInOutCalendarModalIsOpen(true) : null}
+            onClick={() =>
+              isSelectedBookableUnit
+                ? setCheckInOutCalendarModalIsOpen(true)
+                : null
+            }
           >
             <label
               htmlFor="checkout"
@@ -86,7 +99,9 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
         </div>
         <div
           className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-          onClick={() => isSelectedBookableUnit ? setIsGuestsModalOpen(true) : null}
+          onClick={() =>
+            isSelectedBookableUnit ? setIsGuestsModalOpen(true) : null
+          }
         >
           <label
             htmlFor="checkout"
@@ -99,10 +114,11 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
           </span>
         </div>
         <Button
-   
           variant="primary"
-          onClick={() => isSelectedBookableUnit ?
-            router.push(`/accommodation/${params.listingId}/checkout`) : null
+          onClick={() =>
+            isSelectedBookableUnit
+              ? router.push(`/accommodation/${params.listingId}/checkout`)
+              : null
           }
         >
           Book Now
@@ -111,15 +127,18 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
       <div>
         <div className="flex justify-between items-center mt-4">
           <Button
-          
             variant={"ghost"}
             className="underline pl-0"
-            onClick={() => isSelectedBookableUnit ? setIsBreakdownModalOpen(true) : null}
+            onClick={() =>
+              isSelectedBookableUnit ? setIsBreakdownModalOpen(true) : null
+            }
           >
             <PesoSign />
             {checkoutDesc.titlePrice} x {nights}
           </Button>
-          <div>{formatCurrency(checkoutDesc.titlePrice * nights, "Philippines")}</div>
+          <div>
+            {formatCurrency(checkoutDesc.titlePrice * nights, "Philippines")}
+          </div>
         </div>
 
         <div className="flex justify-between items-center">
@@ -137,7 +156,12 @@ const CheckoutBox = ({ checkoutDesc, isSelectedBookableUnit }: CheckoutProcessPr
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
           <div>
-            {formatCurrency( ((checkoutDesc.titlePrice * nights) + checkoutDesc.serviceFee) + (checkoutDesc.pricePerAdditionalPerson * totalGuest), "Philippines")}
+            {formatCurrency(
+              checkoutDesc.titlePrice * nights +
+                checkoutDesc.serviceFee +
+                checkoutDesc.pricePerAdditionalPerson * totalGuest,
+              "Philippines"
+            )}
           </div>
         </div>
       </div>

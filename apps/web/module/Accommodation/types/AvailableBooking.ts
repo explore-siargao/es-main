@@ -7,10 +7,10 @@ export type T_AvailableBookingProps = {
 }
 
 export enum PropertyType {
-  HOSTEL = 'HOSTEL',
-  APARTMENT = 'APARTMENT',
-  HOMESTAY = 'HOMESTAY',
-  HOTEL = 'HOTEL',
-  RESORT = 'RESORT',
-  VILLA = 'VILLA',
+  HOSTEL = "HOSTEL",
+  APARTMENT = "APARTMENT",
+  HOMESTAY = "HOMESTAY",
+  HOTEL = "HOTEL",
+  RESORT = "RESORT",
+  VILLA = "VILLA",
 }
