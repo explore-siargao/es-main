@@ -294,6 +294,48 @@ export const value = {
       "From General Luna, head north on Tourism Road towards Cloud 9. The location is a 10-minute drive from the town center.",
     createdAt: "2024-06-11T12:58:22.123Z",
   },
+  price: {
+    baseRate: 500,
+    pricePerAdditionalPerson: 100,
+  },
+  timeSlots: [
+    {
+      date: "Tue Jul 19 2024 GMT+0800 (Philippine Standard Time)",
+      slots: [
+        { id: "1", bookType: "", time: "09:00 AM", maxCapacity: 8 },
+        { id: "2", bookType: "", time: "10:00 AM", maxCapacity: 12 },
+        { id: "3", bookType: "private", time: "3:00 PM", maxCapacity: 15 },
+        {
+          id: "4",
+          bookType: "joiners",
+          time: "4:00 PM",
+          maxCapacity: 6,
+          availableSlotPerson: 2,
+        },
+        { id: "5", bookType: "", time: "4:00 PM", maxCapacity: 8 },
+      ],
+    },
+    {
+      date: "Tue Jul 20 2024 GMT+0800 (Philippine Standard Time)",
+      slots: [
+        { id: "1", bookType: "private", time: "11:00 AM", maxCapacity: 20 },
+        {
+          id: "2",
+          bookType: "joiners",
+          time: "12:00 PM",
+          maxCapacity: 15,
+          availableSlotPerson: 0,
+        },
+      ],
+    },
+    {
+      date: "Tue Jul 21 2024 GMT+0800 (Philippine Standard Time)",
+      slots: [
+        { id: "1", bookType: "", time: "01:00 PM", maxCapacity: 10 },
+        { id: "2", bookType: "", time: "02:00 PM", maxCapacity: 7 },
+      ],
+    },
+  ],
 }
 
 export const ActivitySingleView = () => {
@@ -368,9 +410,11 @@ export const ActivitySingleView = () => {
                 serviceFee: 1000,
                 durationCost: 125000,
                 descTotalBeforeTaxes: 3000,
-                totalBeforeTaxes: 2000,
-                titlePrice: 1000,
+                totalBeforeTaxes: 1000,
+                titlePrice: value.price.baseRate,
+                pricePerAdditionalPerson: value.price.pricePerAdditionalPerson,
               }}
+              timeSlot={value.timeSlots}
             />
 
             <div className="flex justify-center">
