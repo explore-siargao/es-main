@@ -18,10 +18,10 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
         >
           <Image
             onClick={openModal}
-            src={`/assets/${images[0]?.fileKey}`}
+            src={`/assets/${images[0]?.key}`}
             layout="fill"
             objectFit="cover"
-            alt={String(images[0]?.alt)}
+            alt={String(images[0]?.description)}
             className="cursor-pointer
             2xl:rounded-tl-xl 2xl:rounded-bl-xl
             xl:rounded-tl-xl xl:rounded-bl-xl
@@ -38,10 +38,10 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
             <div className="relative bg-gray-200">
               <Image
                 onClick={openModal}
-                src={`/assets/${images[1]?.fileKey}`}
+                src={`/assets/${images[1]?.key}`}
                 layout="fill"
                 objectFit="cover"
-                alt={String(images[1]?.alt)}
+                alt={String(images[1]?.description)}
                 className="cursor-pointer"
               />
             </div>
@@ -49,10 +49,10 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
           <div className="relative bg-gray-200 rounded-tr-xl">
             <Image
               onClick={openModal}
-              src={`/assets/${images[2]?.fileKey}`}
+              src={`/assets/${images[2]?.key}`}
               layout="fill"
               objectFit="cover"
-              alt={String(images[2]?.alt)}
+              alt={String(images[2]?.description)}
               className="cursor-pointer
               lg-rounded-tr-xl 
               md:rounded-tr-xl md:rounded-bl-none
@@ -67,10 +67,10 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
             >
               <Image
                 onClick={openModal}
-                src={`/assets/${images[3]?.fileKey}`}
+                src={`/assets/${images[3]?.key}`}
                 layout="fill"
                 objectFit="cover"
-                alt={String(images[3]?.alt)}
+                alt={String(images[3]?.description)}
                 className="cursor-pointer
               md:rounded-tr-none md:rounded-bl-none
               sm:rounded-bl-xl lg:rounded-bl-none
@@ -86,10 +86,10 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
           >
             <Image
               onClick={openModal}
-              src={`/assets/${images[1]?.fileKey}`}
+              src={`/assets/${images[1]?.key}`}
               layout="fill"
               objectFit="cover"
-              alt={String(images[1]?.alt)}
+              alt={String(images[1]?.description)}
               className="cursor-pointer 
               2xl:rounded-br-xl 
               xl:rounded-br-xl 

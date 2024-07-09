@@ -18,6 +18,8 @@ import { Flag, Tag } from "lucide-react"
 import { useState } from "react"
 import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
+import AvailableBooking from "./components/AvailableBooking"
+import { T_BookableUnitType } from "@repo/contract"
 
 const reportListingArr = [
   {
@@ -431,8 +433,241 @@ const cancellationPolicyModalData = [
   },
 ]
 
+export const value = {
+  host: "66622c6d14e35b280af399fa",
+  title: "Villa Manao · Private Pool | Bathtub | Sky shower",
+  type: "Hostel",
+  description:
+    "Join us for an exciting island hopping adventure in Siargao. Explore pristine beaches, crystal-clear waters, and vibrant marine life.",
+  highLights: [
+    "Visit three beautiful islands: Naked Island, Daku Island, and Guyam Island",
+    "Snorkeling in crystal-clear waters",
+    "Delicious lunch on Daku Island",
+    "Professional guide with local knowledge",
+  ],
+  cancellationDays: 3,
+  notAllowed: ["Pets", "Smoking", "Littering"],
+  policies: [
+    "Respect marine life and local culture",
+    "Follow the guide’s instructions at all times",
+    "No littering on the islands or in the water",
+    "Wear a life jacket while snorkeling for safety",
+    "Be punctual at the meeting point to ensure timely departure",
+    "Respect marine life and local culture",
+    "Follow the guide’s instructions at all times",
+    "No littering on the islands or in the water",
+    "Wear a life jacket while snorkeling for safety",
+    "Be punctual at the meeting point to ensure timely departure",
+  ],
+  cancellationPolicies: [
+    "Full refund if canceled at least 3 days before the activity",
+    "No refund if canceled within 3 days of the activity",
+  ],
+  photos: [
+    {
+      _id: "66684a5db5c3e8b967c89853",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "1.jpg",
+      thumbKey: "eed38095-0a20-4a10-aece-73558e34b497",
+      isMain: false,
+      description: "Mio kia car",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.833Z",
+    },
+    {
+      _id: "66684a5db5c3e8b967c89856",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "2.jpg",
+      thumbKey: "1401dc9c-2414-4261-a5fe-eccd781d3ac3",
+      isMain: false,
+      description: "",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.823Z",
+    },
+    {
+      _id: "66684a5db5c3e8b967c89858",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "3.jpg",
+      thumbKey: "f6dc04db-237f-46da-8e6a-d1c0e219a518",
+      isMain: false,
+      description: "Test baby",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.838Z",
+    },
+    {
+      _id: "66684a5eb5c3e8b967c8985c",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "4.jpg",
+      thumbKey: "963669f9-d5eb-405d-8a7a-9c9cee49af56",
+      isMain: true,
+      description: "",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:32:37.832Z",
+    },
+    {
+      _id: "66684a5eb5c3e8b967c8985f",
+      rentalId: "66658c520c9477ca42bad2c7",
+      key: "5.jpg",
+      thumbKey: "1e5d5cb5-3a63-43a3-a1d3-3476df3526d8",
+      isMain: false,
+      description: "Baby love",
+      tags: "",
+      createdAt: "2024-06-11T12:58:22.123Z",
+      __v: 0,
+      updatedAt: "2024-06-11T23:42:21.255Z",
+    },
+  ],
+  isSegmentBuilderEnabled: true,
+  bookableUnits: [
+    {
+      _id: {
+        $oid: "668398cc18ec71fe8081105a",
+      },
+      category: "Room",
+      title: "Double Room",
+      description: "Short description sample",
+      totalSize: 5,
+      photos: [
+        {
+          _id: "66684a5db5c3e8b967c89853",
+          rentalId: "66658c520c9477ca42bad2c7",
+          key: "1.jpg",
+          thumbKey: "eed38095-0a20-4a10-aece-73558e34b497",
+          isMain: false,
+          description: "Mio kia car",
+          tags: "",
+        },
+      ],
+      isPrivate: false,
+      maxGuests: 8,
+      adultsIncluded: 0,
+      childrenIncluded: 0,
+      isMultiRoomUnit: false,
+      bedConfigs: [],
+      qty: 3,
+      bed: "1 Queen Bed",
+      unitPrice: {
+        _id: {
+          $oid: "6672818bf2b99ad949c9cf5e",
+        },
+        baseRate: 1800,
+        baseRateMaxCapacity: 10,
+        maximumCapacity: 15,
+        pricePerAdditionalPerson: 50,
+        discountedWeeklyRate: 10,
+        discountedMonthlyRate: 10,
+      },
+    },
+    {
+      _id: {
+        $oid: "667cb18c28b343835a128ca7",
+      },
+      category: "Bed",
+      title: "Bed in 8-Bed Mixed Dorm",
+      description: "Single Bunk Bed",
+      totalSize: null,
+      amenities: [],
+      photos: [
+        {
+          _id: "66684a5eb5c3e8b967c8985c",
+          rentalId: "66658c520c9477ca42bad2c7",
+          key: "4.jpg",
+          thumbKey: "963669f9-d5eb-405d-8a7a-9c9cee49af56",
+          isMain: true,
+          description: "",
+          tags: "",
+          createdAt: "2024-06-11T12:58:22.123Z",
+          __v: 0,
+          updatedAt: "2024-06-11T23:32:37.832Z",
+        },
+      ],
+      isPrivate: false,
+      maxGuests: 3,
+      adultsIncluded: 0,
+      childrenIncluded: 0,
+      isMultiRoomUnit: false,
+      bedConfigs: [],
+      qty: 1,
+      unitPrice: {
+        _id: {
+          $oid: "6672818bf2b99ad949c9cf5e",
+        },
+        baseRate: 800,
+        baseRateMaxCapacity: 10,
+        maximumCapacity: 15,
+        pricePerAdditionalPerson: 20,
+        discountedWeeklyRate: 10,
+        discountedMonthlyRate: 10,
+      },
+    },
+    {
+      _id: {
+        $oid: "667bd82c1b32c84d421c6d26",
+      },
+      category: "Whole-Place",
+      title: "Double Room",
+      description: "",
+      totalSize: 25,
+      amenities: [],
+      photos: [
+        {
+          _id: "66684a5db5c3e8b967c89858",
+          rentalId: "66658c520c9477ca42bad2c7",
+          key: "3.jpg",
+          thumbKey: "f6dc04db-237f-46da-8e6a-d1c0e219a518",
+          isMain: false,
+          description: "Test baby",
+          tags: "",
+          __v: 0,
+        },
+      ],
+      isPrivate: false,
+      maxGuests: 50,
+      adultsIncluded: 0,
+      childrenIncluded: 0,
+      isMultiRoomUnit: false,
+      numBedRooms: "2",
+      numBathRooms: "2",
+      bedConfigs: [],
+      qty: 2,
+      unitPrice: {
+        _id: {
+          $oid: "6672818bf2b99ad949c9cf5e",
+        },
+        baseRate: 15000,
+        baseRateMaxCapacity: 10,
+        maximumCapacity: 15,
+        pricePerAdditionalPerson: 100,
+        discountedWeeklyRate: 10,
+        discountedMonthlyRate: 10,
+      },
+    },
+  ],
+  status: "Incomplete",
+  location: {
+    city: "General Luna",
+    streetAddress: "Purok 1, Tourism Road",
+    barangay: "Catangnan",
+    longitude: 126.1174,
+    latitude: 9.8432,
+    howToGetThere:
+      "From General Luna, head north on Tourism Road towards Cloud 9. The location is a 10-minute drive from the town center.",
+    createdAt: "2024-06-11T12:58:22.123Z",
+  },
+}
+
 export const SingleView = () => {
   const [showModal, setShowModal] = useState(false)
+  const [selectedBookableUnit, setSelectedBookableUnit] =
+    useState<T_BookableUnitType>()
   const handleOpenModal = () => {
     setShowModal(true)
   }
@@ -442,10 +677,7 @@ export const SingleView = () => {
 
   return (
     <WidthWrapper width="small" className="mt-4 lg:mt-8">
-      <SectionInfo
-        images={imageGallery}
-        title="Villa Manao · Private Pool | Bathtub | Sky shower"
-      />
+      <SectionInfo images={value.photos} title={value.title} />
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
@@ -473,11 +705,18 @@ export const SingleView = () => {
             <div className="py-6">
               <BookingDescription {...description} />
             </div>
+
             <div className="py-6 ">
               <PlaceOffers offers={offers} group={group} />
             </div>
             <div className="py-6">
-              <ListingDateRangePicker title="Villa Manao · Private Pool | Bathtub | Sky shower" />
+              <AvailableBooking
+                bookableUnits={value.bookableUnits}
+                propertyType={value.type}
+                onSelectBookableUnit={(unit: T_BookableUnitType) =>
+                  setSelectedBookableUnit(unit)
+                }
+              />
             </div>
           </div>
         </div>
@@ -485,12 +724,20 @@ export const SingleView = () => {
           <div className="md:sticky md:top-6">
             <CheckoutBox
               checkoutDesc={{
-                serviceFee: 1000,
-                durationCost: 125000,
+                pricePerAdditionalPerson: selectedBookableUnit
+                  ? selectedBookableUnit.unitPrice.pricePerAdditionalPerson
+                  : 0,
+                serviceFee: selectedBookableUnit ? 1000 : 0,
+                durationCost: selectedBookableUnit
+                  ? selectedBookableUnit.unitPrice.baseRate * 5
+                  : 0,
                 descTotalBeforeTaxes: 3000,
                 totalBeforeTaxes: 126000,
-                titlePrice: 25000,
+                titlePrice: selectedBookableUnit
+                  ? selectedBookableUnit.unitPrice.baseRate
+                  : 0,
               }}
+              isSelectedBookableUnit={selectedBookableUnit}
             />
             <div>
               <ListingMark
