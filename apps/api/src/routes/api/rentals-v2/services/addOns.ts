@@ -95,7 +95,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
         addOns.babySeat = false ?? addOns.babySeat
         addOns.includesHelmet = false ?? addOns.includesHelmet
         addOns.dashCam = dashCam ?? addOns.dashCam
-        addOns.others = others ?? addOns.others
+        addOns.others = others ?? (addOns.others || [])
       } else if (
         getRental.category === 'Motorbike' ||
         getRental.category === 'Bicycle'
@@ -105,7 +105,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
         addOns.babySeat = babySeat ?? addOns.babySeat
         addOns.includesHelmet = includesHelmet ?? addOns.includesHelmet
         addOns.dashCam = false ?? addOns.dashCam
-        addOns.others = others ?? addOns.others
+        addOns.others = others ?? (addOns.others || [])
       }
 
       await dbRentalAddOns.findByIdAndUpdate(
@@ -117,7 +117,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
             babySeat: babySeat,
             dashCam: dashCam,
             includesHelmet: includesHelmet,
-            others: others,
+            others: others || [],
           },
         },
         {
