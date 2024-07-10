@@ -42,6 +42,9 @@ const ListingLocation = ({ pageType }: Prop) => {
   const { register, handleSubmit, reset, setValue } =
     useForm<T_Listing_Location>()
 
+  const [markerIsSet, setMarkerIsSet] = useState(false)
+  const [handleOverlayClick, setHandleOverlayClick] = useState(false)
+
   useEffect(() => {
     if (data && !isFetching) {
       const location = data?.item?.location
@@ -110,6 +113,20 @@ const ListingLocation = ({ pageType }: Prop) => {
     mutate(formData, callBackReq)
   }
 
+  const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
+    setMarkerIsSet(true)
+    handleSaveLocation()
+  }
+  const handleSaveLocation = () => {
+    setTimeout(() => {
+      setHandleOverlayClick(false)
+    }, 0)
+  }
+
+  const handleOverlayClickToggle = () => {
+    setHandleOverlayClick(true)
+  }
+
   const currentCoords = (
     data?.item?.location?.latitude
       ? [data?.item?.location.latitude, data?.item?.location.longitude]
@@ -131,12 +148,34 @@ const ListingLocation = ({ pageType }: Prop) => {
               Location
             </Typography>
           </div>
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center relative">
+            {!handleOverlayClick && (
+              <div
+                className={`absolute top-0 left-0 w-full h-[450px] bg-black bg-opacity-0 rounded-xl z-10 transition-opacity duration-600 hover:bg-opacity-20 ${
+                  handleOverlayClick
+                    ? "opacity-0 pointer-events-none"
+                    : "opacity-100"
+                }`}
+              >
+                <button
+                  onClick={handleOverlayClickToggle}
+                  className="w-full h-full flex justify-center items-center text-white text-2xl font-semibold transition-opacity duration-300"
+                >
+                  <span className="p-4 rounded-lg">
+                    Click to enable map editing
+                  </span>
+                </button>
+              </div>
+            )}
+
             <SpecificMap
               center={currentCoords}
-              mapHeight={"h-[450px]"}
-              mapWidth={"w-full"}
+              mapHeight="h-[450px]"
+              mapWidth="w-full"
               zoom={11}
+              onMarkerSet={handleMarkerSetter}
+              className="relative z-0"
+              scrollWheelZoomEnabled={!handleOverlayClick}
             />
           </div>
           <Typography variant="p" className="italic text-gray-500 text-xs mt-2">

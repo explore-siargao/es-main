@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { MapContainer, TileLayer, Marker } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, useMapEvent } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
 import { Icon, LatLngTuple } from "leaflet"
@@ -44,6 +44,20 @@ const SpecificMap = ({
     }
   }
 
+  const handleMapClick = (event: L.LeafletMouseEvent) => {
+    const newCoordinates = event.latlng
+    setPosition([newCoordinates.lat, newCoordinates.lng])
+    setCoordinates(newCoordinates.lat, newCoordinates.lng)
+    if (onMarkerSet) {
+      onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
+    }
+  }
+
+  const MapClickHandler = () => {
+    useMapEvent("click", handleMapClick)
+    return null
+  }
+
   const [showMap, setShowMap] = useState(false)
   const HandleResize = () => {
     setShowMap(false)
@@ -73,6 +87,7 @@ const SpecificMap = ({
                 zIndex: 30,
               }}
             >
+              <MapClickHandler />
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
