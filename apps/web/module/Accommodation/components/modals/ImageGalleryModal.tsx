@@ -18,10 +18,10 @@ const ImageGalleryModal = ({
           return (
             <div className="relative h-60 w-10/12 md:w-1/2 lg:w-1/3 mx-auto bg-gray-200">
               <Image
-                src={`/assets/${data.fileKey}`}
+                src={`/assets/${data.key}`}
                 layout="fill"
                 objectFit="cover"
-                alt={`${data.alt}`}
+                alt={`${data.description}`}
               />
             </div>
           )
