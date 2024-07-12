@@ -1,6 +1,6 @@
 export type MapProps = {
   mapData: {
-    id?: number
+    _id?: string
     city: string
     streetAddress: string
     barangay: string

@@ -29,7 +29,7 @@ export const getRentalDetails = async (req: Request, res: Response) => {
         exteriorColor: getRental.Details.exteriorColor,
         seatingCapacity: getRental.Details.seatingCapacity,
         weightCapacity: getRental.Details.weightCapacity,
-        minAgeReq: getRental.Details.minAgeReq,
+        haveDriverLicense: getRental.Details.haveDriverLicense,
         isRegistered: getRental.Details.isRegistered,
       }
     } else if (getRental.category === 'Bicycle') {
@@ -38,7 +38,7 @@ export const getRentalDetails = async (req: Request, res: Response) => {
         condition: getRental.Details.condition,
         exteriorColor: getRental.Details.exteriorColor,
         weightCapacity: getRental.Details.weightCapacity,
-        minAgeReq: getRental.Details.minAgeReq,
+        haveDriverLicense: getRental.Details.haveDriverLicense,
       }
     } else {
       return res.json(response.error({ message: 'Invalid rental category' }))
@@ -65,7 +65,7 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
     interiorColor,
     seatingCapacity,
     weightCapacity,
-    minAgeReq,
+    haveDriverLicense,
     isRegistered,
   }: T_Rental_Details = req.body
   const isValidInput = Z_Rental_Details.safeParse(req.body as T_Rental_Details)
@@ -111,7 +111,8 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
           engineCapacityCc || getDetail.engineCapacityCc
         getDetail.exteriorColor = exteriorColor || getDetail.exteriorColor
         getDetail.interiorColor = interiorColor || getDetail.interiorColor
-        getDetail.minAgeReq = minAgeReq || getDetail.minAgeReq
+        getDetail.haveDriverLicense =
+          haveDriverLicense || getDetail.haveDriverLicense
         getDetail.isRegistered = isRegistered || getDetail.isRegistered
         getDetail.seatingCapacity = seatingCapacity || getDetail.seatingCapacity
         getDetail.weightCapacity = weightCapacity || getDetail.weightCapacity
@@ -149,7 +150,8 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
           engineCapacityCc || getDetail.engineCapacityCc
         getDetail.exteriorColor = exteriorColor || getDetail.exteriorColor
         getDetail.interiorColor = null || getDetail.interiorColor
-        getDetail.minAgeReq = minAgeReq || getDetail.minAgeReq
+        getDetail.haveDriverLicense =
+          haveDriverLicense || getDetail.haveDriverLicense
         getDetail.isRegistered = isRegistered || getDetail.isRegistered
         getDetail.seatingCapacity = seatingCapacity || getDetail.seatingCapacity
         getDetail.weightCapacity = weightCapacity || getDetail.weightCapacity
@@ -159,7 +161,8 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         getDetail.engineCapacityCc = null || getDetail.engineCapacityCc
         getDetail.exteriorColor = exteriorColor || getDetail.exteriorColor
         getDetail.interiorColor = null || getDetail.interiorColor
-        getDetail.minAgeReq = minAgeReq || getDetail.minAgeReq
+        getDetail.haveDriverLicense =
+          haveDriverLicense || getDetail.haveDriverLicense
         getDetail.isRegistered = null || getDetail.isRegistered
         getDetail.seatingCapacity = null || getDetail.seatingCapacity
         getDetail.weightCapacity = weightCapacity || getDetail.weightCapacity

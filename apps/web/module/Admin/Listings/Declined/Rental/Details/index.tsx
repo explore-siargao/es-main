@@ -36,7 +36,8 @@ const Details = ({ pageType }: Prop) => {
     const dbCategory = data?.item?.category
     if (
       (dbCategory !== E_Rental_Category.Bicycle &&
-        formData.isRegistered === "Yes") ||
+        formData.isRegistered === "Yes" &&
+        formData.haveDriverLicense === "Yes") ||
       dbCategory === E_Rental_Category.Bicycle
     ) {
       const callBackReq = {
@@ -61,7 +62,13 @@ const Details = ({ pageType }: Prop) => {
       }
       mutate({ ...formData }, callBackReq)
     } else {
-      toast.error("Sorry! We cannot proceed if this is not registered")
+      if (formData.haveDriverLicense === "No") {
+        toast.error(
+          "Sorry! We cannot proceed if you haven't a driver's license"
+        )
+      } else {
+        toast.error("Sorry! We cannot proceed if this is not registered")
+      }
     }
   }
   return (
@@ -146,14 +153,45 @@ const Details = ({ pageType }: Prop) => {
               valueAsNumber: true,
             })}
           />
-          <Input
-            type="number"
-            id="minAgeReq"
-            disabled={isPending || isLoading}
-            label="Minimum Age Requirement"
-            required
-            {...register("minAgeReq", { required: true, valueAsNumber: true })}
-          />
+          {data?.item?.category !== E_Rental_Category.Bicycle && (
+            <div>
+              <label className="block text-xs font-medium text-text-900">
+                Have a driver's license?
+              </label>
+              <div className="flex items-center mt-2">
+                <label
+                  htmlFor="haveDriverLicense-no"
+                  className="mr-2 block text-sm font-medium leading-6 text-gray-900"
+                >
+                  No
+                </label>
+                <input
+                  id="haveDriverLicense-no"
+                  type="radio"
+                  disabled={isPending || isLoading}
+                  {...register("haveDriverLicense", { required: true })}
+                  className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                  value="No"
+                  required
+                />
+                <label
+                  htmlFor="haveDriverLicense-yes"
+                  className="ml-4 mr-2 block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Yes
+                </label>
+                <input
+                  id="haveDriverLicense-yes"
+                  type="radio"
+                  disabled={isPending || isLoading}
+                  {...register("haveDriverLicense", { required: true })}
+                  className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                  value="Yes"
+                  required
+                />
+              </div>
+            </div>
+          )}
           {data?.item?.category !== E_Rental_Category.Bicycle && (
             <div>
               <label className="block text-xs font-medium text-text-900">

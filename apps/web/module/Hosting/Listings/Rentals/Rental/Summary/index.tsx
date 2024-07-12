@@ -97,10 +97,14 @@ const RentalSummary = () => {
               Includes Helmet
             </Typography>
           )}
-          {rental?.addOns.others !== "" && (
-            <Typography variant="h5" className="mt-2">
-              {rental?.addOns.others}
-            </Typography>
+          {rental?.addOns.others.length > 0 && (
+            <div className="mt-2">
+              {rental?.addOns.others.map((addOn: any) => (
+                <Typography key={addOn} variant="h5" className="mt-2">
+                  {addOn}
+                </Typography>
+              ))}
+            </div>
           )}
         </div>
         <div className="mt-3 border-b border-gray-200 pb-3">

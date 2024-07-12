@@ -1,5 +1,10 @@
 import mongoose, { Schema } from "mongoose"
 
+const bedRooms = new Schema({
+  bedRoomName: String,
+  bedRoomType: String,
+})
+
 const bookableUnitTypes = new Schema({
   category: String,
   title: String,
@@ -27,6 +32,10 @@ const bookableUnitTypes = new Schema({
   maxGuests: Number,
   adultsIncluded: Number,
   childrenIncluded: Number,
+  bedRooms: {
+    type: [bedRooms],
+    required: false,
+  },
   isMultiRoomUnit: {
     type: Boolean,
     default: false,

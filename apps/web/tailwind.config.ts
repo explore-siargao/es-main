@@ -126,6 +126,27 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    function ({ addUtilities }: any) {
+      const newUtilities = {
+        ".text-stroke": {
+          "-webkit-text-stroke": "1px  #7f7f7f",
+        },
+        ".text-stroke-2": {
+          "-webkit-text-stroke": "2px  #7f7f7f",
+        },
+        ".text-stroke-white": {
+          "-webkit-text-stroke": "1px white",
+        },
+        ".text-stroke-2-white": {
+          "-webkit-text-stroke": "2px white",
+        },
+      }
+
+      addUtilities(newUtilities, ["responsive", "hover"])
+    },
+  ],
 }
 export default config

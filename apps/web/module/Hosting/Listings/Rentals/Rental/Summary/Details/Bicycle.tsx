@@ -25,10 +25,6 @@ const Bicycle = () => {
         <span className="font-semibold">Weight Capacity:</span>{" "}
         {rental?.details.weightCapacity}
       </Typography>
-      <Typography variant="h5" className="mt-2">
-        <span className="font-semibold">Minimum Age Requirement:</span>{" "}
-        {rental?.details.minAgeReq}
-      </Typography>
     </>
   )
 }

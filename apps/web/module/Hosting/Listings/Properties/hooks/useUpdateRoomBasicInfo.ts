@@ -6,7 +6,7 @@ interface IRoomBasicInfo {
   _id: string
   title: string
   totalSize: number
-  bed: string
+  description: string
   qty: number
 }
 
