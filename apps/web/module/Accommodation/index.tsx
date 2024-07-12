@@ -20,6 +20,10 @@ import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import AvailableBooking from "./components/AvailableBooking"
 import { T_BookableUnitType } from "@repo/contract"
+import { useParams } from "next/navigation"
+import useGetPropertyById from "../Hosting/Listings/Properties/hooks/useGetPropertyById"
+import { Spinner } from "@/common/components/ui/Spinner"
+import { format, parseISO } from "date-fns"
 
 const reportListingArr = [
   {
@@ -668,131 +672,172 @@ export const SingleView = () => {
   const [showModal, setShowModal] = useState(false)
   const [selectedBookableUnit, setSelectedBookableUnit] =
     useState<T_BookableUnitType>()
+  const params = useParams<{ propertyId: string }>()
+  const propertyId = String(params.propertyId)
+  const { data, isPending } = useGetPropertyById(propertyId)
+
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
   }
+  const sectionInfo = data?.item
+  const offerBy = data?.item
+  const formattedDate = offerBy?.createdAt
+    ? format(parseISO(offerBy.createdAt), "MMMM d, yyyy")
+    : ""
 
   return (
-    <WidthWrapper width="small" className="mt-4 lg:mt-8">
-      <SectionInfo images={value.photos} title={value.title} />
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-        <div className="flex-1 md:w-1/2 2xl:w-full">
-          <div className="divide-y">
-            <div className="pb-6">
-              <SummaryInfo
-                address="Entire villa in General Luna, Philippines"
-                guest={2}
-                bedroom={1}
-                beds={1}
-                baths={1}
-                reviews={4}
-                stars={5}
-              />
-            </div>
-            <div className="py-6">
-              <AvatarTitleDescription
-                avatarKey="2.jpg"
-                title="Hosted by Simon"
-                subTitle="4 months hosting"
-              />
-            </div>
-            <div className="py-6">
-              <Highlights highlights={highlights} />
-            </div>
-            <div className="py-6">
-              <BookingDescription {...description} />
-            </div>
-
-            <div className="py-6 ">
-              <PlaceOffers offers={offers} group={group} />
-            </div>
-            <div className="py-6">
-              <AvailableBooking
-                bookableUnits={value.bookableUnits}
-                propertyType={value.type}
-                onSelectBookableUnit={(unit: T_BookableUnitType) =>
-                  setSelectedBookableUnit(unit)
-                }
-              />
-            </div>
-          </div>
-        </div>
-        <div className="md:w-96 md:relative">
-          <div className="md:sticky md:top-6">
-            <CheckoutBox
-              checkoutDesc={{
-                pricePerAdditionalPerson: selectedBookableUnit
-                  ? selectedBookableUnit.unitPrice.pricePerAdditionalPerson
-                  : 0,
-                serviceFee: selectedBookableUnit ? 1000 : 0,
-                durationCost: selectedBookableUnit
-                  ? selectedBookableUnit.unitPrice.baseRate * 5
-                  : 0,
-                descTotalBeforeTaxes: 3000,
-                totalBeforeTaxes: 126000,
-                titlePrice: selectedBookableUnit
-                  ? selectedBookableUnit.unitPrice.baseRate
-                  : 0,
-              }}
-              isSelectedBookableUnit={selectedBookableUnit}
+    <>
+      {isPending ? (
+        <Spinner>Loading...</Spinner>
+      ) : (
+        <WidthWrapper width="small" className="mt-4 lg:mt-8">
+            <SectionInfo
+              images={data?.item?.photos}
+              title={data?.item?.title}
             />
-            <div>
-              <ListingMark
-                icon={<Tag />}
-                title="Lower Price"
-                desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-              />
-            </div>
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
+              <div className="divide-y">
+                <div className="pb-6">
+                  {data?.item?.bookableUnits.map(
+                    (bookableUnit: T_BookableUnitType) => (
+                      <SummaryInfo
+                        address={data?.item?.description}
+                        guest={bookableUnit.maxGuests}
+                        bedroom={bookableUnit.numBedRooms}
+                        beds={bookableUnit.qty}
+                        baths={bookableUnit.numBathRooms}
+                        reviews={4} //fix: need to find
+                        stars={5} //fix: need to find
+                      />
+                    )
+                  )}
+                </div>
+                <div className="py-6">
+                  <AvatarTitleDescription
+                    avatarKey="2.jpg"
+                    title={`${offerBy?.offerBy?.guest?.firstName || ""} ${offerBy?.offerBy?.guest?.middleName || ""} ${offerBy?.offerBy?.guest?.lastName || ""}`}
+                    subTitle="4 months hosting" //fix: need to find
+                  />
+                </div>
+                <div className="py-6">
+                  <Highlights highlights={highlights} />
+                </div>
+                <div className="py-6">
+                  <BookingDescription {...description} />
+                </div>
 
-            <div className="flex justify-center">
-              <div className="justify-items-center">
-                <Button
-                  variant="ghost"
-                  className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                  size="sm"
-                  onClick={handleOpenModal}
-                >
-                  <Flag className="h-4 w-4" />
-                  Report this listing
-                </Button>
+                <div className="py-6 ">
+                  <PlaceOffers offers={offers} group={group} />
+                </div>
+                <div className="py-6">
+                  {data?.item?.bookableUnits?.length > 0 ? (
+                    <AvailableBooking
+                      bookableUnits={data?.item?.bookableUnits}
+                      propertyType={data?.item?.type}
+                      onSelectBookableUnit={(unit) =>
+                        setSelectedBookableUnit(unit)
+                      } //fix: aayusin pa ang modal
+                    />
+                  ) : (
+                    <p>No data available for bookable units.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="md:w-96 md:relative">
+              <div className="md:sticky md:top-6">
+                <CheckoutBox
+                  checkoutDesc={{
+                    pricePerAdditionalPerson: selectedBookableUnit
+                      ? selectedBookableUnit.unitPrice.pricePerAdditionalPerson
+                      : 0,
+                    serviceFee: selectedBookableUnit ? 1000 : 0,
+                    durationCost: selectedBookableUnit
+                      ? selectedBookableUnit.unitPrice.baseRate * 5
+                      : 0,
+                    descTotalBeforeTaxes: 3000,
+                    totalBeforeTaxes: 126000,
+                    titlePrice: selectedBookableUnit
+                      ? selectedBookableUnit.unitPrice.baseRate
+                      : 0,
+                  }}
+                  isSelectedBookableUnit={selectedBookableUnit}
+                />
+                <div>
+                  <ListingMark
+                    icon={<Tag />}
+                    title="Lower Price"
+                    desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
+                  />
+                </div>
+
+                <div className="flex justify-center">
+                  <div className="justify-items-center">
+                    <Button
+                      variant="ghost"
+                      className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
+                      size="sm"
+                      onClick={handleOpenModal}
+                    >
+                      <Flag className="h-4 w-4" />
+                      Report this listing
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="divide-y border-t">
-        <div className="py-8">
-          <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
-          />
-        </div>
-        <div className="py-8">
-          <UserReviews reviews={userReviews} />
-        </div>
-        <div className="py-8">
-          <WhereYoullBeDescription {...whereYouWillBeDesc} />
-        </div>
-        <div className="py-8">
-          <HostInformation {...hostDummy} />
-        </div>
-        <div className="pt-8">
-          <ThingsToKnow
-            houseRules={houseRulesDummy}
-            houseRulesModalData={houseRulesModalData}
-            safetyProperties={safetyPropertiesDummy}
-            safetyModalData={safetyPropertiesModalData}
-            cancellationPolicies={cancellationPoliciesDummy}
-            cancellationModalData={cancellationPolicyModalData}
-          />
-        </div>
-      </div>
-      <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-    </WidthWrapper>
+          <div className="divide-y border-t">
+            <div className="py-8">
+              <RatingSummary
+                ratings={ratingSummary.ratings}
+                reviews={ratingSummary.reviews}
+                categories={ratingSummary.categories}
+              />
+            </div>
+            <div className="py-8">
+              <UserReviews reviews={userReviews} />
+            </div>
+            <div className="py-8">
+              <WhereYoullBeDescription
+                location={data?.item?.location?.city}
+                coordinates={[
+                  data?.item?.location?.latitude,
+                  data?.item?.location?.longitude,
+                ]}
+                desc={data?.item?.location.howToGetThere}
+              />
+            </div>
+            <div className="py-8">
+              <HostInformation
+                hostName={`${offerBy?.offerBy?.guest?.firstName || ""} ${offerBy?.offerBy?.guest?.middleName || ""} ${offerBy?.offerBy?.guest?.lastName || ""}`}
+                hostProfilePic={hostDummy.hostProfilePic}
+                joinedIn={formattedDate}
+                countReviews={0}
+                rules={[]} //fix: where to get this
+                responseRate={0}
+                responseTime={""}
+              />
+            </div>
+            <div className="pt-8">
+              <ThingsToKnow
+                houseRules={houseRulesDummy}
+                houseRulesModalData={houseRulesModalData}
+                safetyProperties={safetyPropertiesDummy}
+                safetyModalData={safetyPropertiesModalData}
+                cancellationPolicies={cancellationPoliciesDummy}
+                cancellationModalData={cancellationPolicyModalData}
+              />
+            </div>
+          </div>
+          <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+        </WidthWrapper>
+      )}
+    </>
   )
 }
 export default SingleView

@@ -92,7 +92,10 @@ export const getPropertyById = async (req: Request, res: Response) => {
 
     const property = await dbProperties
       .findOne({ _id: propertyId })
-      .populate('offerBy')
+      .populate({
+        path: 'offerBy',
+        populate: [{ path: 'guest' }],
+      })
       .populate('photos')
       .populate('location')
       .populate('facilities')
@@ -100,8 +103,9 @@ export const getPropertyById = async (req: Request, res: Response) => {
       .populate({
         path: 'bookableUnits',
         populate: {
-          path: 'photos',
+          path: 'photos amenities unitPrice',
         },
+       
       })
       .populate('reservations')
 
