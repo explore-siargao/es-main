@@ -18,7 +18,6 @@ const CreatableSelectComponent: React.FC<CreatableSelectProps> = ({
   label,
   options,
   value,
-  defaultValue,
   onChange,
   onCreateOption,
   isRequired = false,
@@ -26,23 +25,24 @@ const CreatableSelectComponent: React.FC<CreatableSelectProps> = ({
   const [selectedValue, setSelectedValue] = React.useState<{
     value: string
     label: string
-  }>(
-    defaultValue
-      ? { value: defaultValue, label: defaultValue }
-      : { value: "", label: "Select..." }
-  )
+  } | null>(value)
 
   React.useEffect(() => {
-    if (defaultValue) {
-      setSelectedValue({ value: defaultValue, label: defaultValue })
-    }
-  }, [defaultValue])
+    setSelectedValue(value)
+  }, [value])
 
   const handleOnChange = (
     newValue: SingleValue<{ value: string; label: string }>
   ) => {
     onChange(newValue)
-    setSelectedValue(newValue as { value: string; label: string })
+    setSelectedValue(newValue)
+  }
+
+  const handleCreateOption = (inputValue: string) => {
+    const newOption = { value: inputValue, label: inputValue }
+    onCreateOption(newOption)
+    setSelectedValue(newOption)
+    onChange(newOption)
   }
 
   return (
@@ -59,10 +59,7 @@ const CreatableSelectComponent: React.FC<CreatableSelectProps> = ({
         options={options}
         value={selectedValue}
         onChange={handleOnChange}
-        onCreateOption={(inputValue) => {
-          const newOption = { value: inputValue, label: inputValue }
-          onCreateOption(newOption)
-        }}
+        onCreateOption={handleCreateOption}
         isClearable
         styles={{
           control: (provided) => ({

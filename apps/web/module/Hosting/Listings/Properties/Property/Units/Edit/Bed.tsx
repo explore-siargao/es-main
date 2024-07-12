@@ -122,33 +122,29 @@ const Bed = ({ pageType }: Prop) => {
 
   const onSubmit = async (formData: T_BedUnit) => {
     formData.amenities = amenities
+
     if (!formData.title || !formData.description) {
       toast.error("Please fill out all required fields")
       return
     }
+
     if (typeCount <= 0) {
       toast.error("Please fill out quantity")
       return
     }
-    try {
-      const saveBasicInfo = updateBedBasicInfo({
-        _id: bedId,
-        title: formData.title,
-        description: formData.description,
-        qty: Number(typeCount),
-      })
 
-      const saveAmenities = updateAmenities({ amenities: formData?.amenities })
-      const filterSelectedAmenities = amenities.filter(
-        (amenity) => amenity.isSelected
-      )
-      if (filterSelectedAmenities.length > 0) {
-        await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-          handleSavePhotos()
-        })
-      } else {
-        toast.error("Please select at least one amenity")
-      }
+    try {
+      await Promise.all([
+        updateBedBasicInfo({
+          _id: bedId,
+          title: formData.title,
+          description: formData.description,
+          qty: Number(typeCount),
+        }),
+        updateAmenities({ amenities: formData.amenities }),
+      ])
+
+      handleSavePhotos()
     } catch (error) {
       toast.error("An error occurred while saving data")
     }
@@ -180,11 +176,19 @@ const Bed = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setValue("title", data?.item?.title)
-      setValue("description", data?.item?.description)
-      setTypeCount(data?.item?.qty)
-      setPhotos(data?.item?.photos)
-      setAmenities(data.item?.amenities)
+      setValue("title", data.item.title)
+      setValue("description", data.item.description)
+      setTypeCount(data.item.qty)
+      setPhotos(data.item.photos)
+      setAmenities(data.item.amenities)
+      setNameOptions((prev) => [
+        ...prev,
+        { value: data?.item?.title, label: data?.item?.title },
+      ])
+      setBedOptions((prev) => [
+        ...prev,
+        { value: data?.item?.description, label: data?.item?.description },
+      ])
     }
   }, [data, isPending])
 

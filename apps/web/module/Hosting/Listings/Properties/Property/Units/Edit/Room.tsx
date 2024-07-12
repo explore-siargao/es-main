@@ -159,25 +159,14 @@ const Room = ({ pageType }: Prop) => {
     }
   }
 
-  useEffect(() => {
-    if (!isPending && data && data.item) {
-      setTypeCount(data?.item.qty)
-      setPhotos(data?.item?.photos)
-      setAmenties(data?.item.amenities)
-      setValue("title", data?.item?.title)
-      setValue("description", data?.item?.description)
-      setValue("size", data?.item?.totalSize)
-    }
-  }, [data, isPending])
-
   const titleOptions = [
     { value: "", label: "Select Name" },
-    { value: "Double Room", label: "Double Room" },
+    { value: "Bed in 8-Bed Mixed Dorm", label: "Bed in 8-Bed Mixed Dorm" },
   ]
 
   const descriptionOptions = [
     { value: "", label: "Select Bed" },
-    { value: "1 Queen Bed", label: "1 Queen Bed" },
+    { value: "Single Bunk Bed", label: "Single Bunk Bed" },
   ]
 
   const [nameOptions, setNameOptions] = useState(titleOptions)
@@ -193,6 +182,25 @@ const Room = ({ pageType }: Prop) => {
     setOptions((prev) => [...prev, newOption])
     fieldOnChange(newOption.value)
   }
+
+  useEffect(() => {
+    if (!isPending && data && data.item) {
+      setTypeCount(data?.item.qty)
+      setPhotos(data?.item?.photos)
+      setAmenties(data?.item.amenities)
+      setValue("title", data?.item?.title)
+      setValue("description", data?.item?.description)
+      setValue("size", data?.item?.totalSize)
+      setNameOptions((prev) => [
+        ...prev,
+        { value: data?.item?.title, label: data?.item?.title },
+      ])
+      setBedOptions((prev) => [
+        ...prev,
+        { value: data?.item?.description, label: data?.item?.description },
+      ])
+    }
+  }, [data, isPending])
 
   return (
     <div className="mt-20 mb-28">
