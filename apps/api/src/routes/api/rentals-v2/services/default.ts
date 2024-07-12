@@ -193,6 +193,14 @@ export const getRental = async (req: Request, res: Response) => {
     const hostId = res.locals.user?.id
     const rental = await dbRentals
       .findOne({ _id: rentalId, host: hostId })
+      .populate({
+        path: 'host',
+        select: 'guest createdAt',
+        populate: {
+          path: 'guest',
+          select: 'firstName lastName',
+        },
+      })
       .populate('details')
       .populate('photos')
       .populate('addOns')
