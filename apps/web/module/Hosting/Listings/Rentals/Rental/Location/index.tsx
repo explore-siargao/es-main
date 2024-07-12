@@ -22,7 +22,6 @@ import useUpdateRentalLocation from "../hooks/useUpdateRentalLocation"
 import { T_Listing_Location } from "@repo/contract"
 import useGetRentalById from "../../../hooks/useGetRentalById"
 import { ErrorMessage } from "@hookform/error-message"
-import ConfirmationMapLocationModal from "../modal/ConfirmationMapLocationModal"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -55,25 +54,12 @@ const ListingLocation = ({ pageType }: Prop) => {
   const handleHowToGetThereChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setHowToGetThere(e.target.value)
   }
-  const [markerCoordinates, setMarkerCoordinates] = useState<{
-    lat: number
-    lng: number
-  } | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isConfirmed, setIsConfirmed] = useState(false)
 
   useEffect(() => {
     if (data?.item?.location?.howToGetThere) {
       setHowToGetThere(data.item.location.howToGetThere)
     }
   }, [data])
-
-  useEffect(() => {
-    if (isConfirmed) {
-      setHandleOverlayClick(false)
-      toast.success("Location saved")
-    }
-  }, [isConfirmed])
 
   useEffect(() => {
     setStreet(data?.item?.location?.streetAddress)
@@ -132,12 +118,9 @@ const ListingLocation = ({ pageType }: Prop) => {
 
   const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
     setMarkerIsSet(true)
-    setMarkerCoordinates(coords)
-    setIsModalOpen(true)
+    handleSaveLocation()
   }
-  const handleConfirmModal = () => {
-    setIsModalOpen(false)
-    setIsConfirmed(true)
+  const handleSaveLocation = () => {
     setTimeout(() => {
       setHandleOverlayClick(false)
     }, 0)
@@ -177,7 +160,7 @@ const ListingLocation = ({ pageType }: Prop) => {
           <div className="flex flex-col justify-center relative">
             {!handleOverlayClick && (
               <div
-                className={`absolute top-0 left-0 w-full h-[450px] bg-black bg-opacity-10 rounded-xl z-10 transition-opacity duration-600 hover:bg-opacity-20 ${
+                className={`absolute top-0 left-0 w-full h-[450px] bg-black bg-opacity-0 rounded-xl z-10 transition-opacity duration-600 hover:bg-opacity-20 ${
                   handleOverlayClick
                     ? "opacity-0 pointer-events-none"
                     : "opacity-100"
@@ -351,13 +334,6 @@ const ListingLocation = ({ pageType }: Prop) => {
           </div>
         </form>
       )}
-      <ConfirmationMapLocationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={handleConfirmModal}
-        markerCoordinates={markerCoordinates}
-        setOverlay={setHandleOverlayClick}
-      />
     </div>
   )
 }
