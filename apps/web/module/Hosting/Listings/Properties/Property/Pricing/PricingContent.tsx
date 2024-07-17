@@ -65,7 +65,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
       <Typography variant="h5" className="mb-2">
         What is the minimum price per night?
       </Typography>
-      <div className="w-60 flex rounded-md shadow-sm mb-4">
+      <div className="w-60 flex rounded-md shadow-sm mb-8">
         <input
           type="number"
           id="base-rate"
@@ -85,7 +85,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
       <Typography variant="h5" className="mb-2">
         What is the base capacity for the minimum nightly rate?
       </Typography>
-      <div className="flex rounded-md mb-4">
+      <div className="flex rounded-md mb-8">
         <button
           className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
           type="button"
@@ -119,7 +119,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         If this property/unit comfortably sleeps additional guests, what is the
         maximum capacity?
       </Typography>
-      <div className="flex rounded-md mb-4">
+      <div className="flex rounded-md mb-8">
         <button
           className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
           type="button"
@@ -152,7 +152,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
       <Typography variant="h5" className="mb-2">
         How much is the traditional charge per extra guest?
       </Typography>
-      <div className="w-60 flex rounded-md shadow-sm mb-4">
+      <div className="w-60 flex rounded-md shadow-sm mb-8">
         <input
           type="number"
           id="price-per-additional-person"
