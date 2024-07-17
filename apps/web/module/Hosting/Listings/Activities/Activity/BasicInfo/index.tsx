@@ -197,7 +197,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                   defaultValue={data?.item?.title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   This is the name that will appear as the title of your listing
                   on our site.
                 </Typography>
@@ -219,7 +219,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                   />
                 </div>
                 <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   Provide a full description about what customers will
                   experience during the activity, in the correct order. Bring
                   the activity to life and write at least 500 characters.
@@ -280,7 +280,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   Provide 3 to 5 of the most memorable experiences that make
                   your activity special and stand out from the competition.
                   Customers will compare your highlights to other activities.
@@ -371,7 +371,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </div>
                   </div>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   How long does your activity last from start to finish? Try to
                   be as accurate as possible.
                 </Typography>
