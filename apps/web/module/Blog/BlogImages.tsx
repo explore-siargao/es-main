@@ -17,7 +17,7 @@ function TravelBlog() {
       <div className="justify-between md:flex text-start items-center">
         <div>
           <Typography variant="h1" fontWeight="semibold">
-          Siargao, dream island of the Philippines
+            Siargao, dream island of the Philippines
           </Typography>
         </div>
         <ShareSave />
@@ -30,10 +30,14 @@ function TravelBlog() {
         />
       </div>
       <h2 className="text-xl font-bold mb-2">About Blog</h2>
-      <p className="mb-8">A special atmosphere, with a lot of young people with a surfing spirit / 
-        good vibes and beautiful landscapes. Even before touching the ground, you will realize the 
-        beauty of the island. Indeed, from the air, you will see hundreds of thousands of palm trees, 
-        as far as the eye can see. There are many things to do in Siargao, that is what we will detail in this article.</p>
+      <p className="mb-8">
+        A special atmosphere, with a lot of young people with a surfing spirit /
+        good vibes and beautiful landscapes. Even before touching the ground,
+        you will realize the beauty of the island. Indeed, from the air, you
+        will see hundreds of thousands of palm trees, as far as the eye can see.
+        There are many things to do in Siargao, that is what we will detail in
+        this article.
+      </p>
       <ImageGalleryModal
         images={images}
         isOpen={galleryModalOpen}
