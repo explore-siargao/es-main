@@ -1,0 +1,93 @@
+{
+  "surfSpots": [
+    "Cloud 9",
+    "Jacking Horse",
+    "Stimpy's",
+    "Rock Island",
+    "Cemetery",
+    "Tuason Point",
+    "Guyam Island",
+    "Daku Reef",
+    "Pacifico",
+    "Pilar Point"
+  ],
+
+  "surfGuide": {
+    "images": [
+      {
+        "fileKey": "1.jpg",
+        "alt": "Cloud 9 Wave"
+      },
+      {
+        "fileKey": "2.jpg",
+        "alt": "Surfer at Jacking Horse"
+      },
+      {
+        "fileKey": "3.jpg",
+        "alt": "Stimpy's Surf Spot"
+      },
+      {
+        "fileKey": "4.jpg",
+        "alt": "Rock Island Waves"
+      },
+      {
+        "fileKey": "5.jpg",
+        "alt": "Cemetery Surfing Area"
+      }
+    ],
+    "guide": "Siargao Island offers a range of surfing spots suitable for all skill levels. Cloud 9 is the most famous, known for its powerful waves. Beginners might prefer the more gentle swells at Jacking Horse or Guyam Island. Advanced surfers should check out Stimpy's and Rock Island for a thrilling experience."
+  },
+  "travelBlog": {
+    "images": [
+      {
+        "fileKey": "1.jpg",
+        "alt": "Cloud 9 Wave"
+      },
+      {
+        "fileKey": "2.jpg",
+        "alt": "Surfer at Jacking Horse"
+      },
+      {
+        "fileKey": "3.jpg",
+        "alt": "Stimpy's Surf Spot"
+      }
+    ],
+    "guide": "These pools are known to be perfect picture-taking spots, courtesy of the waters that are so blue they seem to be emanating their own light. You can dive off the nearby cliffs or explore the caves surrounding the crystal pools."
+  },
+  "howToGetThere": {
+    "map": {
+      "latitude": 9.848056,
+      "longitude": 126.045833
+    },
+    "description": "Siargao Island is accessible by plane from Manila or Cebu, with flights arriving at Sayak Airport. From there, local transportation options like vans and motorbikes can take you to various surf spots around the island."
+  },
+
+  "idealConditions": {
+    "swellDirection": "Best swell direction is from the northeast.",
+    "windDirection": "Ideal wind direction is from the southwest.",
+    "tide": "Mid to high tide provides the best conditions.",
+    "waveDifficulty": {
+      "level": 20,
+      "description": "Suitable for beginners, especially at spots like Guyam Island and Daku Reef."
+    },
+    "waveQuality": {
+      "level": 40,
+      "description": "Varies by location; Cloud 9 offers world-class waves."
+    },
+    "crowdFactor": {
+      "level": 60,
+      "description": "Cloud 9 can get crowded, especially during peak season."
+    }
+  },
+
+  "siargaoSurfForecast": {
+    "windyMap": {
+      "latitude": 9.848056,
+      "longitude": 126.045833
+    },
+    "surfForecast": {
+      "latitude": 9.848056,
+      "longitude": 126.045833
+    }
+  }
+}
