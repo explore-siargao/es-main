@@ -13,30 +13,30 @@ function PopularGuides() {
   return (
     <div className="grid w-60">
       <div>
-        <h1 className="mt-10 text-xl font-bold">POPULAR GUIDES</h1>
+        <h1 className=" text-xl font-bold">Popular Guides</h1>
         <Separator orientation="horizontal" className="mb-5 bg-gray-300" />
         <GridImage
           src={images[0]?.fileKey}
           alt={String(images[0]?.alt)}
-          text="Lorem ipsum dolor sit amet, consectetur"
+          text="Swim with Stingless Jellyfish in Sohoton Cove"
         />
         <Separator orientation="horizontal" className="my-5 bg-gray-300" />
         <GridImage
           src={images[0]?.fileKey}
           alt={String(images[0]?.alt)}
-          text="Lorem ipsum dolor sit amet, consectetur"
+          text="Dive Into the Blue Cathedral "
         />
         <Separator orientation="horizontal" className="my-5 bg-gray-300" />
         <GridImage
           src={images[0]?.fileKey}
           alt={String(images[0]?.alt)}
-          text="Lorem ipsum dolor sit amet, consectetur"
+          text="Island-Hopping"
         />
         <Separator orientation="horizontal" className="my-5 bg-gray-300" />
         <GridImage
           src={images[0]?.fileKey}
           alt={String(images[0]?.alt)}
-          text="Lorem ipsum dolor sit amet, consectetur"
+          text="Surf at Cloud 9 and Other Spots"
         />
       </div>
     </div>
