@@ -24,6 +24,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     title: '',
     numBedRooms: 0,
     numBathRooms: 0,
+    bedRooms: [],
     bedConfigs: [],
     amenities: [],
     totalSize: 0,
@@ -66,6 +67,7 @@ export const addRoomUnit = async (req: Request, res: Response) => {
     category: 'Room',
     title: '',
     description: '',
+    bedRooms: null,
     bedConfigs: [],
     amenities: [],
     totalSize: 0,
@@ -108,6 +110,7 @@ export const addBedUnit = async (req: Request, res: Response) => {
     category: 'Bed',
     title: '',
     description: '',
+    bedRooms: null,
     bedConfigs: [],
     amenities: [],
     totalSize: null,
@@ -202,9 +205,9 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
 export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, bed, totalSize, qty } = req.body
+  const { title, description, totalSize, qty } = req.body
 
-  if (!title || !bed || !totalSize || !qty) {
+  if (!title || !description || !totalSize || !qty) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -234,7 +237,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       {
         $set: {
           title: title,
-          bed: bed,
+          description: description,
           totalSize: totalSize,
           qty: qty,
           updatedAt: Date.now(),
@@ -264,9 +267,17 @@ export const updateWholePlaceUnitBasicInfo = async (
 ) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, totalSize, numBedRooms, numBathRooms, qty } = req.body
+  const { title, totalSize, numBedRooms, numBathRooms, bedRooms, qty } =
+    req.body
 
-  if (!title || !numBedRooms || !numBathRooms || !totalSize || !qty) {
+  if (
+    !title ||
+    !numBedRooms ||
+    !numBathRooms ||
+    !totalSize ||
+    !bedRooms ||
+    !qty
+  ) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -300,6 +311,7 @@ export const updateWholePlaceUnitBasicInfo = async (
             totalSize: totalSize,
             numBedRooms: numBedRooms,
             numBathRooms: numBathRooms,
+            bedRooms: bedRooms,
             qty: qty,
             updatedAt: Date.now(),
           },

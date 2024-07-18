@@ -1,6 +1,7 @@
 import React from "react"
 import { Check, X } from "lucide-react"
 import { TitleSection } from "./TitleSection"
+import { keys } from "lodash"
 
 const Inclusions = ({ rentalData, group }: any) => {
   const fieldsToDisplay = [
@@ -9,8 +10,13 @@ const Inclusions = ({ rentalData, group }: any) => {
     { key: "babySeat", label: "Baby Seat" },
     { key: "dashCam", label: "Dash Cam" },
     { key: "includesHelmet", label: "Includes Helmet" },
-    { key: "others", label: "Others" },
   ]
+
+  if (rentalData["others"].length > 0) {
+    rentalData["others"].forEach((item: any) => {
+      fieldsToDisplay.push({ key: item, label: item })
+    })
+  }
 
   return (
     <>
@@ -19,14 +25,13 @@ const Inclusions = ({ rentalData, group }: any) => {
           {fieldsToDisplay.map(({ key, label }) =>
             key === "others" && !rentalData[key] ? null : (
               <div key={key} className="flex my-3">
-                {rentalData[key] ? (
+                {rentalData[key] ||
+                rentalData[key] === rentalData["others"][key] ? (
                   <Check className="text-primary-500 mr-4" />
                 ) : (
                   <X className="text-error-500 mr-4" />
                 )}
-                {key === "others" && rentalData[key]
-                  ? `${label}: ${rentalData[key]}`
-                  : label}
+                {key === "others" && rentalData[key] ? "" : label || "Others"}
               </div>
             )
           )}

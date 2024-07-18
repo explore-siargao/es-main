@@ -84,6 +84,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
         addOns.babySeat = false || (addOns.babySeat as boolean)
         addOns.includesHelmet = false || (addOns.babySeat as boolean)
         addOns.dashCam = dashCam || (addOns.dashCam as boolean)
+        //@ts-ignore
         addOns.others = others || addOns.others
       } else if (
         getRental.category === 'Motorbike' ||
@@ -94,6 +95,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
         addOns.babySeat = babySeat || (addOns.babySeat as boolean)
         addOns.includesHelmet = includesHelmet || (addOns.babySeat as boolean)
         addOns.dashCam = false || (addOns.dashCam as boolean)
+        //@ts-ignore
         addOns.others = others || addOns.others
       }
       getRental.finishedSections = '["basicInfo", "details", "addOns"]'

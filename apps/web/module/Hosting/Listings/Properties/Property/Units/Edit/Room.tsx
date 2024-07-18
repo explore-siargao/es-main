@@ -14,7 +14,7 @@ import {
   PlusIcon,
 } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
 import usePhotoStore from "../../../../store/usePhotoStore"
 import toast from "react-hot-toast"
@@ -32,10 +32,11 @@ import { T_Property_Amenity } from "@repo/contract"
 import useUpdateRoomBasicInfo from "../../../hooks/useUpdateRoomBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import useGetUnitById from "../hooks/useGetUnitById"
+import CreatableSelect from "@/common/components/ui/CreatableSelect"
 
 type T_RoomUnit = {
   title: string
-  bed: string
+  description: string
   size: number
   typeCount: number
   amenities: T_Property_Amenity[]
@@ -73,7 +74,7 @@ const Room = ({ pageType }: Prop) => {
   )
   const amenities = useSelectAmenityStore((state) => state.amenities)
 
-  const { register, handleSubmit, setValue } = useForm<T_RoomUnit>()
+  const { control, register, handleSubmit, setValue } = useForm<T_RoomUnit>()
 
   const updatePhotosInDb = async () => {
     const toAddPhotos =
@@ -139,7 +140,7 @@ const Room = ({ pageType }: Prop) => {
         _id: unitId,
         title: formData.title,
         totalSize: Number(formData.size),
-        bed: formData.bed,
+        description: formData.description,
         qty: Number(typeCount),
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
@@ -164,10 +165,34 @@ const Room = ({ pageType }: Prop) => {
       setPhotos(data?.item?.photos)
       setAmenties(data?.item.amenities)
       setValue("title", data?.item?.title)
-      setValue("bed", data?.item?.bed)
+      setValue("description", data?.item?.description)
       setValue("size", data?.item?.totalSize)
     }
   }, [data, isPending])
+
+  const titleOptions = [
+    { value: "", label: "Select Name" },
+    { value: "Double Room", label: "Double Room" },
+  ]
+
+  const descriptionOptions = [
+    { value: "", label: "Select Bed" },
+    { value: "1 Queen Bed", label: "1 Queen Bed" },
+  ]
+
+  const [nameOptions, setNameOptions] = useState(titleOptions)
+  const [bedOptions, setBedOptions] = useState(descriptionOptions)
+
+  const handleCreateOption = (
+    newOption: { value: string; label: string },
+    setOptions: React.Dispatch<
+      React.SetStateAction<{ value: string; label: string }[]>
+    >,
+    fieldOnChange: (value: string) => void
+  ) => {
+    setOptions((prev) => [...prev, newOption])
+    fieldOnChange(newOption.value)
+  }
 
   return (
     <div className="mt-20 mb-28">
@@ -184,32 +209,56 @@ const Room = ({ pageType }: Prop) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
-            <Select
-              {...register("title", {
-                required: "This field is required",
-              })}
-              label="Name"
-              required
-            >
-              <>
-                <Option value={""}>Select Name</Option>
-                <Option selected={data?.item?.title}>Double Room</Option>
-              </>
-            </Select>
+            <Controller
+              control={control}
+              name="title"
+              rules={{ required: "This field is required" }}
+              render={({ field }) => (
+                <CreatableSelect
+                  label="Name"
+                  options={nameOptions}
+                  value={
+                    nameOptions.find(
+                      (option) => option.value === field.value
+                    ) || { value: "", label: "Select Name" }
+                  }
+                  onChange={(option) => field.onChange(option?.value || "")}
+                  onCreateOption={(newOption) =>
+                    handleCreateOption(
+                      newOption,
+                      setNameOptions,
+                      field.onChange
+                    )
+                  }
+                  defaultValue={data?.item?.title}
+                  isRequired
+                />
+              )}
+            />
           </div>
           <div>
-            <Select
-              {...register("bed", {
-                required: "This field is required",
-              })}
-              label="Bed"
-              required
-            >
-              <>
-                <Option value={""}>Select Bed</Option>
-                <Option selected={data?.item?.bed}>1 Queen Bed</Option>
-              </>
-            </Select>
+            <Controller
+              control={control}
+              name="description"
+              rules={{ required: "This field is required" }}
+              render={({ field }) => (
+                <CreatableSelect
+                  label="Bed"
+                  options={bedOptions}
+                  value={
+                    bedOptions.find(
+                      (option) => option.value === field.value
+                    ) || { value: "", label: "Select Bed" }
+                  }
+                  onChange={(option) => field.onChange(option?.value || "")}
+                  onCreateOption={(newOption) =>
+                    handleCreateOption(newOption, setBedOptions, field.onChange)
+                  }
+                  defaultValue={data?.item?.description}
+                  isRequired
+                />
+              )}
+            />
           </div>
           <div>
             <Input

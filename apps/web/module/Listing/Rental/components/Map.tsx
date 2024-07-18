@@ -8,8 +8,6 @@ import { Typography } from "@/common/components/ui/Typography"
 
 const WhereYoullBeDescription = ({ mapData }: MapProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const maxLength = 600
-
   return (
     <div className="flex flex-col w-full">
       <div className="flex-1 w-full">
@@ -18,7 +16,7 @@ const WhereYoullBeDescription = ({ mapData }: MapProps) => {
         </Typography>
         <div className="w-12/12 h-[450px] mb-5">
           <SpecificMap
-            center={[mapData.longitude, mapData.latitude]}
+            center={[mapData?.latitude, mapData?.longitude] as [number, number]}
             mapHeight="h-[450px]"
             mapWidth="w-full"
           />
