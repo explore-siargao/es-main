@@ -95,10 +95,9 @@ export function ExportReportExcel(props: ExportReportExcelProps) {
   }
 
   return (
-      <Button variant={"primary"} className="w-full" onClick={xport}>
-        <Import className="mr-2" />
-        <b>Export Report</b>
-      </Button>
- 
+    <Button variant={"primary"} className="w-full" onClick={xport}>
+      <Import className="mr-2" />
+      <b>Export Report</b>
+    </Button>
   )
 }

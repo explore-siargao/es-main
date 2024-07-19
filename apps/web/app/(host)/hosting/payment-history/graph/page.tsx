@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 const GraphPage = () => {
-  return null;
+  return null
 }
 
 export default GraphPage

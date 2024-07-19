@@ -23,7 +23,7 @@ interface OverAllSummaryProps {
 const OverAllSummary: React.FC<OverAllSummaryProps> = ({
   overAllSummaryData,
   filterData,
-  excelData
+  excelData,
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 sticky top-36">
@@ -80,11 +80,10 @@ const OverAllSummary: React.FC<OverAllSummaryProps> = ({
         <Typography className="pt-4 text-sm" variant="p" fontWeight="semibold">
           {overAllSummaryData.total}
         </Typography>
-       
       </div>
       <div className="justify-center mt-4">
-             <ExportReportExcel reportData={excelData} />
-        </div>
+        <ExportReportExcel reportData={excelData} />
+      </div>
     </div>
   )
 }

@@ -9,8 +9,6 @@ import Tabs from "@/common/components/Tabs"
 import insightsTabs from "./helpers/insightsTabs"
 import GraphTab from "../PaymentHistory/GraphTab"
 
-
-
 const Insights = () => {
   const [category, setCategory] = useState("Property")
   const [listing, setListing] = useState("Mountain top house")
@@ -33,7 +31,7 @@ const Insights = () => {
         </Typography>
       </div>
       <div className="grid grid-cols-6 gap-4 mb-4 border-b pb-4">
-      <Select
+        <Select
           label="Category"
           required
           value={category}
@@ -136,9 +134,13 @@ const Insights = () => {
             </Typography>
           </>
         )}
-       
       </div>
-      <GraphTab category={category} listing={listing} year={year} month={month}/>
+      <GraphTab
+        category={category}
+        listing={listing}
+        year={year}
+        month={month}
+      />
     </div>
   )
 }

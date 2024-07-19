@@ -8,7 +8,7 @@ interface YearToDateSummaryProps {
   excelData?: any
 }
 
-const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({excelData}) => {
+const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({ excelData }) => {
   const currentDate = new Date()
   const summaryData = [
     ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
@@ -53,8 +53,8 @@ const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({excelData}) => {
         </Typography>
       </div>
       <div className="flex justify-center mt-4">
-            <ExportReportExcel reportData={excelData} />
-          </div>
+        <ExportReportExcel reportData={excelData} />
+      </div>
     </div>
   )
 }

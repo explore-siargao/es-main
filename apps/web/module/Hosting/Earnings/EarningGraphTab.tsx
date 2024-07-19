@@ -11,7 +11,6 @@ import { ExportReportExcel } from "./components/exportReportExcel"
 import useGetEarningsReport from "../hooks/useGetEarningsReport"
 import insightsTabs from "../Insights/helpers/insightsTabs"
 
-
 const EarningGraphTab = () => {
   const { data: EarningsReport } = useGetEarningsReport()
   return (
@@ -23,10 +22,7 @@ const EarningGraphTab = () => {
       </Typography>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
-          <div className="mt-3">
-            
-     
-          </div>
+          <div className="mt-3"></div>
           <div className="mt-4">
             <EarningsThisMonth />
             <EarningsUpcoming />
@@ -34,9 +30,7 @@ const EarningGraphTab = () => {
           </div>
         </div>
         <div className="col-span-1 relative">
-          <YearToDateSummary excelData={EarningsReport}/>
-         
-        
+          <YearToDateSummary excelData={EarningsReport} />
         </div>
       </div>
     </div>

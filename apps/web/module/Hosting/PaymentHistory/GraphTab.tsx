@@ -8,21 +8,18 @@ import useGetPaymentHistoryGraph from "./hooks/useGetPaymentHistoryGraph"
 import useGetFilteredPaymentHistory from "./hooks/useGetFilteredPaymentHistory"
 import useGetPaymentHistoryReport from "./hooks/useGetPaymentHistoryReport"
 
-
 interface PaymentHistoryProps {
-  category: string,
-  listing: string,
-  year: string,
+  category: string
+  listing: string
+  year: string
   month: string
-  
 }
 
 const GraphTab: React.FC<PaymentHistoryProps> = ({
   category,
   listing,
   year,
-  month
-
+  month,
 }) => {
   const { isPending, data: overAllSummaryDataGraph } =
     useGetPaymentHistoryGraph("all")
@@ -31,7 +28,7 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
     isPending: filteredPaymentHistoryIsPending,
   } = useGetFilteredPaymentHistory(category, listing, year, month)
 
-const {
+  const {
     data: paymentHistoryReport,
     isPending: paymentHistoryReportIsPending,
   } = useGetPaymentHistoryReport(category, listing)
@@ -119,7 +116,7 @@ const {
       <Typography variant="h1" fontWeight="semibold">
         Payment History
       </Typography>
-    
+
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
           {/* <div className="mt-3">
@@ -133,9 +130,7 @@ const {
             filterData={filterData}
             excelData={paymentHistoryReport}
           />
-    
         </div>
-        
       </div>
     </div>
   )
