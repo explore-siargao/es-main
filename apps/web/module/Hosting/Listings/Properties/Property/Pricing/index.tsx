@@ -43,6 +43,13 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   })
 
   const onSubmit = (data: any) => {
+    const cleanedUnitPrices = data.unitPrices.map((item: any) => ({
+      ...item,
+      unitName: item.unitName.startsWith("Custom: ")
+        ? item.unitName.slice("Custom: ".length)
+        : item.unitName,
+    }))
+
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -61,31 +68,32 @@ const Pricing = ({ pageType }: PricingContentProps) => {
         toast.error(String(err))
       },
     }
+
     if (
       pageType === "setup" &&
       !data?.item?.finishedSections?.includes("pricing")
     ) {
-      // @ts-ignore
-      const unitPrices = fields.map((field) => field.unitPrice)
-      mutate(unitPrices, callBackReq)
+      mutate(cleanedUnitPrices, callBackReq)
       updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
     } else {
-      // @ts-ignore
-      const unitPrices = fields.map((field) => field.unitPrice)
-      mutate(unitPrices, callBackReq)
+      mutate(cleanedUnitPrices, callBackReq)
       queryClient.invalidateQueries({
         queryKey: ["property", listingId],
       })
     }
+
     if (pageType === "setup") {
       router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
     }
   }
+
   useEffect(() => {
     if (!isLoading && !isPending && !data?.error && data?.item) {
       const items = unitPriceData?.items?.map((item: any, index: number) => ({
         _id: item._id,
-        unitName: item.unitName + " " + index,
+        unitName: item.unitName.startsWith("Custom: ")
+          ? item.unitName.slice("Custom: ".length)
+          : item.unitName + " " + index,
         unitPrice: {
           ...item.unitPrice,
         },
