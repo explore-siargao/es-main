@@ -42,10 +42,10 @@
 //               fontWeight="semibold"
 //               className="mb-5 mt-5"
 //             >
-              
+
 //               {gRule.category}
 //             </Typography>
-          
+
 //             {gRule?.policy?.map((item) => (
 //               <div key={item.id}>
 //                 <div className="border-b mb-5 mt-5"></div>

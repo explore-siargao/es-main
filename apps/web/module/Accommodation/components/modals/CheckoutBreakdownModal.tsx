@@ -19,10 +19,8 @@ const CheckoutBreakdownModal = ({
     maximumFractionDigits: 0,
   })
 
-  const totalBasePrice = breakdown?.reduce(
-    (total, item) => total + item.price,
-    0
-  ) ?? 0
+  const totalBasePrice =
+    breakdown?.reduce((total, item) => total + item.price, 0) ?? 0
 
   return (
     <ModalContainer

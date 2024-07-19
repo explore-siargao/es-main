@@ -105,7 +105,6 @@ export const getPropertyById = async (req: Request, res: Response) => {
         populate: {
           path: 'photos amenities unitPrice',
         },
-       
       })
       .populate('reservations')
 
