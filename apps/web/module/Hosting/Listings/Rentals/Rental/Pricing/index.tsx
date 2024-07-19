@@ -24,7 +24,7 @@ const Pricing = ({ pageType }: Prop) => {
   const { data, isLoading } = useGetRentalPricing(listingId)
   const { mutate, isPending } = useUpdateRentalPricing(listingId)
   const { register, handleSubmit } = useForm<T_Rental_Pricing>({
-    values: data?.item?.Pricing as T_Rental_Pricing,
+    values: data?.item as T_Rental_Pricing,
   })
 
   const onSubmit = (formData: T_Rental_Pricing) => {

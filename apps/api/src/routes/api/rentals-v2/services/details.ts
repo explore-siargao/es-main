@@ -18,7 +18,7 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
     interiorColor,
     seatingCapacity,
     weightCapacity,
-    minAgeReq,
+    haveDriverLicense,
     isRegistered,
   }: T_Rental_Details = req.body
   const isValidInput = Z_Rental_Details.safeParse(req.body as T_Rental_Details)
@@ -70,7 +70,8 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         details.interiorColor = interiorColor || details.interiorColor
         details.seatingCapacity = seatingCapacity || details.seatingCapacity
         details.weightCapacityKg = weightCapacity || details.weightCapacityKg
-        details.minAgeReq = minAgeReq || details.minAgeReq
+        details.haveDriverLicense =
+          haveDriverLicense || details.haveDriverLicense
         details.isRegistered = isRegistered || details.isRegistered
       } else if (rental.category === 'Motorbike') {
         // if ((engineCapacityLiter ?? 0) < 0.11) {
@@ -103,7 +104,8 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         details.interiorColor = interiorColor || details.interiorColor
         details.seatingCapacity = seatingCapacity || details.seatingCapacity
         details.weightCapacityKg = weightCapacity || details.weightCapacityKg
-        details.minAgeReq = minAgeReq || details.minAgeReq
+        details.haveDriverLicense =
+          haveDriverLicense || details.haveDriverLicense
         details.isRegistered = isRegistered || details.isRegistered
       } else if (rental.category === 'Bicycle') {
         details.condition = condition || details.condition
@@ -113,7 +115,8 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         details.interiorColor = null || details.interiorColor
         details.seatingCapacity = null || details.seatingCapacity
         details.weightCapacityKg = weightCapacity || details.weightCapacityKg
-        details.minAgeReq = minAgeReq || details.minAgeReq
+        details.haveDriverLicense =
+          haveDriverLicense || details.haveDriverLicense
         details.isRegistered = null || details.isRegistered
       }
       details.updatedAt = new Date()

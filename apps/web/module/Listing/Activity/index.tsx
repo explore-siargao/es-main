@@ -1,14 +1,10 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { Button } from "@/common/components/ui/Button"
-import { Check, Flag, Tag } from "lucide-react"
+import { Flag } from "lucide-react"
 import { useState } from "react"
-import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import AvatarTitleDescription from "@/module/Accommodation/components/AvatarTitleDescription"
-import BookingDescription from "@/module/Accommodation/components/BookingDescription"
 import HostInformation from "@/module/Accommodation/components/HostInformation"
-import ListingDateRangePicker from "@/module/Accommodation/components/ListingDateRangePicker"
-import WhereYoullBeDescription from "@/module/Accommodation/components/Map"
 import RatingSummary from "@/module/Accommodation/components/Reviews/RatingSummary"
 import ReportListingModal from "@/module/Accommodation/components/modals/ReportListingModal"
 import UserReviews from "../../Hosting/Listings/Properties/Property/Reviews/UserReviews"
@@ -20,11 +16,13 @@ import Highlights from "./Highlights"
 import ActivityDescription from "./ActivityDescription"
 import WhatToBrings from "./WhatToBrings"
 import NotAllowed from "./NotAllowed"
-import PoliciesModal from "../components/modals/PoliciesModal"
 import ThingsToKnow from "./ThingsToKnow"
 import MeetingPoint from "./MeetingPoint"
 import CheckoutBox from "./CheckoutBox"
 import Builder from "./Itinerary/Builder"
+import { useParams } from "next/navigation"
+import useGetActivityById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
+import { Spinner } from "@/common/components/ui/Spinner"
 
 export const ratingSummary = {
   ratings: 5,
@@ -348,58 +346,169 @@ export const ActivitySingleView = () => {
     setShowModal(false)
   }
 
-  return (
-    <WidthWrapper width="small" className="mt-10">
-      <SectionInfo images={value.photos} title={value.title} />
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-        <div className="flex-1 md:w-1/2 2xl:w-full">
-          <div className="divide-y">
-            <div className="py-6">
-              <AvatarTitleDescription
-                avatarKey="2.jpg"
-                title="Hosted by Simon"
-                subTitle="4 months hosting"
-              />
-            </div>
-            <div className="py-6">
-              <ActivityDescription
-                description={
-                  "Embark on a thrilling Island Hopping Adventure in the tropical paradise of Siargao! This full-day tour is perfect for those seeking to explore the natural beauty and vibrant marine life of the Philippines. Our journey will take you to three of the most picturesque islands: Naked Island, Daku Island, and Guyam Island."
-                }
-              />
-            </div>
-            {value.isSegmentBuilderEnabled ? (
-              <div className="py-6">
-                <Builder />
-              </div>
-            ) : null}
+  const params = useParams<{ rentalId: string }>()
+  const rentalId = String(params.rentalId)
+  const { data, isPending } = useGetActivityById(rentalId)
 
-            <div className="py-6">
-              <Highlights highlights={value.highLights} />
+  const hostingSince = new Date(data?.item?.host?.guest?.createdAt)
+  const monthsDifference =
+    (new Date().getFullYear() - hostingSince.getFullYear()) * 12 +
+    (new Date().getMonth() - hostingSince.getMonth())
+
+  const subTitle = `${monthsDifference} ${monthsDifference === 1 ? "month" : "months"} hosting`
+
+  return (
+    <>
+      {isPending ? (
+        <Spinner>Loading...</Spinner>
+      ) : (
+        <WidthWrapper width="small" className="mt-10">
+          {data && (
+            <SectionInfo
+              images={data?.item?.photos}
+              title={data?.item?.title}
+            />
+          )}
+
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
+              <div className="divide-y">
+                <div className="py-6">
+                  {data && (
+                    <AvatarTitleDescription
+                      avatarKey="2.jpg"
+                      title={`Hosted by ${data?.item?.host?.guest?.firstName}`}
+                      subTitle={subTitle}
+                    />
+                  )}
+                </div>
+
+                <div className="py-6">
+                  {data && (
+                    <ActivityDescription
+                      description={data?.item?.description}
+                    />
+                  )}
+                </div>
+
+                {data ? (
+                  <div className="py-6">
+                    <Builder />
+                  </div>
+                ) : null}
+
+                <div className="py-6">
+                  {data && <Highlights highlights={data?.item?.highLights} />}
+                </div>
+
+                <div className="py-6 ">
+                  {data && (
+                    <PlaceOffers
+                      isFoodIncluded={data?.item?.isFoodIncluded}
+                      isNonAlcoholicDrinkIncluded={
+                        data?.item?.isNonAlcoholicDrinkIncluded
+                      }
+                      isAlcoholicDrinkIncluded={
+                        data?.item?.isAlcoholicDrinkIncluded
+                      }
+                      otherInclusion={data?.item?.otherInclusion}
+                      notIncluded={data?.item?.notIncluded}
+                    />
+                  )}
+                </div>
+
+                <div className="py-6 ">
+                  {data && <Languages languages={data?.item?.languages} />}
+                </div>
+
+                <div className="py-6 ">
+                  {data && (
+                    <Duration
+                      durationHour={data?.item?.durationHour}
+                      durationMinute={data?.item?.durationMinute}
+                    />
+                  )}
+                </div>
+
+                <div className="py-6">
+                  {data && (
+                    <WhatToBrings whatToBrings={data?.item?.whatToBring} />
+                  )}
+                </div>
+
+                <div className="py-6">
+                  {data && <NotAllowed notAllowed={data?.item?.notAllowed} />}
+                </div>
+              </div>
             </div>
-            <div className="py-6 ">
-              <PlaceOffers
-                isFoodIncluded={value.isFoodIncluded}
-                isNonAlcoholicDrinkIncluded={value.isNonAlcoholicDrinkIncluded}
-                isAlcoholicDrinkIncluded={value.isAlcoholicDrinkIncluded}
-                otherInclusion={value.otherInclusion}
-                notIncluded={value.notIncluded}
+
+            <div className="md:w-96 md:relative">
+              <div className="md:sticky md:top-6">
+                <CheckoutBox
+                  checkoutDesc={{
+                    serviceFee: 1000,
+                    durationCost: 125000,
+                    descTotalBeforeTaxes: 3000,
+                    totalBeforeTaxes: 2000,
+                    titlePrice: 1000,
+                  }}
+                />
+
+                <div className="flex justify-center">
+                  <div className="justify-items-center">
+                    <Button
+                      variant="ghost"
+                      className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
+                      size="sm"
+                      onClick={handleOpenModal}
+                    >
+                      <Flag className="h-4 w-4" />
+                      Report this listing
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="divide-y border-t">
+            <div className="py-8">
+              <RatingSummary
+                ratings={ratingSummary.ratings}
+                reviews={ratingSummary.reviews}
+                categories={ratingSummary.categories}
               />
             </div>
-            <div className="py-6 ">
-              <Languages languages={value.languages} />
+            <div className="py-8">
+              <UserReviews reviews={userReviews} />
             </div>
-            <div className="py-6 ">
-              <Duration
-                durationHour={value.durationHour}
-                durationMinute={value.durationMinute}
-              />
+
+            <div className="py-8">
+              {data && (
+                <MeetingPoint
+                  location={`${data?.item?.meetingPoint?.streetAddress}, ${data?.item?.meetingPoint?.barangay}, ${data?.item?.meetingPoint?.city}`}
+                  coordinates={[
+                    data?.item?.meetingPoint?.latitude,
+                    data?.item?.meetingPoint?.longitude,
+                  ]}
+                  desc={data?.item?.meetingPoint?.howToGetThere}
+                />
+              )}
             </div>
-            <div className="py-6">
-              <WhatToBrings whatToBrings={value.whatToBrings} />
-            </div>
-            <div className="py-6">
-              <NotAllowed notAllowed={value.notAllowed} />
+
+            <div className="py-8">
+              {data && (
+                <HostInformation
+                  {...hostDummy}
+                  hostName={data?.item?.host?.guest?.firstName}
+                  joinedIn={new Date(
+                    data?.item?.host?.guest?.createdAt
+                  ).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -417,54 +526,22 @@ export const ActivitySingleView = () => {
               timeSlot={value.timeSlots}
             />
 
-            <div className="flex justify-center">
-              <div className="justify-items-center">
-                <Button
-                  variant="ghost"
-                  className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                  size="sm"
-                  onClick={handleOpenModal}
-                >
-                  <Flag className="h-4 w-4" />
-                  Report this listing
-                </Button>
-              </div>
+
+            <div className="pt-8">
+              {data && (
+                <ThingsToKnow
+                  otherPolicies={data?.item?.policies}
+                  otherPoliciesModalData={data?.item?.policies}
+                  cancellationPolicies={data?.item?.cancellationDays}
+                  cancellationModalData={data?.item?.cancellationDays}
+                />
+              )}
             </div>
           </div>
-        </div>
-      </div>
-      <div className="divide-y border-t">
-        <div className="py-8">
-          <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
-          />
-        </div>
-        <div className="py-8">
-          <UserReviews reviews={userReviews} />
-        </div>
-        <div className="py-8">
-          <MeetingPoint
-            location={`${value.location.streetAddress}, ${value.location.barangay}, ${value.location.city}`}
-            coordinates={[value.location.latitude, value.location.longitude]}
-            desc={value.location.howToGetThere}
-          />
-        </div>
-        <div className="py-8">
-          <HostInformation {...hostDummy} />
-        </div>
-        <div className="pt-8">
-          <ThingsToKnow
-            otherPolicies={value.policies}
-            otherPoliciesModalData={value.policies}
-            cancellationPolicies={value.cancellationPolicies}
-            cancellationModalData={value.cancellationPolicies}
-          />
-        </div>
-      </div>
-      <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-    </WidthWrapper>
+          <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+        </WidthWrapper>
+      )}
+    </>
   )
 }
 export default ActivitySingleView

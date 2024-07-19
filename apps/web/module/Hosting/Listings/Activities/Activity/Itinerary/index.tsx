@@ -105,6 +105,9 @@ const Itinerary = ({ pageType }: Prop) => {
     )
   }
 
+  const [markerIsSet, setMarkerIsSet] = useState(false)
+  const [handleOverlayClick, setHandleOverlayClick] = useState(false)
+
   const street = watch(
     "meetingPoint.streetAddress",
     data?.item?.meetingPoint?.streetAddress
@@ -128,6 +131,20 @@ const Itinerary = ({ pageType }: Prop) => {
   const [isToggled, setIsToggled] = useState(
     activityIsLoading ? false : toggled
   )
+
+  const handleOverlayClickToggle = () => {
+    setHandleOverlayClick(true)
+  }
+
+  const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
+    setMarkerIsSet(true)
+    handleSaveLocation()
+  }
+  const handleSaveLocation = () => {
+    setTimeout(() => {
+      setHandleOverlayClick(false)
+    }, 0)
+  }
 
   useEffect(() => {
     if (!activityIsLoading && data && data.item) {
@@ -158,12 +175,34 @@ const Itinerary = ({ pageType }: Prop) => {
           <Typography variant="h3" fontWeight="semibold" className="mb-2">
             Meeting Point
           </Typography>
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center relative">
+            {!handleOverlayClick && (
+              <div
+                className={`absolute top-0 left-0 w-full h-[450px] bg-black bg-opacity-0 rounded-xl z-10 transition-opacity duration-600 hover:bg-opacity-20 ${
+                  handleOverlayClick
+                    ? "opacity-0 pointer-events-none"
+                    : "opacity-100"
+                }`}
+              >
+                <button
+                  onClick={handleOverlayClickToggle}
+                  className="w-full h-full flex justify-center items-center text-white text-2xl font-semibold transition-opacity duration-300"
+                >
+                  <span className="p-4 rounded-lg">
+                    Click to enable map editing
+                  </span>
+                </button>
+              </div>
+            )}
+
             <SpecificMap
               center={currentCoords}
-              mapHeight={"h-[450px]"}
-              mapWidth={"w-full"}
+              mapHeight="h-[450px]"
+              mapWidth="w-full"
               zoom={11}
+              onMarkerSet={handleMarkerSetter}
+              className="relative z-0"
+              scrollWheelZoomEnabled={!handleOverlayClick}
             />
           </div>
           <Typography className="text-xs text-gray-500 italic mt-2">

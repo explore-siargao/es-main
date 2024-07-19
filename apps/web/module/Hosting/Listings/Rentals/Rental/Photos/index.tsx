@@ -38,6 +38,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
   const setToEditPhotoIndex = usePhotoStore(
     (state) => state.setToEditPhotoIndex
   )
+
   const { getRootProps, getInputProps, isFocused } = useDropzone({
     accept: {
       "image/jpeg": [],
@@ -128,8 +129,19 @@ const RentalPhotos = ({ pageType }: Prop) => {
       })
   }
 
+  const checkDescriptions = () => {
+    for (let photo of photos) {
+      if (!photo.description || photo.tags === null || photo.tags === "") {
+        toast.error("Please put a description and tags to all added photos")
+        return false
+      }
+    }
+    return true
+  }
+
   const handleSave = async () => {
-    if (
+    if (!checkDescriptions()) return
+    else if (
       data?.item?.category === E_Rental_Category.Car &&
       (photos?.length > 4 ||
         (data?.item?.photos && data?.item?.photos.length > 4))
@@ -292,7 +304,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "No description"}
+                    {photo.description || "Click photo to add description"}
                   </Typography>
                 </div>
               ) : null

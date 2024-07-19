@@ -26,11 +26,11 @@ import useUpdateUnitPhoto from "../hooks/useUpdateUnitPhoto"
 import useAddUnitPhoto from "../hooks/useAddUnitPhoto"
 import useDeleteUnitPhoto from "../hooks/useDeleteUnitPhoto"
 import Photos from "./components/Photos"
-import { Option, Select } from "@/common/components/ui/Select"
 import useUpdateBedBasicInfo from "../../../hooks/useUpdateBedBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
+import CreatableSelect from "@/common/components/ui/CreatableSelect"
 
 type T_BedUnit = {
   title: string
@@ -154,6 +154,30 @@ const Bed = ({ pageType }: Prop) => {
     }
   }
 
+  const titleOptions = [
+    { value: "", label: "Select Name" },
+    { value: "Bed in 8-Bed Mixed Dorm", label: "Bed in 8-Bed Mixed Dorm" },
+  ]
+
+  const descriptionOptions = [
+    { value: "", label: "Select Bed" },
+    { value: "Single Bunk Bed", label: "Single Bunk Bed" },
+  ]
+
+  const [nameOptions, setNameOptions] = useState(titleOptions)
+  const [bedOptions, setBedOptions] = useState(descriptionOptions)
+
+  const handleCreateOption = (
+    newOption: { value: string; label: string },
+    setOptions: React.Dispatch<
+      React.SetStateAction<{ value: string; label: string }[]>
+    >,
+    fieldOnChange: (value: string) => void
+  ) => {
+    setOptions((prev) => [...prev, newOption])
+    fieldOnChange(newOption.value)
+  }
+
   useEffect(() => {
     if (!isPending && data && data.item) {
       setValue("title", data?.item?.title)
@@ -179,43 +203,54 @@ const Bed = ({ pageType }: Prop) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
-            <Select
-              {...register("title", {
-                required: "This field is required",
-              })}
-              label="Name"
-              required
-            >
-              <>
-                <Option value={""}>Select Name</Option>
-                <Option selected={data?.item?.title}>
-                  Bed in 8-Bed Mixed Dorm
-                </Option>
-              </>
-            </Select>
+            <Controller
+              control={control}
+              name="title"
+              rules={{ required: "This field is required" }}
+              render={({ field }) => (
+                <CreatableSelect
+                  label="Name"
+                  options={nameOptions}
+                  value={
+                    nameOptions.find(
+                      (option) => option.value === field.value
+                    ) || { value: "", label: "Select Name" }
+                  }
+                  onChange={(option) => field.onChange(option?.value || "")}
+                  onCreateOption={(newOption) =>
+                    handleCreateOption(
+                      newOption,
+                      setNameOptions,
+                      field.onChange
+                    )
+                  }
+                  defaultValue={data?.item?.title}
+                  isRequired
+                />
+              )}
+            />
           </div>
           <div>
             <Controller
               control={control}
               name="description"
-              defaultValue={data?.item?.description || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
-                <Select
-                  {...field}
+                <CreatableSelect
                   label="Bed"
-                  value={field.value}
-                  onChange={(value) => field.onChange(value)}
-                  required
-                >
-                  <Option value={""}>Select Bed</Option>
-                  <Option
-                    value="Single Bunk Bed"
-                    selected={data?.item?.description}
-                  >
-                    Single Bunk Bed
-                  </Option>
-                </Select>
+                  options={bedOptions}
+                  value={
+                    bedOptions.find(
+                      (option) => option.value === field.value
+                    ) || { value: "", label: "Select Bed" }
+                  }
+                  onChange={(option) => field.onChange(option?.value || "")}
+                  onCreateOption={(newOption) =>
+                    handleCreateOption(newOption, setBedOptions, field.onChange)
+                  }
+                  defaultValue={data?.item?.description}
+                  isRequired
+                />
               )}
             />
           </div>

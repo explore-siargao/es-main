@@ -17,6 +17,16 @@ export const Z_Activity_Segment = z.object({
   transfer: z.string().optional(),
 })
 
+export const Z_Activity_Price = z.object({
+  basePrice: z.number().optional(),
+  exceedPersonPrice: z.number().optional(),
+})
+
+export const Z_Activity_Slots = z.object({
+  time: z.string().optional(),
+  minimumGuestCount: z.number().optional(),
+})
+
 export const Z_Activity = z.object({
   id: z.string().optional(),
   host: Z_User.optional(),
@@ -40,6 +50,8 @@ export const Z_Activity = z.object({
   policies: z.string().optional(),
   cancellationPolicies: z.string().optional(),
   photos: z.array(Z_Photo).optional(),
+  price: Z_Activity_Price.optional(),
+  slots: z.array(Z_Activity_Slots).optional(),
   status: z.nativeEnum(E_Activity_Status).optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
@@ -70,6 +82,11 @@ export const Z_Update_Activity_Basic_Info = z.object({
   durationHour: z.number().optional(),
   durationMinute: z.number().optional(),
   languages: z.array(z.string()).optional(),
+})
+
+export const Z_Update_Activity_Pice_Slots = z.object({
+  price: Z_Activity_Price.optional(),
+  slots: z.array(Z_Activity_Slots).optional(),
 })
 
 export const Z_Activity_Status = z.object({

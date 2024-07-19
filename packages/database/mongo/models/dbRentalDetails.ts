@@ -34,7 +34,10 @@ const rentalDetails = new Schema({
     required: false,
   },
   weightCapacityKg: Number,
-  minAgeReq: Number,
+  haveDriverLicense: {
+    type: String,
+    required: false,
+  },
   isRegistered: {
     type: String,
     required: false,
