@@ -89,11 +89,9 @@ export function ExportReportExcel(props: ExportReportExcelProps) {
   }
 
   return (
-    <div className="flex items-center">
-      <Button variant={"primary"} onClick={xport}>
+      <Button variant={"primary"} className="w-full" onClick={xport}>
         <Import className="mr-2" />
         <b>Export Report</b>
       </Button>
-    </div>
   )
 }

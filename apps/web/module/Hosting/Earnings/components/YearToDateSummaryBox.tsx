@@ -2,8 +2,13 @@ import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
 import formatCurrency from "@/common/helpers/formatCurrency"
+import { ExportReportExcel } from "./exportReportExcel"
 
-const YearToDateSummary: React.FC = () => {
+interface YearToDateSummaryProps {
+  excelData?: any
+}
+
+const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({excelData}) => {
   const currentDate = new Date()
   const summaryData = [
     ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
@@ -47,6 +52,9 @@ const YearToDateSummary: React.FC = () => {
           {formatCurrency(97800, "Philippines")}
         </Typography>
       </div>
+      <div className="flex justify-center mt-4">
+            <ExportReportExcel reportData={excelData} />
+          </div>
     </div>
   )
 }

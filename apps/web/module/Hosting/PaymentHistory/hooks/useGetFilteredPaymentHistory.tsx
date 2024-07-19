@@ -57,7 +57,7 @@ function useGetFilteredPaymentHistory(
   month: String
 ) {
   const query = useQuery({
-    queryKey: ["insights", category, listing, year, month],
+    queryKey: [category, listing, year, month],
     queryFn: () => getFilteredPaymentHistory(category, listing, year, month),
     refetchOnWindowFocus: false,
   })
