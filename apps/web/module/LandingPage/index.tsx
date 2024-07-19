@@ -30,7 +30,7 @@ const LandingPage = () => {
     };
     
   }, [search, checkIn, checkOut, numberOfGuest, date]);
-  console.log(isLoading)
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const welcome = localStorage.getItem("welcome")
@@ -53,10 +53,10 @@ const LandingPage = () => {
   items.forEach((element) => {
     formData.append("item[]", element.id)
   })
-  // formData.forEach((value, key) => {
-  //   console.log("key", key)
-  //   console.log("value", value)
-  // })
+  formData.forEach((value, key) => {
+    console.log("key", key)
+    console.log("value", value)
+  })
 
   return (
     <>
