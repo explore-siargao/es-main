@@ -1,12 +1,35 @@
 "use client"
-import SpecificMap from "@/common/components/SpecificMap"
+
 import { Button } from "@/common/components/ui/Button"
 import WhereYouWillBeModal from "./WhereYouWillBeModal"
-import { useState } from "react"
-import { MapProps } from "../types/Map"
 import { Typography } from "@/common/components/ui/Typography"
+import { useState } from "react"
+import SpecificMap from "@/common/components/SpecificMap"
 
-const WhereYoullBeDescription = ({ location, coordinates, desc }: MapProps) => {
+interface ILocation {
+  city: string
+  streetAddress: string
+  barangay: string
+  longitude: number
+  latitude: number
+}
+
+interface MapProps {
+  coordinates: [number, number]
+  desc: string
+  locationDescription: string
+}
+
+interface WhereYoullBeDescriptionProps extends MapProps {
+  location: ILocation
+}
+
+const WhereYoullBeDescription: React.FC<WhereYoullBeDescriptionProps> = ({
+  location,
+  coordinates,
+  desc,
+  locationDescription,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const maxLength = 600
   const slicedDescription =
@@ -18,16 +41,20 @@ const WhereYoullBeDescription = ({ location, coordinates, desc }: MapProps) => {
         <Typography variant="h2" fontWeight="semibold" className="mb-5">
           Where you'll be
         </Typography>
-        <div className="w-12/12 h-[450px] bg-primary-200 mb-5">
+        <div className="w-full h-[450px] bg-primary-200 mb-5">
           <SpecificMap
-            center={coordinates as [number, number]}
+            center={coordinates}
             mapHeight="h-[450px]"
             mapWidth="w-full"
           />
         </div>
 
         {location && (
-          <div className="text-md font-semibold mb-5">{location}</div>
+          <div className="text-md font-semibold mb-5">
+            <div>
+              {location.streetAddress}, {location.barangay}, {location.city}
+            </div>
+          </div>
         )}
         {desc && (
           <div className="flex text-sm mb-4">
@@ -45,9 +72,10 @@ const WhereYoullBeDescription = ({ location, coordinates, desc }: MapProps) => {
         </Button>
       </div>
       <WhereYouWillBeModal
-        center={coordinates as [number, number]}
+        center={coordinates}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        locationDescription={locationDescription}
       />
     </div>
   )

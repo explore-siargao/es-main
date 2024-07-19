@@ -1,40 +1,41 @@
-import { Button } from "@/common/components/ui/Button";
-import { useState } from "react";
-import { PropertyType, T_AvailableBookingProps } from "../types/AvailableBooking";
-import { TitleSection } from "./TitleSection";
-import Image from "next/image";
-import { T_BookableUnitType } from "@repo/contract";
+import { Button } from "@/common/components/ui/Button"
+import {
+  PropertyType,
+  T_AvailableBookingProps,
+} from "../types/AvailableBooking"
+import { TitleSection } from "./TitleSection"
+import Image from "next/image"
+import { T_BookableUnitType } from "@repo/contract"
 
 const AvailableBooking = ({
   bookableUnits,
   propertyType,
   onSelectBookableUnit,
+  selectedBookableUnit,
 }: T_AvailableBookingProps) => {
-  const [descriptionModalOpen, setDescriptionModalOpen] = useState(false);
-
   const handleSelectUnit = (unit: T_BookableUnitType) => {
-    onSelectBookableUnit(unit);
-  };
+    onSelectBookableUnit(unit)
+  }
 
-  let title = "";
+  let title = ""
   switch (propertyType.toUpperCase()) {
     case PropertyType.HOTEL:
-      title = "Available Rooms";
-      break;
+      title = "Available Rooms"
+      break
     case PropertyType.HOSTEL:
     case PropertyType.HOMESTAY:
-      title = "Available Bed and Rooms";
-      break;
+      title = "Available Bed and Rooms"
+      break
     case PropertyType.RESORT:
-      title = "Available Bed, Rooms and Whole Places";
-      break;
+      title = "Available Bed, Rooms and Whole Places"
+      break
     case PropertyType.APARTMENT:
     case PropertyType.VILLA:
-      title = "Available Whole Places";
-      break;
+      title = "Available Whole Places"
+      break
     default:
-      title = "Available Booking";
-      break;
+      title = "Available Booking"
+      break
   }
 
   return (
@@ -46,7 +47,7 @@ const AvailableBooking = ({
             {unit.photos && unit.photos.length > 0 && (
               <Image
                 className="rounded-xl relative"
-                src={`/assets/${unit.photos[0]?.key || 'default-image-key'}`}
+                src={`/assets/${unit.photos[0]?.key || "default-image-key"}`}
                 width={600}
                 height={300}
                 alt={"Test"}
@@ -57,15 +58,13 @@ const AvailableBooking = ({
               className="w-full mt-5"
               variant="primary"
             >
-              Select
+              {selectedBookableUnit === unit ? "Selected" : "Select"}
             </Button>
           </div>
           <div className="w-auto mx-10">
             <div className="flex text-md mb-2 font-bold">{unit.category}</div>
             <div className="flex text-md mb-2">{unit.title}</div>
-            {unit.bed && (
-              <div className="flex text-md mb-2"> {unit.bed}</div>
-            )}
+            {unit.bed && <div className="flex text-md mb-2"> {unit.bed}</div>}
             {unit.category === "Bed" && (
               <div className="flex text-md mb-2">{unit.description}</div>
             )}
@@ -88,7 +87,7 @@ const AvailableBooking = ({
         </div>
       ))}
     </>
-  );
-};
+  )
+}
 
-export default AvailableBooking;
+export default AvailableBooking
