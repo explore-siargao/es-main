@@ -14,12 +14,11 @@ import PropertySearchBar from "./SearchBar/PropertySearchBar"
 import ActivitiesSearchBar from "./SearchBar/ActivitiesSearchBar"
 import RentalsSearchBar from "./SearchBar/RentalsSearchBar"
 
-
 type T_Search_Form = {
-  search: string,
-  checkIn: string,
-  checkOut: string,
-  date: string,
+  search: string
+  checkIn: string
+  checkOut: string
+  date: string
   numberOfGuest: number
 }
 
@@ -35,12 +34,12 @@ function SearchBar({
   const router = useRouter()
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
-  
+
   useEffect(() => {
     form.reset()
     clearSearchValues()
   }, [path])
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const closeModal = () => setIsModalOpen(false)
   const applyToHost = () => {
@@ -50,9 +49,15 @@ function SearchBar({
       setIsModalOpen(true)
     }
   }
-  
+
   const onSubmit = (data: T_Search_Form) => {
-    setSearchValues(data.search, data.checkIn, data.checkOut, data.date, Number(data.numberOfGuest))
+    setSearchValues(
+      data.search,
+      data.checkIn,
+      data.checkOut,
+      data.date,
+      Number(data.numberOfGuest)
+    )
   }
 
   return (
