@@ -15,7 +15,7 @@ const Builder = () => {
       <Typography variant="h3" fontWeight="semibold" className="mb-2">
         Itinerary Builder
       </Typography>
-      <Typography className="text-xs text-gray-500 italic mt-2">
+      <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
         Streamline travel planning by centralizing itinerary creation and
         management, particularly focusing on segments like accommodations,
         activities, and transportation transfers

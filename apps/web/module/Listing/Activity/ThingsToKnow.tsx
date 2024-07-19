@@ -1,32 +1,20 @@
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
-import { T_ThingsToKnowProps } from "../types/ThingsToKnow"
 import HouseRulesModal from "./OtherPoliciesModal"
-import CancellationPolicyModal from "./CancellationPolicyModal"
 import TitleLists from "./ThingsToKnow/TitleLists"
+import { T_ThingsToKnowProps } from "../types/ThingsToKnow"
 
 const ThingsToKnow = ({
-  otherPolicies,
-  otherPoliciesModalData,
-  cancellationPolicies,
-  cancellationModalData,
+  otherPolicies = [],
+  otherPoliciesModalData = [],
+  cancellationPolicies = "",
 }: T_ThingsToKnowProps) => {
   const [isHouseRulesModalOpen, setIsHouseRulesModalOpen] = useState(false)
-  const [isCancellationPolicyModalOpen, setIsCancellationPolicyModalOpen] =
-    useState(false)
-
-  const openCancellationPolicyModal = () => {
-    setIsCancellationPolicyModalOpen(true)
-  }
-
-  const openHouseRulesModal = () => {
-    setIsHouseRulesModalOpen(true)
-  }
+  const openHouseRulesModal = () => setIsHouseRulesModalOpen(true)
 
   const closeModal = () => {
     setIsHouseRulesModalOpen(false)
-    setIsCancellationPolicyModalOpen(false)
   }
 
   return (
@@ -50,32 +38,14 @@ const ThingsToKnow = ({
         </div>
 
         <div className="w-full flex flex-col items-start">
-          <TitleLists
-            title="Cancellation policy"
-            rules={cancellationPolicies}
-          />
-          {cancellationPolicies.length > 3 && (
-            <Button
-              className="underline mt-2"
-              variant="link"
-              size="link"
-              onClick={openCancellationPolicyModal}
-            >
-              Show more &gt;
-            </Button>
-          )}
+          <TitleLists title="Cancellation days" rules={cancellationPolicies} />
         </div>
       </div>
+
       <HouseRulesModal
         onClose={closeModal}
         isOpen={isHouseRulesModalOpen}
         otherPolicies={otherPoliciesModalData}
-      />
-
-      <CancellationPolicyModal
-        onClose={closeModal}
-        isOpen={isCancellationPolicyModalOpen}
-        cancellationPolicy={cancellationModalData}
       />
     </>
   )
