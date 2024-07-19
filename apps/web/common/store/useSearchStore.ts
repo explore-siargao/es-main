@@ -22,18 +22,20 @@ export const useSearchStore = create<T_Search>((set) => ({
   checkOut: "",
   date: "",
   numberOfGuest: null,
-  setSearchValues: (search, checkIn, checkOut, date, numberOfGuest) => set({ 
-    search: search,
-    checkIn: checkIn,
-    checkOut: checkOut,
-    date: date,
-    numberOfGuest: numberOfGuest
-   }),
-  clearSearchValues: () => set({ 
-    search: "",
-    checkIn: "",
-    checkOut: "",
-    date: "",
-    numberOfGuest: null
-   }),
+  setSearchValues: (search, checkIn, checkOut, date, numberOfGuest) =>
+    set({
+      search: search,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      date: date,
+      numberOfGuest: numberOfGuest,
+    }),
+  clearSearchValues: () =>
+    set({
+      search: "",
+      checkIn: "",
+      checkOut: "",
+      date: "",
+      numberOfGuest: null,
+    }),
 }))

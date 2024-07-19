@@ -1,18 +1,14 @@
-import React from 'react'
+import React from "react"
 import { Option, Select } from "@/common/components/ui/Select"
 import { Search } from "lucide-react"
-import { Separator } from '../../ui/Separator'
-import { Input } from '../../ui/Input'
-import { useFormContext } from 'react-hook-form'
-import { Button } from '../../ui/Button'
+import { Separator } from "../../ui/Separator"
+import { Input } from "../../ui/Input"
+import { useFormContext } from "react-hook-form"
+import { Button } from "../../ui/Button"
 
 function RentalsSearchBar() {
   const { register } = useFormContext()
-  const categories = [
-    "Car",
-    "Motorbike",
-    "Bicycle"
-  ];
+  const categories = ["Car", "Motorbike", "Bicycle"]
   return (
     <div className="flex gap-2 w-full justify-center rounded-full items-center p-2 border bg-white border-gray-300 mb-4">
       <Select 
@@ -37,7 +33,10 @@ function RentalsSearchBar() {
       {/* <div className="h-full p-4 bg-primary-500 justify-center items-center rounded-full">
         <Search className="text-white" />
       </div> */}
-      <Button variant={"primary"} className="h-full p-4 justify-center items-center rounded-full">
+      <Button
+        variant={"primary"}
+        className="h-full p-4 justify-center items-center rounded-full"
+      >
         <Search className="text-white" />
       </Button>
     </div>
