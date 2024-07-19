@@ -26,11 +26,12 @@ import useUpdateUnitPhoto from "../hooks/useUpdateUnitPhoto"
 import useAddUnitPhoto from "../hooks/useAddUnitPhoto"
 import useDeleteUnitPhoto from "../hooks/useDeleteUnitPhoto"
 import Photos from "./components/Photos"
+import { Option, Select } from "@/common/components/ui/Select"
 import useUpdateBedBasicInfo from "../../../hooks/useUpdateBedBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
-import CreatableSelect from "@/common/components/ui/CreatableSelect"
+import { Input } from "@/common/components/ui/Input"
 
 type T_BedUnit = {
   title: string
@@ -55,6 +56,8 @@ const Bed = ({ pageType }: Prop) => {
   const router = useRouter()
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
+  const [customTitle, setCustomTitle] = useState("")
+  const [customDescription, setCustomDescription] = useState("")
 
   const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
   const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
@@ -71,6 +74,7 @@ const Bed = ({ pageType }: Prop) => {
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const amenities = useSelectAmenityStore((state) => state.amenities)
   const { control, register, handleSubmit, setValue } = useForm<T_BedUnit>()
+
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
@@ -130,6 +134,7 @@ const Bed = ({ pageType }: Prop) => {
       toast.error("Please fill out quantity")
       return
     }
+
     try {
       const saveBasicInfo = updateBedBasicInfo({
         _id: bedId,
@@ -154,37 +159,19 @@ const Bed = ({ pageType }: Prop) => {
     }
   }
 
-  const titleOptions = [
-    { value: "", label: "Select Name" },
-    { value: "Bed in 8-Bed Mixed Dorm", label: "Bed in 8-Bed Mixed Dorm" },
-  ]
-
-  const descriptionOptions = [
-    { value: "", label: "Select Bed" },
-    { value: "Single Bunk Bed", label: "Single Bunk Bed" },
-  ]
-
-  const [nameOptions, setNameOptions] = useState(titleOptions)
-  const [bedOptions, setBedOptions] = useState(descriptionOptions)
-
-  const handleCreateOption = (
-    newOption: { value: string; label: string },
-    setOptions: React.Dispatch<
-      React.SetStateAction<{ value: string; label: string }[]>
-    >,
-    fieldOnChange: (value: string) => void
-  ) => {
-    setOptions((prev) => [...prev, newOption])
-    fieldOnChange(newOption.value)
-  }
-
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setValue("title", data?.item?.title)
-      setValue("description", data?.item?.description)
+      setValue("title", data?.item?.title || "")
+      setValue("description", data?.item?.description || "")
       setTypeCount(data?.item?.qty)
       setPhotos(data?.item?.photos)
       setAmenities(data.item?.amenities)
+      if (data?.item?.title?.startsWith("Custom: ")) {
+        setCustomTitle(data?.item?.title.replace("Custom: ", ""))
+      }
+      if (data?.item?.description?.startsWith("Custom: ")) {
+        setCustomDescription(data?.item?.description.replace("Custom: ", ""))
+      }
     }
   }, [data, isPending])
 
@@ -206,27 +193,49 @@ const Bed = ({ pageType }: Prop) => {
             <Controller
               control={control}
               name="title"
+              defaultValue={data?.item?.title || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
-                <CreatableSelect
-                  label="Name"
-                  options={nameOptions}
-                  value={
-                    nameOptions.find(
-                      (option) => option.value === field.value
-                    ) || { value: "", label: "Select Name" }
-                  }
-                  onChange={(option) => field.onChange(option?.value || "")}
-                  onCreateOption={(newOption) =>
-                    handleCreateOption(
-                      newOption,
-                      setNameOptions,
-                      field.onChange
-                    )
-                  }
-                  defaultValue={data?.item?.title}
-                  isRequired
-                />
+                <>
+                  <Select
+                    {...field}
+                    label="Name"
+                    value={
+                      field.value.startsWith("Custom:") ? "Custom" : field.value
+                    }
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (value === "Custom") {
+                        setCustomTitle("")
+                        field.onChange("Custom: ")
+                      } else {
+                        setCustomTitle("")
+                        field.onChange(value)
+                      }
+                    }}
+                    required
+                  >
+                    <Option value={""}>Select Name</Option>
+                    <Option value="Bed in 8-Bed Mixed Dorm">
+                      Bed in 8-Bed Mixed Dorm
+                    </Option>
+                    <Option value="Custom">Custom</Option>
+                  </Select>
+                  {field.value.startsWith("Custom:") && (
+                    <Input
+                      label="Custom"
+                      type="text"
+                      value={customTitle}
+                      onChange={(e) => {
+                        setCustomTitle(e.target.value)
+                        field.onChange(`Custom: ${e.target.value}`)
+                      }}
+                      placeholder="Enter custom name"
+                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      required
+                    />
+                  )}
+                </>
               )}
             />
           </div>
@@ -234,23 +243,47 @@ const Bed = ({ pageType }: Prop) => {
             <Controller
               control={control}
               name="description"
+              defaultValue={data?.item?.description || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
-                <CreatableSelect
-                  label="Bed"
-                  options={bedOptions}
-                  value={
-                    bedOptions.find(
-                      (option) => option.value === field.value
-                    ) || { value: "", label: "Select Bed" }
-                  }
-                  onChange={(option) => field.onChange(option?.value || "")}
-                  onCreateOption={(newOption) =>
-                    handleCreateOption(newOption, setBedOptions, field.onChange)
-                  }
-                  defaultValue={data?.item?.description}
-                  isRequired
-                />
+                <>
+                  <Select
+                    {...field}
+                    label="Bed"
+                    value={
+                      field.value.startsWith("Custom:") ? "Custom" : field.value
+                    }
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (value === "Custom") {
+                        setCustomDescription("")
+                        field.onChange("Custom: ")
+                      } else {
+                        setCustomDescription("")
+                        field.onChange(value)
+                      }
+                    }}
+                    required
+                  >
+                    <Option value={""}>Select Bed</Option>
+                    <Option value="Single Bunk Bed">Single Bunk Bed</Option>
+                    <Option value="Custom">Custom</Option>
+                  </Select>
+                  {field.value.startsWith("Custom:") && (
+                    <Input
+                      label="Custom"
+                      type="text"
+                      value={customDescription}
+                      onChange={(e) => {
+                        setCustomDescription(e.target.value)
+                        field.onChange(`Custom: ${e.target.value}`)
+                      }}
+                      placeholder="Enter custom bed"
+                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      required
+                    />
+                  )}
+                </>
               )}
             />
           </div>
@@ -297,7 +330,7 @@ const Bed = ({ pageType }: Prop) => {
         <Photos />
         <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
-          Amenities and Facilities (for the bed itself) asd
+          Amenities and Facilities (for the bed itself)
         </Typography>
         <div className="grid grid-cols-2 gap-3 mb-3">
           <AmenitiesCheckboxes

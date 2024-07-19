@@ -23,6 +23,10 @@ type Props = {
 const PricingContent: React.FC<Props> = ({ index, field, update }) => {
   const { _id, unitName, unitPrice } = field
 
+  const cleanUnitName = unitName.startsWith("Custom: ")
+    ? unitName.replace("Custom: ", "")
+    : unitName
+
   const [baseRatePrice, setBaseRatePrice] = useState(unitPrice.baseRate ?? null)
   const [baseRateMax, setBaseRateMax] = useState(
     unitPrice.baseRateMaxCapacity ?? 1
@@ -38,7 +42,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
   useEffect(() => {
     update(index, {
       _id: _id,
-      unitName: unitName,
+      unitName: cleanUnitName,
       unitPrice: {
         _id: unitPrice._id,
         baseRate: baseRatePrice,
