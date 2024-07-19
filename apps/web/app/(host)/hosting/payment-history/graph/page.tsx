@@ -10,11 +10,7 @@ export const metadata: Metadata = {
 }
 
 const GraphPage = () => {
-  return (
-    <AuthGuard>
-      <GraphTab />
-    </AuthGuard>
-  )
+  return null;
 }
 
 export default GraphPage
