@@ -116,6 +116,18 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
       <Typography variant="h1" fontWeight="semibold">
         Payment History
       </Typography>
+      <Typography
+        variant="p"
+        className="flex justify-between items-center text-gray-500 my-2"
+      >
+        The Payment History component gives you a detailed view of financial
+        transactions categorized by property type, listing, and specific
+        timeframes. It simplifies financial analysis with clear graphs showing
+        completed and cancelled payments, helping you understand performance at
+        a glance. With easy-to-use filters and the ability to export detailed
+        reports, you can make informed decisions and efficiently manage finances
+        for your properties.
+      </Typography>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
