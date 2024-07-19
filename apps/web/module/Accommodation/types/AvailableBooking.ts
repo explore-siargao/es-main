@@ -3,6 +3,7 @@ import { T_BookableUnitType } from "@repo/contract"
 export type T_AvailableBookingProps = {
   bookableUnits: T_BookableUnitType[]
   propertyType: string
+  selectedBookableUnit: string
   onSelectBookableUnit: (unit: T_BookableUnitType) => void
 }
 
