@@ -31,6 +31,18 @@ const EarningsUpcoming = () => {
       ),
     ],
   ]
+
+  const earningsUpcomingDescription = (
+    <Typography
+      variant="p"
+      className="flex justify-between items-center text-gray-500 pb-4"
+    >
+      Plan for the future with confidence using this graph that forecasts your
+      upcoming income. Visualize expected revenue trends to make proactive
+      financial decisions and manage your finances effectively.
+    </Typography>
+  )
+
   return (
     <div className="mt-8">
       {upcoming?.item && upcoming.item.months.length > 0 ? (
@@ -48,6 +60,7 @@ const EarningsUpcoming = () => {
               </span>
             </Typography>
           </div>
+          {earningsUpcomingDescription}
           <Chart
             data={upcoming.item.months}
             isPending={upcomingIsPending}
@@ -59,9 +72,10 @@ const EarningsUpcoming = () => {
         </>
       ) : (
         <>
-          <Typography fontWeight="semibold" variant="h2" className="pb-4">
+          <Typography fontWeight="semibold" variant="h2">
             Upcoming
           </Typography>
+          {earningsUpcomingDescription}
           <Typography fontWeight="semibold" variant="p">
             No upcoming earnings at the moment.
           </Typography>

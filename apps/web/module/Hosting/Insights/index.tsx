@@ -21,16 +21,7 @@ const Insights = () => {
   return (
     <div className="mt-20">
       <Tabs tabs={insightsTabs} />
-      <div className="my-4">
-        <Typography
-          variant="h1"
-          fontWeight="semibold"
-          className="flex justify-between items-center mb-2"
-        >
-          Insights
-        </Typography>
-      </div>
-      <div className="grid grid-cols-6 gap-4 mb-4 border-b pb-4">
+      <div className="grid grid-cols-6 gap-4 my-4 border-b pb-4">
         <Select
           label="Category"
           required
@@ -83,6 +74,26 @@ const Insights = () => {
           <Option value={"Dec"}>December</Option>
         </Select>
       </div>
+      <div className="my-4">
+        <Typography
+          variant="h1"
+          fontWeight="semibold"
+          className="flex justify-between items-center mb-2"
+        >
+          Insights
+        </Typography>
+        <Typography
+          variant="p"
+          className="flex justify-between items-center text-gray-500 mb-2"
+        >
+          The Insights section offers a clear view of your property's
+          performance, customized by category, listing, and time. Navigate
+          effortlessly with tabs, see real-time updates, and visualize data with
+          interactive charts. Understand views, bookings, and rates to make
+          informed decisions and optimize your property management strategy.
+        </Typography>
+      </div>
+
       <div className="flex gap-4 mb-4">
         <div className="p-6 border border-primary-500 rounded-lg w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
