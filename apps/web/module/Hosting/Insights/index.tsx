@@ -5,6 +5,9 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { LucideBadgeInfo, LucideInfo } from "lucide-react"
 import useGetInsights from "./hooks/useGetInsights"
 import Chart, { ChartType } from "./components/Chart"
+import Tabs from "@/common/components/Tabs"
+import insightsTabs from "./helpers/insightsTabs"
+import GraphTab from "../PaymentHistory/GraphTab"
 
 const Insights = () => {
   const [category, setCategory] = useState("Property")
@@ -17,7 +20,8 @@ const Insights = () => {
   console.log(filteredInsights)
   return (
     <div className="mt-20">
-      <div className="mb-4">
+      <Tabs tabs={insightsTabs} />
+      <div className="my-4">
         <Typography
           variant="h1"
           fontWeight="semibold"
@@ -64,11 +68,19 @@ const Insights = () => {
           value={month}
           onChange={(e) => setMonth(e.target.value)}
         >
-          <Option value={"All"}>All</Option>
+          <Option value={"all"}>All</Option>
+          <Option value={"Jan"}>January</Option>
+          <Option value={"Feb"}>February</Option>
+          <Option value={"Mar"}>March</Option>
+          <Option value={"Apr"}>April</Option>
           <Option value={"May"}>May</Option>
-          <Option value={"April"}>April</Option>
-          <Option value={"March"}>March</Option>
-          <Option value={"February"}>February</Option>
+          <Option value={"Jun"}>June</Option>
+          <Option value={"Jul"}>July</Option>
+          <Option value={"Aug"}>August</Option>
+          <Option value={"Sep"}>September</Option>
+          <Option value={"OCt"}>October</Option>
+          <Option value={"Nov"}>November</Option>
+          <Option value={"Dec"}>December</Option>
         </Select>
       </div>
       <div className="flex gap-4 mb-4">
@@ -123,6 +135,12 @@ const Insights = () => {
           </>
         )}
       </div>
+      <GraphTab
+        category={category}
+        listing={listing}
+        year={year}
+        month={month}
+      />
     </div>
   )
 }

@@ -46,18 +46,6 @@ const topLinks = [
     basePath: "/hosting/reservations",
   },
   {
-    title: "Earnings",
-    icon: <LucideCoins className="h-5 w-5" />,
-    link: "/hosting/earnings/graph",
-    basePath: "/hosting/earnings",
-  },
-  {
-    title: "Payment History",
-    icon: <LucideHandCoins className="h-5 w-5" />,
-    link: "/hosting/payment-history/graph",
-    basePath: "/hosting/payment-history",
-  },
-  {
     title: "Insights",
     icon: <LucideAreaChart className="h-5 w-5" />,
     link: "/hosting/insights",
