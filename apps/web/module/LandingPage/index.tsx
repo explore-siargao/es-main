@@ -62,7 +62,7 @@ const LandingPage = () => {
       {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : (
-        <WidthWrapper className="mb-24 lg:mt-[22rem]">
+        <WidthWrapper className="mb-24 lg:mt-6">
           {search || checkIn || checkOut || numberOfGuest ? (
             <div className="flex flex-col gap-4">
               {path === "/" && (

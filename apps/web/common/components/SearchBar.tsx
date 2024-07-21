@@ -61,12 +61,7 @@ function SearchBar({
   }
 
   return (
-    <header
-      className={cn(
-        `w-full inset-x-0 top-[118px] z-50 bg-gray-100 flex flex-col items-center`,
-        isFixed && "fixed"
-      )}
-    >
+    <div className={`w-full mt-28 z-20 bg-gray-50 flex flex-col items-center`}>
       <WidthWrapper width={contentWidth}>
         <nav
           className="flex items-center justify-between py-2 my-2 w-full"
@@ -78,15 +73,15 @@ function SearchBar({
                 variant="link"
                 size="sm"
                 onClick={() => router.push("/")}
-                className={path === "/" ? "font-bold" : ""}
+                className={path === "/" ? "font-bold underline" : ""}
               >
-                Property
+                Properties
               </Button>
               <Button
                 variant="link"
                 size="sm"
                 onClick={() => router.push("/activities")}
-                className={path === "/activities" ? "font-bold" : ""}
+                className={path === "/activities" ? "font-bold underline" : ""}
               >
                 Activities
               </Button>
@@ -94,7 +89,7 @@ function SearchBar({
                 variant="link"
                 size="sm"
                 onClick={() => router.push("/rentals")}
-                className={path === "/rentals" ? "font-bold" : ""}
+                className={path === "/rentals" ? "font-bold underline" : ""}
               >
                 Rentals
               </Button>
@@ -110,7 +105,7 @@ function SearchBar({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
-    </header>
+    </div>
   )
 }
 
