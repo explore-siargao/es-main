@@ -347,3 +347,33 @@ router.patch(
 )
 
 export default router
+
+// <Typography variant="h4" fontWeight="semibold" className="mb-3">
+// Amenities and Facilities (for the whole place itself)
+// </Typography>
+// <div className="grid grid-cols-2 gap-3 mb-3">
+// <AmenitiesCheckboxes
+//   title="Most Popular"
+//   icon={<LucideSparkles className="h-4 w-4" />}
+// />
+// <AmenitiesCheckboxes
+//   title="Bathroom"
+//   icon={<LucideBath className="h-4 w-4" />}
+// />
+// <AmenitiesCheckboxes
+//   title="Living Area"
+//   icon={<LucideArmchair className="h-4 w-4" />}
+// />
+// <AmenitiesCheckboxes
+//   title="Kitchen"
+//   icon={<LucideCookingPot className="h-4 w-4" />}
+// />
+// <AmenitiesCheckboxes
+//   title="General"
+//   icon={<LucideLayoutList className="h-4 w-4" />}
+// />
+// <AmenitiesCheckboxes
+//   title="Outdoors"
+//   icon={<LucidePalmtree className="h-4 w-4" />}
+// />
+// </div>

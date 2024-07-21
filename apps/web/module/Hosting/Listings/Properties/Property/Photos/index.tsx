@@ -105,7 +105,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
                   queryKey: ["property-finished-sections", listingId],
                 })
                 router.push(
-                  `/hosting/listings/properties/setup/${listingId}/pricing`
+                  `/hosting/listings/properties/setup/${listingId}/policies`
                 )
               }
             },
@@ -120,7 +120,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
           })
           if (pageType === "setup") {
             router.push(
-              `/hosting/listings/properties/setup/${listingId}/pricing`
+              `/hosting/listings/properties/setup/${listingId}/policies`
             )
           }
         }

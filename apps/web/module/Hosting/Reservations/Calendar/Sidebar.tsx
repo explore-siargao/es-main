@@ -13,9 +13,13 @@ import { useState } from "react"
 
 type SideBarProps = {
   nextPrevFunction: Function
+  openAddReservationModal: Function
 }
 
-const Sidebar = ({ nextPrevFunction }: SideBarProps) => {
+const Sidebar = ({
+  nextPrevFunction,
+  openAddReservationModal,
+}: SideBarProps) => {
   const [isShowAllRoomTypes, setIsShowAllRoomTypes] = useState(false)
 
   return (
@@ -34,6 +38,7 @@ const Sidebar = ({ nextPrevFunction }: SideBarProps) => {
           size={"sm"}
           variant={"secondary"}
           className="rounded-full w-full"
+          onClick={() => openAddReservationModal()}
         >
           <Plus className="w-5" />
         </Button>

@@ -97,10 +97,14 @@ const RentalSummary = () => {
               Includes Helmet
             </Typography>
           )}
-          {rental?.addOns.others !== "" && (
-            <Typography variant="h5" className="mt-2">
-              {rental?.addOns.others}
-            </Typography>
+          {rental?.addOns.others.length > 0 && (
+            <div className="mt-2">
+              {rental?.addOns.others.map((addOn: any) => (
+                <Typography key={addOn} variant="h5" className="mt-2">
+                  {addOn}
+                </Typography>
+              ))}
+            </div>
           )}
         </div>
         <div className="mt-3 border-b border-gray-200 pb-3">
@@ -170,10 +174,12 @@ const RentalSummary = () => {
             <span className="font-semibold">Barangay / District:</span>{" "}
             {rental?.location?.barangay}
           </Typography>
-          <Typography variant="h5" className="mt-2">
-            <span className="font-semibold">How to get there:</span>{" "}
-            {rental?.location?.howToGetThere}
-          </Typography>
+          <div className="w-1/2">
+            <Typography variant="h5" className="mt-2">
+              <span className="font-semibold">How to get there:</span>{" "}
+              {rental?.location?.howToGetThere}
+            </Typography>
+          </div>
         </div>
       </div>
       <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">

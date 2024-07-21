@@ -39,7 +39,22 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const totalGuest = adults + children + infants
-  const durationDays = 5
+  let durationDays = 5
+  if (dateRange.from && dateRange.to) {
+    const fromDate = new Date(dateRange.from)
+    const toDate = new Date(dateRange.to)
+
+    if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+      const timeDifference = toDate.getTime() - fromDate.getTime()
+      durationDays = Math.round(timeDifference / (1000 * 60 * 60 * 24))
+
+      console.log(durationDays) // Output: 7
+    } else {
+      console.error("Invalid Date objects.")
+    }
+  } else {
+    console.error("Invalid date range provided.")
+  }
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">

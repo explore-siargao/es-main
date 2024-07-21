@@ -8,6 +8,17 @@ import Chart, { ChartType } from "./components/Chart"
 const EarningsPaid = () => {
   const { data, isPending } = useGetPaidEarnings()
 
+  const earningsPaidDescription = (
+    <Typography
+      variant="p"
+      className="flex justify-between items-center text-gray-500 pb-4"
+    >
+      Stay organized and informed with a detailed graph of your paid earnings.
+      Easily track and review your completed payments to maintain financial
+      clarity and manage your cash flow efficiently.
+    </Typography>
+  )
+
   return (
     <div className="mt-8">
       {data?.item && data.item.months.length > 0 ? (
@@ -25,6 +36,7 @@ const EarningsPaid = () => {
               </span>
             </Typography>
           </div>
+          {earningsPaidDescription}
           <Chart
             width="100%"
             height={400}
@@ -36,9 +48,10 @@ const EarningsPaid = () => {
         </>
       ) : (
         <>
-          <Typography fontWeight="semibold" variant="h2" className="pb-4">
+          <Typography fontWeight="semibold" variant="h2">
             Paid
           </Typography>
+          {earningsPaidDescription}
           <Typography fontWeight="semibold" variant="p">
             Payouts are sent after guests check in.{" "}
             <button className="underline">Learn how payouts work</button>

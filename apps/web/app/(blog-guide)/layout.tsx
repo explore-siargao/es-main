@@ -10,6 +10,7 @@ import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import BlogHeader from "@/common/components/BlogHeader"
 import Footer from "@/common/components/Footer"
+import GuideBlogHeader from "@/module/BlogGuide/Header"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -30,6 +31,7 @@ export default async function BlogGuideLayout({
           <AuthStateProvider>
             <GlobalModalWrapper>
               <BlogHeader contentWidth="small" isFixed={false} />
+              <GuideBlogHeader />
               {children}
               <Footer contentWidth="small" />
             </GlobalModalWrapper>
