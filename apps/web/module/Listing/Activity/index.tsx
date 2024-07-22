@@ -362,158 +362,86 @@ export const ActivitySingleView = () => {
       {isPending ? (
         <Spinner>Loading...</Spinner>
       ) : (
-        <>
-          <WidthWrapper width="small" className="mt-10">
-            {data && (
-              <SectionInfo
-                images={data?.item?.photos}
-                title={data?.item?.title}
-              />
-            )}
+        <WidthWrapper width="small" className="mt-10">
+          {data && (
+            <SectionInfo
+              images={data?.item?.photos}
+              title={data?.item?.title}
+            />
+          )}
 
-            <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-              <div className="flex-1 md:w-1/2 2xl:w-full">
-                <div className="divide-y">
-                  <div className="py-6">
-                    {data && (
-                      <AvatarTitleDescription
-                        avatarKey="2.jpg"
-                        title={`Hosted by ${data?.item?.host?.guest?.firstName}`}
-                        subTitle={subTitle}
-                      />
-                    )}
-                  </div>
-
-                  <div className="py-6">
-                    {data && (
-                      <ActivityDescription
-                        description={data?.item?.description}
-                      />
-                    )}
-                  </div>
-
-                  {data ? (
-                    <div className="py-6">
-                      <Builder />
-                    </div>
-                  ) : null}
-
-                  <div className="py-6">
-                    {data && <Highlights highlights={data?.item?.highLights} />}
-                  </div>
-
-                  <div className="py-6 ">
-                    {data && (
-                      <PlaceOffers
-                        isFoodIncluded={data?.item?.isFoodIncluded}
-                        isNonAlcoholicDrinkIncluded={
-                          data?.item?.isNonAlcoholicDrinkIncluded
-                        }
-                        isAlcoholicDrinkIncluded={
-                          data?.item?.isAlcoholicDrinkIncluded
-                        }
-                        otherInclusion={data?.item?.otherInclusion}
-                        notIncluded={data?.item?.notIncluded}
-                      />
-                    )}
-                  </div>
-
-                  <div className="py-6 ">
-                    {data && <Languages languages={data?.item?.languages} />}
-                  </div>
-
-                  <div className="py-6 ">
-                    {data && (
-                      <Duration
-                        durationHour={data?.item?.durationHour}
-                        durationMinute={data?.item?.durationMinute}
-                      />
-                    )}
-                  </div>
-
-                  <div className="py-6">
-                    {data && (
-                      <WhatToBrings whatToBrings={data?.item?.whatToBring} />
-                    )}
-                  </div>
-
-                  <div className="py-6">
-                    {data && <NotAllowed notAllowed={data?.item?.notAllowed} />}
-                  </div>
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
+              <div className="divide-y">
+                <div className="py-6">
+                  {data && (
+                    <AvatarTitleDescription
+                      avatarKey="2.jpg"
+                      title={`Hosted by ${data?.item?.host?.guest?.firstName}`}
+                      subTitle={subTitle}
+                    />
+                  )}
                 </div>
-              </div>
 
-              <div className="md:w-96 md:relative">
-                <div className="md:sticky md:top-6">
-                  <CheckoutBox
-                    checkoutDesc={{
-                      serviceFee: 1000,
-                      durationCost: 125000,
-                      descTotalBeforeTaxes: 3000,
-                      totalBeforeTaxes: 2000,
-                      titlePrice: 1000,
-                      pricePerAdditionalPerson: 0,
-                    }}
-                    timeSlot={undefined}
-                  />
+                <div className="py-6">
+                  {data && (
+                    <ActivityDescription
+                      description={data?.item?.description}
+                    />
+                  )}
+                </div>
 
-                  <div className="flex justify-center">
-                    <div className="justify-items-center">
-                      <Button
-                        variant="ghost"
-                        className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                        size="sm"
-                        onClick={handleOpenModal}
-                      >
-                        <Flag className="h-4 w-4" />
-                        Report this listing
-                      </Button>
-                    </div>
+                {data ? (
+                  <div className="py-6">
+                    <Builder />
                   </div>
+                ) : null}
+
+                <div className="py-6">
+                  {data && <Highlights highlights={data?.item?.highLights} />}
+                </div>
+
+                <div className="py-6 ">
+                  {data && (
+                    <PlaceOffers
+                      isFoodIncluded={data?.item?.isFoodIncluded}
+                      isNonAlcoholicDrinkIncluded={
+                        data?.item?.isNonAlcoholicDrinkIncluded
+                      }
+                      isAlcoholicDrinkIncluded={
+                        data?.item?.isAlcoholicDrinkIncluded
+                      }
+                      otherInclusion={data?.item?.otherInclusion}
+                      notIncluded={data?.item?.notIncluded}
+                    />
+                  )}
+                </div>
+
+                <div className="py-6 ">
+                  {data && <Languages languages={data?.item?.languages} />}
+                </div>
+
+                <div className="py-6 ">
+                  {data && (
+                    <Duration
+                      durationHour={data?.item?.durationHour}
+                      durationMinute={data?.item?.durationMinute}
+                    />
+                  )}
+                </div>
+
+                <div className="py-6">
+                  {data && (
+                    <WhatToBrings whatToBrings={data?.item?.whatToBring} />
+                  )}
+                </div>
+
+                <div className="py-6">
+                  {data && <NotAllowed notAllowed={data?.item?.notAllowed} />}
                 </div>
               </div>
             </div>
-            <div className="divide-y border-t">
-              <div className="py-8">
-                <RatingSummary
-                  ratings={ratingSummary.ratings}
-                  reviews={ratingSummary.reviews}
-                  categories={ratingSummary.categories}
-                />
-              </div>
-              <div className="py-8">
-                <UserReviews reviews={userReviews} />
-              </div>
 
-              <div className="py-8">
-                {data && (
-                  <MeetingPoint
-                    location={`${data?.item?.meetingPoint?.streetAddress}, ${data?.item?.meetingPoint?.barangay}, ${data?.item?.meetingPoint?.city}`}
-                    coordinates={[
-                      data?.item?.meetingPoint?.latitude,
-                      data?.item?.meetingPoint?.longitude,
-                    ]}
-                    desc={data?.item?.meetingPoint?.howToGetThere}
-                  />
-                )}
-              </div>
-
-              <div className="py-8">
-                {data && (
-                  <HostInformation
-                    {...hostDummy}
-                    hostName={data?.item?.host?.guest?.firstName}
-                    joinedIn={new Date(
-                      data?.item?.host?.guest?.createdAt
-                    ).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  />
-                )}
-              </div>
-            </div>
             <div className="md:w-96 md:relative">
               <div className="md:sticky md:top-6">
                 <CheckoutBox
@@ -521,29 +449,99 @@ export const ActivitySingleView = () => {
                     serviceFee: 1000,
                     durationCost: 125000,
                     descTotalBeforeTaxes: 3000,
-                    totalBeforeTaxes: 1000,
-                    titlePrice: value.price.baseRate,
-                    pricePerAdditionalPerson:
-                      value.price.pricePerAdditionalPerson,
+                    totalBeforeTaxes: 2000,
+                    titlePrice: 1000,
+                    pricePerAdditionalPerson: 0,
                   }}
-                  timeSlot={value.timeSlots}
+                  timeSlot={undefined}
                 />
 
-                <div className="pt-8">
-                  {data && (
-                    <ThingsToKnow
-                      otherPolicies={data?.item?.policies}
-                      otherPoliciesModalData={data?.item?.policies}
-                      cancellationPolicies={data?.item?.cancellationDays}
-                      cancellationModalData={data?.item?.cancellationDays}
-                    />
-                  )}
+                <div className="flex justify-center">
+                  <div className="justify-items-center">
+                    <Button
+                      variant="ghost"
+                      className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
+                      size="sm"
+                      onClick={handleOpenModal}
+                    >
+                      <Flag className="h-4 w-4" />
+                      Report this listing
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-            <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-          </WidthWrapper>
-        </>
+          </div>
+          <div className="divide-y border-t">
+            <div className="py-8">
+              <RatingSummary
+                ratings={ratingSummary.ratings}
+                reviews={ratingSummary.reviews}
+                categories={ratingSummary.categories}
+              />
+            </div>
+            <div className="py-8">
+              <UserReviews reviews={userReviews} />
+            </div>
+
+            <div className="py-8">
+              {data && (
+                <MeetingPoint
+                  location={`${data?.item?.meetingPoint?.streetAddress}, ${data?.item?.meetingPoint?.barangay}, ${data?.item?.meetingPoint?.city}`}
+                  coordinates={[
+                    data?.item?.meetingPoint?.latitude,
+                    data?.item?.meetingPoint?.longitude,
+                  ]}
+                  desc={data?.item?.meetingPoint?.howToGetThere}
+                />
+              )}
+            </div>
+
+            <div className="py-8">
+              {data && (
+                <HostInformation
+                  {...hostDummy}
+                  hostName={data?.item?.host?.guest?.firstName}
+                  joinedIn={new Date(
+                    data?.item?.host?.guest?.createdAt
+                  ).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                />
+              )}
+            </div>
+          </div>
+          <div className="md:w-96 md:relative">
+            <div className="md:sticky md:top-6">
+              <CheckoutBox
+                checkoutDesc={{
+                  serviceFee: 1000,
+                  durationCost: 125000,
+                  descTotalBeforeTaxes: 3000,
+                  totalBeforeTaxes: 1000,
+                  titlePrice: value.price.baseRate,
+                  pricePerAdditionalPerson:
+                    value.price.pricePerAdditionalPerson,
+                }}
+                timeSlot={value.timeSlots}
+              />
+
+              <div className="pt-8">
+                {data && (
+                  <ThingsToKnow
+                    otherPolicies={data?.item?.policies}
+                    otherPoliciesModalData={data?.item?.policies}
+                    cancellationPolicies={data?.item?.cancellationDays}
+                    cancellationModalData={data?.item?.cancellationDays}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+        </WidthWrapper>
       )}
     </>
   )
