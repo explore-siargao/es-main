@@ -46,7 +46,7 @@ export type T_CancellationModalData = {
 }
 
 export type T_ThingsToKnowProps = {
-  houseRules: T_HouseRules[]
+  houseRules?: T_HouseRules[]
   safetyProperties: T_SafetyProperties[]
   cancellationPolicies: T_CancellationPolicies[]
   houseRulesModalData: T_HouseRulesModalData[]

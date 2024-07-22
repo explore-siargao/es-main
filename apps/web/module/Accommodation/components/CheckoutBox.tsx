@@ -3,17 +3,18 @@ import PesoSign from "@/common/components/PesoSign"
 import { Button } from "@/common/components/ui/Button"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import CheckoutBreakdownModal from "./modals/CheckoutBreakdownModal"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import CheckoutMoreInfoModal from "./modals/CheckoutMoreInfoModal"
 import CheckInOutModal from "./modals/CheckInOutModal"
 import useCheckInOutDateStore from "@/module/Accommodation/store/useCheckInOutDateStore"
 import Asterisk from "@/common/components/ui/Asterisk"
-import { differenceInDays, format } from "date-fns"
 import { useParams, useRouter } from "next/navigation"
 import GuestAddModal from "./modals/GuestAddModal"
 import useGuestAdd from "@/module/Accommodation/store/useGuestsStore"
 import { APP_NAME } from "@repo/constants"
 import { Typography } from "@/common/components/ui/Typography"
+import { T_BookableUnitType } from "@repo/contract"
+import { differenceInDays, format, eachDayOfInterval } from "date-fns"
 
 interface ICheckout {
   id?: number
@@ -28,11 +29,13 @@ interface ICheckout {
 interface CheckoutProcessProps {
   checkoutDesc: ICheckout
   isSelectedBookableUnit?: boolean
+  unit?: T_BookableUnitType
 }
 
 const CheckoutBox = ({
   checkoutDesc,
   isSelectedBookableUnit,
+  unit,
 }: CheckoutProcessProps) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
@@ -43,17 +46,69 @@ const CheckoutBox = ({
     useState(false)
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
+  const totalGuest = adults + children + infants
+
   const nights = differenceInDays(
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
   )
-  const totalGuest = adults + children + infants
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [breakdown, setBreakdown] = useState<{ date: string; price: number }[]>(
+    []
+  )
+
+  const [totalBasePrice, setTotalBasePrice] = useState<number | null>(null)
+
+  const calculatePrice = () => {
+    const nights = differenceInDays(
+      dateRange.to ?? new Date(),
+      dateRange.from ?? new Date()
+    )
+    const basePricePerGuest = checkoutDesc.titlePrice * totalGuest
+    const additionalFees = checkoutDesc.serviceFee
+    const additionalGuestsPrice = checkoutDesc.pricePerAdditionalPerson
+      ? checkoutDesc.pricePerAdditionalPerson * totalGuest
+      : 0
+    const total =
+      basePricePerGuest * nights + additionalFees + additionalGuestsPrice
+
+    setTotalPrice(total)
+
+    if (dateRange.from && dateRange.to) {
+      const daysArray = eachDayOfInterval({
+        start: dateRange.from,
+        end: dateRange.to,
+      })
+
+      const breakdownArray = daysArray.map((date) => ({
+        date: format(date, "MM/dd/yyyy"),
+        price: basePricePerGuest,
+      }))
+
+      setBreakdown(breakdownArray)
+    }
+  }
+  useEffect(() => {
+    calculatePrice()
+  }, [dateRange.from, dateRange.to, totalGuest, checkoutDesc])
+
+  useEffect(() => {
+    if (breakdown.length > 0) {
+      const total = breakdown.reduce((acc, item) => acc + item.price, 0)
+      setTotalBasePrice(total)
+    }
+  }, [breakdown])
+
   return (
     <div
-      className={`border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col ${!isSelectedBookableUnit ? "opacity-70" : ""} divide-text-100 overflow-y-auto mb-5`}
+      className={`border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col ${
+        !isSelectedBookableUnit ? "opacity-70" : ""
+      } divide-text-100 overflow-y-auto mb-5`}
     >
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
-        {formatCurrency(checkoutDesc.titlePrice, "Philippines")}
+        {unit
+          ? formatCurrency(unit.unitPrice.baseRate, "Philippines")
+          : formatCurrency(checkoutDesc.titlePrice, "Philippines")}
         <small className="font-light"> night</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
@@ -104,7 +159,7 @@ const CheckoutBox = ({
           }
         >
           <label
-            htmlFor="checkout"
+            htmlFor="guests"
             className="block text-xs font-medium text-text-900 hover:cursor-pointer"
           >
             Guests <Asterisk />
@@ -134,10 +189,15 @@ const CheckoutBox = ({
             }
           >
             <PesoSign />
-            {checkoutDesc.titlePrice} x {nights}
+            {unit ? unit.unitPrice.baseRate : checkoutDesc.titlePrice} x{" "}
+            {totalGuest}
           </Button>
           <div>
-            {formatCurrency(checkoutDesc.titlePrice * nights, "Philippines")}
+            {formatCurrency(
+              (unit ? unit.unitPrice.baseRate : checkoutDesc.titlePrice) *
+                totalGuest,
+              "Philippines"
+            )}
           </div>
         </div>
 
@@ -156,21 +216,22 @@ const CheckoutBox = ({
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
           <div>
-            {formatCurrency(
-              checkoutDesc.titlePrice * nights +
-                checkoutDesc.serviceFee +
-                (checkoutDesc.pricePerAdditionalPerson
-                  ? checkoutDesc.pricePerAdditionalPerson
-                  : 0) *
-                  totalGuest,
-              "Philippines"
-            )}
+            {totalBasePrice !== null
+              ? formatCurrency(
+                  totalBasePrice + checkoutDesc.serviceFee,
+                  "Philippines"
+                )
+              : "Loading..."}
           </div>
         </div>
       </div>
       <CheckoutBreakdownModal
         isOpen={isBreakdownModalOpen}
         onClose={() => setIsBreakdownModalOpen(false)}
+        breakdown={breakdown}
+        onTotalBasePriceCalculated={(price) => {
+          setTotalBasePrice(price)
+        }}
       />
       <CheckoutMoreInfoModal
         isOpen={isMoreInfoModalOpen}

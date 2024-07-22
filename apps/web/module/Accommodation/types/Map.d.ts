@@ -3,4 +3,5 @@ export type MapProps = {
   location: string
   coordinates: [Number, Number]
   desc: string
+  locationDescription?: string
 }
