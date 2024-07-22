@@ -1,11 +1,14 @@
+"use client"
 import { Button } from "@/common/components/ui/Button"
 import {
   PropertyType,
   T_AvailableBookingProps,
 } from "../types/AvailableBooking"
 import { TitleSection } from "./TitleSection"
-import Image from "next/image"
 import { T_BookableUnitType } from "@repo/contract"
+import ImageGallery from "./ImageGallery"
+import ImageGalleryModal from "./modals/ImageGalleryModal"
+import { useState } from "react"
 
 const AvailableBooking = ({
   bookableUnits,
@@ -15,6 +18,10 @@ const AvailableBooking = ({
 }: T_AvailableBookingProps) => {
   const handleSelectUnit = (unit: T_BookableUnitType) => {
     onSelectBookableUnit(unit)
+  }
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false)
+  const openModal = () => {
+    setGalleryModalOpen(true)
   }
 
   let title = ""
@@ -42,16 +49,22 @@ const AvailableBooking = ({
     <>
       <TitleSection size="lg" title={title} />
       {bookableUnits.map((unit: T_BookableUnitType) => (
-        <div key={unit.id} className="flex mt-10">
-          <div className="flex-col w-72">
+        <div key={unit.id} className="flex flex-col sm:flex-row w-full mt-10">
+          <div className="flex-1 sm:w-96">
             {unit.photos && unit.photos.length > 0 && (
-              <Image
-                className="rounded-xl relative"
-                src={`/assets/${unit.photos[0]?.key || "default-image-key"}`}
-                width={600}
-                height={300}
-                alt={"Test"}
-              />
+              <>
+                <ImageGallery
+                  images={unit.photos}
+                  openModal={openModal}
+                  isViewModal={true}
+                  showThreeOnly={true}
+                />
+                <ImageGalleryModal
+                  images={unit.photos}
+                  isOpen={galleryModalOpen}
+                  onClose={() => setGalleryModalOpen(false)}
+                />
+              </>
             )}
             <Button
               onClick={() => handleSelectUnit(unit)}
@@ -61,25 +74,21 @@ const AvailableBooking = ({
               {selectedBookableUnit === unit ? "Selected" : "Select"}
             </Button>
           </div>
-          <div className="w-auto mx-10">
-            <div className="flex text-md mb-2 font-bold">{unit.category}</div>
-            <div className="flex text-md mb-2">{unit.title}</div>
-            {unit.bed && <div className="flex text-md mb-2"> {unit.bed}</div>}
+          <div className="flex-1 sm:ml-10 mt-4 sm:mt-0">
+            <div className="text-md mb-2 font-bold">{unit.category}</div>
+            <div className="text-md mb-2">{unit.title}</div>
+            {unit.bed && <div className="text-md mb-2"> {unit.bed}</div>}
             {unit.category === "Bed" && (
-              <div className="flex text-md mb-2">{unit.description}</div>
+              <div className="text-md mb-2">{unit.description}</div>
             )}
             {unit.totalSize && (
-              <div className="flex text-md mb-2">
-                {unit.totalSize} Square meters
-              </div>
+              <div className="text-md mb-2">{unit.totalSize} Square meters</div>
             )}
-            <div className="flex text-md mb-2">
-              {unit.maxGuests} Guests capacity
-            </div>
+            <div className="text-md mb-2">{unit.maxGuests} Guests capacity</div>
             <Button
               variant="link"
               size="link"
-              className="flex text-md mb-2 underline"
+              className="text-md mb-2 underline"
             >
               Show all information &gt;
             </Button>

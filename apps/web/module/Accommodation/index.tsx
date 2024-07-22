@@ -744,6 +744,7 @@ export const SingleView = () => {
                         propertyType={data?.item?.type}
                         onSelectBookableUnit={handleSelectBookableUnit}
                         selectedBookableUnit={selectedBookableUnit}
+                        imagesAvailable={data?.item?.photos}
                       />
                     ) : (
                       <p>No data available for bookable units.</p>
