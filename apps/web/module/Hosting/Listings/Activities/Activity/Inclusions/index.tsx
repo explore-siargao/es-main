@@ -27,7 +27,7 @@ interface RadioProps {
   label: string
 }
 
-const RadioInput: React.FC<RadioProps> = ({
+export const RadioInput: React.FC<RadioProps> = ({
   id,
   value,
   checked,

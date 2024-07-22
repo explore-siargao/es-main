@@ -40,6 +40,11 @@ export const addActivity = async (req: Request, res: Response) => {
       isSegmentBuilderEnabled: false,
       segments: [],
       meetingPoint: location._id,
+      price: {
+        basePrice: 0,
+        exceedPersonPrice: 0,
+      },
+      slots: [],
       status: 'Incomplete',
     }
 
@@ -66,7 +71,12 @@ export const getActivity = async (req: Request, res: Response) => {
   try {
     const getActivity = await dbActivities
       .findOne({ _id: activityId, deletedAt: null })
-      .populate('host')
+      .populate({
+        path: 'host',
+        populate: {
+          path: 'guest',
+        },
+      })
       .populate('meetingPoint')
       .populate('segments')
       .populate('photos')

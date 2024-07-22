@@ -10,13 +10,17 @@ import CheckoutBox from "./components/CheckoutBox"
 import WhereYoullBeDescription from "./components/Map"
 import { Button } from "@/common/components/ui/Button"
 import { Flag, Tag } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import { rentalData } from "@/dummy"
 import Requirements from "./components/Requirements"
 import Inclusions from "./components/Inclusions"
 import SimilarRentals from "./components/SimilarRentals"
+import useGetRentalById from "@/module/Admin/Listings/hooks/useGetRentalById"
+import { useParams } from "next/navigation"
+import { Spinner } from "@/common/components/ui/Spinner"
+import { T_BookingAboutDescriptionProps } from "./types/BookingAboutDescription"
 
 export const ratingSummary = {
   ratings: 5,
@@ -115,121 +119,149 @@ export const userReviews = [
   },
 ]
 
+type T_AboutData = T_BookingAboutDescriptionProps["aboutData"]
+type T_RequirementData = {
+  haveDriverLicense: string | null
+  requiredDeposit: number | null
+}
 export const RentalSingleView = () => {
   const [showModal, setShowModal] = useState(false)
+  const params = useParams<{ rentalId: string }>()
+  const rentalId = String(params.rentalId)
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
   }
-  const requirementData = {
-    minAgeReq: rentalData.details.minAgeReq,
-    requiredDeposit: rentalData.pricing.requiredDeposit,
-  }
-  const aboutData = {
-    category: rentalData.category,
-    bodyType: rentalData.bodyType,
-    transmission: rentalData.transmission,
-    fuel: rentalData.fuel,
-    engineCapacityLiter: rentalData.details.engineCapacityLiter,
-    engineCapacityCc: rentalData.details.engineCapacityCc,
-    condition: rentalData.details.condition,
-    exteriorColor: rentalData.details.exteriorColor,
-    interiorColor: rentalData.details.interiorColor,
-    seatingCapacity: rentalData.details.seatingCapacity,
-    isRegistered: rentalData.details.isRegistered,
-    weightCapacityKg: rentalData.details.weightCapacityKg,
-  }
+
+  const [requirementData, setRequirementData] = useState<T_RequirementData>({
+    haveDriverLicense: "",
+    requiredDeposit: 0,
+  })
+  const [aboutData, setAboutData] = useState<T_AboutData | null>(null)
+
+  const { data, isPending } = useGetRentalById(rentalId)
+
+  useEffect(() => {
+    if (!isPending && data?.item) {
+      setAboutData({
+        category: data?.item?.category,
+        bodyType: data?.item?.bodyType,
+        transmission: data?.item?.transmission,
+        fuel: data?.item?.fuel || "hello",
+        engineCapacityLiter: data?.item?.details?.engineCapacityLiter,
+        engineCapacityCc: data?.item?.details?.engineCapacityCc,
+        condition: data?.item?.details?.condition,
+        exteriorColor: data?.item?.details?.exteriorColor,
+        interiorColor: data?.item?.details?.interiorColor,
+        seatingCapacity: data?.item?.details?.seatingCapacity,
+        isRegistered: data?.item?.details?.isRegistered,
+        weightCapacityKg: data?.item?.details?.weightCapacityKg,
+      })
+
+      setRequirementData({
+        haveDriverLicense: data?.item?.details?.haveDriverLicense,
+        requiredDeposit: data?.item?.pricing?.requiredDeposit,
+      })
+      const date = new Date(data?.item?.host?.createdAt)
+      hostDummy.hostName = data?.item?.host?.guest?.firstName
+      hostDummy.joinedIn = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    }
+  }, [data, isPending])
+
   return (
     <WidthWrapper width="small" className="mt-4 lg:mt-8">
-      <div>
-        <SectionInfo
-          images={rentalData.photos}
-          title={`${rentalData.year} ${rentalData.make} ${rentalData.modelBadge}`}
-        />
-      </div>
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-        <div className="flex-1 md:w-1/2 2xl:w-full">
-          <div className="divide-y">
-            <div className="py-6">
-              <AvatarTitleDescription
-                avatarKey="2.jpg"
-                title={`Hosted by ${rentalData.host}`}
-                subTitle="Pick up - Self drive"
-              />
-            </div>
-            <div className="py-6">
-              <BookingDescription aboutData={aboutData} />
-            </div>
-            <div className="py-6 ">
-              <Inclusions rentalData={rentalData.addOns} />
-            </div>
-            <div className="py-6 ">
-              <Requirements requirementData={requirementData} />
-            </div>
-          </div>
-        </div>
-
-        <div className="md:w-96 md:relative">
-          <div className="md:sticky md:top-6">
-            <CheckoutBox
-              checkoutDesc={{
-                serviceFee: 300,
-                durationCost: 1500,
-                descTotalBeforeTaxes: 300,
-                totalBeforeTaxes: 1800,
-                titlePrice: rentalData.pricing.dayRate,
-                downPayment: rentalData.pricing.requiredDeposit,
-              }}
+      {isPending ? (
+        <Spinner size="md">Loading...</Spinner>
+      ) : (
+        <>
+          <div>
+            <SectionInfo
+              images={data?.item?.photos}
+              title={`${data?.item?.year ? data?.item?.year : ""} ${data?.item?.make ? data?.item?.make : ""} ${data?.item?.modelBadge ? data?.item?.modelBadge : ""}`}
             />
-            <div>
-              <ListingMark
-                icon={<Tag />}
-                title="Lower Price"
-                desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-              />
+          </div>
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
+              <div className="divide-y">
+                <div className="py-6">
+                  <BookingDescription aboutData={aboutData} />
+                </div>
+                <div className="py-6 ">
+                  <Inclusions rentalData={data?.item?.addOns} />
+                </div>
+                <div className="py-6 ">
+                  <Requirements requirementData={requirementData} />
+                </div>
+              </div>
             </div>
 
-            <div className="flex justify-center">
-              <div className="justify-items-center">
-                <Button
-                  variant="ghost"
-                  className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                  size="sm"
-                  onClick={handleOpenModal}
-                >
-                  <Flag className="h-4 w-4" />
-                  Report this listing
-                </Button>
+            <div className="md:w-96 md:relative">
+              <div className="md:sticky md:top-6">
+                <CheckoutBox
+                  checkoutDesc={{
+                    serviceFee: data?.item?.pricing?.dayRate,
+                    durationCost: 1500,
+                    descTotalBeforeTaxes: data?.item?.pricing?.dayRate,
+                    totalBeforeTaxes: 1800,
+                    titlePrice: data?.item?.pricing?.dayRate,
+                    downPayment: data?.item?.pricing?.requiredDeposit,
+                  }}
+                />
+                <div>
+                  <ListingMark
+                    icon={<Tag />}
+                    title="Lower Price"
+                    desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
+                  />
+                </div>
+
+                <div className="flex justify-center">
+                  <div className="justify-items-center">
+                    <Button
+                      variant="ghost"
+                      className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
+                      size="sm"
+                      onClick={handleOpenModal}
+                    >
+                      <Flag className="h-4 w-4" />
+                      Report this listing
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="divide-y border-t">
-        <div className="py-8">
-          <WhereYoullBeDescription mapData={rentalData.location} />
-        </div>
+          <div className="divide-y border-t">
+            <div className="py-8">
+              <WhereYoullBeDescription mapData={data?.item?.location} />
+            </div>
 
-        <div className="py-8">
-          <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
-          />
-        </div>
-        <div className="py-8">
-          <UserReviews reviews={userReviews} />
-        </div>
-        <div className="py-8">
-          <HostInformation {...hostDummy} />
-        </div>
-        <div className="py-8">
-          <SimilarRentals />
-        </div>
-      </div>
-      <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+            <div className="py-8">
+              <RatingSummary
+                ratings={ratingSummary.ratings}
+                reviews={ratingSummary.reviews}
+                categories={ratingSummary.categories}
+              />
+            </div>
+            <div className="py-8">
+              <UserReviews reviews={userReviews} />
+            </div>
+            <div className="py-8">
+              <HostInformation {...hostDummy} />
+            </div>
+            <div className="py-8">
+              <SimilarRentals />
+            </div>
+          </div>
+          <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+        </>
+      )}
     </WidthWrapper>
   )
 }

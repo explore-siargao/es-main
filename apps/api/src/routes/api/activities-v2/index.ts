@@ -29,6 +29,7 @@ import {
   getPhotosByActivityId,
   updatePhoto,
 } from './services/photos'
+import { updatePriceAndSlots } from './services/price-slots'
 
 const router = express.Router()
 
@@ -137,6 +138,16 @@ router.delete(
   isCsrfTokenValid,
   isUserLoggedIn,
   deletePhoto
+)
+
+//price and slots
+router.patch(
+  '/:activityId/price-slots',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostActivityOwner,
+  updatePriceAndSlots
 )
 
 //status
