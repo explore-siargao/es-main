@@ -1,105 +1,38 @@
-import { Button } from "@/common/components/ui/Button"
+import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import React, { useState } from "react"
 import TitleLists from "./TitleLists"
-import SafetyPropertyModal from "../modals/ModalSafetyProperty"
-import CancellationPolicyModal from "../modals/CancellationPolicyModal"
-import HouseRulesModal from "../modals/ModalHouseRules"
-import { T_ThingsToKnowProps } from "../../types/ThingsToKnow"
+import { useParams } from "next/navigation"
+import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
+import { T_Property_Policy } from "@repo/contract"
 
-const ThingsToKnow = ({
-  houseRules,
-  houseRulesModalData,
-  safetyProperties,
-  safetyModalData,
-  cancellationPolicies,
-  cancellationModalData,
-}: T_ThingsToKnowProps) => {
-  const [isHouseRulesModalOpen, setIsHouseRulesModalOpen] = useState(false)
-  const [isSafetyPropertyModalOpen, setIsSafetyPropertyModalOpen] =
-    useState(false)
+const ThingsToKnow = () => {
+  const params = useParams<{ propertyId: string }>()
+  const propertyId = String(params.propertyId)
+  const { data, isPending } = useGetPropertyById(propertyId)
 
-  const [isCancellationPolicyModalOpen, setIsCancellationPolicyModalOpen] =
-    useState(false)
-
-  const openCancellationPolicyModal = () => {
-    setIsCancellationPolicyModalOpen(true)
-  }
-
-  const openHouseRulesModal = () => {
-    setIsHouseRulesModalOpen(true)
-  }
-
-  const openSafetyPropertyModal = () => {
-    setIsSafetyPropertyModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setIsHouseRulesModalOpen(false)
-    setIsSafetyPropertyModalOpen(false)
-    setIsCancellationPolicyModalOpen(false)
+  const groupedPolicies: Record<string, T_Property_Policy[]> = {}
+  if (data?.item?.policies) {
+    data.item.policies.forEach((policy: T_Property_Policy) => {
+      const { category } = policy
+      if (!groupedPolicies[category]) {
+        groupedPolicies[category] = []
+      }
+      groupedPolicies[category]?.push(policy)
+    })
   }
 
   return (
     <>
       <Typography variant="h2" fontWeight="semibold">
-        Things to know
+        Policies
       </Typography>
-      <div className="flex w-full mt-4 mb-6">
-        <div className="w-full md:w-1/3">
-          <TitleLists title="House Rules" rules={houseRules} />
-          <Button
-            className="underline mt-2"
-            variant="link"
-            size="link"
-            onClick={openHouseRulesModal}
-          >
-            Show more &gt;
-          </Button>
-        </div>
-        <div className="w-full md:w-1/3">
-          <TitleLists title="Safety & Property" rules={safetyProperties} />
-          <Button
-            className="underline mt-2"
-            variant="link"
-            size="link"
-            onClick={openSafetyPropertyModal}
-          >
-            Show more &gt;
-          </Button>
-        </div>
-        <div className="w-full md:w-1/3">
-          <TitleLists
-            title="Cancellation policy"
-            rules={cancellationPolicies}
-          />
-          <Button
-            className="underline mt-2"
-            variant="link"
-            size="link"
-            onClick={openCancellationPolicyModal}
-          >
-            Show more &gt;
-          </Button>
-        </div>
+      <div className="flex w-full mt-4 mb-6 gap-4">
+        {Object.entries(groupedPolicies)?.map(([category, items]) => (
+          <div key={category} className="w-full md:w-1/3">
+            <TitleLists title={category} policies={items} maxVisibleItems={3} />
+          </div>
+        ))}
       </div>
-      <HouseRulesModal
-        onClose={closeModal}
-        isOpen={isHouseRulesModalOpen}
-        groupRules={houseRulesModalData}
-      />
-
-      <SafetyPropertyModal
-        onClose={closeModal}
-        isOpen={isSafetyPropertyModalOpen}
-        groupSafetyProperty={safetyModalData}
-      />
-
-      <CancellationPolicyModal
-        onClose={closeModal}
-        isOpen={isCancellationPolicyModalOpen}
-        groupCancellationPolicy={cancellationModalData}
-      />
     </>
   )
 }

@@ -2,7 +2,7 @@
 import PesoSign from "@/common/components/PesoSign"
 import { Button } from "@/common/components/ui/Button"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import { useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import useCheckInOutDateStore from "@/module/Accommodation/store/useCheckInOutDateStore"
 import Asterisk from "@/common/components/ui/Asterisk"
 import { format } from "date-fns"
@@ -14,6 +14,9 @@ import CheckoutBreakdownModal from "@/module/Accommodation/components/modals/Che
 import CheckInOutModal from "@/module/Accommodation/components/modals/CheckInOutModal"
 import CheckoutMoreInfoModal from "@/module/Accommodation/components/modals/CheckoutMoreInfoModal"
 import GuestAddModal from "@/module/Accommodation/components/modals/GuestAddModal"
+import { Option, Select } from "@/common/components/ui/Select"
+import { RadioInput } from "@/module/Hosting/Listings/Activities/Activity/Inclusions"
+import ScheduleDateModal from "./ScheduleDataModal"
 
 interface ICheckout {
   id?: number
@@ -22,13 +25,15 @@ interface ICheckout {
   descTotalBeforeTaxes: number
   totalBeforeTaxes: number
   titlePrice: number
+  pricePerAdditionalPerson: number
 }
 
 interface CheckoutProcessProps {
   checkoutDesc: ICheckout
+  timeSlot: any
 }
 
-const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
+const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
@@ -37,8 +42,55 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
+  const [bookType, setBookType] = useState<string>("")
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
+  const [selectedTime, setSelectedTime] = useState<string | number | null>(null)
   const totalGuest = adults + children + infants
+  let filteredTimeSlots = []
+  if (dateRange.from) {
+    if (Array.isArray(timeSlot)) {
+      const slot = timeSlot.find((slot: { date: Date }) => {
+        const slotDate = new Date(slot.date)
+        dateRange?.from?.setHours(0, 0, 0, 0)
+        const fromDateStr = dateRange?.from?.toISOString().slice(0, 10)
+        const slotDateStr = slotDate.toISOString().slice(0, 10)
+        return slotDateStr === fromDateStr
+      })
+
+      filteredTimeSlots =
+        slot?.slots?.filter(
+          (slot: {
+            bookType: string
+            maxCapacity: number
+            availableSlotPerson: number
+          }) => {
+            if (bookType === "private") {
+              return slot.bookType !== "private" && slot.bookType !== "joiners"
+            } else if (bookType === "joiners") {
+              return (
+                slot.bookType !== "private" &&
+                (slot.availableSlotPerson > 0 || !slot.availableSlotPerson)
+              )
+            } else {
+              return true
+            }
+          }
+        ) || []
+    }
+  }
+
+  const maximumCapacity = filteredTimeSlots.find(
+    (slot: { id: string }) => slot.id === selectedTime
+  )?.maxCapacity
+
+  const availableSlotPerson = filteredTimeSlots.find(
+    (slot: { id: string }) => slot.id === selectedTime
+  )?.availableSlotPerson
+
+  useEffect(() => {
+    setSelectedTime(null)
+  }, [dateRange])
+
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
@@ -46,10 +98,28 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         <small className="font-light"> person</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
+        <div className="flex space-x-2 my-2">
+          <RadioInput
+            id="bookType"
+            value="joiners"
+            label="Joiners"
+            checked={bookType === "joiners"}
+            onChange={() => setBookType("joiners")}
+          />
+          <RadioInput
+            id="bookType"
+            value="private"
+            label="Private"
+            checked={bookType === "private"}
+            onChange={() => setBookType("private")}
+          />
+        </div>
         <div className="grid grid-cols-2 gap-3">
           <div
             className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() => setCheckInOutCalendarModalIsOpen(true)}
+            onClick={() =>
+              bookType ? setCheckInOutCalendarModalIsOpen(true) : null
+            }
           >
             <label
               htmlFor="check-in"
@@ -63,24 +133,30 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
                 : "Add date"}
             </span>
           </div>
-          <div
-            className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() => setCheckInOutCalendarModalIsOpen(true)}
+
+          <Select
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+              setSelectedTime(event.target.value)
+            }
+            disabled={!bookType}
+            label={`Start time *`}
           >
-            <label
-              htmlFor="checkout"
-              className="block text-xs font-medium text-text-900 hover:cursor-pointer"
-            >
-              Start time <Asterisk />
-            </label>
-            <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-              {dateRange.to ? format(dateRange.to, "hh:mm:ss a") : "Add time"}
-            </span>
-          </div>
+            {selectedTime ? null : (
+              <Option key="__empty__" value="">
+                Select start time
+              </Option>
+            )}
+
+            {filteredTimeSlots.map((timeSlot: any) => (
+              <Option key={timeSlot.id} value={timeSlot.id}>
+                {timeSlot.time}
+              </Option>
+            ))}
+          </Select>
         </div>
         <div
           className="relative rounded-md px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-          onClick={() => setIsGuestsModalOpen(true)}
+          onClick={() => (selectedTime ? setIsGuestsModalOpen(true) : null)}
         >
           <label
             htmlFor="checkout"
@@ -92,6 +168,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
             {`${totalGuest} guest${totalGuest > 1 ? "s" : ""}`}
           </span>
         </div>
+
         <Button
           variant="primary"
           onClick={() =>
@@ -112,12 +189,38 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           </Button>
           <div>{formatCurrency(checkoutDesc.serviceFee, "Philippines")}</div>
         </div>
+        {totalGuest > maximumCapacity ? (
+          <div className="flex justify-between items-center mt-2">
+            <Button
+              variant={"ghost"}
+              className="underline pl-0"
+              onClick={() => setIsMoreInfoModalOpen(true)}
+            >
+              Exceed guests additional fee
+            </Button>
+            <div>
+              {formatCurrency(
+                (totalGuest - maximumCapacity) *
+                  checkoutDesc.pricePerAdditionalPerson,
+                "Philippines"
+              )}
+            </div>
+          </div>
+        ) : null}
 
         <div className="border-b mt-5 mb-5"></div>
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
           <div>
-            {formatCurrency(checkoutDesc.totalBeforeTaxes, "Philippines")}
+            {formatCurrency(
+              checkoutDesc.titlePrice * totalGuest +
+                (totalGuest > maximumCapacity
+                  ? (totalGuest - maximumCapacity) *
+                    checkoutDesc.pricePerAdditionalPerson
+                  : 0) +
+                checkoutDesc.serviceFee,
+              "Philippines"
+            )}
           </div>
         </div>
       </div>
@@ -129,13 +232,18 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         isOpen={isMoreInfoModalOpen}
         onClose={() => setIsMoreInfoModalOpen(false)}
       />
-      <CheckInOutModal
+      <ScheduleDateModal
         isOpen={checkInOutCalendarModalIsOpen}
         onClose={() => setCheckInOutCalendarModalIsOpen(false)}
       />
       <GuestAddModal
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
+        maximumCapacity={
+          bookType && availableSlotPerson
+            ? availableSlotPerson
+            : maximumCapacity
+        }
       />
     </div>
   )

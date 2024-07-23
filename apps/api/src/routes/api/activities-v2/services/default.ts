@@ -162,44 +162,27 @@ export const updateItinerary = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    if (
-      !activity.isSegmentBuilderEnabled &&
-      isSegmentBuilderEnabled &&
-      segments.length > 1
-    ) {
-      await dbActivities.findByIdAndUpdate(
-        activityId,
-        {
-          $set: {
-            segments: segments,
-            isSegmentBuilderEnabled: isSegmentBuilderEnabled,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
-    } else if (
-      !activity.isSegmentBuilderEnabled &&
-      isSegmentBuilderEnabled &&
-      segments.length < 2
-    ) {
-      return res.json(
-        response.error({
-          message: 'Please add at least 2 item in the itinerary builder',
-        })
-      )
-    } else if (activity.isSegmentBuilderEnabled && !isSegmentBuilderEnabled) {
-      await dbActivities.findByIdAndUpdate(
-        activityId,
-        {
-          $set: {
-            isSegmentBuilderEnabled: isSegmentBuilderEnabled,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
+    if (isSegmentBuilderEnabled) {
+      if (segments.length < 2) {
+        return res.json(
+          response.error({
+            message: 'Please add at least 2 items in the itinerary builder',
+          })
+        )
+      }
     }
+
+    await dbActivities.findByIdAndUpdate(
+      activityId,
+      {
+        $set: {
+          segments: segments,
+          isSegmentBuilderEnabled: isSegmentBuilderEnabled,
+          updatedAt: Date.now(),
+        },
+      },
+      { new: true }
+    )
 
     if (
       activity.status === 'Incomplete' &&
