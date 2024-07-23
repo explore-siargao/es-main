@@ -46,6 +46,7 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const [selectedTime, setSelectedTime] = useState<string | number | null>(null)
   const totalGuest = adults + children + infants
+
   let filteredTimeSlots = []
   if (dateRange.from) {
     if (Array.isArray(timeSlot)) {

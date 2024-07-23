@@ -714,131 +714,122 @@ export const SingleView = () => {
       {isPending ? (
         <Spinner>Loading...</Spinner>
       ) : (
-        <>
-          <WidthWrapper width="small" className="mt-4 lg:mt-8">
-            <SectionInfo
-              images={data?.item?.photos}
-              title={data?.item?.title}
-            />
+        <WidthWrapper width="small" className="mt-4 lg:mt-8">
+          <SectionInfo images={data?.item?.photos} title={data?.item?.title} />
 
-            <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-              <div className="flex-1 md:w-1/2 2xl:w-full">
-                <div className="divide-y">
-                  <div className="pb-6">
-                    <SummaryInfo />
-                  </div>
-                  <div className="py-6">
-                    <BookingDescription {...description} />
-                  </div>
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
+              <div className="divide-y">
+                <div className="pb-6">
+                  <SummaryInfo />
+                </div>
+                <div className="py-6">
+                  <BookingDescription {...description} />
+                </div>
 
-                  <div className="py-6 ">
-                    <PlaceOffers
-                      offers={data?.item?.facilities}
-                      group={data?.item?.facilities}
+                <div className="py-6 ">
+                  <PlaceOffers
+                    offers={data?.item?.facilities}
+                    group={data?.item?.facilities}
+                  />
+                </div>
+                <div className="py-6">
+                  {data?.item?.bookableUnits?.length > 0 ? (
+                    <AvailableBooking
+                      bookableUnits={data?.item?.bookableUnits}
+                      propertyType={data?.item?.type}
+                      onSelectBookableUnit={handleSelectBookableUnit}
+                      selectedBookableUnit={selectedBookableUnit}
+                      imagesAvailable={data?.item?.photos}
                     />
-                  </div>
-                  <div className="py-6">
-                    {data?.item?.bookableUnits?.length > 0 ? (
-                      <AvailableBooking
-                        bookableUnits={data?.item?.bookableUnits}
-                        propertyType={data?.item?.type}
-                        onSelectBookableUnit={handleSelectBookableUnit}
-                        selectedBookableUnit={selectedBookableUnit}
-                      />
-                    ) : (
-                      <p>No data available for bookable units.</p>
-                    )}
-                  </div>
+                  ) : (
+                    <p>No data available for bookable units.</p>
+                  )}
                 </div>
               </div>
-              <div className="md:w-96 md:relative">
-                <div className="md:sticky md:top-6">
-                  {bookableUnit && (
-                    <CheckoutBox
-                      checkoutDesc={{
-                        pricePerAdditionalPerson:
-                          bookableUnit.unitPrice?.pricePerAdditionalPerson || 0,
-                        serviceFee: bookableUnit ? 1000 : 0,
-                        durationCost: bookableUnit
-                          ? bookableUnit.unitPrice?.baseRate * 5
-                          : 0,
-                        descTotalBeforeTaxes: 3000,
-                        totalBeforeTaxes: 126000,
-                        titlePrice: bookableUnit.unitPrice?.baseRate || 0,
-                      }}
-                      isSelectedBookableUnit={bookableUnit}
-                    />
-                  )}
-                  <div>
-                    <ListingMark
-                      icon={<Tag />}
-                      title="Lower Price"
-                      desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-                    />
-                  </div>
+            </div>
+            <div className="md:w-96 md:relative">
+              <div className="md:sticky md:top-6">
+                {bookableUnit && (
+                  <CheckoutBox
+                    checkoutDesc={{
+                      pricePerAdditionalPerson:
+                        bookableUnit.unitPrice?.pricePerAdditionalPerson || 0,
+                      serviceFee: bookableUnit ? 1000 : 0,
+                      durationCost: bookableUnit
+                        ? bookableUnit.unitPrice?.baseRate * 5
+                        : 0,
+                      descTotalBeforeTaxes: 3000,
+                      totalBeforeTaxes: 126000,
+                      titlePrice: bookableUnit.unitPrice?.baseRate || 0,
+                    }}
+                    isSelectedBookableUnit={bookableUnit}
+                  />
+                )}
+                <div>
+                  <ListingMark
+                    icon={<Tag />}
+                    title="Lower Price"
+                    desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
+                  />
+                </div>
 
-                  <div className="flex justify-center">
-                    <div className="justify-items-center">
-                      <Button
-                        variant="ghost"
-                        className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                        size="sm"
-                        onClick={handleOpenModal}
-                      >
-                        <Flag className="h-4 w-4" />
-                        Report this listing
-                      </Button>
-                    </div>
+                <div className="flex justify-center">
+                  <div className="justify-items-center">
+                    <Button
+                      variant="ghost"
+                      className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
+                      size="sm"
+                      onClick={handleOpenModal}
+                    >
+                      <Flag className="h-4 w-4" />
+                      Report this listing
+                    </Button>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="divide-y border-t">
-              <div className="py-8">
-                <RatingSummary
-                  ratings={ratingSummary.ratings}
-                  reviews={ratingSummary.reviews}
-                  categories={ratingSummary.categories}
-                />
-              </div>
-              <div className="py-8">
-                <UserReviews reviews={userReviews} />
-              </div>
-              <div className="py-8">
-                {data?.item?.location &&
-                  typeof latitude === "number" &&
-                  typeof longitude === "number" && (
-                    <WhereYoullBeDescription
-                      location={data.item.location}
-                      coordinates={[latitude, longitude]}
-                      desc={data.item.location.howToGetThere}
-                      locationDescription={data?.item?.location.howToGetThere}
-                    />
-                  )}
-              </div>
-              <div className="py-8">
-                <HostInformation
-                  hostName={`${offerBy?.offerBy?.guest?.firstName || ""} ${offerBy?.offerBy?.guest?.middleName || ""} ${offerBy?.offerBy?.guest?.lastName || ""}`}
-                  hostProfilePic={hostDummy.hostProfilePic}
-                  joinedIn={formattedDate}
-                  countReviews={0}
-                  rules={hostDummy.rules}
-                  responseRate={0}
-                  responseTime={""}
-                />
-              </div>
-              <div className="pt-8">
-                <ThingsToKnow />
-              </div>
+          </div>
+          <div className="divide-y border-t">
+            <div className="py-8">
+              <RatingSummary
+                ratings={ratingSummary.ratings}
+                reviews={ratingSummary.reviews}
+                categories={ratingSummary.categories}
+              />
             </div>
-            {/* <UnitDetailsModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              onConfirm={handleConfirm}
-            /> */}
-            <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-          </WidthWrapper>
-        </>
+            <div className="py-8">
+              <UserReviews reviews={userReviews} />
+            </div>
+            <div className="py-8">
+              {data?.item?.location &&
+                typeof latitude === "number" &&
+                typeof longitude === "number" && (
+                  <WhereYoullBeDescription
+                    location={data.item.location}
+                    coordinates={[latitude, longitude]}
+                    desc={data.item.location.howToGetThere}
+                    locationDescription={data?.item?.location.howToGetThere}
+                  />
+                )}
+            </div>
+            <div className="py-8">
+              <HostInformation
+                hostName={`${offerBy?.offerBy?.guest?.firstName || ""} ${offerBy?.offerBy?.guest?.middleName || ""} ${offerBy?.offerBy?.guest?.lastName || ""}`}
+                hostProfilePic={hostDummy.hostProfilePic}
+                joinedIn={formattedDate}
+                countReviews={0}
+                rules={hostDummy.rules}
+                responseRate={0}
+                responseTime={""}
+              />
+            </div>
+            <div className="pt-8">
+              <ThingsToKnow />
+            </div>
+          </div>
+          <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+        </WidthWrapper>
       )}
     </>
   )
