@@ -59,7 +59,7 @@ const Insights = () => {
           value={month}
           onChange={(e) => setMonth(e.target.value)}
         >
-          <Option value={"all"}>All</Option>
+          <Option value={"All"}>All</Option>
           <Option value={"Jan"}>January</Option>
           <Option value={"Feb"}>February</Option>
           <Option value={"Mar"}>March</Option>

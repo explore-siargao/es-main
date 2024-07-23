@@ -27,7 +27,7 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
     data: filteredPaymentHistory,
     isPending: filteredPaymentHistoryIsPending,
   } = useGetFilteredPaymentHistory(category, listing, year, month)
-
+  console.log(filteredPaymentHistory)
   const {
     data: paymentHistoryReport,
     isPending: paymentHistoryReportIsPending,
@@ -69,6 +69,13 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
         filteredPaymentHistory[0]?.completed,
     },
   ]
+
+  const filterAllData =
+    filteredPaymentHistory?.map((entry) => ({
+      name: entry.date,
+      cancelled: entry.cancelled,
+      completed: entry.completed,
+    })) ?? []
 
   const summaryData = {
     labels: ["Completed", "Cancelled"],
@@ -131,10 +138,10 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
-          {/* <div className="mt-3">
-            <Tabs tabs={paymentHistoryTabs} />
-          </div> */}
-          <Graph graphData={mockData} />
+          <Graph
+            graphData={month === "All" ? filterAllData : mockData}
+            isFilterAll={month === "All" ? true : false}
+          />
         </div>
         <div className="col-span-1 relative">
           <OverAllSummary
