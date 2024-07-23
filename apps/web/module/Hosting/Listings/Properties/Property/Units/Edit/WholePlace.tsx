@@ -9,6 +9,7 @@ import {
   LucidePalmtree,
   LucideSparkles,
   MinusIcon,
+  Plus,
   PlusIcon,
 } from "lucide-react"
 import Link from "next/link"
@@ -31,6 +32,7 @@ import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Spinner } from "@/common/components/ui/Spinner"
+import AddBedroomModal from "./components/AddBedroomModal"
 
 type T_BedRooms = {
   bedRoomName: string
@@ -45,6 +47,7 @@ type T_WholePlaceUnit = {
   bathrooms: number
   typeCount: number
   amenities: T_Property_Amenity[]
+  exactUnitCount: number
 }
 
 type Prop = {
@@ -57,6 +60,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const wholePlaceId = String(params.wholePlaceId)
   const [isSavings, setIsSavings] = useState(false)
+  const [isAddBedroomModalOpen, setIsAddBedroomModalOpen] = useState(false)
   const queryClient = useQueryClient()
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const [bedCount, setBedCount] = useState<number>(
@@ -65,6 +69,10 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
+  )
+
+  const [exactUnitCount, setExactUnitCount] = useState<number>(
+    Number(data?.item?.numExactUnit) || 0
   )
 
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
@@ -258,7 +266,7 @@ const WholePlace = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-4 gap-x-6">
+            {/* <div className="grid grid-cols-4 gap-x-6">
               <div>
                 <Input
                   label="Name"
@@ -285,9 +293,35 @@ const WholePlace = ({ pageType }: Prop) => {
                   required
                 />
               </div>
+            </div> */}
+            <Typography variant="h4" fontWeight="semibold" className="mt-4">
+                 Where can guests sleep?
+                </Typography>
+                <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
+                 How many comfortable living spaces does this unit have? Click to add bed type.
+                </Typography>
+                <div className="grid grid-cols-4 gap-x-6">
+                <div>
+                <Input
+                  label="Placeholder"
+                  id="size"
+                  type="number"
+                  disabled={isPending || isFetching}
+                  defaultValue={data?.item?.totalSize}
+                  {...register("size", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+              </div>
+              
+            
             </div>
+            <Button variant={"ghost"} onClick={() => setIsAddBedroomModalOpen(true)} className="my-2 flex underline">
+            <Plus/> Add bedroom
+            </Button>
             <div className="grid grid-cols-4 mt-4 gap-x-6">
-              <div>
+              {/* <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
                   Bedrooms / Sleeping Space
                 </Typography>
@@ -350,10 +384,10 @@ const WholePlace = ({ pageType }: Prop) => {
                     />
                   </div>
                 ))}
-              </div>
+              </div> */}
               <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
-                  Number of Bathrooms
+                  How many bathrooms are in this unit?
                 </Typography>
                 <div className="flex rounded-md">
                   <button
@@ -396,7 +430,7 @@ const WholePlace = ({ pageType }: Prop) => {
                   </button>
                 </div>
               </div>
-              <div>
+              {/* <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
                   How many of this type you have?
                 </Typography>
@@ -436,9 +470,93 @@ const WholePlace = ({ pageType }: Prop) => {
                     <PlusIcon className="h-3 w-3" />
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
+            <Typography variant="h4" fontWeight="semibold" className="mt-4">
+                  How big is this unit?
+                </Typography>
+                <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
+                 Enter the unit size in square meters, we will automatically convert to square foot
+                </Typography>
+                <div className="grid grid-cols-4 gap-x-6">
+                <div>
+                <Input
+                  label="Sqm"
+                  id="size"
+                  type="number"
+                  disabled={isPending || isFetching}
+                  defaultValue={data?.item?.totalSize}
+                  {...register("size", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+              </div>
+              <div>
+                <Input
+                  label="Ft"
+                  id="name"
+                  type="number"
+                  disabled
+                  defaultValue={data?.item?.title}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+              </div>
+            
+            </div>
+            <div>
+                <Typography variant="h4" fontWeight="semibold" className="mt-4">
+                  How many of this exact unit do you have?
+                </Typography>
+                <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
+                  Identical amenities, bedrooms, bathrooms, etc.
+                </Typography>
+                <div className="flex rounded-md">
+                  <button
+                    disabled={isPending || isFetching}
+                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                    type="button"
+                    onClick={() => {
+                      exactUnitCount > 0 &&
+                      setExactUnitCount(
+                          (exactUnitCount: any) => exactUnitCount - 1
+                        )
+                    }}
+                  >
+                    <MinusIcon className="h-3 w-3" />
+                  </button>
+                  <input
+                    disabled={isPending || isFetching}
+                    type="number"
+                    id="exactUnit"
+                    {...register("exactUnitCount")}
+                    className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                    value={exactUnitCount}
+                    min={0}
+                    onChange={(e) => {
+                      const val = Number(e.target.value)
+                      setExactUnitCount(val)
+                    }}
+                  />
+                  <button
+                    disabled={isPending || isFetching}
+                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                    type="button"
+                    onClick={() =>
+                      setExactUnitCount(
+                        (exactUnitCount: number) => exactUnitCount + 1
+                      )
+                    }
+                  >
+                    <PlusIcon className="h-3 w-3" />
+                  </button>
+                </div>
+              </div>
             <hr className="mt-6 mb-4" />
+      
             <Photos />
             <hr className="mt-6 mb-4" />
             <Typography variant="h4" fontWeight="semibold" className="mb-3">
@@ -481,8 +599,14 @@ const WholePlace = ({ pageType }: Prop) => {
             </div>
           </form>
         </div>
+       
       )}
+        <AddBedroomModal
+           isOpen={isAddBedroomModalOpen}
+           onClose={() => setIsAddBedroomModalOpen(false)}
+         />
     </>
+    
   )
 }
 
