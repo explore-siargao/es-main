@@ -1,10 +1,9 @@
 "use client"
-import React, { useState } from "react"
+import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import OverAllSummary from "./components/OverAllSummary"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import Graph from "@/module/Hosting/PaymentHistory/Graph"
-import useGetPaymentHistoryGraph from "./hooks/useGetPaymentHistoryGraph"
 import useGetFilteredPaymentHistory from "./hooks/useGetFilteredPaymentHistory"
 import useGetPaymentHistoryReport from "./hooks/useGetPaymentHistoryReport"
 
@@ -21,37 +20,15 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
   year,
   month,
 }) => {
-  const { isPending, data: overAllSummaryDataGraph } =
-    useGetPaymentHistoryGraph("all")
   const {
     data: filteredPaymentHistory,
     isPending: filteredPaymentHistoryIsPending,
   } = useGetFilteredPaymentHistory(category, listing, year, month)
   console.log(filteredPaymentHistory)
-  const {
-    data: paymentHistoryReport,
-    isPending: paymentHistoryReportIsPending,
-  } = useGetPaymentHistoryReport(category, listing)
-  // const summaryData = {
-  //   labels: ["Completed", "Cancelled"],
-  //   values: [
-  //     [
-  //       formatCurrency(
-  //         !isPending && overAllSummaryDataGraph?.item?.completed,
-  //         "Philippines"
-  //       ) || null,
-  //       formatCurrency(
-  //         !isPending && overAllSummaryDataGraph?.item?.cancelled,
-  //         "Philippines"
-  //       ) || null,
-  //     ],
-  //   ],
-  //   total:
-  //     formatCurrency(
-  //       !isPending && overAllSummaryDataGraph?.item?.total,
-  //       "Philippines"
-  //     ) || null,
-  // }
+  const { data: paymentHistoryReport } = useGetPaymentHistoryReport(
+    category,
+    listing
+  )
 
   const mockData = [
     {
@@ -140,7 +117,7 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
         <div className="lg:col-span-3">
           <Graph
             graphData={month === "All" ? filterAllData : mockData}
-            isFilterAll={month === "All" ? true : false}
+            isFilterAll={month === "All"}
           />
         </div>
         <div className="col-span-1 relative">

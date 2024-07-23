@@ -11,7 +11,7 @@ import {
 } from "recharts"
 import formatCurrency from "@/common/helpers/formatCurrency"
 
-type Value = string | number | null | false;
+type Value = string | number | null | false
 interface Data {
   name: string
   value?: Value
@@ -21,7 +21,7 @@ interface Data {
 
 interface GraphProps {
   graphData: Data[]
-  isFilterAll?: boolean
+  isFilterAll: boolean
 }
 
 const Graph: React.FC<GraphProps> = ({ graphData, isFilterAll }) => {
