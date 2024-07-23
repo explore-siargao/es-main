@@ -74,6 +74,7 @@ const AvailableBooking = ({
               {selectedBookableUnit === unit ? "Selected" : "Select"}
             </Button>
           </div>
+
           <div className="flex-1 sm:ml-10 mt-4 sm:mt-0">
             <div className="text-md mb-2 font-bold">{unit.category}</div>
             <div className="text-md mb-2">{unit.title}</div>

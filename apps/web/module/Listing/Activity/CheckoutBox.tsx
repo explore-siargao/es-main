@@ -46,16 +46,20 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const [selectedTime, setSelectedTime] = useState<string | number | null>(null)
   const totalGuest = adults + children + infants
-  const filteredTimeSlots = dateRange.from
-    ? timeSlot
-        .find((slot: { date: Date }) => {
-          const slotDate = new Date(slot.date)
-          dateRange?.from?.setHours(0, 0, 0, 0)
-          const fromDateStr = dateRange?.from?.toISOString().slice(0, 10)
-          const slotDateStr = slotDate.toISOString().slice(0, 10)
-          return slotDateStr === fromDateStr
-        })
-        ?.slots.filter(
+
+  let filteredTimeSlots = []
+  if (dateRange.from) {
+    if (Array.isArray(timeSlot)) {
+      const slot = timeSlot.find((slot: { date: Date }) => {
+        const slotDate = new Date(slot.date)
+        dateRange?.from?.setHours(0, 0, 0, 0)
+        const fromDateStr = dateRange?.from?.toISOString().slice(0, 10)
+        const slotDateStr = slotDate.toISOString().slice(0, 10)
+        return slotDateStr === fromDateStr
+      })
+
+      filteredTimeSlots =
+        slot?.slots?.filter(
           (slot: {
             bookType: string
             maxCapacity: number
@@ -73,7 +77,8 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
             }
           }
         ) || []
-    : []
+    }
+  }
 
   const maximumCapacity = filteredTimeSlots.find(
     (slot: { id: string }) => slot.id === selectedTime

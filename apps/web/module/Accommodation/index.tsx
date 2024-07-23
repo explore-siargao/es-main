@@ -789,6 +789,7 @@ export const SingleView = () => {
                 </div>
               </div>
             </div>
+
           </div>
           <div className="divide-y border-t">
             <div className="py-8">
@@ -828,11 +829,6 @@ export const SingleView = () => {
               <ThingsToKnow />
             </div>
           </div>
-          {/* <UnitDetailsModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              onConfirm={handleConfirm}
-            /> */}
           <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
         </WidthWrapper>
       )}

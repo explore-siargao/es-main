@@ -445,6 +445,7 @@ export const ActivitySingleView = () => {
             <div className="md:w-96 md:relative">
               <div className="md:sticky md:top-6">
                 <CheckoutBox
+                  //@ts-ignore
                   checkoutDesc={{
                     serviceFee: 1000,
                     durationCost: 125000,
