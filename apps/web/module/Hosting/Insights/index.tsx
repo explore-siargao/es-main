@@ -14,10 +14,8 @@ const Insights = () => {
   const [listing, setListing] = useState("Mountain top house")
   const [year, setYear] = useState("2024")
   const [month, setMonth] = useState("All")
-
   const { data: filteredInsights, isPending: filteredInsightsIsPending } =
     useGetInsights(category, listing, year, month)
-  console.log(filteredInsights)
   return (
     <div className="mt-20">
       <Tabs tabs={insightsTabs} />

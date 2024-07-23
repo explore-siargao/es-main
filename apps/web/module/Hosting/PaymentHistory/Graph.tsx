@@ -11,11 +11,12 @@ import {
 } from "recharts"
 import formatCurrency from "@/common/helpers/formatCurrency"
 
+type Value = string | number | null | false;
 interface Data {
   name: string
-  value?: string | number | null | undefined | false
-  cancelled?: string | number | null | undefined | false
-  completed?: string | number | null | undefined | false
+  value?: Value
+  cancelled?: Value
+  completed?: Value
 }
 
 interface GraphProps {
