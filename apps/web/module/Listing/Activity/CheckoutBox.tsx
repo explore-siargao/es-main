@@ -46,38 +46,39 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const [selectedTime, setSelectedTime] = useState<string | number | null>(null)
   const totalGuest = adults + children + infants
-  const filteredTimeSlots = dateRange.from
-    ? Array.isArray(timeSlot)
-      ? timeSlot
-          .find((slot: { date: Date }) => {
-            const slotDate = new Date(slot.date)
-            dateRange?.from?.setHours(0, 0, 0, 0)
-            const fromDateStr = dateRange?.from?.toISOString().slice(0, 10)
-            const slotDateStr = slotDate.toISOString().slice(0, 10)
-            return slotDateStr === fromDateStr
-          })
-          ?.slots.filter(
-            (slot: {
-              bookType: string
-              maxCapacity: number
-              availableSlotPerson: number
-            }) => {
-              if (bookType === "private") {
-                return (
-                  slot.bookType !== "private" && slot.bookType !== "joiners"
-                )
-              } else if (bookType === "joiners") {
-                return (
-                  slot.bookType !== "private" &&
-                  (slot.availableSlotPerson > 0 || !slot.availableSlotPerson)
-                )
-              } else {
-                return true
-              }
+  let filteredTimeSlots = []
+  if (dateRange.from) {
+    if (Array.isArray(timeSlot)) {
+      const slot = timeSlot.find((slot: { date: Date }) => {
+        const slotDate = new Date(slot.date)
+        dateRange?.from?.setHours(0, 0, 0, 0)
+        const fromDateStr = dateRange?.from?.toISOString().slice(0, 10)
+        const slotDateStr = slotDate.toISOString().slice(0, 10)
+        return slotDateStr === fromDateStr
+      })
+
+      if (slot && slot.slots) {
+        filteredTimeSlots = slot.slots.filter(
+          (slot: {
+            bookType: string
+            maxCapacity: number
+            availableSlotPerson: number
+          }) => {
+            if (bookType === "private") {
+              return slot.bookType !== "private" && slot.bookType !== "joiners"
+            } else if (bookType === "joiners") {
+              return (
+                slot.bookType !== "private" &&
+                (slot.availableSlotPerson > 0 || !slot.availableSlotPerson)
+              )
+            } else {
+              return true
             }
-          ) || []
-      : []
-    : []
+          }
+        )
+      }
+    }
+  }
 
   const maximumCapacity = filteredTimeSlots.find(
     (slot: { id: string }) => slot.id === selectedTime
