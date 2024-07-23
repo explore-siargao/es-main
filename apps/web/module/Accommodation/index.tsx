@@ -789,7 +789,6 @@ export const SingleView = () => {
                 </div>
               </div>
             </div>
-
           </div>
           <div className="divide-y border-t">
             <div className="py-8">
