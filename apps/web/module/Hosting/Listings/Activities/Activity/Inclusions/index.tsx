@@ -434,7 +434,7 @@ const Inclusions = ({ pageType }: Prop) => {
                     <Typography className="text-sm"> Add inclusion</Typography>
                   </button>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   List everything that is included in the price so customers
                   understand the value for money of your activity. Add a new
                   inclusion for each one.

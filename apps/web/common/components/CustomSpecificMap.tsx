@@ -1,10 +1,11 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { MapContainer, TileLayer, Marker } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
 import { Icon, LatLngTuple } from "leaflet"
 import { WEB_URL } from "../constants/ev"
+
 interface SpecificMapProps {
   center: [number, number]
   mapHeight: string
@@ -35,6 +36,19 @@ const CustomSpecificMap = ({
     setCoordinates(newCoordinates.lat, newCoordinates.lng)
   }
 
+  const handleMapClick = (event: any) => {
+    const newCoordinates = event.latlng
+    setPosition([newCoordinates.lat, newCoordinates.lng])
+    setCoordinates(newCoordinates.lat, newCoordinates.lng)
+  }
+
+  const MapClickHandler = () => {
+    useMapEvents({
+      click: handleMapClick,
+    })
+    return null
+  }
+
   const [showMap, setShowMap] = useState(false)
   const HandleResize = () => {
     setShowMap(false)
@@ -62,6 +76,7 @@ const CustomSpecificMap = ({
               zIndex: 30,
             }}
           >
+            <MapClickHandler />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

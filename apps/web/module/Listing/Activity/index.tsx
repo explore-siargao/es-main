@@ -452,7 +452,9 @@ export const ActivitySingleView = () => {
                     descTotalBeforeTaxes: 3000,
                     totalBeforeTaxes: 2000,
                     titlePrice: 1000,
+                    pricePerAdditionalPerson: 0,
                   }}
+                  timeSlot={undefined}
                 />
 
                 <div className="flex justify-center">
@@ -512,7 +514,6 @@ export const ActivitySingleView = () => {
               )}
             </div>
           </div>
-
           <div className="md:w-96 md:relative">
             <div className="md:sticky md:top-6">
               <CheckoutBox
