@@ -57,8 +57,8 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
         return slotDateStr === fromDateStr
       })
 
-      if (slot && slot.slots) {
-        filteredTimeSlots = slot.slots.filter(
+      filteredTimeSlots =
+        slot?.slots?.filter(
           (slot: {
             bookType: string
             maxCapacity: number
@@ -75,8 +75,7 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
               return true
             }
           }
-        )
-      }
+        ) || []
     }
   }
 
