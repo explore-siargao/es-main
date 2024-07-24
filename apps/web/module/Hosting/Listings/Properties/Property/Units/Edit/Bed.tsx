@@ -5,6 +5,7 @@ import {
   LucideBath,
   LucideChevronLeft,
   LucideCookingPot,
+  LucideInfo,
   LucideLayoutList,
   LucidePalmtree,
   LucideSparkles,
@@ -14,7 +15,7 @@ import {
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
 import { useEffect, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import toast from "react-hot-toast"
 import EditPhotoModal from "../../../../components/modals/EditPhotoModal"
 import usePhotoStore from "../../../../store/usePhotoStore"
@@ -29,16 +30,19 @@ import Photos from "./components/Photos"
 import { Option, Select } from "@/common/components/ui/Select"
 import useUpdateBedBasicInfo from "../../../hooks/useUpdateBedBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
-import { T_Property_Amenity } from "@repo/contract"
+import { T_Property_Amenity, T_Update_Bed_Basic_Info } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Input } from "@/common/components/ui/Input"
+import { Popover } from "@headlessui/react"
 
-type T_BedUnit = {
-  title: string
-  description: string
-  qty: number
-  amenities: T_Property_Amenity[]
-}
+// type T_BedUnit = {
+//   title: string
+//   description?: string
+//   isHaveSharedBathRoom: boolean
+//   isSmokingAllowed: boolean
+//   qty?: number
+//   amenities: T_Property_Amenity[]
+// }
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -56,8 +60,6 @@ const Bed = ({ pageType }: Prop) => {
   const router = useRouter()
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
-  const [customTitle, setCustomTitle] = useState("")
-  const [customDescription, setCustomDescription] = useState("")
 
   const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
   const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
@@ -73,7 +75,16 @@ const Bed = ({ pageType }: Prop) => {
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const amenities = useSelectAmenityStore((state) => state.amenities)
-  const { control, register, handleSubmit, setValue } = useForm<T_BedUnit>()
+  const { control, register, handleSubmit, setValue, watch } =
+    useForm<T_Update_Bed_Basic_Info>()
+
+  const totalSizeInSqm = useWatch({
+    control,
+    name: "totalSize",
+    defaultValue: data?.item?.totalSize || 0,
+  })
+
+  const totalSizeInSqft = (totalSizeInSqm * 10.76).toFixed(2)
 
   const updatePhotosInDb = async () => {
     const toAddPhotos =
@@ -124,23 +135,23 @@ const Bed = ({ pageType }: Prop) => {
     }
   }
 
-  const onSubmit = async (formData: T_BedUnit) => {
+  const onSubmit = async (formData: T_Update_Bed_Basic_Info) => {
     formData.amenities = amenities
-    if (!formData.title || !formData.description) {
+    if (!formData.title) {
       toast.error("Please fill out all required fields")
       return
     }
-    if (typeCount <= 0) {
-      toast.error("Please fill out quantity")
+    if (formData.totalSize <= 0) {
+      toast.error("Please fill total size count field")
       return
     }
-
     try {
       const saveBasicInfo = updateBedBasicInfo({
         _id: bedId,
         title: formData.title,
-        description: formData.description,
-        qty: Number(typeCount),
+        isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
+        isSmokingAllowed: formData.isSmokingAllowed,
+        totalSize: formData.totalSize,
       })
 
       const saveAmenities = updateAmenities({ amenities: formData?.amenities })
@@ -161,19 +172,29 @@ const Bed = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setValue("title", data?.item?.title || "")
-      setValue("description", data?.item?.description || "")
-      setTypeCount(data?.item?.qty)
+      setValue("title", data?.item?.title)
+      setValue("isHaveSharedBathRoom", data?.item?.isHaveSharedBathRoom)
+      setValue("isSmokingAllowed", data?.item?.isSmokingAllowed)
+      setValue("totalSize", data?.item?.totalSize)
       setPhotos(data?.item?.photos)
       setAmenities(data.item?.amenities)
-      if (data?.item?.title?.startsWith("Custom: ")) {
-        setCustomTitle(data?.item?.title.replace("Custom: ", ""))
-      }
-      if (data?.item?.description?.startsWith("Custom: ")) {
-        setCustomDescription(data?.item?.description.replace("Custom: ", ""))
-      }
     }
   }, [data, isPending])
+
+  const bedOptions = [
+    "Bed in 2 person dorm",
+    "Bed in 4 person dorm",
+    "Bed in 6 person dorm",
+    "Bed in 8 person dorm",
+    "Bed in 10 person dorm",
+    "Bed in 12 person dorm",
+    "Bed in 14 person dorm",
+    "Bed in 16 person dorm",
+    "Bed in 18 person dorm",
+    "Bed in 20 person dorm",
+  ]
+
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="mt-20 mb-28">
@@ -187,150 +208,179 @@ const Bed = ({ pageType }: Prop) => {
           Units / Edit Bed
         </Typography>
       </div>
+      <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+        What type of dorm room do you have?
+        <div
+          className="relative"
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
+          <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
+          {isOpen && (
+            <div className="justify-items-center absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] transition-all">
+              <Typography variant="h5" className="italic">
+                Contact us if you can't find your shared space/dorm type
+              </Typography>
+            </div>
+          )}
+        </div>
+      </Typography>
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-4 gap-x-6">
+        <div className="grid grid-cols-4 gap-x-6 mb-4">
           <div>
             <Controller
               control={control}
               name="title"
-              defaultValue={data?.item?.title || ""}
-              rules={{ required: "This field is required" }}
-              render={({ field }) => (
-                <>
-                  <Select
-                    {...field}
-                    label="Name"
-                    value={
-                      field.value.startsWith("Custom:") ? "Custom" : field.value
-                    }
-                    onChange={(e) => {
-                      const value = e.target.value
-                      if (value === "Custom") {
-                        setCustomTitle("")
-                        field.onChange("Custom: ")
-                      } else {
-                        setCustomTitle("")
-                        field.onChange(value)
-                      }
-                    }}
-                    required
-                  >
-                    <Option value={""}>Select Name</Option>
-                    <Option value="Bed in 8-Bed Mixed Dorm">
-                      Bed in 8-Bed Mixed Dorm
-                    </Option>
-                    <Option value="Custom">Custom</Option>
-                  </Select>
-                  {field.value.startsWith("Custom:") && (
-                    <Input
-                      label="Custom"
-                      type="text"
-                      value={customTitle}
-                      onChange={(e) => {
-                        setCustomTitle(e.target.value)
-                        field.onChange(`Custom: ${e.target.value}`)
-                      }}
-                      placeholder="Enter custom name"
-                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      required
-                    />
-                  )}
-                </>
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={control}
-              name="description"
               defaultValue={data?.item?.description || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
-                <>
-                  <Select
-                    {...field}
-                    label="Bed"
-                    value={
-                      field.value.startsWith("Custom:") ? "Custom" : field.value
-                    }
-                    onChange={(e) => {
-                      const value = e.target.value
-                      if (value === "Custom") {
-                        setCustomDescription("")
-                        field.onChange("Custom: ")
-                      } else {
-                        setCustomDescription("")
-                        field.onChange(value)
-                      }
-                    }}
-                    required
-                  >
-                    <Option value={""}>Select Bed</Option>
-                    <Option value="Single Bunk Bed">Single Bunk Bed</Option>
-                    <Option value="Custom">Custom</Option>
-                  </Select>
-                  {field.value.startsWith("Custom:") && (
-                    <Input
-                      label="Custom"
-                      type="text"
-                      value={customDescription}
-                      onChange={(e) => {
-                        setCustomDescription(e.target.value)
-                        field.onChange(`Custom: ${e.target.value}`)
-                      }}
-                      placeholder="Enter custom bed"
-                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      required
-                    />
-                  )}
-                </>
+                <Select
+                  {...field}
+                  label="Name"
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                  required
+                >
+                  <Option value={""}>Please select one</Option>
+                  {bedOptions.map((option) => (
+                    <Option
+                      key={option}
+                      value={option}
+                      selected={data?.item?.title === option}
+                    >
+                      {option}
+                    </Option>
+                  ))}
+                </Select>
               )}
             />
           </div>
         </div>
-        <div className="grid grid-cols-4 mt-4">
-          <div>
-            <Typography variant="h4" fontWeight="semibold" className="mb-2">
-              How many of this type you have?
+        <div className="mb-4">
+          <div className="mb-4">
+            <Typography
+              variant="h4"
+              fontWeight="semibold"
+              className="flex mb-2"
+            >
+              Does this room have a shared bathroom?
             </Typography>
-            <div className="flex rounded-md">
-              <button
-                className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                type="button"
-                onClick={() => {
-                  typeCount > 0 && setTypeCount((typeCount) => typeCount - 1)
-                }}
-              >
-                <MinusIcon className="h-3 w-3" />
-              </button>
+            <div className="flex items-center">
               <input
-                type="number"
-                id="type-count"
+                id="isHaveSharedBathRoom-no"
+                type="radio"
+                {...register("isHaveSharedBathRoom", { required: true })}
+                className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                value="No"
                 required
-                {...register("qty")}
-                className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                value={typeCount}
-                min={0}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value)
-                  setTypeCount(val)
-                }}
+                checked={watch("isHaveSharedBathRoom") === "No"}
               />
-              <button
-                className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                type="button"
-                onClick={() => setTypeCount((typeCount) => typeCount + 1)}
+              <label
+                htmlFor="isHaveSharedBathRoom-no"
+                className="ml-2 block text-sm font-medium leading-6 text-gray-900"
               >
-                <PlusIcon className="h-3 w-3" />
-              </button>
+                No
+              </label>
             </div>
+            <div className="flex items-center">
+              <input
+                id="isHaveSharedBathRoom-yes"
+                type="radio"
+                {...register("isHaveSharedBathRoom", { required: true })}
+                className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                value="Yes"
+                required
+                checked={watch("isHaveSharedBathRoom") === "Yes"}
+              />
+              <label
+                htmlFor="isHaveSharedBathRoom-yes"
+                className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+              >
+                Yes
+              </label>
+            </div>
+          </div>
+          <div className="mt-2">
+            <Typography
+              variant="h4"
+              fontWeight="semibold"
+              className="flex mb-2"
+            >
+              Is smoking allowed in the dorm room?
+            </Typography>
+            <div className="flex items-center">
+              <input
+                id="isSmokingAllowed-no"
+                type="radio"
+                {...register("isSmokingAllowed", { required: true })}
+                className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                value="No"
+                required
+                checked={watch("isSmokingAllowed") === "No"}
+              />
+              <label
+                htmlFor="isSmokingAllowed-no"
+                className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+              >
+                No
+              </label>
+            </div>
+            <div className="flex items-center mt-2">
+              <input
+                id="isSmokingAllowed-yes"
+                type="radio"
+                {...register("isSmokingAllowed", { required: true })}
+                className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                value="Yes"
+                required
+                checked={watch("isSmokingAllowed") === "Yes"}
+              />
+              <label
+                htmlFor="isSmokingAllowed-yes"
+                className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+              >
+                Yes
+              </label>
+            </div>
+          </div>
+        </div>
+        <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+          How big is this dorm room?
+        </Typography>
+        <Typography className="text-xs text-gray-500 italic mt-2 mb-2">
+          Enter the dorm room size in square meters. We will automatically
+          convert to square foot.
+        </Typography>
+        <div className="grid grid-cols-8 gap-x-6">
+          <div >
+            <Input
+              label="Total Size (sqm)"
+              id="totalSize"
+              type="number"
+              defaultValue={data?.item?.totalSize}
+              {...register("totalSize", {
+                required: "This field is required",
+              })}
+              required
+            />
+          </div>
+          <div>
+            <Input
+              className="bg-gray-100 text-gray-200"
+              label="Total Size (sqft)"
+              id="totalSizeSqft"
+              type="number"
+              value={totalSizeInSqft}
+              disabled
+            />
           </div>
         </div>
         <hr className="mt-6 mb-4" />
         <Photos />
         <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
-          Amenities and Facilities (for the bed itself)
+          Amenities and Facilities (for the bed itself) asd
         </Typography>
         <div className="grid grid-cols-2 gap-3 mb-3">
           <AmenitiesCheckboxes
