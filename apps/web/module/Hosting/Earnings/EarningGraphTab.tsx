@@ -8,18 +8,15 @@ import Tabs from "@/common/components/Tabs"
 import YearToDateSummary from "./components/YearToDateSummaryBox"
 import useGetEarningsReport from "../hooks/useGetEarningsReport"
 import insightsTabs from "../Insights/helpers/insightsTabs"
-import useGetInsights from "../Insights/hooks/useGetInsights"
 import { Option, Select } from "@/common/components/ui/Select"
 
 const EarningGraphTab = () => {
   const [category, setCategory] = useState("All")
-  const [listing, setListing] = useState("Mountain top house")
   const [year, setYear] = useState("2024")
   const [month, setMonth] = useState("All")
   const [propertyType, setPropertyType] = useState("All")
 
-  const { data: filteredInsights, isPending: filteredInsightsIsPending } =
-    useGetInsights(category, listing, year, month)
+
   const { data: EarningsReport } = useGetEarningsReport()
 
   console.log("Marker: ", EarningsReport)
