@@ -9,6 +9,7 @@ import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
+import ImageTextCard from "./components/ImageTextCard"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -177,6 +178,35 @@ const LandingPage = () => {
                     />
                   ))}
                 </ul>
+              </div>
+              <div className="flex gap-4">
+                <ImageTextCard
+                  imageKey={"1.jpg"}
+                  title={"Restaurants, cafes & bars"}
+                  description={
+                    "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multi-cultural restaurants, cafes and bars will indulge your senses."
+                  }
+                  linkTitle={"View foodie guide"}
+                  url={"/"}
+                />
+                <ImageTextCard
+                  imageKey={"2.jpg"}
+                  title={"Surfing in Siargao"}
+                  description={
+                    "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecast and connect with local instructors."
+                  }
+                  linkTitle={"Check the best surf spots"}
+                  url={"/"}
+                />
+                <ImageTextCard
+                  imageKey={"3.jpg"}
+                  title={"Getting to the island"}
+                  description={
+                    "Borders are finally opened and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
+                  }
+                  linkTitle={"Essential travel info"}
+                  url={"/"}
+                />
               </div>
             </div>
           )}
