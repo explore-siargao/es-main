@@ -16,7 +16,6 @@ const EarningGraphTab = () => {
   const [month, setMonth] = useState("All")
   const [propertyType, setPropertyType] = useState("All")
 
-
   const { data: EarningsReport } = useGetEarningsReport()
 
   console.log("Marker: ", EarningsReport)
