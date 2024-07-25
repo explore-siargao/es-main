@@ -182,8 +182,6 @@ const Bed = ({ pageType }: Prop) => {
     "Bed in 20 person dorm",
   ]
 
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
@@ -198,26 +196,13 @@ const Bed = ({ pageType }: Prop) => {
       </div>
       <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
         What type of dorm room do you have?
-        <div
-          className="relative"
-          role="button"
-          tabIndex={0}
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              setIsOpen(!isOpen)
-            }
-          }}
-        >
+        <div className="relative group">
           <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
-          {isOpen && (
-            <div className="justify-items-center absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] transition-all">
-              <Typography variant="h5" className="italic">
-                Contact us if you can't find your shared space/dorm type
-              </Typography>
-            </div>
-          )}
+          <div className="absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] opacity-0 group-hover:opacity-100 transition-opacity">
+            <Typography variant="h5" className="italic">
+              Contact us if you can't find your shared space/dorm type
+            </Typography>
+          </div>
         </div>
       </Typography>
 
