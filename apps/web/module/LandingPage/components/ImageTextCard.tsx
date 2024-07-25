@@ -30,7 +30,7 @@ const ImageTextCard = ({
           className="rounded-t-lg"
         />
       </div>
-      <div className="flex flex-col space-y-4 p-8">
+      <div className="flex flex-col space-y-4 pr-8 pl-8 pt-8 pb-6">
         <Typography variant="h2" fontWeight="semibold">
           {title}
         </Typography>

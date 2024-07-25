@@ -183,7 +183,7 @@ const LandingPage = () => {
                 </ul>
               </div>
 
-              <div className="sm:flex w-full items-center sm:mt-8 bg-gray-50 pt-6 ">
+              <div className="sm:flex w-full items-center sm:mt-8">
                 <div className="sm:flex w-full gap-8 justify-center space-y-8 sm:space-y-0">
                   <div className="flex-shrink-0">
                     <ImageTextCard
