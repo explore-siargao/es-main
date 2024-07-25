@@ -353,7 +353,7 @@ const Bed = ({ pageType }: Prop) => {
           convert to square foot.
         </Typography>
         <div className="grid grid-cols-8 gap-x-6">
-          <div >
+          <div>
             <Input
               label="Total Size (sqm)"
               id="totalSize"
