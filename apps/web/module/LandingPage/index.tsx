@@ -10,9 +10,9 @@ import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
 import ImageTextCard from "./components/ImageTextCard"
-import  airport  from "../../public/airport.jpg"
-import  image1  from "../../public/image1.jpg"
-import  surf  from "../../public/surf.jpg"
+import airport from "../../public/airport.jpg"
+import image1 from "../../public/image1.jpg"
+import surf from "../../public/surf.jpg"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
