@@ -9,7 +9,6 @@ import {
   LucidePalmtree,
   LucideSparkles,
   MinusIcon,
-  Plus,
   PlusIcon,
 } from "lucide-react"
 import Link from "next/link"
@@ -33,6 +32,8 @@ import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import AddBedroomModal from "./components/AddBedroomModal"
+import Builder from "@/module/Listing/Activity/Itinerary/Builder"
+import Bedroom from "./components/Bedroom"
 
 type T_BedRooms = {
   bedRoomName: string
@@ -98,7 +99,8 @@ const WholePlace = ({ pageType }: Prop) => {
   const amenities = useSelectAmenityStore((state) => state.amenities)
   const { control, register, unregister, handleSubmit, setValue } =
     useForm<T_WholePlaceUnit>()
-
+    const [sqm, setSqm] = useState(data?.item?.totalSize || '');
+    const [sqft, setSqft] = useState('');
   const { fields, append, remove } = useFieldArray({
     control,
     name: "bedRooms",
@@ -207,22 +209,6 @@ const WholePlace = ({ pageType }: Prop) => {
     }
   }
 
-  const addBedInput = () => {
-    // setBedInputs((prevBedInput: any) => [...prevBedInput, bedCount as number])
-    setBedCount((prevBedCount: number) => prevBedCount + 1)
-    append({ bedRoomName: "", bedRoomType: "" })
-  }
-
-  const removeBedInput = () => {
-    if (fields.length > 0) {
-      //@ts-ignore
-      unregister(`bedRooms.${fields.length - 1}`)
-      // setBedInputs((prevBedInputs: any) => prevBedInputs.slice(0, -1))
-      remove(fields.length - 1)
-      setBedCount((prevBedCount: any) => prevBedCount - 1)
-    }
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       await refetch()
@@ -266,125 +252,20 @@ const WholePlace = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* <div className="grid grid-cols-4 gap-x-6">
-              <div>
-                <Input
-                  label="Name"
-                  id="name"
-                  type="text"
-                  disabled={isPending || isFetching}
-                  defaultValue={data?.item?.title}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-              <div>
-                <Input
-                  label="Total Size (sqm)"
-                  id="size"
-                  type="number"
-                  disabled={isPending || isFetching}
-                  defaultValue={data?.item?.totalSize}
-                  {...register("size", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-            </div> */}
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
                  Where can guests sleep?
                 </Typography>
                 <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
                  How many comfortable living spaces does this unit have? Click to add bed type.
                 </Typography>
-                <div className="grid grid-cols-4 gap-x-6">
+                <div className="grid grid-cols-2">
                 <div>
-                <Input
-                  label="Placeholder"
-                  id="size"
-                  type="number"
-                  disabled={isPending || isFetching}
-                  defaultValue={data?.item?.totalSize}
-                  {...register("size", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
+                <Bedroom/>
               </div>
               
             
             </div>
-            <Button variant={"ghost"} onClick={() => setIsAddBedroomModalOpen(true)} className="my-2 flex underline">
-            <Plus/> Add bedroom
-            </Button>
             <div className="grid grid-cols-4 mt-4 gap-x-6">
-              {/* <div>
-                <Typography variant="h4" fontWeight="semibold" className="mb-2">
-                  Bedrooms / Sleeping Space
-                </Typography>
-                <div className="flex rounded-md mb-3">
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={removeBedInput}
-                  >
-                    <MinusIcon className="h-3 w-3" />
-                  </button>
-                  <input
-                    disabled={isPending || isFetching}
-                    type="number"
-                    id="beds"
-                    {...register("bedCount")}
-                    className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                    value={bedCount as number}
-                    min={0}
-                    onChange={(e) => {
-                      const val: number = Number(e.target.value)
-                      setBedCount(val)
-                    }}
-                  />
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={addBedInput}
-                  >
-                    <PlusIcon className="h-3 w-3" />
-                  </button>
-                </div>
-                {fields.map((field: T_BedRooms, index: number) => (
-                  <div className="grid grid-cols-2 my-3 gap-x-3" key={index}>
-                    <Input
-                      label="Bedroom name"
-                      type="text"
-                      id={`bed-name-${field.bedRoomName}`}
-                      disabled={false}
-                      // @ts-ignore
-                      {...register(`bedRooms.${index}.bedRoomName`, {
-                        required: true,
-                      })}
-                      onChange={(e) => (field.bedRoomName = e.target.value)}
-                      required
-                    />
-                    <Input
-                      label="Bedroom type"
-                      type="text"
-                      id={`bed-name-${index}`}
-                      disabled={false}
-                      // @ts-ignore
-                      {...register(`bedRooms.${index}.bedRoomType`, {
-                        required: true,
-                      })}
-                      onChange={(e) => (field.bedRoomType = e.target.value)}
-                      required
-                    />
-                  </div>
-                ))}
-              </div> */}
               <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
                   How many bathrooms are in this unit?
@@ -430,47 +311,6 @@ const WholePlace = ({ pageType }: Prop) => {
                   </button>
                 </div>
               </div>
-              {/* <div>
-                <Typography variant="h4" fontWeight="semibold" className="mb-2">
-                  How many of this type you have?
-                </Typography>
-                <div className="flex rounded-md">
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={() => {
-                      typeCount > 0 &&
-                        setTypeCount((typeCount: any) => typeCount - 1)
-                    }}
-                  >
-                    <MinusIcon className="h-3 w-3" />
-                  </button>
-                  <input
-                    disabled={isPending || isFetching}
-                    type="number"
-                    id="type-count"
-                    {...register("typeCount")}
-                    className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                    value={typeCount}
-                    min={0}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value)
-                      setTypeCount(val)
-                    }}
-                  />
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={() =>
-                      setTypeCount((typeCount: any) => typeCount + 1)
-                    }
-                  >
-                    <PlusIcon className="h-3 w-3" />
-                  </button>
-                </div>
-              </div> */}
             </div>
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
                   How big is this unit?
@@ -489,13 +329,14 @@ const WholePlace = ({ pageType }: Prop) => {
                   {...register("size", {
                     required: "This field is required",
                   })}
+                  onChange={(event) => setSqm(event.target.value)}
                   required
                 />
               </div>
               <div>
                 <Input
                   label="Ft"
-                  id="name"
+                  id="squareFoot"
                   type="number"
                   disabled
                   defaultValue={data?.item?.title}

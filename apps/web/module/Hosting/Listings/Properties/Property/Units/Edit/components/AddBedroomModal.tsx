@@ -5,9 +5,10 @@ import { SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { useBedroomStore } from "../store/useBedroomStore";
 
 
-type Field = {
+type T_BedRooms = {
   bedRoomType: string;
   bedRoomTypeCount: number;
 };
@@ -18,7 +19,7 @@ type Props = {
 };
 
 const AddBedroomModal = ({ isOpen, onClose }: Props) => {
-  const [fields, setFields] = useState<Field[]>([
+  const [fields, setFields] = useState<T_BedRooms[]>([
     { bedRoomType: 'Single Bed', bedRoomTypeCount: 0 },
     { bedRoomType: 'Twin Bed', bedRoomTypeCount: 0 },
     { bedRoomType: 'Double Bed', bedRoomTypeCount: 0 },
@@ -34,16 +35,20 @@ const AddBedroomModal = ({ isOpen, onClose }: Props) => {
 
   const handleBedRoomTypeCountChange = (index: number, value: string) => {
     const newFields = [...fields];
-    fields[index].bedRoomTypeCount = parseInt(value, 10) || 0; 
+    if (newFields[index]) {
+      newFields[index].bedRoomTypeCount = parseInt(value, 10) || 0;
+      setFields(newFields);
+    }
     setFields(newFields);
   };
-
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
   const onSubmit: SubmitHandler<any> = () => {
-    console.log(fields);
+    updateBedrooms([fields])
     toast.success('Bedroom added successfully');
     onClose();
+    setFields(fields.map(field => ({ ...field, bedRoomTypeCount: 0 })));
   };
-
+  
   return (
     <ModalContainer
       onClose={onClose}
@@ -56,7 +61,7 @@ const AddBedroomModal = ({ isOpen, onClose }: Props) => {
           How many of each bed type are available in this room?
         </Typography>
         <div>
-          {fields.map((field: Field, index: number) => (
+          {fields.map((field: T_BedRooms, index: number) => (
             <div className="grid grid-cols-2 my-3 gap-x-3" key={index}>
               <Typography variant="h4" fontWeight="semibold">
           {field.bedRoomType}
@@ -68,7 +73,11 @@ const AddBedroomModal = ({ isOpen, onClose }: Props) => {
                   onClick={() => {
                     if (field.bedRoomTypeCount > 0) {
                       const newFields = [...fields];
-                      newFields[index].bedRoomTypeCount--;
+                      if (newFields[index]) {
+                        newFields[index].bedRoomTypeCount--;
+                        setFields(newFields);
+                      }
+                  
                       setFields(newFields);
                     }
                   }}
@@ -88,7 +97,9 @@ const AddBedroomModal = ({ isOpen, onClose }: Props) => {
                   type="button"
                   onClick={() => {
                     const newFields = [...fields];
+                    if (newFields[index]) {
                     newFields[index].bedRoomTypeCount++;
+                    }
                     setFields(newFields);
                   }}
                 >
