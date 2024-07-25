@@ -1,11 +1,11 @@
 import React from "react"
-import Image from "next/image"
+import Image, { StaticImageData } from "next/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideArrowRight } from "lucide-react"
 import Link from "next/link"
 
 interface ICardItems {
-  imageKey: string
+  imageKey: StaticImageData
   title: string
   description: string
   linkTitle: string
@@ -20,21 +20,23 @@ const ImageTextCard = ({
   url,
 }: ICardItems) => {
   return (
-    <div key={description} className="flex flex-col max-w-80">
-      <Image
-        src={`/assets/${imageKey}`}
-        width={300}
-        height={300}
-        alt={title}
-        className="object-cover h-72 w-80 rounded-lg"
-      />
-      <div className="flex flex-col mr-4 ml-4 space-y-4 mt-6">
+    <div className="bg-white rounded-lg shadow-md flex-shrink-0 w-80">
+      <div className="relative w-full h-56">
+        <Image
+          src={imageKey}
+          layout="fill"
+          alt={title}
+          objectFit="cover"
+          className="rounded-t-lg"
+        />
+      </div>
+      <div className="flex flex-col space-y-4 p-8">
         <Typography variant="h2" fontWeight="semibold">
           {title}
         </Typography>
-        <Typography>{description}</Typography>
+        <Typography className="text-gray-700">{description}</Typography>
         <Link href={url}>
-          <div className="flex gap-2 hover:underline">
+          <div className="flex items-center gap-2 hover:underline">
             <Typography>{linkTitle}</Typography>
             <LucideArrowRight />
           </div>

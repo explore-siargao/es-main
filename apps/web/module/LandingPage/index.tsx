@@ -10,6 +10,9 @@ import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
 import ImageTextCard from "./components/ImageTextCard"
+import  airport  from "../../public/airport.jpg"
+import  image1  from "../../public/image1.jpg"
+import  surf  from "../../public/surf.jpg"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -179,34 +182,43 @@ const LandingPage = () => {
                   ))}
                 </ul>
               </div>
-              <div className="flex gap-4">
-                <ImageTextCard
-                  imageKey={"1.jpg"}
-                  title={"Restaurants, cafes & bars"}
-                  description={
-                    "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multi-cultural restaurants, cafes and bars will indulge your senses."
-                  }
-                  linkTitle={"View foodie guide"}
-                  url={"/"}
-                />
-                <ImageTextCard
-                  imageKey={"2.jpg"}
-                  title={"Surfing in Siargao"}
-                  description={
-                    "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecast and connect with local instructors."
-                  }
-                  linkTitle={"Check the best surf spots"}
-                  url={"/"}
-                />
-                <ImageTextCard
-                  imageKey={"3.jpg"}
-                  title={"Getting to the island"}
-                  description={
-                    "Borders are finally opened and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
-                  }
-                  linkTitle={"Essential travel info"}
-                  url={"/"}
-                />
+
+              <div className="sm:flex w-full items-center sm:mt-8 bg-gray-50 pt-6 ">
+                <div className="sm:flex w-full gap-8 justify-center space-y-8 sm:space-y-0">
+                  <div className="flex-shrink-0">
+                    <ImageTextCard
+                      imageKey={image1}
+                      title={"Restaurants, cafes & bars"}
+                      description={
+                        "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multicultural restaurants, cafes and bars will indulge your senses."
+                      }
+                      linkTitle={"View foodie guide"}
+                      url={"/"}
+                    />
+                  </div>
+                  <div className="flex-shrink-0">
+                    <ImageTextCard
+                      imageKey={surf}
+                      title={"Surfing in Siargao"}
+                      description={
+                        "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecasts and connect with local instructors."
+                      }
+                      linkTitle={"Check the best surf spots"}
+                      url={"/"}
+                    />
+                  </div>
+                  <div className="flex-shrink-0">
+                    <ImageTextCard
+                      imageKey={airport}
+                      title={"Getting to the island"}
+                      description={
+                        "Borders are finally open and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
+                      }
+                      linkTitle={"Essential travel info"}
+                      url={"/"}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           )}
