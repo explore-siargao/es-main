@@ -10,6 +10,14 @@ const bookableUnitTypes = new Schema({
   title: String,
   description: String,
   totalSize: Number,
+  isHaveSharedBathRoom: {
+    type: String,
+    required: false,
+  },
+  isSmokingAllowed: {
+    type: String,
+    required: false,
+  },
   bed: String,
   unitPrice: {
     type: mongoose.Schema.ObjectId,
