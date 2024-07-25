@@ -5,13 +5,11 @@ import { SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { Option, Select } from "@/common/components/ui/Select"
 
 
 type Field = {
-  bedRoomName: string;
   bedRoomType: string;
-  bedRoomTypeCount: number; // Individual count for each bed type
+  bedRoomTypeCount: number;
 };
 
 type Props = {
@@ -21,30 +19,27 @@ type Props = {
 
 const AddBedroomModal = ({ isOpen, onClose }: Props) => {
   const [fields, setFields] = useState<Field[]>([
-    { bedRoomName: '', bedRoomType: '', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Single Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Twin Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Double Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Queen Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Queen XL Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'King Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'King XL Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Sofa Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Bunk Bed', bedRoomTypeCount: 0 },
+    { bedRoomType: 'Lot (Baby Bed)', bedRoomTypeCount: 0 },
+
   ]);
-
-  const addField = () => {
-    setFields([
-      ...fields,
-      { bedRoomName: '', bedRoomType: '', bedRoomTypeCount: 0 }
-    ]);
-  };
-
-  const handleBedRoomNameChange = (index: number, value: string) => {
-    const newFields = [...fields];
-    newFields[index].bedRoomName = value;
-    setFields(newFields);
-  };
 
   const handleBedRoomTypeCountChange = (index: number, value: string) => {
     const newFields = [...fields];
-    newFields[index].bedRoomTypeCount = parseInt(value, 10) || 0; // Ensure it's a number
+    fields[index].bedRoomTypeCount = parseInt(value, 10) || 0; 
     setFields(newFields);
   };
 
-  const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<any> = () => {
+    console.log(fields);
     toast.success('Bedroom added successfully');
     onClose();
   };
@@ -56,31 +51,16 @@ const AddBedroomModal = ({ isOpen, onClose }: Props) => {
       size="sm"
       title="Add Bedroom"
     >
-      <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
+      <div className="py-4 px-6 flex flex-col space-x-2 divide-text-100 overflow-y-auto">
         <Typography variant="h4" fontWeight="semibold">
           How many of each bed type are available in this room?
         </Typography>
         <div>
           {fields.map((field: Field, index: number) => (
             <div className="grid grid-cols-2 my-3 gap-x-3" key={index}>
-             <Select
-        label="Bedroom Type"
-        id="bedroom-type-select"
-        onChange={(e) => console.log("Selected value:", e.target.value)}
-        required
-      >
-        <Option value="single">Single Bed</Option>
-        <Option value="double">Twin Bed</Option>
-        <Option value="queen">Double Bed</Option>
-        <Option value="king">Queen Bed</Option>
-        <Option value="king">Queen XL Bed</Option>
-        <Option value="king">King Bed</Option>
-        <Option value="king">King XL Bed</Option>
-        <Option value="king">Sofa Bed</Option>
-        <Option value="king">Queen Bed</Option>
-        <Option value="queen">Bunk Bed</Option>
-        <Option value="king">Lot (Baby Bed)</Option>
-      </Select>
+              <Typography variant="h4" fontWeight="semibold">
+          {field.bedRoomType}
+        </Typography>
               <div className="flex rounded-md">
                 <button
                   className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
@@ -118,10 +98,8 @@ const AddBedroomModal = ({ isOpen, onClose }: Props) => {
             </div>
           ))}
         </div>
-        <div className="flex">
-          <Button variant={"ghost"} className="my-2 flex underline " onClick={addField}>
-            <PlusIcon /> Add bed type
-          </Button>
+        <div className="flex justify-end">
+        <Button onClick={onSubmit}>Confirm</Button>
         </div>
       </div>
     </ModalContainer>
