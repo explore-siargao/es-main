@@ -9,8 +9,6 @@ import {
   LucideLayoutList,
   LucidePalmtree,
   LucideSparkles,
-  MinusIcon,
-  PlusIcon,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
@@ -30,19 +28,9 @@ import Photos from "./components/Photos"
 import { Option, Select } from "@/common/components/ui/Select"
 import useUpdateBedBasicInfo from "../../../hooks/useUpdateBedBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
-import { T_Property_Amenity, T_Update_Bed_Basic_Info } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Input } from "@/common/components/ui/Input"
-import { Popover } from "@headlessui/react"
-
-// type T_BedUnit = {
-//   title: string
-//   description?: string
-//   isHaveSharedBathRoom: boolean
-//   isSmokingAllowed: boolean
-//   qty?: number
-//   amenities: T_Property_Amenity[]
-// }
+import { T_Update_Bed_Basic_Info } from "@repo/contract"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -212,8 +200,15 @@ const Bed = ({ pageType }: Prop) => {
         What type of dorm room do you have?
         <div
           className="relative"
+          role="button"
+          tabIndex={0}
           onMouseEnter={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsOpen(!isOpen)
+            }
+          }}
         >
           <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
           {isOpen && (
