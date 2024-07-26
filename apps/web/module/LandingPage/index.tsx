@@ -10,6 +10,19 @@ import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
 import TravelStyleSlider from "./components/TravelStyleSlider"
+import il1 from "../../common/assets/sample/island-1.jpg"
+import il2 from "../../common/assets/sample/island-2.jpg"
+import il3 from "../../common/assets/sample/island-3.jpg"
+import il4 from "../../common/assets/sample/island-4.jpg"
+import il5 from "../../common/assets/sample/island-5.jpg"
+import il6 from "../../common/assets/sample/island-6.jpg"
+import il7 from "../../common/assets/sample/island-7.jpg"
+import il8 from "../../common/assets/sample/island-8.jpg"
+import il9 from "../../common/assets/sample/island-9.jpg"
+import il10 from "../../common/assets/sample/island-10.jpg"
+import il11 from "../../common/assets/sample/island-11.jpg"
+import il12 from "../../common/assets/sample/island-12.jpg"
+import TravelSlider from "./components/TravelSlider"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -110,13 +123,83 @@ const LandingPage = () => {
       url: "/",
     },
   ]
+  const groupCardsDummy2 = [
+    {
+      imageKey: il1,
+      mainPlace: "General Luna",
+      subPlace: "Town Centre",
+    },
+    {
+      imageKey: il2,
+      mainPlace: "Catangnan",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il3,
+      mainPlace: "Malinao",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il4,
+      mainPlace: "Pacifico",
+      subPlace: "North Siargao",
+    },
+    {
+      imageKey: il5,
+      mainPlace: "Islands",
+      subPlace: "Popular Trips",
+    },
+    {
+      imageKey: il6,
+      mainPlace: "General Luna",
+      subPlace: "Town Centre",
+    },
+    {
+      imageKey: il7,
+      mainPlace: "Catangnan",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il8,
+      mainPlace: "Malinao",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il9,
+      mainPlace: "Pacifico",
+      subPlace: "North Siargao",
+    },
+    {
+      imageKey: il10,
+      mainPlace: "Islands",
+      subPlace: "Popular Trips",
+    },
+    {
+      imageKey: il11,
+      mainPlace: "General Luna",
+      subPlace: "Popular Trips",
+    },
+    {
+      imageKey: il12,
+      mainPlace: "Islands",
+      subPlace: "Popular Trips",
+    },
+  ]
+
   return (
     <>
-      {isPending || isLoading ? (
+      {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
-      ) : (
-        <WidthWrapper className="mb-24 lg:mt-6">
-          {search || checkIn || checkOut || numberOfGuest ? (
+      ) : ( */}
+      <WidthWrapper className="mb-24 lg:mt-6">
+        <div className="w-full mb-20">
+          <TravelSlider
+            title="Explore Siargao Island"
+            description="Essential travel information for your island vacation"
+            groupCards={groupCardsDummy}
+          />
+        </div>
+        {/* {search || checkIn || checkOut || numberOfGuest ? (
             <div className="flex flex-col gap-4">
               {path === "/" && (
                 <Typography variant={"h5"} className="text-gray-500">
@@ -239,9 +322,9 @@ const LandingPage = () => {
                 />
               </div>
             </div>
-          )}
-        </WidthWrapper>
-      )}
+          )} */}
+      </WidthWrapper>
+      {/* )} */}
     </>
   )
 }
