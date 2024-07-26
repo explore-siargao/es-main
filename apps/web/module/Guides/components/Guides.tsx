@@ -2,30 +2,18 @@ import { Typography } from "@/common/components/ui/Typography"
 import Image from "next/image"
 import Link from "next/link"
 
-type T_Props = {
+type T_Guides = {
   title: string
+  imageKey: string
+  link: string
 }
 
-const guides = [
-  {
-    fileKey: "1.jpg",
-    title: "Cloud 9 Wave",
-  },
-  {
-    fileKey: "2.jpg",
-    title: "Surfer at Jacking Horse",
-  },
-  {
-    fileKey: "3.jpg",
-    title: "Stimpy's Surf Spot",
-  },
-  {
-    fileKey: "5.jpg",
-    title: "Rock Island Waves",
-  },
-]
+type T_Props = {
+  title: string
+  guides: T_Guides[]
+}
 
-const Guides = ({ title }: T_Props) => {
+const Guides = ({ title, guides }: T_Props) => {
   return (
     <div>
       <Typography
@@ -40,8 +28,8 @@ const Guides = ({ title }: T_Props) => {
           <Link href="#" key={index}>
             <div className="relative h-44 mb-2">
               <Image
-                src={"/assets/" + guide.fileKey}
-                alt={guide.title}
+                src={"/assets/" + guide.imageKey}
+                alt=""
                 fill
                 className="bg-gray-200 rounded-md"
                 objectFit="cover"

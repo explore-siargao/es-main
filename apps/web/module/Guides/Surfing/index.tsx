@@ -23,15 +23,38 @@ const SurfingGuide = () => {
     },
   ]
 
+  const guides = [
+    {
+      imageKey: "1.jpg",
+      title: "Cloud 9 Wave",
+      link: "#",
+    },
+    {
+      imageKey: "2.jpg",
+      title: "Surfer at Jacking Horse",
+      link: "#",
+    },
+    {
+      imageKey: "3.jpg",
+      title: "Stimpy's Surf Spot",
+      link: "#",
+    },
+    {
+      imageKey: "5.jpg",
+      title: "Rock Island Waves",
+      link: "#",
+    },
+  ]
+
   return (
-    <WidthWrapper width="small" className="mt-44">
+    <WidthWrapper width="small" className="mt-24 md: mt-36 lg:mt-44">
       <GuideContent
         contentTitle="Surfing in Siargao"
         contentText={contentText}
         markers={markers}
       />
       <Separator orientation="horizontal" className="my-12 bg-gray-300" />
-      <Guides title="Surf Guides" />
+      <Guides title="Surf Guides" guides={guides} />
     </WidthWrapper>
   )
 }

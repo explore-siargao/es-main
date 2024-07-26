@@ -1,5 +1,4 @@
 import MultipleMarkerMap from "@/common/components/MultipleMarkerMap"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Typography } from "@/common/components/ui/Typography"
 
 type T_Markers = {
@@ -36,8 +35,8 @@ const GuideContent = ({ contentTitle, contentText, markers }: T_Props) => {
       <div>
         <MultipleMarkerMap
           markerLocations={markers}
-          center={[9.913431, 126.049483]}
-          mapHeight={"h-[520px]"}
+          center={[9.835667, 126.049483]}
+          mapHeight={"h-[750px]"}
           mapWidth={"w-full"}
           zoom={11}
         />
