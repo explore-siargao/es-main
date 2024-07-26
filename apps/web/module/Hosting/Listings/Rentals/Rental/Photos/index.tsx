@@ -131,8 +131,8 @@ const RentalPhotos = ({ pageType }: Prop) => {
 
   const checkDescriptions = () => {
     for (let photo of photos) {
-      if (!photo.description) {
-        toast.error("Please put a description to all added photos")
+      if (!photo.description || photo.tags === null || photo.tags === "") {
+        toast.error("Please put a description and tags to all added photos")
         return false
       }
     }
@@ -141,7 +141,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
 
   const handleSave = async () => {
     if (!checkDescriptions()) return
-    if (
+    else if (
       data?.item?.category === E_Rental_Category.Car &&
       (photos?.length > 4 ||
         (data?.item?.photos && data?.item?.photos.length > 4))

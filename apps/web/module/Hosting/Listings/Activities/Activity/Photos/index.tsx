@@ -129,8 +129,19 @@ const ActivityPhotos = ({ pageType }: Prop) => {
       })
   }
 
+  const checkDescriptions = () => {
+    for (let photo of photos) {
+      if (!photo.description || photo.tags === null || photo.tags === "") {
+        toast.error("Please put a description and tags to all added photos")
+        return false
+      }
+    }
+    return true
+  }
+
   const handleSave = async () => {
-    if (
+    if (!checkDescriptions()) return
+    else if (
       photos?.length > 2 ||
       (data?.item?.photos && data?.item?.photos.length > 2)
     ) {
@@ -273,7 +284,7 @@ const ActivityPhotos = ({ pageType }: Prop) => {
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "No description"}
+                    {photo.description || "Click photo to add description"}
                   </Typography>
                 </div>
               ) : null

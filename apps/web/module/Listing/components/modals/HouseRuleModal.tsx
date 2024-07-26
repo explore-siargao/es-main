@@ -39,10 +39,19 @@ const HouseRuleModal = ({
         </div>
 
         {houseRules.map((data) => (
+          //@ts-ignore
           <div className="py-2 pt-5" key={data.id}>
-            <TitleSection title={data.title}>
+            <TitleSection
+              //@ts-ignore
+              title={data.title}
+            >
               {data.rules.map((rule: any) => (
-                <div className="py-4 border-b" key={rule.id}>
+                //@ts-ignore
+                <div
+                  className="py-4 border-b"
+                  //@ts-ignore
+                  key={rule.id}
+                >
                   <IconDescription
                     // @ts-ignore
                     icon={rule.icon}

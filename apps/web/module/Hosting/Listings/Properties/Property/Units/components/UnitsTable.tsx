@@ -46,27 +46,35 @@ const UnitsTable = () => {
     }),
     columnHelper.accessor("title", {
       header: "Name",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
+      cell: (context) => {
+        const value = context.getValue() || ""
+        const cleanValue = value.startsWith("Custom: ")
+          ? value.slice("Custom: ".length)
+          : value
+        return (
+          <Link
+            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+          >
+            <Typography variant="p">{cleanValue}</Typography>
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor("description", {
       header: "Description",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original?.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
+      cell: (context) => {
+        const value = context.getValue() || ""
+        const cleanValue = value.startsWith("Custom: ")
+          ? value.slice("Custom: ".length)
+          : value
+        return (
+          <Link
+            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+          >
+            <Typography variant="p">{cleanValue}</Typography>
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor("category", {
       header: "Type",
