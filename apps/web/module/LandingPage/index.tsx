@@ -192,13 +192,20 @@ const LandingPage = () => {
         <Spinner variant="primary" middle />
       ) : ( */}
       <WidthWrapper className="mb-24 lg:mt-6">
-        <div className="w-full mb-20">
+        <div className="w-full mt-6 mb-10">
           <TravelSlider
             title="Explore Siargao Island"
             description="Essential travel information for your island vacation"
-            groupCards={groupCardsDummy}
+            groupCards={groupCardsDummy2}
           />
         </div>
+        <div className="mt-4 mb-10">
+                <TravelStyleSlider
+                  title="What's your travel style?"
+                  description="Browse by property type to find the perfect space"
+                  groupCards={groupCardsDummy}
+                />
+              </div>
         {/* {search || checkIn || checkOut || numberOfGuest ? (
             <div className="flex flex-col gap-4">
               {path === "/" && (
