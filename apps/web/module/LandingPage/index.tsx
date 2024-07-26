@@ -9,6 +9,7 @@ import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
+import TravelStyleSlider from "./components/TravelStyleSlider"
 import il1 from "../../common/assets/sample/island-1.jpg"
 import il2 from "../../common/assets/sample/island-2.jpg"
 import il3 from "../../common/assets/sample/island-3.jpg"
@@ -71,6 +72,58 @@ const LandingPage = () => {
   })
 
   const groupCardsDummy = [
+    {
+      imageKey: "/assets/1.jpg",
+      cardTitle: "Hostels",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      cardTitle: "Resorts",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      cardTitle: "Villas",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      cardTitle: "Hotels",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      cardTitle: "Hostels",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      cardTitle: "Resorts",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/1.jpg",
+      cardTitle: "Villas",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      cardTitle: "Islands",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      cardTitle: "Islands",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      cardTitle: "Islands",
+      url: "/",
+    },
+  ]
+  const groupCardsDummy2 = [
     {
       imageKey: il1,
       mainPlace: "General Luna",
@@ -260,6 +313,13 @@ const LandingPage = () => {
                     />
                   ))}
                 </ul>
+              </div>
+              <div className="mt-20">
+                <TravelStyleSlider
+                  title="What's your travel style?"
+                  description="Browse by property type to find the perfect space"
+                  groupCards={groupCardsDummy}
+                />
               </div>
             </div>
           )} */}
