@@ -14,7 +14,7 @@ interface SliderProps {
   }[]
 }
 
-const TravelSlider = ({ cards }: SliderProps) => {
+const PropertySlider = ({ cards }: SliderProps) => {
   return (
     <Swiper
       slidesPerView={6}
@@ -106,4 +106,4 @@ const TravelSlider = ({ cards }: SliderProps) => {
   )
 }
 
-export default TravelSlider
+export default PropertySlider
