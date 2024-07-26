@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import Slider from "./Slider"
+import Slider from "./TravelSlider"
 
 type TravelStyleProps = {
   title: string
