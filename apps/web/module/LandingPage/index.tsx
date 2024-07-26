@@ -200,12 +200,12 @@ const LandingPage = () => {
           />
         </div>
         <div className="mt-4 mb-10">
-                <TravelStyleSlider
-                  title="What's your travel style?"
-                  description="Browse by property type to find the perfect space"
-                  groupCards={groupCardsDummy}
-                />
-              </div>
+          <TravelStyleSlider
+            title="What's your travel style?"
+            description="Browse by property type to find the perfect space"
+            groupCards={groupCardsDummy}
+          />
+        </div>
         {/* {search || checkIn || checkOut || numberOfGuest ? (
             <div className="flex flex-col gap-4">
               {path === "/" && (
