@@ -1,8 +1,14 @@
 import mongoose, { Schema } from "mongoose"
 
+
+const bed = new Schema({
+  name: String,
+  qty: Number
+})
+
 const bedRooms = new Schema({
   bedRoomName: String,
-  bedRoomType: String,
+  beds: [bed],
 })
 
 const bookableUnitTypes = new Schema({

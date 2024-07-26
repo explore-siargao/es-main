@@ -1,31 +1,34 @@
 import { create } from "zustand";
+import { T_Bedroom } from "../../types";
 
-type T_Bedroom = {
-  bedrooms: any[][];
-  initialBedrooms: (bedrooms: any[][]) => void;
-  updateBedrooms: (newBedrooms: any[][]) => void;
+type BedroomStore = {
+  bedrooms: T_Bedroom[];
+  setInitialBedrooms: (bedrooms: T_Bedroom[]) => void;
+  updateBedrooms: (newBedrooms: T_Bedroom[]) => void;
   deleteBedroom: (index: number) => void;
 };
 
-export const useBedroomStore = create<T_Bedroom>((set) => ({
+export const useBedroomStore = create<BedroomStore>((set) => ({
   bedrooms: [],
-
-  initialBedrooms: (bedrooms: any[][]) =>
-    set(() => ({
-      bedrooms: deepCopyBedrooms(bedrooms),
-    })),
-
-  updateBedrooms: (newBedrooms: any[][]) =>
-    set((state) => ({
-      bedrooms: [...state.bedrooms, ...deepCopyBedrooms(newBedrooms)], 
-    })),
-
+  setInitialBedrooms: (bedrooms: T_Bedroom[]) =>
+    set({ bedrooms: deepCopyBedrooms(bedrooms) }),
+  updateBedrooms: (newBedrooms: T_Bedroom[]) =>
+    set({ bedrooms: deepCopyBedrooms(newBedrooms) }),
   deleteBedroom: (index: number) =>
-    set((state) => ({
-      bedrooms: state.bedrooms.filter((_, idx) => idx !== index),
-    })),
+    set((state) => {
+      if (index < 0 || index >= state.bedrooms.length) {
+        return state; 
+      }
+      return {
+        bedrooms: state.bedrooms.filter((_, idx) => idx !== index),
+      };
+    }),
 }));
 
-function deepCopyBedrooms(bedrooms: any[][]): any[][] {
-  return bedrooms.map((insideArray) => [...insideArray.map(item => Array.isArray(item) ? deepCopyBedrooms(item) : {...item})]);
+function deepCopyBedrooms(bedrooms: T_Bedroom[]): T_Bedroom[] {
+  return bedrooms.map((bedroom) => ({
+    bedRoomName: bedroom.bedRoomName,
+    beds: bedroom.beds.map((bed) => ({ ...bed })),
+  }));
 }
+

@@ -15,7 +15,7 @@ import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
 import { useEffect, useState } from "react"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useParams, useRouter } from "next/navigation"
 import { Input } from "@/common/components/ui/Input"
@@ -31,20 +31,17 @@ import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Spinner } from "@/common/components/ui/Spinner"
-import AddBedroomModal from "./components/AddBedroomModal"
-import Builder from "@/module/Listing/Activity/Itinerary/Builder"
 import Bedroom from "./components/Bedroom"
-
-type T_BedRooms = {
-  bedRoomName: string
-  bedRoomType: string
-}
+import { useBedroomStore } from "./store/useBedroomStore"
+import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
+import { T_Bedroom } from "../types"
 
 type T_WholePlaceUnit = {
   title: string
   bedCount: number
-  bedRooms: T_BedRooms[]
+  bedRooms: T_Bedroom[]
   size: number
+  squareFoot: number
   bathrooms: number
   typeCount: number
   amenities: T_Property_Amenity[]
@@ -55,19 +52,17 @@ type Prop = {
   pageType: "setup" | "edit"
 }
 
+
 const WholePlace = ({ pageType }: Prop) => {
   const router = useRouter()
   const params = useParams()
   const listingId = String(params.listingId)
   const wholePlaceId = String(params.wholePlaceId)
   const [isSavings, setIsSavings] = useState(false)
-  const [isAddBedroomModalOpen, setIsAddBedroomModalOpen] = useState(false)
   const queryClient = useQueryClient()
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
-  const [bedCount, setBedCount] = useState<number>(
-    (data?.item?.numBedRooms as number) || 0
-  )
-
+  const bedrooms = useBedroomStore((state) => state.bedrooms)
+  
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
   )
@@ -76,7 +71,6 @@ const WholePlace = ({ pageType }: Prop) => {
     Number(data?.item?.numExactUnit) || 0
   )
 
-  const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const { mutateAsync: updateWholePlaceBasicInfo } =
     useUpdateWholePlaceBasicInfo(listingId)
   const { mutateAsync: updateAmenties } = useUpdateAmenities(
@@ -96,15 +90,16 @@ const WholePlace = ({ pageType }: Prop) => {
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms);
+  useEffect(() => {
+    if(data && data?.item?.bedRooms){
+      updateBedrooms(data?.item?.bedRooms);
+    }
+  }, [data, updateBedrooms]);
+
   const amenities = useSelectAmenityStore((state) => state.amenities)
-  const { control, register, unregister, handleSubmit, setValue } =
+  const { register, handleSubmit, setValue} =
     useForm<T_WholePlaceUnit>()
-    const [sqm, setSqm] = useState(data?.item?.totalSize || '');
-    const [sqft, setSqft] = useState('');
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "bedRooms",
-  })
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
@@ -155,14 +150,16 @@ const WholePlace = ({ pageType }: Prop) => {
     }
   }
 
-  const onSubmit = async (formData: T_WholePlaceUnit) => {
+  const onSubmit = async (formData: T_WholePlaceUnit) => 
+    {
+
     formData.amenities = amenities
     if (formData.size <= 0) {
       toast.error("Please fill total size count field")
       return
     }
 
-    if (bedCount <= 0) {
+    if (bedrooms.length <= 0) {
       toast.error("Please fill out bedroom/space count field")
       return
     }
@@ -170,28 +167,22 @@ const WholePlace = ({ pageType }: Prop) => {
       toast.error("Please fill out bathroom count field")
       return
     }
-    if (typeCount <= 0) {
-      toast.error("Please fill out type count field")
-      return
-    }
 
     try {
-      if ((bedCount as number) > 0) {
+      if ((bedrooms.length as number) > 0) {
         setIsSavings(true)
         formData.amenities = amenities
-        formData.bedCount = bedCount
-        formData.bedRooms = fields
+        formData.bedRooms = bedrooms
       } else {
         toast.error("Must have at least 1 bedroom or sleeping space.")
       }
-      const saveBasicInfo = updateWholePlaceBasicInfo({
+      const saveBasicInfo = await updateWholePlaceBasicInfo({
         _id: wholePlaceId,
         title: formData.title,
-        totalSize: Number(formData.size),
-        numBedRooms: bedCount,
         numBathRooms: bathroomCount,
-        bedRooms: formData.bedRooms,
-        qty: Number(typeCount),
+        totalSize: formData.size,
+        bedRooms: bedrooms,
+        qty: Number(exactUnitCount),
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
       const filterSelectedAmenities = amenities.filter(
@@ -221,20 +212,28 @@ const WholePlace = ({ pageType }: Prop) => {
     if (!isPending && !isFetching && data?.item) {
       setValue("title", data?.item?.title)
       setValue("size", data?.item?.totalSize)
-      setBedCount(Number(data?.item?.numBedRooms))
       setBathroomCount(Number(data?.item.numBathRooms))
-      setTypeCount(data?.item.qty)
+      setExactUnitCount(Number(data?.item.qty))
       setPhotos(data?.item?.photos)
       setAmenties(data.item?.amenities)
-      data.item?.bedRooms?.forEach((bedRoom: T_BedRooms) => {
-        append({
-          bedRoomName: bedRoom.bedRoomName,
-          bedRoomType: bedRoom.bedRoomType,
-        })
-      })
+      handleSqmChange(data.item?.totalSize)
     }
   }, [data, isPending, isFetching])
 
+  const [sizeValues, setSizeValues] = useState({
+    sqm: 0,
+    squareFoot: 0,
+  });
+
+  const handleSqmChange = (value: string) => {
+    const newSquareFoot = (Number(value) * SQM_TO_FT_CONVERSION_FACTOR).toFixed(2);
+
+   
+    setSizeValues({
+      sqm: Number(value),
+      squareFoot: Number(newSquareFoot),
+    });
+  };
   return (
     <>
       {isPending || isFetching ? (
@@ -252,6 +251,18 @@ const WholePlace = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-4 gap-x-6">
+          <Input
+                  label="Title"
+                  id="title"
+                  type="text"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+                </div>
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
                  Where can guests sleep?
                 </Typography>
@@ -288,7 +299,6 @@ const WholePlace = ({ pageType }: Prop) => {
                     disabled={isPending || isFetching}
                     type="number"
                     id="bathrooms"
-                    {...register("bathrooms")}
                     className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                     value={bathroomCount}
                     min={0}
@@ -312,6 +322,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 </div>
               </div>
             </div>
+            
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
                   How big is this unit?
                 </Typography>
@@ -325,11 +336,10 @@ const WholePlace = ({ pageType }: Prop) => {
                   id="size"
                   type="number"
                   disabled={isPending || isFetching}
-                  defaultValue={data?.item?.totalSize}
                   {...register("size", {
                     required: "This field is required",
                   })}
-                  onChange={(event) => setSqm(event.target.value)}
+                  onChange={(event) =>handleSqmChange(event.target.value)}
                   required
                 />
               </div>
@@ -338,11 +348,8 @@ const WholePlace = ({ pageType }: Prop) => {
                   label="Ft"
                   id="squareFoot"
                   type="number"
+                  value={sizeValues.squareFoot}
                   disabled
-                  defaultValue={data?.item?.title}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
                   required
                 />
               </div>
@@ -373,7 +380,6 @@ const WholePlace = ({ pageType }: Prop) => {
                     disabled={isPending || isFetching}
                     type="number"
                     id="exactUnit"
-                    {...register("exactUnitCount")}
                     className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                     value={exactUnitCount}
                     min={0}
@@ -442,10 +448,6 @@ const WholePlace = ({ pageType }: Prop) => {
         </div>
        
       )}
-        <AddBedroomModal
-           isOpen={isAddBedroomModalOpen}
-           onClose={() => setIsAddBedroomModalOpen(false)}
-         />
     </>
     
   )
