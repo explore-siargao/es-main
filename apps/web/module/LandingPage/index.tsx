@@ -135,18 +135,18 @@ const LandingPage = () => {
 
   return (
     <>
-      {isPending || isLoading ? (
+      {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
-      ) : (
-        <WidthWrapper className="mb-24 lg:mt-6">
-          <div className="w-full mb-20">
-            <TravelSlider
-              title="Explore Siargao Island"
-              description="Essential travel information for your island vacation"
-              groupCards={groupCardsDummy}
-            />
-          </div>
-          {search || checkIn || checkOut || numberOfGuest ? (
+      ) : ( */}
+      <WidthWrapper className="mb-24 lg:mt-6">
+        <div className="w-full mb-20">
+          <TravelSlider
+            title="Explore Siargao Island"
+            description="Essential travel information for your island vacation"
+            groupCards={groupCardsDummy}
+          />
+        </div>
+        {/* {search || checkIn || checkOut || numberOfGuest ? (
             <div className="flex flex-col gap-4">
               {path === "/" && (
                 <Typography variant={"h5"} className="text-gray-500">
@@ -262,9 +262,9 @@ const LandingPage = () => {
                 </ul>
               </div>
             </div>
-          )}
-        </WidthWrapper>
-      )}
+          )} */}
+      </WidthWrapper>
+      {/* )} */}
     </>
   )
 }
