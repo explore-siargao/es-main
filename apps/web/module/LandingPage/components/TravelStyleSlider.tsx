@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import Slider from "./TravelSlider"
+import TravelSlider from "./TravelSlider"
 
 type TravelStyleProps = {
   title: string
@@ -32,7 +32,7 @@ const TravelStyleSlider = ({
         )}
       </div>
       <div>
-        <Slider cards={groupCards} />
+        <TravelSlider cards={groupCards} />
       </div>
     </div>
   )
