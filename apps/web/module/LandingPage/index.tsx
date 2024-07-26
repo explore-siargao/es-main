@@ -70,7 +70,6 @@ const LandingPage = () => {
     console.log("value", value)
   })
 
-  const ASSET_ROOT = "/assets"
   const groupCardsDummy = [
     {
       imageKey: il1,
