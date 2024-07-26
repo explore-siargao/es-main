@@ -9,6 +9,7 @@ import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
+import TravelStyleSlider from "./components/TravelStyleSlider"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -57,6 +58,58 @@ const LandingPage = () => {
     console.log("value", value)
   })
 
+  const groupCardsDummy = [
+    {
+      imageKey: "/assets/1.jpg",
+      cardTitle: "Hostels",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      cardTitle: "Resorts",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      cardTitle: "Villas",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      cardTitle: "Hotels",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      cardTitle: "Hostels",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      cardTitle: "Resorts",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/1.jpg",
+      cardTitle: "Villas",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      cardTitle: "Islands",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      cardTitle: "Islands",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      cardTitle: "Islands",
+      url: "/",
+    },
+  ]
   return (
     <>
       {isPending || isLoading ? (
@@ -177,6 +230,13 @@ const LandingPage = () => {
                     />
                   ))}
                 </ul>
+              </div>
+              <div className="mt-20">
+                <TravelStyleSlider
+                  title="What's your travel style?"
+                  description="Browse by property type to find the perfect space"
+                  groupCards={groupCardsDummy}
+                />
               </div>
             </div>
           )}
