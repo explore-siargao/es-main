@@ -13,6 +13,7 @@ import { useSearchStore } from "../store/useSearchStore"
 import PropertySearchBar from "./SearchBar/PropertySearchBar"
 import ActivitiesSearchBar from "./SearchBar/ActivitiesSearchBar"
 import RentalsSearchBar from "./SearchBar/RentalsSearchBar"
+import { Typography } from "./ui/Typography"
 
 type T_Search_Form = {
   search: string
@@ -61,27 +62,40 @@ function SearchBar({
   }
 
   return (
-    <div className={`w-full mt-28 z-20 bg-gray-50 flex flex-col items-center`}>
+    <div
+      className={`w-full mt-28 h-96 z-20 flex flex-col items-center bg-[url('/search-bar-image-4.png')] bg-cover bg-no-repeat bg-center 
+            before:content-[''] 
+            before:absolute before:inset-0 
+            before:block before:bg-gradient-to-b 
+            before:from-gray-700 before:to-gray-900 
+            before:opacity-30 before:z-[-5] relative`}
+    >
       <WidthWrapper width={contentWidth}>
+        <Typography
+          className="text-white mx-auto text-left w-[931px] text-6xl mt-36 mb-[74px]"
+          fontWeight="bold"
+        >
+          Find Your Island Vibe
+        </Typography>
         <nav
           className="flex items-center justify-between py-2 my-2 w-full"
           aria-label="Global"
         >
           <div className="flex flex-col gap-4 mx-auto">
-            <div className="flex gap-2 rounded-full items-center px-2 py-1 mx-auto">
+            <div className="flex gap-8 rounded-full">
               <Button
                 variant="link"
                 size="sm"
                 onClick={() => router.push("/")}
-                className={path === "/" ? "font-bold underline" : ""}
+                className={`${path === "/" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
-                Properties
+                Places to stay
               </Button>
               <Button
                 variant="link"
                 size="sm"
                 onClick={() => router.push("/activities")}
-                className={path === "/activities" ? "font-bold underline" : ""}
+                className={`${path === "/activities" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Activities
               </Button>
@@ -89,7 +103,7 @@ function SearchBar({
                 variant="link"
                 size="sm"
                 onClick={() => router.push("/rentals")}
-                className={path === "/rentals" ? "font-bold underline" : ""}
+                className={`${path === "/rentals" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Rentals
               </Button>

@@ -191,7 +191,7 @@ const LandingPage = () => {
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
-      <WidthWrapper className="mb-24 lg:mt-6">
+      <WidthWrapper className="mb-24 lg:mt-20">
         <div className="w-full mt-6 mb-10">
           <TravelSlider
             title="Explore Siargao Island"
