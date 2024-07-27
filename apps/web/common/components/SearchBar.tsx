@@ -71,12 +71,14 @@ function SearchBar({
             before:opacity-30 before:z-[-5] relative`}
     >
       <WidthWrapper width={contentWidth}>
-        <Typography
-          className="text-white mx-auto text-left w-[931px] text-6xl mt-36 mb-[74px]"
-          fontWeight="bold"
-        >
-          Find Your Island Vibe
-        </Typography>
+        <WidthWrapper width="small">
+          <Typography
+            className="text-white text-6xl mt-36 mb-[74px]"
+            fontWeight="bold"
+          >
+            Find your island vibe
+          </Typography>
+        </WidthWrapper>
         <nav
           className="flex items-center justify-between py-2 my-2 w-full"
           aria-label="Global"

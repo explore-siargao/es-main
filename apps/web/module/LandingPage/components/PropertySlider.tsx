@@ -17,16 +17,16 @@ interface SliderProps {
 const PropertySlider = ({ cards }: SliderProps) => {
   return (
     <Swiper
-      slidesPerView={6}
+      slidesPerView={4}
       modules={[Navigation, Pagination, Scrollbar, A11y]}
       navigation
       breakpoints={{
         320: { slidesPerView: 1 },
         640: { slidesPerView: 2 },
         768: { slidesPerView: 3 },
-        720: { slidesPerView: 4 },
-        1080: { slidesPerView: 5 },
-        1920: { slidesPerView: 6 },
+        720: { slidesPerView: 3 },
+        1080: { slidesPerView: 3 },
+        1920: { slidesPerView: 4 },
       }}
     >
       <style>{`
