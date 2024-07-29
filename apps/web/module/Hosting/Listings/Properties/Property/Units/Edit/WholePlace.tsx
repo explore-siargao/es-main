@@ -35,6 +35,7 @@ import Bedroom from "./components/Bedroom"
 import { useBedroomStore } from "./store/useBedroomStore"
 import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
 import { T_Bedroom } from "../types"
+import { Option, Select } from "@/common/components/ui/Select"
 
 type T_WholePlaceUnit = {
   title: string
@@ -252,16 +253,20 @@ const WholePlace = ({ pageType }: Prop) => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-4 gap-x-6">
-          <Input
-                  label="Title"
-                  id="title"
-                  type="text"
+          <Select
+                  label="Unit Type"
                   disabled={isPending || isFetching}
                   {...register("title", {
                     required: "This field is required",
                   })}
-                  required
-                />
+                >
+                    <Option value="Villa">Villa</Option>
+                    <Option value="Apartment">Apartment</Option>
+                    <Option value="Studio">Studio apartment</Option>
+                    <Option value="House">House</Option>
+                    <Option value="Condominium">Condominium</Option>
+
+                </Select>
                 </div>
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
                  Where can guests sleep?

@@ -9,8 +9,16 @@ import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { T_Photo } from "@repo/contract"
 import { isArray } from "lodash"
+import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
+import { E_Property_Category } from "../constants"
+const numWords = require('num-words');
 
-const UnitsTable = () => {
+interface UnitsTableProps {
+  category?: string;
+
+}
+
+const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { data, isPending } = useGetPropertyById(listingId)
@@ -47,6 +55,7 @@ const UnitsTable = () => {
     columnHelper.accessor("title", {
       header: "Name",
       cell: (context) => {
+        const numBedrooms = context.row.original.bedRooms ? context.row.original.bedRooms.length : 0
         const value = context.getValue() || ""
         const cleanValue = value.startsWith("Custom: ")
           ? value.slice("Custom: ".length)
@@ -55,7 +64,11 @@ const UnitsTable = () => {
           <Link
             href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
           >
-            <Typography variant="p">{cleanValue}</Typography>
+            <Typography variant="p">
+            {category === E_Property_Category.WholePlace
+              ? `${capitalizeFirstLetter(numWords(numBedrooms))}-bedroom ${cleanValue}`
+              : cleanValue}
+          </Typography>
           </Link>
         )
       },
