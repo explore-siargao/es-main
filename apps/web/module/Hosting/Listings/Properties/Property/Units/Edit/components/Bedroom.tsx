@@ -33,6 +33,7 @@ const Bedroom = () => {
 
     </div>
     <div className="flex items-center"><Button
+    type="button"
     variant={"ghost"}
       onClick={() =>  deleteBedroom(index)}
       className="underline text-md" 

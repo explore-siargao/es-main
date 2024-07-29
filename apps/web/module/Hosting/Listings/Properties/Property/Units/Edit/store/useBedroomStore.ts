@@ -15,14 +15,9 @@ export const useBedroomStore = create<BedroomStore>((set) => ({
   updateBedrooms: (newBedrooms: IBedroom[]) =>
     set({ bedrooms: deepCopyBedrooms(newBedrooms) }),
   deleteBedroom: (index: number) =>
-    set((state) => {
-      if (index < 0 || index >= state.bedrooms.length) {
-        return state; 
-      }
-      return {
-        bedrooms: state.bedrooms.filter((_, idx) => idx !== index),
-      };
-    }),
+    set((state) => ({
+      bedrooms: state.bedrooms.filter((_, idx) => idx !== index),
+    })),
 }));
 
 function deepCopyBedrooms(bedrooms: IBedroom[]): IBedroom[] {
