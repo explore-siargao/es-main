@@ -53,7 +53,6 @@ type Prop = {
   pageType: "setup" | "edit"
 }
 
-
 const WholePlace = ({ pageType }: Prop) => {
   const router = useRouter()
   const params = useParams()
@@ -63,7 +62,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
-  
+
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
   )
@@ -91,16 +90,15 @@ const WholePlace = ({ pageType }: Prop) => {
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
-  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms);
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
   useEffect(() => {
     if (data?.item?.bedRooms) {
-      updateBedrooms(data.item.bedRooms);
+      updateBedrooms(data.item.bedRooms)
     }
-  }, [data, updateBedrooms]);
+  }, [data, updateBedrooms])
 
   const amenities = useSelectAmenityStore((state) => state.amenities)
-  const { register, handleSubmit, setValue} =
-    useForm<T_WholePlaceUnit>()
+  const { register, handleSubmit, setValue } = useForm<T_WholePlaceUnit>()
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
@@ -151,9 +149,7 @@ const WholePlace = ({ pageType }: Prop) => {
     }
   }
 
-  const onSubmit = async (formData: T_WholePlaceUnit) => 
-    {
-
+  const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
     if (formData.size <= 0) {
       toast.error("Please fill total size count field")
@@ -224,17 +220,18 @@ const WholePlace = ({ pageType }: Prop) => {
   const [sizeValues, setSizeValues] = useState({
     sqm: 0,
     squareFoot: 0,
-  });
+  })
 
   const handleSqmChange = (value: string) => {
-    const newSquareFoot = (Number(value) * SQM_TO_FT_CONVERSION_FACTOR).toFixed(2);
+    const newSquareFoot = (Number(value) * SQM_TO_FT_CONVERSION_FACTOR).toFixed(
+      2
+    )
 
-   
     setSizeValues({
       sqm: Number(value),
       squareFoot: Number(newSquareFoot),
-    });
-  };
+    })
+  }
   return (
     <>
       {isPending || isFetching ? (
@@ -252,34 +249,36 @@ const WholePlace = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-4 gap-x-6">
-          <Select
-                  label="Unit Type"
-                  disabled={isPending || isFetching}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                >
-                    <Option value="Villa">Villa</Option>
-                    <Option value="Apartment">Apartment</Option>
-                    <Option value="Studio">Studio apartment</Option>
-                    <Option value="House">House</Option>
-                    <Option value="Condominium">Condominium</Option>
-
-                </Select>
-                </div>
+            <div className="grid grid-cols-4 gap-x-6">
+              <Select
+                label="Unit Type"
+                disabled={isPending || isFetching}
+                {...register("title", {
+                  required: "This field is required",
+                })}
+              >
+                <Option value="Villa">Villa</Option>
+                <Option value="Apartment">Apartment</Option>
+                <Option value="Studio">Studio apartment</Option>
+                <Option value="House">House</Option>
+                <Option value="Condominium">Condominium</Option>
+              </Select>
+            </div>
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
-                 Where can guests sleep?
-                </Typography>
-                <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
-                 How many comfortable living spaces does this unit have? Click to add bed type.
-                </Typography>
-                <div className="grid grid-cols-2">
-                <div>
-                <Bedroom/>
+              Where can guests sleep?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="mb-2 text-gray-400"
+            >
+              How many comfortable living spaces does this unit have? Click to
+              add bed type.
+            </Typography>
+            <div className="grid grid-cols-2">
+              <div>
+                <Bedroom />
               </div>
-              
-            
             </div>
             <div className="grid grid-cols-4 mt-4 gap-x-6">
               <div>
@@ -327,15 +326,20 @@ const WholePlace = ({ pageType }: Prop) => {
                 </div>
               </div>
             </div>
-            
+
             <Typography variant="h4" fontWeight="semibold" className="mt-4">
-                  How big is this unit?
-                </Typography>
-                <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
-                 Enter the unit size in square meters, we will automatically convert to square foot
-                </Typography>
-                <div className="grid grid-cols-4 gap-x-6">
-                <div>
+              How big is this unit?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="mb-2 text-gray-400"
+            >
+              Enter the unit size in square meters, we will automatically
+              convert to square foot
+            </Typography>
+            <div className="grid grid-cols-4 gap-x-6">
+              <div>
                 <Input
                   label="Sqm"
                   id="size"
@@ -344,7 +348,7 @@ const WholePlace = ({ pageType }: Prop) => {
                   {...register("size", {
                     required: "This field is required",
                   })}
-                  onChange={(event) =>handleSqmChange(event.target.value)}
+                  onChange={(event) => handleSqmChange(event.target.value)}
                   required
                 />
               </div>
@@ -358,57 +362,60 @@ const WholePlace = ({ pageType }: Prop) => {
                   required
                 />
               </div>
-            
             </div>
             <div>
-                <Typography variant="h4" fontWeight="semibold" className="mt-4">
-                  How many of this exact unit do you have?
-                </Typography>
-                <Typography variant="h5" fontWeight="normal" className="mb-2 text-gray-400">
-                  Identical amenities, bedrooms, bathrooms, etc.
-                </Typography>
-                <div className="flex rounded-md">
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={() => {
-                      exactUnitCount > 0 &&
+              <Typography variant="h4" fontWeight="semibold" className="mt-4">
+                How many of this exact unit do you have?
+              </Typography>
+              <Typography
+                variant="h5"
+                fontWeight="normal"
+                className="mb-2 text-gray-400"
+              >
+                Identical amenities, bedrooms, bathrooms, etc.
+              </Typography>
+              <div className="flex rounded-md">
+                <button
+                  disabled={isPending || isFetching}
+                  className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  type="button"
+                  onClick={() => {
+                    exactUnitCount > 0 &&
                       setExactUnitCount(
-                          (exactUnitCount: any) => exactUnitCount - 1
-                        )
-                    }}
-                  >
-                    <MinusIcon className="h-3 w-3" />
-                  </button>
-                  <input
-                    disabled={isPending || isFetching}
-                    type="number"
-                    id="exactUnit"
-                    className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                    value={exactUnitCount}
-                    min={0}
-                    onChange={(e) => {
-                      const val = Number(e.target.value)
-                      setExactUnitCount(val)
-                    }}
-                  />
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={() =>
-                      setExactUnitCount(
-                        (exactUnitCount: number) => exactUnitCount + 1
+                        (exactUnitCount: any) => exactUnitCount - 1
                       )
-                    }
-                  >
-                    <PlusIcon className="h-3 w-3" />
-                  </button>
-                </div>
+                  }}
+                >
+                  <MinusIcon className="h-3 w-3" />
+                </button>
+                <input
+                  disabled={isPending || isFetching}
+                  type="number"
+                  id="exactUnit"
+                  className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                  value={exactUnitCount}
+                  min={0}
+                  onChange={(e) => {
+                    const val = Number(e.target.value)
+                    setExactUnitCount(val)
+                  }}
+                />
+                <button
+                  disabled={isPending || isFetching}
+                  className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  type="button"
+                  onClick={() =>
+                    setExactUnitCount(
+                      (exactUnitCount: number) => exactUnitCount + 1
+                    )
+                  }
+                >
+                  <PlusIcon className="h-3 w-3" />
+                </button>
               </div>
+            </div>
             <hr className="mt-6 mb-4" />
-      
+
             <Photos />
             <hr className="mt-6 mb-4" />
             <Typography variant="h4" fontWeight="semibold" className="mb-3">
@@ -451,10 +458,8 @@ const WholePlace = ({ pageType }: Prop) => {
             </div>
           </form>
         </div>
-       
       )}
     </>
-    
   )
 }
 

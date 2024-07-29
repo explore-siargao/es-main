@@ -267,15 +267,8 @@ export const updateWholePlaceUnitBasicInfo = async (
 ) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, totalSize, numBathRooms, bedRooms, qty } =
-    req.body
-  if (
-    !title ||
-    !numBathRooms ||
-    !totalSize ||
-    !bedRooms ||
-    !qty
-  ) {
+  const { title, totalSize, numBathRooms, bedRooms, qty } = req.body
+  if (!title || !numBathRooms || !totalSize || !bedRooms || !qty) {
     console.log(REQUIRED_VALUE_EMPTY)
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
@@ -297,12 +290,12 @@ export const updateWholePlaceUnitBasicInfo = async (
     const findUnitInProperty =
       getProperty?.bookableUnits.includes(bookableUnitId)
     if (!findUnitInProperty) {
-        console.log('Bookable unit not found in property')
+      console.log('Bookable unit not found in property')
       return res.json(
         response.error({ message: 'Bookable unit not found in property' })
       )
     }
-   
+
     const updateWholePlaceBasicInfo =
       await dbBookableUnitTypes.findOneAndUpdate(
         { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },

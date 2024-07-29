@@ -1,65 +1,65 @@
-import ModalContainer from "@/common/components/ModalContainer";
-import { Button } from "@/common/components/ui/Button";
-import { Typography } from "@/common/components/ui/Typography";
-import toast from "react-hot-toast";
-import { MinusIcon, PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useBedroomStore } from "../store/useBedroomStore";
-import { defaultBedroom } from "../../constants";
-import { IBedroom } from "../../types";
-
-
+import ModalContainer from "@/common/components/ModalContainer"
+import { Button } from "@/common/components/ui/Button"
+import { Typography } from "@/common/components/ui/Typography"
+import toast from "react-hot-toast"
+import { MinusIcon, PlusIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useBedroomStore } from "../store/useBedroomStore"
+import { defaultBedroom } from "../../constants"
+import { IBedroom } from "../../types"
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  mode: "add" | "edit";
-  selectedIndex?: number; 
-};
+  isOpen: boolean
+  onClose: () => void
+  mode: "add" | "edit"
+  selectedIndex?: number
+}
 
 const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
-  const [fields, setFields] = useState<IBedroom>(defaultBedroom);
-  const bedrooms = useBedroomStore((state) => state.bedrooms);
-  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms);
-  
+  const [fields, setFields] = useState<IBedroom>(defaultBedroom)
+  const bedrooms = useBedroomStore((state) => state.bedrooms)
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
+
   const handleBedCountChange = (bedIndex: number, value: string) => {
-    const newBeds = [...fields.beds];
+    const newBeds = [...fields.beds]
     if (newBeds[bedIndex]) {
-      newBeds[bedIndex].qty = parseInt(value, 10) || 0;
-      setFields({ ...fields, beds: newBeds });
+      newBeds[bedIndex].qty = parseInt(value, 10) || 0
+      setFields({ ...fields, beds: newBeds })
     }
-  };
-  
+  }
+
   const resetBedQuantities = () => {
     setFields((prev) => ({
       ...prev,
       beds: prev.beds.map((bed) => ({ ...bed, qty: 0 })),
-    }));
-  };
+    }))
+  }
   useEffect(() => {
     resetBedQuantities()
-
   }, [])
   const onSubmit = () => {
-    let updatedBedrooms = [...bedrooms];
+    let updatedBedrooms = [...bedrooms]
     if (mode === "edit" && selectedIndex !== undefined) {
-      updatedBedrooms[selectedIndex] = deepCopyBedroom(fields);
+      updatedBedrooms[selectedIndex] = deepCopyBedroom(fields)
     } else if (mode === "add") {
-      updatedBedrooms.push(deepCopyBedroom(fields));
+      updatedBedrooms.push(deepCopyBedroom(fields))
     }
     resetBedQuantities()
-    updateBedrooms(updatedBedrooms);
-  
-  
-    toast.success(mode === "edit" ? 'Bedroom updated successfully' : 'Bedroom added successfully');
-    onClose();
-  };
-  
+    updateBedrooms(updatedBedrooms)
+
+    toast.success(
+      mode === "edit"
+        ? "Bedroom updated successfully"
+        : "Bedroom added successfully"
+    )
+    onClose()
+  }
+
   function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
       bedRoomName: bedroom.bedRoomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
-    };
+    }
   }
 
   return (
@@ -84,10 +84,10 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
                   className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
-                    const newBeds = [...fields.beds];
+                    const newBeds = [...fields.beds]
                     if (newBeds[index] && newBeds[index].qty > 0) {
-                      newBeds[index].qty--;
-                      setFields({ ...fields, beds: newBeds });
+                      newBeds[index].qty--
+                      setFields({ ...fields, beds: newBeds })
                     }
                   }}
                 >
@@ -101,31 +101,32 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
                   min={0}
                   onChange={(e) => handleBedCountChange(index, e.target.value)}
                 />
-            
+
                 <button
                   className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
-                    const newBeds = [...fields.beds];
+                    const newBeds = [...fields.beds]
                     if (newBeds[index]) {
-                      newBeds[index].qty++;
-                      setFields({ ...fields, beds: newBeds });
+                      newBeds[index].qty++
+                      setFields({ ...fields, beds: newBeds })
                     }
                   }}
                 >
                   <PlusIcon className="h-3 w-3" />
                 </button>
-                </div>
-            
+              </div>
             </div>
           ))}
         </div>
         <div className="flex justify-center mt-5">
-          <Button onClick={onSubmit}>{mode === "edit" ? "Confirm" : "Add Bedroom"}</Button>
+          <Button onClick={onSubmit}>
+            {mode === "edit" ? "Confirm" : "Add Bedroom"}
+          </Button>
         </div>
       </div>
     </ModalContainer>
-  );
-};
+  )
+}
 
-export default AddBedroomModal;
+export default AddBedroomModal

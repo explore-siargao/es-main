@@ -52,12 +52,13 @@ const Photos = () => {
         >
           Please upload at least{" "}
           {data?.item?.category !== E_Rental_Category.Car ? (
-          <>
-        3 photos of your property. 
-        The more you upload, <br/> the more likely you are to get bookings. You can upload more later.
-    </>
-) : "5 photos"}
-
+            <>
+              3 photos of your property. The more you upload, <br /> the more
+              likely you are to get bookings. You can upload more later.
+            </>
+          ) : (
+            "5 photos"
+          )}
         </Typography>
         <Typography
           variant="h6"

@@ -1,12 +1,12 @@
-import { create } from "zustand";
-import { IBedroom } from "../../types";
+import { create } from "zustand"
+import { IBedroom } from "../../types"
 
 type BedroomStore = {
-  bedrooms: IBedroom[];
-  setInitialBedrooms: (bedrooms: IBedroom[]) => void;
-  updateBedrooms: (newBedrooms: IBedroom[]) => void;
-  deleteBedroom: (index: number) => void;
-};
+  bedrooms: IBedroom[]
+  setInitialBedrooms: (bedrooms: IBedroom[]) => void
+  updateBedrooms: (newBedrooms: IBedroom[]) => void
+  deleteBedroom: (index: number) => void
+}
 
 export const useBedroomStore = create<BedroomStore>((set) => ({
   bedrooms: [],
@@ -18,12 +18,11 @@ export const useBedroomStore = create<BedroomStore>((set) => ({
     set((state) => ({
       bedrooms: state.bedrooms.filter((_, idx) => idx !== index),
     })),
-}));
+}))
 
 function deepCopyBedrooms(bedrooms: IBedroom[]): IBedroom[] {
   return bedrooms.map((bedroom) => ({
     bedRoomName: bedroom.bedRoomName,
     beds: bedroom.beds.map((bed) => ({ ...bed })),
-  }));
+  }))
 }
-

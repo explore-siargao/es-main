@@ -1,5 +1,3 @@
-
-
 const MOST_POPULAR = "Most Popular"
 const OUTDOORS = "Outdoors"
 const GENERAL = "General"
@@ -478,43 +476,44 @@ export const AMENITIES = [
   },
 ]
 
-
 export const INITIAL_BEDROOMS = [
   {
     bedRoomName: "Bed Room 1",
     beds: [
-      { name: 'Single Bed', qty: 0 },
-      { name: 'Twin Bed', qty: 0 },
-      { name: 'Double Bed', qty: 0 },
-      { name: 'Queen Bed', qty: 0 },
-      { name: 'Queen XL Bed', qty: 0 },
-      { name: 'King Bed', qty: 0 },
-      { name: 'King XL Bed', qty: 0 },
-      { name: 'Sofa Bed', qty: 0 },
-      { name: 'Bunk Bed', qty: 0 },
-      { name: 'Lot (Baby Bed)', qty: 0 }
-    ]
+      { name: "Single Bed", qty: 0 },
+      { name: "Twin Bed", qty: 0 },
+      { name: "Double Bed", qty: 0 },
+      { name: "Queen Bed", qty: 0 },
+      { name: "Queen XL Bed", qty: 0 },
+      { name: "King Bed", qty: 0 },
+      { name: "King XL Bed", qty: 0 },
+      { name: "Sofa Bed", qty: 0 },
+      { name: "Bunk Bed", qty: 0 },
+      { name: "Lot (Baby Bed)", qty: 0 },
+    ],
   },
-];
+]
 
 export const defaultBedroom = {
-  bedRoomName: '',
-  beds: [ { name: 'Single Bed', qty: 0 },
-    { name: 'Twin Bed', qty: 0 },
-    { name: 'Double Bed', qty: 0 },
-    { name: 'Queen Bed', qty: 0 },
-    { name: 'Queen XL Bed', qty: 0 },
-    { name: 'King Bed', qty: 0 },
-    { name: 'King XL Bed', qty: 0 },
-    { name: 'Sofa Bed', qty: 0 },
-    { name: 'Bunk Bed', qty: 0 },
-    { name: 'Lot (Baby Bed)', qty: 0 }]
-};
+  bedRoomName: "",
+  beds: [
+    { name: "Single Bed", qty: 0 },
+    { name: "Twin Bed", qty: 0 },
+    { name: "Double Bed", qty: 0 },
+    { name: "Queen Bed", qty: 0 },
+    { name: "Queen XL Bed", qty: 0 },
+    { name: "King Bed", qty: 0 },
+    { name: "King XL Bed", qty: 0 },
+    { name: "Sofa Bed", qty: 0 },
+    { name: "Bunk Bed", qty: 0 },
+    { name: "Lot (Baby Bed)", qty: 0 },
+  ],
+}
 
-export const SQM_TO_FT_CONVERSION_FACTOR = 10.7639; 
+export const SQM_TO_FT_CONVERSION_FACTOR = 10.7639
 
 export enum E_Property_Category {
   WholePlace = "WholePlace",
   Bed = "Bed",
-  Room = "Room"
+  Room = "Room",
 }

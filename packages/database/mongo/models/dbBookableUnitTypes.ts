@@ -1,9 +1,8 @@
 import mongoose, { Schema } from "mongoose"
 
-
 const bed = new Schema({
   name: String,
-  qty: Number
+  qty: Number,
 })
 
 const bedRooms = new Schema({
