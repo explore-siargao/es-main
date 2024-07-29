@@ -1,15 +1,15 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image";
-import { Typography } from "@/common/components/ui/Typography";
-import { LucideArrowRight } from "lucide-react";
-import Link from "next/link";
+import React from "react"
+import Image, { StaticImageData } from "next/image"
+import { Typography } from "@/common/components/ui/Typography"
+import { LucideArrowRight } from "lucide-react"
+import Link from "next/link"
 
 interface ICardItems {
-  imageKey: StaticImageData;
-  title: string;
-  description: string;
-  linkTitle: string;
-  url: string;
+  imageKey: StaticImageData
+  title: string
+  description: string
+  linkTitle: string
+  url: string
 }
 
 const ImageTextCard = ({
@@ -39,13 +39,15 @@ const ImageTextCard = ({
         </Typography>
         <Link href={url}>
           <div className="flex items-center gap-2 hover:underline">
-            <Typography className="text-sm sm:text-base md:text-base">{linkTitle}</Typography>
+            <Typography className="text-sm sm:text-base md:text-base">
+              {linkTitle}
+            </Typography>
             <LucideArrowRight />
           </div>
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ImageTextCard;
+export default ImageTextCard
