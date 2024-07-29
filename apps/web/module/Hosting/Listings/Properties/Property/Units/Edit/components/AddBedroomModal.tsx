@@ -3,7 +3,7 @@ import { Button } from "@/common/components/ui/Button";
 import { Typography } from "@/common/components/ui/Typography";
 import toast from "react-hot-toast";
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBedroomStore } from "../store/useBedroomStore";
 import { defaultBedroom } from "../../constants";
 import { IBedroom } from "../../types";
@@ -36,7 +36,10 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
       beds: prev.beds.map((bed) => ({ ...bed, qty: 0 })),
     }));
   };
+  useEffect(() => {
+    resetBedQuantities()
 
+  }, [])
   const onSubmit = () => {
     let updatedBedrooms = [...bedrooms];
     if (mode === "edit" && selectedIndex !== undefined) {
