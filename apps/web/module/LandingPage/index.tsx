@@ -292,7 +292,7 @@ const LandingPage = () => {
               "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multicultural restaurants, cafes and bars will indulge your senses."
             }
             linkTitle={"View foodie guide"}
-            url={"/"}
+            url={"/guides/restaurants/restaurant-name"}
           />
           <ImageTextCard
             imageKey={surfImage}
@@ -301,7 +301,7 @@ const LandingPage = () => {
               "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecasts and connect with local instructors."
             }
             linkTitle={"Check the best surf spots"}
-            url={"/"}
+            url={"/guides/surfing/surf-name"}
           />
           <ImageTextCard
             imageKey={airport}
@@ -310,7 +310,7 @@ const LandingPage = () => {
               "Borders are finally open and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
             }
             linkTitle={"Essential travel info"}
-            url={"/"}
+            url={"/guides/locations/location-name"}
           />
         </div>
 
