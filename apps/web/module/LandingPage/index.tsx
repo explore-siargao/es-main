@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from "react"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import useGetAllBookings from "../LandingPage/hooks/useGetAllBookings"
-import { Spinner } from "@/common/components/ui/Spinner"
 import useSessionStore from "@/common/store/useSessionStore"
-import Listing from "../Listing"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
@@ -27,7 +25,6 @@ import surfImage from "../../common/assets/sample/surf.jpg"
 import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
-import SearchBar from "@/common/components/SearchBar"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
