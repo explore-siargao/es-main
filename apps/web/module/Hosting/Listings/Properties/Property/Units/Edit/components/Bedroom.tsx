@@ -18,7 +18,7 @@ const Bedroom = () => {
        <div className="grid grid-cols-2 gap-x-7 gap-y-2">
        {bedrooms.map((bedroomArray, index) => {
   return (
-    <><div key={index} className="mt-2 rounded-lg p-4 border w-full border-text-200">
+    <><div key={bedroomArray.bedRoomName} className="mt-2 rounded-lg p-4 border w-full border-text-200">
       <Typography variant="h4">
         Bedroom {index + 1}
       </Typography>

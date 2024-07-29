@@ -3,11 +3,11 @@ import { Button } from "@/common/components/ui/Button";
 import { Typography } from "@/common/components/ui/Typography";
 import toast from "react-hot-toast";
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useBedroomStore } from "../store/useBedroomStore";
 import { defaultBedroom } from "../../constants";
 
-export interface T_BedRoom {
+export interface T_Bedroom {
   bedRoomName: string;
   beds: {
     name: string;
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
-  const [fields, setFields] = useState<T_BedRoom>(defaultBedroom);
+  const [fields, setFields] = useState<T_Bedroom>(defaultBedroom);
   const bedrooms = useBedroomStore((state) => state.bedrooms);
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms);
   
@@ -57,7 +57,7 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
     onClose();
   };
   
-  function deepCopyBedroom(bedroom: T_BedRoom): T_BedRoom {
+  function deepCopyBedroom(bedroom: T_Bedroom): T_Bedroom {
     return {
       bedRoomName: bedroom.bedRoomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
@@ -77,7 +77,7 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
         </Typography>
         <div>
           {fields.beds.map((bed, index) => (
-            <div className="grid grid-cols-2 my-3  items-center" key={index}>
+            <div className="grid grid-cols-2 my-3  items-center" key={bed.name}>
               <Typography variant="h4" fontWeight="semibold">
                 {bed.name}
               </Typography>

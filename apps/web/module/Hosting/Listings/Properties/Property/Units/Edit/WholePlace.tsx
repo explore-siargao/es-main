@@ -34,13 +34,13 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import Bedroom from "./components/Bedroom"
 import { useBedroomStore } from "./store/useBedroomStore"
 import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
-import { T_Bedroom } from "../types"
+import { I_Bedroom } from "../types"
 import { Option, Select } from "@/common/components/ui/Select"
 
 type T_WholePlaceUnit = {
   title: string
   bedCount: number
-  bedRooms: T_Bedroom[]
+  bedRooms: I_Bedroom[]
   size: number
   squareFoot: number
   bathrooms: number
@@ -93,8 +93,8 @@ const WholePlace = ({ pageType }: Prop) => {
   )
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms);
   useEffect(() => {
-    if(data && data?.item?.bedRooms){
-      updateBedrooms(data?.item?.bedRooms);
+    if (data?.item?.bedRooms) {
+      updateBedrooms(data.item.bedRooms);
     }
   }, [data, updateBedrooms]);
 

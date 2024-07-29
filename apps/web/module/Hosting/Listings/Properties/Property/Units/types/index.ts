@@ -1,9 +1,9 @@
-export interface T_Bed {
+export interface I_Bed {
     name: string;
     qty: number;
   }
   
-  export interface T_Bedroom {
+  export interface I_Bedroom {
     bedRoomName: string;
-    beds: T_Bed[];
+    beds: I_Bed[];
   }
