@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from "react"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import useGetAllBookings from "../LandingPage/hooks/useGetAllBookings"
-import { Spinner } from "@/common/components/ui/Spinner"
 import useSessionStore from "@/common/store/useSessionStore"
-import Listing from "../Listing"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
 import { Typography } from "@/common/components/ui/Typography"
@@ -22,7 +20,11 @@ import il9 from "../../common/assets/sample/island-9.jpg"
 import il10 from "../../common/assets/sample/island-10.jpg"
 import il11 from "../../common/assets/sample/island-11.jpg"
 import il12 from "../../common/assets/sample/island-12.jpg"
+import foodImage from "../../common/assets/sample/image1.jpg"
+import surfImage from "../../common/assets/sample/surf.jpg"
+import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
+import ImageTextCard from "./components/ImageTextCard"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -71,7 +73,7 @@ const LandingPage = () => {
     console.log("value", value)
   })
 
-  const groupCardsDummy = [
+  const groupCardsDummyTravelStyle = [
     {
       imageKey: "/assets/1.jpg",
       cardTitle: "Hostels",
@@ -123,7 +125,7 @@ const LandingPage = () => {
       url: "/",
     },
   ]
-  const groupCardsDummy2 = [
+  const groupCardsDummy = [
     {
       imageKey: il1,
       mainPlace: "General Luna",
@@ -185,27 +187,133 @@ const LandingPage = () => {
       subPlace: "Popular Trips",
     },
   ]
+  const groupCardsDummyRecommendedPlaceToStay = [
+    {
+      imageKey: "/assets/1.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/1.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/2.jpg",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      url: "/",
+    },
+  ]
 
   return (
     <>
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
-      <WidthWrapper width="small" className="mb-24 lg:mt-20">
-        <div className="w-full mt-6 mb-10">
+      <WidthWrapper className="mb-24 lg:mt-6">
+        <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
             description="Essential travel information for your island vacation"
-            groupCards={groupCardsDummy2}
-          />
-        </div>
-        <div className="mt-4 mb-10">
-          <TravelStyleSlider
-            title="What's your travel style?"
-            description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummy}
           />
         </div>
+        <div className="sm:mt-10">
+          <TravelStyleSlider
+            title={"What's your travel style?"}
+            description="Browse by property type to find the perfect space"
+            groupCards={groupCardsDummyTravelStyle}
+          />
+        </div>
+        <div className="sm:mt-10">
+          <TravelStyleSlider
+            title={"Recommended places to stay"}
+            description="Hand-picked properties just for you"
+            groupCards={groupCardsDummyRecommendedPlaceToStay}
+          />
+        </div>
+        <div className="sm:mt-10 space-y-12 pl-5">
+          <div>
+            <Typography variant="h2" fontWeight="semibold">
+              Looking for something to do in Siargao?
+            </Typography>
+            <Typography variant="h4">
+              We've partnered the islands for tour and activity providers.
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="h2" fontWeight="semibold">
+              Reliable cars, motorbikes and more
+            </Typography>
+            <Typography variant="h4">
+              Take the road, let's travel with one of our trusted rental
+              partners.
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="h2" fontWeight="semibold">
+              Inspiration for your trip
+            </Typography>
+            <Typography variant="h4">
+              Let us help you make the most out of your time in Siargao island
+            </Typography>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-4 sm:gap-6 lg:gap-10 md:gap-4 p-4 sm:mt-10">
+          <ImageTextCard
+            imageKey={foodImage}
+            title={"Restaurants, cafes & bars"}
+            description={
+              "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multicultural restaurants, cafes and bars will indulge your senses."
+            }
+            linkTitle={"View foodie guide"}
+            url={"/"}
+          />
+          <ImageTextCard
+            imageKey={surfImage}
+            title={"Surfing in Siargao"}
+            description={
+              "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecasts and connect with local instructors."
+            }
+            linkTitle={"Check the best surf spots"}
+            url={"/"}
+          />
+          <ImageTextCard
+            imageKey={airport}
+            title={"Getting to the island"}
+            description={
+              "Borders are finally open and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
+            }
+            linkTitle={"Essential travel info"}
+            url={"/"}
+          />
+        </div>
+
         {/* {search || checkIn || checkOut || numberOfGuest ? (
             <div className="flex flex-col gap-4">
               {path === "/" && (

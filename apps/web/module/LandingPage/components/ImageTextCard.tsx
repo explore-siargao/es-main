@@ -20,8 +20,8 @@ const ImageTextCard = ({
   url,
 }: ICardItems) => {
   return (
-    <div className="bg-white rounded-lg shadow-md flex-shrink-0 w-80">
-      <div className="relative w-full h-56">
+    <div className="bg-white rounded-lg shadow-md flex-shrink-0 w-full mx-auto sm:w-full md:w-[calc(50%-1rem)] lg:w-[450px]">
+      <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-56">
         <Image
           src={imageKey}
           layout="fill"
@@ -30,14 +30,18 @@ const ImageTextCard = ({
           className="rounded-t-lg"
         />
       </div>
-      <div className="flex flex-col space-y-4 pr-8 pl-8 pt-8 pb-6">
-        <Typography variant="h2" fontWeight="semibold">
+      <div className="flex flex-col space-y-4 p-4 sm:p-6 md:p-6 lg:p-6">
+        <Typography variant="h3" fontWeight="semibold">
           {title}
         </Typography>
-        <Typography className="text-gray-700">{description}</Typography>
+        <Typography className="text-gray-700 text-sm sm:text-base md:text-base">
+          {description}
+        </Typography>
         <Link href={url}>
           <div className="flex items-center gap-2 hover:underline">
-            <Typography>{linkTitle}</Typography>
+            <Typography className="text-sm sm:text-base md:text-base">
+              {linkTitle}
+            </Typography>
             <LucideArrowRight />
           </div>
         </Link>
