@@ -6,14 +6,9 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useBedroomStore } from "../store/useBedroomStore";
 import { defaultBedroom } from "../../constants";
+import { IBedroom } from "../../types";
 
-export interface T_Bedroom {
-  bedRoomName: string;
-  beds: {
-    name: string;
-    qty: number;
-  }[];
-}
+
 
 type Props = {
   isOpen: boolean;
@@ -23,7 +18,7 @@ type Props = {
 };
 
 const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
-  const [fields, setFields] = useState<T_Bedroom>(defaultBedroom);
+  const [fields, setFields] = useState<IBedroom>(defaultBedroom);
   const bedrooms = useBedroomStore((state) => state.bedrooms);
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms);
   
@@ -57,7 +52,7 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
     onClose();
   };
   
-  function deepCopyBedroom(bedroom: T_Bedroom): T_Bedroom {
+  function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
       bedRoomName: bedroom.bedRoomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),

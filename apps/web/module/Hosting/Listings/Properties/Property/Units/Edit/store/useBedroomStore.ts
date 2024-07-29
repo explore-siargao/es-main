@@ -1,18 +1,18 @@
 import { create } from "zustand";
-import { I_Bedroom } from "../../types";
+import { IBedroom } from "../../types";
 
 type BedroomStore = {
-  bedrooms: I_Bedroom[];
-  setInitialBedrooms: (bedrooms: I_Bedroom[]) => void;
-  updateBedrooms: (newBedrooms: I_Bedroom[]) => void;
+  bedrooms: IBedroom[];
+  setInitialBedrooms: (bedrooms: IBedroom[]) => void;
+  updateBedrooms: (newBedrooms: IBedroom[]) => void;
   deleteBedroom: (index: number) => void;
 };
 
 export const useBedroomStore = create<BedroomStore>((set) => ({
   bedrooms: [],
-  setInitialBedrooms: (bedrooms: I_Bedroom[]) =>
+  setInitialBedrooms: (bedrooms: IBedroom[]) =>
     set({ bedrooms: deepCopyBedrooms(bedrooms) }),
-  updateBedrooms: (newBedrooms: I_Bedroom[]) =>
+  updateBedrooms: (newBedrooms: IBedroom[]) =>
     set({ bedrooms: deepCopyBedrooms(newBedrooms) }),
   deleteBedroom: (index: number) =>
     set((state) => {
@@ -25,7 +25,7 @@ export const useBedroomStore = create<BedroomStore>((set) => ({
     }),
 }));
 
-function deepCopyBedrooms(bedrooms: I_Bedroom[]): I_Bedroom[] {
+function deepCopyBedrooms(bedrooms: IBedroom[]): IBedroom[] {
   return bedrooms.map((bedroom) => ({
     bedRoomName: bedroom.bedRoomName,
     beds: bedroom.beds.map((bed) => ({ ...bed })),
