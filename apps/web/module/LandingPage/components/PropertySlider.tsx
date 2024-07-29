@@ -9,7 +9,7 @@ import Link from "next/link"
 interface SliderProps {
   cards: {
     imageKey: string
-    cardTitle: string
+    cardTitle?: string
     url: string
   }[]
 }
@@ -84,7 +84,7 @@ const PropertySlider = ({ cards }: SliderProps) => {
             <Image
               className="cursor-pointer"
               src={card.imageKey}
-              alt={card.cardTitle}
+              alt={card.cardTitle || ""}
               layout="fill"
               objectFit="cover"
             />
