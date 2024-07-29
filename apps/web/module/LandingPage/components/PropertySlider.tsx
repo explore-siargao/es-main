@@ -9,7 +9,7 @@ import Link from "next/link"
 interface SliderProps {
   cards: {
     imageKey: string
-    cardTitle: string
+    cardTitle?: string
     url: string
   }[]
 }
@@ -29,7 +29,7 @@ const PropertySlider = ({ cards }: SliderProps) => {
         1920: { slidesPerView: 6 },
       }}
     >
-      <style>{`
+     <style>{`
   .swiper {
     position: relative;
   }
@@ -52,12 +52,12 @@ const PropertySlider = ({ cards }: SliderProps) => {
     transition: opacity 0.3s ease-in-out;
   }
   .swiper-button-next {
-  margin-top: 2px;
+    margin-top: 2px;
     opacity: 1; 
     right: 10px; 
   }
   .swiper-button-prev {
-  margin-top: 2px;
+    margin-top: 2px;
     opacity: 0;
     left: 10px; 
   }
@@ -80,11 +80,11 @@ const PropertySlider = ({ cards }: SliderProps) => {
 
       {cards.map((card) => (
         <SwiperSlide key={card.cardTitle} className="pl-5 pr-5">
-          <div className="mt-4 relative w-full h-56 rounded-xl overflow-hidden shadow-md">
+          <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
             <Image
               className="cursor-pointer"
               src={card.imageKey}
-              alt={card.cardTitle}
+              alt={card.cardTitle || ""}
               layout="fill"
               objectFit="cover"
             />

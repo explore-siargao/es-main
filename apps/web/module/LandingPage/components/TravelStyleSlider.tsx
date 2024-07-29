@@ -3,11 +3,11 @@ import { Typography } from "@/common/components/ui/Typography"
 import PropertySlider from "./PropertySlider"
 
 type TravelStyleProps = {
-  title: string
+  title?: string
   description?: string
   groupCards: {
     imageKey: string
-    cardTitle: string
+    cardTitle?: string
     url: string
   }[]
 }
