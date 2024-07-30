@@ -1,9 +1,10 @@
 import MultipleMarkerMap from "@/common/components/MultipleMarkerMap"
 import { Typography } from "@/common/components/ui/Typography"
-
+import data from "../data.json"
 type T_Markers = {
   lat: number
   long: number
+  name: string
 }
 
 type T_Props = {
@@ -13,6 +14,7 @@ type T_Props = {
 }
 
 const GuideContent = ({ contentTitle, contentText, markers }: T_Props) => {
+  const images = data.surfGuide.images
   return (
     <div className="grid md:grid-cols-2 gap-12">
       <div>
@@ -36,6 +38,7 @@ const GuideContent = ({ contentTitle, contentText, markers }: T_Props) => {
         <MultipleMarkerMap
           markerLocations={markers}
           center={[9.835667, 126.049483]}
+          imagePlace={`/assets/${images[0]?.fileKey}`}
           mapHeight={"h-80 sm:h-[735px] md:h-[470px] lg:h-[500px]"}
           mapWidth={"w-full"}
           zoom={11}
