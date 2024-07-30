@@ -5,11 +5,11 @@ import SpecificMap from "@/common/components/SpecificMap"
 function Directions() {
   return (
     <div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4">
         {" "}
         <SpecificMap
           center={[9.913431, 126.049483]}
-          mapHeight={"h-[300px]"}
+          mapHeight={"h-80 sm:h-[720px] md:h-[470px] lg:h-[500px]"}
           mapWidth={"w-full"}
           zoom={11}
         />

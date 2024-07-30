@@ -36,7 +36,7 @@ const GuideContent = ({ contentTitle, contentText, markers }: T_Props) => {
         <MultipleMarkerMap
           markerLocations={markers}
           center={[9.835667, 126.049483]}
-          mapHeight={"h-[750px]"}
+          mapHeight={"h-80 sm:h-[735px] md:h-[470px] lg:h-[500px]"}
           mapWidth={"w-full"}
           zoom={11}
         />
