@@ -8,7 +8,6 @@ const bedRooms = new Schema({
 const bookableUnitTypes = new Schema({
   category: String,
   title: String,
-  description: String,
   totalSize: Number,
   isHaveSharedBathRoom: {
     type: String,
