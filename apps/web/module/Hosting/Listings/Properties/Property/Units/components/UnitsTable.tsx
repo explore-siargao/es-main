@@ -60,24 +60,10 @@ const UnitsTable = () => {
         )
       },
     }),
-    columnHelper.accessor("description", {
-      header: "Description",
-      cell: (context) => {
-        const value = context.getValue() || ""
-        const cleanValue = value.startsWith("Custom: ")
-          ? value.slice("Custom: ".length)
-          : value
-        return (
-          <Link
-            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-          >
-            <Typography variant="p">{cleanValue}</Typography>
-          </Link>
-        )
-      },
-    }),
+
     columnHelper.accessor("category", {
       header: "Type",
+      size: 400,
       cell: (context) => (
         <Link
           href={`/hosting/listings/properties/setup/${listingId}/units/${context.getValue().toLowerCase() + "s"}/${context.row.original?._id}/edit`}
