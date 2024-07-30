@@ -60,7 +60,7 @@ const UnitsTable = () => {
         )
       },
     }),
- 
+
     columnHelper.accessor("category", {
       header: "Type",
       size: 400,
