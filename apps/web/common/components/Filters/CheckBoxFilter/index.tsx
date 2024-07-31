@@ -32,7 +32,7 @@ const CheckBoxFilter = ({ category, filters }: T_Props) => {
       </Typography>
       <div className="space-y-1">
         {filters.map((filter, index) => (
-          <div className="flex items-center justify-between" key={index}>
+          <div className="flex items-center justify-between" key={filter.type}>
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
