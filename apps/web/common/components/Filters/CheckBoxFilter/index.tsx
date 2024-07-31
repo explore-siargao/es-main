@@ -11,90 +11,6 @@ type T_Filters = {
   filterCount: number
 }
 
-// IMPLEMENTATION EXAMPLE FOR OTHER PAGE
-
-{
-  /* 
-  const filterData = [
-    {
-      type: "Hotels",
-      filterCount: 1388,
-      category: "Popular filters",
-    },
-    {
-      type: "Pets allowed",
-      filterCount: 100,
-      category: "Popular filters",
-    },
-    {
-      type: "Free WiFi",
-      filterCount: 2773,
-      category: "Popular filters",
-    },
-    {
-      type: "5 stars",
-      filterCount: 87,
-      category: "Popular filters",
-    },
-    {
-      type: "Free cancellation",
-      filterCount: 196,
-      category: "Popular filters",
-    },
-    {
-      type: "No prepayment",
-      filterCount: 382,
-      category: "Popular filters",
-    },
-    {
-      type: "Parking",
-      filterCount: 350,
-      category: "Facilities",
-    },
-    {
-      type: "Restaurant",
-      filterCount: 116,
-      category: "Facilities",
-    },
-    {
-      type: "Room service",
-      filterCount: 105,
-      category: "Facilities",
-    },
-    {
-      type: "Fitness centre",
-      filterCount: 78,
-      category: "Facilities",
-    },
-    {
-      type: "Pets allowed",
-      filterCount: 51,
-      category: "Facilities",
-    },
-    {
-      type: "Free WiFi",
-      filterCount: 498,
-      category: "Facilities",
-    },
-  ]
-
-  <div>
-  {Array.from(
-    new Set(filterData.map((item) => item.category)),
-    (category) => (
-      <CheckBoxFilter
-        key={category}
-        category={category}
-        filters={filterData.filter(
-          (item) => item.category === category
-        )}
-      />
-    )
-  )}
-  </div> 
-  */
-}
-
 const CheckBoxFilter = ({ category, filters }: T_Props) => {
   const filterData = useFilterStore((state) => state.filterData)
   const setFilter = useFilterStore((state) => state.setFilter)
@@ -116,10 +32,7 @@ const CheckBoxFilter = ({ category, filters }: T_Props) => {
       </Typography>
       <div className="space-y-1">
         {filters.map((filter, index) => (
-          <div
-            className="flex items-center justify-between"
-            key={`filter_cb_${index}`}
-          >
+          <div className="flex items-center justify-between" key={index}>
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"

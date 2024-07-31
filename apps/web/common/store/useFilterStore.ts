@@ -10,24 +10,32 @@ type T_FilterStore = {
   setFilter: (value: T_Filter[]) => void
 }
 
+const filterExistingValues = (state: T_FilterStore, values: T_Filter[]) => {
+  return state.filterData.filter((value) =>
+    values.some(
+      (newValue) =>
+        newValue.category === value.category && newValue.type === value.type
+    )
+  )
+}
+
+const filterNewValues = (existingValues: T_Filter[], values: T_Filter[]) => {
+  return values.filter(
+    (value) =>
+      !existingValues.some(
+        (existingValue) =>
+          existingValue.category === value.category &&
+          existingValue.type === value.type
+      )
+  )
+}
+
 const useFilterStore = create<T_FilterStore>()((set) => ({
   filterData: [],
   setFilter: (values) =>
     set((state) => {
-      const existingValues = state.filterData.filter((value) =>
-        values.some(
-          (newValue) =>
-            newValue.category === value.category && newValue.type === value.type
-        )
-      )
-      const newValues = values.filter(
-        (value) =>
-          !existingValues.some(
-            (existingValue) =>
-              existingValue.category === value.category &&
-              existingValue.type === value.type
-          )
-      )
+      const existingValues = filterExistingValues(state, values)
+      const newValues = filterNewValues(existingValues, values)
       return {
         filterData: [...existingValues, ...newValues],
       }
