@@ -39,7 +39,10 @@ const NumericFilter = ({ category, filters }: T_Props) => {
         {category}
       </Typography>
       {filters.map((filter, index) => (
-        <div className="grid grid-cols-2 items-center space-y-2" key={filter.type}>
+        <div
+          className="grid grid-cols-2 items-center space-y-2"
+          key={filter.type}
+        >
           <Typography>{filter.type}</Typography>
           <div className="flex justify-between border border-neutral-400 rounded-md max-w">
             <button
