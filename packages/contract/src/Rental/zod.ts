@@ -82,6 +82,7 @@ export const Z_Rental_Basic_Info = z.object({
     .optional()
     .nullable(),
   year: z.string().optional().nullable(),
+  qty: z.number()
 })
 
 export const Z_UpdateRentalLocation = z.object({
