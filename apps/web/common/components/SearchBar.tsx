@@ -70,20 +70,18 @@ function SearchBar({
             before:from-gray-700 before:to-gray-900 
             before:opacity-30 before:z-[-5] relative`}
     >
-      <WidthWrapper width={contentWidth}>
-        <WidthWrapper width="small">
-          <Typography
-            className="text-white text-6xl mt-36 mb-[74px]"
-            fontWeight="bold"
-          >
-            Find your island vibe
-          </Typography>
-        </WidthWrapper>
+      <WidthWrapper width="medium">
+        <Typography
+          className="text-white text-6xl mt-36 mb-[74px] ml-40"
+          fontWeight="bold"
+        >
+          Find your island vibe
+        </Typography>
         <nav
-          className="flex items-center justify-between py-2 my-2 w-full"
+          className="flex items-center justify-center py-2 my-2 w-full"
           aria-label="Global"
         >
-          <div className="flex flex-col gap-4 mx-auto">
+          <div className="flex flex-col gap-4">
             <div className="flex gap-8 rounded-full">
               <Button
                 variant="link"

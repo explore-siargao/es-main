@@ -27,9 +27,18 @@ function RentalsSearchBar() {
       <Input
         type="date"
         className="w-full rounded-l-full ring-0 bg-inherit focus-within:ring-0"
-        label={"Date"}
+        label={"Pickup Date"}
         {...register("date")}
       />
+
+      <Input
+        type="date"
+        className="w-full rounded-l-full ring-0 bg-inherit focus-within:ring-0"
+        label={"Pickup Drop Date"}
+        {...register("date")}
+      />
+      <Separator orientation="vertical" className="bg-gray-300 h-8" />
+      
       {/* <div className="h-full p-4 bg-primary-500 justify-center items-center rounded-full">
         <Search className="text-white" />
       </div> */}
