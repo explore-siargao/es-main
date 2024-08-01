@@ -38,7 +38,7 @@ function RentalsSearchBar() {
         {...register("date")}
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
-      
+
       {/* <div className="h-full p-4 bg-primary-500 justify-center items-center rounded-full">
         <Search className="text-white" />
       </div> */}
