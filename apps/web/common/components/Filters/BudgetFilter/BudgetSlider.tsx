@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState, useRef } from "react"
-import Image, { StaticImageData } from "next/image"
+import Image from "next/image"
 import { Typography } from "../../ui/Typography"
 import imageSrc from "../../../assets/bargraph.png"
 
 interface BudgetSliderProps {
-  imageSrc: StaticImageData
   title: string
   min: number
   max: number
-  step: number
   initialMinValue: number
   initialMaxValue: number
   onValueChange: (minValue: number, maxValue: number) => void

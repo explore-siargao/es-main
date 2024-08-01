@@ -25,6 +25,7 @@ import surfImage from "../../common/assets/sample/surf.jpg"
 import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
+import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -230,12 +231,30 @@ const LandingPage = () => {
     },
   ]
 
+    const [minBudget, setMinBudget] = useState<number>(0)
+  const [maxBudget, setMaxBudget] = useState<number>(5000)
+  const handleValueChange = (minValue: number, maxValue: number) => {
+    setMinBudget(minValue)
+    setMaxBudget(maxValue)
+  }
+
+
   return (
     <>
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
       <WidthWrapper className="mb-24 lg:mt-6">
+      <div className="w-80">
+          <BudgetSlider
+            title="Your budget (per night)"
+            min={0}
+            max={10000}
+            initialMinValue={minBudget}
+            initialMaxValue={maxBudget}
+            onValueChange={handleValueChange}  />
+        </div>
+
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
