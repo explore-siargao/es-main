@@ -66,6 +66,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
     fuel,
     transmission,
     year,
+    qty,
   }: T_Rental_Basic_Info = req.body
   const isValidInput = Z_Rental_Basic_Info.safeParse(
     req.body as T_Rental_Basic_Info
@@ -81,7 +82,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         )
       }
 
-      if (category === 'Car' || category === 'Motorbike') {
+      if (category === 'Car') {
         rental.category =
           rental.category === '' || rental.category === null
             ? category
@@ -92,17 +93,21 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.fuel = fuel || rental.fuel
         rental.transmission = transmission || rental.transmission
         rental.year = year || rental.year
-      } else if (category === 'Bicycle') {
+      } else if (category === 'Motorbike' || category === 'Bicycle') {
         rental.category =
           rental.category === '' || rental.category === null
             ? category
             : rental.category
         rental.make = make || rental.make
-        rental.modelBadge = null
-        rental.bodyType = null
-        rental.fuel = null
-        rental.transmission = null
-        rental.year = null
+        rental.modelBadge =
+          category === 'Motorbike' ? modelBadge || rental.modelBadge : null
+        rental.bodyType =
+          category === 'Motorbike' ? bodyType || rental.bodyType : null
+        rental.fuel = category === 'Motorbike' ? fuel || rental.fuel : null
+        rental.transmission =
+          category === 'Motorbike' ? transmission || rental.transmission : null
+        rental.year = category === 'Motorbike' ? year || rental.year : null
+        rental.qty = qty || rental.qty
       }
 
       rental.finishedSections = ['basicInfo']
@@ -117,6 +122,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         fuel: rental.fuel,
         transmission: rental.transmission,
         year: rental.year,
+        qty: rental.qty,
       }
 
       res.json(
