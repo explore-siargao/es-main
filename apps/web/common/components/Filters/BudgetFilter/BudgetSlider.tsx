@@ -111,7 +111,7 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
           </div>
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         .thumb {
           -webkit-appearance: none;
           background-color: transparent;
