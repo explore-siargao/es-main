@@ -1,15 +1,15 @@
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
-import Image, { StaticImageData } from "next/image"
-import { Typography } from "@/common/components/ui/Typography"
+import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
+import SliderItem from "./SliderItem"
 
 interface SliderProps {
   cards: {
-    imageKey: StaticImageData
-    mainPlace: string
-    subPlace: string
+    imageKey: StaticImageData | string
+    title: string
+    subTitle?: string
   }[]
 }
 
@@ -76,22 +76,12 @@ const Slider = ({ cards }: SliderProps) => {
 `}</style>
 
       {cards.map((card) => (
-        <SwiperSlide key={card.mainPlace} className="pl-5 pr-5">
-          <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
-            <Image
-              className="cursor-pointer"
-              src={card.imageKey}
-              alt={card.mainPlace}
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-          <div className="mt-2 text-left">
-            <Typography variant="h4" fontWeight="semibold">
-              {card.mainPlace}
-            </Typography>
-            <Typography variant="h5">{card.subPlace}</Typography>
-          </div>
+        <SwiperSlide key={card.title} className="pl-5 pr-5">
+          <SliderItem
+            imageKey={card.imageKey}
+            title={card.title}
+            subTitle={card.subTitle}
+          />
         </SwiperSlide>
       ))}
     </Swiper>
