@@ -235,7 +235,7 @@ const LandingPage = () => {
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
-      <WidthWrapper className="mb-24 lg:mt-6">
+      <WidthWrapper width="medium" className="mb-24 lg:mt-6">
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
@@ -284,7 +284,7 @@ const LandingPage = () => {
             </Typography>
           </div>
         </div>
-        <div className="flex flex-wrap gap-4 sm:gap-6 lg:gap-10 md:gap-4 p-4 sm:mt-10">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 p-4 sm:mt-10">
           <ImageTextCard
             imageKey={foodImage}
             title={"Restaurants, cafes & bars"}
