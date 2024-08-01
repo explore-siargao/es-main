@@ -25,6 +25,7 @@ import surfImage from "../../common/assets/sample/surf.jpg"
 import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
+import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -294,12 +295,19 @@ const LandingPage = () => {
     },
   ]
 
+
   return (
     <>
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
+
+      <WidthWrapper className="mb-24 lg:mt-6">
+    
+
+
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
+
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"

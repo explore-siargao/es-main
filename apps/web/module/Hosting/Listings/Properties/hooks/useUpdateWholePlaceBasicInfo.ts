@@ -1,19 +1,14 @@
 import { API_URL_PROPERTIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 import { useMutation } from "@tanstack/react-query"
-
-type T_BedRooms = {
-  bedRoomName: string
-  bedRoomType: string
-}
+import { IBedroom } from "../Property/Units/types"
 
 interface IWholePlaceBasicInfo {
   _id: string
   title: string
   totalSize: number
-  numBedRooms: number
+  bedRooms: IBedroom[]
   numBathRooms: number
-  bedRooms: T_BedRooms[]
   qty: number
 }
 
