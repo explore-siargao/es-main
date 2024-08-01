@@ -7,10 +7,11 @@ type TravelSliderProps = {
   title: string
   description?: string
   groupCards: {
-    imageKey: StaticImageData
-    mainPlace: string
-    subPlace: string
+    imageKey: StaticImageData | string
+    title: string
+    subTitle?: string
   }[]
+  url?: string
 }
 
 const TravelSlider = ({
