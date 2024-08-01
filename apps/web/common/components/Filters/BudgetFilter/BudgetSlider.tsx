@@ -122,7 +122,7 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
           -webkit-appearance: none;
           background-color: transparent;
           -webkit-tap-highlight-color: transparent;
-          background-color:  #fafbf8;
+          background-color: #fafbf8;
           border: none;
           border-radius: 50%;
           box-shadow: 0 0 1px 1px #ced4da;
