@@ -21,6 +21,7 @@ const CheckBoxFilter = ({ category, filters }: T_Props) => {
       setFilter(filterData.filter((f) => f.type !== filter.type))
     } else {
       // add new filter
+      // @ts-ignore
       setFilter([...filterData, { category, type: filter.type }])
     }
   }
