@@ -25,6 +25,7 @@ import surfImage from "../../common/assets/sample/surf.jpg"
 import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
+import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -75,167 +76,238 @@ const LandingPage = () => {
 
   const groupCardsDummyTravelStyle = [
     {
-      imageKey: "/assets/1.jpg",
-      cardTitle: "Hostels",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/2.jpg",
-      cardTitle: "Resorts",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/3.jpg",
-      cardTitle: "Villas",
-      url: "/",
-    },
-    {
       imageKey: "/assets/4.jpg",
-      cardTitle: "Hotels",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/4.jpg",
-      cardTitle: "Hostels",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/2.jpg",
-      cardTitle: "Resorts",
+      title: "Hostels",
       url: "/",
     },
     {
       imageKey: "/assets/1.jpg",
-      cardTitle: "Villas",
+      title: "Apartments",
       url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
-      cardTitle: "Islands",
+      title: "Homestay",
+      url: "/",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      title: "Hotels",
       url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
-      cardTitle: "Islands",
+      title: "Resorts",
       url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
-      cardTitle: "Islands",
+      title: "Villas",
       url: "/",
     },
   ]
+
   const groupCardsDummy = [
     {
       imageKey: il1,
-      mainPlace: "Anajawan",
-      subPlace: "General Luna",
+      title: "General Luna",
+      subTitle: "Town Centre",
     },
     {
       imageKey: il2,
-      mainPlace: "Cabitoonan",
-      subPlace: "General Luna",
+      title: "Catangnan",
+      subTitle: "General Luna",
     },
     {
       imageKey: il3,
-      mainPlace: "Catangnan",
-      subPlace: "General Luna",
+      title: "Malinao",
+      subTitle: "General Luna",
     },
     {
       imageKey: il4,
-      mainPlace: "Consuelo",
-      subPlace: "General Luna",
+      title: "Pacifico",
+      subTitle: "North Siargao",
     },
     {
       imageKey: il5,
-      mainPlace: "Corazon",
-      subPlace: "General Luna",
+      title: "Islands",
+      subTitle: "Popular Trips",
     },
     {
       imageKey: il6,
-      mainPlace: "Daku",
-      subPlace: "General Luna",
+      title: "General Luna",
+      subTitle: "Town Centre",
     },
     {
       imageKey: il7,
-      mainPlace: "La Januza",
-      subPlace: "General Luna",
+      title: "Catangnan",
+      subTitle: "General Luna",
     },
     {
       imageKey: il8,
-      mainPlace: "Libertad",
-      subPlace: "General Luna",
+      title: "Malinao",
+      subTitle: "General Luna",
     },
     {
       imageKey: il9,
-      mainPlace: "Magsaysay",
-      subPlace: "General Luna",
+      title: "Pacifico",
+      subTitle: "North Siargao",
     },
     {
       imageKey: il10,
-      mainPlace: "Malinao",
-      subPlace: "General Luna",
+      title: "Islands",
+      subTitle: "Popular Trips",
     },
     {
       imageKey: il11,
-      mainPlace: "Santa Fe",
-      subPlace: "General Luna",
+      title: "General Luna",
+      subTitle: "Popular Trips",
     },
     {
       imageKey: il12,
-      mainPlace: "Suyangan",
-      subPlace: "General Luna",
+      title: "Islands",
+      subTitle: "Popular Trips",
     },
   ]
   const groupCardsDummyRecommendedPlaceToStay = [
     {
-      imageKey: "/assets/1.jpg",
+      imageKey: "/assets/5.jpg",
+      title: "Siargao Seasky Resort",
       url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
+      title: "Mad Monkey Siargao",
       url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
+      title: "Patrick's on the Beach",
       url: "/",
     },
     {
       imageKey: "/assets/4.jpg",
+      title: "Strangers Inn & Bar",
       url: "/",
     },
     {
       imageKey: "/assets/4.jpg",
+      title: "Kaha Island Stay",
       url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
+      title: "Beachfront Kubo",
       url: "/",
     },
     {
       imageKey: "/assets/1.jpg",
+      title: "G Villas Siargao",
       url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
+      title: "Suyog Life Siargao",
       url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
+      title: "Bohemian Beach House",
       url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
+      title: "Siargao Residency",
       url: "/",
     },
   ]
+
+  const groupCardsDummySomethingToDo = [
+    {
+      imageKey: il8,
+      title: "Surfing",
+    },
+    {
+      imageKey: il9,
+      title: "Kayaking",
+    },
+    {
+      imageKey: il5,
+      title: "Diving",
+    },
+    {
+      imageKey: il4,
+      title: "Wing Foiling",
+    },
+    {
+      imageKey: il6,
+      title: "Paddle Boarding",
+    },
+  ]
+
+  const groupCardsDummyReliableCars = [
+    {
+      imageKey: "/assets/fe65c50d-2cde-46e6-8c9b-58a73c59e768",
+      title: "2018 Honda Civic AT",
+    },
+    {
+      imageKey: "/assets/b57d645a-a3bb-4d23-9e9b-d5caa3f0ae69",
+      title: "2023 Toyota Wigo G CVT",
+    },
+    {
+      imageKey: "/assets/2a820a6a-9baf-4b7c-884a-217f86e7e657",
+      title: "2020 CBR500RXZ Honda MT",
+    },
+    {
+      imageKey: "/assets/099843f0-d626-42fb-899e-62c6687614a2",
+      title: "2000 CBR500R Honda SAT",
+    },
+    {
+      imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
+      title: "2020 Suzuki R150 Fi MT",
+    },
+  ]
+
+  const groupCardsDummyInspiration = [
+    {
+      imageKey: il9,
+      title: "Boat Trip",
+    },
+    {
+      imageKey: il7,
+      title: "Beto Spring",
+    },
+    {
+      imageKey: il3,
+      title: "Coconut Tree Lookout",
+    },
+    {
+      imageKey: il2,
+      title: "Cloud 9",
+    },
+    {
+      imageKey: il6,
+      title: "Alegria Beach",
+    },
+    {
+      imageKey: il5,
+      title: "Pacifico Beach",
+    },
+  ]
+
 
   return (
     <>
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
+
+      <WidthWrapper className="mb-24 lg:mt-6">
+    
+
+
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
+
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
@@ -244,45 +316,39 @@ const LandingPage = () => {
           />
         </div>
         <div className="sm:mt-10">
-          <TravelStyleSlider
-            title={"What's your travel style?"}
+          <TravelSlider
+            title="What's your travel style?"
             description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummyTravelStyle}
           />
         </div>
         <div className="sm:mt-10">
-          <TravelStyleSlider
-            title={"Recommended places to stay"}
+          <TravelSlider
+            title="Recommended places to stay"
             description="Hand-picked properties just for you"
             groupCards={groupCardsDummyRecommendedPlaceToStay}
           />
         </div>
-        <div className="sm:mt-10 space-y-12 pl-5">
-          <div>
-            <Typography variant="h2" fontWeight="semibold">
-              Looking for something to do in Siargao?
-            </Typography>
-            <Typography variant="h4">
-              We've partnered the islands for tour and activity providers.
-            </Typography>
-          </div>
-          <div>
-            <Typography variant="h2" fontWeight="semibold">
-              Reliable cars, motorbikes and more
-            </Typography>
-            <Typography variant="h4">
-              Take the road, let's travel with one of our trusted rental
-              partners.
-            </Typography>
-          </div>
-          <div>
-            <Typography variant="h2" fontWeight="semibold">
-              Inspiration for your trip
-            </Typography>
-            <Typography variant="h4">
-              Let us help you make the most out of your time in Siargao island
-            </Typography>
-          </div>
+        <div className="sm:mt-10">
+          <TravelSlider
+            title="Looking for something to do in Siargao?"
+            description="We've partnered the islands for tour and activity providers."
+            groupCards={groupCardsDummySomethingToDo}
+          />
+        </div>
+        <div className="sm:mt-10">
+          <TravelSlider
+            title="Reliable cars, motorbikes and more"
+            description="Take the road, let's travel with one of our trusted rental partners."
+            groupCards={groupCardsDummyReliableCars}
+          />
+        </div>
+        <div className="sm:mt-10">
+          <TravelSlider
+            title="Inspiration for your trip"
+            description="Let us help you make the most out of your time in Siargao island"
+            groupCards={groupCardsDummyInspiration}
+          />
         </div>
         <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 p-4 sm:mt-10">
           <ImageTextCard

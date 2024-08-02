@@ -1,8 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
-import Image, { StaticImageData } from "next/image"
-import { Typography } from "@/common/components/ui/Typography"
+import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { useRouter } from "next/navigation"
 
@@ -18,9 +17,9 @@ const toKebabCase = (str: string) => {
 
 interface SliderProps {
   cards: {
-    imageKey: StaticImageData
-    mainPlace: string
-    subPlace: string
+    imageKey: StaticImageData | string
+    title: string
+    subTitle?: string
   }[]
 }
 
