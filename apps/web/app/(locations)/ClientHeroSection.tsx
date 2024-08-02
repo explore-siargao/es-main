@@ -1,18 +1,33 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { usePathname } from "next/navigation"
 import HeroSection from "@/module/Locations/components/HeroSection"
 
 const ClientHeroSection = () => {
   const pathname = usePathname()
   const subPlace = pathname.split("/").pop()
+  const firstPath = pathname.split("/")[1]
 
   const toSentenceCase = (str: string) => {
-    return str
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ")
+    let textDisplay
+    if (firstPath === "properties") {
+      textDisplay =
+        str
+          .split("-")
+          .map(
+            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          )
+          .join(" ") + "s in Siargao"
+    } else {
+      textDisplay = str
+        .split("-")
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(" ")
+    }
+    return textDisplay
   }
 
   return (

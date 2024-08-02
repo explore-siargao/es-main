@@ -324,7 +324,7 @@ const TravelStyle = () => {
   }
 
   return (
-    <WidthWrapper width="medium" className="mt-24 md: mt-36 lg:mt-44">
+    <WidthWrapper width="medium" className="mt-24">
       {travelStyleItems ? (
         <TravelStyleContainer
           title={travelStyleTitle}
