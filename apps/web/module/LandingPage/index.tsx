@@ -23,6 +23,7 @@ import surfImage from "../../common/assets/sample/surf.jpg"
 import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
+import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -107,33 +108,33 @@ const LandingPage = () => {
   const groupCardsDummy = [
     {
       imageKey: il1,
-      title: "General Luna",
-      subTitle: "Town Centre",
+      title: "Anajawan",
+      subTitle: "General Luna",
     },
     {
       imageKey: il2,
-      title: "Catangnan",
+      title: "Cabitoonan",
       subTitle: "General Luna",
     },
     {
       imageKey: il3,
-      title: "Malinao",
+      title: "Catangnan",
       subTitle: "General Luna",
     },
     {
       imageKey: il4,
-      title: "Pacifico",
-      subTitle: "North Siargao",
+      title: "Consuelo",
+      subTitle: "General Luna",
     },
     {
       imageKey: il5,
-      title: "Islands",
-      subTitle: "Popular Trips",
+      title: "Corazon",
+      subTitle: "General Luna",
     },
     {
       imageKey: il6,
-      title: "General Luna",
-      subTitle: "Town Centre",
+      title: "Daku",
+      subTitle: "General Luna",
     },
     {
       imageKey: il7,
@@ -147,25 +148,26 @@ const LandingPage = () => {
     },
     {
       imageKey: il9,
-      title: "Pacifico",
-      subTitle: "North Siargao",
+      title: "Libertad",
+      subTitle: "General Luna",
     },
     {
       imageKey: il10,
-      title: "Islands",
-      subTitle: "Popular Trips",
+      title: "Magsaysay",
+      subTitle: "General Luna",
     },
     {
       imageKey: il11,
-      title: "General Luna",
-      subTitle: "Popular Trips",
+      title: "Santa Fe",
+      subTitle: "General Luna",
     },
     {
       imageKey: il12,
-      title: "Islands",
-      subTitle: "Popular Trips",
+      title: "Suyangan",
+      subTitle: "General Luna",
     },
   ]
+
   const groupCardsDummyRecommendedPlaceToStay = [
     {
       imageKey: "/assets/5.jpg",
@@ -287,6 +289,7 @@ const LandingPage = () => {
       {/* {isPending || isLoading ? (
         <Spinner variant="primary" middle />
       ) : ( */}
+
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
         <div className="sm:mt-20">
           <TravelSlider
@@ -485,7 +488,6 @@ const LandingPage = () => {
             </div>
           )} */}
       </WidthWrapper>
-      {/* )} */}
     </>
   )
 }

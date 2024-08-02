@@ -3,7 +3,19 @@ import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import SliderItem from "./SliderItem"
+import { useRouter } from "next/navigation"
+import { Typography } from "@/common/components/ui/Typography"
+import Image from "next/image"
+
+const toKebabCase = (str: string) => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
+}
 
 interface SliderProps {
   cards: {
@@ -15,6 +27,12 @@ interface SliderProps {
 }
 
 const Slider = ({ cards }: SliderProps) => {
+  const router = useRouter()
+  const handleCardClick = (subTitle: string) => {
+    const kebabCaseSubPlace = toKebabCase(subTitle)
+    router.push(`/locations/${kebabCaseSubPlace}`)
+  }
+
   return (
     <Swiper
       slidesPerView={4}

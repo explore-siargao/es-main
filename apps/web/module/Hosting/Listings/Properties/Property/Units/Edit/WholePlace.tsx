@@ -15,7 +15,7 @@ import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
 import { useEffect, useState } from "react"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
-import { useFieldArray, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useParams, useRouter } from "next/navigation"
 import { Input } from "@/common/components/ui/Input"
@@ -31,20 +31,22 @@ import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Spinner } from "@/common/components/ui/Spinner"
-
-type T_BedRooms = {
-  bedRoomName: string
-  bedRoomType: string
-}
+import Bedroom from "./components/Bedroom"
+import { useBedroomStore } from "./store/useBedroomStore"
+import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
+import { IBedroom } from "../types"
+import { Option, Select } from "@/common/components/ui/Select"
 
 type T_WholePlaceUnit = {
   title: string
   bedCount: number
-  bedRooms: T_BedRooms[]
+  bedRooms: IBedroom[]
   size: number
+  squareFoot: number
   bathrooms: number
   typeCount: number
   amenities: T_Property_Amenity[]
+  exactUnitCount: number
 }
 
 type Prop = {
@@ -59,15 +61,16 @@ const WholePlace = ({ pageType }: Prop) => {
   const [isSavings, setIsSavings] = useState(false)
   const queryClient = useQueryClient()
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
-  const [bedCount, setBedCount] = useState<number>(
-    (data?.item?.numBedRooms as number) || 0
-  )
+  const bedrooms = useBedroomStore((state) => state.bedrooms)
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
   )
 
-  const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
+  const [exactUnitCount, setExactUnitCount] = useState<number>(
+    Number(data?.item?.numExactUnit) || 0
+  )
+
   const { mutateAsync: updateWholePlaceBasicInfo } =
     useUpdateWholePlaceBasicInfo(listingId)
   const { mutateAsync: updateAmenties } = useUpdateAmenities(
@@ -87,14 +90,15 @@ const WholePlace = ({ pageType }: Prop) => {
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
-  const amenities = useSelectAmenityStore((state) => state.amenities)
-  const { control, register, unregister, handleSubmit, setValue } =
-    useForm<T_WholePlaceUnit>()
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
+  useEffect(() => {
+    if (data?.item?.bedRooms) {
+      updateBedrooms(data.item.bedRooms)
+    }
+  }, [data, updateBedrooms])
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "bedRooms",
-  })
+  const amenities = useSelectAmenityStore((state) => state.amenities)
+  const { register, handleSubmit, setValue } = useForm<T_WholePlaceUnit>()
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
@@ -152,7 +156,7 @@ const WholePlace = ({ pageType }: Prop) => {
       return
     }
 
-    if (bedCount <= 0) {
+    if (bedrooms.length <= 0) {
       toast.error("Please fill out bedroom/space count field")
       return
     }
@@ -160,28 +164,22 @@ const WholePlace = ({ pageType }: Prop) => {
       toast.error("Please fill out bathroom count field")
       return
     }
-    if (typeCount <= 0) {
-      toast.error("Please fill out type count field")
-      return
-    }
 
     try {
-      if ((bedCount as number) > 0) {
+      if ((bedrooms.length as number) > 0) {
         setIsSavings(true)
         formData.amenities = amenities
-        formData.bedCount = bedCount
-        formData.bedRooms = fields
+        formData.bedRooms = bedrooms
       } else {
         toast.error("Must have at least 1 bedroom or sleeping space.")
       }
-      const saveBasicInfo = updateWholePlaceBasicInfo({
+      const saveBasicInfo = await updateWholePlaceBasicInfo({
         _id: wholePlaceId,
         title: formData.title,
-        totalSize: Number(formData.size),
-        numBedRooms: bedCount,
         numBathRooms: bathroomCount,
-        bedRooms: formData.bedRooms,
-        qty: Number(typeCount),
+        totalSize: formData.size,
+        bedRooms: bedrooms,
+        qty: Number(exactUnitCount),
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
       const filterSelectedAmenities = amenities.filter(
@@ -199,22 +197,6 @@ const WholePlace = ({ pageType }: Prop) => {
     }
   }
 
-  const addBedInput = () => {
-    // setBedInputs((prevBedInput: any) => [...prevBedInput, bedCount as number])
-    setBedCount((prevBedCount: number) => prevBedCount + 1)
-    append({ bedRoomName: "", bedRoomType: "" })
-  }
-
-  const removeBedInput = () => {
-    if (fields.length > 0) {
-      //@ts-ignore
-      unregister(`bedRooms.${fields.length - 1}`)
-      // setBedInputs((prevBedInputs: any) => prevBedInputs.slice(0, -1))
-      remove(fields.length - 1)
-      setBedCount((prevBedCount: any) => prevBedCount - 1)
-    }
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       await refetch()
@@ -227,20 +209,29 @@ const WholePlace = ({ pageType }: Prop) => {
     if (!isPending && !isFetching && data?.item) {
       setValue("title", data?.item?.title)
       setValue("size", data?.item?.totalSize)
-      setBedCount(Number(data?.item?.numBedRooms))
       setBathroomCount(Number(data?.item.numBathRooms))
-      setTypeCount(data?.item.qty)
+      setExactUnitCount(Number(data?.item.qty))
       setPhotos(data?.item?.photos)
       setAmenties(data.item?.amenities)
-      data.item?.bedRooms?.forEach((bedRoom: T_BedRooms) => {
-        append({
-          bedRoomName: bedRoom.bedRoomName,
-          bedRoomType: bedRoom.bedRoomType,
-        })
-      })
+      handleSqmChange(data.item?.totalSize)
     }
   }, [data, isPending, isFetching])
 
+  const [sizeValues, setSizeValues] = useState({
+    sqm: 0,
+    squareFoot: 0,
+  })
+
+  const handleSqmChange = (value: string) => {
+    const newSquareFoot = (Number(value) * SQM_TO_FT_CONVERSION_FACTOR).toFixed(
+      2
+    )
+
+    setSizeValues({
+      sqm: Number(value),
+      squareFoot: Number(newSquareFoot),
+    })
+  }
   return (
     <>
       {isPending || isFetching ? (
@@ -259,101 +250,40 @@ const WholePlace = ({ pageType }: Prop) => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-4 gap-x-6">
+              <Select
+                label="Unit Type"
+                disabled={isPending || isFetching}
+                {...register("title", {
+                  required: "This field is required",
+                })}
+              >
+                <Option value="Villa">Villa</Option>
+                <Option value="Apartment">Apartment</Option>
+                <Option value="Studio">Studio apartment</Option>
+                <Option value="House">House</Option>
+                <Option value="Condominium">Condominium</Option>
+              </Select>
+            </div>
+            <Typography variant="h4" fontWeight="semibold" className="mt-4">
+              Where can guests sleep?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="mb-2 text-gray-400"
+            >
+              How many comfortable living spaces does this unit have? Click to
+              add bed type.
+            </Typography>
+            <div className="grid grid-cols-2">
               <div>
-                <Input
-                  label="Name"
-                  id="name"
-                  type="text"
-                  disabled={isPending || isFetching}
-                  defaultValue={data?.item?.title}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-              <div>
-                <Input
-                  label="Total Size (sqm)"
-                  id="size"
-                  type="number"
-                  disabled={isPending || isFetching}
-                  defaultValue={data?.item?.totalSize}
-                  {...register("size", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
+                <Bedroom />
               </div>
             </div>
             <div className="grid grid-cols-4 mt-4 gap-x-6">
               <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
-                  Bedrooms / Sleeping Space
-                </Typography>
-                <div className="flex rounded-md mb-3">
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={removeBedInput}
-                  >
-                    <MinusIcon className="h-3 w-3" />
-                  </button>
-                  <input
-                    disabled={isPending || isFetching}
-                    type="number"
-                    id="beds"
-                    {...register("bedCount")}
-                    className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                    value={bedCount as number}
-                    min={0}
-                    onChange={(e) => {
-                      const val: number = Number(e.target.value)
-                      setBedCount(val)
-                    }}
-                  />
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={addBedInput}
-                  >
-                    <PlusIcon className="h-3 w-3" />
-                  </button>
-                </div>
-                {fields.map((field: T_BedRooms, index: number) => (
-                  <div className="grid grid-cols-2 my-3 gap-x-3" key={index}>
-                    <Input
-                      label="Bedroom name"
-                      type="text"
-                      id={`bed-name-${field.bedRoomName}`}
-                      disabled={false}
-                      // @ts-ignore
-                      {...register(`bedRooms.${index}.bedRoomName`, {
-                        required: true,
-                      })}
-                      onChange={(e) => (field.bedRoomName = e.target.value)}
-                      required
-                    />
-                    <Input
-                      label="Bedroom type"
-                      type="text"
-                      id={`bed-name-${index}`}
-                      disabled={false}
-                      // @ts-ignore
-                      {...register(`bedRooms.${index}.bedRoomType`, {
-                        required: true,
-                      })}
-                      onChange={(e) => (field.bedRoomType = e.target.value)}
-                      required
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <Typography variant="h4" fontWeight="semibold" className="mb-2">
-                  Number of Bathrooms
+                  How many bathrooms are in this unit?
                 </Typography>
                 <div className="flex rounded-md">
                   <button
@@ -373,7 +303,6 @@ const WholePlace = ({ pageType }: Prop) => {
                     disabled={isPending || isFetching}
                     type="number"
                     id="bathrooms"
-                    {...register("bathrooms")}
                     className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                     value={bathroomCount}
                     min={0}
@@ -396,49 +325,97 @@ const WholePlace = ({ pageType }: Prop) => {
                   </button>
                 </div>
               </div>
+            </div>
+
+            <Typography variant="h4" fontWeight="semibold" className="mt-4">
+              How big is this unit?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="mb-2 text-gray-400"
+            >
+              Enter the unit size in square meters, we will automatically
+              convert to square foot
+            </Typography>
+            <div className="grid grid-cols-4 gap-x-6">
               <div>
-                <Typography variant="h4" fontWeight="semibold" className="mb-2">
-                  How many of this type you have?
-                </Typography>
-                <div className="flex rounded-md">
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={() => {
-                      typeCount > 0 &&
-                        setTypeCount((typeCount: any) => typeCount - 1)
-                    }}
-                  >
-                    <MinusIcon className="h-3 w-3" />
-                  </button>
-                  <input
-                    disabled={isPending || isFetching}
-                    type="number"
-                    id="type-count"
-                    {...register("typeCount")}
-                    className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                    value={typeCount}
-                    min={0}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value)
-                      setTypeCount(val)
-                    }}
-                  />
-                  <button
-                    disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                    type="button"
-                    onClick={() =>
-                      setTypeCount((typeCount: any) => typeCount + 1)
-                    }
-                  >
-                    <PlusIcon className="h-3 w-3" />
-                  </button>
-                </div>
+                <Input
+                  label="Sqm"
+                  id="size"
+                  type="number"
+                  disabled={isPending || isFetching}
+                  {...register("size", {
+                    required: "This field is required",
+                  })}
+                  onChange={(event) => handleSqmChange(event.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Input
+                  label="Ft"
+                  id="squareFoot"
+                  type="number"
+                  value={sizeValues.squareFoot}
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <Typography variant="h4" fontWeight="semibold" className="mt-4">
+                How many of this exact unit do you have?
+              </Typography>
+              <Typography
+                variant="h5"
+                fontWeight="normal"
+                className="mb-2 text-gray-400"
+              >
+                Identical amenities, bedrooms, bathrooms, etc.
+              </Typography>
+              <div className="flex rounded-md">
+                <button
+                  disabled={isPending || isFetching}
+                  className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  type="button"
+                  onClick={() => {
+                    exactUnitCount > 0 &&
+                      setExactUnitCount(
+                        (exactUnitCount: any) => exactUnitCount - 1
+                      )
+                  }}
+                >
+                  <MinusIcon className="h-3 w-3" />
+                </button>
+                <input
+                  disabled={isPending || isFetching}
+                  type="number"
+                  id="exactUnit"
+                  className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                  value={exactUnitCount}
+                  min={0}
+                  onChange={(e) => {
+                    const val = Number(e.target.value)
+                    setExactUnitCount(val)
+                  }}
+                />
+                <button
+                  disabled={isPending || isFetching}
+                  className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  type="button"
+                  onClick={() =>
+                    setExactUnitCount(
+                      (exactUnitCount: number) => exactUnitCount + 1
+                    )
+                  }
+                >
+                  <PlusIcon className="h-3 w-3" />
+                </button>
               </div>
             </div>
             <hr className="mt-6 mb-4" />
+
             <Photos />
             <hr className="mt-6 mb-4" />
             <Typography variant="h4" fontWeight="semibold" className="mb-3">
