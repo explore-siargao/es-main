@@ -4,6 +4,8 @@ import "swiper/css/navigation"
 import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { useRouter } from "next/navigation"
+import { Typography } from "@/common/components/ui/Typography"
+import Image from "next/image"
 
 const toKebabCase = (str: string) => {
   return str
@@ -19,14 +21,14 @@ interface SliderProps {
   cards: {
     imageKey: StaticImageData | string
     title: string
-    subTitle?: string
+    subTitle: string
   }[]
 }
 
 const Slider = ({ cards }: SliderProps) => {
   const router = useRouter()
-  const handleCardClick = (subPlace: string) => {
-    const kebabCaseSubPlace = toKebabCase(subPlace)
+  const handleCardClick = (subTitle: string) => {
+    const kebabCaseSubPlace = toKebabCase(subTitle)
     router.push(`/locations/${kebabCaseSubPlace}`)
   }
 
@@ -92,24 +94,24 @@ const Slider = ({ cards }: SliderProps) => {
 `}</style>
 
       {cards.map((card) => (
-        <SwiperSlide key={card.mainPlace} className="pl-5 pr-5">
+        <SwiperSlide key={card.title} className="pl-5 pr-5">
           <div
             className="relative w-full h-56 rounded-xl overflow-hidden shadow-md"
-            onClick={() => handleCardClick(card.subPlace)}
+            onClick={() => handleCardClick(card.subTitle)}
           >
             <Image
               className="cursor-pointer"
               src={card.imageKey}
-              alt={card.mainPlace}
+              alt={card.title}
               layout="fill"
               objectFit="cover"
             />
           </div>
           <div className="mt-2 text-left">
             <Typography variant="h4" fontWeight="semibold">
-              {card.mainPlace}
+              {card.title}
             </Typography>
-            <Typography variant="h5">{card.subPlace}</Typography>
+            <Typography variant="h5">{card.subTitle}</Typography>
           </div>
         </SwiperSlide>
       ))}
