@@ -3,17 +3,35 @@ import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import SliderItem from "./SliderItem"
+import { useRouter } from "next/navigation"
+import { Typography } from "@/common/components/ui/Typography"
+import Image from "next/image"
+
+const toKebabCase = (str: string) => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
+}
 
 interface SliderProps {
   cards: {
     imageKey: StaticImageData | string
     title: string
-    subTitle?: string
+    subTitle: string
   }[]
 }
 
 const Slider = ({ cards }: SliderProps) => {
+  const router = useRouter()
+  const handleCardClick = (subTitle: string) => {
+    const kebabCaseSubPlace = toKebabCase(subTitle)
+    router.push(`/locations/${kebabCaseSubPlace}`)
+  }
+
   return (
     <Swiper
       slidesPerView={4}
@@ -77,11 +95,24 @@ const Slider = ({ cards }: SliderProps) => {
 
       {cards.map((card) => (
         <SwiperSlide key={card.title} className="pl-5 pr-5">
-          <SliderItem
-            imageKey={card.imageKey}
-            title={card.title}
-            subTitle={card.subTitle}
-          />
+          <div
+            className="relative w-full h-56 rounded-xl overflow-hidden shadow-md"
+            onClick={() => handleCardClick(card.subTitle)}
+          >
+            <Image
+              className="cursor-pointer"
+              src={card.imageKey}
+              alt={card.title}
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div className="mt-2 text-left">
+            <Typography variant="h4" fontWeight="semibold">
+              {card.title}
+            </Typography>
+            <Typography variant="h5">{card.subTitle}</Typography>
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>
