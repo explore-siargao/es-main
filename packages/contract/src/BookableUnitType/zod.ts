@@ -70,6 +70,7 @@ export const Z_AddBedUnit = z.object({
 export const Z_Update_Bed_Basic_Info = z.object({
   _id: z.string().optional().nullable(),
   title: z.string(),
+  qty: z.number(),
   isHaveSharedBathRoom: z.enum(["Yes", "No"]).optional().nullable(),
   isSmokingAllowed: z.enum(["Yes", "No"]).optional().nullable(),
   totalSize: z.number(),

@@ -9,6 +9,8 @@ import {
   LucideLayoutList,
   LucidePalmtree,
   LucideSparkles,
+  MinusIcon,
+  PlusIcon,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/common/components/ui/Button"
@@ -42,7 +44,7 @@ const Bed = ({ pageType }: Prop) => {
   const bedId = String(params.bedId)
   const queryClient = useQueryClient()
 
-  const { data, isPending } = useGetUnitById(bedId)
+  const { data, isPending, isFetching } = useGetUnitById(bedId)
   const { mutateAsync: updateBedBasicInfo } = useUpdateBedBasicInfo(listingId)
   const { mutateAsync: updateAmenities } = useUpdateAmenities(listingId, bedId)
   const router = useRouter()
@@ -133,10 +135,15 @@ const Bed = ({ pageType }: Prop) => {
       toast.error("Please fill total size count field")
       return
     }
+    if (typeCount <= 0) {
+      toast.error("Please fill out type count field")
+      return
+    }
     try {
       const saveBasicInfo = updateBedBasicInfo({
         _id: bedId,
         title: formData.title,
+        qty: Number(typeCount),
         isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
         isSmokingAllowed: formData.isSmokingAllowed,
         totalSize: formData.totalSize,
@@ -161,13 +168,14 @@ const Bed = ({ pageType }: Prop) => {
   useEffect(() => {
     if (!isPending && data && data.item) {
       setValue("title", data?.item?.title)
+      setTypeCount(data?.item.qty)
       setValue("isHaveSharedBathRoom", data?.item?.isHaveSharedBathRoom)
       setValue("isSmokingAllowed", data?.item?.isSmokingAllowed)
       setValue("totalSize", data?.item?.totalSize)
       setPhotos(data?.item?.photos)
       setAmenities(data.item?.amenities)
     }
-  }, [data, isPending])
+  }, [data, isPending, isFetching])
 
   const bedOptions = [
     "Bed in 2 person dorm",
@@ -354,6 +362,44 @@ const Bed = ({ pageType }: Prop) => {
               value={totalSizeInSqft}
               disabled
             />
+          </div>
+        </div>
+        <div className="mt-6">
+          <Typography variant="h4" fontWeight="semibold" className="mb-2">
+            How many of this type you have?
+          </Typography>
+          <div className="flex rounded-md">
+            <button
+              disabled={isPending || isFetching}
+              className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+              type="button"
+              onClick={() => {
+                typeCount > 0 && setTypeCount((typeCount: any) => typeCount - 1)
+              }}
+            >
+              <MinusIcon className="h-3 w-3" />
+            </button>
+            <input
+              disabled={isPending || isFetching}
+              type="number"
+              id="type-count"
+              {...register("qty")}
+              className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+              value={typeCount}
+              min={0}
+              onChange={(e) => {
+                const val = parseInt(e.target.value)
+                setTypeCount(val)
+              }}
+            />
+            <button
+              disabled={isPending || isFetching}
+              className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+              type="button"
+              onClick={() => setTypeCount((typeCount: any) => typeCount + 1)}
+            >
+              <PlusIcon className="h-3 w-3" />
+            </button>
           </div>
         </div>
         <hr className="mt-6 mb-4" />
