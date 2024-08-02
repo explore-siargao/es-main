@@ -4,8 +4,7 @@ import "swiper/css/navigation"
 import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { useRouter } from "next/navigation"
-import { Typography } from "@/common/components/ui/Typography"
-import Image from "next/image"
+import SliderItem from "./SliderItem"
 
 const toKebabCase = (str: string) => {
   return str
@@ -21,16 +20,20 @@ interface SliderProps {
   cards: {
     imageKey: StaticImageData | string
     title: string
-    subTitle: string
+    subTitle?: string
+    url?: string
   }[]
 }
 
 const Slider = ({ cards }: SliderProps) => {
   const router = useRouter()
+
+  // may be used if first link approach is not good
   const handleCardClick = (subTitle: string) => {
     const kebabCaseSubPlace = toKebabCase(subTitle)
     router.push(`/locations/${kebabCaseSubPlace}`)
   }
+  //
 
   return (
     <Swiper
@@ -95,24 +98,12 @@ const Slider = ({ cards }: SliderProps) => {
 
       {cards.map((card) => (
         <SwiperSlide key={card.title} className="pl-5 pr-5">
-          <div
-            className="relative w-full h-56 rounded-xl overflow-hidden shadow-md"
-            onClick={() => handleCardClick(card.subTitle)}
-          >
-            <Image
-              className="cursor-pointer"
-              src={card.imageKey}
-              alt={card.title}
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-          <div className="mt-2 text-left">
-            <Typography variant="h4" fontWeight="semibold">
-              {card.title}
-            </Typography>
-            <Typography variant="h5">{card.subTitle}</Typography>
-          </div>
+          <SliderItem
+            imageKey={card.imageKey}
+            title={card.title}
+            subTitle={card.subTitle}
+            url={card.url}
+          />
         </SwiperSlide>
       ))}
     </Swiper>

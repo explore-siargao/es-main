@@ -10,6 +10,7 @@ type TravelSliderProps = {
     imageKey: StaticImageData | string
     title: string
     subTitle?: string
+    url?: string
   }[]
   url?: string
 }

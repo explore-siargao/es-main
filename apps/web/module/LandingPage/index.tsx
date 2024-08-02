@@ -5,9 +5,7 @@ import useGetAllBookings from "../LandingPage/hooks/useGetAllBookings"
 import useSessionStore from "@/common/store/useSessionStore"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
-import { Typography } from "@/common/components/ui/Typography"
 import { usePathname } from "next/navigation"
-import TravelStyleSlider from "./components/TravelStyleSlider"
 import il1 from "../../common/assets/sample/island-1.jpg"
 import il2 from "../../common/assets/sample/island-2.jpg"
 import il3 from "../../common/assets/sample/island-3.jpg"
@@ -76,34 +74,34 @@ const LandingPage = () => {
 
   const groupCardsDummyTravelStyle = [
     {
-      imageKey: "/assets/4.jpg",
+      imageKey: "/assets/cf7c14dc-d3f5-46e8-b813-01cf04200519",
       title: "Hostels",
-      url: "/",
+      url: "/properties/hostel",
+    },
+    {
+      imageKey: "/assets/f57a9104-b3bc-4c6c-8e7b-ff15ac529b06",
+      title: "Apartments",
+      url: "/properties/apartment",
+    },
+    {
+      imageKey: "/assets/4.jpg",
+      title: "Homestay",
+      url: "/properties/homestay",
+    },
+    {
+      imageKey: "/assets/ac0d3e85-f3da-4f30-8db5-e8bdb98385df",
+      title: "Hotels",
+      url: "/properties/hotel",
+    },
+    {
+      imageKey: "/assets/3.jpg",
+      title: "Resorts",
+      url: "/properties/resort",
     },
     {
       imageKey: "/assets/1.jpg",
-      title: "Apartments",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/3.jpg",
-      title: "Homestay",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/4.jpg",
-      title: "Hotels",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/2.jpg",
-      title: "Resorts",
-      url: "/",
-    },
-    {
-      imageKey: "/assets/3.jpg",
       title: "Villas",
-      url: "/",
+      url: "/properties/villa",
     },
   ]
 
@@ -112,61 +110,73 @@ const LandingPage = () => {
       imageKey: il1,
       title: "Anajawan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il2,
       title: "Cabitoonan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il3,
       title: "Catangnan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il4,
       title: "Consuelo",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il5,
       title: "Corazon",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il6,
       title: "Daku",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il7,
       title: "Catangnan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il8,
       title: "Malinao",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il9,
       title: "Libertad",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il10,
       title: "Magsaysay",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il11,
       title: "Santa Fe",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il12,
       title: "Suyangan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
   ]
 
@@ -174,52 +184,42 @@ const LandingPage = () => {
     {
       imageKey: "/assets/5.jpg",
       title: "Siargao Seasky Resort",
-      url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
       title: "Mad Monkey Siargao",
-      url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Patrick's on the Beach",
-      url: "/",
     },
     {
       imageKey: "/assets/4.jpg",
       title: "Strangers Inn & Bar",
-      url: "/",
     },
     {
       imageKey: "/assets/4.jpg",
       title: "Kaha Island Stay",
-      url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
       title: "Beachfront Kubo",
-      url: "/",
     },
     {
       imageKey: "/assets/1.jpg",
       title: "G Villas Siargao",
-      url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Suyog Life Siargao",
-      url: "/",
     },
     {
       imageKey: "/assets/2.jpg",
       title: "Bohemian Beach House",
-      url: "/",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Siargao Residency",
-      url: "/",
     },
   ]
 

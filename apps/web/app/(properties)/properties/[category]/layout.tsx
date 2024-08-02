@@ -9,7 +9,8 @@ import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import Footer from "@/common/components/Footer"
-import GuideHeader from "@/module/Guides/components/Header"
+import Header from "@/common/components/Header"
+import ClientHeroSection from "@/app/(locations)/ClientHeroSection"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -29,7 +30,8 @@ export default async function BlogGuideLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <GuideHeader />
+              <Header />
+              <ClientHeroSection />
               {children}
               <Footer contentWidth="small" />
             </GlobalModalWrapper>
