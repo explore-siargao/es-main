@@ -7,7 +7,6 @@ import SurfGuide from "./SurfGuide"
 import Directions from "./Directions"
 import IdealConditions from "./IdealConditions"
 import Forecast from "./Forecast"
-import WindMap from "./WindMap"
 
 function SurfingGuide() {
   const [coordinates, setCoordinates] = useState<{

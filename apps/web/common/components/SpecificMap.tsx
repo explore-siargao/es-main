@@ -1,11 +1,19 @@
-"use client"
 import React, { useState, useEffect } from "react"
-import { MapContainer, TileLayer, Marker, useMapEvent } from "react-leaflet"
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvent,
+} from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
 import { Icon, LatLngTuple } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { WEB_URL } from "../constants/ev"
+import Image from "next/image"
+import { Button } from "./ui/Button"
+
 interface SpecificMapProps {
   center: [number, number]
   mapHeight: string
@@ -14,13 +22,14 @@ interface SpecificMapProps {
   className?: React.ReactNode
   onMarkerSet?: (coords: { lat: number; lng: number }) => void | undefined
   scrollWheelZoomEnabled?: boolean
+  imagePlace?: string
 }
 
 const markerIcon = new Icon({
   iconUrl: `${WEB_URL}/marker.png`,
   iconSize: [35, 35],
   iconAnchor: [18, 18],
-  popupAnchor: [-3, -76],
+  popupAnchor: [0, -20],
 })
 
 const SpecificMap = ({
@@ -31,14 +40,34 @@ const SpecificMap = ({
   onMarkerSet,
   className,
   scrollWheelZoomEnabled,
+  imagePlace,
 }: SpecificMapProps) => {
   const { setCoordinates } = useCoordinatesStore()
   const [position, setPosition] = useState<[number, number] | null>(null)
+  const [placeName, setPlaceName] = useState<string>("")
+
+  useEffect(() => {
+    fetchPlaceName(center[0], center[1])
+  }, [center])
+
+  const fetchPlaceName = async (lat: number, lng: number) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`
+      )
+      const data = await response.json()
+      setPlaceName(data.display_name || "Unknown place")
+    } catch (error) {
+      console.error("Error fetching place name:", error)
+      setPlaceName("Unknown place")
+    }
+  }
 
   const handleMarkerDragEnd = (event: L.LeafletEvent) => {
     const newCoordinates = event.target.getLatLng()
     setPosition([newCoordinates.lat, newCoordinates.lng])
     setCoordinates(newCoordinates.lat, newCoordinates.lng)
+    fetchPlaceName(newCoordinates.lat, newCoordinates.lng)
     if (onMarkerSet) {
       onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
     }
@@ -48,9 +77,32 @@ const SpecificMap = ({
     const newCoordinates = event.latlng
     setPosition([newCoordinates.lat, newCoordinates.lng])
     setCoordinates(newCoordinates.lat, newCoordinates.lng)
+    fetchPlaceName(newCoordinates.lat, newCoordinates.lng)
     if (onMarkerSet) {
       onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
     }
+  }
+
+  const handleMarkerEvents = (marker: L.Marker) => {
+    const popup = marker.getPopup()
+
+    marker.on("mouseover", () => {
+      marker.openPopup()
+    })
+
+    marker.on("mouseout", () => {
+      if (!popup?.isOpen) {
+        marker.closePopup()
+      }
+    })
+
+    popup?.on("mouseover", () => {
+      marker.openPopup()
+    })
+
+    popup?.on("mouseout", () => {
+      marker.closePopup()
+    })
   }
 
   const MapClickHandler = () => {
@@ -68,7 +120,10 @@ const SpecificMap = ({
       setShowMap(true)
     }, 1500)
     window.addEventListener("resize", HandleResize)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("resize", HandleResize)
+    }
   }, [HandleResize])
 
   return (
@@ -100,12 +155,34 @@ const SpecificMap = ({
                 eventHandlers={{
                   dragend: handleMarkerDragEnd,
                 }}
-              ></Marker>
+                ref={(marker) => {
+                  if (marker) {
+                    handleMarkerEvents(marker)
+                  }
+                }}
+              >
+                <Popup autoClose={false} closeOnClick={false}>
+                  <div className="w-32 grid">
+                    {imagePlace ? (
+                      <Image
+                        src={imagePlace}
+                        alt=""
+                        width={150}
+                        height={100}
+                        className="bg-gray-200 rounded-md"
+                      />
+                    ) : null}
+                    {placeName}
+                    <span>Difficulty: Intermediate</span>
+                    <Button variant={"link"} className="underline">
+                      View Guides
+                    </Button>
+                  </div>
+                </Popup>
+              </Marker>
             </MapContainer>
           ) : (
-            <div
-              className={`flex h-full flex-1 flex-col justify-center items-center`}
-            >
+            <div className="flex h-full flex-1 flex-col justify-center items-center">
               <Spinner variant="primary" />
             </div>
           )}
