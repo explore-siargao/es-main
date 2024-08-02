@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 function GuideBlogHeader() {
   return (
-    <div className="w-full h-max border mt-1 rounded-lg">
+    <div className="w-full h-max border border-t-0">
       <div className="flex divide-x-2 w-full bg-white rounded-md py-2">
         <div className="font-semibold w-max shrink-0 px-4 my-auto">
           NEARBY RESTAURANTS

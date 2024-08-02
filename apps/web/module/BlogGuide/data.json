@@ -15,23 +15,23 @@
   "surfGuide": {
     "images": [
       {
-        "fileKey": "1.jpg",
+        "key": "1.jpg",
         "alt": "Cloud 9 Wave"
       },
       {
-        "fileKey": "2.jpg",
+        "key": "2.jpg",
         "alt": "Surfer at Jacking Horse"
       },
       {
-        "fileKey": "3.jpg",
+        "key": "3.jpg",
         "alt": "Stimpy's Surf Spot"
       },
       {
-        "fileKey": "4.jpg",
+        "key": "4.jpg",
         "alt": "Rock Island Waves"
       },
       {
-        "fileKey": "5.jpg",
+        "key": "5.jpg",
         "alt": "Cemetery Surfing Area"
       }
     ],

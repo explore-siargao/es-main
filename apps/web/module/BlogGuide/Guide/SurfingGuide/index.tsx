@@ -8,6 +8,9 @@ import Directions from "./Directions"
 import IdealConditions from "./IdealConditions"
 import Forecast from "./Forecast"
 import WindMap from "./WindMap"
+import useGetCmsPosts from "@/common/hooks/useGetCmsPosts"
+
+// TODO: cmsData type
 
 function SurfingGuide() {
   const [coordinates, setCoordinates] = useState<{
@@ -19,11 +22,12 @@ function SurfingGuide() {
     setCoordinates({ latitude, longitude })
   }
   const params = useParams()
-  const guideName = params.guideName
+  const guideName = params.guideName as string
+  const { data } = useGetCmsPosts(guideName)
   return (
     <WidthWrapper width={"small"}>
       <div className="mt-10">
-        <SurfGuide />
+        <SurfGuide cmsData={data} />
         <Separator
           orientation="horizontal"
           className="mt-10 mb-6 bg-gray-300"

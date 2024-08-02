@@ -23,6 +23,10 @@ module.exports = {
         source: "/mock/v1/:path*",
         destination: `${process.env.API_URL}/mock/v1/:path*`,
       },
+      {
+        source: "/api/posts",
+        destination: `http://localhost:3001/api/posts`,
+      },
     ]
   },
   env: {
