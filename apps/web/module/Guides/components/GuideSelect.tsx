@@ -19,8 +19,8 @@ export default function GuideSelect() {
       <div
         className={`absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none ${
           isOpen
-            ? "ease-out duration-100"
-            : "scale-95 opacity-0 ease-in duration-75"
+            ? "ease-out duration-100 block"
+            : "scale-95 opacity-0 ease-in duration-75 hidden"
         }`}
       >
         <div className="py-1">
