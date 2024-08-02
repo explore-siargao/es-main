@@ -4,6 +4,17 @@ import "swiper/css/navigation"
 import Image, { StaticImageData } from "next/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
+import { useRouter } from "next/navigation"
+
+const toKebabCase = (str: string) => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
+}
 
 interface SliderProps {
   cards: {
@@ -14,6 +25,12 @@ interface SliderProps {
 }
 
 const Slider = ({ cards }: SliderProps) => {
+  const router = useRouter()
+  const handleCardClick = (subPlace: string) => {
+    const kebabCaseSubPlace = toKebabCase(subPlace)
+    router.push(`/locations/${kebabCaseSubPlace}`)
+  }
+
   return (
     <Swiper
       slidesPerView={4}
@@ -77,7 +94,10 @@ const Slider = ({ cards }: SliderProps) => {
 
       {cards.map((card) => (
         <SwiperSlide key={card.mainPlace} className="pl-5 pr-5">
-          <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
+          <div
+            className="relative w-full h-56 rounded-xl overflow-hidden shadow-md"
+            onClick={() => handleCardClick(card.subPlace)}
+          >
             <Image
               className="cursor-pointer"
               src={card.imageKey}

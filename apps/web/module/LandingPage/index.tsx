@@ -128,63 +128,63 @@ const LandingPage = () => {
   const groupCardsDummy = [
     {
       imageKey: il1,
-      mainPlace: "General Luna",
-      subPlace: "Town Centre",
+      mainPlace: "Anajawan",
+      subPlace: "General Luna",
     },
     {
       imageKey: il2,
-      mainPlace: "Catangnan",
+      mainPlace: "Cabitoonan",
       subPlace: "General Luna",
     },
     {
       imageKey: il3,
-      mainPlace: "Malinao",
-      subPlace: "General Luna",
-    },
-    {
-      imageKey: il4,
-      mainPlace: "Pacifico",
-      subPlace: "North Siargao",
-    },
-    {
-      imageKey: il5,
-      mainPlace: "Islands",
-      subPlace: "Popular Trips",
-    },
-    {
-      imageKey: il6,
-      mainPlace: "General Luna",
-      subPlace: "Town Centre",
-    },
-    {
-      imageKey: il7,
       mainPlace: "Catangnan",
       subPlace: "General Luna",
     },
     {
+      imageKey: il4,
+      mainPlace: "Consuelo",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il5,
+      mainPlace: "Corazon",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il6,
+      mainPlace: "Daku",
+      subPlace: "General Luna",
+    },
+    {
+      imageKey: il7,
+      mainPlace: "La Januza",
+      subPlace: "General Luna",
+    },
+    {
       imageKey: il8,
-      mainPlace: "Malinao",
+      mainPlace: "Libertad",
       subPlace: "General Luna",
     },
     {
       imageKey: il9,
-      mainPlace: "Pacifico",
-      subPlace: "North Siargao",
+      mainPlace: "Magsaysay",
+      subPlace: "General Luna",
     },
     {
       imageKey: il10,
-      mainPlace: "Islands",
-      subPlace: "Popular Trips",
+      mainPlace: "Malinao",
+      subPlace: "General Luna",
     },
     {
       imageKey: il11,
-      mainPlace: "General Luna",
-      subPlace: "Popular Trips",
+      mainPlace: "Santa Fe",
+      subPlace: "General Luna",
     },
     {
       imageKey: il12,
-      mainPlace: "Islands",
-      subPlace: "Popular Trips",
+      mainPlace: "Suyangan",
+      subPlace: "General Luna",
     },
   ]
   const groupCardsDummyRecommendedPlaceToStay = [
