@@ -1,6 +1,6 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import TravelStyleContainer from "./TravelStyleContainer"
+import TravelStyleContainer from "./components/TravelStyleContainer"
 import { usePathname } from "next/navigation"
 import { Typography } from "@/common/components/ui/Typography"
 
