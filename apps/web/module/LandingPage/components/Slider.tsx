@@ -4,8 +4,7 @@ import "swiper/css/navigation"
 import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { useRouter } from "next/navigation"
-import { Typography } from "@/common/components/ui/Typography"
-import Image from "next/image"
+import SliderItem from "./SliderItem"
 
 const toKebabCase = (str: string) => {
   return str
@@ -28,10 +27,13 @@ interface SliderProps {
 
 const Slider = ({ cards }: SliderProps) => {
   const router = useRouter()
+
+  // may be used if first link approach is not good
   const handleCardClick = (subTitle: string) => {
     const kebabCaseSubPlace = toKebabCase(subTitle)
     router.push(`/locations/${kebabCaseSubPlace}`)
   }
+  //
 
   return (
     <Swiper

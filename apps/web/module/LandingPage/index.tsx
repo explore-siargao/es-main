@@ -110,61 +110,73 @@ const LandingPage = () => {
       imageKey: il1,
       title: "Anajawan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il2,
       title: "Cabitoonan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il3,
       title: "Catangnan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il4,
       title: "Consuelo",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il5,
       title: "Corazon",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il6,
       title: "Daku",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il7,
       title: "Catangnan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il8,
       title: "Malinao",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il9,
       title: "Libertad",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il10,
       title: "Magsaysay",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il11,
       title: "Santa Fe",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
     {
       imageKey: il12,
       title: "Suyangan",
       subTitle: "General Luna",
+      url: "/locations/general-luna",
     },
   ]
 
