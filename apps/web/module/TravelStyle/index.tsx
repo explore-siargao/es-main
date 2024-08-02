@@ -313,9 +313,6 @@ const TravelStyle = () => {
   } else if (pathName === "/properties/resort") {
     travelStyleItems = dummyDataResort
     travelStyleTitle = "Resorts"
-  } else if (pathName === "/properties/apartment") {
-    travelStyleItems = dummyDataApartment
-    travelStyleTitle = "Apartments"
   } else if (pathName === "/properties/villa") {
     travelStyleItems = dummyDataVilla
     travelStyleTitle = "Villas"
