@@ -10,6 +10,7 @@ interface SliderProps {
     imageKey: StaticImageData | string
     title: string
     subTitle?: string
+    url?: string
   }[]
 }
 
@@ -81,6 +82,7 @@ const Slider = ({ cards }: SliderProps) => {
             imageKey={card.imageKey}
             title={card.title}
             subTitle={card.subTitle}
+            url={card.url}
           />
         </SwiperSlide>
       ))}
