@@ -1,5 +1,7 @@
+import React, { useState } from "react"
 import useFilterStore from "@/common/store/useFilterStore"
 import { Typography } from "../../ui/Typography"
+import { LucideChevronDown } from "lucide-react"
 
 type T_Props = {
   category: string
@@ -14,16 +16,23 @@ type T_Filters = {
 const CheckBoxFilter = ({ category, filters }: T_Props) => {
   const filterData = useFilterStore((state) => state.filterData)
   const setFilter = useFilterStore((state) => state.setFilter)
+  const [showAll, setShowAll] = useState(false)
 
   const handleCheckboxChange = (filter: T_Filters) => {
     if (filterData.some((f) => f.type === filter.type)) {
-      // remove filter if it's existing
+      // Remove filter if it's existing
       setFilter(filterData.filter((f) => f.type !== filter.type))
     } else {
-      // add new filter
+      // Add new filter
       //@ts-ignore
       setFilter([...filterData, { category, type: filter.type }])
     }
+  }
+
+  const itemsToShow = showAll ? filters : filters.slice(0, 5)
+
+  const handleToggleShowAll = () => {
+    setShowAll(!showAll)
   }
 
   return (
@@ -32,7 +41,7 @@ const CheckBoxFilter = ({ category, filters }: T_Props) => {
         {category}
       </Typography>
       <div className="space-y-1">
-        {filters.map((filter, index) => (
+        {itemsToShow.map((filter, index) => (
           <div className="flex items-center justify-between" key={filter.type}>
             <div className="flex items-center space-x-2">
               <input
@@ -50,6 +59,17 @@ const CheckBoxFilter = ({ category, filters }: T_Props) => {
           </div>
         ))}
       </div>
+      {filters.length > 5 && (
+        <button
+          onClick={handleToggleShowAll}
+          className="text-primary-600 mt-2 flex items-center space-x-1"
+        >
+          <span>{showAll ? "Show less" : `Show all ${filters.length}`}</span>
+          <LucideChevronDown
+            className={`transition-transform duration-200 ${showAll ? "rotate-180" : ""}`}
+          />
+        </button>
+      )}
     </div>
   )
 }
