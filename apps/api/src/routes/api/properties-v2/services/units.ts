@@ -33,7 +33,6 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     maxGuests: 0,
     adultsIncluded: 0,
     childrenIncluded: 0,
-    description: '',
     isMultiRoomUnit: false,
     unitPrices: null,
     qty: 0,
@@ -66,7 +65,6 @@ export const addRoomUnit = async (req: Request, res: Response) => {
   const newBookableUnitType = new dbBookableUnitTypes({
     category: 'Room',
     title: '',
-    description: '',
     bedRooms: null,
     bedConfigs: [],
     amenities: [],
@@ -109,7 +107,8 @@ export const addBedUnit = async (req: Request, res: Response) => {
   const newBookableUnitType = new dbBookableUnitTypes({
     category: 'Bed',
     title: '',
-    description: '',
+    isHaveSharedBathRoom: 'No',
+    isSmokingAllowed: 'No',
     bedRooms: null,
     bedConfigs: [],
     amenities: [],
@@ -147,9 +146,16 @@ export const addBedUnit = async (req: Request, res: Response) => {
 export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, description, qty } = req.body
+  const { title, qty, isHaveSharedBathRoom, isSmokingAllowed, totalSize } =
+    req.body
 
-  if (!title || !description || !qty) {
+  if (
+    !title ||
+    !qty ||
+    !isHaveSharedBathRoom ||
+    !isSmokingAllowed ||
+    !totalSize
+  ) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -179,8 +185,10 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
       {
         $set: {
           title: title,
-          description: description,
           qty: qty,
+          isHaveSharedBathRoom: isHaveSharedBathRoom,
+          isSmokingAllowed: isSmokingAllowed,
+          totalSize: totalSize,
           updatedAt: Date.now(),
         },
       },
@@ -205,9 +213,9 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
 export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, description, totalSize, qty } = req.body
+  const { title, totalSize, qty } = req.body
 
-  if (!title || !description || !totalSize || !qty) {
+  if (!title || !totalSize || !qty) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -237,7 +245,6 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       {
         $set: {
           title: title,
-          description: description,
           totalSize: totalSize,
           qty: qty,
           updatedAt: Date.now(),
@@ -267,17 +274,9 @@ export const updateWholePlaceUnitBasicInfo = async (
 ) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, totalSize, numBedRooms, numBathRooms, bedRooms, qty } =
-    req.body
-
-  if (
-    !title ||
-    !numBedRooms ||
-    !numBathRooms ||
-    !totalSize ||
-    !bedRooms ||
-    !qty
-  ) {
+  const { title, totalSize, numBathRooms, bedRooms, qty } = req.body
+  if (!title || !numBathRooms || !totalSize || !bedRooms || !qty) {
+    console.log(REQUIRED_VALUE_EMPTY)
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -287,6 +286,7 @@ export const updateWholePlaceUnitBasicInfo = async (
       category: 'Whole-Place',
     })
     if (!getBookableUnitWholePlace) {
+      console.log('Bookable unit not found')
       return res.json(response.error({ message: 'Bookable unit not found' }))
     }
 
@@ -297,6 +297,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     const findUnitInProperty =
       getProperty?.bookableUnits.includes(bookableUnitId)
     if (!findUnitInProperty) {
+      console.log('Bookable unit not found in property')
       return res.json(
         response.error({ message: 'Bookable unit not found in property' })
       )
@@ -309,7 +310,7 @@ export const updateWholePlaceUnitBasicInfo = async (
           $set: {
             title: title,
             totalSize: totalSize,
-            numBedRooms: numBedRooms,
+            numBedRooms: 0,
             numBathRooms: numBathRooms,
             bedRooms: bedRooms,
             qty: qty,
@@ -326,6 +327,7 @@ export const updateWholePlaceUnitBasicInfo = async (
       })
     )
   } catch (err: any) {
+    console.log(err)
     return res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,

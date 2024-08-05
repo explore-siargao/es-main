@@ -65,7 +65,7 @@ const reportListingArr = [
   },
 ]
 
-const imageGallery = [
+export const imageGallery = [
   {
     fileKey: "1.jpg",
     alt: "Image 1",

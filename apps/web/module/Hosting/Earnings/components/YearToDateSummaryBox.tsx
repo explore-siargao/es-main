@@ -11,7 +11,7 @@ interface YearToDateSummaryProps {
 const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({ excelData }) => {
   const currentDate = new Date()
   const summaryData = [
-    ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
+    ["Gross earnings", "Adjustments", "Service fee", "12% VAT"],
     [
       formatCurrency(94800, "Philippines"),
       formatCurrency(2000, "Philippines"),
