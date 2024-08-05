@@ -24,6 +24,7 @@ import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
 import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
+import { Typography } from "@/common/components/ui/Typography"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -338,14 +339,15 @@ const LandingPage = () => {
             groupCards={groupCardsDummyReliableCars}
           />
         </div>
-        <div className="sm:mt-10">
-          <TravelSlider
-            title="Inspiration for your trip"
-            description="Let us help you make the most out of your time in Siargao island"
-            groupCards={groupCardsDummyInspiration}
-          />
+        <div className="sm:mt-10 mb-8 pl-5">
+          <Typography variant="h2" fontWeight="semibold" className="text-left">
+            Inspiration for your trip
+          </Typography>
+          <Typography variant="h4" className="text-left">
+            Let us help you make the most out of your time in Siargao island
+          </Typography>
         </div>
-        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 p-4 sm:mt-10">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 px-5">
           <ImageTextCard
             imageKey={foodImage}
             title={"Restaurants, cafes & bars"}
