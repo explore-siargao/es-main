@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import { Typography } from "../../ui/Typography"
 import imageSrc from "../../../assets/bargraph.png"
-
+import formatCurrency from "@/common/helpers/formatCurrency"
 interface BudgetSliderProps {
   title: string
   min: number
@@ -55,18 +55,17 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
   }, [minValue, maxValue, onValueChange])
 
   return (
-    <div className="w-full max-w-sm mx-auto mt-10 border rounded-md p-5 pb-5">
-      <Typography fontWeight="semibold" variant="h2">
-        {title}
-      </Typography>
+    <div className="border max-w-xs p-4 shadow-sm overflow-hidden">
+      <Typography fontWeight="bold">{title}</Typography>
       <label
         htmlFor="budget-range"
-        className="block text-lg font-medium text-gray-700 mt-2"
+        className="block text-sm font-medium text-gray-700 mt-2"
       >
-        ₱{minValue} - ₱{maxValue}
+        {formatCurrency(minValue, "Philippines")} -{" "}
+        {formatCurrency(maxValue, "Philippines")} +
       </label>
       <div className="relative mt-4">
-        <div className="h-16 w-52 flex mx-auto opacity-20 grayscale -scale-x-100">
+        <div className="h-16 w-full flex mx-auto opacity-20 grayscale">
           <Image
             src={imageSrc}
             alt="Bar graph image"

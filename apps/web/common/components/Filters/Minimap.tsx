@@ -17,21 +17,23 @@ const Minimap = () => {
   const [currentCoords] = useState<[number, number]>([9.913431, 126.049483])
 
   return (
-    <div className="relative flex items-center justify-center w-64 h-40 rounded-md shadow-sm overflow-hidden">
-      <MapContainer
-        center={currentCoords}
-        zoom={9}
-        scrollWheelZoom={false}
-        dragging={false}
-        attributionControl={false}
-        zoomControl={false}
-        className="absolute inset-0 z-0"
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker icon={markerIcon} position={currentCoords}></Marker>
-      </MapContainer>
-      <div className="absolute bottom-4 left-0 w-full flex items-center justify-center z-20">
-        <Button>Show on map</Button>
+    <div className="border max-w-xs shadow-sm rounded-md overflow-hidden">
+      <div className="relative flex items-center justify-center h-40">
+        <MapContainer
+          center={currentCoords}
+          zoom={9}
+          scrollWheelZoom={false}
+          dragging={false}
+          attributionControl={false}
+          zoomControl={false}
+          className="absolute inset-0 z-0"
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Marker icon={markerIcon} position={currentCoords}></Marker>
+        </MapContainer>
+        <div className="absolute bottom-4 left-0 w-full flex items-center justify-center z-20">
+          <Button>Show on map</Button>
+        </div>
       </div>
     </div>
   )
