@@ -23,10 +23,10 @@ interface SliderProps {
     subTitle?: string
     url?: string
   }[]
-  isGuide:boolean
+  isGuide: boolean
 }
 
-const Slider = ({ cards,isGuide }: SliderProps) => {
+const Slider = ({ cards, isGuide }: SliderProps) => {
   const router = useRouter()
 
   // may be used if first link approach is not good
