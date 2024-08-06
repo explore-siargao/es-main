@@ -245,9 +245,17 @@ const LandingPage = () => {
       imageKey: il6,
       title: "Paddle Boarding",
     },
+    {
+      imageKey: il7,
+      title: "Wonder surfing",
+    },
   ]
 
   const groupCardsDummyReliableCars = [
+    {
+      imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
+      title: "2021 Suzuki R150 Fi MT",
+    },
     {
       imageKey: "/assets/fe65c50d-2cde-46e6-8c9b-58a73c59e768",
       title: "2018 Honda Civic AT",
@@ -319,7 +327,7 @@ const LandingPage = () => {
             description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummyTravelStyle}
             isGuide={false}
-            itemsNumber={4}
+            itemsNumber={6}
           />
         </div>
         <div className="sm:mt-10">
@@ -328,7 +336,7 @@ const LandingPage = () => {
             description="Hand-picked properties just for you"
             groupCards={groupCardsDummyRecommendedPlaceToStay}
             isGuide={false}
-            itemsNumber={4}
+            itemsNumber={6}
           />
         </div>
         <div className="sm:mt-10">
@@ -337,7 +345,7 @@ const LandingPage = () => {
             description="We've partnered the islands for tour and activity providers."
             groupCards={groupCardsDummySomethingToDo}
             isGuide={false}
-            itemsNumber={4}
+            itemsNumber={6}
           />
         </div>
         <div className="sm:mt-10">
@@ -346,7 +354,7 @@ const LandingPage = () => {
             description="Take the road, let's travel with one of our trusted rental partners."
             groupCards={groupCardsDummyReliableCars}
             isGuide={false}
-            itemsNumber={4}
+            itemsNumber={6}
           />
         </div>
         <div className="sm:mt-10 mb-8 pl-5">
