@@ -13,7 +13,7 @@ type TravelSliderProps = {
     url?: string
   }[]
   url?: string
-  isGuide:boolean
+  isGuide: boolean
 }
 
 const TravelSlider = ({

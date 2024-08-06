@@ -7,7 +7,7 @@ type T_Props = {
   title: string
   subTitle?: string
   url?: string
-  isGuide:boolean
+  isGuide: boolean
 }
 
 const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
