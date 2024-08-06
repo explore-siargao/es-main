@@ -25,6 +25,8 @@ import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
 import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 import { Typography } from "@/common/components/ui/Typography"
+import CardList, { Filters } from "./components/CardView"
+import SideFilter from "@/common/components/Filters/SideFilter"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -297,6 +299,96 @@ const LandingPage = () => {
     },
   ]
 
+  const ASSET_ROOT = "/assets"
+  const dummyCards = [
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Balcony",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Balcony",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Beach Front",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Beach Front",
+    },
+  ]
+
+  const dummyFilters: Filters[] = [{ type: "Free WiFi" }]
+
   return (
     <>
       {/* {isPending || isLoading ? (
@@ -304,6 +396,10 @@ const LandingPage = () => {
       ) : ( */}
 
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
+        <div className="mt-14">
+          <SideFilter />
+          <CardList cards={dummyCards} filters={dummyFilters} />
+        </div>
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
