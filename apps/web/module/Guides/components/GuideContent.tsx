@@ -5,6 +5,7 @@ type T_Markers = {
   lat: number
   long: number
   name: string
+  causine?: string
 }
 
 type T_Props = {
