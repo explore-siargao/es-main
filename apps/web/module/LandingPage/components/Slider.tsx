@@ -24,9 +24,10 @@ interface SliderProps {
     url?: string
   }[]
   isGuide: boolean
+  itemsNumber: number
 }
 
-const Slider = ({ cards, isGuide }: SliderProps) => {
+const Slider = ({ cards, isGuide, itemsNumber }: SliderProps) => {
   const router = useRouter()
 
   // may be used if first link approach is not good
@@ -34,20 +35,31 @@ const Slider = ({ cards, isGuide }: SliderProps) => {
     const kebabCaseSubPlace = toKebabCase(subTitle)
     router.push(`/locations/${kebabCaseSubPlace}`)
   }
-  //
+
+  const calculateOffset = (itemsNumber: number) => {
+    const containerWidth = 100 // Assuming container width is 100%
+    const itemWidth = containerWidth / itemsNumber
+    const visiblePartOfLastItem = itemWidth / 2
+    return containerWidth - visiblePartOfLastItem
+  }
 
   return (
     <Swiper
-      slidesPerView={4}
+      slidesPerView={itemsNumber - 0.5} // show half of the last item
       modules={[Navigation, Pagination, Scrollbar, A11y]}
       navigation
+      slidesOffsetAfter={calculateOffset(itemsNumber)}
       breakpoints={{
-        320: { slidesPerView: 1 },
-        640: { slidesPerView: 2 },
-        768: { slidesPerView: 3 },
-        1024: { slidesPerView: 3 },
-        1280: { slidesPerView: 3 },
-        1536: { slidesPerView: 4 },
+        320: { slidesPerView: 1.5 },
+        640: { slidesPerView: 2.5 },
+        768: { slidesPerView: itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5 },
+        1024: {
+          slidesPerView: itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5,
+        },
+        1280: {
+          slidesPerView: itemsNumber - 0.5 > 3 ? 4.5 : itemsNumber - 0.5,
+        },
+        1536: { slidesPerView: itemsNumber - 0.5 },
       }}
     >
       <style>{`
