@@ -12,7 +12,6 @@ type T_Props = {
 
 const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
   return (
-    <>
       <Link href={url ?? "#"} target={isGuide ?"_blank": "_self"}>
         <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
           <Image src={imageKey} alt={title} layout="fill" objectFit="cover" />
@@ -24,7 +23,6 @@ const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
           <Typography variant="h5">{subTitle}</Typography>
         </div>
       </Link>
-    </>
   )
 }
 
