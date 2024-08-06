@@ -19,7 +19,7 @@ import GuideSelect from "./GuideSelect"
 import { Input } from "@/common/components/ui/Input"
 import GuideSearchBar from "./GuideSearchBar"
 
-const SurfingGuideHeader = ({
+const GuideHeader = ({
   contentWidth = "wide",
   isFixed = true,
 }: {
@@ -106,35 +106,8 @@ const SurfingGuideHeader = ({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
-      {/* <div className="absolute bottom-0 translate-y-[18px] hidden md:block w-2/5">
-        <div className="flex gap-1 rounded-full justify-center items-center px-2 py-1">
-          <Button
-            variant="link"
-            size="sm"
-            onClick={() => router.push(LINK_LOGIN)}
-            className="underline"
-          >
-            Places To Stay
-          </Button>
-          <Button
-            variant="link"
-            size="sm"
-            onClick={() => router.push(LINK_LOGIN)}
-          >
-            Activities
-          </Button>
-          <Button
-            variant="link"
-            size="sm"
-            onClick={() => router.push(LINK_LOGIN)}
-          >
-            Rentals
-          </Button>
-        </div>
-        <GuideSearchBar />
-      </div> */}
     </header>
   )
 }
 
-export default SurfingGuideHeader
+export default GuideHeader

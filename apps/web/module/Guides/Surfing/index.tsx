@@ -13,13 +13,9 @@ const SurfingGuide = () => {
 
   const markers = [
     {
-      lat: 9.856823,
-      long: 126.098476,
-    },
-    { lat: 9.82604, long: 126.002346 },
-    {
-      lat: 9.749532,
-      long: 126.07552,
+      lat: 9.8137,
+      long: 126.1651,
+      name: "Cloud 9",
     },
   ]
 

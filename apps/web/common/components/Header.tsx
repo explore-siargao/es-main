@@ -16,7 +16,7 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
 
 function Header({
-  contentWidth = "wide",
+  contentWidth = "medium",
   isFixed = true,
 }: {
   readonly contentWidth?: "medium" | "small" | "wide" | "full"

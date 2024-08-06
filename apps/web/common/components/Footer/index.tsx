@@ -13,7 +13,7 @@ import { SUPPORT, EXPLORE_SIARGAO, DESTINATION, PARTNER_WITH_US } from "./links"
 import { Globe } from "lucide-react"
 
 const Footer = ({
-  contentWidth = "wide",
+  contentWidth = "medium",
 }: {
   readonly contentWidth?: "medium" | "small" | "wide" | "full"
 }) => {
