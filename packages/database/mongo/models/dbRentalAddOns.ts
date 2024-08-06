@@ -27,8 +27,8 @@ const rentalAddOns = new Schema({
     default: false,
   },
   others: {
-    type: String,
-    required: false,
+    type: [String],
+    default: [],
   },
 })
 

@@ -22,20 +22,14 @@ export async function getFilteredPaymentHistory(
   let filteredPaymentHistory: any[]
 
   if (month.toLowerCase() === "all") {
-    filteredPaymentHistory = [
-      paymentHistoryByYear.reduce(
-        (accumulator, paymentHistory) => {
-          if (paymentHistory) {
-            paymentHistory.data.forEach(({ cancelled, completed }) => {
-              accumulator.cancelled += cancelled
-              accumulator.completed += completed
-            })
-          }
-          return accumulator
-        },
-        { cancelled: 0, completed: 0 }
-      ),
-    ]
+    filteredPaymentHistory = paymentHistoryByYear.flatMap(
+      (paymentHistory) =>
+        paymentHistory?.data.map(({ date, cancelled, completed }) => ({
+          date,
+          cancelled,
+          completed,
+        })) || []
+    )
   } else {
     filteredPaymentHistory = filteredData.flatMap((item, index) => {
       const paymentHistory = paymentHistoryByYear[index]
@@ -57,7 +51,7 @@ function useGetFilteredPaymentHistory(
   month: String
 ) {
   const query = useQuery({
-    queryKey: ["insights", category, listing, year, month],
+    queryKey: [category, listing, year, month],
     queryFn: () => getFilteredPaymentHistory(category, listing, year, month),
     refetchOnWindowFocus: false,
   })

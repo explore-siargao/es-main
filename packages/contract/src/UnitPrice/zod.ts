@@ -4,7 +4,7 @@ import { Z_BookableUnitTypes } from "../BookableUnitType"
 export const Z_UnitPrice = z.object({
   _id: z.string().optional(),
   baseRate: z.number(),
-  baseRateMaxcapacity: z.number(),
+  baseRateMaxCapacity: z.number(),
   maximumCapacity: z.number(),
   pricePerAdditionalPerson: z.number(),
   discountedWeekLyRate: z.number(),

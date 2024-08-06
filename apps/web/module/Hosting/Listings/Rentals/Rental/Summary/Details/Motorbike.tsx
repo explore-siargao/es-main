@@ -34,8 +34,8 @@ const Motorbike = () => {
         {rental?.details.weightCapacity}
       </Typography>
       <Typography variant="h5" className="mt-2">
-        <span className="font-semibold">Minimum Age Requirement:</span>{" "}
-        {rental?.details.minAgeReq}
+        <span className="font-semibold">Have a driver's license:</span>{" "}
+        {rental?.details.haveDriverLicense}
       </Typography>
       <Typography variant="h5" className="mt-2">
         <span className="font-semibold">Registered and lawful:</span>{" "}

@@ -1,27 +1,36 @@
-import { iconMap } from "@/common/helpers/iconMap"
 import React from "react"
+import { iconMap } from "@/common/helpers/iconMap"
 
-type T_IconDescriptionProps = {
-  icon: string
+interface IconDescriptionProps {
+  icon?: keyof typeof iconMap
   description: string
   isNotIncluded: boolean
+  className?: string
 }
 
-const IconDescription: React.FC<T_IconDescriptionProps> = ({
+const IconDescription: React.FC<IconDescriptionProps> = ({
   icon,
   description,
-  isNotIncluded = false,
+  isNotIncluded,
 }) => {
-  const IconDescriptionStyle = isNotIncluded
-    ? { textDecoration: "line-through" }
-    : {}
+  const lines = description.split("\n")
 
   return (
-    <div className="flex items-center mb-5 gap-5">
-      {/* @ts-expect-error */}
-      {icon && iconMap[icon]()}
-      <div className="flex" style={IconDescriptionStyle}>
-        {description}
+    <div className="flex mb-4 gap-2">
+      {icon && iconMap[icon] && (
+        <div className="flex-shrink-0">
+          {iconMap[icon]({ className: "w-5 h-5" })}
+        </div>
+      )}
+      <div className="flex-col">
+        {lines.map((line, index) => (
+          <div
+            key={index}
+            className={isNotIncluded ? "line-through" : undefined}
+          >
+            {line}
+          </div>
+        ))}
       </div>
     </div>
   )

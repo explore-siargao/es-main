@@ -105,7 +105,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
                   queryKey: ["property-finished-sections", listingId],
                 })
                 router.push(
-                  `/hosting/listings/properties/setup/${listingId}/pricing`
+                  `/hosting/listings/properties/setup/${listingId}/policies`
                 )
               }
             },
@@ -120,7 +120,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
           })
           if (pageType === "setup") {
             router.push(
-              `/hosting/listings/properties/setup/${listingId}/pricing`
+              `/hosting/listings/properties/setup/${listingId}/policies`
             )
           }
         }
@@ -130,13 +130,24 @@ const ListingPhotos = ({ pageType }: Prop) => {
       })
   }
 
+  const checkDescriptions = () => {
+    for (let photo of photos) {
+      if (!photo.description || photo.tags === null || photo.tags === "") {
+        toast.error("Please put a description and tags to all added photos")
+        return false
+      }
+    }
+    return true
+  }
+
   const handleSave = async () => {
     if (
       photos?.length < 5 ||
       (data?.item?.Photos && data?.item?.Photos.length < 5)
     ) {
       toast.error("Please add at least 5 photos")
-    } else {
+    } else if (!checkDescriptions()) return
+    else {
       updatePhotosInDb()
     }
   }
@@ -274,7 +285,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "No description"}
+                    {photo.description || "Click photo to add description"}
                   </Typography>
                 </div>
               ) : null

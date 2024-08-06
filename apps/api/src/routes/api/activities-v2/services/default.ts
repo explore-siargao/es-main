@@ -40,6 +40,11 @@ export const addActivity = async (req: Request, res: Response) => {
       isSegmentBuilderEnabled: false,
       segments: [],
       meetingPoint: location._id,
+      price: {
+        basePrice: 0,
+        exceedPersonPrice: 0,
+      },
+      slots: [],
       status: 'Incomplete',
     }
 
@@ -66,7 +71,12 @@ export const getActivity = async (req: Request, res: Response) => {
   try {
     const getActivity = await dbActivities
       .findOne({ _id: activityId, deletedAt: null })
-      .populate('host')
+      .populate({
+        path: 'host',
+        populate: {
+          path: 'guest',
+        },
+      })
       .populate('meetingPoint')
       .populate('segments')
       .populate('photos')
@@ -152,44 +162,27 @@ export const updateItinerary = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    if (
-      !activity.isSegmentBuilderEnabled &&
-      isSegmentBuilderEnabled &&
-      segments.length > 1
-    ) {
-      await dbActivities.findByIdAndUpdate(
-        activityId,
-        {
-          $set: {
-            segments: segments,
-            isSegmentBuilderEnabled: isSegmentBuilderEnabled,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
-    } else if (
-      !activity.isSegmentBuilderEnabled &&
-      isSegmentBuilderEnabled &&
-      segments.length < 2
-    ) {
-      return res.json(
-        response.error({
-          message: 'Please add at least 2 item in the itinerary builder',
-        })
-      )
-    } else if (activity.isSegmentBuilderEnabled && !isSegmentBuilderEnabled) {
-      await dbActivities.findByIdAndUpdate(
-        activityId,
-        {
-          $set: {
-            isSegmentBuilderEnabled: isSegmentBuilderEnabled,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
+    if (isSegmentBuilderEnabled) {
+      if (segments.length < 2) {
+        return res.json(
+          response.error({
+            message: 'Please add at least 2 items in the itinerary builder',
+          })
+        )
+      }
     }
+
+    await dbActivities.findByIdAndUpdate(
+      activityId,
+      {
+        $set: {
+          segments: segments,
+          isSegmentBuilderEnabled: isSegmentBuilderEnabled,
+          updatedAt: Date.now(),
+        },
+      },
+      { new: true }
+    )
 
     if (
       activity.status === 'Incomplete' &&

@@ -130,10 +130,12 @@ const Summary = () => {
                     <span className="font-semibold">Barangay / District:</span>{" "}
                     {data?.item?.location?.barangay}
                   </Typography>
-                  <Typography variant="h5" className="mt-2">
-                    <span className="font-semibold">How to get there:</span>{" "}
-                    {data?.item?.location?.howToGetThere}
-                  </Typography>
+                  <div className="w-1/2">
+                    <Typography variant="h5" className="mt-2">
+                      <span className="font-semibold">How to get there:</span>{" "}
+                      {data?.item?.location?.howToGetThere}
+                    </Typography>
+                  </div>
                 </>
               ) : (
                 <Typography variant="h5" className="mt-2">

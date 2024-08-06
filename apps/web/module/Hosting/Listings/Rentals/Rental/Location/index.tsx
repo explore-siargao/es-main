@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
@@ -17,10 +17,13 @@ import { MUNICIPALITIES, BARANGAYS } from "@repo/constants"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
+import { T_Listing_Location } from "@repo/contract"
+import ModalContainer from "@/common/components/ModalContainer"
 import { cn } from "@/common/helpers/cn"
 import useUpdateRentalLocation from "../hooks/useUpdateRentalLocation"
-import { T_Listing_Location } from "@repo/contract"
+import useUpdateRentalFinishedSections from "../hooks/useUpdateRentalFinishedSections"
 import useGetRentalById from "../../../hooks/useGetRentalById"
+import { ErrorMessage } from "@hookform/error-message"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -32,41 +35,125 @@ const ListingLocation = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateRentalLocation(listingId)
-  const { data } = useGetRentalById(listingId)
-  const { latitude, longitude } = useCoordinatesStore()
+  const { data, isPending: isFetching } = useGetRentalById(listingId)
+  const { latitude, longitude, setCoordinates } = useCoordinatesStore()
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
-  const { register, handleSubmit } = useForm<T_Listing_Location>({
-    values: data?.item?.location,
+  const { mutateAsync: updateFinishedSection } =
+    useUpdateRentalFinishedSections(listingId)
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<T_Listing_Location>({
+    defaultValues: data?.item?.location,
+    criteriaMode: "all",
   })
 
-  const [streetAddress, setStreet] = useState<string>()
-  const [howToGetThere, setHowToGetThere] = useState<string>()
+  const [markerIsSet, setMarkerIsSet] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [initialCoords, setInitialCoords] = useState<[number, number]>([
+    9.913431, 126.049483,
+  ])
+  const [currentCoords, setCurrentCoords] =
+    useState<[number, number]>(initialCoords)
+
+  const [howToGetThere, setHowToGetThere] = useState<string>("")
+
+  const handleHowToGetThereChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setHowToGetThere(e.target.value)
+  }
 
   useEffect(() => {
-    setStreet(data?.item?.location?.streetAddress)
-    setHowToGetThere(data?.item?.location?.howToGetThere)
-  }, [data])
+    if (data && !isFetching) {
+      const location = data?.item?.location
+        ? data?.item?.location
+        : { city: "", street: "" }
+      reset(location)
+      setSelectedMunicipality(location.city)
+      const coords: [number, number] = [
+        location.latitude || initialCoords[0],
+        location.longitude || initialCoords[1],
+      ]
+      setCoordinates(...coords)
+      setInitialCoords(coords)
+      setCurrentCoords(coords)
+      setHowToGetThere(location.howToGetThere || "")
+    }
+  }, [data, isFetching, reset, setCoordinates])
+
+  useEffect(() => {
+    setValue("latitude", latitude as number)
+    setValue("longitude", longitude as number)
+  }, [latitude, longitude, setValue])
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setCurrentCoords(initialCoords)
+      setMarkerIsSet(false)
+    }
+  }, [isModalOpen, initialCoords])
+
+  const closeModal = () => {
+    setCoordinates(...initialCoords)
+    setMarkerIsSet(false)
+    setIsModalOpen(false)
+  }
 
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
 
-  const onSubmit: SubmitHandler<T_Listing_Location> = (
-    formData: T_Listing_Location
-  ) => {
+  const onSubmit: SubmitHandler<T_Listing_Location> = (formData) => {
+    const initialLat = 9.913431
+    const initialLng = 126.049483
+
+    const areCoordinatesInitial =
+      currentCoords[0] === initialLat && currentCoords[1] === initialLng
+
+    if (areCoordinatesInitial && !markerIsSet) {
+      toast.error("Please set the marker on the map before saving.")
+      return
+    }
+
+    formData.latitude = currentCoords[0]
+    formData.longitude = currentCoords[1]
+
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          queryClient.invalidateQueries({
-            queryKey: ["rental", listingId],
-          })
-          if (pageType === "setup") {
+          if (
+            pageType === "setup" &&
+            !data?.item?.finishedSections?.includes("location")
+          ) {
+            const callBack2 = {
+              onSuccess: (data: any) => {
+                if (!data.error) {
+                  queryClient.invalidateQueries({
+                    queryKey: ["property-finished-sections", listingId],
+                  })
+                } else {
+                  toast.error(String(data.message))
+                }
+              },
+              onError: (err: any) => {
+                toast.error(String(err))
+              },
+            }
+            updateFinishedSection({ newFinishedSection: "location" }, callBack2)
+          } else {
             queryClient.invalidateQueries({
-              queryKey: ["rental-finished-sections", listingId],
+              queryKey: ["property", listingId],
             })
-            router.push(`/hosting/listings/rentals/setup/${listingId}/summary`)
+          }
+          if (pageType === "setup") {
+            router.push(
+              `/hosting/listings/properties/setup/${listingId}/facilities`
+            )
           }
         } else {
           toast.error(String(data.message))
@@ -76,27 +163,23 @@ const ListingLocation = ({ pageType }: Prop) => {
         toast.error(String(err))
       },
     }
-    mutate(
-      {
-        ...formData,
-        latitude: latitude as number,
-        longitude: longitude as number,
-      },
-      callBackReq
-    )
+    mutate(formData, callBackReq)
   }
-  const currentCoords = (
-    data?.item?.location?.latitude
-      ? [data?.item?.location?.latitude, data?.item?.location?.longitude]
-      : [9.913431, 126.049483]
-  ) as [number, number]
+
+  const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
+    setMarkerIsSet(true)
+    setCoordinates(coords.lat, coords.lng)
+    setCurrentCoords([coords.lat, coords.lng])
+    setValue("latitude", coords.lat)
+    setValue("longitude", coords.lng)
+  }
 
   return (
     <div className="mt-20 mb-14">
-      {isPending ? (
+      {isPending || isFetching ? (
         <Spinner size="md">Loading...</Spinner>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="form-container">
           <div className="mb-8">
             <Typography
               variant="h1"
@@ -106,18 +189,14 @@ const ListingLocation = ({ pageType }: Prop) => {
               Location
             </Typography>
           </div>
-          <div className="flex flex-col justify-center">
-            <SpecificMap
-              center={currentCoords}
-              mapHeight={"h-[450px]"}
-              mapWidth={"w-full"}
-              zoom={11}
-            />
-          </div>
-          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
-            You can drag and drop the yellow marker above to set your exact
-            location on the map
-          </Typography>
+          <Button
+            variant="primary"
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="focus:outline-none focus:ring-0"
+          >
+            Show Map
+          </Button>{" "}
           <div className="flex mt-8 gap-12 flex-wrap">
             <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg mb-24">
               <Typography variant="h3" fontWeight="semibold">
@@ -129,8 +208,6 @@ const ListingLocation = ({ pageType }: Prop) => {
                 label="Street address"
                 required
                 {...register("streetAddress", { required: true })}
-                defaultValue={data?.item?.location?.streetAddress}
-                onChange={() => setStreet(streetAddress)}
               />
               <Select
                 label="City / Municipality"
@@ -140,18 +217,17 @@ const ListingLocation = ({ pageType }: Prop) => {
                 onChange={updateBarangayOptions}
               >
                 <Option value="">Select municipality</Option>
-                {MUNICIPALITIES.map((key) => {
-                  return (
-                    <Option
-                      value={key.name}
-                      key={key.name}
-                      selected={key.name === data?.item?.location?.city}
-                    >
-                      {key.name}
-                    </Option>
-                  )
-                })}
+                {MUNICIPALITIES.map((municipality) => (
+                  <Option
+                    key={municipality.name}
+                    value={municipality.name}
+                    selected={municipality.name === selectedMunicipality}
+                  >
+                    {municipality.name}
+                  </Option>
+                ))}
               </Select>
+
               <Select
                 label="Barangay / District"
                 id="barangaySelect"
@@ -173,21 +249,42 @@ const ListingLocation = ({ pageType }: Prop) => {
                   </Option>
                 ))}
               </Select>
+
               <div className="mt-2">
                 <Typography variant="h3" fontWeight="semibold">
-                  How to get there
+                  How to get there *
                 </Typography>
                 <Textarea
                   className="mt-1"
+                  placeholder="Explain in detail how to get to your location. This will help your customers find you!"
                   required
-                  {...register("howToGetThere", { required: true })}
-                  defaultValue={data?.item?.location?.howToGetThere}
-                  onChange={() => setHowToGetThere(howToGetThere)}
+                  {...register("howToGetThere", {
+                    required: "This input is required.",
+                    minLength: {
+                      value: 100,
+                      message: "This field has minimum of 100 characters",
+                    },
+                  })}
+                  value={howToGetThere}
+                  onChange={handleHowToGetThereChange}
                 />
-                <Typography className="text-xs text-gray-500 italic mt-2">
-                  Accurately explain on how to get in your property addressasd
-                </Typography>
               </div>
+              <ErrorMessage
+                errors={errors}
+                name="howToGetThere"
+                render={({ messages }) => {
+                  return messages
+                    ? Object.entries(messages).map(([type, message]) =>
+                        typeof message === "string" ? (
+                          <p className="text-red-600 text-xs " key={type}>
+                            {" "}
+                            <i>{message}</i>{" "}
+                          </p>
+                        ) : null
+                      )
+                    : null
+                }}
+              />
             </div>
 
             <div className="flex-wrap">
@@ -236,6 +333,46 @@ const ListingLocation = ({ pageType }: Prop) => {
           </div>
         </form>
       )}
+
+      <ModalContainer
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title="Location"
+        size="sm"
+      >
+        <div className="pt-4 pl-4 pr-4">
+          <SpecificMap
+            center={currentCoords}
+            mapHeight="h-[450px]"
+            mapWidth="w-full"
+            zoom={11}
+            onMarkerSet={handleMarkerSetter}
+            className="relative z-0"
+            scrollWheelZoomEnabled
+          />
+        </div>
+        <div className="pl-4">
+          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
+            You can drag and drop the yellow marker above to set your exact
+            location on the map
+          </Typography>
+        </div>
+        <div className="p-4 flex justify-end">
+          <Button
+            variant="primary"
+            onClick={() => {
+              if (markerIsSet) {
+                setInitialCoords(currentCoords)
+                closeModal()
+              }
+            }}
+            className="focus:outline-none focus:ring-0"
+            disabled={!markerIsSet}
+          >
+            Save Location
+          </Button>
+        </div>
+      </ModalContainer>
     </div>
   )
 }

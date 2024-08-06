@@ -1,9 +1,9 @@
 "use client"
-import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
+import ShareSave from "@/module/Accommodation/components/ShareSave"
+import React, { useState } from "react"
 import ImageGallery from "./ImageGallery"
 import ImageGalleryModal from "./modals/ImageGalleryModal"
-import ShareSave from "./ShareSave"
 import { T_SectionInfoProps } from "../types/SectionInfo"
 
 const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
@@ -25,7 +25,7 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
         <ImageGallery
           images={images}
           openModal={openModal}
-          isViewModal={false}
+          isViewModal={true}
         />
       </div>
       <ImageGalleryModal

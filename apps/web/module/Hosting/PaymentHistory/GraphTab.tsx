@@ -1,55 +1,34 @@
 "use client"
-import React, { useState } from "react"
+import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
-import Tabs from "@/common/components/Tabs"
 import OverAllSummary from "./components/OverAllSummary"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import Graph from "@/module/Hosting/PaymentHistory/Graph"
-import paymentHistoryTabs from "./constants/paymentHistoryTabs"
-import useGetPaymentHistoryGraph from "./hooks/useGetPaymentHistoryGraph"
 import useGetFilteredPaymentHistory from "./hooks/useGetFilteredPaymentHistory"
-import { Option, Select } from "@/common/components/ui/Select"
-import { Button } from "@/common/components/ui/Button"
-import { ExportReportExcel } from "./components/exportReportExcel"
 import useGetPaymentHistoryReport from "./hooks/useGetPaymentHistoryReport"
 
-const GraphTab = () => {
-  const { isPending, data: overAllSummaryDataGraph } =
-    useGetPaymentHistoryGraph("all")
-  const [category, setCategory] = useState("Property")
-  const [listing, setListing] = useState("Mountain top house")
-  const [year, setYear] = useState("2024")
-  const [month, setMonth] = useState("all")
+interface PaymentHistoryProps {
+  category: string
+  listing: string
+  year: string
+  month: string
+}
+
+const GraphTab: React.FC<PaymentHistoryProps> = ({
+  category,
+  listing,
+  year,
+  month,
+}) => {
   const {
     data: filteredPaymentHistory,
     isPending: filteredPaymentHistoryIsPending,
   } = useGetFilteredPaymentHistory(category, listing, year, month)
-
-  const {
-    data: paymentHistoryReport,
-    isPending: paymentHistoryReportIsPending,
-  } = useGetPaymentHistoryReport(category, listing)
-  // const summaryData = {
-  //   labels: ["Completed", "Cancelled"],
-  //   values: [
-  //     [
-  //       formatCurrency(
-  //         !isPending && overAllSummaryDataGraph?.item?.completed,
-  //         "Philippines"
-  //       ) || null,
-  //       formatCurrency(
-  //         !isPending && overAllSummaryDataGraph?.item?.cancelled,
-  //         "Philippines"
-  //       ) || null,
-  //     ],
-  //   ],
-  //   total:
-  //     formatCurrency(
-  //       !isPending && overAllSummaryDataGraph?.item?.total,
-  //       "Philippines"
-  //     ) || null,
-  // }
+  console.log(filteredPaymentHistory)
+  const { data: paymentHistoryReport } = useGetPaymentHistoryReport(
+    category,
+    listing
+  )
 
   const mockData = [
     {
@@ -67,6 +46,13 @@ const GraphTab = () => {
         filteredPaymentHistory[0]?.completed,
     },
   ]
+
+  const filterAllData =
+    filteredPaymentHistory?.map((entry) => ({
+      name: entry.date,
+      cancelled: entry.cancelled,
+      completed: entry.completed,
+    })) ?? []
 
   const summaryData = {
     labels: ["Completed", "Cancelled"],
@@ -114,72 +100,31 @@ const GraphTab = () => {
       <Typography variant="h1" fontWeight="semibold">
         Payment History
       </Typography>
-      <div className="my-5 grid lg:grid-cols-6 grid-cols-2 gap-4 mb-4 pb-4">
-        <Select
-          label="Category"
-          required
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <Option value={"Property"}>Property</Option>
-          <Option value={"Rental"}>Rental</Option>
-          <Option value={"Activity"}>Activity</Option>
-        </Select>
-        <Select
-          label="Listing"
-          required
-          value={listing}
-          onChange={(e) => setListing(e.target.value)}
-        >
-          <Option value={"Mountain top house"}>Mountain top house</Option>
-          <Option value={"Word of Life"}>Word of Life</Option>
-          <Option value={"Bianca Hotel"}>Bianca Hotel</Option>
-        </Select>
-        <Select
-          label="Year"
-          required
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-        >
-          <Option value={"2024"}>2024</Option>
-          <Option value={"2023"}>2023</Option>
-          <Option value={"2022"}>2022</Option>
-          <Option value={"2021"}>2021</Option>
-        </Select>
-        <Select
-          label="Month"
-          required
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-        >
-          <Option value={"all"}>All</Option>
-          <Option value={"Jan"}>January</Option>
-          <Option value={"Feb"}>February</Option>
-          <Option value={"Mar"}>March</Option>
-          <Option value={"Apr"}>April</Option>
-          <Option value={"May"}>May</Option>
-          <Option value={"Jun"}>June</Option>
-          <Option value={"Jul"}>July</Option>
-          <Option value={"Aug"}>August</Option>
-          <Option value={"Sep"}>September</Option>
-          <Option value={"OCt"}>October</Option>
-          <Option value={"Nov"}>November</Option>
-          <Option value={"Dec"}>December</Option>
-        </Select>
+      <Typography
+        variant="p"
+        className="flex justify-between items-center text-gray-500 my-2"
+      >
+        The Payment History component gives you a detailed view of financial
+        transactions categorized by property type, listing, and specific
+        timeframes. It simplifies financial analysis with clear graphs showing
+        completed and cancelled payments, helping you understand performance at
+        a glance. With easy-to-use filters and the ability to export detailed
+        reports, you can make informed decisions and efficiently manage finances
+        for your properties.
+      </Typography>
 
-        <ExportReportExcel reportData={paymentHistoryReport} />
-      </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
-          {/* <div className="mt-3">
-            <Tabs tabs={paymentHistoryTabs} />
-          </div> */}
-          <Graph graphData={mockData} />
+          <Graph
+            graphData={month === "All" ? filterAllData : mockData}
+            isFilterAll={month === "All"}
+          />
         </div>
         <div className="col-span-1 relative">
           <OverAllSummary
             overAllSummaryData={summaryData}
             filterData={filterData}
+            excelData={paymentHistoryReport}
           />
         </div>
       </div>

@@ -11,6 +11,7 @@ import { cn } from "@/common/helpers/cn"
 import useUpdateRentalAddOns from "../hooks/useUpdateRentalAddOns"
 import useGetRentalAddOns from "../hooks/useGetRentalAddOns"
 import { useEffect, useState } from "react"
+import { LucidePlus, LucideX } from "lucide-react"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -32,6 +33,8 @@ const AddOns = ({ pageType }: Prop) => {
   const [babySeatChecked, setBabySeatChecked] = useState<boolean>(false)
   const [includesHelmetChecked, setIncludesHelmetChecked] =
     useState<boolean>(false)
+  const [otherAddOns, setOtherAddOns] = useState<string[]>([])
+  const [newAddOn, setNewAddOn] = useState<string>("")
 
   const onSubmit = (formData: T_Rental_AddOns) => {
     const callBackReq = {
@@ -62,18 +65,35 @@ const AddOns = ({ pageType }: Prop) => {
         dashCam: dashCamChecked,
         babySeat: babySeatChecked,
         boardRack: boardRackChecked,
+        others: otherAddOns,
       },
       callBackReq
     )
   }
 
   useEffect(() => {
-    setRoofRackChecked(data?.item?.roofRack)
-    setDashCamChecked(data?.item?.dashCam)
-    setBabySeatChecked(data?.item?.babySeat)
-    setBoardRackChecked(data?.item?.boardRack)
-    setIncludesHelmetChecked(data?.item?.includesHelmet)
+    setRoofRackChecked(data?.item?.roofRack || false)
+    setDashCamChecked(data?.item?.dashCam || false)
+    setBabySeatChecked(data?.item?.babySeat || false)
+    setBoardRackChecked(data?.item?.boardRack || false)
+    setIncludesHelmetChecked(data?.item?.includesHelmet || false)
+    setOtherAddOns(
+      (data?.item?.others || []).filter((addOn: any) => addOn.trim() !== "")
+    )
   }, [data])
+
+  const addNewAddOn = () => {
+    if (newAddOn.trim() !== "") {
+      setOtherAddOns((prev) => [...prev, newAddOn.trim()])
+      setNewAddOn("")
+    } else {
+      toast.error("Other add-on cannot be empty")
+    }
+  }
+
+  const removeAddOn = (index: number) => {
+    setOtherAddOns((prev) => prev.filter((_, i) => i !== index))
+  }
 
   return (
     <div className="mt-20">
@@ -167,13 +187,53 @@ const AddOns = ({ pageType }: Prop) => {
               </div>
             </>
           )}
-          <Input
-            type="text"
-            id="other"
-            label="Other, please specify"
-            defaultValue={data?.item?.others}
-            {...register("others")}
-          />
+          <div className="mt-4">
+            <Typography variant="h4" fontWeight="semibold" className="mb-4">
+              Additional Add-Ons
+            </Typography>
+            {otherAddOns.length > 0 && (
+              <ul>
+                {otherAddOns.map((addOn, index) => (
+                  <li
+                    key={addOn}
+                    className="mt-2 p-2 border border-gray-100 rounded-md flex justify-between items-center"
+                  >
+                    <p className="text-sm">{addOn}</p>
+                    <button
+                      type="button"
+                      className="hover:cursor-pointer"
+                      onClick={() => removeAddOn(index)}
+                      aria-label="Remove Add-On"
+                    >
+                      <LucideX className="w-5 h-5 hover:text-error-500 transition" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className="mt-2">
+              <Input
+                className="p-2 rounded-md"
+                type="text"
+                label="Add-On"
+                value={newAddOn}
+                onChange={(e) => setNewAddOn(e.target.value)}
+              />
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="flex hover:cursor-pointer mt-2 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
+                  onClick={addNewAddOn}
+                >
+                  <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                  <Typography className="text-sm">
+                    {" "}
+                    Add other add-ons
+                  </Typography>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button

@@ -16,6 +16,8 @@ import useGetPropertyById from "../../hooks/useGetPropertyById"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
 import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
+import useGetPropertyUnitPricesById from "../../hooks/useGetPropertyUnitPricesById"
+import useUpdatePropertyUnitPriceById from "../../hooks/useUpdatePropertyUnitPriceById"
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
@@ -29,64 +31,77 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
-  const { handleSubmit, control } = useForm()
+  const { handleSubmit, control, reset } = useForm()
+  const { mutate, isPending } = useUpdatePropertyUnitPriceById(listingId)
+  const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId)
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
-  const { fields, append, update } = useFieldArray({
+  const { fields, update } = useFieldArray({
     control,
     name: "unitPrices",
     keyName: "key",
   })
 
   const onSubmit = (data: any) => {
+    const cleanedUnitPrices = data.unitPrices.map((item: any) => ({
+      ...item,
+      unitName: item.unitName.startsWith("Custom: ")
+        ? item.unitName.slice("Custom: ".length)
+        : item.unitName,
+    }))
+
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          toast.success(data.message)
+          queryClient.invalidateQueries({
+            queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property-unit-pricing", listingId],
+          })
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+
     if (
       pageType === "setup" &&
       !data?.item?.finishedSections?.includes("pricing")
     ) {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            queryClient.invalidateQueries({
-              queryKey: ["property-finished-sections", listingId],
-            })
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      }
+      mutate(cleanedUnitPrices, callBackReq)
       updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
     } else {
+      mutate(cleanedUnitPrices, callBackReq)
       queryClient.invalidateQueries({
         queryKey: ["property", listingId],
       })
     }
+
     if (pageType === "setup") {
-      router.push(`/hosting/listings/properties/setup/${listingId}/policies`)
+      router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
     }
   }
 
   useEffect(() => {
-    if (!isLoading && !data?.error && data?.item) {
-      // const items = data?.item?.BookableUnit.map((item) => ({
-      //   id: item.id,
-      //   unitName: item.unitName,
-      //   unitPrice: {
-      //     id: item.unitPrice.id,
-      //     baseRate: item.unitPrice.baseRate,
-      //     baseRateMaxCapacity: item.unitPrice.baseRateMaxcapacity,
-      //     maximumCapacity: item.unitPrice.maximumCapacity,
-      //     pricePerAdditionalPerson: item.unitPrice.pricePerAdditionalPerson,
-      //     discountedWeeklyRate: item.unitPrice.discountedWeekLyRate,
-      //     discountMonthlyRate: item.unitPrice.discountMonthlyRate,
-      //   },
-      // }))
+    if (!isLoading && !isPending && !data?.error && data?.item) {
+      const items = unitPriceData?.items?.map((item: any, index: number) => ({
+        _id: item._id,
+        unitName: item.unitName.startsWith("Custom: ")
+          ? item.unitName.slice("Custom: ".length)
+          : item.unitName + " " + index,
+        unitPrice: {
+          ...item.unitPrice,
+        },
+      }))
 
-      append([])
+      reset({ unitPrices: items })
     }
-  }, [])
+  }, [data, isLoading, unitPriceData])
 
   return (
     <div className="my-20">

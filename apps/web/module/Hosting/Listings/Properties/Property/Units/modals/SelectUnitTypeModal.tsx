@@ -114,11 +114,11 @@ const SelectUnitTypeModal = ({
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    New Bed
+                    New shared space
                   </Typography>
                   <Typography variant="h5">
-                    Bed in a room. Sleeping space, bathroom and kitchen are
-                    shared.
+                    A bed in a dorm room or shared accommodation with shared
+                    amenities
                   </Typography>
                 </div>
               </button>
@@ -138,10 +138,11 @@ const SelectUnitTypeModal = ({
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    New Room
+                    New private room
                   </Typography>
                   <Typography variant="h5">
-                    Room in a place. Sleeping space is private.
+                    A private room or sleeping space that might have a shared
+                    bathroom or kitchen.
                   </Typography>
                 </div>
               </button>
@@ -167,10 +168,11 @@ const SelectUnitTypeModal = ({
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    New Room
+                    New private room
                   </Typography>
                   <Typography variant="h5">
-                    Room in a place. Sleeping space is private.
+                    A private room or sleeping space that might have a shared
+                    bathroom or kitchen.
                   </Typography>
                 </div>
               </button>
@@ -200,10 +202,12 @@ const SelectUnitTypeModal = ({
                     fontWeight="semibold"
                     className="uppercase mb-3"
                   >
-                    New Whole Place
+                    New whole space
                   </Typography>
                   <Typography variant="h5">
-                    Whole place in a Property, everything here is private.
+                    A fully self-contained accommodation such as a villa,
+                    apartment or bungalow with its own bathroom, kitchen, and
+                    living area.
                   </Typography>
                 </div>
               </button>

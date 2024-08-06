@@ -14,7 +14,7 @@ import {
   PlusIcon,
 } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
 import usePhotoStore from "../../../../store/usePhotoStore"
 import toast from "react-hot-toast"
@@ -35,7 +35,7 @@ import useGetUnitById from "../hooks/useGetUnitById"
 
 type T_RoomUnit = {
   title: string
-  bed: string
+  description: string
   size: number
   typeCount: number
   amenities: T_Property_Amenity[]
@@ -55,6 +55,8 @@ const Room = ({ pageType }: Prop) => {
 
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
+  const [customTitle, setCustomTitle] = useState("")
+  const [customDescription, setCustomDescription] = useState("")
   const { mutateAsync: updateRoomBasicInfo } = useUpdateRoomBasicInfo(listingId)
   const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
   const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
@@ -73,7 +75,7 @@ const Room = ({ pageType }: Prop) => {
   )
   const amenities = useSelectAmenityStore((state) => state.amenities)
 
-  const { register, handleSubmit, setValue } = useForm<T_RoomUnit>()
+  const { control, register, handleSubmit, setValue } = useForm<T_RoomUnit>()
 
   const updatePhotosInDb = async () => {
     const toAddPhotos =
@@ -139,7 +141,7 @@ const Room = ({ pageType }: Prop) => {
         _id: unitId,
         title: formData.title,
         totalSize: Number(formData.size),
-        bed: formData.bed,
+        description: formData.description,
         qty: Number(typeCount),
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
@@ -160,12 +162,18 @@ const Room = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setTypeCount(data?.item.qty)
+      setValue("title", data?.item?.title || "")
+      setValue("description", data?.item?.description)
+      setTypeCount(data?.item?.qty)
       setPhotos(data?.item?.photos)
-      setAmenties(data?.item.amenities)
-      setValue("title", data?.item?.title)
-      setValue("bed", data?.item?.bed)
+      setAmenties(data?.item?.amenities)
       setValue("size", data?.item?.totalSize)
+      if (data?.item?.title?.startsWith("Custom: ", "")) {
+        setCustomTitle(data?.item?.title.replace("Custom: ", ""))
+      }
+      if (data?.item?.description?.startsWith("Custom: ")) {
+        setCustomDescription(data?.item?.description.replace("Custom: ", ""))
+      }
     }
   }, [data, isPending])
 
@@ -184,32 +192,100 @@ const Room = ({ pageType }: Prop) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
-            <Select
-              {...register("title", {
-                required: "This field is required",
-              })}
-              label="Name"
-              required
-            >
-              <>
-                <Option value={""}>Select Name</Option>
-                <Option selected={data?.item?.title}>Double Room</Option>
-              </>
-            </Select>
+            <Controller
+              control={control}
+              name="title"
+              defaultValue={data?.item?.title || ""}
+              rules={{ required: "This field is required" }}
+              render={({ field }) => (
+                <>
+                  <Select
+                    {...field}
+                    label="Name"
+                    value={
+                      field.value.startsWith("Custom:") ? "Custom" : field.value
+                    }
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (value === "Custom") {
+                        setCustomTitle("")
+                        field.onChange("Custom: ")
+                      } else {
+                        setCustomTitle("")
+                        field.onChange(value)
+                      }
+                    }}
+                    required
+                  >
+                    <Option value={""}>Select Name</Option>
+                    <Option value="Double Room">Double Room</Option>
+                    <Option value="Custom">Custom</Option>
+                  </Select>
+                  {field.value.startsWith("Custom:") && (
+                    <Input
+                      label="Custom"
+                      type="text"
+                      value={customTitle}
+                      onChange={(e) => {
+                        setCustomTitle(e.target.value)
+                        field.onChange(`Custom: ${e.target.value}`)
+                      }}
+                      placeholder="Enter custom name"
+                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      required
+                    />
+                  )}
+                </>
+              )}
+            />
           </div>
           <div>
-            <Select
-              {...register("bed", {
-                required: "This field is required",
-              })}
-              label="Bed"
-              required
-            >
-              <>
-                <Option value={""}>Select Bed</Option>
-                <Option selected={data?.item?.bed}>1 Queen Bed</Option>
-              </>
-            </Select>
+            <Controller
+              control={control}
+              name="description"
+              defaultValue={data?.item?.description || ""}
+              rules={{ required: "This field is required" }}
+              render={({ field }) => (
+                <>
+                  <Select
+                    {...field}
+                    label="Bed"
+                    value={
+                      field.value.startsWith("Custom:") ? "Custom" : field.value
+                    }
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (value === "Custom") {
+                        setCustomDescription("")
+                        field.onChange("Custom: ")
+                      } else {
+                        setCustomDescription("")
+                        field.onChange(value)
+                      }
+                    }}
+                    required
+                  >
+                    <Option value={""}>Select Bed</Option>
+                    <Option value="1 Queen Bed">1 Queen Bed</Option>
+                    <Option value="Custom">Custom</Option>
+                  </Select>
+                  {field.value.startsWith("Custom:") && (
+                    <Input
+                      label="Custom"
+                      type="text"
+                      value={customDescription}
+                      onChange={(e) => {
+                        setCustomDescription(e.target.value)
+                        field.onChange(`Custom: ${e.target.value}`)
+                      }}
+                      placeholder="Enter custom bed"
+                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      required
+                    />
+                  )}
+                </>
+              )}
+            />
           </div>
           <div>
             <Input

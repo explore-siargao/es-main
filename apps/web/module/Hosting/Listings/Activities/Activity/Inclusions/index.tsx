@@ -27,7 +27,7 @@ interface RadioProps {
   label: string
 }
 
-const RadioInput: React.FC<RadioProps> = ({
+export const RadioInput: React.FC<RadioProps> = ({
   id,
   value,
   checked,
@@ -434,6 +434,11 @@ const Inclusions = ({ pageType }: Prop) => {
                     <Typography className="text-sm"> Add inclusion</Typography>
                   </button>
                 </div>
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
+                  List everything that is included in the price so customers
+                  understand the value for money of your activity. Add a new
+                  inclusion for each one.
+                </Typography>
               </div>
             </div>
 
@@ -487,6 +492,12 @@ const Inclusions = ({ pageType }: Prop) => {
                     <Typography className="text-sm"> Add exclusion</Typography>
                   </button>
                 </div>
+                <Typography className="text-xs text-gray-500 italic mt-2">
+                  List everything that customers need to pay extra for (i.e
+                  environmental fees, alcohol, etc that isn't included in the
+                  price). This allows customers to appropriately set their
+                  expectations. Add a new exclusion for each one.
+                </Typography>
               </div>
             </div>
 
