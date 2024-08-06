@@ -310,6 +310,7 @@ const LandingPage = () => {
             description="Essential travel information for your island vacation"
             groupCards={groupCardsDummy}
             isGuide={true}
+            itemsNumber={6}
           />
         </div>
         <div className="sm:mt-10">
@@ -318,6 +319,7 @@ const LandingPage = () => {
             description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummyTravelStyle}
             isGuide={false}
+            itemsNumber={4}
           />
         </div>
         <div className="sm:mt-10">
@@ -326,6 +328,7 @@ const LandingPage = () => {
             description="Hand-picked properties just for you"
             groupCards={groupCardsDummyRecommendedPlaceToStay}
             isGuide={false}
+            itemsNumber={4}
           />
         </div>
         <div className="sm:mt-10">
@@ -334,6 +337,7 @@ const LandingPage = () => {
             description="We've partnered the islands for tour and activity providers."
             groupCards={groupCardsDummySomethingToDo}
             isGuide={false}
+            itemsNumber={4}
           />
         </div>
         <div className="sm:mt-10">
@@ -342,6 +346,7 @@ const LandingPage = () => {
             description="Take the road, let's travel with one of our trusted rental partners."
             groupCards={groupCardsDummyReliableCars}
             isGuide={false}
+            itemsNumber={4}
           />
         </div>
         <div className="sm:mt-10 mb-8 pl-5">

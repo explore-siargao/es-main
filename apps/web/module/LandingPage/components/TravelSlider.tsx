@@ -14,6 +14,7 @@ type TravelSliderProps = {
   }[]
   url?: string
   isGuide: boolean
+  itemsNumber: number
 }
 
 const TravelSlider = ({
@@ -21,6 +22,7 @@ const TravelSlider = ({
   description,
   groupCards,
   isGuide,
+  itemsNumber,
 }: TravelSliderProps) => {
   const formattedGroupCards = groupCards.map((card) => ({
     ...card,
@@ -42,7 +44,7 @@ const TravelSlider = ({
         )}
       </div>
       <div>
-        <Slider cards={formattedGroupCards} isGuide={isGuide} />
+        <Slider cards={formattedGroupCards} isGuide={isGuide} itemsNumber={itemsNumber} />
       </div>
     </div>
   )
