@@ -44,7 +44,11 @@ const TravelSlider = ({
         )}
       </div>
       <div>
-        <Slider cards={formattedGroupCards} isGuide={isGuide} itemsNumber={itemsNumber} />
+        <Slider
+          cards={formattedGroupCards}
+          isGuide={isGuide}
+          itemsNumber={itemsNumber}
+        />
       </div>
     </div>
   )

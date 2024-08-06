@@ -53,8 +53,12 @@ const Slider = ({ cards, isGuide, itemsNumber }: SliderProps) => {
         320: { slidesPerView: 1.5 },
         640: { slidesPerView: 2.5 },
         768: { slidesPerView: itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5 },
-        1024: { slidesPerView: itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5 },
-        1280: { slidesPerView: itemsNumber - 0.5 > 3 ? 4.5 : itemsNumber - 0.5 },
+        1024: {
+          slidesPerView: itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5,
+        },
+        1280: {
+          slidesPerView: itemsNumber - 0.5 > 3 ? 4.5 : itemsNumber - 0.5,
+        },
         1536: { slidesPerView: itemsNumber - 0.5 },
       }}
     >
