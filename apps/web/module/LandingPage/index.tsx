@@ -111,73 +111,73 @@ const LandingPage = () => {
       imageKey: il1,
       title: "Anajawan",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il2,
       title: "Cabitoonan",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il3,
       title: "Catangnan",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il4,
       title: "Consuelo",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il5,
       title: "Corazon",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il6,
       title: "Daku",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il7,
       title: "Catangnan",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il8,
       title: "Malinao",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il9,
       title: "Libertad",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il10,
       title: "Magsaysay",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il11,
       title: "Santa Fe",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
     {
       imageKey: il12,
       title: "Suyangan",
       subTitle: "General Luna",
-      url: "/locations/general-luna",
+      url: "/guide/travel/general-luna",
     },
   ]
 
@@ -309,6 +309,7 @@ const LandingPage = () => {
             title="Explore Siargao Island"
             description="Essential travel information for your island vacation"
             groupCards={groupCardsDummy}
+            isGuide={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -316,6 +317,7 @@ const LandingPage = () => {
             title="What's your travel style?"
             description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummyTravelStyle}
+            isGuide={false}
           />
         </div>
         <div className="sm:mt-10">
@@ -323,6 +325,7 @@ const LandingPage = () => {
             title="Recommended places to stay"
             description="Hand-picked properties just for you"
             groupCards={groupCardsDummyRecommendedPlaceToStay}
+            isGuide={false}
           />
         </div>
         <div className="sm:mt-10">
@@ -330,6 +333,7 @@ const LandingPage = () => {
             title="Looking for something to do in Siargao?"
             description="We've partnered the islands for tour and activity providers."
             groupCards={groupCardsDummySomethingToDo}
+            isGuide={false}
           />
         </div>
         <div className="sm:mt-10">
@@ -337,6 +341,7 @@ const LandingPage = () => {
             title="Reliable cars, motorbikes and more"
             description="Take the road, let's travel with one of our trusted rental partners."
             groupCards={groupCardsDummyReliableCars}
+            isGuide={false}
           />
         </div>
         <div className="sm:mt-10 mb-8 pl-5">
