@@ -211,10 +211,12 @@ router.patch(
 )
 
 //calendars
-router.get('/calendar/bike',
-   isOriginValid,
-   isUserLoggedIn,
-   isCsrfTokenValid,
-   getBikeCalendar)
+router.get(
+  '/calendar/bike',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getBikeCalendar
+)
 
 export default router

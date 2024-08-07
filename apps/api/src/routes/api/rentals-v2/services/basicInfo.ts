@@ -110,14 +110,14 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.year = category === 'Motorbike' ? year || rental.year : null
         rental.qty = qty || rental.qty
         if (rental.qty) {
-          rental.ids = [];
+          rental.ids = []
           for (let i = 0; i < rental.qty; i++) {
-            const objectId = new mongoose.Types.ObjectId();
-            rental.ids.push(objectId);
+            const objectId = new mongoose.Types.ObjectId()
+            rental.ids.push(objectId)
           }
         }
       }
-     
+
       rental.finishedSections = ['basicInfo']
       rental.updatedAt = new Date()
       await rental.save()
