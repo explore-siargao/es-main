@@ -25,8 +25,7 @@ import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
 import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 import { Typography } from "@/common/components/ui/Typography"
-import CardList, { Filters } from "./components/CardView"
-import SideFilter from "@/common/components/Filters/SideFilter"
+import CardList, { Filters } from "./components/CardList"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -396,10 +395,6 @@ const LandingPage = () => {
       ) : ( */}
 
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
-        <div className="mt-14">
-          <SideFilter />
-          <CardList cards={dummyCards} filters={dummyFilters} />
-        </div>
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
