@@ -2,9 +2,9 @@ import React from "react"
 import CustomSpecificMap from "@/common/components/CustomSpecificMap"
 
 type T_Props = {
-  latitude: number
-  longitude: number
-  locationGuide: string
+  readonly latitude: number
+  readonly longitude: number
+  readonly locationGuide: string
 }
 
 function Directions({ latitude, longitude, locationGuide }: T_Props) {

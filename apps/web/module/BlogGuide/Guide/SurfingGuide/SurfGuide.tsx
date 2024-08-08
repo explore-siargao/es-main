@@ -6,9 +6,9 @@ import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Accommodation/components/ShareSave"
 
 type T_Props = {
-  title: string
-  images: any
-  guideText: string
+  readonly title: string
+  readonly images: any
+  readonly guideText: string
 }
 
 type T_Images = {

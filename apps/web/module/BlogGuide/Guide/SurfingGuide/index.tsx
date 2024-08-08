@@ -10,7 +10,32 @@ import Forecast from "./Forecast"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 
-function SurfingGuide() {
+const GuideContent = ({ guideData }: { guideData: any }) => {
+  return (
+    <div className="mt-10">
+      <SurfGuide
+        title={guideData?.title}
+        guideText={guideData?.hero?.guide[0]?.children[0]?.text}
+        images={guideData?.hero?.images}
+      />
+      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <Directions
+        longitude={guideData?.location && guideData?.location[0]}
+        latitude={guideData?.location && guideData?.location[1]}
+        locationGuide={
+          guideData?.locationGuide &&
+          guideData?.locationGuide[0]?.children[0]?.text
+        }
+      />
+      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <IdealConditions />
+      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <Forecast />
+    </div>
+  )
+}
+
+const SurfingGuide = () => {
   const [guideData, setGuideData] = useState<any>([])
   const [guideDataLoading, setGuideDataLoading] = useState(true)
   const [coordinates, setCoordinates] = useState<{
@@ -53,35 +78,7 @@ function SurfingGuide() {
       {guideDataLoading ? (
         <Spinner variant="primary" middle />
       ) : guideData ? (
-        <div className="mt-10">
-          <SurfGuide
-            title={guideData?.title}
-            guideText={guideData?.hero?.guide[0]?.children[0]?.text}
-            images={guideData?.hero?.images}
-          />
-          <Separator
-            orientation="horizontal"
-            className="mt-10 mb-6 bg-gray-300"
-          />
-          <Directions
-            longitude={guideData?.location && guideData?.location[0]}
-            latitude={guideData?.location && guideData?.location[1]}
-            locationGuide={
-              guideData?.locationGuide &&
-              guideData?.locationGuide[0]?.children[0]?.text
-            }
-          />
-          <Separator
-            orientation="horizontal"
-            className="mt-10 mb-6 bg-gray-300"
-          />
-          <IdealConditions />
-          <Separator
-            orientation="horizontal"
-            className="mt-10 mb-6 bg-gray-300"
-          />
-          <Forecast />
-        </div>
+        <GuideContent guideData={guideData} />
       ) : (
         <Typography className="mt-10">No data was found.</Typography>
       )}
