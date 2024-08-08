@@ -25,6 +25,18 @@ type Bicycle = {
   reservations: Reservation[]
 }
 
+type Car = {
+  abbr: string;
+  status: string;
+  reservations: Reservation[];
+};
+
+type CarItem = {
+  name: string;
+  price: string;
+  cars: Car[];
+};
+
 type Item = {
   name: string
   price: string
@@ -231,3 +243,95 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getCarCalendar = async (req: Request, res: Response) => {
+  const startDate = new Date(req.query.startDate as string);
+  const endDate = new Date(req.query.endDate as string);
+
+  try {
+    // Step 1: Retrieve all car rentals by host
+    const carRentals = await dbRentals
+      .find({ category: 'Car', host: res.locals.user.id })
+      .populate('pricing');
+
+    if (!carRentals.length) {
+      return res.json(
+        response.success({
+          items: [],
+          message: 'No car rentals found.',
+        })
+      );
+    }
+
+    // Extract all ids from car rentals
+    const allCarIds = carRentals.map((rental) => rental._id);
+
+    // Step 2: Fetch all reservations associated with these car ids
+    const reservations = await dbReservations
+      .find({
+        rentalId: { $in: allCarIds },
+        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+      })
+      .populate('guest'); // Ensure guest field is populated
+
+    // Step 3: Structure the data in the specified format
+    const items: CarItem[] = carRentals.map((rental) => {
+      const cars: Car[] = [
+        {
+          abbr: `${rental.make} ${rental.modelBadge}`,
+          status: 'available',
+          reservations: [],
+        },
+      ];
+
+      // Step 4: Distribute reservations across cars
+      reservations.forEach((reservation: any) => {
+        if (reservation.guest) {
+          const reservationItem: Reservation = {
+            name:
+              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
+            startDate: reservation.startDate ?? new Date(),
+            endDate: reservation.endDate ?? new Date(),
+            guestCount: reservation.guestCount ?? 0,
+          };
+
+          for (let i = 0; i < cars.length; i++) {
+            const car = cars[i]; // Store the current car in a local variable
+
+            // Ensure the car is not undefined
+            if (car) {
+              const currentReservations = car.reservations ?? []; // Ensure it's an array
+
+              if (!hasDateConflict(currentReservations, reservationItem)) {
+                car.reservations.push(reservationItem); // Access the reservations array
+                car.status = 'occupied'; // Update the status
+                break; // Exit the loop after assigning
+              }
+            }
+          }
+        }
+      });
+
+      return {
+        name: rental.make + ' ' + rental.modelBadge ?? 'Unknown', // Ensure name is always a string
+        //@ts-ignore
+        price: rental.pricing?.dayRate ?? 'N/A', // Ensure price is always a string
+        cars,
+      };
+    });
+
+    res.json(
+      response.success({
+        items,
+        allItemCount: items.length,
+        message: 'Car calendar fetched successfully.',
+      })
+    );
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message || 'Unknown error occurred.',
+      })
+    );
+  }
+};
