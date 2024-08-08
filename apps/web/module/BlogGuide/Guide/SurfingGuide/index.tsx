@@ -20,12 +20,9 @@ const GuideContent = ({ guideData }: { guideData: any }) => {
       />
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
       <Directions
-        longitude={guideData?.location && guideData?.location[0]}
-        latitude={guideData?.location && guideData?.location[1]}
-        locationGuide={
-          guideData?.locationGuide &&
-          guideData?.locationGuide[0]?.children[0]?.text
-        }
+        longitude={guideData?.location[0]}
+        latitude={guideData?.location[1]}
+        locationGuide={guideData?.locationGuide[0]?.children[0]?.text}
       />
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
       <IdealConditions />
