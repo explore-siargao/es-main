@@ -70,13 +70,15 @@ const SurfingGuide = () => {
     getGuidePost()
   }, [])
 
-  const content = guideDataLoading ? (
-    <Spinner variant="primary" middle />
-  ) : guideData ? (
-    <GuideContent guideData={guideData} />
-  ) : (
-    <Typography className="mt-10">No data was found.</Typography>
-  )
+  let content
+
+  if (guideDataLoading) {
+    content = <Spinner variant="primary" middle />
+  } else if (guideData) {
+    content = <GuideContent guideData={guideData} />
+  } else {
+    content = <Typography className="mt-10">No data was found.</Typography>
+  }
 
   return <WidthWrapper width={"small"}>{content}</WidthWrapper>
 }
