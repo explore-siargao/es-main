@@ -70,17 +70,15 @@ const SurfingGuide = () => {
     getGuidePost()
   }, [])
 
-  return (
-    <WidthWrapper width={"small"}>
-      {guideDataLoading ? (
-        <Spinner variant="primary" middle />
-      ) : guideData ? (
-        <GuideContent guideData={guideData} />
-      ) : (
-        <Typography className="mt-10">No data was found.</Typography>
-      )}
-    </WidthWrapper>
+  const content = guideDataLoading ? (
+    <Spinner variant="primary" middle />
+  ) : guideData ? (
+    <GuideContent guideData={guideData} />
+  ) : (
+    <Typography className="mt-10">No data was found.</Typography>
   )
+
+  return <WidthWrapper width={"small"}>{content}</WidthWrapper>
 }
 
 export default SurfingGuide
