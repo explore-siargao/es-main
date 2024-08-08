@@ -14,14 +14,20 @@ const ImageGalleryModal = ({
         <div className="flex justify-center my-4">
           <ShareSave />
         </div>
-        {images.map((data) => {
+        {images?.map((data) => {
           return (
             <div className="relative h-60 w-10/12 md:w-1/2 lg:w-1/3 mx-auto bg-gray-200">
               <Image
-                src={`/assets/${data.key}`}
+                src={
+                  data.key ? `/assets/${data.key}` : (data.image?.url as string)
+                }
                 layout="fill"
                 objectFit="cover"
-                alt={`${data.description}`}
+                alt={
+                  data.description
+                    ? data.description
+                    : (data.image?.alt as string)
+                }
               />
             </div>
           )

@@ -1,14 +1,23 @@
-import { Button } from "@/common/components/ui/Button"
 import React, { useState } from "react"
 import data from "../../data.json"
-import Image from "next/image"
 import ImageGallery from "@/module/Accommodation/components/ImageGallery"
 import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
 import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Accommodation/components/ShareSave"
 
-function SurfGuide() {
-  const images = data.surfGuide.images
+type T_Props = {
+  title: string
+  images: any
+  guideText: string
+}
+
+type T_Images = {
+  alt: string
+  fileName: string
+  url: string
+}
+
+function SurfGuide({ title, guideText, images }: T_Props) {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const openModal = () => {
     setGalleryModalOpen(true)
@@ -19,7 +28,7 @@ function SurfGuide() {
       <div className="justify-between md:flex text-start items-center">
         <div>
           <Typography variant="h1" fontWeight="semibold">
-            Cloud 9 Siargao
+            {title}
           </Typography>
         </div>
         <ShareSave />
@@ -32,7 +41,7 @@ function SurfGuide() {
         />
       </div>
       <h2 className="text-xl font-bold mb-2">Guide</h2>
-      <p className="mb-8">{data.surfGuide.guide}</p>
+      <p className="mb-8 whitespace-pre-wrap">{guideText}</p>
       <ImageGalleryModal
         images={images}
         isOpen={galleryModalOpen}

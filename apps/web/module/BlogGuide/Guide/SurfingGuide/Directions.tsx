@@ -1,14 +1,18 @@
 import React from "react"
-import data from "../../data.json"
 import CustomSpecificMap from "@/common/components/CustomSpecificMap"
 
-function Directions() {
+type T_Props = {
+  latitude: number
+  longitude: number
+  locationGuide: string
+}
+
+function Directions({ latitude, longitude, locationGuide }: T_Props) {
   return (
     <div>
       <div className="grid md:grid-cols-2 gap-4">
-        {" "}
         <CustomSpecificMap
-          center={[9.8137, 126.1651]}
+          center={[latitude, longitude]}
           mapHeight={"h-80 sm:h-[720px] md:h-[470px] lg:h-[500px]"}
           mapWidth={"w-full"}
           zoom={11}
@@ -16,7 +20,7 @@ function Directions() {
         />
         <div>
           <h2 className="text-xl font-bold mb-2">How to get there</h2>
-          <p>{data.howToGetThere.description}</p>
+          <p className="whitespace-pre-wrap">{locationGuide}</p>
         </div>
       </div>
     </div>
