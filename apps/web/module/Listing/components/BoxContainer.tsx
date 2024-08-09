@@ -20,7 +20,7 @@ type BoxContainerProps = {
   distance: string
   location: string
   date: string
-  price: string
+  price: number
   dayTime: string
   ratings: string
   isHearted: boolean
@@ -87,9 +87,9 @@ const BoxContainer = ({
 
   return (
     <>
-      <li>
+      <li className="relative rounded-lg overflow-hidden h-full list-none">
         <Link href={`/accommodation/${listingId}`} target="_blank">
-          <div className="h-80 w-auto 2xl:h-72 2xl:w-auto rounded-2xl relative select-none">
+          <div className="h-48 w-full relative">
             <button
               onClick={(e) => {
                 e.preventDefault()
@@ -98,14 +98,14 @@ const BoxContainer = ({
               className="absolute top-3 right-3 z-40"
             >
               <HeartIcon
-                className={` h-7 w-7 text-text-50 active:scale-90 ${
-                  isAdded ? "fill-error-500" : "fill-text-500/50 "
+                className={`h-7 w-7 text-text-50 active:scale-90 ${
+                  isAdded ? "fill-error-500" : "fill-text-500/50"
                 }`}
               />
             </button>
             <Slider images={imageKey} />
           </div>
-          <div className="flex-1 -space-y-1 w-auto">
+          <div className="p-4">
             <div className="flex justify-between">
               <Typography
                 variant="h3"
@@ -114,7 +114,7 @@ const BoxContainer = ({
               >
                 {location}
               </Typography>
-              <div className="flex text-text-500 place-items-center gap-1">
+              <div className="flex text-text-500 items-center gap-1">
                 <StarIcon className="h-4 w-auto" />
                 {ratings}
               </div>

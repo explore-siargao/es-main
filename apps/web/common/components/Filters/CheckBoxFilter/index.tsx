@@ -6,27 +6,35 @@ import { LucideChevronDown } from "lucide-react"
 type T_Props = {
   category: string
   filters: T_Filters[]
+  onFilterChange: (filters: T_Filters[]) => void
 }
 
 type T_Filters = {
+  category: string
   type: string
   filterCount: number
 }
 
-const CheckBoxFilter = ({ category, filters }: T_Props) => {
+const CheckBoxFilter = ({ category, filters, onFilterChange }: T_Props) => {
   const filterData = useFilterStore((state) => state.filterData)
   const setFilter = useFilterStore((state) => state.setFilter)
   const [showAll, setShowAll] = useState(false)
 
   const handleCheckboxChange = (filter: T_Filters) => {
-    if (filterData.some((f) => f.type === filter.type)) {
-      // Remove filter if it's existing
-      setFilter(filterData.filter((f) => f.type !== filter.type))
+    let updatedFilters
+    if (
+      filterData.some(
+        (f) => f.type === filter.type && f.category === filter.category
+      )
+    ) {
+      updatedFilters = filterData.filter(
+        (f) => !(f.type === filter.type && f.category === filter.category)
+      )
     } else {
-      // Add new filter
-      //@ts-ignore
-      setFilter([...filterData, { category, type: filter.type }])
+      updatedFilters = [...filterData, filter]
     }
+    setFilter(updatedFilters)
+    onFilterChange(updatedFilters)
   }
 
   const itemsToShow = showAll ? filters : filters.slice(0, 5)
@@ -48,7 +56,10 @@ const CheckBoxFilter = ({ category, filters }: T_Props) => {
                 type="checkbox"
                 id={`filter_cb_${index}`}
                 className={`text-primary-500 focus:ring-primary-500 h-4 w-4 rounded`}
-                checked={filterData.some((f) => f.type === filter.type)}
+                checked={filterData.some(
+                  (f) =>
+                    f.type === filter.type && f.category === filter.category
+                )}
                 onChange={() => handleCheckboxChange(filter)}
               />
               <Typography className="mt-0.5">{filter.type}</Typography>

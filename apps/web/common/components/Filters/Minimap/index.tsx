@@ -2,9 +2,9 @@
 import React, { useState } from "react"
 import { MapContainer, TileLayer, Marker } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
-import { Button } from "../ui/Button"
 import { Icon } from "leaflet"
 import { WEB_URL } from "@/common/constants/ev"
+import { Button } from "../../ui/Button"
 
 const markerIcon = new Icon({
   iconUrl: `${WEB_URL}/marker.png`,
