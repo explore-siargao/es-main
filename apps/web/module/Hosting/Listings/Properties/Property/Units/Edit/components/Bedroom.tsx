@@ -29,10 +29,12 @@ const Bedroom = ({ unitType }: T_Prop) => {
           {displayBedrooms.map((bedroomArray, index) => {
             return (
               <React.Fragment key={bedroomArray.roomName}>
-                <div
-                  className="mt-2 rounded-lg p-4 border w-full border-text-200"
-                >
-                  <Typography variant="h4">{unitType === "Studio" ? "Living Room" : `Bedroom ${index + 1}`} </Typography>
+                <div className="mt-2 rounded-lg p-4 border w-full border-text-200">
+                  <Typography variant="h4">
+                    {unitType === "Studio"
+                      ? "Living Room"
+                      : `Bedroom ${index + 1}`}{" "}
+                  </Typography>
                   {bedroomArray.beds
                     .filter((bed) => bed.qty > 0)
                     .map((bed, bedIndex, filteredBeds) => (

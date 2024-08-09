@@ -13,7 +13,6 @@ interface IWholePlaceBasicInfo {
   livingRooms: IBedroom[]
   singleBedRoom: IBed
   singleLivingRoom: IBed
-
 }
 
 export async function updateWholePlaceBasicInfo(
