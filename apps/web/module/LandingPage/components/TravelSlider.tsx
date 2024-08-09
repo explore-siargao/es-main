@@ -7,10 +7,12 @@ type TravelSliderProps = {
   title: string
   description?: string
   groupCards: {
-    imageKey: StaticImageData
-    mainPlace: string
-    subPlace: string
+    imageKey: StaticImageData | string
+    title: string
+    subTitle?: string
+    url?: string
   }[]
+  url?: string
 }
 
 const TravelSlider = ({
@@ -18,6 +20,11 @@ const TravelSlider = ({
   description,
   groupCards,
 }: TravelSliderProps) => {
+  const formattedGroupCards = groupCards.map((card) => ({
+    ...card,
+    subTitle: card.subTitle || "",
+  }))
+
   return (
     <div className="mb-5">
       <div className="pl-5 mb-8">
@@ -33,7 +40,7 @@ const TravelSlider = ({
         )}
       </div>
       <div>
-        <Slider cards={groupCards} />
+        <Slider cards={formattedGroupCards} />
       </div>
     </div>
   )

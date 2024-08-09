@@ -1,15 +1,23 @@
-"use client"
-import React, { useState, useEffect } from "react"
-import { MapContainer, TileLayer, Marker, useMapEvent } from "react-leaflet"
+import React, { useState, useEffect, useRef } from "react"
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvent,
+} from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
-import { Icon, LatLngTuple } from "leaflet"
+import { Icon, LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { WEB_URL } from "../constants/ev"
+import Image from "next/image"
+import Link from "next/link"
 
 interface MarkerLocation {
   lat: number
   long: number
+  name: string
 }
 
 interface MultipleMarkerMapProps {
@@ -21,13 +29,15 @@ interface MultipleMarkerMapProps {
   className?: React.ReactNode
   onMarkerSet?: (coords: { lat: number; lng: number }) => void | undefined
   scrollWheelZoomEnabled?: boolean
+  imagePlace?: string
+  isSurfGuide?: boolean
 }
 
 const markerIcon = new Icon({
   iconUrl: `${WEB_URL}/marker.png`,
   iconSize: [35, 35],
   iconAnchor: [18, 18],
-  popupAnchor: [-3, -76],
+  popupAnchor: [0, -20],
 })
 
 const MultipleMarkerMap = ({
@@ -39,22 +49,42 @@ const MultipleMarkerMap = ({
   onMarkerSet,
   className,
   scrollWheelZoomEnabled,
+  imagePlace,
+  isSurfGuide,
 }: MultipleMarkerMapProps) => {
   const { setCoordinates } = useCoordinatesStore()
-  const [position, setPosition] = useState<[number, number] | null>(null)
+  const [placeNames, setPlaceNames] = useState<{ [key: number]: string }>({})
 
-  const handleMarkerDragEnd = (event: L.LeafletEvent) => {
-    const newCoordinates = event.target.getLatLng()
-    setPosition([newCoordinates.lat, newCoordinates.lng])
-    setCoordinates(newCoordinates.lat, newCoordinates.lng)
-    if (onMarkerSet) {
-      onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
+  const markerRefs = useRef<Map<number, L.Marker>>(new Map())
+  const popupRefs = useRef<Map<number, L.Popup>>(new Map())
+
+  useEffect(() => {
+    const fetchAllPlaceNames = async () => {
+      const newPlaceNames: any = {}
+
+      for (const [index, location] of markerLocations.entries()) {
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.long}&addressdetails=1&extratags=0`
+          )
+          const data = await response.json()
+          const { town, road, village } = data.address || {}
+          const formattedAddress = `${town ? town + ", " : ""}${road ? road + ", " : ""}${village ? village + "" : ""}`
+          newPlaceNames[index] = formattedAddress || "Unknown place"
+        } catch (error) {
+          console.error(`Error fetching place name for marker ${index}:`, error)
+          newPlaceNames[index] = "Unknown place"
+        }
+      }
+
+      setPlaceNames(newPlaceNames)
     }
-  }
 
-  const handleMapClick = (event: L.LeafletMouseEvent) => {
+    fetchAllPlaceNames()
+  }, [markerLocations])
+
+  const handleMapClick = (event: LeafletMouseEvent) => {
     const newCoordinates = event.latlng
-    setPosition([newCoordinates.lat, newCoordinates.lng])
     setCoordinates(newCoordinates.lat, newCoordinates.lng)
     if (onMarkerSet) {
       onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
@@ -76,8 +106,21 @@ const MultipleMarkerMap = ({
       setShowMap(true)
     }, 1500)
     window.addEventListener("resize", HandleResize)
-    return () => clearTimeout(timer)
-  }, [HandleResize])
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("resize", HandleResize)
+    }
+  }, [])
+
+  const handleMarkerMouseOver = (index: number) => {
+    const marker = markerRefs.current.get(index)
+    marker?.openPopup()
+  }
+
+  const handleMarkerMouseOut = (index: number) => {
+    const marker = markerRefs.current.get(index)
+    marker?.closePopup()
+  }
 
   return (
     <div className={`${className}`}>
@@ -100,14 +143,72 @@ const MultipleMarkerMap = ({
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {markerLocations.map((location, index) => (
-                <Marker
-                  icon={markerIcon}
-                  position={[location.lat, location.long] as LatLngTuple}
-                  draggable={false}
-                  key={index}
-                />
-              ))}
+              {markerLocations.map((location, index) => {
+                if (!location?.lat || !location?.long) {
+                  console.error(`Invalid location data at index ${index}`)
+                  return null
+                }
+
+                return (
+                  <Marker
+                    icon={markerIcon}
+                    position={[location.lat, location.long] as LatLngTuple}
+                    draggable={false}
+                    key={index}
+                    ref={(el) => {
+                      if (el) {
+                        markerRefs.current.set(index, el)
+                      }
+                    }}
+                    eventHandlers={{
+                      mouseover: () => handleMarkerMouseOver(index),
+                      mouseout: () => handleMarkerMouseOut(index),
+                    }}
+                  >
+                    <button
+                      onMouseEnter={() => handleMarkerMouseOver(index)}
+                      onMouseLeave={() => handleMarkerMouseOut(index)}
+                    >
+                      <Popup
+                        ref={(el) => {
+                          if (el) {
+                            popupRefs.current.set(index, el)
+                          }
+                        }}
+                      >
+                        <div className="w-32 grid ">
+                          {imagePlace ? (
+                            <Image
+                              src={imagePlace}
+                              alt=""
+                              width={150}
+                              height={100}
+                              className="bg-gray-200 rounded-md"
+                            />
+                          ) : null}
+                          <span className="mt-2 font-semibold">
+                            {location.name}
+                          </span>
+                          <span className="mt-2 ">
+                            {placeNames[index] || "Loading place name..."}
+                          </span>
+                          {isSurfGuide ? (
+                            <span className="mt-2">
+                              Skill level required: Intermediate
+                            </span>
+                          ) : null}
+                          <Link href={""} className=" mt-2">
+                            <span className="underline text-primary-600 hover:text-primary-700 text-start">
+                              {" "}
+                              View Guides
+                            </span>
+                          </Link>
+                        </div>
+                      </Popup>
+                    </button>
+                  </Marker>
+                )
+              })}
             </MapContainer>
           ) : (
             <div

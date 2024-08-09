@@ -12,24 +12,19 @@ const RestaurantGuide = () => {
 
   const markers = [
     {
-      lat: 9.970336,
-      long: 126.049733,
+      lat: 9.8075389,
+      long: 126.164634,
+      name: "Lamari Bar & Restaurant",
     },
     {
-      lat: 9.922317,
-      long: 126.055913,
+      lat: 9.7878741,
+      long: 126.160532,
+      name: "Kermit Siargao Surf Hotel & Restaurant",
     },
     {
-      lat: 9.843848,
-      long: 126.031194,
-    },
-    {
-      lat: 9.786337,
-      long: 126.060033,
-    },
-    {
-      lat: 9.816785,
-      long: 126.101918,
+      lat: 9.7917949,
+      long: 126.0800644,
+      name: "Bravo Restaurant",
     },
   ]
 

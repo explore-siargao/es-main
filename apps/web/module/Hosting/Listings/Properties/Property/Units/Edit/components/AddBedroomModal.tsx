@@ -63,7 +63,7 @@ const AddBedroomModal = ({
     onClose()
   }
 
-    useEffect(() => {
+  useEffect(() => {
     if (mode === "edit" && selectedIndex !== undefined) {
       const bedroomToEdit = bedrooms[selectedIndex]
       if (bedroomToEdit) {
@@ -72,7 +72,7 @@ const AddBedroomModal = ({
     } else {
       resetBedQuantities()
     }
-  }, [isOpen, mode, selectedIndex, bedrooms]) 
+  }, [isOpen, mode, selectedIndex, bedrooms])
   function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
       roomName: bedroom.roomName,

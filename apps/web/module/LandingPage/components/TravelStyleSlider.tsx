@@ -7,7 +7,7 @@ type TravelStyleProps = {
   description?: string
   groupCards: {
     imageKey: string
-    cardTitle: string
+    cardTitle?: string
     url: string
   }[]
 }

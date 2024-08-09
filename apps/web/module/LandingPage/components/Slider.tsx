@@ -1,31 +1,52 @@
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
-import Image, { StaticImageData } from "next/image"
-import { Typography } from "@/common/components/ui/Typography"
+import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
+import { useRouter } from "next/navigation"
+import SliderItem from "./SliderItem"
+
+const toKebabCase = (str: string) => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
+}
 
 interface SliderProps {
   cards: {
-    imageKey: StaticImageData
-    mainPlace: string
-    subPlace: string
+    imageKey: StaticImageData | string
+    title: string
+    subTitle?: string
+    url?: string
   }[]
 }
 
 const Slider = ({ cards }: SliderProps) => {
+  const router = useRouter()
+
+  // may be used if first link approach is not good
+  const handleCardClick = (subTitle: string) => {
+    const kebabCaseSubPlace = toKebabCase(subTitle)
+    router.push(`/locations/${kebabCaseSubPlace}`)
+  }
+  //
+
   return (
     <Swiper
-      slidesPerView={6}
+      slidesPerView={4}
       modules={[Navigation, Pagination, Scrollbar, A11y]}
       navigation
       breakpoints={{
         320: { slidesPerView: 1 },
         640: { slidesPerView: 2 },
         768: { slidesPerView: 3 },
-        1024: { slidesPerView: 4 },
-        1280: { slidesPerView: 5 },
-        1536: { slidesPerView: 6 },
+        1024: { slidesPerView: 3 },
+        1280: { slidesPerView: 3 },
+        1536: { slidesPerView: 4 },
       }}
     >
       <style>{`
@@ -76,22 +97,13 @@ const Slider = ({ cards }: SliderProps) => {
 `}</style>
 
       {cards.map((card) => (
-        <SwiperSlide key={card.mainPlace} className="pl-5 pr-5">
-          <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
-            <Image
-              className="cursor-pointer"
-              src={card.imageKey}
-              alt={card.mainPlace}
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
-          <div className="mt-2 text-left">
-            <Typography variant="h4" fontWeight="semibold">
-              {card.mainPlace}
-            </Typography>
-            <Typography variant="h5">{card.subPlace}</Typography>
-          </div>
+        <SwiperSlide key={card.title} className="pl-5 pr-5">
+          <SliderItem
+            imageKey={card.imageKey}
+            title={card.title}
+            subTitle={card.subTitle}
+            url={card.url}
+          />
         </SwiperSlide>
       ))}
     </Swiper>

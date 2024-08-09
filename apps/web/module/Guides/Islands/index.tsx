@@ -13,20 +13,19 @@ const IslandsGuide = () => {
 
   const markers = [
     {
-      lat: 9.742714,
-      long: 126.16126,
+      lat: 9.67361,
+      long: 125.94833,
+      name: "Sohoton Cove National Park",
     },
     {
-      lat: 9.883017,
-      long: 125.910249,
+      lat: 9.7411837,
+      long: 126.1640441,
+      name: "Daku Island",
     },
     {
-      lat: 9.901859,
-      long: 125.941613,
-    },
-    {
-      lat: 9.765246,
-      long: 126.167992,
+      lat: 9.765,
+      long: 126.16778,
+      name: "Guyam Island",
     },
   ]
 
