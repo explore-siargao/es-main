@@ -246,6 +246,7 @@ const CalendarTable = () => {
               <td colSpan={1} rowSpan={2} className="">
                 <Sidebar
                   nextPrevFunction={moveStartDateByOneDay}
+                  //@ts-ignore
                   openAddReservationModal={handleOpenAddReservationModal}
                 />
               </td>
