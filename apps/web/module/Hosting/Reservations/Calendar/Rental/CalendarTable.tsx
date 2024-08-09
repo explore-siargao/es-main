@@ -69,14 +69,15 @@ const RentalsCalendarTable = () => {
 
   const handleSaveNewReservation = (newReservation: any, reset: Function) => {
     const updatedData = { ...filteredData }
-    const category = updatedData.items.filter(
+    const category = updatedData?.items?.filter(
       (category) => category.name === newReservation.category
     )
-
-    if (category.length > 0) {
+//@ts-ignore
+    if (category?.length > 0) {
+      //@ts-ignore
       const selectedCategory = category[0]
       if (selectedCategory) {
-        const motorcycle = selectedCategory.motorcycles.find(
+        const motorcycle = selectedCategory?.motorcycles?.find(
           (rm) => rm.abbr === newReservation.motorcycle
         )
         if (motorcycle) {
@@ -223,12 +224,13 @@ const RentalsCalendarTable = () => {
 
   const handleSaveRoom = (categoryName: string, motorIndex: number) => {
     const newFilteredData = { ...filteredData }
-    const category = newFilteredData.items.find(
+    const category = newFilteredData?.items?.find(
       (category) => category.name === categoryName
     )
 
     if (category) {
-      const motorcycle = category.motorcycles[motorIndex]
+      //@ts-ignore
+      const motorcycle = category?.motorcycles[motorIndex]
       if (motorcycle) {
         motorcycle.abbr = tempRoomAbbr
         setFilteredData(newFilteredData)
@@ -309,7 +311,7 @@ const RentalsCalendarTable = () => {
                   })}
                 </tr>
                 {!collapsed[category.name] &&
-                  category.motorcycles.map((motorcycle, motorIndex) => (
+                  category?.motorcycles?.map((motorcycle, motorIndex) => (
                     <tr key={motorcycle.abbr} className="hover:bg-gray-100 relative">
                       <td className="border p-4 text-left border-l-0">
                         <div className="flex justify-between items-center">

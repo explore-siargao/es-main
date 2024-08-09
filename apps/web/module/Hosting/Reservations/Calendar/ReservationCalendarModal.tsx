@@ -37,7 +37,7 @@ const ReservationCalendarModal = ({
               Guest
             </Typography>
             <Typography variant="h3" className="text-gray-500">
-              {selectedReservation.reservation.name}
+              {selectedReservation?.reservation?.name}
             </Typography>
           </div>
           <div className="flex">
@@ -46,7 +46,7 @@ const ReservationCalendarModal = ({
                 Start date
               </Typography>
               <Typography variant="h3" className="text-gray-500">
-                {format(selectedReservation.reservation.startDate, "PPPP")}
+                {format(selectedReservation?.reservation?.startDate as string, "PPPP")}
               </Typography>
             </div>
             <div className="flex flex-col w-full">
@@ -54,7 +54,7 @@ const ReservationCalendarModal = ({
                 End date
               </Typography>
               <Typography variant="h3" className="text-gray-500">
-                {format(selectedReservation.reservation.endDate, "PPPP")}
+                {format(selectedReservation?.reservation?.endDate as string, "PPPP")}
               </Typography>
             </div>
           </div>
@@ -64,7 +64,7 @@ const ReservationCalendarModal = ({
               Guest count
             </Typography>
             <Typography variant="h3" className="text-gray-500">
-              {selectedReservation.reservation.guestCount}
+              {selectedReservation?.reservation?.guestCount}
             </Typography>
           </div>
         </div>

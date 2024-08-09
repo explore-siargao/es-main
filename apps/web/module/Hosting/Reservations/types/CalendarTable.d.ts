@@ -5,9 +5,24 @@ export interface Reservation {
   guestCount: number
 }
 
+export interface Booking {
+  name: string
+  start_date: string
+  end_date: string
+  guest_count: number
+}
+
 export interface SelectedReservation {
-  motorcycles: string
-  reservation: Reservation
+  room?:string
+  motorcycles?: string
+  reservation?: Reservation
+  booking?: Booking
+}
+
+export interface Room {
+  abbr: string
+  status: string
+  bookings?: Booking[]
 }
 
 export interface MotorCycle {
@@ -19,9 +34,11 @@ export interface MotorCycle {
 export interface Category {
   name: string
   price: string
-  motorcycles: MotorCycle[]
+  rooms?:Room[]
+  motorcycles?: MotorCycle[]
 }
 
 export interface SampleData {
-  items: Category[]
+  items?: Category[]
+  categories?: Category[]
 }
