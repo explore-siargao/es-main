@@ -4,7 +4,19 @@ import { Typography } from "@/common/components/ui/Typography"
 import { AtSign, MapPin, Phone } from "lucide-react"
 import SpecificMap from "@/common/components/SpecificMap"
 
-const RestaurantLocation = ({ coordinates }: { coordinates: number[] }) => {
+type T_Props = {
+  coordinates: number[]
+  address: string
+  phoneNumber: string
+  emailAddress: string
+}
+
+const RestaurantLocation = ({
+  coordinates,
+  address,
+  phoneNumber,
+  emailAddress,
+}: T_Props) => {
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
@@ -22,18 +34,15 @@ const RestaurantLocation = ({ coordinates }: { coordinates: number[] }) => {
           <div className="">
             <MapPin />
           </div>
-          <div className="w-full">
-            Tourism Road, General Luna, Siargao Island, Surigao del Norte,
-            Philippines
-          </div>
+          <div className="w-full">{address}</div>
         </div>
         <div className="flex items-center gap-4">
           <Phone />
-          <div>09123456789</div>
+          <div>{phoneNumber}</div>
         </div>
         <div className="flex items-center gap-4">
           <AtSign />
-          <div>restaurantemail@gmail.com</div>
+          <div>{emailAddress}</div>
         </div>
       </div>
       <div className="mt-8">

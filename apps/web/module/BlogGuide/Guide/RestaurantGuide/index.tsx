@@ -5,7 +5,7 @@ import BookingDescription from "@/module/Accommodation/components/BookingDescrip
 import PlaceOffers from "@/module/Accommodation/components/PlaceOffers"
 import UserReviews from "@/module/Accommodation/components/Reviews/UserReviews"
 import SectionInfo from "./SectionInfo"
-import RestaurantLocation from "./CheckoutBox"
+import RestaurantLocation from "./RestaurantLocation"
 import Image from "next/image"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
@@ -15,6 +15,9 @@ import PriceLevel from "./components/PriceLevel"
 import OffersCuisine from "./components/OffersCuisine"
 import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
 import ChefsNote from "./components/ChefsNote"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { Spinner } from "@/common/components/ui/Spinner"
 
 const imageGallery = [
   {
@@ -38,17 +41,6 @@ const imageGallery = [
     alt: "Image 5",
   },
 ]
-
-const description = {
-  generalDescription:
-    "Welcome to this stunning private villa located just near one of the most beautiful  beaches of Siargao. Enjoy scenic private outdoor pool views & stylishly furnished spacious  indoor  with a touch of local art. All hidden in 800 m2 tropical garden.",
-  aboutSpace:
-    "Welcome to this stunning private villa located just near one of the most beautiful beaches of Siargao. Enjoy scenic private outdoor pool views & stylishly furnished spacious indoor with a touch of local art. All hidden in 800 m2 tropical garden. The unique mixture of modern design & tropical nature provides comfort and privacy whilst offering unique experience of luxurious getaway in a jungle paradise.",
-  aboutGuestAccess:
-    "This spacious 1-bedroom villa is for full and exclusive use of our guests, which have 24h access to the property provided during their stay. To keep our Guests' privacy and safety the building is fenced and can be locked from inside and outside. The guests have unlimited access to private outdoor pool and bath tube with hot water. Free access to WiFi connection is provided.",
-  otherThingsNote:
-    "We recommend to our guests to have a motorbike or scooter to reach the house or get there by van from the airport (we can arrange this for you). Please be aware that the last part of the road to the villa is through a dirt road, that usually gets muddy during heavy rains, which occur between December and February. Please make sure you are comfortable driving a scooter/motorbike on a dirt road or rent a trike from General Luna.",
-}
 
 const offers = [
   {
@@ -264,104 +256,166 @@ const offersCuisine = [
 ]
 
 export const RestaurantGuide = () => {
+  const params = useParams()
+  const guideName = params.guideName
+
+  const [guideData, setGuideData] = useState<any>([])
+  const [guideDataLoading, setGuideDataLoading] = useState(true)
+
+  const getGuideData = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/restaurants/guide/${guideName}`
+      )
+
+      if (!res.ok) {
+        throw new Error(`Response status: ${res.status}`)
+      }
+
+      const data = await res.json()
+      setGuideData(data.docs[0])
+      setGuideDataLoading(false)
+    } catch (err) {
+      console.log(err)
+      setGuideDataLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getGuideData()
+  }, [])
+
+  useEffect(() => {
+    console.log(guideData)
+  }, [guideData])
+
   return (
     <WidthWrapper width="small" className="mt-10">
-      <h1 className="text-2xl font-bold mb-4">RESTAURANT GUIDE</h1>
-      <SectionInfo images={imageGallery} title="Kermit Siargao" />
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-        <div className="flex-1 md:w-1/2 2xl:w-full">
-          <div>
-            <div className="pb-6 flex flex-col gap-8">
-              <h1 className="text-2xl font-bold">ABOUT</h1>
+      {guideDataLoading ? (
+        <Spinner variant="primary" middle />
+      ) : guideData && !guideDataLoading ? (
+        <>
+          <h1 className="text-2xl font-bold mb-4">RESTAURANT GUIDE</h1>
+          <SectionInfo images={guideData.hero.images} title={guideData.title} />
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
               <div>
-                <BookingDescription {...description} />
+                <div className="pb-6 flex flex-col gap-8">
+                  <h1 className="text-2xl font-bold">ABOUT</h1>
+                  <div>
+                    <BookingDescription
+                      generalDescription={
+                        guideData.about.aboutPlace[0].children[0].text
+                      }
+                      aboutSpace={
+                        guideData.about.aboutSpace[0].children[0].text
+                      }
+                      aboutGuestAccess={
+                        guideData.about.aboutGuestAccess[0].children[0].text
+                      }
+                      otherThingsNote={
+                        guideData.about.otherThings[0].children[0].text
+                      }
+                    />
+                  </div>
+                </div>
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <div className="py-6 ">
+                  <PlaceOffers offers={offers} group={group} />
+                </div>
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <div className="py-6 ">
+                  <PriceLevel priceLevel={guideData.content.priceLevels} />
+                </div>
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <div className="py-6 ">
+                  <SocialMediaContacts contacts={sampleSocialMediaData} />
+                </div>
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <div className="py-6 ">
+                  <OpeningHours schedules={sampleSchedules} />
+                </div>
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <div className="py-6 ">
+                  <OffersCuisine offers={offersCuisine} />
+                </div>
               </div>
             </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <PlaceOffers offers={offers} group={group} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <PriceLevel priceLevel={priceLevel} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <SocialMediaContacts contacts={sampleSocialMediaData} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <OpeningHours schedules={sampleSchedules} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <OffersCuisine offers={offersCuisine} />
-            </div>
-          </div>
-        </div>
-        <div className="md:w-96 md:relative">
-          <div className="md:sticky md:top-6">
-            <RestaurantLocation coordinates={coordinates} />
-          </div>
-        </div>
-      </div>
-
-      <Separator orientation="horizontal" className="bg-gray-300" />
-      <ListingReviews />
-
-      <Separator orientation="horizontal" className="bg-gray-300" />
-      <ChefsNote />
-
-      <Separator orientation="horizontal" className="bg-gray-300" />
-      <div>
-        <div className="py-8">
-          <h1 className="text-2xl font-bold">ACCOMMODATION NEARBY</h1>
-          <div className="w-full flex gap-8 mt-8">
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image
-                  src={"/assets/1.jpg"}
-                  className="h-full w-full object-cover"
-                  width={500}
-                  height={500}
-                  alt=""
+            <div className="md:w-96 md:relative">
+              <div className="md:sticky md:top-6">
+                <RestaurantLocation
+                  coordinates={[
+                    guideData.locations.location[1],
+                    guideData.locations.location[0],
+                  ]}
+                  address={guideData.locations.address}
+                  phoneNumber={guideData.locations.phoneNumber}
+                  emailAddress={guideData.locations.emailAddress}
                 />
               </div>
-              <Typography variant="h3" fontWeight="semibold">
-                BLISS Restaurant Siargao
-              </Typography>
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image
-                  src={"/assets/1.jpg"}
-                  className="h-full w-full object-cover"
-                  width={500}
-                  height={500}
-                  alt=""
-                />
-              </div>
-              <Typography variant="h3" fontWeight="semibold">
-                Abukay
-              </Typography>
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image
-                  src={"/assets/1.jpg"}
-                  className="h-full w-full object-cover"
-                  width={500}
-                  height={500}
-                  alt=""
-                />
-              </div>
-              <Typography variant="h3" fontWeight="semibold">
-                Ocean 101 Beach Resort Restaurant
-              </Typography>
             </div>
           </div>
-        </div>
-      </div>
+
+          <Separator orientation="horizontal" className="bg-gray-300" />
+          <ListingReviews />
+
+          <Separator orientation="horizontal" className="bg-gray-300" />
+          <ChefsNote note={guideData.content.chefNote} />
+
+          <Separator orientation="horizontal" className="bg-gray-300" />
+          <div>
+            <div className="py-8">
+              <h1 className="text-2xl font-bold">ACCOMMODATION NEARBY</h1>
+              <div className="w-full flex gap-8 mt-8">
+                <div className="w-full flex flex-col gap-2">
+                  <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
+                    <Image
+                      src={"/assets/1.jpg"}
+                      className="h-full w-full object-cover"
+                      width={500}
+                      height={500}
+                      alt=""
+                    />
+                  </div>
+                  <Typography variant="h3" fontWeight="semibold">
+                    BLISS Restaurant Siargao
+                  </Typography>
+                </div>
+                <div className="w-full flex flex-col gap-2">
+                  <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
+                    <Image
+                      src={"/assets/1.jpg"}
+                      className="h-full w-full object-cover"
+                      width={500}
+                      height={500}
+                      alt=""
+                    />
+                  </div>
+                  <Typography variant="h3" fontWeight="semibold">
+                    Abukay
+                  </Typography>
+                </div>
+                <div className="w-full flex flex-col gap-2">
+                  <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
+                    <Image
+                      src={"/assets/1.jpg"}
+                      className="h-full w-full object-cover"
+                      width={500}
+                      height={500}
+                      alt=""
+                    />
+                  </div>
+                  <Typography variant="h3" fontWeight="semibold">
+                    Ocean 101 Beach Resort Restaurant
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Typography>No data was found.</Typography>
+      )}
     </WidthWrapper>
   )
 }
