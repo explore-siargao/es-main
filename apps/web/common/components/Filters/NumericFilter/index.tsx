@@ -1,19 +1,20 @@
 import { Minus, Plus } from "lucide-react"
 import { Typography } from "../../ui/Typography"
 import useFilterStore from "@/common/store/useFilterStore"
-import { useEffect } from "react"
 
-type T_Props = {
+type T_Filter = {
   category: string
-  filters: T_Filters[]
-}
-
-type T_Filters = {
   type: string
   filterCount: number
 }
 
-const NumericFilter = ({ category, filters }: T_Props) => {
+type T_Props = {
+  category: string
+  filters: T_Filter[]
+  onFilterChange: (filters: T_Filter[]) => void
+}
+
+const NumericFilter = ({ category, filters, onFilterChange }: T_Props) => {
   const filterData = useFilterStore((state) => state.filterData)
   const increaseFilterCount = useFilterStore(
     (state) => state.increaseFilterCount
@@ -29,9 +30,39 @@ const NumericFilter = ({ category, filters }: T_Props) => {
     return filter ? filter.filterCount : 0
   }
 
-  useEffect(() => {
-    console.log(filterData)
-  }, [filterData])
+  const handleIncrease = (category: string, type: string) => {
+    increaseFilterCount(category, type)
+    const updatedFilter = {
+      category,
+      type,
+      filterCount: getFilterCount(category, type) + 1,
+    }
+    onFilterChange([
+      ...filterData.filter(
+        (f) => !(f.category === category && f.type === type)
+      ),
+      updatedFilter,
+    ])
+  }
+
+  const handleDecrease = (category: string, type: string) => {
+    if (getFilterCount(category, type) > 0) {
+      decreaseFilterCount(category, type)
+      const updatedFilter = {
+        category,
+        type,
+        filterCount: getFilterCount(category, type) - 1,
+      }
+      const newFilterData = filterData.filter(
+        (f) => !(f.category === category && f.type === type)
+      )
+      if (updatedFilter.filterCount > 0) {
+        onFilterChange([...newFilterData, updatedFilter])
+      } else {
+        onFilterChange(newFilterData)
+      }
+    }
+  }
 
   return (
     <div className="border max-w-xs p-4 rounded-bl-md rounded-br-md">
@@ -47,7 +78,7 @@ const NumericFilter = ({ category, filters }: T_Props) => {
           <div className="flex justify-between  border-neutral-400 rounded-md max-w">
             <button
               className="px-4 py-2 text-primary-800 rounded-l-md enabled:hover:bg-primary-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-              onClick={() => decreaseFilterCount(category, filter.type)}
+              onClick={() => handleDecrease(category, filter.type)}
               disabled={getFilterCount(category, filter.type) === 0}
             >
               <Minus className="h-4 w-4" />
@@ -57,7 +88,7 @@ const NumericFilter = ({ category, filters }: T_Props) => {
             </Typography>
             <button
               className="px-4 py-2 text-primary-800 rounded-r-md enabled:hover:bg-primary-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-              onClick={() => increaseFilterCount(category, filter.type)}
+              onClick={() => handleIncrease(category, filter.type)}
             >
               <Plus className="h-4 w-4 " />
             </button>
