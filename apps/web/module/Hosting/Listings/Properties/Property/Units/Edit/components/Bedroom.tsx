@@ -19,7 +19,8 @@ const Bedroom = ({ unitType }: T_Prop) => {
   }
 
   const isSingleBedroom = bedrooms.length >= 1
-  const displayBedrooms = unitType === "Studio" ? bedrooms.slice(0, 1) : bedrooms
+  const displayBedrooms =
+    unitType === "Studio" ? bedrooms.slice(0, 1) : bedrooms
   return (
     <div>
       <div>
@@ -28,10 +29,12 @@ const Bedroom = ({ unitType }: T_Prop) => {
           {displayBedrooms.map((bedroomArray, index) => {
             return (
               <React.Fragment key={bedroomArray.bedRoomName}>
-                <div
-                  className="mt-2 rounded-lg p-4 border w-full border-text-200"
-                >
-                  <Typography variant="h4">{unitType === "Studio" ? "Living Room" : `Bedroom ${index + 1}`} </Typography>
+                <div className="mt-2 rounded-lg p-4 border w-full border-text-200">
+                  <Typography variant="h4">
+                    {unitType === "Studio"
+                      ? "Living Room"
+                      : `Bedroom ${index + 1}`}{" "}
+                  </Typography>
                   {bedroomArray.beds
                     .filter((bed) => bed.qty > 0)
                     .map((bed, bedIndex, filteredBeds) => (
@@ -62,10 +65,12 @@ const Bedroom = ({ unitType }: T_Prop) => {
           onClick={handleAddButtonClick}
           className="text-text-400 text-sm flex items-center gap-2 p-2 mt-2 hover:font-semibold transition"
         >
-          <LucidePlus className="h-4 w-4" /> 
-          {unitType === "Studio" 
-    ? (isSingleBedroom ? "Edit Living Room" : "Add Living Room") 
-    : "Add Bedroom"}
+          <LucidePlus className="h-4 w-4" />
+          {unitType === "Studio"
+            ? isSingleBedroom
+              ? "Edit Living Room"
+              : "Add Living Room"
+            : "Add Bedroom"}
         </button>
       </div>
       <AddBedroomModal
