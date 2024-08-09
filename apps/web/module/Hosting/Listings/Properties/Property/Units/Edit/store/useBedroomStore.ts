@@ -22,7 +22,7 @@ export const useBedroomStore = create<BedroomStore>((set) => ({
 
 function deepCopyBedrooms(bedrooms: IBedroom[]): IBedroom[] {
   return bedrooms.map((bedroom) => ({
-    bedRoomName: bedroom.bedRoomName,
+    roomName: bedroom.roomName,
     beds: bedroom.beds.map((bed) => ({ ...bed })),
   }))
 }

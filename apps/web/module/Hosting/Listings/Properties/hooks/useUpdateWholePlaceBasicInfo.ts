@@ -1,7 +1,7 @@
 import { API_URL_PROPERTIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 import { useMutation } from "@tanstack/react-query"
-import { IBedroom } from "../Property/Units/types"
+import { IBed, IBedroom } from "../Property/Units/types"
 
 interface IWholePlaceBasicInfo {
   _id: string
@@ -10,6 +10,10 @@ interface IWholePlaceBasicInfo {
   bedRooms: IBedroom[]
   numBathRooms: number
   qty: number
+  livingRooms: IBedroom[]
+  singleBedRoom: IBed
+  singleLivingRoom: IBed
+
 }
 
 export async function updateWholePlaceBasicInfo(

@@ -6,7 +6,12 @@ const bed = new Schema({
 })
 
 const bedRooms = new Schema({
-  bedRoomName: String,
+  roomName: String,
+  beds: [bed],
+})
+
+const livingRooms = new Schema({
+  roomName: String,
   beds: [bed],
 })
 
@@ -47,6 +52,18 @@ const bookableUnitTypes = new Schema({
   childrenIncluded: Number,
   bedRooms: {
     type: [bedRooms],
+    required: false,
+  },
+  livingRooms: {
+    type: [livingRooms],
+    required: false,
+  },
+  singleLivingRoom: {
+    type: bed,
+    required: false,
+  },
+  singleBedRoom: {
+    type: bed,
     required: false,
   },
   isMultiRoomUnit: {
