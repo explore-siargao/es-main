@@ -19,12 +19,18 @@ import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
-  Booking,
+  Reservation,
+  MotorCycle,
 } from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
+import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
+import { Spinner } from "@/common/components/ui/Spinner"
 
 const RentalsCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const endDate = new Date(startDate)
+  endDate.setDate(startDate.getDate()+11)
+  const {data:sampleData, isPending} = useGetCalendarMotor(startDate.toLocaleDateString(), endDate.toLocaleDateString())
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -34,6 +40,7 @@ const RentalsCalendarTable = () => {
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
+  //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
@@ -62,18 +69,18 @@ const RentalsCalendarTable = () => {
 
   const handleSaveNewReservation = (newReservation: any, reset: Function) => {
     const updatedData = { ...filteredData }
-    const category = updatedData.categories.filter(
+    const category = updatedData.items.filter(
       (category) => category.name === newReservation.category
     )
 
     if (category.length > 0) {
       const selectedCategory = category[0]
       if (selectedCategory) {
-        const room = selectedCategory.rooms.find(
-          (rm) => rm.abbr === newReservation.room
+        const motorcycle = selectedCategory.motorcycles.find(
+          (rm) => rm.abbr === newReservation.motorcycle
         )
-        if (room) {
-          room.bookings.push(newReservation)
+        if (motorcycle) {
+          motorcycle.reservations.push(newReservation)
           setFilteredData(updatedData)
           toast.success("Reservation added successfully")
           reset()
@@ -89,13 +96,13 @@ const RentalsCalendarTable = () => {
     const filterDataByDate = () => {
       const calendarEnd = addDays(startDate, daysPerPage - 1)
       const newFilteredData = {
-        categories: sampleData.categories.map((category) => ({
+        items: sampleData?.items?.map((category) => ({
           ...category,
-          rooms: category.rooms.map((room) => ({
-            ...room,
-            bookings: room.bookings.filter((booking) => {
-              const bookingStart = new Date(booking.start_date)
-              const bookingEnd = new Date(booking.end_date)
+          motorcycles: category.motorcycles.map((motorcycle:MotorCycle) => ({
+            ...motorcycle,
+            reservations: motorcycle.reservations.filter((reservation) => {
+              const bookingStart = new Date(reservation.startDate)
+              const bookingEnd = new Date(reservation.endDate)
               return !(
                 isAfter(bookingStart, calendarEnd) ||
                 isBefore(bookingEnd, startDate)
@@ -104,15 +111,17 @@ const RentalsCalendarTable = () => {
           })),
         })),
       }
+      //@ts-ignore
       setFilteredData(newFilteredData)
     }
 
     filterDataByDate()
-  }, [startDate])
+  }, [startDate,sampleData?.items])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
+  // const {data} = useGetCalendarMotor(startDate,end)
 
   const generateCalendarHeader = () => {
     const headers = []
@@ -187,10 +196,10 @@ const RentalsCalendarTable = () => {
   const getBookingStyle = (
     startDate: Date,
     daysPerPage: number,
-    booking: Booking
+    booking: Reservation
   ) => {
-    const bookingStart = new Date(booking.start_date)
-    const bookingEnd = new Date(booking.end_date)
+    const bookingStart = new Date(booking.startDate)
+    const bookingEnd = new Date(booking.endDate)
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
     if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
@@ -212,16 +221,16 @@ const RentalsCalendarTable = () => {
     setTempRoomAbbr(abbr)
   }
 
-  const handleSaveRoom = (categoryName: string, roomIndex: number) => {
+  const handleSaveRoom = (categoryName: string, motorIndex: number) => {
     const newFilteredData = { ...filteredData }
-    const category = newFilteredData.categories.find(
+    const category = newFilteredData.items.find(
       (category) => category.name === categoryName
     )
 
     if (category) {
-      const room = category.rooms[roomIndex]
-      if (room) {
-        room.abbr = tempRoomAbbr
+      const motorcycle = category.motorcycles[motorIndex]
+      if (motorcycle) {
+        motorcycle.abbr = tempRoomAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -233,9 +242,11 @@ const RentalsCalendarTable = () => {
 
     setEditingRoom(null)
   }
-
   return (
     <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
+      {isPending ? (
+        <Spinner size="md">Loading...</Spinner>
+      ):(<div>
       <div className="overflow-auto">
         <table className="min-w-max w-full rounded-lg">
           <thead className="">
@@ -253,7 +264,7 @@ const RentalsCalendarTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.categories.map((category, index) => (
+            {filteredData?.items?.map((category, index) => (
               <React.Fragment key={category.name}>
                 <tr
                   className="hover:bg-gray-100 cursor-pointer"
@@ -298,11 +309,11 @@ const RentalsCalendarTable = () => {
                   })}
                 </tr>
                 {!collapsed[category.name] &&
-                  category.rooms.map((room, roomIndex) => (
-                    <tr key={room.abbr} className="hover:bg-gray-100 relative">
+                  category.motorcycles.map((motorcycle, motorIndex) => (
+                    <tr key={motorcycle.abbr} className="hover:bg-gray-100 relative">
                       <td className="border p-4 text-left border-l-0">
                         <div className="flex justify-between items-center">
-                          {editingRoom === room.abbr ? (
+                          {editingRoom === motorcycle.abbr ? (
                             <Input
                               type="text"
                               value={tempRoomAbbr}
@@ -312,14 +323,14 @@ const RentalsCalendarTable = () => {
                               label={""}
                             />
                           ) : (
-                            <span>{room.abbr}</span>
+                            <span>{motorcycle.abbr}</span>
                           )}
-                          {editingRoom === room.abbr ? (
+                          {editingRoom === motorcycle.abbr ? (
                             <Button
                               size={"icon"}
                               variant={"link"}
                               onClick={() =>
-                                handleSaveRoom(category.name, roomIndex)
+                                handleSaveRoom(category.name, motorIndex)
                               }
                             >
                               <Save className="text-gray-500 w-5" />
@@ -328,7 +339,7 @@ const RentalsCalendarTable = () => {
                             <Button
                               size={"icon"}
                               variant={"link"}
-                              onClick={() => handleEditRoom(room.abbr)}
+                              onClick={() => handleEditRoom(motorcycle.abbr)}
                             >
                               <Edit3 className="text-gray-500 w-5" />
                             </Button>
@@ -339,7 +350,7 @@ const RentalsCalendarTable = () => {
                         colSpan={daysPerPage}
                         className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
                       >
-                        {room.bookings.map((booking: Booking) => {
+                        {motorcycle.reservations.map((booking: Reservation) => {
                           const style = getBookingStyle(
                             startDate,
                             daysPerPage,
@@ -359,8 +370,8 @@ const RentalsCalendarTable = () => {
                               onClick={() => {
                                 setIsReservationModalOpen(true)
                                 setSelectedReservation({
-                                  room: room.abbr,
-                                  booking: booking,
+                                  motorcycles: motorcycle.abbr,
+                                  reservation: booking,
                                 })
                               }}
                               className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
@@ -403,6 +414,8 @@ const RentalsCalendarTable = () => {
         onSave={handleSaveNewReservation}
         data={filteredData}
       />
+      </div>
+    )}
     </div>
   )
 }
