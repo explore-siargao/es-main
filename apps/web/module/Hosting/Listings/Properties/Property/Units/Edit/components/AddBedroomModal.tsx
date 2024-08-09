@@ -63,6 +63,16 @@ const AddBedroomModal = ({
     onClose()
   }
 
+    useEffect(() => {
+    if (mode === "edit" && selectedIndex !== undefined) {
+      const bedroomToEdit = bedrooms[selectedIndex]
+      if (bedroomToEdit) {
+        setFields(deepCopyBedroom(bedroomToEdit))
+      }
+    } else {
+      resetBedQuantities()
+    }
+  }, [isOpen, mode, selectedIndex, bedrooms]) 
   function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
       bedRoomName: bedroom.bedRoomName,

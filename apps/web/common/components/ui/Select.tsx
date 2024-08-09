@@ -4,7 +4,7 @@ import Asterisk from "./Asterisk"
 
 export interface SelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label: string
+  label?: string
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
