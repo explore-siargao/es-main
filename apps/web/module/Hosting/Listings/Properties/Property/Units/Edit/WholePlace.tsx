@@ -354,38 +354,13 @@ const WholePlace = ({ pageType }: Prop) => {
                         onClick={() =>
                           setSingleRoomBedCount(
                             (singleRoomBedCount: number) => singleRoomBedCount + 1
-
                           )
-                      }}
-                    >
-                      <MinusIcon className="h-3 w-3" />
-                    </button>
-                    <input
-                      disabled={isPending || isFetching}
-                      type="number"
-                      id="bathrooms"
-                      className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                      value={sofaBedCount}
-                      min={0}
-                      onChange={(e) => {
-                        const val = Number(e.target.value)
-                        setSofaBedCount(val)
-                      }}
-                    />
-                    <button
-                      disabled={isPending || isFetching}
-                      className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                      type="button"
-                      onClick={() =>
-                        setSofaBedCount(
-                          (sofaBedCount: number) => sofaBedCount + 1
-                        )
-                      }
-                    >
-                      <PlusIcon className="h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
+                        }
+                      >
+                        <PlusIcon className="h-3 w-3" />
+                      </button>
+                    </div>
+          </div>
               ) : (
                 <div>
                   <Bedroom unitType={unitType} />
@@ -415,19 +390,19 @@ const WholePlace = ({ pageType }: Prop) => {
                   </div>
                 ) : (
                   <div className="flex items-center space-x-6">
-                    <Select
-                      onChange={(e) => setSingleRoomBed(e.currentTarget.value)}
-                    >
-                      <Option value="Single Bed">Single Bed</Option>
-                      <Option value="Double Bed">Double Bed</Option>
-                      <Option value="Queen Bed">Queen Bed</Option>
-                      <Option value="Queen XL Bed">Queen XL Bed</Option>
-                      <Option value="King Bed">King Bed</Option>
-                      <Option value="King XL Bed">King XL Bed</Option>
-                      <Option value="Sofa Bed">Sofa Bed</Option>
-                      <Option value="Bunk Bed">Bunk Bed</Option>
-                      <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
-                    </Select>
+                     <Select
+                onChange={(e) => setSingleRoomBed(e.currentTarget.value)}
+              >
+                <Option value="Single Bed">Single Bed</Option>
+                <Option value="Double Bed">Double Bed</Option>
+                <Option value="Queen Bed">Queen Bed</Option>
+                <Option value="Queen XL Bed">Queen XL Bed</Option>
+                <Option value="King Bed">King Bed</Option>
+                <Option value="King XL Bed">King XL Bed</Option>
+                <Option value="Sofa Bed">Sofa Bed</Option>
+                <Option value="Bunk Bed">Bunk Bed</Option>
+                <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
+              </Select>
                     <div className="flex rounded-md">
                       <button
                         disabled={isPending || isFetching}
