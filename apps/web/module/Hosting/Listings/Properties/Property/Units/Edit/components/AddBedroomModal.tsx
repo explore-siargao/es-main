@@ -13,9 +13,16 @@ type Props = {
   onClose: () => void
   mode: "add" | "edit"
   selectedIndex?: number
+  unitType: string
 }
 
-const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
+const AddBedroomModal = ({
+  isOpen,
+  onClose,
+  mode,
+  selectedIndex,
+  unitType,
+}: Props) => {
   const [fields, setFields] = useState<IBedroom>(defaultBedroom)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
@@ -56,6 +63,16 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
     onClose()
   }
 
+  useEffect(() => {
+    if (mode === "edit" && selectedIndex !== undefined) {
+      const bedroomToEdit = bedrooms[selectedIndex]
+      if (bedroomToEdit) {
+        setFields(deepCopyBedroom(bedroomToEdit))
+      }
+    } else {
+      resetBedQuantities()
+    }
+  }, [isOpen, mode, selectedIndex, bedrooms])
   function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
       bedRoomName: bedroom.bedRoomName,
@@ -63,12 +80,20 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
     }
   }
 
+  let unitName
+
+  if (unitType === "Studio") {
+    unitName = "Living Room"
+  } else {
+    unitName = "Bedroom"
+  }
+
   return (
     <ModalContainer
       onClose={onClose}
       isOpen={isOpen}
       size="sm"
-      title={mode === "edit" ? "Edit Bedroom" : "Add Bedroom"}
+      title={mode === "edit" ? `Edit ${unitName}` : `Add ${unitName}`}
     >
       <div className="py-4 px-20 flex flex-col divide-text-100 overflow-y-auto">
         <Typography variant="h3" fontWeight="semibold" className="mb-5">
