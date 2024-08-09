@@ -62,18 +62,20 @@ const CalendarTable = () => {
 
   const handleSaveNewReservation = (newReservation: any, reset: Function) => {
     const updatedData = { ...filteredData }
-    const category = updatedData.categories.filter(
+    const category = updatedData?.categories?.filter(
       (category) => category.name === newReservation.category
     )
 
-    if (category.length > 0) {
+    //@ts-ignore
+    if (category?.length > 0) {
+      //@ts-ignore
       const selectedCategory = category[0]
       if (selectedCategory) {
-        const room = selectedCategory.rooms.find(
+        const room = selectedCategory?.rooms?.find(
           (rm) => rm.abbr === newReservation.room
         )
         if (room) {
-          room.bookings.push(newReservation)
+          room?.bookings?.push(newReservation)
           setFilteredData(updatedData)
           toast.success("Reservation added successfully")
           reset()
@@ -214,12 +216,13 @@ const CalendarTable = () => {
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
     const newFilteredData = { ...filteredData }
-    const category = newFilteredData.categories.find(
+    const category = newFilteredData?.categories?.find(
       (category) => category.name === categoryName
     )
 
     if (category) {
-      const room = category.rooms[roomIndex]
+      //@ts-ignore
+      const room = category?.rooms[roomIndex]
       if (room) {
         room.abbr = tempRoomAbbr
         setFilteredData(newFilteredData)
@@ -243,6 +246,7 @@ const CalendarTable = () => {
               <td colSpan={1} rowSpan={2} className="">
                 <Sidebar
                   nextPrevFunction={moveStartDateByOneDay}
+                  //@ts-ignore
                   openAddReservationModal={handleOpenAddReservationModal}
                 />
               </td>
@@ -253,7 +257,7 @@ const CalendarTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.categories.map((category, index) => (
+            {filteredData?.categories?.map((category, index) => (
               <React.Fragment key={category.name}>
                 <tr
                   className="hover:bg-gray-100 cursor-pointer"
@@ -298,7 +302,7 @@ const CalendarTable = () => {
                   })}
                 </tr>
                 {!collapsed[category.name] &&
-                  category.rooms.map((room, roomIndex) => (
+                  category?.rooms?.map((room, roomIndex) => (
                     <tr key={room.abbr} className="hover:bg-gray-100 relative">
                       <td className="border p-4 text-left border-l-0">
                         <div className="flex justify-between items-center">
@@ -339,7 +343,7 @@ const CalendarTable = () => {
                         colSpan={daysPerPage}
                         className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
                       >
-                        {room.bookings.map((booking: Booking) => {
+                        {room?.bookings?.map((booking: Booking) => {
                           const style = getBookingStyle(
                             startDate,
                             daysPerPage,
@@ -359,7 +363,7 @@ const CalendarTable = () => {
                               onClick={() => {
                                 setIsReservationModalOpen(true)
                                 setSelectedReservation({
-                                  room: room.abbr,
+                                  room: room?.abbr,
                                   booking: booking,
                                 })
                               }}

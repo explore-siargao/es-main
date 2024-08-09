@@ -22,12 +22,11 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
 
   const handleBedCountChange = (bedIndex: number, value: string) => {
     const newBeds = [...fields.beds]
-    const bed = newBeds[bedIndex] as { qty?: number }
+    const bed = newBeds[bedIndex]
     if (bed) {
       bed.qty = parseInt(value, 10) || 0
+      setFields({ ...fields, beds: newBeds })
     }
-
-    setFields({ ...fields, beds: newBeds })
   }
 
   const resetBedQuantities = () => {
@@ -87,9 +86,9 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
                   type="button"
                   onClick={() => {
                     const newBeds = [...fields.beds]
-
-                    if (newBeds[index] && newBeds[index]!.qty > 0) {
-                      newBeds[index]!.qty--
+                    const bed = newBeds[index]
+                    if (bed && bed.qty > 0) {
+                      bed.qty--
                       setFields({ ...fields, beds: newBeds })
                     }
                   }}
@@ -110,8 +109,9 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
                   type="button"
                   onClick={() => {
                     const newBeds = [...fields.beds]
-                    if (newBeds[index]) {
-                      newBeds[index]!.qty++
+                    const bed = newBeds[index]
+                    if (bed) {
+                      bed.qty++
                       setFields({ ...fields, beds: newBeds })
                     }
                   }}

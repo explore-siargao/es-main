@@ -1,3 +1,10 @@
+export interface Reservation {
+  name: string
+  startDate: string
+  endDate: string
+  guestCount: number
+}
+
 export interface Booking {
   name: string
   start_date: string
@@ -6,22 +13,32 @@ export interface Booking {
 }
 
 export interface SelectedReservation {
-  room: string
-  booking: Booking
+  room?: string
+  motorcycles?: string
+  reservation?: Reservation
+  booking?: Booking
 }
 
 export interface Room {
   abbr: string
   status: string
-  bookings: Booking[]
+  bookings?: Booking[]
+}
+
+export interface MotorCycle {
+  abbr: string
+  status: string
+  reservations: Reservation[]
 }
 
 export interface Category {
   name: string
   price: string
-  rooms: Room[]
+  rooms?: Room[]
+  motorcycles?: MotorCycle[]
 }
 
 export interface SampleData {
-  categories: Category[]
+  items?: Category[]
+  categories?: Category[]
 }

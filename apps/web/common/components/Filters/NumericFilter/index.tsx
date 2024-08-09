@@ -34,7 +34,7 @@ const NumericFilter = ({ category, filters }: T_Props) => {
   }, [filterData])
 
   return (
-    <div className="border max-w-xs p-4">
+    <div className="border max-w-xs p-4 rounded-bl-md rounded-br-md">
       <Typography className="mb-2" fontWeight="bold">
         {category}
       </Typography>
@@ -44,7 +44,7 @@ const NumericFilter = ({ category, filters }: T_Props) => {
           key={filter.type}
         >
           <Typography>{filter.type}</Typography>
-          <div className="flex justify-between border border-neutral-400 rounded-md max-w">
+          <div className="flex justify-between  border-neutral-400 rounded-md max-w">
             <button
               className="px-4 py-2 text-primary-800 rounded-l-md enabled:hover:bg-primary-100 disabled:text-gray-400 disabled:cursor-not-allowed"
               onClick={() => decreaseFilterCount(category, filter.type)}
