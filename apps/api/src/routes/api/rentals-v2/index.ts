@@ -27,6 +27,7 @@ import {
 import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
+import { getBikeCalendar, getMotorcycleCalendar } from './services/calendar'
 
 const router = express.Router()
 
@@ -207,6 +208,23 @@ router.patch(
   isCsrfTokenValid,
   isHostRentalOwner,
   updateStatus
+)
+
+//calendars
+router.get(
+  '/calendar/bike',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getBikeCalendar
+)
+
+router.get(
+  '/calendar/motor',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getMotorcycleCalendar
 )
 
 export default router

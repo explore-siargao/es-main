@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import {
@@ -108,6 +109,13 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           category === 'Motorbike' ? transmission || rental.transmission : null
         rental.year = category === 'Motorbike' ? year || rental.year : null
         rental.qty = qty || rental.qty
+        if (rental.qty) {
+          rental.ids = []
+          for (let i = 0; i < rental.qty; i++) {
+            const objectId = new mongoose.Types.ObjectId()
+            rental.ids.push(objectId)
+          }
+        }
       }
 
       rental.finishedSections = ['basicInfo']
