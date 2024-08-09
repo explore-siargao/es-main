@@ -4,7 +4,11 @@ import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
 import { useForm } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
-import { Category, MotorCycle, SelectedReservation } from "../../types/CalendarTable"
+import {
+  Category,
+  MotorCycle,
+  SelectedReservation,
+} from "../../types/CalendarTable"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
