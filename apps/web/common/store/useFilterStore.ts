@@ -13,50 +13,9 @@ type T_FilterStore = {
   decreaseFilterCount: (category: string, type: string) => void
 }
 
-const filterExistingValues = (state: T_FilterStore, values: T_Filter[]) => {
-  return state.filterData.filter((value) =>
-    values.some(
-      (newValue) =>
-        newValue.category === value.category && newValue.type === value.type
-    )
-  )
-}
-
-const filterNewValues = (existingValues: T_Filter[], values: T_Filter[]) => {
-  return values.filter(
-    (value) =>
-      !existingValues.some(
-        (existingValue) =>
-          existingValue.category === value.category &&
-          existingValue.type === value.type
-      )
-  )
-}
-
-const updateFilterCount = (state: T_FilterStore, values: T_Filter[]) => {
-  return state.filterData.map((value) => {
-    const matchingValue = values.find(
-      (newValue) =>
-        newValue.category === value.category && newValue.type === value.type
-    )
-    if (matchingValue) {
-      return { ...value, filterCount: matchingValue.filterCount }
-    }
-    return value
-  })
-}
-
 const useFilterStore = create<T_FilterStore>()((set) => ({
   filterData: [],
-  setFilter: (values) =>
-    set((state) => {
-      const existingValues = filterExistingValues(state, values)
-      const newValues = filterNewValues(existingValues, values)
-      const updatedFilterData = updateFilterCount(state, values)
-      return {
-        filterData: [...updatedFilterData, ...newValues],
-      }
-    }),
+  setFilter: (values) => set({ filterData: values }),
   increaseFilterCount: (category, type) =>
     set((state) => {
       const filterExists = state.filterData.some(

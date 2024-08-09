@@ -61,6 +61,20 @@ function SearchBar({
     )
   }
 
+  const [pageProperty, setPageProperty] = useState(1)
+
+  useEffect(() => {
+    if (path != "/listings") {
+      if (path === "/activities") {
+        setPageProperty(2)
+      } else if (path === "/rentals") {
+        setPageProperty(3)
+      } else {
+        setPageProperty(1)
+      }
+    }
+  })
+
   return (
     <div
       className={`w-full mt-28 h-96 z-20 flex flex-col items-center bg-[url('/search-bar-image-4.png')] bg-cover bg-no-repeat bg-center 
@@ -86,7 +100,13 @@ function SearchBar({
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => router.push("/")}
+                onClick={() => {
+                  if (path === "/listings") {
+                    setPageProperty(1)
+                  } else {
+                    router.push("/")
+                  }
+                }}
                 className={`${path === "/" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Places to stay
@@ -94,7 +114,13 @@ function SearchBar({
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => router.push("/activities")}
+                onClick={() => {
+                  if (path === "/listings") {
+                    setPageProperty(2)
+                  } else {
+                    router.push("/activities")
+                  }
+                }}
                 className={`${path === "/activities" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Activities
@@ -102,7 +128,13 @@ function SearchBar({
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => router.push("/rentals")}
+                onClick={() => {
+                  if (path === "/listings") {
+                    setPageProperty(3)
+                  } else {
+                    router.push("/rentals")
+                  }
+                }}
                 className={`${path === "/rentals" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Rentals
@@ -110,9 +142,9 @@ function SearchBar({
             </div>
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                {path === "/" && <PropertySearchBar />}
-                {path === "/activities" && <ActivitiesSearchBar />}
-                {path === "/rentals" && <RentalsSearchBar />}
+                {pageProperty === 1 && <PropertySearchBar />}
+                {pageProperty === 2 && <ActivitiesSearchBar />}
+                {pageProperty === 3 && <RentalsSearchBar />}
               </form>
             </FormProvider>
           </div>

@@ -25,7 +25,7 @@ import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
 import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 import { Typography } from "@/common/components/ui/Typography"
-import CardList, { Filters } from "./components/CardList"
+import CardList, { Filters } from "../Listings/components/CardList"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
