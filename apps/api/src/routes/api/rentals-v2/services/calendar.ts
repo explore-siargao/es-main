@@ -119,7 +119,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       return {
         name: rental.make ?? 'Unknown', // Ensure name is always a string
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 'N/A', // Ensure price is always a string
+        price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
         bicycles,
       }
     })
@@ -211,7 +211,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       return {
         name: rental.make + ' ' + rental.modelBadge ?? 'Unknown', // Ensure name is always a string
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 'N/A', // Ensure price is always a string
+        price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
         motorcycles,
       }
     })
