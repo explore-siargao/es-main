@@ -11,6 +11,10 @@ export type T_Image = {
   updatedAt?: string
   fileKey?: string
   alt?: string
+  image?: {
+    url?: string
+    alt?: string
+  }
 }
 
 export type T_SectionInfoProps = {
