@@ -5,7 +5,11 @@ import AddBedroomModal from "./AddBedroomModal"
 import { useBedroomStore } from "../store/useBedroomStore"
 import { Button } from "@/common/components/ui/Button"
 
-const Bedroom = () => {
+type T_Prop = {
+  unitType: string
+}
+
+const Bedroom = ({ unitType }: T_Prop) => {
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const deleteBedroom = useBedroomStore((state) => state.deleteBedroom)
   const [isAddBedroomModalOpen, setIsAddBedroomModalOpen] = useState(false)
@@ -51,13 +55,15 @@ const Bedroom = () => {
           onClick={() => setIsAddBedroomModalOpen(true)}
           className="text-text-400 text-sm flex items-center gap-2 p-2 mt-2 hover:font-semibold transition"
         >
-          <LucidePlus className="h-4 w-4" /> Add Bedroom
+          <LucidePlus className="h-4 w-4" /> Add{" "}
+          {unitType === "Studio" ? "Living Room" : "Bedroom"}
         </button>
       </div>
       <AddBedroomModal
         isOpen={isAddBedroomModalOpen}
         onClose={() => setIsAddBedroomModalOpen(false)}
         mode="add"
+        unitType={unitType}
       />
     </div>
   )
