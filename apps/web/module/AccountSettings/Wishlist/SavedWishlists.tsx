@@ -63,6 +63,7 @@ const SavedWishlists = ({
         location={location}
         date={date}
         distance={distance}
+        //@ts-ignore
         price={"₱" + price}
         imageKey={imageKey}
         dayTime={isNight ? "Night" : ""}

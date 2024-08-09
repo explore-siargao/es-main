@@ -16,8 +16,8 @@ export type BookingProps = {
   isHearted: boolean
 }
 
-const Listing = (props: BookingProps) => {
+const ListingItems = (props: BookingProps) => {
   return <BoxContainer {...props} />
 }
 
-export default Listing
+export default ListingItems
