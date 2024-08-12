@@ -478,7 +478,7 @@ export const AMENITIES = [
 
 export const INITIAL_BEDROOMS = [
   {
-    bedRoomName: "Bed Room 1",
+    roomName: "Bed Room 1",
     beds: [
       { name: "Single Bed", qty: 0 },
       { name: "Twin Bed", qty: 0 },
@@ -495,7 +495,7 @@ export const INITIAL_BEDROOMS = [
 ]
 
 export const defaultBedroom = {
-  bedRoomName: "",
+  roomName: "",
   beds: [
     { name: "Single Bed", qty: 0 },
     { name: "Twin Bed", qty: 0 },
