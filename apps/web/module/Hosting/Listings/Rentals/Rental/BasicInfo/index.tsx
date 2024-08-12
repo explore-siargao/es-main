@@ -86,6 +86,7 @@ const BasicInfo = ({ pageType }: Prop) => {
               {...register("make", { required: true })}
             />
           ) : null}
+
           {watch("category") &&
           watch("category") !== E_Rental_Category.Bicycle ? (
             <Input
@@ -97,6 +98,7 @@ const BasicInfo = ({ pageType }: Prop) => {
               {...register("modelBadge", { required: true })}
             />
           ) : null}
+
           {watch("category") === E_Rental_Category.Car ? (
             <Select
               label="Body"
@@ -111,6 +113,7 @@ const BasicInfo = ({ pageType }: Prop) => {
               })}
             </Select>
           ) : null}
+
           {watch("category") &&
           watch("category") !== E_Rental_Category.Bicycle ? (
             <>
@@ -155,6 +158,18 @@ const BasicInfo = ({ pageType }: Prop) => {
                 })}
               </Select>
             </>
+          ) : null}
+
+          {watch("category") === E_Rental_Category.Motorbike ||
+          watch("category") === E_Rental_Category.Bicycle ? (
+            <Input
+              type="number"
+              id="qty"
+              label="Quantity"
+              required
+              disabled={isPending || isLoading}
+              {...register("qty", { required: true, valueAsNumber: true })}
+            />
           ) : null}
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">

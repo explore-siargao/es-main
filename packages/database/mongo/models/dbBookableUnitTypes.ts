@@ -1,15 +1,32 @@
 import mongoose, { Schema } from "mongoose"
 
+const bed = new Schema({
+  name: String,
+  qty: Number,
+})
+
 const bedRooms = new Schema({
-  bedRoomName: String,
-  bedRoomType: String,
+  roomName: String,
+  beds: [bed],
+})
+
+const livingRooms = new Schema({
+  roomName: String,
+  beds: [bed],
 })
 
 const bookableUnitTypes = new Schema({
   category: String,
   title: String,
-  description: String,
   totalSize: Number,
+  isHaveSharedBathRoom: {
+    type: String,
+    required: false,
+  },
+  isSmokingAllowed: {
+    type: String,
+    required: false,
+  },
   bed: String,
   unitPrice: {
     type: mongoose.Schema.ObjectId,
@@ -34,6 +51,18 @@ const bookableUnitTypes = new Schema({
   childrenIncluded: Number,
   bedRooms: {
     type: [bedRooms],
+    required: false,
+  },
+  livingRooms: {
+    type: [livingRooms],
+    required: false,
+  },
+  singleLivingRoom: {
+    type: bed,
+    required: false,
+  },
+  singleBedRoom: {
+    type: bed,
     required: false,
   },
   isMultiRoomUnit: {

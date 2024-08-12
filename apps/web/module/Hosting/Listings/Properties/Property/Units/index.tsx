@@ -10,6 +10,7 @@ import useGetPropertyById from "../../hooks/useGetPropertyById"
 import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
+import { E_Property_Category } from "./constants"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -88,7 +89,7 @@ const Units = ({ pageType }: Prop) => {
           </Typography>
         </Button>
       </Typography>
-      <UnitsTable />
+      <UnitsTable category={E_Property_Category.WholePlace} />
       {pageType === "setup" && (
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button size="sm" onClick={handleSave}>
