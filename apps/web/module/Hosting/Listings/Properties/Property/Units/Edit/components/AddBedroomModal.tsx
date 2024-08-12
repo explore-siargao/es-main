@@ -75,7 +75,7 @@ const AddBedroomModal = ({
   }, [isOpen, mode, selectedIndex, bedrooms])
   function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
-      bedRoomName: bedroom.bedRoomName,
+      roomName: bedroom.roomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
     }
   }
