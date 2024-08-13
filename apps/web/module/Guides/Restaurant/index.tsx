@@ -15,16 +15,19 @@ const RestaurantGuide = () => {
       lat: 9.8075389,
       long: 126.164634,
       name: "Lamari Bar & Restaurant",
+      cuisine: "Italian Pizza",
     },
     {
       lat: 9.7878741,
       long: 126.160532,
       name: "Kermit Siargao Surf Hotel & Restaurant",
+      cuisine: "Japanese Ramen",
     },
     {
       lat: 9.7917949,
       long: 126.0800644,
       name: "Bravo Restaurant",
+      cuisine: "Mexican  Pasta",
     },
   ]
 
@@ -52,7 +55,7 @@ const RestaurantGuide = () => {
   ]
 
   return (
-    <WidthWrapper width="small" className="mt-24 md: mt-36 lg:mt-44">
+    <WidthWrapper width="small" className="mt-24 md:mt-36 lg:mt-44">
       <GuideContent
         contentTitle="Restaurant, Cafe, Bars in Siargao"
         contentText={contentText}

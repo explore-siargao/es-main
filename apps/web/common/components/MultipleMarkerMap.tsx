@@ -18,6 +18,8 @@ interface MarkerLocation {
   lat: number
   long: number
   name: string
+  surfingLevel?: string
+  cuisine?: string
 }
 
 interface MultipleMarkerMapProps {
@@ -188,6 +190,12 @@ const MultipleMarkerMap = ({
                           ) : null}
                           <span className="mt-2 font-semibold">
                             {location.name}
+                          </span>
+                          <span>
+                            {location.cuisine ? location.cuisine : ""}
+                          </span>
+                          <span>
+                            {location.surfingLevel ? location.surfingLevel : ""}
                           </span>
                           <span className="mt-2 ">
                             {placeNames[index] || "Loading place name..."}

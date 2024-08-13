@@ -16,6 +16,7 @@ const SurfingGuide = () => {
       lat: 9.8137,
       long: 126.1651,
       name: "Cloud 9",
+      surfingLevel: "Beginner",
     },
   ]
 
@@ -24,26 +25,30 @@ const SurfingGuide = () => {
       imageKey: "1.jpg",
       title: "Cloud 9 Wave",
       link: "#",
+      surfingLevel: "Intermediate",
     },
     {
       imageKey: "2.jpg",
       title: "Surfer at Jacking Horse",
       link: "#",
+      surfingLevel: "Advanced",
     },
     {
       imageKey: "3.jpg",
       title: "Stimpy's Surf Spot",
       link: "#",
+      surfingLevel: "Beginner",
     },
     {
       imageKey: "5.jpg",
       title: "Rock Island Waves",
       link: "#",
+      surfingLevel: "Advanced",
     },
   ]
 
   return (
-    <WidthWrapper width="small" className="mt-24 md: mt-36 lg:mt-44">
+    <WidthWrapper width="small" className="mt-24 md:mt-36 lg:mt-44">
       <GuideContent
         contentTitle="Surfing in Siargao"
         contentText={contentText}

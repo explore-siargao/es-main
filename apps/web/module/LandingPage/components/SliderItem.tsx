@@ -7,23 +7,22 @@ type T_Props = {
   title: string
   subTitle?: string
   url?: string
+  isGuide: boolean
 }
 
-const SliderItem = ({ imageKey, title, subTitle, url }: T_Props) => {
+const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
   return (
-    <>
-      <Link href={url ?? "#"}>
-        <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
-          <Image src={imageKey} alt={title} layout="fill" objectFit="cover" />
-        </div>
-        <div className="mt-2 text-left">
-          <Typography variant="h4" fontWeight="semibold">
-            {title}
-          </Typography>
-          <Typography variant="h5">{subTitle}</Typography>
-        </div>
-      </Link>
-    </>
+    <Link href={url ?? "#"} target={isGuide ? "_blank" : "_self"}>
+      <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
+        <Image src={imageKey} alt={title} layout="fill" objectFit="cover" />
+      </div>
+      <div className="mt-2 text-left">
+        <Typography variant="h4" fontWeight="semibold">
+          {title}
+        </Typography>
+        <Typography variant="h5">{subTitle}</Typography>
+      </div>
+    </Link>
   )
 }
 

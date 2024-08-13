@@ -4,6 +4,6 @@ export interface IBed {
 }
 
 export interface IBedroom {
-  bedRoomName: string
+  roomName: string
   beds: IBed[]
 }

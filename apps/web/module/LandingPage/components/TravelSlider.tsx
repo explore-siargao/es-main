@@ -44,6 +44,8 @@ const TravelSlider = ({
             ...card,
             onClick: () => handleCardClick(card.url),
           }))}
+          isGuide={false}
+          itemsNumber={0}
         />
       </div>
     </div>
