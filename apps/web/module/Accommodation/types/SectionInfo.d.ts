@@ -11,6 +11,10 @@ export type T_Image = {
   updatedAt?: string
   fileKey?: string
   alt?: string
+  image?: {
+    url?: string
+    alt?: string
+  }
 }
 
 export type T_SectionInfoProps = {
@@ -22,6 +26,7 @@ export type T_ImagesProps = {
   openModal: () => void
   images: T_Image[]
   isViewModal: boolean
+  showThreeOnly?: boolean
 }
 
 export type T_ImageGalleryModalProps = {

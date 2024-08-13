@@ -15,4 +15,4 @@ const unitPrices = new Schema({
   deletedAt: Date,
 })
 
-export default mongoose.model("UnitPrice", unitPrices)
+export default mongoose.model("UnitPrices", unitPrices)

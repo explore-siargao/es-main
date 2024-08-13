@@ -7,9 +7,14 @@ import { MinusCircle, PlusCircle } from "lucide-react"
 interface GuestAddModalProps {
   isOpen: boolean
   onClose: () => void
+  maximumCapacity?: number
 }
 
-const GuestAddModal = ({ isOpen, onClose }: GuestAddModalProps) => {
+const GuestAddModal = ({
+  isOpen,
+  onClose,
+  maximumCapacity,
+}: GuestAddModalProps) => {
   const guest = useGuestAdd((state) => state.guest)
   const incrementGuest = useGuestAdd((state) => state.incrementGuest)
   const decrementGuest = useGuestAdd((state) => state.decrementGuest)
@@ -117,8 +122,8 @@ const GuestAddModal = ({ isOpen, onClose }: GuestAddModalProps) => {
           </div>
         </div>
         <Typography variant="h6" className="px-4 py-2">
-          This place has a maximum of 8 guests, not including infants. Pets
-          aren't allowed.
+          This place has a maximum of {maximumCapacity} guests, not including
+          infants. Pets aren't allowed.
         </Typography>
       </div>
     </ModalContainer>

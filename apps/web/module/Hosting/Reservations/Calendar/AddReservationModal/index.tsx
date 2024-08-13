@@ -4,7 +4,11 @@ import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
 import { useForm } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
-import { Category, Room, SelectedReservation } from "../../types/CalendarTable"
+import {
+  Category,
+  MotorCycle,
+  SelectedReservation,
+} from "../../types/CalendarTable"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
@@ -20,7 +24,7 @@ const AddReservationModal = ({
   data,
 }: IReservationCalendarModalProps) => {
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [filteredRooms, setFilteredRooms] = useState<Room[]>([])
+  const [filteredRooms, setFilteredRooms] = useState<MotorCycle[]>([])
 
   const handleSave = (data: any) => {
     const resetform = () => {
@@ -77,7 +81,7 @@ const AddReservationModal = ({
                 >
                   <Option value="">Select</Option>
                   {data &&
-                    data.categories.map((category: Category) => (
+                    data?.categories?.map((category: Category) => (
                       <Option key={category.name} value={category.name}>
                         {category.name}
                       </Option>
@@ -95,7 +99,7 @@ const AddReservationModal = ({
                   })}
                 >
                   <Option value="">Select</Option>
-                  {filteredRooms.map((room: Room) => (
+                  {filteredRooms.map((room: MotorCycle) => (
                     <Option key={room.abbr} value={room.abbr}>
                       {room.abbr}
                     </Option>

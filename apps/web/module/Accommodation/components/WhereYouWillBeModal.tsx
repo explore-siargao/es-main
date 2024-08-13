@@ -5,18 +5,23 @@ interface WhereYouWillBeModalProps {
   isOpen: boolean
   onClose: () => void
   center: [number, number]
+  locationDescription?: string
 }
 
 const WhereYouWillBeModal = ({
   isOpen,
   onClose,
   center,
+  locationDescription,
 }: WhereYouWillBeModalProps) => {
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose} size="full">
       <div className="md:grid grid-cols-12 h-[95vh]">
         <div className="md:col-span-4 lg:col-span-3 py-4 md:py-6">
-          <WhereYouWillBe title="Where you'll be" />
+          <WhereYouWillBe
+            title="Where you'll be"
+            locationDescription={locationDescription}
+          />
         </div>
         <div className="md:col-span-8 lg:col-span-9 justify-center items-center">
           <SpecificMap

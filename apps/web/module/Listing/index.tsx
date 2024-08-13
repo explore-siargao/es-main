@@ -10,7 +10,7 @@ export type BookingProps = {
   distance: string
   location: string
   date: string
-  price: string
+  price: number
   dayTime: string
   ratings: string
   isHearted: boolean

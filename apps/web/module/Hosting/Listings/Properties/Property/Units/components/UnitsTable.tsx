@@ -9,8 +9,15 @@ import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { T_Photo } from "@repo/contract"
 import { isArray } from "lodash"
+import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
+import { E_Property_Category } from "../constants"
+const numWords = require("num-words")
 
-const UnitsTable = () => {
+interface UnitsTableProps {
+  category?: string
+}
+
+const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { data, isPending } = useGetPropertyById(listingId)
@@ -46,30 +53,31 @@ const UnitsTable = () => {
     }),
     columnHelper.accessor("title", {
       header: "Name",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
+      cell: (context) => {
+        const numBedrooms = context.row.original.bedRooms
+          ? context.row.original.bedRooms.length
+          : 0
+        const value = context.getValue() || ""
+        const cleanValue = value.startsWith("Custom: ")
+          ? value.slice("Custom: ".length)
+          : value
+        return (
+          <Link
+            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+          >
+            <Typography variant="p">
+              {category === E_Property_Category.WholePlace
+                ? `${capitalizeFirstLetter(numWords(numBedrooms))}-bedroom ${cleanValue}`
+                : cleanValue}
+            </Typography>
+          </Link>
+        )
+      },
     }),
-    columnHelper.accessor("description", {
-      header: "Description",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original?.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
-    }),
+
     columnHelper.accessor("category", {
       header: "Type",
+      size: 400,
       cell: (context) => (
         <Link
           href={`/hosting/listings/properties/setup/${listingId}/units/${context.getValue().toLowerCase() + "s"}/${context.row.original?._id}/edit`}
