@@ -1,4 +1,4 @@
-"use client"
+import { useRouter } from "next/navigation"
 import { Typography } from "@/common/components/ui/Typography"
 import Slider from "./Slider"
 import { StaticImageData } from "next/image"
@@ -9,10 +9,8 @@ type TravelSliderProps = {
   groupCards: {
     imageKey: StaticImageData | string
     title: string
-    subTitle?: string
-    url?: string
+    url: string
   }[]
-  url?: string
 }
 
 const TravelSlider = ({
@@ -20,10 +18,11 @@ const TravelSlider = ({
   description,
   groupCards,
 }: TravelSliderProps) => {
-  const formattedGroupCards = groupCards.map((card) => ({
-    ...card,
-    subTitle: card.subTitle || "",
-  }))
+  const router = useRouter()
+
+  const handleCardClick = (url: string) => {
+    router.push(url)
+  }
 
   return (
     <div className="mb-5">
@@ -40,7 +39,12 @@ const TravelSlider = ({
         )}
       </div>
       <div>
-        <Slider cards={formattedGroupCards} />
+        <Slider
+          cards={groupCards.map((card) => ({
+            ...card,
+            onClick: () => handleCardClick(card.url),
+          }))}
+        />
       </div>
     </div>
   )
