@@ -20,8 +20,8 @@ module.exports = {
         destination: `${process.env.API_URL}/api/v2/:path*`,
       },
       {
-        source: "/api/posts/:path*",
-        destination: `${process.env.PAYLOAD_URL}/api/posts/:path*`,
+        source: "/api/locations/:path*",
+        destination: `${process.env.PAYLOAD_URL}/api/locations/:path*`,
       },
       {
         source: "/mock/v1/:path*",
