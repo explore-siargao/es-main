@@ -1,10 +1,10 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ListingItems from "./components/ListingItems"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import SideFilter from "./components/SideFilter"
-import formatCurrency from "@/common/helpers/formatCurrency"
 import { Typography } from "@/common/components/ui/Typography"
+import { useSearchParams } from "next/navigation"
 
 type T_Filter = {
   category: string
@@ -192,6 +192,10 @@ const filterDataByPayload = (
 }
 
 const ListingsPage = () => {
+  const searchParams = useSearchParams()
+  const category = searchParams.get("category")
+  const type = searchParams.get("type")
+
   const [filters, setFilters] = useState<T_Filter[]>([])
   const [budget, setBudget] = useState<{ min: number; max: number }>({
     min: 1000,
@@ -207,6 +211,12 @@ const ListingsPage = () => {
   }
 
   const filteredData = filterDataByPayload(dummyData, filters, budget)
+
+  useEffect(() => {
+    if (category && type) {
+      console.log(`Category: ${category}, Type: ${type}`)
+    }
+  }, [category, type])
 
   return (
     <WidthWrapper width="medium">

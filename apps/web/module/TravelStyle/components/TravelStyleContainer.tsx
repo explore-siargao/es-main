@@ -11,6 +11,7 @@ type T_Items = {
   imageKey: StaticImageData | string
   title: string
   description: string
+  type: string
 }
 
 const TravelStyleContainer = ({ title, items }: T_Props) => {
@@ -21,13 +22,15 @@ const TravelStyleContainer = ({ title, items }: T_Props) => {
           {title}
         </Typography>
       </div>
+
       <div className="grid grid-cols-4 gap-10">
         {items.map((item) => (
           <TravelStyleItem
+            key={item.title}
             imageKey={item.imageKey}
             title={item.title}
             description={item.description}
-            key={item.title}
+            type={item.type}
           />
         ))}
       </div>
