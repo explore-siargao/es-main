@@ -20,6 +20,14 @@ export type T_Image = {
 export type T_SectionInfoProps = {
   title: string
   images: T_Image[]
+  ratings?: number
+  reviews?: number
+  priceRangeLow?: number
+  priceRangeHigh?: number
+  location?: string
+  cuisine?: string
+  menus?: any
+  events?: any
 }
 
 export type T_ImagesProps = {
