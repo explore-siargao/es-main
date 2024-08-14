@@ -15,7 +15,7 @@ const ListingReviews = ({ letterCase, fontWeight }: T_ListingReviewsProps) => {
     <div className="mt-20 mb-14">
       <Typography
         variant="h1"
-        fontWeight={fontWeight ? fontWeight : "semibold"}
+        fontWeight={fontWeight || "semibold"}
         className={letterCase}
       >
         Reviews

@@ -125,9 +125,8 @@ export const RestaurantGuide = () => {
 
   return (
     <WidthWrapper width="small" className="mt-10">
-      {guideDataLoading ? (
-        <Spinner variant="primary" middle />
-      ) : guideData && !guideDataLoading ? (
+      {guideDataLoading && <Spinner variant="primary" middle />}
+      {!guideDataLoading && guideData && (
         <>
           <SectionInfo
             images={guideData.hero.images}
@@ -157,7 +156,6 @@ export const RestaurantGuide = () => {
                 </div>
                 <Separator orientation="horizontal" className="bg-gray-300" />
                 <ChefsNote chefNote={guideData.content.chefNote} />
-
                 <Separator orientation="horizontal" className="bg-gray-300" />
                 <div className="py-8">
                   <AmenityList amenities={guideData.content.amenities} />
@@ -181,14 +179,12 @@ export const RestaurantGuide = () => {
               </div>
             </div>
           </div>
-
           <Separator
             orientation="horizontal"
             className="bg-gray-300"
             id="#reviews"
           />
           <ListingReviews letterCase="uppercase" fontWeight="bold" />
-
           <Separator orientation="horizontal" className="bg-gray-300" />
           <div>
             <div className="py-8">
@@ -197,6 +193,7 @@ export const RestaurantGuide = () => {
                 {guideData.content.nearbyAccommodations.map(
                   (data: any, index: number) => (
                     <NearbyAccommodation
+                      key={"accommodation-" + index}
                       name={data.accommodationName}
                       image={data.accommodationImage.url}
                       url={data.accommodationLink}
@@ -208,7 +205,8 @@ export const RestaurantGuide = () => {
             </div>
           </div>
         </>
-      ) : (
+      )}
+      {!guideDataLoading && !guideData && (
         <Typography>No data was found.</Typography>
       )}
     </WidthWrapper>

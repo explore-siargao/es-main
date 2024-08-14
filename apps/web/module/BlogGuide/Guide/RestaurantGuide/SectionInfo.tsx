@@ -4,12 +4,11 @@ import { Typography } from "@/common/components/ui/Typography"
 import ImageGallery from "@/module/Accommodation/components/ImageGallery"
 import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
 import { T_SectionInfoProps } from "@/module/Accommodation/types/SectionInfo"
-import { Star, StarIcon } from "lucide-react"
+import { StarIcon } from "lucide-react"
 import ShareSave from "./components/ShareSave"
 import Link from "next/link"
 import MenuModal from "./components/modals/MenuModal"
 import EventsModal from "./components/modals/EventsModal"
-import PesoSign from "@/common/components/PesoSign"
 import formatCurrency from "@/common/helpers/formatCurrency"
 
 const SectionInfo = ({

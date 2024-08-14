@@ -8,15 +8,17 @@ type T_EventsModalProps = {
 }
 const EventsModal = ({ isOpen, onClose, events }: T_EventsModalProps) => {
   return (
-    <ModalContainer isOpen={isOpen} onClose={onClose} size="sm">
-      <div className="px-12 py-6">
-        <Typography variant="h2" className="text-center" fontWeight="semibold">
-          Specials and Events
-        </Typography>
+    <ModalContainer
+      isOpen={isOpen}
+      onClose={onClose}
+      size="sm"
+      title="Specials and Events"
+    >
+      <div className="px-12 pb-6">
         <div className="mt-6 space-y-6">
           {events ? (
             events.map((item: any, index: number) => (
-              <div key={index}>
+              <div key={"events-" + index}>
                 <Typography variant="h4" fontWeight="semibold" className="mb-1">
                   {item.eventTitle}
                 </Typography>

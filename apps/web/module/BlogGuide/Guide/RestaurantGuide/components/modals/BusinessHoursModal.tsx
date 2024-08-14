@@ -19,14 +19,16 @@ const BusinessHoursModal = ({
   businessHours,
 }: T_BusinessHoursModalProps) => {
   return (
-    <ModalContainer isOpen={isOpen} onClose={onClose} size="sm">
-      <div className="px-12 py-6">
-        <Typography variant="h2" className="text-center" fontWeight="semibold">
-          Business Hours
-        </Typography>
+    <ModalContainer
+      isOpen={isOpen}
+      onClose={onClose}
+      size="sm"
+      title="Business Hours"
+    >
+      <div className="px-12 pb-6">
         <div className="mt-6 space-y-4">
           {businessHours.map((item: any, index: number) => (
-            <div className="flex items-center" key={index}>
+            <div className="flex items-center" key={"hours-" + index}>
               <Typography className="w-28">{item.day}:</Typography>
               {item.open && item.closes ? (
                 <div className="flex space-x-4">

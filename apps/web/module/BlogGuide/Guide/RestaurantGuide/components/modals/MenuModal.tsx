@@ -9,16 +9,13 @@ type T_MenuModalProps = {
 }
 const MenuModal = ({ isOpen, onClose, menus }: T_MenuModalProps) => {
   return (
-    <ModalContainer isOpen={isOpen} onClose={onClose} size="md">
-      <div className="px-12 py-6">
-        <Typography variant="h2" className="text-center" fontWeight="semibold">
-          Menu
-        </Typography>
+    <ModalContainer isOpen={isOpen} onClose={onClose} size="md" title="Menu">
+      <div className="px-12 pb-6">
         <div className="mt-4 space-y-6">
           {menus ? (
             menus.map((item: any, index: number) => (
               <Image
-                key={index}
+                key={"menu-image-" + index}
                 src={item.menu.url}
                 alt={item.menu.alt}
                 width={1200}
