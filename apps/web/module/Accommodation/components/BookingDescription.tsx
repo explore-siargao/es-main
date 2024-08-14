@@ -2,6 +2,7 @@ import { Button } from "@/common/components/ui/Button"
 import ModalAboutTitleDescription from "./modals/ModalAboutTitleDescription"
 import { useState } from "react"
 import { T_BookingDescriptionProps } from "../types/BookingDescription"
+import { Typography } from "@/common/components/ui/Typography"
 
 const BookingDescription = ({
   generalDescription,

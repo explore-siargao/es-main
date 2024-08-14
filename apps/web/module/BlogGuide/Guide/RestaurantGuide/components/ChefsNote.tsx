@@ -3,18 +3,18 @@ import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 
 type T_Prop = {
-  note: string
+  chefNote: string
 }
 
-const ChefsNote = ({ note }: T_Prop) => {
+const ChefsNote = ({ chefNote }: T_Prop) => {
   return (
-    <div className="my-14">
-      <Typography variant="h1" fontWeight="semibold">
-        Chef's Note
+    <div className="my-8">
+      <Typography variant="h1" fontWeight="bold" className="uppercase">
+        From the Chef
       </Typography>
       <div className="divide-y">
         <div className="py-4">
-          <Typography variant="h4">{note}</Typography>
+          <Typography variant="h4">{chefNote}</Typography>
         </div>
       </div>
     </div>

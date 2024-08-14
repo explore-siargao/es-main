@@ -1,46 +1,17 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import { StarIcon } from "lucide-react"
 import BookingDescription from "@/module/Accommodation/components/BookingDescription"
 import PlaceOffers from "@/module/Accommodation/components/PlaceOffers"
-import UserReviews from "@/module/Accommodation/components/Reviews/UserReviews"
 import SectionInfo from "./SectionInfo"
 import RestaurantLocation from "./RestaurantLocation"
-import Image from "next/image"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
-import OpeningHours from "./components/OpeningHours"
-import SocialMediaContacts from "./components/Contacts"
-import PriceLevel from "./components/PriceLevel"
-import OffersCuisine from "./components/OffersCuisine"
 import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
-import ChefsNote from "./components/ChefsNote"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Spinner } from "@/common/components/ui/Spinner"
-
-const imageGallery = [
-  {
-    fileKey: "1.jpg",
-    alt: "Image 1",
-  },
-  {
-    fileKey: "2.jpg",
-    alt: "Image 2",
-  },
-  {
-    fileKey: "3.jpg",
-    alt: "Image 3",
-  },
-  {
-    fileKey: "4.jpg",
-    alt: "Image 4",
-  },
-  {
-    fileKey: "5.jpg",
-    alt: "Image 5",
-  },
-]
+import NearbyAccommodation from "./components/NearbyAccommodation"
+import ChefsNote from "./components/ChefsNote"
 
 const offers = [
   {
@@ -204,57 +175,6 @@ export const userReviews = [
   },
 ]
 
-const coordinates = [9.802, 126.1366]
-
-const sampleSchedules = [
-  { day: "Monday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Tuesday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Wednesday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Thursday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Friday", open: "09:00 AM", close: "08:00 PM" },
-  { day: "Saturday", open: "10:00 AM", close: "08:00 PM" },
-  { day: "Sunday", open: "10:00 AM", close: "06:00 PM" },
-]
-
-const sampleSocialMediaData = [
-  {
-    icon: "facebook",
-    description: "Facebook",
-    isNotIncluded: false,
-    link: "https://facebook.com",
-  },
-  {
-    icon: "twitter",
-    description: "Twitter",
-    isNotIncluded: false,
-    link: "https://twitter.com",
-  },
-  {
-    icon: "instagram",
-    description: "Instagram",
-    isNotIncluded: false,
-    link: "https://instagram.com",
-  },
-]
-
-const priceLevel = [
-  { level: 2, product: "Matcha Latte" },
-  { level: 4, product: "Mocha Latte" },
-  { level: 1, product: "Espresso" },
-  { level: 3, product: "Cappuccino" },
-  { level: 2, product: "Americano" },
-  { level: 4, product: "Flat White" },
-]
-
-const offersCuisine = [
-  { icon: "check", description: "Vegetarian options", isNotIncluded: false },
-  { icon: "check", description: "Vegan options", isNotIncluded: false },
-  { icon: "check", description: "Gluten-free options", isNotIncluded: false },
-  { icon: "check", description: "Dairy-free options", isNotIncluded: false },
-  { icon: "check", description: "Halal options", isNotIncluded: false },
-  { icon: "check", description: "Kosher options", isNotIncluded: false },
-]
-
 export const RestaurantGuide = () => {
   const params = useParams()
   const guideName = params.guideName
@@ -285,18 +205,24 @@ export const RestaurantGuide = () => {
     getGuideData()
   }, [])
 
-  useEffect(() => {
-    console.log(guideData)
-  }, [guideData])
-
   return (
     <WidthWrapper width="small" className="mt-10">
       {guideDataLoading ? (
         <Spinner variant="primary" middle />
       ) : guideData && !guideDataLoading ? (
         <>
-          <h1 className="text-2xl font-bold mb-4">RESTAURANT GUIDE</h1>
-          <SectionInfo images={guideData.hero.images} title={guideData.title} />
+          <SectionInfo
+            images={guideData.hero.images}
+            title={guideData.title}
+            ratings={ratingSummary.ratings}
+            reviews={ratingSummary.reviews}
+            priceRangeLow={guideData.hero.priceRangeLow}
+            priceRangeHigh={guideData.hero.priceRangeHigh}
+            location={guideData.locations.address}
+            cuisine={guideData.hero.cuisine}
+            menus={guideData.hero.menus}
+            events={guideData.hero.specialAndEvents}
+          />
           <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
             <div className="flex-1 md:w-1/2 2xl:w-full">
               <div>
@@ -304,44 +230,27 @@ export const RestaurantGuide = () => {
                   <h1 className="text-2xl font-bold">ABOUT</h1>
                   <div>
                     <BookingDescription
-                      generalDescription={
-                        guideData.about.aboutPlace[0].children[0].text
-                      }
-                      aboutSpace={
-                        guideData.about.aboutSpace[0].children[0].text
-                      }
-                      aboutGuestAccess={
-                        guideData.about.aboutGuestAccess[0].children[0].text
-                      }
-                      otherThingsNote={
-                        guideData.about.otherThings[0].children[0].text
-                      }
+                      generalDescription={guideData.about.aboutPlace}
+                      aboutSpace={guideData.about.aboutSpace}
+                      aboutGuestAccess={guideData.about.aboutGuestAccess}
+                      otherThingsNote={guideData.about.otherThings}
                     />
                   </div>
                 </div>
                 <Separator orientation="horizontal" className="bg-gray-300" />
-                <div className="py-6 ">
-                  <PlaceOffers offers={offers} group={group} />
-                </div>
+                <ChefsNote chefNote={guideData.about.chefNote} />
+
                 <Separator orientation="horizontal" className="bg-gray-300" />
-                <div className="py-6 ">
-                  <PriceLevel priceLevel={guideData.content.priceLevels} />
-                </div>
-                <Separator orientation="horizontal" className="bg-gray-300" />
-                <div className="py-6 ">
-                  <SocialMediaContacts contacts={sampleSocialMediaData} />
-                </div>
-                <Separator orientation="horizontal" className="bg-gray-300" />
-                <div className="py-6 ">
-                  <OpeningHours schedules={sampleSchedules} />
-                </div>
-                <Separator orientation="horizontal" className="bg-gray-300" />
-                <div className="py-6 ">
-                  <OffersCuisine offers={offersCuisine} />
+                <div className="py-6">
+                  <PlaceOffers
+                    offers={offers}
+                    group={group}
+                    title="AMENITIES AND MORE"
+                  />
                 </div>
               </div>
             </div>
-            <div className="md:w-96 md:relative">
+            <div className="md:w-96 md:relative" id="location">
               <div className="md:sticky md:top-6">
                 <RestaurantLocation
                   coordinates={[
@@ -351,64 +260,36 @@ export const RestaurantGuide = () => {
                   address={guideData.locations.address}
                   phoneNumber={guideData.locations.phoneNumber}
                   emailAddress={guideData.locations.emailAddress}
+                  businessHours={guideData.locations.businessHours}
+                  facebookLink={guideData.locations.facebookLink}
+                  instagramLink={guideData.locations.instagramLink}
                 />
               </div>
             </div>
           </div>
 
-          <Separator orientation="horizontal" className="bg-gray-300" />
-          <ListingReviews />
-
-          <Separator orientation="horizontal" className="bg-gray-300" />
-          <ChefsNote note={guideData.content.chefNote} />
+          <Separator
+            orientation="horizontal"
+            className="bg-gray-300"
+            id="#reviews"
+          />
+          <ListingReviews letterCase="uppercase" fontWeight="bold" />
 
           <Separator orientation="horizontal" className="bg-gray-300" />
           <div>
             <div className="py-8">
               <h1 className="text-2xl font-bold">ACCOMMODATION NEARBY</h1>
               <div className="w-full flex gap-8 mt-8">
-                <div className="w-full flex flex-col gap-2">
-                  <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                    <Image
-                      src={"/assets/1.jpg"}
-                      className="h-full w-full object-cover"
-                      width={500}
-                      height={500}
-                      alt=""
+                {guideData.content.nearbyAccommodations.map(
+                  (data: any, index: number) => (
+                    <NearbyAccommodation
+                      name={data.accommodationName}
+                      image={data.accommodationImage.url}
+                      url={data.accommodationLink}
+                      index={index}
                     />
-                  </div>
-                  <Typography variant="h3" fontWeight="semibold">
-                    BLISS Restaurant Siargao
-                  </Typography>
-                </div>
-                <div className="w-full flex flex-col gap-2">
-                  <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                    <Image
-                      src={"/assets/1.jpg"}
-                      className="h-full w-full object-cover"
-                      width={500}
-                      height={500}
-                      alt=""
-                    />
-                  </div>
-                  <Typography variant="h3" fontWeight="semibold">
-                    Abukay
-                  </Typography>
-                </div>
-                <div className="w-full flex flex-col gap-2">
-                  <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                    <Image
-                      src={"/assets/1.jpg"}
-                      className="h-full w-full object-cover"
-                      width={500}
-                      height={500}
-                      alt=""
-                    />
-                  </div>
-                  <Typography variant="h3" fontWeight="semibold">
-                    Ocean 101 Beach Resort Restaurant
-                  </Typography>
-                </div>
+                  )
+                )}
               </div>
             </div>
           </div>

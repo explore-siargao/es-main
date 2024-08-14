@@ -4,14 +4,34 @@ import { Typography } from "@/common/components/ui/Typography"
 import ImageGallery from "@/module/Accommodation/components/ImageGallery"
 import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
 import { T_SectionInfoProps } from "@/module/Accommodation/types/SectionInfo"
-import { Star } from "lucide-react"
+import { Star, StarIcon } from "lucide-react"
 import ShareSave from "./components/ShareSave"
+import Link from "next/link"
+import MenuModal from "./components/modals/MenuModal"
+import EventsModal from "./components/modals/EventsModal"
+import PesoSign from "@/common/components/PesoSign"
+import formatCurrency from "@/common/helpers/formatCurrency"
 
-const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
+const SectionInfo = ({
+  title,
+  images,
+  ratings,
+  reviews,
+  priceRangeLow,
+  priceRangeHigh,
+  location,
+  cuisine,
+  menus,
+  events,
+}: T_SectionInfoProps) => {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const openModal = () => {
     setGalleryModalOpen(true)
   }
+
+  const [menuModalOpen, setMenuModalOpen] = useState(false)
+  const [eventModalOpen, setEventModalOpen] = useState(false)
+
   return (
     <>
       <div className="justify-between md:flex text-start items-center">
@@ -22,6 +42,46 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
         </div>
         <ShareSave />
       </div>
+      <div className="flex items-center space-x-3 mt-2">
+        <Link href="#reviews">
+          <div className="flex items-center space-x-1.5">
+            <StarIcon className="h-3 w-3" fill="#000" />
+            <Typography>
+              {ratings} ({reviews}{" "}
+              {
+                // @ts-ignore
+                reviews <= 1 ? "review" : "reviews"
+              }
+              )
+            </Typography>
+          </div>
+        </Link>
+        <Typography variant="h6">&#8226;</Typography>
+        <Link href="#location">
+          <Typography>{location}</Typography>
+        </Link>
+        <Typography variant="h6">&#8226;</Typography>
+        <Typography>
+          {
+            // @ts-ignore
+            formatCurrency(priceRangeLow, "Philippines")
+          }{" "}
+          -{" "}
+          {
+            // @ts-ignore
+            formatCurrency(priceRangeHigh, "Philippines")
+          }
+        </Typography>
+        <Typography variant="h6">&#8226;</Typography>
+        <Typography>{cuisine}</Typography>
+        <Typography variant="h6">&#8226;</Typography>
+        <button onClick={() => setMenuModalOpen(true)}>Menu</button>
+        <Typography variant="h6">&#8226;</Typography>
+        <button onClick={() => setEventModalOpen(true)}>
+          <Typography>Specials and Events</Typography>
+        </button>
+      </div>
+
       <div className="my-6">
         <ImageGallery
           images={images}
@@ -33,6 +93,16 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
         images={images}
         isOpen={galleryModalOpen}
         onClose={() => setGalleryModalOpen(false)}
+      />
+      <MenuModal
+        isOpen={menuModalOpen}
+        onClose={() => setMenuModalOpen(false)}
+        menus={menus}
+      />
+      <EventsModal
+        isOpen={eventModalOpen}
+        onClose={() => setEventModalOpen(false)}
+        events={events}
       />
     </>
   )
