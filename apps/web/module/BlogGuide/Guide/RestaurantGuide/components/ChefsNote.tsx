@@ -8,7 +8,7 @@ type T_Prop = {
 
 const ChefsNote = ({ chefNote }: T_Prop) => {
   return (
-    <div className="my-8">
+    <div className="mt-[31px] mb-7">
       <Typography variant="h1" fontWeight="bold" className="uppercase">
         From the Chef
       </Typography>

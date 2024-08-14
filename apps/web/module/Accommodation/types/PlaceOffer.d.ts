@@ -31,5 +31,4 @@ export type T_OfferModal = {
 export type T_PlaceOfferProps = {
   offers: T_Offer[]
   group?: T_OfferModal[]
-  title?: string
 }

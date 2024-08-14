@@ -6,7 +6,7 @@ import PlaceOfferModal from "../../Listing/components/modals/PlaceOfferModal"
 import { T_Offer, T_PlaceOfferProps } from "../types/PlaceOffer"
 import { iconMap } from "@/common/helpers/iconMap"
 
-const PlaceOffers = ({ offers, group, title }: T_PlaceOfferProps) => {
+const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
   const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
 
   const getCategoryIcon = (
@@ -60,7 +60,7 @@ const PlaceOffers = ({ offers, group, title }: T_PlaceOfferProps) => {
 
   return (
     <>
-      <TitleSection size="lg" title={title ? title : "What this place offers"}>
+      <TitleSection size="lg" title="What this place offers">
         <div className="mb-5"></div>
         <div className="grid grid-cols-2 gap-4">
           <ul className="mb-2">

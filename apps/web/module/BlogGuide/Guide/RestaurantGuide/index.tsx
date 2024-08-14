@@ -1,7 +1,6 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import BookingDescription from "@/module/Accommodation/components/BookingDescription"
-import PlaceOffers from "@/module/Accommodation/components/PlaceOffers"
 import SectionInfo from "./SectionInfo"
 import RestaurantLocation from "./RestaurantLocation"
 import { Separator } from "@/common/components/ui/Separator"
@@ -12,96 +11,7 @@ import { useEffect, useState } from "react"
 import { Spinner } from "@/common/components/ui/Spinner"
 import NearbyAccommodation from "./components/NearbyAccommodation"
 import ChefsNote from "./components/ChefsNote"
-
-const offers = [
-  {
-    icon: "check",
-    category: "",
-    facility: "WiFi",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "Free street parking",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "No smoking",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "Smoke alarm",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "Bed",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "Angry people",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "Alarm clock",
-    isSelected: true,
-  },
-  {
-    icon: "check",
-    category: "",
-    facility: "No bugs",
-    isSelected: true,
-  },
-]
-
-const group = [
-  {
-    title: "Entertainment",
-    offers: [
-      { description: "WiFi", icon: "wifi", isNotIncluded: false },
-      {
-        description: "Free street parking",
-        icon: "wifi",
-        isNotIncluded: false,
-      },
-    ],
-  },
-  {
-    title: "Bedroom and laundry",
-    offers: [
-      { description: "Bed", icon: "wifi", isNotIncluded: false },
-      { description: "Angry people", icon: "wifi", isNotIncluded: false },
-    ],
-  },
-  {
-    title: "Family",
-    offers: [
-      { description: "Alarm", icon: "wifi", isNotIncluded: false },
-      { description: "Smoke alarm", icon: "wifi", isNotIncluded: false },
-    ],
-  },
-  {
-    title: "Not Included",
-    offers: [
-      { description: "Bug", icon: "wifi", isNotIncluded: true },
-      {
-        description: "Cigarette off",
-        icon: "wifi",
-        isNotIncluded: true,
-      },
-    ],
-  },
-]
+import AmenityList from "./components/AmenityList"
 
 export const ratingSummary = {
   ratings: 5,
@@ -246,15 +156,11 @@ export const RestaurantGuide = () => {
                   </div>
                 </div>
                 <Separator orientation="horizontal" className="bg-gray-300" />
-                <ChefsNote chefNote={guideData.about.chefNote} />
+                <ChefsNote chefNote={guideData.content.chefNote} />
 
                 <Separator orientation="horizontal" className="bg-gray-300" />
-                <div className="py-6">
-                  <PlaceOffers
-                    offers={offers}
-                    group={group}
-                    title="AMENITIES AND MORE"
-                  />
+                <div className="py-8">
+                  <AmenityList amenities={guideData.content.amenities} />
                 </div>
               </div>
             </div>
