@@ -356,9 +356,7 @@ const BikeCalendarTable = () => {
                                 <Button
                                   size={"icon"}
                                   variant={"link"}
-                                  onClick={() =>
-                                    handleEditRoom(bicycle.abbr)
-                                  }
+                                  onClick={() => handleEditRoom(bicycle.abbr)}
                                 >
                                   <Edit3 className="text-gray-500 w-5" />
                                 </Button>
