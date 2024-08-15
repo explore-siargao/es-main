@@ -26,7 +26,7 @@ import AddReservationModal from "../AddReservationModal"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
 
-const RentalsCalendarTable = () => {
+const MotorCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -443,4 +443,4 @@ const RentalsCalendarTable = () => {
   )
 }
 
-export default RentalsCalendarTable
+export default MotorCalendarTable
