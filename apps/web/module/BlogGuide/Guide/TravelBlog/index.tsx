@@ -5,20 +5,18 @@ import React, { useEffect, useState } from "react"
 import { Separator } from "@/common/components/ui/Separator"
 import TravelImages from "./TravelImages"
 import PopularGuides from "./PopularGuides"
-import TravelChecklist from "./TravelChecklist"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
-import OtherContents from "./OtherContents"
 import serialize from "./components/RichText/serialize"
 
 const TravelGuideContent = ({ guideData }: { guideData: any }) => {
   return (
-    <div className="mt-10">
-      <div className="py-8 grid lg:grid-cols-5">
-        <div className="lg:col-span-4 lg:mr-20 mr-10 space-y-10">
+    <div className="mt-2">
+      <div className="py-8 flex">
+        <div className="lg:mr-20 mr-10 space-y-10">
           <TravelImages
-            title={guideData?.title}
-            images={guideData?.hero?.images}
+            title={guideData.title}
+            images={guideData.hero.images}
           />
           <div className="prose max-w-full">
             {serialize(guideData?.content?.mainContent)}
@@ -36,7 +34,7 @@ const TravelGuideContent = ({ guideData }: { guideData: any }) => {
                   className="mb-5 bg-gray-300"
                 />
                 <ul className="grid list-disc ml-5 space-y-5">
-                  {guideData?.sideContent?.pageSummary.map(
+                  {guideData.sideContent.pageSummary.map(
                     (note: any, index: number) => (
                       <li key={index}>{note.item}</li>
                     )

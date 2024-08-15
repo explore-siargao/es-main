@@ -30,6 +30,7 @@ function TravelBlog({ title, images }: T_Props) {
           images={images}
           openModal={openModal}
           isViewModal={true}
+          isRoundedEdge={true}
         />
       </div>
       <ImageGalleryModal
