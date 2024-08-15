@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 
 type T_Requirement = {
-  item: string;
-};
+  item: string
+}
 
 type T_Props = {
-  readonly requirements: T_Requirement[];
-};
+  readonly requirements: T_Requirement[]
+}
 
 function TravelChecklist({ requirements }: T_Props) {
   return (
@@ -18,7 +18,7 @@ function TravelChecklist({ requirements }: T_Props) {
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
-export default TravelChecklist;
+export default TravelChecklist

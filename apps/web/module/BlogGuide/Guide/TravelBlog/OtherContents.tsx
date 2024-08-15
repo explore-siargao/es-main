@@ -1,17 +1,17 @@
-import React from "react";
+import React from "react"
 
 type T_TopThingsToDo = {
-  item: string;
-};
+  item: string
+}
 
 type T_FoodNotes = {
-  item: string;
-};
+  item: string
+}
 
 type T_Props = {
-  readonly thingsToDo: T_TopThingsToDo[];
-  readonly foodNotes: T_FoodNotes[];
-};
+  readonly thingsToDo: T_TopThingsToDo[]
+  readonly foodNotes: T_FoodNotes[]
+}
 
 function OtherContents({ thingsToDo, foodNotes }: T_Props) {
   return (
@@ -30,7 +30,7 @@ function OtherContents({ thingsToDo, foodNotes }: T_Props) {
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
-export default OtherContents;
+export default OtherContents
