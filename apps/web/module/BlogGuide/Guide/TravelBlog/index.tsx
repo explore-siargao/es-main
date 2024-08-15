@@ -9,17 +9,20 @@ import TravelChecklist from "./TravelChecklist"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 import OtherContents from "./OtherContents"
+import serialize from "./components/RichText/serialize"
 
 const TravelGuideContent = ({ guideData }: { guideData: any }) => {
   return (
     <div className="mt-10">
       <div className="py-8 grid lg:grid-cols-5">
         <div className="lg:col-span-4 lg:mr-20 mr-10 space-y-10">
-          <TravelImages title={guideData?.title} images={guideData?.hero?.images} guideText={guideData?.hero?.guide[0]?.children[0]?.text} />
-          <Separator orientation="horizontal" className="my-10 bg-gray-300" />
-          <TravelChecklist requirements={guideData?.content?.requirements} />
-          <Separator orientation="horizontal" className="my-10 bg-gray-300" />
-          <OtherContents thingsToDo={guideData?.content?.thingsToDo} foodNotes={guideData?.content?.foodNotes} />
+          <TravelImages
+            title={guideData?.title}
+            images={guideData?.hero?.images}
+          />
+          <div className="prose max-w-full">
+            {serialize(guideData?.content?.mainContent)}
+          </div>
         </div>
 
         <div>
@@ -33,9 +36,11 @@ const TravelGuideContent = ({ guideData }: { guideData: any }) => {
                   className="mb-5 bg-gray-300"
                 />
                 <ul className="grid list-disc ml-5 space-y-5">
-                {guideData?.content?.thingsToDo.map((note:any, index: number) => (
-                    <li key={index}>{note.item}</li>
-                  ))}
+                  {guideData?.sideContent?.pageSummary.map(
+                    (note: any, index: number) => (
+                      <li key={index}>{note.item}</li>
+                    )
+                  )}
                 </ul>
               </div>
             </div>
@@ -44,7 +49,6 @@ const TravelGuideContent = ({ guideData }: { guideData: any }) => {
       </div>
     </div>
   )
-
 }
 function TravelBlog() {
   const params = useParams()
@@ -69,14 +73,13 @@ function TravelBlog() {
       setTravelDataLoading(false)
     }
   }
- 
 
   useEffect(() => {
     getTravelCms()
   }, [])
 
   console.log(travelData)
-  
+
   let content
 
   if (travelDataLoading) {
