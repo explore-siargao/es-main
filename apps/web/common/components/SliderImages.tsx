@@ -15,7 +15,7 @@ interface SliderProps {
 }
 
 const Slider = ({ images }: SliderProps) => {
-  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
 
   return (
     <>
@@ -64,7 +64,7 @@ const Slider = ({ images }: SliderProps) => {
               <img
                 width={300}
                 height={300}
-                src={image.fileKey ? `/assets/${image.fileKey}` :  image.url}
+                src={image.fileKey ? `/assets/${image.fileKey}` : image.url}
                 className="block h-full w-full object-cover"
                 alt={image.alt || ""}
               />
@@ -74,30 +74,29 @@ const Slider = ({ images }: SliderProps) => {
       </Swiper>
 
       <Swiper
-  onSwiper={setThumbsSwiper}
-  loop={true}
-  spaceBetween={10}
-  slidesPerView={4}
-  freeMode={true}
-  watchSlidesProgress={true}
-  modules={[FreeMode, Thumbs]}
-  className="justify-center items-center w-1/2 my-5 rounded-lg"
->
-  {images.map((image) => (
-    <SwiperSlide key={image.fileKey ?? image.url}>
-      <div className="flex justify-center items-center">
-        <img
-          src={image.fileKey ? `/assets/${image.fileKey}` : image.url}
-         className="w-full h-40 object-cover rounded-lg"
-          alt={image.alt || ""}
-        />
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
-
+        onSwiper={setThumbsSwiper}
+        loop={true}
+        spaceBetween={10}
+        slidesPerView={4}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Thumbs]}
+        className="justify-center items-center w-1/2 my-5 rounded-lg"
+      >
+        {images.map((image) => (
+          <SwiperSlide key={image.fileKey ?? image.url}>
+            <div className="flex justify-center items-center">
+              <img
+                src={image.fileKey ? `/assets/${image.fileKey}` : image.url}
+                className="w-full h-40 object-cover rounded-lg"
+                alt={image.alt || ""}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </>
-  );
+  )
 }
 
-export default Slider;
+export default Slider
