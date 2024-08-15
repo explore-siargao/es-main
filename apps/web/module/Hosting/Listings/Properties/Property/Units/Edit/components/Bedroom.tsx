@@ -44,7 +44,7 @@ const Bedroom = ({ unitType }: T_Prop) => {
                       </span>
                     ))}
                 </div>
-                {unitType !== "Studio" && (
+                {unitType === "Studio" && (
                   <div className="flex items-center">
                     <Button
                       type="button"

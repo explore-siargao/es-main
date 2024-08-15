@@ -36,18 +36,35 @@ import { useBedroomStore } from "./store/useBedroomStore"
 import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
 import { IBedroom } from "../types"
 import { Option, Select } from "@/common/components/ui/Select"
+import { RadioInput } from "@/module/Hosting/Listings/Activities/Activity/Inclusions"
+import Livingroom from "./components/Livingroom"
+import { useLivingroomStore } from "./store/useLivingroomStore"
 
 type T_WholePlaceUnit = {
-  title: string
-  bedCount: number
-  bedRooms: IBedroom[]
-  size: number
-  squareFoot: number
-  bathrooms: number
-  typeCount: number
-  amenities: T_Property_Amenity[]
-  exactUnitCount: number
+  title: string;
+  bedCount: number;
+  bedRooms: IBedroom[];
+  size: number;
+  squareFoot: number;
+  bathrooms: number;
+  typeCount: number;
+  amenities: T_Property_Amenity[];
+  exactUnitCount: number;
+  livingRoom: IBedroom[];
+};
+
+interface IWholePlaceBasicInfo {
+  numBathRooms: number;
+  title: string;
+  totalSize: number;
+  qty: number;
+  bedRooms: IBedroom[];
+  livingRooms: IBedroom[];
+  singleBedRoom: { name: string; qty: number };
+  singleLivingRoom: { name: string; qty: number };
 }
+
+
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -62,6 +79,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
+  const [livingroom, setLivingroom] = useState<IBedroom[]>([])
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
@@ -103,6 +121,18 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const amenities = useSelectAmenityStore((state) => state.amenities)
   const { register, handleSubmit, setValue } = useForm<T_WholePlaceUnit>()
+  const livingroomData = useLivingroomStore((state) => state.livingroom)
+  const setLivingroomData = useLivingroomStore(
+    (state) => state.setInitialLivingrooms
+  )
+  const [hasSleepingSpaces, setHasSleepingSpaces] = useState<string>("no")
+
+  const handleUpdateLivingrooms = (updatedLivingroom: IBedroom[]) => {
+    setLivingroomData(updatedLivingroom);
+  };
+  
+  
+
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
@@ -154,76 +184,91 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
-    formData.amenities = amenities
+    formData.amenities = amenities;
+  
     if (formData.size <= 0) {
-      toast.error("Please fill total size count field")
-      return
+      toast.error("Please fill total size count field");
+      return;
     }
-
+  
     if (bedrooms.length <= 0) {
-      toast.error("Please fill out bedroom/space count field")
-      return
+      toast.error("Please fill out bedroom/space count field");
+      return;
     }
+  
     if (bathroomCount <= 0) {
-      toast.error("Please fill out bathroom count field")
-      return
+      toast.error("Please fill out bathroom count field");
+      return;
     }
-
+  
     try {
-      if ((bedrooms.length as number) > 0) {
-        setIsSavings(true)
-        formData.amenities = amenities
-        formData.bedRooms = bedrooms
+      if (bedrooms.length > 0) {
+        setIsSavings(true);
+        formData.amenities = amenities;
+        formData.bedRooms = bedrooms;
       } else {
-        toast.error("Must have at least 1 bedroom or sleeping space.")
+        toast.error("Must have at least 1 bedroom or sleeping space.");
+        return;
       }
-
+  
       const commonProps = {
         _id: wholePlaceId,
         title: formData.title,
         numBathRooms: bathroomCount,
         totalSize: formData.size,
         qty: Number(exactUnitCount),
-      }
-
-      const unitSpecificProps =
+      };
+  
+      const unitSpecificProps: Omit<IWholePlaceBasicInfo, "_id"> =
         unitType === "Studio"
           ? {
               bedRooms: [],
-              livingRooms: bedrooms.length > 0 ? [bedrooms[0] as IBedroom] : [],
+              livingRooms: livingroom.length > 0 ? [livingroom[0] as IBedroom] : [],
               singleBedRoom: { name: "", qty: 0 },
               singleLivingRoom: {
                 name: singleRoomBed,
                 qty: singleRoomBedCount,
               },
+              numBathRooms: bathroomCount,
+              title: formData.title,
+              totalSize: formData.size,
+              qty: Number(exactUnitCount),
             }
           : {
+              livingRooms: livingroomData,
               bedRooms: bedrooms,
-              livingRooms: [],
               singleBedRoom: { name: singleRoomBed, qty: singleRoomBedCount },
               singleLivingRoom: { name: "", qty: 0 },
-            }
-
+              numBathRooms: bathroomCount,
+              title: formData.title,
+              totalSize: formData.size,
+              qty: Number(exactUnitCount),
+            };
+            console.log("Unit Specific Props to Save:", unitSpecificProps);
+  
       const saveBasicInfo = await updateWholePlaceBasicInfo({
         ...commonProps,
         ...unitSpecificProps,
-      })
-      const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+      });
+  
+      const saveAmenities = updateAmenties({ amenities: formData?.amenities });
+  
       const filterSelectedAmenities = amenities.filter(
         (amenity) => amenity.isSelected
-      )
+      );
+  
       if (filterSelectedAmenities.length > 0) {
         await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-          handleSavePhotos()
-        })
+          handleSavePhotos();
+        });
       } else {
-        toast.error("Please select at least one amenity")
+        toast.error("Please select at least one amenity");
       }
     } catch (error) {
-      toast.error("An error occurred while saving data")
+      toast.error("An error occurred while saving data");
     }
-  }
-
+  };
+  
   useEffect(() => {
     if (!isPending && !isFetching && data?.item) {
       setValue("title", data?.item?.title)
@@ -233,6 +278,9 @@ const WholePlace = ({ pageType }: Prop) => {
       setPhotos(data?.item?.photos)
       setAmenties(data.item?.amenities)
       handleSqmChange(data.item?.totalSize)
+      const livingRooms = data.item?.livingRooms || []
+      setLivingroomData(livingRooms)
+      setHasSleepingSpaces(livingRooms.length > 0 ? "yes" : "no")
     }
   }, [data, isPending, isFetching])
 
@@ -252,9 +300,12 @@ const WholePlace = ({ pageType }: Prop) => {
     })
   }
 
-  const [unitType, setUnitType] = useState(data?.item?.title || "")
+  const [unitType, setUnitType] = useState(data?.item?.title || "villa")
   const [singleRoomBed, setSingleRoomBed] = useState("Single Bed")
   const [singleRoomBedCount, setSingleRoomBedCount] = useState(0)
+  const isLivingRoomVisible =
+    unitType === "Studio" || hasSleepingSpaces === "yes"
+
   useEffect(() => {
     if (data?.item?.title === "Studio") {
       setSingleRoomBed(data?.item?.singleLivingRoom?.name || "Single Bed")
@@ -298,164 +349,160 @@ const WholePlace = ({ pageType }: Prop) => {
                 <Option value="Condominium">Condominium</Option>
               </Select>
             </div>
-            <Typography variant="h4" fontWeight="semibold" className="mt-4">
-              Where can guests sleep?
-            </Typography>
-            <Typography
-              variant="h5"
-              fontWeight="normal"
-              className="mb-2 text-gray-400"
-            >
-              {unitType !== "Studio"
-                ? "How many comfortable living spaces does this unit have? Click to add bed type."
-                : `What type does this unit have?`}
-            </Typography>
-            <div className="grid grid-cols-2">
-              {unitType === "Studio" ? (
-                <div className="flex items-center space-x-6">
-                  <Select
-                    onChange={(e) => setSingleRoomBed(e.currentTarget.value)}
-                    value={singleRoomBed}
+            <div>
+              {unitType !== "Studio" && (
+                <>
+                  <Typography
+                    variant="h4"
+                    fontWeight="semibold"
+                    className="mt-4"
                   >
-                    <Option value="Single Bed">Single Bed</Option>
-                    <Option value="Double Bed">Double Bed</Option>
-                    <Option value="Queen Bed">Queen Bed</Option>
-                    <Option value="Queen XL Bed">Queen XL Bed</Option>
-                    <Option value="King Bed">King Bed</Option>
-                    <Option value="King XL Bed">King XL Bed</Option>
-                    <Option value="Sofa Bed">Sofa Bed</Option>
-                    <Option value="Bunk Bed">Bunk Bed</Option>
-                    <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
-                  </Select>
-                  <div className="flex rounded-md">
-                    <button
-                      disabled={isPending || isFetching}
-                      className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                      type="button"
-                      onClick={() => {
-                        singleRoomBedCount > 0 &&
-                          setSingleRoomBedCount(
-                            (singleRoomBedCount: number) =>
-                              singleRoomBedCount - 1
-                          )
-                      }}
-                    >
-                      <MinusIcon className="h-3 w-3" />
-                    </button>
-                    <input
-                      disabled={isPending || isFetching}
-                      type="number"
-                      id="bathrooms"
-                      className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                      value={singleRoomBedCount}
-                      min={0}
-                      onChange={(e) => {
-                        const val = Number(e.target.value)
-                        setSingleRoomBedCount(val)
-                      }}
-                    />
-                    <button
-                      disabled={isPending || isFetching}
-                      className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                      type="button"
-                      onClick={() =>
-                        setSingleRoomBedCount(
-                          (singleRoomBedCount: number) => singleRoomBedCount + 1
-                        )
-                      }
-                    >
-                      <PlusIcon className="h-3 w-3" />
-                    </button>
+                    Where can guests sleep?
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    fontWeight="normal"
+                    className="mb-2 text-gray-400"
+                  >
+                    {unitType !== "Studio"
+                      ? "How many comfortable living spaces does this unit have? Click to add bed type."
+                      : `What type does this unit have?`}
+                  </Typography>
+                  <div className="grid grid-cols-2">
+                    {unitType === "Studio" ? (
+                      <div className="flex items-center space-x-6">
+                        <Select
+                          onChange={(e) =>
+                            setSingleRoomBed(e.currentTarget.value)
+                          }
+                          value={singleRoomBed}
+                        >
+                          <Option value="Single Bed">Single Bed</Option>
+                          <Option value="Double Bed">Double Bed</Option>
+                          <Option value="Queen Bed">Queen Bed</Option>
+                          <Option value="Queen XL Bed">Queen XL Bed</Option>
+                          <Option value="King Bed">King Bed</Option>
+                          <Option value="King XL Bed">King XL Bed</Option>
+                          <Option value="Sofa Bed">Sofa Bed</Option>
+                          <Option value="Bunk Bed">Bunk Bed</Option>
+                          <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
+                        </Select>
+                        <div className="flex rounded-md">
+                          <button
+                            disabled={isPending || isFetching}
+                            className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                            type="button"
+                            onClick={() => {
+                              singleRoomBedCount > 0 &&
+                                setSingleRoomBedCount(
+                                  (prevCount) => prevCount - 1
+                                )
+                            }}
+                          >
+                            <MinusIcon className="h-3 w-3" />
+                          </button>
+                          <input
+                            disabled={isPending || isFetching}
+                            type="number"
+                            id="bathrooms"
+                            className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                            value={singleRoomBedCount}
+                            min={0}
+                            onChange={(e) => {
+                              const val = Number(e.target.value)
+                              setSingleRoomBedCount(val)
+                            }}
+                          />
+                          <button
+                            disabled={isPending || isFetching}
+                            className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                            type="button"
+                            onClick={() =>
+                              setSingleRoomBedCount(
+                                (prevCount) => prevCount + 1
+                              )
+                            }
+                          >
+                            <PlusIcon className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <Bedroom unitType={unitType} />
+                      </div>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div>
-                  <Bedroom unitType={unitType} />
+                </>
+              )}
+
+              {unitType != "" && (
+                <div className="mt-4">
+                  {unitType !== "Studio" && (
+                    <div className="flex flex-col space-y-1">
+                      <Typography variant="h4" fontWeight="semibold">
+                        Do you have any sleeping spaces on your living room? Yes
+                        or No
+                      </Typography>
+                      <div className="flex gap-4">
+                        <RadioInput
+                          id="hasSleepingSpaces"
+                          value="yes"
+                          checked={hasSleepingSpaces === "yes"}
+                          onChange={() => setHasSleepingSpaces("yes")}
+                          label="Yes"
+                        />
+                        <RadioInput
+                          id="hasNoSleepingSpaces"
+                          value="no"
+                          checked={hasSleepingSpaces === "no"}
+                          onChange={() => setHasSleepingSpaces("no")}
+                          label="No"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {isLivingRoomVisible && unitType === "Studio" && (
+                    <>
+                      <Typography variant="h4" fontWeight="semibold">
+                        Living room
+                      </Typography>
+                      <Typography
+                        variant="h5"
+                        fontWeight="normal"
+                        className="mb-2 text-gray-400"
+                      >
+                        {unitType === "Studio"
+                          ? "How many comfortable living spaces does this unit have? Click to add living room."
+                          : `What type does this unit have?`}
+                      </Typography>
+                    </>
+                  )}
+
+                  {isLivingRoomVisible && (
+                    <>
+                      {unitType === "Studio" ? (
+                        <div className="grid grid-cols-2">
+                          <div>
+                            <Bedroom unitType={unitType} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2">
+                          <div>
+                            <Livingroom
+                              unitType={unitType}
+                              onLivingroomUpdate={handleUpdateLivingrooms}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
             </div>
-
-            {unitType != "" && (
-              <div className="mt-4">
-                <Typography variant="h4" fontWeight="semibold">
-                  Living room
-                </Typography>
-                <Typography
-                  variant="h5"
-                  fontWeight="normal"
-                  className="mb-2 text-gray-400"
-                >
-                  {unitType === "Studio"
-                    ? " How many comfortable living spaces does this unit have? Click to add living room."
-                    : `What type does this unit have?`}
-                </Typography>
-                {unitType === "Studio" ? (
-                  <div className="grid grid-cols-2">
-                    <div>
-                      <Bedroom unitType={unitType} />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center space-x-6">
-                    <Select
-                      onChange={(e) => setSingleRoomBed(e.currentTarget.value)}
-                    >
-                      <Option value="Single Bed">Single Bed</Option>
-                      <Option value="Double Bed">Double Bed</Option>
-                      <Option value="Queen Bed">Queen Bed</Option>
-                      <Option value="Queen XL Bed">Queen XL Bed</Option>
-                      <Option value="King Bed">King Bed</Option>
-                      <Option value="King XL Bed">King XL Bed</Option>
-                      <Option value="Sofa Bed">Sofa Bed</Option>
-                      <Option value="Bunk Bed">Bunk Bed</Option>
-                      <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
-                    </Select>
-                    <div className="flex rounded-md">
-                      <button
-                        disabled={isPending || isFetching}
-                        className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                        type="button"
-                        onClick={() => {
-                          singleRoomBedCount > 0 &&
-                            setSingleRoomBedCount(
-                              (singleRoomBedCount: number) =>
-                                singleRoomBedCount - 1
-                            )
-                        }}
-                      >
-                        <MinusIcon className="h-3 w-3" />
-                      </button>
-                      <input
-                        disabled={isPending || isFetching}
-                        type="number"
-                        id="bathrooms"
-                        className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                        value={singleRoomBedCount}
-                        min={0}
-                        onChange={(e) => {
-                          const val = Number(e.target.value)
-                          setSingleRoomBedCount(val)
-                        }}
-                      />
-                      <button
-                        disabled={isPending || isFetching}
-                        className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                        type="button"
-                        onClick={() =>
-                          setSingleRoomBedCount(
-                            (singleRoomBedCount: number) =>
-                              singleRoomBedCount + 1
-                          )
-                        }
-                      >
-                        <PlusIcon className="h-3 w-3" />
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
             <div className="grid grid-cols-4 mt-4 gap-x-6">
               <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
