@@ -25,7 +25,6 @@ const TravelSlider = ({
   isGuide,
   itemsNumber,
   isLastItemFull,
-  
 }: TravelSliderProps) => {
   const formattedGroupCards = groupCards.map((card) => ({
     ...card,

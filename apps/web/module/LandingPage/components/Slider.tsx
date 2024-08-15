@@ -28,7 +28,12 @@ interface SliderProps {
   isLastItemFull?: boolean
 }
 
-const Slider = ({ cards, isGuide, itemsNumber, isLastItemFull }: SliderProps) => {
+const Slider = ({
+  cards,
+  isGuide,
+  itemsNumber,
+  isLastItemFull,
+}: SliderProps) => {
   const router = useRouter()
 
   // may be used if first link approach is not good
@@ -47,18 +52,44 @@ const Slider = ({ cards, isGuide, itemsNumber, isLastItemFull }: SliderProps) =>
   const slidesPerViewBreakpoints = {
     320: { slidesPerView: isLastItemFull ? 1 : 1.5 },
     640: { slidesPerView: isLastItemFull ? 2 : 2.5 },
-    768: { slidesPerView: isLastItemFull ? (itemsNumber > 2 ? 2 : itemsNumber) : (itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5) },
-    1024: { slidesPerView: isLastItemFull ? (itemsNumber > 3 ? 3 : itemsNumber) : (itemsNumber - 0.5 > 2 ? 3.5 : itemsNumber - 0.5) },
-    1280: { slidesPerView: isLastItemFull ? (itemsNumber > 4 ? 4 : itemsNumber) : (itemsNumber - 0.5 > 3 ? 4.5 : itemsNumber - 0.5) },
+    768: {
+      slidesPerView: isLastItemFull
+        ? itemsNumber > 2
+          ? 2
+          : itemsNumber
+        : itemsNumber - 0.5 > 2
+          ? 3.5
+          : itemsNumber - 0.5,
+    },
+    1024: {
+      slidesPerView: isLastItemFull
+        ? itemsNumber > 3
+          ? 3
+          : itemsNumber
+        : itemsNumber - 0.5 > 2
+          ? 3.5
+          : itemsNumber - 0.5,
+    },
+    1280: {
+      slidesPerView: isLastItemFull
+        ? itemsNumber > 4
+          ? 4
+          : itemsNumber
+        : itemsNumber - 0.5 > 3
+          ? 4.5
+          : itemsNumber - 0.5,
+    },
     1536: { slidesPerView: isLastItemFull ? itemsNumber : itemsNumber - 0.5 },
-  };
+  }
 
   return (
     <Swiper
       slidesPerView={itemsNumber} // show half of the last item
       modules={[Navigation, Pagination, Scrollbar, A11y]}
       navigation
-      slidesOffsetAfter={isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)}
+      slidesOffsetAfter={
+        isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)
+      }
       breakpoints={slidesPerViewBreakpoints}
     >
       <style>{`
