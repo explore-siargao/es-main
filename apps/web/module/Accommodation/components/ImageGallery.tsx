@@ -8,6 +8,7 @@ const ImageGallery = ({
   openModal,
   isViewModal,
   showThreeOnly,
+  isRoundedEdge,
 }: T_ImagesProps) => {
   const getImgSrc = (index: number) => {
     const image = images[index]
@@ -24,7 +25,7 @@ const ImageGallery = ({
         layout="fill"
         objectFit="cover"
         alt={images ? getImgSrc(index).alt : ""}
-        className="cursor-pointer"
+        className={`${isRoundedEdge && index === 0 ? "rounded-l-xl" : isRoundedEdge && index === 2 ? "rounded-tr-xl" : isRoundedEdge && index === 4 ? "rounded-br-xl" : ""} cursor-pointer`}
       />
     </div>
   )
