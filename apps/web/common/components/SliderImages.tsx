@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Thumbs, FreeMode } from "swiper/modules"
 import "swiper/swiper-bundle.css"
