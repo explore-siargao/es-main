@@ -14,7 +14,7 @@ const reservationCalendarTabs = [
   {
     name: "Rentals",
     icon: <LucideCarFront className="w-5" />,
-    link: "/hosting/reservations/calendar/rentals",
+    link: "/hosting/reservations/calendar/rentals/bicycles",
   },
   {
     name: "Activities",
