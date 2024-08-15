@@ -76,8 +76,6 @@ function TravelBlog() {
     getTravelCms()
   }, [])
 
-  console.log(travelData)
-
   let content
 
   if (travelDataLoading) {

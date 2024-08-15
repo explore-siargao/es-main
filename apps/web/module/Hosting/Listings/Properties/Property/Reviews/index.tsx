@@ -6,18 +6,17 @@ import RatingSummary from "@/module/Accommodation/components/Reviews/RatingSumma
 import UserReviews from "./UserReviews"
 
 type T_ListingReviewsProps = {
-  letterCase?: string
   fontWeight?: "extralight" | "light" | "normal" | "thin" | "semibold" | "bold"
+  customMargin?: string
 }
 
-const ListingReviews = ({ letterCase, fontWeight }: T_ListingReviewsProps) => {
+const ListingReviews = ({
+  fontWeight,
+  customMargin,
+}: T_ListingReviewsProps) => {
   return (
-    <div className="mt-20 mb-14">
-      <Typography
-        variant="h1"
-        fontWeight={fontWeight || "semibold"}
-        className={letterCase}
-      >
+    <div className={customMargin ? customMargin : "mt-20 mb-14"}>
+      <Typography variant="h1" fontWeight={fontWeight || "semibold"}>
         Reviews
       </Typography>
       <div className="divide-y">
