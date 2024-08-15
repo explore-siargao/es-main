@@ -2,10 +2,12 @@ import { Button } from "@/common/components/ui/Button"
 import Image from "next/image"
 import { Grip } from "lucide-react"
 import { T_ImagesProps } from "../types/SectionInfo"
+import { Dialog } from '@headlessui/react';
+import { useState } from 'react';
+import SliderImages from "@/common/components/SliderImages";
 
 const ImageGallery = ({
   images,
-  openModal,
   isViewModal,
   showThreeOnly,
 }: T_ImagesProps) => {
@@ -15,11 +17,30 @@ const ImageGallery = ({
     const imgAlt = image?.description || image?.image?.alt || ""
     return { src: imgSrc, alt: imgAlt }
   }
-
+  const [isOpen, setIsOpen] = useState(false);
+  const DummyImage = [
+    {
+      fileKey: "1.jpg",
+      url: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0"
+    },
+    {
+      fileKey: "2.jpg",
+      url: "https://images.unsplash.com/photo-1491553895911-0055eca6402d"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+    },
+    {
+      url: "https://www.blisssiargao.com/wp-content/uploads/2023/07/Siargao-Beaches.jpg"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1486915309851-b0cc1f8a0084"
+    }
+  ]
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative bg-gray-200 ${additionalClasses}`}>
       <Image
-        onClick={openModal}
+         onClick={() => setIsOpen(true)}
         src={images ? getImgSrc(index).src : ""}
         layout="fill"
         objectFit="cover"
@@ -33,7 +54,7 @@ const ImageGallery = ({
     <Button
       variant="shaded"
       className="absolute bottom-2 md:bottom-2 right-2 md:right-2 bg-white px-1 text-[10px] h-6 p-2"
-      onClick={() => openModal()}
+      onClick={() => setIsOpen(true)}
     >
       <Grip className="h-2 w-2 mr-1 mb-0.5" />
       Show all photos
@@ -83,14 +104,44 @@ const ImageGallery = ({
         <Button
           variant="shaded"
           className="absolute bottom-2 md:bottom-4 right-1 md:right-4 bg-white"
-          onClick={() => openModal()}
+          onClick={() => setIsOpen(true)}
         >
           <Grip className="h-4 w-4 mr-2 mb-0.5" />
           Show all photos
         </Button>
       )}
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80" />
+        <div className="relative w-full h-full bg-white bg-opacity-10">       
+        <SliderImages images={DummyImage}/> 
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full hover:bg-gray-400 focus:outline-none"
+          >
+            <svg
+              className="h-6 w-6 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </Dialog>
     </div>
   )
 }
 
 export default ImageGallery
+
