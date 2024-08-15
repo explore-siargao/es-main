@@ -3,23 +3,33 @@ import React from "react"
 import data from "../data.json"
 import { Button } from "@/common/components/ui/Button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { WidthWrapper } from "@/common/components/WidthWrapper"
 
-function GuideBlogHeader() {
+function GuideBlogHeader({
+  contentWidth,
+}: {
+  readonly contentWidth?: "medium" | "small" | "wide" | "full"
+}) {
   return (
-    <div className="w-full h-max border mt-1 rounded-lg">
-      <div className="flex divide-x-2 w-full bg-white rounded-md py-2">
-        <div className="font-semibold w-max shrink-0 px-4 my-auto">
-          NEARBY RESTAURANTS
-        </div>
-        <div className="w-full px-2 flex justify-between my-auto">
-          <div className="flex justify-between w-full">
-            {data.surfSpots.map((spot, index) => (
-              <Button variant={"link"} key={index}>
-                {spot}
-              </Button>
-            ))}
+    <WidthWrapper
+      width={contentWidth}
+      className="border-b border-b-gray-200/50"
+    >
+      <div className="w-full h-max">
+        <div className="flex justify-between w-full py-2">
+          <div className="font-semibold w-max shrink-0 pr-4 my-auto border-r">
+            NEARBY RESTAURANTS
           </div>
-          <div className="flex my-auto px-4">
+          <div className="px-2 flex justify-between my-auto overflow-hidden">
+            <div className="flex justify-between ">
+              {data.surfSpots.map((spot, index) => (
+                <Button variant={"link"} key={index}>
+                  {spot}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div className="flex pl-4">
             <Button className="px-0 hover:text-gray-500" variant={"ghost"}>
               <ChevronLeft />
             </Button>
@@ -29,7 +39,7 @@ function GuideBlogHeader() {
           </div>
         </div>
       </div>
-    </div>
+    </WidthWrapper>
   )
 }
 

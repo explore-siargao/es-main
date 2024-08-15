@@ -31,7 +31,7 @@ export default async function BlogGuideLayout({
           <AuthStateProvider>
             <GlobalModalWrapper>
               <BlogHeader contentWidth="small" isFixed={false} />
-              <GuideBlogHeader />
+              <GuideBlogHeader contentWidth="small" />
               {children}
               <Footer contentWidth="small" />
             </GlobalModalWrapper>
