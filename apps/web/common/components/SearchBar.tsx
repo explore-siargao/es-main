@@ -1,14 +1,12 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { LINK_LOGIN } from "@/common/constants/links"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import { cn } from "@/common/helpers/cn"
 import ApplyToHostModal from "../../module/LandingPage/components/ApplyToHostModal"
 import useSessionStore from "@/common/store/useSessionStore"
 import { Button } from "./ui/Button"
 import { FormProvider, useForm } from "react-hook-form"
-
 import { useSearchStore } from "../store/useSearchStore"
 import PropertySearchBar from "./SearchBar/PropertySearchBar"
 import ActivitiesSearchBar from "./SearchBar/ActivitiesSearchBar"
@@ -33,6 +31,9 @@ function SearchBar({
   const session = useSessionStore((state) => state)
   const path = usePathname()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const category = searchParams.get("category") || "property"
+
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
 
@@ -61,6 +62,18 @@ function SearchBar({
     )
   }
 
+  const [pageProperty, setPageProperty] = useState(1)
+
+  useEffect(() => {
+    if (category === "property") {
+      setPageProperty(1)
+    } else if (category === "activities") {
+      setPageProperty(2)
+    } else if (category === "rentals") {
+      setPageProperty(3)
+    }
+  }, [category])
+
   return (
     <div
       className={`w-full mt-28 h-96 z-20 flex flex-col items-center bg-[url('/search-bar-image-4.png')] bg-cover bg-no-repeat bg-center 
@@ -86,33 +99,39 @@ function SearchBar({
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => router.push("/")}
-                className={`${path === "/" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
+                onClick={() => {
+                  router.push("/listings?category=property")
+                }}
+                className={`${category === "property" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Places to stay
               </Button>
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => router.push("/activities")}
-                className={`${path === "/activities" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
+                onClick={() => {
+                  router.push("/listings?category=activities")
+                }}
+                className={`${category === "activities" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Activities
               </Button>
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => router.push("/rentals")}
-                className={`${path === "/rentals" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
+                onClick={() => {
+                  router.push("/listings?category=rentals")
+                }}
+                className={`${category === "rentals" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Rentals
               </Button>
             </div>
             <FormProvider {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                {path === "/" && <PropertySearchBar />}
-                {path === "/activities" && <ActivitiesSearchBar />}
-                {path === "/rentals" && <RentalsSearchBar />}
+                {pageProperty === 1 && <PropertySearchBar />}
+                {pageProperty === 2 && <ActivitiesSearchBar />}
+                {pageProperty === 3 && <RentalsSearchBar />}
               </form>
             </FormProvider>
           </div>

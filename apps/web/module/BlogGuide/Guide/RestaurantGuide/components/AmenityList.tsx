@@ -13,7 +13,7 @@ type T_Amenity = {
 const AmenityList = ({ amenities }: T_Prop) => {
   return (
     <>
-      <Typography variant="h1" fontWeight="bold" className="uppercase mb-4">
+      <Typography variant="h1" fontWeight="bold" className="mb-4">
         Amenities and more
       </Typography>
       <div className="grid grid-cols-2 gap-4 w-full">

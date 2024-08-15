@@ -13,21 +13,27 @@ type Props = {
   onClose: () => void
   mode: "add" | "edit"
   selectedIndex?: number
+  unitType: string
 }
 
-const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
+const AddBedroomModal = ({
+  isOpen,
+  onClose,
+  mode,
+  selectedIndex,
+  unitType,
+}: Props) => {
   const [fields, setFields] = useState<IBedroom>(defaultBedroom)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
 
   const handleBedCountChange = (bedIndex: number, value: string) => {
     const newBeds = [...fields.beds]
-    const bed = newBeds[bedIndex] as { qty?: number }
+    const bed = newBeds[bedIndex]
     if (bed) {
       bed.qty = parseInt(value, 10) || 0
+      setFields({ ...fields, beds: newBeds })
     }
-
-    setFields({ ...fields, beds: newBeds })
   }
 
   const resetBedQuantities = () => {
@@ -57,11 +63,29 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
     onClose()
   }
 
+  useEffect(() => {
+    if (mode === "edit" && selectedIndex !== undefined) {
+      const bedroomToEdit = bedrooms[selectedIndex]
+      if (bedroomToEdit) {
+        setFields(deepCopyBedroom(bedroomToEdit))
+      }
+    } else {
+      resetBedQuantities()
+    }
+  }, [isOpen, mode, selectedIndex, bedrooms])
   function deepCopyBedroom(bedroom: IBedroom): IBedroom {
     return {
-      bedRoomName: bedroom.bedRoomName,
+      roomName: bedroom.roomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
     }
+  }
+
+  let unitName
+
+  if (unitType === "Studio") {
+    unitName = "Living Room"
+  } else {
+    unitName = "Bedroom"
   }
 
   return (
@@ -69,7 +93,7 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
       onClose={onClose}
       isOpen={isOpen}
       size="sm"
-      title={mode === "edit" ? "Edit Bedroom" : "Add Bedroom"}
+      title={mode === "edit" ? `Edit ${unitName}` : `Add ${unitName}`}
     >
       <div className="py-4 px-20 flex flex-col divide-text-100 overflow-y-auto">
         <Typography variant="h3" fontWeight="semibold" className="mb-5">
@@ -87,9 +111,9 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
                   type="button"
                   onClick={() => {
                     const newBeds = [...fields.beds]
-
-                    if (newBeds[index] && newBeds[index]!.qty > 0) {
-                      newBeds[index]!.qty--
+                    const bed = newBeds[index]
+                    if (bed && bed.qty > 0) {
+                      bed.qty--
                       setFields({ ...fields, beds: newBeds })
                     }
                   }}
@@ -110,8 +134,9 @@ const AddBedroomModal = ({ isOpen, onClose, mode, selectedIndex }: Props) => {
                   type="button"
                   onClick={() => {
                     const newBeds = [...fields.beds]
-                    if (newBeds[index]) {
-                      newBeds[index]!.qty++
+                    const bed = newBeds[index]
+                    if (bed) {
+                      bed.qty++
                       setFields({ ...fields, beds: newBeds })
                     }
                   }}

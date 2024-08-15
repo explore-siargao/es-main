@@ -140,12 +140,12 @@ export const RestaurantGuide = () => {
             menus={guideData.hero.menus}
             events={guideData.hero.specialAndEvents}
           />
-          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12 mt-[11px]">
             <div className="flex-1 md:w-1/2 2xl:w-full">
               <div>
-                <div className="pb-6 flex flex-col gap-8">
-                  <h1 className="text-2xl font-bold">ABOUT</h1>
-                  <div>
+                <div className="pb-6 flex flex-col">
+                  <h1 className="text-2xl font-bold">About</h1>
+                  <div className="mt-4">
                     <BookingDescription
                       generalDescription={guideData.about.aboutPlace}
                       aboutSpace={guideData.about.aboutSpace}
@@ -184,11 +184,11 @@ export const RestaurantGuide = () => {
             className="bg-gray-300"
             id="#reviews"
           />
-          <ListingReviews letterCase="uppercase" fontWeight="bold" />
+          <ListingReviews customMargin="mt-[31px]" fontWeight="bold" />
           <Separator orientation="horizontal" className="bg-gray-300" />
           <div>
             <div className="py-8">
-              <h1 className="text-2xl font-bold">ACCOMMODATION NEARBY</h1>
+              <h1 className="text-2xl font-bold">Accommodation Nearby</h1>
               <div className="w-full flex gap-8 mt-8">
                 {guideData.content.nearbyAccommodations.map(
                   (data: any, index: number) => (

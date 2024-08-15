@@ -66,8 +66,6 @@ const serialize = (children: any) =>
         return <h5 key={i}>{serialize(node.children)}</h5>
       case "h6":
         return <h6 key={i}>{serialize(node.children)}</h6>
-      case "h6":
-        return <h6 key={i}>{serialize(node.children)}</h6>
       case "blockquote":
         return <blockquote key={i}>{serialize(node.children)}</blockquote>
       case "ul":

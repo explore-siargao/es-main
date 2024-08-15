@@ -78,6 +78,10 @@ const rentals = new Schema({
     type: [String],
     default: [],
   },
+  ids: {
+    type: [mongoose.Schema.ObjectId],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

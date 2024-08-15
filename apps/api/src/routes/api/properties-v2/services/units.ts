@@ -274,7 +274,16 @@ export const updateWholePlaceUnitBasicInfo = async (
 ) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, totalSize, numBathRooms, bedRooms, qty } = req.body
+  const {
+    title,
+    totalSize,
+    numBathRooms,
+    bedRooms,
+    qty,
+    livingRooms,
+    singleBedRoom,
+    singleLivingRoom,
+  } = req.body
   if (!title || !numBathRooms || !totalSize || !bedRooms || !qty) {
     console.log(REQUIRED_VALUE_EMPTY)
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
@@ -313,6 +322,9 @@ export const updateWholePlaceUnitBasicInfo = async (
             numBedRooms: 0,
             numBathRooms: numBathRooms,
             bedRooms: bedRooms,
+            livingRooms: livingRooms,
+            singleBedRoom: singleBedRoom,
+            singleLivingRoom: singleLivingRoom,
             qty: qty,
             updatedAt: Date.now(),
           },

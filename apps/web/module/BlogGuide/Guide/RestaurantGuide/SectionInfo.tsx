@@ -86,6 +86,7 @@ const SectionInfo = ({
           images={images}
           openModal={openModal}
           isViewModal={true}
+          isRoundedEdge={true}
         />
       </div>
       <ImageGalleryModal
