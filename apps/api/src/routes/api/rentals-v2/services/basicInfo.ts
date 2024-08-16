@@ -93,7 +93,16 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.bodyType = bodyType || rental.bodyType
         rental.fuel = fuel || rental.fuel
         rental.transmission = transmission || rental.transmission
-        rental.year = year || rental.year
+        ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
+        rental.ids = rental.ids
+        if (rental.qty) {
+          for (let i = 0; i < rental.qty; i++) {
+            if (rental.ids[i] === undefined) {
+              const objectId = new mongoose.Types.ObjectId()
+              rental.ids.push(objectId)
+            }
+          }
+        }
       } else if (category === 'Motorbike' || category === 'Bicycle') {
         rental.category =
           rental.category === '' || rental.category === null
@@ -109,11 +118,13 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           category === 'Motorbike' ? transmission || rental.transmission : null
         rental.year = category === 'Motorbike' ? year || rental.year : null
         rental.qty = qty || rental.qty
+        rental.ids = rental.ids
         if (rental.qty) {
-          rental.ids = []
           for (let i = 0; i < rental.qty; i++) {
-            const objectId = new mongoose.Types.ObjectId()
-            rental.ids.push(objectId)
+            if (rental.ids[i] === undefined) {
+              const objectId = new mongoose.Types.ObjectId()
+              rental.ids.push(objectId)
+            }
           }
         }
       }

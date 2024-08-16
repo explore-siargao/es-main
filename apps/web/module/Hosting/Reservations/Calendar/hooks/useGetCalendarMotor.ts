@@ -11,7 +11,7 @@ export async function getMotorCalendar(startDate: string, endDate: string) {
 
 function useGetCalendarMotor(startDate: string, endDate: string) {
   const query = useQuery({
-    queryKey: ["listings"],
+    queryKey: ["calendar-motor"],
     queryFn: () => getMotorCalendar(startDate, endDate),
   })
   return query

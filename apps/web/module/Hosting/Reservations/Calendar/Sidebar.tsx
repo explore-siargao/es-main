@@ -69,7 +69,7 @@ const Sidebar = ({
           className="px-0"
         >
           {isShowAllRoomTypes ? <ChevronRight /> : <ChevronDown />}
-          All Room Types
+          All Types
         </Button>
       </div>
     </div>
