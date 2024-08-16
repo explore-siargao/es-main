@@ -4,23 +4,23 @@
 
 ### Features
 
-* Added backend car calendar reservation endpoint ([d1c84ab](https://github.com/explore-siargao/es-main/commit/d1c84ab276dbc208dd02b5ecc17e49d1318b0459))
-* **web:** Added Connected car calendar reservationfrontend to backend ([d3ce744](https://github.com/explore-siargao/es-main/commit/d3ce7440fdf45bc06ffe0ef57d4654adcbb4165e))
-* **web:** Added custom hook for getting cars calendar reservation ([806cbe8](https://github.com/explore-siargao/es-main/commit/806cbe8ea066faa27241c0da7373eb5d12b6c0e5))
-* **web:** Added custom hooks for getting bike calendar reservation ([6262897](https://github.com/explore-siargao/es-main/commit/6262897b326ecc63008fd4fd0d35f4421a796909))
-* **web:** Added dynamic returns of some categories and types of filter ([8e412ac](https://github.com/explore-siargao/es-main/commit/8e412acc99e895984b638282cadeefce01effb5b))
-* **web:** Added image gallery border radius and blog guide header margin ([cb14bd4](https://github.com/explore-siargao/es-main/commit/cb14bd42296cde1a347e97ffb5f4a5c8651a3b83))
-* **web:** Added rich text serializer ([9d6dba4](https://github.com/explore-siargao/es-main/commit/9d6dba4384c79b1085971134a54945753f8ab406))
-* **web:** Implemented backend get calendar rentals bike to frontendend ([3a4e88c](https://github.com/explore-siargao/es-main/commit/3a4e88c206ce47732ae2ce88fe2b6d2d2539f5a3))
-* **web:** Improved second page UI ([008e1e8](https://github.com/explore-siargao/es-main/commit/008e1e8cf8f6636f8d3251a342d255eee5402141))
-* **web:** landing page improvements ([d7981d5](https://github.com/explore-siargao/es-main/commit/d7981d56e0544aacd65712b17a97534618a5aeb3))
-* **web:** lightbox image gallery ([06a1324](https://github.com/explore-siargao/es-main/commit/06a132487aa757d90ab2d843410972159ad0f143), [1df8548](https://github.com/explore-siargao/es-main/commit/1df8548673ccd2142fef8041ff249bf4737331ec))
-* **web:** Some adjustments in user interface ([0d75177](https://github.com/explore-siargao/es-main/commit/0d75177b03216503496a34f6ca3539a605e2f544))
-* **web:** UI clean ups ([74c4bb1](https://github.com/explore-siargao/es-main/commit/74c4bb14cd472ac2c7f985fd3f011e5462a8d4a4))
+- Added backend car calendar reservation endpoint ([d1c84ab](https://github.com/explore-siargao/es-main/commit/d1c84ab276dbc208dd02b5ecc17e49d1318b0459))
+- **web:** Added Connected car calendar reservationfrontend to backend ([d3ce744](https://github.com/explore-siargao/es-main/commit/d3ce7440fdf45bc06ffe0ef57d4654adcbb4165e))
+- **web:** Added custom hook for getting cars calendar reservation ([806cbe8](https://github.com/explore-siargao/es-main/commit/806cbe8ea066faa27241c0da7373eb5d12b6c0e5))
+- **web:** Added custom hooks for getting bike calendar reservation ([6262897](https://github.com/explore-siargao/es-main/commit/6262897b326ecc63008fd4fd0d35f4421a796909))
+- **web:** Added dynamic returns of some categories and types of filter ([8e412ac](https://github.com/explore-siargao/es-main/commit/8e412acc99e895984b638282cadeefce01effb5b))
+- **web:** Added image gallery border radius and blog guide header margin ([cb14bd4](https://github.com/explore-siargao/es-main/commit/cb14bd42296cde1a347e97ffb5f4a5c8651a3b83))
+- **web:** Added rich text serializer ([9d6dba4](https://github.com/explore-siargao/es-main/commit/9d6dba4384c79b1085971134a54945753f8ab406))
+- **web:** Implemented backend get calendar rentals bike to frontendend ([3a4e88c](https://github.com/explore-siargao/es-main/commit/3a4e88c206ce47732ae2ce88fe2b6d2d2539f5a3))
+- **web:** Improved second page UI ([008e1e8](https://github.com/explore-siargao/es-main/commit/008e1e8cf8f6636f8d3251a342d255eee5402141))
+- **web:** landing page improvements ([d7981d5](https://github.com/explore-siargao/es-main/commit/d7981d56e0544aacd65712b17a97534618a5aeb3))
+- **web:** lightbox image gallery ([06a1324](https://github.com/explore-siargao/es-main/commit/06a132487aa757d90ab2d843410972159ad0f143), [1df8548](https://github.com/explore-siargao/es-main/commit/1df8548673ccd2142fef8041ff249bf4737331ec))
+- **web:** Some adjustments in user interface ([0d75177](https://github.com/explore-siargao/es-main/commit/0d75177b03216503496a34f6ca3539a605e2f544))
+- **web:** UI clean ups ([74c4bb1](https://github.com/explore-siargao/es-main/commit/74c4bb14cd472ac2c7f985fd3f011e5462a8d4a4))
 
 ### Bug Fixes
 
-* **web:** Try fix issues 1 ([09d069e](https://github.com/explore-siargao/es-main/commit/09d069e94e9023b0a5ad9fcec6ab3d4744ea06ab))
+- **web:** Try fix issues 1 ([09d069e](https://github.com/explore-siargao/es-main/commit/09d069e94e9023b0a5ad9fcec6ab3d4744ea06ab))
 
 ## [0.7.0](https://github.com/explore-siargao/es-main/compare/v0.6.0...v0.7.0) (2024-08-13)
 
