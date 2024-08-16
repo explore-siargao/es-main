@@ -15,7 +15,8 @@ export interface Booking {
 export interface SelectedReservation {
   room?: string
   motorcycles?: string
-  bicyles?: string
+  bicyles?: string,
+  cars?:string
   reservation?: Reservation
   booking?: Booking
 }
@@ -26,7 +27,7 @@ export interface Room {
   bookings?: Booking[]
 }
 
-export interface MotorCycle {
+export interface Rental {
   abbr: string
   status: string
   reservations: Reservation[]
@@ -36,8 +37,9 @@ export interface Category {
   name: string
   price: string
   rooms?: Room[]
-  motorcycles?: MotorCycle[]
-  bicycles?: MotorCycle[]
+  motorcycles?: Rental[]
+  bicycles?: Rental[]
+  cars?: Rental[]
 }
 
 export interface SampleData {
