@@ -5,10 +5,18 @@ import { ratingSummary, userReviews } from "@/module/Accommodation"
 import RatingSummary from "@/module/Accommodation/components/Reviews/RatingSummary"
 import UserReviews from "./UserReviews"
 
-const ListingReviews = () => {
+type T_ListingReviewsProps = {
+  fontWeight?: "extralight" | "light" | "normal" | "thin" | "semibold" | "bold"
+  customMargin?: string
+}
+
+const ListingReviews = ({
+  fontWeight,
+  customMargin,
+}: T_ListingReviewsProps) => {
   return (
-    <div className="mt-20 mb-14">
-      <Typography variant="h1" fontWeight="semibold">
+    <div className={customMargin ? customMargin : "mt-20 mb-14"}>
+      <Typography variant="h1" fontWeight={fontWeight || "semibold"}>
         Reviews
       </Typography>
       <div className="divide-y">
