@@ -160,14 +160,14 @@ const BasicInfo = ({ pageType }: Prop) => {
             </>
           ) : null}
 
-            <Input
-              type="number"
-              id="qty"
-              label="Quantity"
-              required
-              disabled={isPending || isLoading}
-              {...register("qty", { required: true, valueAsNumber: true })}
-            />
+          <Input
+            type="number"
+            id="qty"
+            label="Quantity"
+            required
+            disabled={isPending || isLoading}
+            {...register("qty", { required: true, valueAsNumber: true })}
+          />
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button

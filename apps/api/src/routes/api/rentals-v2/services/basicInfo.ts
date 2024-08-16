@@ -93,14 +93,13 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.bodyType = bodyType || rental.bodyType
         rental.fuel = fuel || rental.fuel
         rental.transmission = transmission || rental.transmission
-        rental.year = year || rental.year,
-        rental.qty = qty || rental.qty
+        ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
         rental.ids = rental.ids
         if (rental.qty) {
           for (let i = 0; i < rental.qty; i++) {
-            if(rental.ids[i]===undefined){
-            const objectId = new mongoose.Types.ObjectId()
-            rental.ids.push(objectId)
+            if (rental.ids[i] === undefined) {
+              const objectId = new mongoose.Types.ObjectId()
+              rental.ids.push(objectId)
             }
           }
         }
@@ -122,9 +121,9 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.ids = rental.ids
         if (rental.qty) {
           for (let i = 0; i < rental.qty; i++) {
-            if(rental.ids[i]===undefined){
-            const objectId = new mongoose.Types.ObjectId()
-            rental.ids.push(objectId)
+            if (rental.ids[i] === undefined) {
+              const objectId = new mongoose.Types.ObjectId()
+              rental.ids.push(objectId)
             }
           }
         }

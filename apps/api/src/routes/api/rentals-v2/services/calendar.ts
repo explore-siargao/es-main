@@ -75,19 +75,19 @@ export const getCarCalendar = async (req: Request, res: Response) => {
 
     // Extract all ids from bicycle rentals
     const allRentalIds = carRentals.flatMap((rental) => rental.ids)
-    
+
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
       .populate('guest') // Ensure guest field is populated
-      
+
     //Structure the data in the specified format
     const items: any = carRentals.map((rental) => {
-      const transmission = rental.transmission==="Automatic" ? "AT" : "MT"
+      const transmission = rental.transmission === 'Automatic' ? 'AT' : 'MT'
       const cars: Car[] = rental.ids.map((id, index) => {
-        const abbr = `${rental.year+" "+rental.make+" "+rental.modelBadge+" "+transmission} ${index + 1}`
+        const abbr = `${rental.year + ' ' + rental.make + ' ' + rental.modelBadge + ' ' + transmission} ${index + 1}`
         return {
           abbr,
           status: 'available',
@@ -122,9 +122,11 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           }
         }
       })
-      
+
       return {
-        name: `${rental.year+" "+rental.make+" "+rental.modelBadge+" "+transmission}` ?? 'Unknown', // Ensure name is always a string
+        name:
+          `${rental.year + ' ' + rental.make + ' ' + rental.modelBadge + ' ' + transmission}` ??
+          'Unknown', // Ensure name is always a string
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
         cars,

@@ -27,7 +27,11 @@ import {
 import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
-import { getBikeCalendar, getCarCalendar, getMotorcycleCalendar } from './services/calendar'
+import {
+  getBikeCalendar,
+  getCarCalendar,
+  getMotorcycleCalendar,
+} from './services/calendar'
 
 const router = express.Router()
 
