@@ -40,6 +40,7 @@ function SearchBar({
   useEffect(() => {
     form.reset()
     clearSearchValues()
+    console.log(path)
   }, [path])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -91,7 +92,9 @@ function SearchBar({
           Find your island vibe
         </Typography>
       </WidthWrapper>
-      <WidthWrapper width={category === "" ? "small" : "medium"}>
+      <WidthWrapper
+        width={path === "/" && category === "" ? "small" : "medium"}
+      >
         <nav
           className="flex items-center justify-center py-2 my-2 w-full"
           aria-label="Global"
