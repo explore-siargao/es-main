@@ -160,8 +160,6 @@ const BasicInfo = ({ pageType }: Prop) => {
             </>
           ) : null}
 
-          {watch("category") === E_Rental_Category.Motorbike ||
-          watch("category") === E_Rental_Category.Bicycle ? (
             <Input
               type="number"
               id="qty"
@@ -170,7 +168,6 @@ const BasicInfo = ({ pageType }: Prop) => {
               disabled={isPending || isLoading}
               {...register("qty", { required: true, valueAsNumber: true })}
             />
-          ) : null}
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button
