@@ -40,7 +40,6 @@ function SearchBar({
   useEffect(() => {
     form.reset()
     clearSearchValues()
-    console.log(path)
   }, [path])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
