@@ -15,8 +15,8 @@ export interface Booking {
 export interface SelectedReservation {
   room?: string
   motorcycles?: string
-  bicyles?: string,
-  cars?:string
+  bicyles?: string
+  cars?: string
   reservation?: Reservation
   booking?: Booking
 }

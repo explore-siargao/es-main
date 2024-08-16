@@ -367,40 +367,38 @@ const CarCalendarTable = () => {
                             colSpan={daysPerPage}
                             className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
                           >
-                            {car.reservations.map(
-                              (booking: Reservation) => {
-                                const style = getBookingStyle(
-                                  startDate,
-                                  daysPerPage,
-                                  booking
-                                )
-                                if (!style) return null
+                            {car.reservations.map((booking: Reservation) => {
+                              const style = getBookingStyle(
+                                startDate,
+                                daysPerPage,
+                                booking
+                              )
+                              if (!style) return null
 
-                                const { startCol, colSpan } = style
+                              const { startCol, colSpan } = style
 
-                                return (
-                                  <div
-                                    key={booking.name}
-                                    style={{
-                                      left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                      width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                                    }}
-                                    onClick={() => {
-                                      setIsReservationModalOpen(true)
-                                      setSelectedReservation({
-                                        cars: car.abbr,
-                                        reservation: booking,
-                                      })
-                                    }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
-                                  >
-                                    <span className="text-white text-sm truncate px-2">
-                                      {booking.name}
-                                    </span>
-                                  </div>
-                                )
-                              }
-                            )}
+                              return (
+                                <div
+                                  key={booking.name}
+                                  style={{
+                                    left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                    width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                  }}
+                                  onClick={() => {
+                                    setIsReservationModalOpen(true)
+                                    setSelectedReservation({
+                                      cars: car.abbr,
+                                      reservation: booking,
+                                    })
+                                  }}
+                                  className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                                >
+                                  <span className="text-white text-sm truncate px-2">
+                                    {booking.name}
+                                  </span>
+                                </div>
+                              )
+                            })}
                             <div className="absolute inset-0 z-10 flex h-full">
                               {generateCalendarRowBorder()}
                             </div>
