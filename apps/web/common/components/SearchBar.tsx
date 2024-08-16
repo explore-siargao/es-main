@@ -32,7 +32,7 @@ function SearchBar({
   const path = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const category = searchParams.get("category") || "property"
+  const category = searchParams.get("category") || ""
 
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
@@ -91,7 +91,7 @@ function SearchBar({
           Find your island vibe
         </Typography>
       </WidthWrapper>
-      <WidthWrapper width="small">
+      <WidthWrapper width={category === "" ? "small" : "medium"}>
         <nav
           className="flex items-center justify-center py-2 my-2 w-full"
           aria-label="Global"

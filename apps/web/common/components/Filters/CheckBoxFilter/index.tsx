@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import useFilterStore from "@/common/store/useFilterStore"
 import { Typography } from "../../ui/Typography"
 import { LucideChevronDown } from "lucide-react"
@@ -7,6 +7,7 @@ type T_Props = {
   category: string
   filters: T_Filters[]
   onFilterChange: (filters: T_Filters[]) => void
+  defaultChecked?: string
 }
 
 type T_Filters = {
@@ -15,7 +16,12 @@ type T_Filters = {
   filterCount: number
 }
 
-const CheckBoxFilter = ({ category, filters, onFilterChange }: T_Props) => {
+const CheckBoxFilter = ({
+  category,
+  filters,
+  onFilterChange,
+  defaultChecked,
+}: T_Props) => {
   const filterData = useFilterStore((state) => state.filterData)
   const setFilter = useFilterStore((state) => state.setFilter)
   const [showAll, setShowAll] = useState(false)
@@ -43,8 +49,19 @@ const CheckBoxFilter = ({ category, filters, onFilterChange }: T_Props) => {
     setShowAll(!showAll)
   }
 
+  useEffect(() => {
+    if (defaultChecked) {
+      const defaultFilter = filters.find(
+        (filter) => filter.type === defaultChecked
+      )
+      if (defaultFilter) {
+        handleCheckboxChange(defaultFilter)
+      }
+    }
+  }, [])
+
   return (
-    <div className="border max-w-xs p-4">
+    <div className="border border-gray-300 max-w-xs p-4">
       <Typography className="mb-1" fontWeight="bold">
         {category}
       </Typography>

@@ -196,6 +196,7 @@ const ListingsPage = () => {
   const category = searchParams.get("category")
   const type = searchParams.get("type")
 
+  const [filteredData, setFilterData] = useState<any>([])
   const [filters, setFilters] = useState<T_Filter[]>([])
   const [budget, setBudget] = useState<{ min: number; max: number }>({
     min: 1000,
@@ -210,27 +211,45 @@ const ListingsPage = () => {
     setBudget({ min: minValue, max: maxValue })
   }
 
-  const filteredData = filterDataByPayload(dummyData, filters, budget)
-
   useEffect(() => {
     if (category && type) {
       console.log(`Category: ${category}, Type: ${type}`)
+      setFilters([
+        {
+          type: type,
+          filterCount: 0,
+          category:
+            category === "property"
+              ? "Properties"
+              : category === "activities"
+                ? "Activities"
+                : category === "rentals"
+                  ? "Rentals"
+                  : "",
+        },
+      ])
     }
   }, [category, type])
 
+  useEffect(() => {
+    setFilterData(filterDataByPayload(dummyData, filters, budget))
+  }, [filters])
+
   return (
-    <WidthWrapper width="small" className="">
+    <WidthWrapper width="medium" className="">
       <div className="flex gap-x-10 mt-14">
         <div className="w-[30%]">
           <SideFilter
             onFiltersChange={handleFiltersChange}
             onBudgetChange={handleBudgetChange}
+            listingCategory={category ? category : ""}
+            filterItemType={type ? type : ""}
           />
         </div>
         <div className="w-70%">
           {filteredData.length > 0 ? (
-            <div className="grid grid-cols-3 gap-6">
-              {filteredData.map((item) => (
+            <div className="grid grid-cols-4 gap-6">
+              {filteredData.map((item: any) => (
                 <div key={item.listingId}>
                   <ListingItems {...item} />
                 </div>
