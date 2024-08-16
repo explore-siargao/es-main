@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
 import {
   Category,
-  MotorCycle,
+  Rental,
   SelectedReservation,
 } from "../../types/CalendarTable"
 
@@ -24,7 +24,7 @@ const AddReservationModal = ({
   data,
 }: IReservationCalendarModalProps) => {
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [filteredRooms, setFilteredRooms] = useState<MotorCycle[]>([])
+  const [filteredRooms, setFilteredRooms] = useState<Rental[]>([])
 
   const handleSave = (data: any) => {
     const resetform = () => {
@@ -99,7 +99,7 @@ const AddReservationModal = ({
                   })}
                 >
                   <Option value="">Select</Option>
-                  {filteredRooms.map((room: MotorCycle) => (
+                  {filteredRooms.map((room: Rental) => (
                     <Option key={room.abbr} value={room.abbr}>
                       {room.abbr}
                     </Option>

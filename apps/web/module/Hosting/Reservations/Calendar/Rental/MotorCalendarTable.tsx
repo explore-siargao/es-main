@@ -20,7 +20,7 @@ import {
   SelectedReservation,
   SampleData,
   Reservation,
-  MotorCycle,
+  Rental,
 } from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
@@ -102,7 +102,7 @@ const MotorCalendarTable = () => {
       const newFilteredData = {
         items: sampleData?.items?.map((category) => ({
           ...category,
-          motorcycles: category.motorcycles.map((motorcycle: MotorCycle) => ({
+          motorcycles: category.motorcycles.map((motorcycle: Rental) => ({
             ...motorcycle,
             reservations: motorcycle.reservations.filter((reservation) => {
               const bookingStart = new Date(reservation.startDate)
