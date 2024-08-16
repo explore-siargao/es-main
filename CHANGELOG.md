@@ -2,7 +2,6 @@
 
 ## [0.8.0](https://github.com/explore-siargao/es-main/compare/v0.7.0...v0.8.0) (2024-08-16)
 
-
 ### Features
 
 * Added backend car calendar reservation endpoint ([d1c84ab](https://github.com/explore-siargao/es-main/commit/d1c84ab276dbc208dd02b5ecc17e49d1318b0459))
@@ -15,16 +14,13 @@
 * **web:** Implemented backend get calendar rentals bike to frontendend ([3a4e88c](https://github.com/explore-siargao/es-main/commit/3a4e88c206ce47732ae2ce88fe2b6d2d2539f5a3))
 * **web:** Improved second page UI ([008e1e8](https://github.com/explore-siargao/es-main/commit/008e1e8cf8f6636f8d3251a342d255eee5402141))
 * **web:** landing page improvements ([d7981d5](https://github.com/explore-siargao/es-main/commit/d7981d56e0544aacd65712b17a97534618a5aeb3))
-* **web:** lightbox image gallery ([06a1324](https://github.com/explore-siargao/es-main/commit/06a132487aa757d90ab2d843410972159ad0f143))
-* **web:** lightbox image gallery ([1df8548](https://github.com/explore-siargao/es-main/commit/1df8548673ccd2142fef8041ff249bf4737331ec))
+* **web:** lightbox image gallery ([06a1324](https://github.com/explore-siargao/es-main/commit/06a132487aa757d90ab2d843410972159ad0f143), [1df8548](https://github.com/explore-siargao/es-main/commit/1df8548673ccd2142fef8041ff249bf4737331ec))
 * **web:** Some adjustments in user interface ([0d75177](https://github.com/explore-siargao/es-main/commit/0d75177b03216503496a34f6ca3539a605e2f544))
 * **web:** UI clean ups ([74c4bb1](https://github.com/explore-siargao/es-main/commit/74c4bb14cd472ac2c7f985fd3f011e5462a8d4a4))
-
 
 ### Bug Fixes
 
 * **web:** Try fix issues 1 ([09d069e](https://github.com/explore-siargao/es-main/commit/09d069e94e9023b0a5ad9fcec6ab3d4744ea06ab))
-* **wip:** Try fix on amenities section ([4c1eecd](https://github.com/explore-siargao/es-main/commit/4c1eecd844f06c9228ef7fad4f9b8fa544f6183e))
 
 ## [0.7.0](https://github.com/explore-siargao/es-main/compare/v0.6.0...v0.7.0) (2024-08-13)
 
