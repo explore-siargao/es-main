@@ -219,7 +219,7 @@ const ListingsPage = () => {
   }, [category, type])
 
   return (
-    <WidthWrapper width="medium">
+    <WidthWrapper width="small" className="">
       <div className="flex gap-x-10 mt-14">
         <div className="w-[30%]">
           <SideFilter
@@ -229,7 +229,7 @@ const ListingsPage = () => {
         </div>
         <div className="w-70%">
           {filteredData.length > 0 ? (
-            <div className="grid grid-cols-5 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               {filteredData.map((item) => (
                 <div key={item.listingId}>
                   <ListingItems {...item} />

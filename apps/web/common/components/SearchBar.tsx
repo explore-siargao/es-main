@@ -90,11 +90,13 @@ function SearchBar({
         >
           Find your island vibe
         </Typography>
+      </WidthWrapper>
+      <WidthWrapper width="small">
         <nav
           className="flex items-center justify-center py-2 my-2 w-full"
           aria-label="Global"
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col w-full gap-4">
             <div className="flex gap-8 rounded-full">
               <Button
                 variant="link"
@@ -136,8 +138,8 @@ function SearchBar({
             </FormProvider>
           </div>
         </nav>
-        <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
+      <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
     </div>
   )
 }

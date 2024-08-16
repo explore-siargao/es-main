@@ -31,7 +31,7 @@ export default async function RootLayout({
           <AuthStateProvider>
             <GlobalModalWrapper>
               <div className="flex flex-col gap-2">
-                <Header />
+                <Header contentWidth="small" />
                 <SearchBar />
               </div>
               <div className="min-h-screen">{children}</div>
