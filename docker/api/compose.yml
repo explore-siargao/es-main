@@ -4,7 +4,5 @@ services:
     image: jpmadrigal/es-api-dev:latest
     container_name: es-api-dev
     restart: unless-stopped
-    env_file:
-      - ../../.env.development
     ports:
       - 9000:9000
