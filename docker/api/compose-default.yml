@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   es-web:
     image: jpmadrigal/es-api-dev:latest
