@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  es-api:
-    image: jpmadrigal/es-api-dev:latest
-    container_name: es-api-dev
-    restart: unless-stopped
-    ports:
-      - 9000:9000

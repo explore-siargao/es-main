@@ -6,9 +6,6 @@ dotenv.config({ path: path.join(__dirname, '../../../../.env') })
 
 const MONGO_URL = process.env.MONGO_URL || ""
 
-console.log('mongodb packages', MONGO_URL)
-console.log('path', path.join(__dirname, '../../../../.env'))
-
 export const initMongo = () =>
   mongoose
     .connect(MONGO_URL)

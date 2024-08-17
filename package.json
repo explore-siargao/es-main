@@ -23,10 +23,8 @@
     "db:web-arm": "docker image rm jpmadrigal/es-web-dev-arm:latest ; docker compose -f ./docker/web/compose-build-arm.yml --env-file .env build --no-cache",
     "dc:web-arm": "docker compose -f ./docker/web/compose-arm.yml up -d && docker ps",
     "dbp:api": "docker image rm jpmadrigal/es-api-dev:latest ; docker build --no-cache -f ./docker/api/Dockerfile -t jpmadrigal/es-api-dev . && docker push jpmadrigal/es-api-dev:latest",
-    "db:api": "docker compose -f ./docker/api/compose-build.yml build",
-    "dc:api": "docker compose -f ./docker/api/compose.yml up -d && docker ps",
-    "db:api-arm": "docker image rm jpmadrigal/es-api-dev-arm:latest ; docker compose -f ./docker/api/compose-build-arm.yml --env-file .env.development build --no-cache",
-    "dc:api-arm": "docker compose -f ./docker/api/compose-arm.yml up -d && docker ps"
+    "dc:api": "docker container stop es-api-dev ; docker container rm es-api-dev ; docker compose -f ./docker/api/compose-default.yml up -d && docker ps",
+    "dc:api-arm": "docker container stop es-api-dev ; docker container rm es-api-dev ; docker compose -f ./docker/api/compose-arm.yml up -d --env-file .env && docker ps"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

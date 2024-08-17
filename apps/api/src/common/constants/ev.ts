@@ -3,8 +3,6 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: path.join(__dirname, '../../../../../.env') })
 
-console.log('mongodb api', process.env.MONGO_URL)
-
 export const API_PORT = process.env.API_PORT || 9000
 export const PASSWORD_ENCRYPT_KEY = process.env.PASSWORD_ENCRYPT_KEY || ''
 export const CARD_ENCRYPT_KEY = process.env.CARD_ENCRYPT_KEY || ''

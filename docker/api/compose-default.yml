@@ -1,10 +1,9 @@
-version: '3.8'
 services:
   es-web:
-    image: jpmadrigal/es-api-dev-arm:latest
+    image: jpmadrigal/es-api-dev:latest
     build:
       context: ../../
-      dockerfile: ./docker/api/Dockerfile.arm
+      dockerfile: ./docker/api/Dockerfile
       args:
         API_PORT: ${API_PORT}
         PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
@@ -25,4 +24,9 @@ services:
         GOOGLE_APIS_URL: ${GOOGLE_APIS_URL}
         REDIS_URL: ${REDIS_URL}
         WINDY_KEY: ${WINDY_KEY}
+        MONGO_URL: ${MONGO_URL}
+    container_name: es-api-dev
+    restart: unless-stopped
+    ports:
+      - 9000:9000
 

@@ -32,5 +32,4 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: pnpm run db:api
       - run: pnpm run dc:api
