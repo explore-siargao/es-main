@@ -1,6 +1,8 @@
 import mongoose from "mongoose"
 const MONGO_URL = process.env.MONGO_URL || ""
 
+console.log('MONGO_URL', MONGO_URL)
+
 export const initMongo = () =>
   mongoose
     .connect(MONGO_URL)

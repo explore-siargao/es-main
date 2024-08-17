@@ -24,3 +24,10 @@ export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || ''
 export const GOOGLE_SECRET_ID = process.env.GOOGLE_SECRET_ID || ''
 export const GOOGLE_APIS_URL = process.env.GOOGLE_APIS_URL || ''
 export const REDIS_URL = process.env.REDIS_URL || ''
+
+// 1. Fix mongodb url
+// 1. Fix docker files compose
+// 2. Remove prisma
+// 3. Setup frontend
+// 4. Setup cms
+// 5. Connect to ngrok
