@@ -25,4 +25,5 @@ services:
         GOOGLE_APIS_URL: ${GOOGLE_APIS_URL}
         REDIS_URL: ${REDIS_URL}
         WINDY_KEY: ${WINDY_KEY}
+        MONGO_URL: ${MONGO_URL}
 
