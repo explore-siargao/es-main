@@ -51,6 +51,7 @@ services:
         CARD_ENCRYPT_KEY: ${CARD_ENCRYPT_KEY}
         PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
         WINDY_KEY: ${WINDY_KEY}
+        PAYLOAD_URL: ${PAYLOAD_URL}
     image: es-web-sit:latest
     container_name: es-web-sit
     restart: unless-stopped
