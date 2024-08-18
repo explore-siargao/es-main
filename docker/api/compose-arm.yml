@@ -1,6 +1,5 @@
 services:
   es-api:
-    image: jpmadrigal/es-api-dev-arm:latest
     build:
       context: ../../
       dockerfile: ./docker/api/Dockerfile.arm
@@ -25,6 +24,7 @@ services:
         REDIS_URL: ${REDIS_URL}
         WINDY_KEY: ${WINDY_KEY}
         MONGO_URL: ${MONGO_URL}
+    image: jpmadrigal/es-api-dev-arm:latest
     container_name: es-api-dev-arm
     restart: unless-stopped
     ports:
