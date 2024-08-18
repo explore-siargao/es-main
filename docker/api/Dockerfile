@@ -24,6 +24,8 @@ ARG REDIS_URL
 ARG WINDY_KEY
 ARG MONGO_URL
 ARG CLIENT_ORIGINS
+ARG DATABASE_URL
+ARG SHADOW_DATABASE_URL
 
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
@@ -50,6 +52,8 @@ RUN echo "API_PORT=$API_PORT" > .env && \
     echo "REDIS_URL=${REDIS_URL}" >> .env && \
     echo "WINDY_KEY=${WINDY_KEY}" >> .env && \
     echo "CLIENT_ORIGINS=${CLIENT_ORIGINS}" >> .env && \
+    echo "DATABASE_URL=${DATABASE_URL}" >> .env && \
+    echo "SHADOW_DATABASE_URL=${SHADOW_DATABASE_URL}" >> .env && \
     echo "MONGO_URL=${MONGO_URL}" >> .env
 
 # Copy root folders files
