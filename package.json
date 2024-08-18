@@ -23,7 +23,7 @@
     "db:web-arm": "docker image rm jpmadrigal/es-web-dev-arm:latest ; docker compose -f ./docker/web/compose-build-arm.yml --env-file .env build --no-cache",
     "dc:web-arm": "docker compose -f ./docker/web/compose-arm.yml up -d && docker ps",
     "dbp:api": "docker image rm jpmadrigal/es-api-dev:latest ; docker build --no-cache -f ./docker/api/Dockerfile -t jpmadrigal/es-api-dev . && docker push jpmadrigal/es-api-dev:latest",
-    "dc:api": "docker compose -p es-sit -f ./docker/compose-sit.yml up -d && docker ps && docker system prune -f",
+    "dc:api": "docker compose -p es-sit -f ./docker/api/compose-default.yml up -d && docker ps && docker system prune -f",
     "dc:api-arm": "docker compose -f ./docker/api/compose-arm.yml up -d --env-file .env && docker ps"
   },
   "devDependencies": {
