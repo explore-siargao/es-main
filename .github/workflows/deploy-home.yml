@@ -2,7 +2,7 @@ name: deploy-home
 
 on:
   push:
-    branches: ["deployment-3"]
+    branches: ["main"]
 
 jobs:
   deployment:
