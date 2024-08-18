@@ -25,7 +25,6 @@ services:
         WINDY_KEY: ${WINDY_KEY}
         MONGO_URL: ${MONGO_URL}
         CLIENT_ORIGINS: ${CLIENT_ORIGINS}
-    image: es-api-sit:latest
     container_name: es-api-sit
     restart: unless-stopped
     ports:
@@ -52,7 +51,6 @@ services:
         PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
         WINDY_KEY: ${WINDY_KEY}
         PAYLOAD_URL: ${PAYLOAD_URL}
-    image: es-web-sit:latest
     container_name: es-web-sit
     restart: unless-stopped
     ports:
