@@ -10,12 +10,6 @@
     "start": "turbo start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate": "turbo db:generate",
-    "db:seed:local": "turbo db:seed:local",
-    "db:seed:development": "turbo db:seed:development",
-    "db:push:local": "turbo db:push:local",
-    "db:push:development": "turbo db:push:development",
-    "pdb:push": "npx prisma db push",
     "dr:redis": "sudo docker container stop redis ; sudo docker container stop redis_insight ; sudo docker container rm redis ; sudo docker container rm redis_insight ; sudo docker compose -f ./docker/redis/compose.yml up -d && sudo docker ps",
     "dc:es-sit": "docker compose -p es-sit -f ./docker/compose-sit.yml up -d && docker ps && docker system prune -f"
   },
