@@ -34,6 +34,7 @@ jobs:
       FACEBOOK_CLIENT_ID: ${{secrets.FACEBOOK_CLIENT_ID}}
       FACEBOOK_SECRET_ID: ${{secrets.FACEBOOK_SECRET_ID}}
       CLIENT_ORIGINS: ${{secrets.CLIENT_ORIGINS}}
+      PAYLOAD_URL: ${{secrets.PAYLOAD_URL}}
 
     steps:
       - uses: actions/checkout@v3
