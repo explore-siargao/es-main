@@ -1,5 +1,5 @@
 services:
-  es-api:
+  es-web:
     image: jpmadrigal/es-api-dev:latest
     build:
       context: ../../
