@@ -24,7 +24,6 @@ services:
         REDIS_URL: ${REDIS_URL}
         WINDY_KEY: ${WINDY_KEY}
         MONGO_URL: ${MONGO_URL}
-    image: jpmadrigal/es-api-dev:latest
     container_name: es-api-dev
     restart: unless-stopped
     ports:
