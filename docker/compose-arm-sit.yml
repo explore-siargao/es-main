@@ -1,8 +1,8 @@
 services:
   es-api:
     build:
-      context: ../../
-      dockerfile: ./docker/api/Dockerfile
+      context: ../
+      dockerfile: ./docker/api/Dockerfile.arm
       args:
         API_PORT: ${API_PORT}
         PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
@@ -25,7 +25,6 @@ services:
         WINDY_KEY: ${WINDY_KEY}
         MONGO_URL: ${MONGO_URL}
         CLIENT_ORIGINS: ${CLIENT_ORIGINS}
-    image: es-api-sit:latest
     container_name: es-api-sit
     restart: unless-stopped
     ports:
@@ -35,8 +34,8 @@ services:
 
   es-web:
     build:
-      context: ../../
-      dockerfile: ./docker/web/Dockerfile
+      context: ../
+      dockerfile: ./docker/web/Dockerfile.arm
       args:
         API_URL: ${API_URL}
         API_AUTH_URL: ${API_AUTH_URL}
@@ -52,7 +51,6 @@ services:
         PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
         WINDY_KEY: ${WINDY_KEY}
         PAYLOAD_URL: ${PAYLOAD_URL}
-    image: es-web-sit:latest
     container_name: es-web-sit
     restart: unless-stopped
     ports:
