@@ -1,8 +1,7 @@
-name: deploy-home
+name: deploy-home-manual
 
 on:
-  push:
-    branches: ["deployment-3"]
+  workflow_dispatch:
 
 jobs:
   deployment:
