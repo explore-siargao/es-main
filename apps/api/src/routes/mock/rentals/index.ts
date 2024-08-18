@@ -28,12 +28,7 @@ import { updateStatus } from './service/status'
 const router = express.Router()
 //rentals
 router.get('/', isOriginValid, getAllRentals)
-router.get(
-  '/:rentalId',
-  isOriginValid,
-  isHostRentalOwner,
-  getRental
-)
+router.get('/:rentalId', isOriginValid, isHostRentalOwner, getRental)
 router.delete(
   '/:rentalId',
   isOriginValid,
@@ -132,12 +127,7 @@ router.patch(
 )
 
 //add-ons
-router.get(
-  '/:rentalId/add-ons',
-  isOriginValid,
-  isHostRentalOwner,
-  getAddOns
-)
+router.get('/:rentalId/add-ons', isOriginValid, isHostRentalOwner, getAddOns)
 router.patch(
   '/:rentalId/add-ons',
   isOriginValid,

@@ -28,12 +28,7 @@ import { addActivity } from './service/default'
 const router = express.Router()
 
 // activity-info
-router.get(
-  '/:activityId',
-  isOriginValid,
-  isHostActivityOwner,
-  getActivities
-)
+router.get('/:activityId', isOriginValid, isHostActivityOwner, getActivities)
 router.patch(
   '/:activityId/info',
   isCsrfTokenValid,
@@ -69,7 +64,7 @@ router.post(
 
 router.get(
   '/:activityId/itineraries',
-  
+
   isOriginValid,
   isHostActivityOwner,
   getItineraries
@@ -77,7 +72,7 @@ router.get(
 
 router.patch(
   '/:activityId/itineraries',
-  
+
   isOriginValid,
   isCsrfTokenValid,
   isHostActivityOwner,
@@ -86,7 +81,7 @@ router.patch(
 
 router.delete(
   '/:activityId/itineraries/:itineraryId',
-  
+
   isCsrfTokenValid,
   isOriginValid,
   isHostActivityOwner,
@@ -96,7 +91,7 @@ router.delete(
 //Additional info
 router.get(
   '/:activityId/additional-info',
-  
+
   isOriginValid,
   isHostActivityOwner,
   getAdditionalInfo
@@ -104,7 +99,7 @@ router.get(
 
 router.patch(
   '/:activityId/additional-info',
-  
+
   isCsrfTokenValid,
   isOriginValid,
   isHostActivityOwner,
@@ -115,7 +110,7 @@ router.patch(
 router.get(
   '/:activityId/finished-sections',
   isOriginValid,
-  
+
   isHostActivityOwner,
   getFinishedSections
 )
@@ -123,7 +118,7 @@ router.patch(
   '/:activityId/finished-sections',
   isOriginValid,
   isCsrfTokenValid,
-  
+
   isHostActivityOwner,
   updateFinishedSections
 )
@@ -133,7 +128,7 @@ router.patch(
   '/:activityId/status',
   isOriginValid,
   isCsrfTokenValid,
-  
+
   isHostActivityOwner,
   updateStatus
 )

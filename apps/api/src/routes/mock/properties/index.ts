@@ -44,12 +44,7 @@ const router = express.Router()
 //properties
 router.post('/', isOriginValid, isCsrfTokenValid, addProperty)
 router.get('/', isOriginValid, getPropertiesByHostId)
-router.get(
-  '/:propertyId',
-  isOriginValid,
-  isHostPropertyOwner,
-  getPropertyById
-)
+router.get('/:propertyId', isOriginValid, isHostPropertyOwner, getPropertyById)
 router.delete(
   '/:propertyId',
   isOriginValid,
@@ -127,12 +122,7 @@ router.get(
 )
 
 router.get('/', isOriginValid, getPropertiesByHostId)
-router.get(
-  '/:propertyId',
-  isOriginValid,
-  isHostPropertyOwner,
-  getPropertyById
-)
+router.get('/:propertyId', isOriginValid, isHostPropertyOwner, getPropertyById)
 router.post('/', isOriginValid, isCsrfTokenValid, addProperty)
 router.patch(
   '/:propertyId/property-type',

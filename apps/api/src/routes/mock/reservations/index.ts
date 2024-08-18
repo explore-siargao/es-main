@@ -13,17 +13,9 @@ import isUserReservationOwner from './middlewares/isUserReservationOwner'
 const router = express.Router()
 
 // DEFAULT
-router.get(
-  '/guest/:guestId',
-  isCsrfTokenValid2,
-  getReservationsByGuest
-)
+router.get('/guest/:guestId', isCsrfTokenValid2, getReservationsByGuest)
 router.get('/host', isCsrfTokenValid2, getReservationsByHost)
-router.get(
-  '/:reservationId',
-  isCsrfTokenValid2,
-  getReservationsById
-)
+router.get('/:reservationId', isCsrfTokenValid2, getReservationsById)
 router.post('/:userId', isCsrfTokenValid2, addReservation)
 router.patch(
   '/:reservationId',

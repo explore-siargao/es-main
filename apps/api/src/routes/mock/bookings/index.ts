@@ -21,49 +21,17 @@ router.get('/to-review/:id', isOriginValid, getToReviewById)
 router.get('/paginated', paginatedBooking)
 
 //eranings
-router.get(
-  '/earnings/this-month',
-  isOriginValid,
-  getThisMonthEarnings
-)
-router.get(
-  '/earnings/this-month/bookings',
-  isOriginValid,
-  getThisMonthBookings
-)
-router.get(
-  '/earnings/upcoming',
-  isOriginValid,
-  getUpcomingEarnings
-)
-router.get(
-  '/earnings/upcoming/bookings',
-  isOriginValid,
-  getUpcomingBookings
-)
+router.get('/earnings/this-month', isOriginValid, getThisMonthEarnings)
+router.get('/earnings/this-month/bookings', isOriginValid, getThisMonthBookings)
+router.get('/earnings/upcoming', isOriginValid, getUpcomingEarnings)
+router.get('/earnings/upcoming/bookings', isOriginValid, getUpcomingBookings)
 router.get('/earnings/paid', isOriginValid, getPaidEarnings)
-router.get(
-  '/earnings/paid/bookings',
-  isOriginValid,
-  getPaidBookings
-)
-router.get(
-  '/earnings/:monthYear',
-  isOriginValid,
-  getMonthYearEarnings
-)
-router.get(
-  '/earnings/:monthYear/bookings',
-  isOriginValid,
-  getMonthYearBookings
-)
+router.get('/earnings/paid/bookings', isOriginValid, getPaidBookings)
+router.get('/earnings/:monthYear', isOriginValid, getMonthYearEarnings)
+router.get('/earnings/:monthYear/bookings', isOriginValid, getMonthYearBookings)
 
 //payment history
-router.get(
-  '/payment-history/:date',
-  isOriginValid,
-  getPaymentHistoryGraph
-)
+router.get('/payment-history/:date', isOriginValid, getPaymentHistoryGraph)
 router.get(
   '/payment-history/:date/bookings',
   isOriginValid,

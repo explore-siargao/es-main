@@ -6,11 +6,7 @@ const router = express.Router()
 
 // DEFAULT
 router.get('/', isCsrfTokenValid2, getConversations)
-router.get(
-  '/:conversationId/messages',
-  isCsrfTokenValid2,
-  getMessages
-)
+router.get('/:conversationId/messages', isCsrfTokenValid2, getMessages)
 router.post('/', isCsrfTokenValid2, addMessage)
 
 export default router

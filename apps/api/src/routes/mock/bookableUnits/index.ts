@@ -16,11 +16,6 @@ router.post('/:propertyId', addBookableUnit)
 router.patch('/:bookableUnitId', updateBookableUnitByBookableUnitId)
 router.get('/:bookableUnitId', getBookableUnitTypeByBookableUnitId)
 router.get('/:propertyId/paginated', getPaginatedBookableUnitByPropertyId)
-router.get(
-  '/',
-  isCsrfTokenValid2,
-  isOriginValid,
-  getAllBookableUnitTypeByHost
-)
+router.get('/', isCsrfTokenValid2, isOriginValid, getAllBookableUnitTypeByHost)
 
 export default router
