@@ -17,13 +17,13 @@ import {
   googleAuthPrompt,
   googleAuthScope,
   googleOAuth2Client,
-} from '../../users/helpers/googleAuth'
-import { getGoogleUserData } from '../../users/helpers/googleApiRequest'
-import generateSession from '../../users/helpers/generateSession'
+} from '../helpers/googleAuth'
+import { getGoogleUserData } from '../helpers/googleApiRequest'
+import generateSession from '../helpers/generateSession'
 import { T_User } from '@repo/contract'
 import randomNumber from '@/common/helpers/randomNumber'
 import { WEB_URL } from '@/common/constants/ev'
-import { AuthEmail, TSendEmailParams } from '../../users/service/authEmail'
+import { AuthEmail, TSendEmailParams } from './authEmail'
 import verifyCaptcha from '@/common/helpers/verifyCaptcha'
 import {
   dbForgotPasswords,

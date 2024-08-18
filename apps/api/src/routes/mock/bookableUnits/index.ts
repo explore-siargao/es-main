@@ -6,7 +6,6 @@ import {
   getPaginatedBookableUnitByPropertyId,
   updateBookableUnitByBookableUnitId,
 } from './service/default'
-import isUserLoggedIn2 from '@/common/middleware/auth/isUserLoggedIn2'
 import isCsrfTokenValid2 from '@/common/middleware/auth/isCsrfTokenValid2'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
 
@@ -19,7 +18,6 @@ router.get('/:bookableUnitId', getBookableUnitTypeByBookableUnitId)
 router.get('/:propertyId/paginated', getPaginatedBookableUnitByPropertyId)
 router.get(
   '/',
-  isUserLoggedIn2,
   isCsrfTokenValid2,
   isOriginValid,
   getAllBookableUnitTypeByHost
