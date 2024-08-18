@@ -23,6 +23,7 @@ ARG GOOGLE_APIS_URL
 ARG REDIS_URL
 ARG WINDY_KEY
 ARG MONGO_URL
+ARG CLIENT_ORIGINS
 
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
@@ -48,6 +49,7 @@ RUN echo "API_PORT=$API_PORT" > .env && \
     echo "GOOGLE_APIS_URL=${GOOGLE_APIS_URL}" >> .env && \
     echo "REDIS_URL=${REDIS_URL}" >> .env && \
     echo "WINDY_KEY=${WINDY_KEY}" >> .env && \
+    echo "CLIENT_ORIGINS=${CLIENT_ORIGINS}" >> .env && \
     echo "MONGO_URL=${MONGO_URL}" >> .env
 
 # Copy root folders files

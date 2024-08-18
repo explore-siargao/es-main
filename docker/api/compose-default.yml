@@ -24,9 +24,43 @@ services:
         REDIS_URL: ${REDIS_URL}
         WINDY_KEY: ${WINDY_KEY}
         MONGO_URL: ${MONGO_URL}
-    image: es-api:latest
-    container_name: es-api
+        CLIENT_ORIGINS: ${CLIENT_ORIGINS}
+    image: es-api-sit:latest
+    container_name: es-api-sit
     restart: unless-stopped
     ports:
       - 9000:9000
+    networks:
+      - es-network
+
+  es-web:
+    build:
+      context: ../../
+      dockerfile: ./docker/web/Dockerfile
+      args:
+        API_URL: ${API_URL}
+        API_AUTH_URL: ${API_AUTH_URL}
+        API_MOCK_URL: ${API_MOCK_URL}
+        WEB_URL: ${WEB_URL}
+        RECAPTCHA_KEY: ${RECAPTCHA_KEY}
+        RECAPTCHA_KEY_SECRET: ${RECAPTCHA_KEY_SECRET}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_SECRET_ID: ${GOOGLE_SECRET_ID}
+        FACEBOOK_CLIENT_ID: ${FACEBOOK_CLIENT_ID}
+        FACEBOOK_SECRET_ID: ${FACEBOOK_SECRET_ID}
+        CARD_ENCRYPT_KEY: ${CARD_ENCRYPT_KEY}
+        PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
+        WINDY_KEY: ${WINDY_KEY}
+    image: es-web-sit:latest
+    container_name: es-web-sit
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - es-network
+
+networks:
+  es-network:
+    driver: bridge
+
 

@@ -29,6 +29,11 @@ jobs:
       REDIS_URL: ${{secrets.REDIS_URL}}
       WINDY_KEY: ${{secrets.WINDY_KEY}}
       MONGO_URL: ${{secrets.MONGO_URL}}
+      API_AUTH_URL: ${{secrets.API_AUTH_URL}}
+      RECAPTCHA_KEY: ${{secrets.RECAPTCHA_KEY}}
+      FACEBOOK_CLIENT_ID: ${{secrets.FACEBOOK_CLIENT_ID}}
+      FACEBOOK_SECRET_ID: ${{secrets.FACEBOOK_SECRET_ID}}
+      CLIENT_ORIGINS: ${{secrets.CLIENT_ORIGINS}}
 
     steps:
       - uses: actions/checkout@v3
