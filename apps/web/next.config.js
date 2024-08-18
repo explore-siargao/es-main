@@ -21,12 +21,16 @@ module.exports = {
         destination: `${process.env.API_URL}/api/v2/:path*`,
       },
       {
-        source: "/api/:category(surfs|restaurants|locations)/:path*",
-        destination: `${process.env.PAYLOAD_URL}/api/:category/:path*`,
+        source: "/mock/v1/:path*",
+        destination: `${process.env.API_MOCK_URL}/mock/v1/:path*`,
       },
       {
-        source: "/mock/v1/:path*",
-        destination: `${process.env.API_URL}/mock/v1/:path*`,
+        source: "/cms/api/:path*",
+        destination: `${process.env.PAYLOAD_URL}/cms/api/:path*`,
+      },
+      {
+        source: "/cms/admin/:path*",
+        destination: `${process.env.PAYLOAD_URL}/cms/admin/:path*`,
       },
     ]
   },
