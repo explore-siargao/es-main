@@ -3,6 +3,7 @@ name: deploy-home
 on:
   push:
     branches: ["deployment-3"]
+  workflow_dispatch:
 
 jobs:
   deployment:
