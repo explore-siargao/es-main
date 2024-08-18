@@ -24,7 +24,8 @@ services:
         REDIS_URL: ${REDIS_URL}
         WINDY_KEY: ${WINDY_KEY}
         MONGO_URL: ${MONGO_URL}
-    container_name: es-api-dev
+    image: es-api:latest
+    container_name: es-api
     restart: unless-stopped
     ports:
       - 9000:9000
