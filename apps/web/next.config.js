@@ -43,6 +43,7 @@ module.exports = {
     CARD_ENCRYPT_KEY: process.env.CARD_ENCRYPT_KEY,
     PASSWORD_ENCRYPT_KEY: process.env.PASSWORD_ENCRYPT_KEY,
     WINDY_KEY: process.env.WINDY_KEY,
+    PAYLOAD_URL: process.env.PAYLOAD_URL,
   },
   images: {
     remotePatterns: [
