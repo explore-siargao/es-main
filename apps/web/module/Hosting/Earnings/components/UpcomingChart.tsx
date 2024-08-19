@@ -14,7 +14,7 @@ type T_Prop = {
   data?: {
     month: string
     year: string
-    completed: number
+    paid: number
     upcoming: number
   }[]
 }
@@ -41,10 +41,11 @@ const UpcomingChart = ({ data }: T_Prop) => {
           }
         />
         <Tooltip
+          cursor={{ fill: "#F3F4F6" }}
           formatter={(value: number) => formatCurrency(value, "Philippines")}
         />
-        <Bar dataKey="upcoming" fill="#B2DADA" />
-        <Bar dataKey="completed" fill="#008489" />
+        <Bar dataKey="upcoming" fill="#C4E5E6" />
+        <Bar dataKey="paid" fill="#8DBFC0" />
       </BarChart>
     </ResponsiveContainer>
   )

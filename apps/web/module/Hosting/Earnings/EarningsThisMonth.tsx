@@ -8,7 +8,7 @@ type T_Prop = {
   data?: {
     month: string
     year: string
-    completed: number
+    paid: number
     upcoming: number
   }
 }
@@ -35,7 +35,7 @@ const EarningsThisMonth = ({ data }: T_Prop) => {
             <Typography variant="h1" className="text-[30px]">
               You&apos;ve made{" "}
               <span className="text-gray-400">
-                {formatCurrency(data.completed, "Philippines")}
+                {formatCurrency(data.paid, "Philippines")}
               </span>{" "}
               this month
             </Typography>

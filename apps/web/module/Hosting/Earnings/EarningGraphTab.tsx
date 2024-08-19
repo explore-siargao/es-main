@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import EarningsThisMonth from "./EarningsThisMonth"
 import EarningsUpcoming from "./EarningsUpcoming"
 import EarningsPaid from "./EarningsPaid"
@@ -14,73 +14,73 @@ const dummyData = [
   {
     month: "January",
     year: "2024",
-    completed: 30000,
+    paid: 30000,
     upcoming: 10000,
   },
   {
     month: "February",
     year: "2024",
-    completed: 35000,
+    paid: 35000,
     upcoming: 5000,
   },
   {
     month: "March",
     year: "2024",
-    completed: 40000,
+    paid: 40000,
     upcoming: 10000,
   },
   {
     month: "April",
     year: "2024",
-    completed: 45000,
+    paid: 45000,
     upcoming: 20000,
   },
   {
     month: "May",
     year: "2024",
-    completed: 50000,
+    paid: 50000,
     upcoming: 10000,
   },
   {
     month: "June",
     year: "2024",
-    completed: 55000,
+    paid: 55000,
     upcoming: 25000,
   },
   {
     month: "July",
     year: "2024",
-    completed: 60000,
+    paid: 60000,
     upcoming: 30000,
   },
   {
     month: "August",
     year: "2024",
-    completed: 40000,
+    paid: 40000,
     upcoming: 24000,
   },
   {
     month: "September",
     year: "2024",
-    completed: 65000,
+    paid: 65000,
     upcoming: 35000,
   },
   {
     month: "October",
     year: "2024",
-    completed: 70000,
+    paid: 70000,
     upcoming: 20000,
   },
   {
     month: "November",
     year: "2024",
-    completed: 37000,
+    paid: 37000,
     upcoming: 7300,
   },
   {
     month: "December",
     year: "2024",
-    completed: 35000,
+    paid: 35000,
     upcoming: 5000,
   },
 ]
@@ -88,12 +88,29 @@ const dummyData = [
 const EarningGraphTab = () => {
   const [category, setCategory] = useState("All")
   const [year, setYear] = useState("2024")
-  const [month, setMonth] = useState("All")
+  const [month, setMonth] = useState("all")
   const [propertyType, setPropertyType] = useState("All")
 
   const { data: EarningsReport } = useGetEarningsReport()
 
   console.log("Marker: ", EarningsReport)
+
+  const [upcomingEarnings, setUpcomingEarnings] = useState<any>([])
+
+  useEffect(() => {
+    let filteredEarnings
+
+    if (month === "all") {
+      filteredEarnings = dummyData.filter((earning) => earning.year === year)
+    } else {
+      filteredEarnings = dummyData.filter(
+        (earning) => earning.year === year && earning.month === month
+      )
+    }
+
+    setUpcomingEarnings(filteredEarnings)
+  }, [year, month])
+
   return (
     <div className="mt-20 mb-14">
       <Tabs tabs={insightsTabs} />
@@ -117,18 +134,18 @@ const EarningGraphTab = () => {
           onChange={(e) => setMonth(e.target.value)}
         >
           <Option value="all">All</Option>
-          <Option value="Jan">January</Option>
-          <Option value="Feb">February</Option>
-          <Option value="Mar">March</Option>
-          <Option value="Apr">April</Option>
+          <Option value="January">January</Option>
+          <Option value="February">February</Option>
+          <Option value="March">March</Option>
+          <Option value="April">April</Option>
           <Option value="May">May</Option>
-          <Option value="Jun">June</Option>
-          <Option value="Jul">July</Option>
-          <Option value="Aug">August</Option>
-          <Option value="Sep">September</Option>
-          <Option value="Oct">October</Option>
-          <Option value="Nov">November</Option>
-          <Option value="Dec">December</Option>
+          <Option value="June">June</Option>
+          <Option value="July">July</Option>
+          <Option value="August">August</Option>
+          <Option value="September">September</Option>
+          <Option value="October">October</Option>
+          <Option value="November">November</Option>
+          <Option value="December">December</Option>
         </Select>
 
         <Select
@@ -171,7 +188,7 @@ const EarningGraphTab = () => {
 
           <div className="mt-4">
             <EarningsThisMonth data={dummyData[7]} />
-            <EarningsUpcoming data={dummyData} />
+            <EarningsUpcoming data={upcomingEarnings} />
             {/* <EarningsPaid /> */}
           </div>
         </div>
