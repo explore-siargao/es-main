@@ -2,7 +2,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucidePlus } from "lucide-react"
 import React, { useState } from "react"
 import AddBedroomModal from "./AddBedroomModal"
-import { useBedroomStore } from "../store/useBedroomStore"
+import { useBedroomStore, useBedroomStudioStore } from "../store/useBedroomStore"
 import { Button } from "@/common/components/ui/Button"
 
 type T_Prop = {
@@ -11,6 +11,7 @@ type T_Prop = {
 
 const Bedroom = ({ unitType }: T_Prop) => {
   const bedrooms = useBedroomStore((state) => state.bedrooms)
+  const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
   const deleteBedroom = useBedroomStore((state) => state.deleteBedroom)
   const [isAddBedroomModalOpen, setIsAddBedroomModalOpen] = useState(false)
 
@@ -44,7 +45,7 @@ const Bedroom = ({ unitType }: T_Prop) => {
                       </span>
                     ))}
                 </div>
-                {unitType === "Studio" && (
+                {unitType !== "Studio" && (
                   <div className="flex items-center">
                     <Button
                       type="button"

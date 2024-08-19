@@ -12,3 +12,5 @@ export interface IBedroom {
 export interface IBedroom {
   beds: IBed[]
 }
+
+

@@ -32,7 +32,7 @@ import { T_Property_Amenity } from "@repo/contract"
 import useGetUnitById from "../hooks/useGetUnitById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import Bedroom from "./components/Bedroom"
-import { useBedroomStore } from "./store/useBedroomStore"
+import { useBedroomStore, useBedroomStudioStore } from "./store/useBedroomStore"
 import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
 import { IBedroom } from "../types"
 import { Option, Select } from "@/common/components/ui/Select"
@@ -41,30 +41,30 @@ import Livingroom from "./components/Livingroom"
 import { useLivingroomStore } from "./store/useLivingroomStore"
 
 type T_WholePlaceUnit = {
-  title: string;
-  bedCount: number;
-  bedRooms: IBedroom[];
-  size: number;
-  squareFoot: number;
-  bathrooms: number;
-  typeCount: number;
-  amenities: T_Property_Amenity[];
-  exactUnitCount: number;
-  livingRoom: IBedroom[];
-};
-
-interface IWholePlaceBasicInfo {
-  numBathRooms: number;
-  title: string;
-  totalSize: number;
-  qty: number;
-  bedRooms: IBedroom[];
-  livingRooms: IBedroom[];
-  singleBedRoom: { name: string; qty: number };
-  singleLivingRoom: { name: string; qty: number };
+  title: string
+  bedCount: number
+  bedRooms: IBedroom[]
+  bedroomStudio: IBedroom[]
+  size: number
+  squareFoot: number
+  bathrooms: number
+  typeCount: number
+  amenities: T_Property_Amenity[]
+  exactUnitCount: number
+  livingRoom: IBedroom[]
 }
 
-
+interface IWholePlaceBasicInfo {
+  numBathRooms: number
+  title: string
+  totalSize: number
+  qty: number
+  bedRooms: IBedroom[]
+  bedroomStudio: IBedroom[]
+  livingRooms: IBedroom[]
+  singleBedRoom: { name: string; qty: number }
+  singleLivingRoom: { name: string; qty: number }
+}
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -79,6 +79,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
+  const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
   const [livingroom, setLivingroom] = useState<IBedroom[]>([])
 
   const [bathroomCount, setBathroomCount] = useState<number>(
@@ -122,16 +123,14 @@ const WholePlace = ({ pageType }: Prop) => {
   const amenities = useSelectAmenityStore((state) => state.amenities)
   const { register, handleSubmit, setValue } = useForm<T_WholePlaceUnit>()
   const livingroomData = useLivingroomStore((state) => state.livingroom)
+
   const setLivingroomData = useLivingroomStore(
     (state) => state.setInitialLivingrooms
   )
-  const [hasSleepingSpaces, setHasSleepingSpaces] = useState<string>("no")
 
   const handleUpdateLivingrooms = (updatedLivingroom: IBedroom[]) => {
-    setLivingroomData(updatedLivingroom);
-  };
-  
-  
+    setLivingroomData(updatedLivingroom)
+  }
 
   const updatePhotosInDb = async () => {
     const toAddPhotos =
@@ -184,46 +183,55 @@ const WholePlace = ({ pageType }: Prop) => {
   }
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
-    formData.amenities = amenities;
-  
+    formData.amenities = amenities
+
     if (formData.size <= 0) {
-      toast.error("Please fill total size count field");
-      return;
+      toast.error("Please fill total size count field")
+      return
     }
-  
+
     if (bedrooms.length <= 0) {
-      toast.error("Please fill out bedroom/space count field");
-      return;
+      toast.error("Please fill out bedroom/space count field")
+      return
     }
-  
+
     if (bathroomCount <= 0) {
-      toast.error("Please fill out bathroom count field");
-      return;
+      toast.error("Please fill out bathroom count field")
+      return
     }
-  
+
     try {
       if (bedrooms.length > 0) {
-        setIsSavings(true);
-        formData.amenities = amenities;
-        formData.bedRooms = bedrooms;
+        setIsSavings(true)
+        formData.amenities = amenities
+        formData.bedRooms = bedrooms
       } else {
-        toast.error("Must have at least 1 bedroom or sleeping space.");
-        return;
+        toast.error("Must have at least 1 bedroom or sleeping space.")
+        return
       }
-  
+
       const commonProps = {
         _id: wholePlaceId,
         title: formData.title,
         numBathRooms: bathroomCount,
         totalSize: formData.size,
         qty: Number(exactUnitCount),
-      };
-  
+      }
+
+      //test
+
+      if (bedroomsStudio.length > 0) {
+        formData.bedroomStudio = bedroomsStudio
+        console.log("bedroomStudio data to be saved:", bedroomsStudio)
+      } else {
+        console.error("bedroomStudio data is empty at the time of saving.")
+      }
       const unitSpecificProps: Omit<IWholePlaceBasicInfo, "_id"> =
         unitType === "Studio"
           ? {
               bedRooms: [],
-              livingRooms: livingroom.length > 0 ? [livingroom[0] as IBedroom] : [],
+              bedroomStudio: [],
+              livingRooms: bedrooms.length > 0 ? [bedrooms[0] as IBedroom] : [],
               singleBedRoom: { name: "", qty: 0 },
               singleLivingRoom: {
                 name: singleRoomBed,
@@ -237,38 +245,43 @@ const WholePlace = ({ pageType }: Prop) => {
           : {
               livingRooms: livingroomData,
               bedRooms: bedrooms,
+              bedroomStudio: bedroomsStudio,
               singleBedRoom: { name: singleRoomBed, qty: singleRoomBedCount },
               singleLivingRoom: { name: "", qty: 0 },
               numBathRooms: bathroomCount,
               title: formData.title,
               totalSize: formData.size,
               qty: Number(exactUnitCount),
-            };
-            console.log("Unit Specific Props to Save:", unitSpecificProps);
-  
+            }
+      console.log("Unit Specific Props to Save:", unitSpecificProps)
+
+      if (unitType !== "Studio" && bedroomsStudio.length > 0) {
+        console.log("bedroomStudio data to be saved:", bedroomsStudio)
+      }
+
       const saveBasicInfo = await updateWholePlaceBasicInfo({
         ...commonProps,
         ...unitSpecificProps,
-      });
-  
-      const saveAmenities = updateAmenties({ amenities: formData?.amenities });
-  
+      })
+
+      const saveAmenities = updateAmenties({ amenities: formData?.amenities })
+
       const filterSelectedAmenities = amenities.filter(
         (amenity) => amenity.isSelected
-      );
-  
+      )
+
       if (filterSelectedAmenities.length > 0) {
         await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-          handleSavePhotos();
-        });
+          handleSavePhotos()
+        })
       } else {
-        toast.error("Please select at least one amenity");
+        toast.error("Please select at least one amenity")
       }
     } catch (error) {
-      toast.error("An error occurred while saving data");
+      toast.error("An error occurred while saving data")
     }
-  };
-  
+  }
+
   useEffect(() => {
     if (!isPending && !isFetching && data?.item) {
       setValue("title", data?.item?.title)
@@ -279,6 +292,7 @@ const WholePlace = ({ pageType }: Prop) => {
       setAmenties(data.item?.amenities)
       handleSqmChange(data.item?.totalSize)
       const livingRooms = data.item?.livingRooms || []
+      const bedroomsStudio = data.item?.bedroomStudio || []
       setLivingroomData(livingRooms)
       setHasSleepingSpaces(livingRooms.length > 0 ? "yes" : "no")
     }
@@ -300,19 +314,24 @@ const WholePlace = ({ pageType }: Prop) => {
     })
   }
 
-  const [unitType, setUnitType] = useState(data?.item?.title || "villa")
+  const [unitType, setUnitType] = useState(data?.item?.title || "")
   const [singleRoomBed, setSingleRoomBed] = useState("Single Bed")
   const [singleRoomBedCount, setSingleRoomBedCount] = useState(0)
+  const [hasSleepingSpaces, setHasSleepingSpaces] = useState("")
+
   const isLivingRoomVisible =
     unitType === "Studio" || hasSleepingSpaces === "yes"
 
   useEffect(() => {
-    if (data?.item?.title === "Studio") {
-      setSingleRoomBed(data?.item?.singleLivingRoom?.name || "Single Bed")
-      setSingleRoomBedCount(data?.item?.singleLivingRoom?.qty || 0)
-    } else {
-      setSingleRoomBed(data?.item?.singleBedRoom?.name || "Single Bed")
-      setSingleRoomBedCount(data?.item?.singleBedRoom?.qty || 0)
+    if (data) {
+      setUnitType(data?.item?.title || "villa")
+      if (data?.item?.title === "Studio") {
+        setSingleRoomBed(data?.item?.singleLivingRoom?.name || "Single Bed")
+        setSingleRoomBedCount(data?.item?.singleLivingRoom?.qty || 0)
+      } else {
+        setSingleRoomBed(data?.item?.singleBedRoom?.name || "Single Bed")
+        setSingleRoomBedCount(data?.item?.singleBedRoom?.qty || 0)
+      }
     }
   }, [data])
 
@@ -463,40 +482,49 @@ const WholePlace = ({ pageType }: Prop) => {
                     </div>
                   )}
 
-                  {isLivingRoomVisible && unitType === "Studio" && (
-                    <>
-                      <Typography variant="h4" fontWeight="semibold">
-                        Living room
-                      </Typography>
-                      <Typography
-                        variant="h5"
-                        fontWeight="normal"
-                        className="mb-2 text-gray-400"
-                      >
-                        {unitType === "Studio"
-                          ? "How many comfortable living spaces does this unit have? Click to add living room."
-                          : `What type does this unit have?`}
-                      </Typography>
-                    </>
-                  )}
-
                   {isLivingRoomVisible && (
                     <>
                       {unitType === "Studio" ? (
-                        <div className="grid grid-cols-2">
-                          <div>
-                            <Bedroom unitType={unitType} />
+                        <>
+                          <Typography variant="h4" fontWeight="semibold">
+                            Living room
+                          </Typography>
+                          <Typography
+                            variant="h5"
+                            fontWeight="normal"
+                            className="mb-2 text-gray-400"
+                          >
+                            How many comfortable living spaces does this unit
+                            have? Click to add living room.
+                          </Typography>
+                          <div className="grid grid-cols-2">
+                            <div>
+                              {/* ito yung sa studio type */}
+                              <Bedroom unitType={unitType} />
+                            </div>
                           </div>
-                        </div>
+                        </>
                       ) : (
-                        <div className="grid grid-cols-2">
-                          <div>
-                            <Livingroom
-                              unitType={unitType}
-                              onLivingroomUpdate={handleUpdateLivingrooms}
-                            />
+                        <>
+                          <Typography variant="h4" fontWeight="semibold">
+                            Living room
+                          </Typography>
+                          <Typography
+                            variant="h5"
+                            fontWeight="normal"
+                            className="mb-2 text-gray-400"
+                          >
+                            What type does this unit have?
+                          </Typography>
+                          <div className="grid grid-cols-2">
+                            <div>
+                              <Livingroom
+                                unitType={unitType}
+                                onLivingroomUpdate={handleUpdateLivingrooms}
+                              />
+                            </div>
                           </div>
-                        </div>
+                        </>
                       )}
                     </>
                   )}
