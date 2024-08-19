@@ -20,12 +20,12 @@ module.exports = {
         destination: `${process.env.API_URL}/api/v2/:path*`,
       },
       {
-        source: "/api/:category(surfs|restaurants|locations)/:path*",
-        destination: `${process.env.PAYLOAD_URL}/api/:category/:path*`,
-      },
-      {
         source: "/mock/v1/:path*",
         destination: `${process.env.API_URL}/mock/v1/:path*`,
+      },
+      {
+        source: "/cms/:path*",
+        destination: `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/cms/:path*`,
       },
     ]
   },
@@ -43,6 +43,7 @@ module.exports = {
     CARD_ENCRYPT_KEY: process.env.CARD_ENCRYPT_KEY,
     PASSWORD_ENCRYPT_KEY: process.env.PASSWORD_ENCRYPT_KEY,
     WINDY_KEY: process.env.WINDY_KEY,
+    PAYLOAD_PUBLIC_SERVER_URL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
   },
   images: {
     remotePatterns: [

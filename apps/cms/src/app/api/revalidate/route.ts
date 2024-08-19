@@ -9,7 +9,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 
   if (
     !secret ||
-    secret !== process.env.NEXT_PRIVATE_REVALIDATION_KEY ||
+    secret !== process.env.PAYLOAD_NEXT_PRIVATE_REVALIDATION_KEY ||
     typeof collection !== 'string' ||
     typeof slug !== 'string'
   ) {

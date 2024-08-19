@@ -39,7 +39,7 @@ export async function GET(
     return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
-  if (secret !== process.env.NEXT_PRIVATE_DRAFT_SECRET) {
+  if (secret !== process.env.PAYLOAD_NEXT_PRIVATE_DRAFT_SECRET) {
     return new Response('Invalid token', { status: 401 })
   }
 

@@ -6,7 +6,7 @@ import path from 'path'
 // See `./README.md#eject` for more information
 
 dotenv.config({
-  path: path.resolve(__dirname, '../../../.env.cms'),
+  path: path.resolve(__dirname, '../../../.env'),
 })
 
 import express from 'express'
@@ -15,7 +15,7 @@ import payload from 'payload'
 import { seed } from './payload/seed'
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PAYLOAD_PORT || 3000
 
 // Redirect root to the admin panel
 app.get('/', (_, res) => {
