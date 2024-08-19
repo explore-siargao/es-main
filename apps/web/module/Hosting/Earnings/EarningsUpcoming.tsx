@@ -3,10 +3,26 @@ import { Typography } from "@/common/components/ui/Typography"
 import useGetUpcomingEarnings from "../hooks/useGetUpcomingEarnings"
 import { Spinner } from "@/common/components/ui/Spinner"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import Chart, { ChartType } from "./components/Chart"
 import { format } from "date-fns"
+import UpcomingChart from "./components/UpcomingChart"
 
-const EarningsUpcoming = () => {
+type T_Prop = {
+  data?:
+    | {
+        month: string
+        year: string
+        paid: number
+        upcoming: number
+      }
+    | {
+        month: string
+        year: string
+        paid: number
+        upcoming: number
+      }[]
+}
+
+const EarningsUpcoming = ({ data }: T_Prop) => {
   const { data: upcoming, isPending: upcomingIsPending } =
     useGetUpcomingEarnings()
   const currentDate = new Date()
@@ -43,34 +59,17 @@ const EarningsUpcoming = () => {
     </Typography>
   )
 
+  let total = 0
+
+  if (Array.isArray(data)) {
+    total = data.reduce((acc, current) => acc + current.paid, 0)
+  } else if (data) {
+    total = data.paid
+  }
+
   return (
     <div className="mt-8">
-      {upcoming?.item && upcoming.item.months.length > 0 ? (
-        <>
-          <div>
-            <Typography variant="h1" className="text-[30px]">
-              Your upcoming earnings{" "}
-              <span className="text-gray-400">
-                {upcomingIsPending
-                  ? formatCurrency(0.0, "Philippines")
-                  : formatCurrency(
-                      upcoming.item.summary.totalEarnings,
-                      "Philippines"
-                    )}
-              </span>
-            </Typography>
-          </div>
-          {earningsUpcomingDescription}
-          <Chart
-            data={upcoming.item.months}
-            isPending={upcomingIsPending}
-            width="100%"
-            height={400}
-            type={ChartType.upcoming}
-            earningType="monthly"
-          />
-        </>
-      ) : (
+      {!data || (Array.isArray(data) && data.length === 0) ? (
         <>
           <Typography fontWeight="semibold" variant="h2">
             Upcoming
@@ -79,6 +78,21 @@ const EarningsUpcoming = () => {
           <Typography fontWeight="semibold" variant="p">
             No upcoming earnings at the moment.
           </Typography>
+        </>
+      ) : (
+        <>
+          <div>
+            <Typography variant="h1" className="text-[30px]">
+              Your upcoming earnings{" "}
+              <span className="text-gray-400">
+                {formatCurrency(total, "Philippines")}
+              </span>
+            </Typography>
+          </div>
+          {earningsUpcomingDescription}
+          <div className="w-full h-[400px]">
+            <UpcomingChart data={Array.isArray(data) ? data : [data]} />
+          </div>
         </>
       )}
     </div>
