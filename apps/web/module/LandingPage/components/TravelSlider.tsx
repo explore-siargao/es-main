@@ -15,6 +15,7 @@ type TravelSliderProps = {
   url?: string
   isGuide: boolean
   itemsNumber: number
+  isLastItemFull?: boolean
 }
 
 const TravelSlider = ({
@@ -23,6 +24,7 @@ const TravelSlider = ({
   groupCards,
   isGuide,
   itemsNumber,
+  isLastItemFull,
 }: TravelSliderProps) => {
   const formattedGroupCards = groupCards.map((card) => ({
     ...card,
@@ -48,6 +50,7 @@ const TravelSlider = ({
           cards={formattedGroupCards}
           isGuide={isGuide}
           itemsNumber={itemsNumber}
+          isLastItemFull={isLastItemFull}
         />
       </div>
     </div>

@@ -1,14 +1,12 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { LINK_LOGIN } from "@/common/constants/links"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import { cn } from "@/common/helpers/cn"
 import ApplyToHostModal from "../../module/LandingPage/components/ApplyToHostModal"
 import useSessionStore from "@/common/store/useSessionStore"
 import { Button } from "./ui/Button"
 import { FormProvider, useForm } from "react-hook-form"
-
 import { useSearchStore } from "../store/useSearchStore"
 import PropertySearchBar from "./SearchBar/PropertySearchBar"
 import ActivitiesSearchBar from "./SearchBar/ActivitiesSearchBar"
@@ -33,6 +31,9 @@ function SearchBar({
   const session = useSessionStore((state) => state)
   const path = usePathname()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const category = searchParams.get("category") || ""
+
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
 
@@ -64,16 +65,14 @@ function SearchBar({
   const [pageProperty, setPageProperty] = useState(1)
 
   useEffect(() => {
-    if (path != "/listings") {
-      if (path === "/activities") {
-        setPageProperty(2)
-      } else if (path === "/rentals") {
-        setPageProperty(3)
-      } else {
-        setPageProperty(1)
-      }
+    if (category === "property") {
+      setPageProperty(1)
+    } else if (category === "activities") {
+      setPageProperty(2)
+    } else if (category === "rentals") {
+      setPageProperty(3)
     }
-  })
+  }, [category])
 
   return (
     <div
@@ -91,23 +90,23 @@ function SearchBar({
         >
           Find your island vibe
         </Typography>
+      </WidthWrapper>
+      <WidthWrapper
+        width={path === "/" && category === "" ? "small" : "medium"}
+      >
         <nav
           className="flex items-center justify-center py-2 my-2 w-full"
           aria-label="Global"
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col w-full gap-4">
             <div className="flex gap-8 rounded-full">
               <Button
                 variant="link"
                 size="sm"
                 onClick={() => {
-                  if (path === "/listings") {
-                    setPageProperty(1)
-                  } else {
-                    router.push("/")
-                  }
+                  router.push("/listings?category=property")
                 }}
-                className={`${path === "/" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
+                className={`${category === "property" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Places to stay
               </Button>
@@ -115,13 +114,9 @@ function SearchBar({
                 variant="link"
                 size="sm"
                 onClick={() => {
-                  if (path === "/listings") {
-                    setPageProperty(2)
-                  } else {
-                    router.push("/activities")
-                  }
+                  router.push("/listings?category=activities")
                 }}
-                className={`${path === "/activities" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
+                className={`${category === "activities" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Activities
               </Button>
@@ -129,13 +124,9 @@ function SearchBar({
                 variant="link"
                 size="sm"
                 onClick={() => {
-                  if (path === "/listings") {
-                    setPageProperty(3)
-                  } else {
-                    router.push("/rentals")
-                  }
+                  router.push("/listings?category=rentals")
                 }}
-                className={`${path === "/rentals" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
+                className={`${category === "rentals" ? "font-bold underline" : ""} text-white hover:text-gray-300 px-0`}
               >
                 Rentals
               </Button>
@@ -149,8 +140,8 @@ function SearchBar({
             </FormProvider>
           </div>
         </nav>
-        <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
+      <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
     </div>
   )
 }

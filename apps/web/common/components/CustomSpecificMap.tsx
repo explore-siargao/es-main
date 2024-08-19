@@ -12,6 +12,7 @@ interface SpecificMapProps {
   mapWidth: string
   zoom?: number
   setCoordinates: (lat: number, lng: number) => void
+  isRoundedEdge?: boolean
 }
 
 const markerIcon = new Icon({
@@ -27,6 +28,7 @@ const CustomSpecificMap = ({
   mapWidth,
   zoom,
   setCoordinates,
+  isRoundedEdge,
 }: SpecificMapProps) => {
   const [position, setPosition] = useState<[number, number] | null>(null)
 
@@ -63,7 +65,9 @@ const CustomSpecificMap = ({
   }, [HandleResize])
 
   return (
-    <div className="flex-1 block bg-primary-200">
+    <div
+      className={`${isRoundedEdge && "rounded-xl"} flex-1 block bg-primary-200`}
+    >
       <div className={`${mapHeight} ${mapWidth} relative`}>
         {showMap ? (
           <MapContainer
@@ -75,6 +79,7 @@ const CustomSpecificMap = ({
               width: "100%",
               zIndex: 30,
             }}
+            className={isRoundedEdge ? "rounded-xl" : ""}
           >
             <MapClickHandler />
             <TileLayer
