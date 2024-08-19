@@ -49,7 +49,7 @@ const SurfingGuide = () => {
   const getGuidePost = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/surfs/guide/${guideName}`
+        `http://localhost:3000/cms/api/surfs/guide/${guideName}`
       )
 
       if (!res.ok) {
