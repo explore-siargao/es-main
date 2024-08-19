@@ -10,6 +10,81 @@ import useGetEarningsReport from "../hooks/useGetEarningsReport"
 import insightsTabs from "../Insights/helpers/insightsTabs"
 import { Option, Select } from "@/common/components/ui/Select"
 
+const dummyData = [
+  {
+    month: "January",
+    year: "2024",
+    completed: 30000,
+    upcoming: 10000,
+  },
+  {
+    month: "February",
+    year: "2024",
+    completed: 35000,
+    upcoming: 5000,
+  },
+  {
+    month: "March",
+    year: "2024",
+    completed: 40000,
+    upcoming: 10000,
+  },
+  {
+    month: "April",
+    year: "2024",
+    completed: 45000,
+    upcoming: 20000,
+  },
+  {
+    month: "May",
+    year: "2024",
+    completed: 50000,
+    upcoming: 10000,
+  },
+  {
+    month: "June",
+    year: "2024",
+    completed: 55000,
+    upcoming: 25000,
+  },
+  {
+    month: "July",
+    year: "2024",
+    completed: 60000,
+    upcoming: 30000,
+  },
+  {
+    month: "August",
+    year: "2024",
+    completed: 40000,
+    upcoming: 24000,
+  },
+  {
+    month: "September",
+    year: "2024",
+    completed: 65000,
+    upcoming: 35000,
+  },
+  {
+    month: "October",
+    year: "2024",
+    completed: 70000,
+    upcoming: 20000,
+  },
+  {
+    month: "November",
+    year: "2024",
+    completed: 37000,
+    upcoming: 7300,
+  },
+  {
+    month: "December",
+    year: "2024",
+    completed: 35000,
+    upcoming: 5000,
+  },
+]
+
 const EarningGraphTab = () => {
   const [category, setCategory] = useState("All")
   const [year, setYear] = useState("2024")
@@ -95,9 +170,9 @@ const EarningGraphTab = () => {
           <div className="mt-3"></div>
 
           <div className="mt-4">
-            <EarningsThisMonth />
-            <EarningsUpcoming />
-            <EarningsPaid />
+            <EarningsThisMonth data={dummyData[7]} />
+            <EarningsUpcoming data={dummyData} />
+            {/* <EarningsPaid /> */}
           </div>
         </div>
         <div className="col-span-1 relative">

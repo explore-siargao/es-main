@@ -1,8 +1,17 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import Chart, { ChartType } from "./components/Chart"
 import useGetThisMonthEarnings from "../hooks/useGetThisMonthEarnings"
 import formatCurrency from "@/common/helpers/formatCurrency"
+import ThisMonthChart from "./components/ThisMonthChart"
+
+type T_Prop = {
+  data?: {
+    month: string
+    year: string
+    completed: number
+    upcoming: number
+  }
+}
 
 const earningsGraphDescription = (
   <Typography
@@ -14,36 +23,27 @@ const earningsGraphDescription = (
     of your financial goals.
   </Typography>
 )
-const EarningsThisMonth = () => {
+const EarningsThisMonth = ({ data }: T_Prop) => {
   const { data: thisMonth, isPending: thisMonthIsPending } =
     useGetThisMonthEarnings()
+
   return (
     <div>
-      {thisMonth?.item && thisMonth.item.days.length > 0 ? (
+      {data ? (
         <>
           <div>
             <Typography variant="h1" className="text-[30px]">
               You&apos;ve made{" "}
               <span className="text-gray-400">
-                {thisMonthIsPending
-                  ? formatCurrency(0.0, "Philippines")
-                  : formatCurrency(
-                      thisMonth.item.summary.totalEarnings,
-                      "Philippines"
-                    )}
+                {formatCurrency(data.completed, "Philippines")}
               </span>{" "}
               this month
             </Typography>
           </div>
           {earningsGraphDescription}
-          <Chart
-            data={thisMonth.item.days}
-            isPending={thisMonthIsPending}
-            width="100%"
-            height={400}
-            type={ChartType["this-month"]}
-            earningType="daily"
-          />
+          <div className="w-full h-[200px]">
+            <ThisMonthChart data={data} />
+          </div>
         </>
       ) : (
         <>

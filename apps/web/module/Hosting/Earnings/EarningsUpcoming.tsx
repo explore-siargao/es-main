@@ -3,10 +3,19 @@ import { Typography } from "@/common/components/ui/Typography"
 import useGetUpcomingEarnings from "../hooks/useGetUpcomingEarnings"
 import { Spinner } from "@/common/components/ui/Spinner"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import Chart, { ChartType } from "./components/Chart"
 import { format } from "date-fns"
+import UpcomingChart from "./components/UpcomingChart"
 
-const EarningsUpcoming = () => {
+type T_Prop = {
+  data?: {
+    month: string
+    year: string
+    completed: number
+    upcoming: number
+  }[]
+}
+
+const EarningsUpcoming = ({ data }: T_Prop) => {
   const { data: upcoming, isPending: upcomingIsPending } =
     useGetUpcomingEarnings()
   const currentDate = new Date()
@@ -45,7 +54,7 @@ const EarningsUpcoming = () => {
 
   return (
     <div className="mt-8">
-      {upcoming?.item && upcoming.item.months.length > 0 ? (
+      {/* {upcoming?.item && upcoming.item.months.length > 0 ? (
         <>
           <div>
             <Typography variant="h1" className="text-[30px]">
@@ -80,7 +89,14 @@ const EarningsUpcoming = () => {
             No upcoming earnings at the moment.
           </Typography>
         </>
-      )}
+      )} */}
+      <Typography fontWeight="semibold" variant="h2">
+        Your upcoming and paid earnings
+      </Typography>
+      {earningsUpcomingDescription}
+      <div className="w-full h-[400px]">
+        <UpcomingChart data={data} />
+      </div>
     </div>
   )
 }
