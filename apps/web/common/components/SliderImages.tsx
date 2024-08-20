@@ -14,8 +14,35 @@ interface SliderProps {
   }[]
 }
 
+interface ImageData {
+  image: {
+    _id?: string
+    alt?: string
+    filename?: string
+    mimeType?: string
+    filesize?: number
+    width?: number
+    height?: number
+    focalX?: number
+    focalY?: number
+    createdAt?: string
+    updatedAt?: string
+    url?: string
+  }
+  id?: string
+}
+
 const Slider = ({ images }: SliderProps) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const updateCurrentIndex = (swiper: any) => {
+    setCurrentIndex(swiper.realIndex)
+  }
+
+  const isOldFormat = (imageData: any): imageData is ImageData => {
+    return imageData.image && imageData.image.url;
+  }
 
   return (
     <>
@@ -25,7 +52,8 @@ const Slider = ({ images }: SliderProps) => {
         pagination={{ type: "bullets", clickable: true }}
         modules={[Navigation, Pagination, Thumbs]}
         thumbs={{ swiper: thumbsSwiper }}
-        className="justify-center h-3/4 w-1/2 items-center my-5 rounded-lg"
+        onSlideChange={updateCurrentIndex}
+        className="relative h-3/4 w-1/2 my-5 rounded-lg"
       >
         <style>{`
           .swiper-button-prev, .swiper-button-next {
@@ -58,19 +86,23 @@ const Slider = ({ images }: SliderProps) => {
           }
         `}</style>
 
-        {images.map((image) => (
-          <SwiperSlide key={image.fileKey ?? image.url}>
-            <div className="flex h-full w-full items-center justify-center">
+        {images.map((imageData, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative flex h-full w-full items-center justify-center">
               <img
                 width={300}
                 height={300}
-                src={image.fileKey ? `/assets/${image.fileKey}` : image.url}
+                src={isOldFormat(imageData) ? imageData.image.url : imageData.url}
                 className="block h-full w-full object-cover"
-                alt={image.alt || ""}
+                alt={isOldFormat(imageData) ? imageData.image.alt || "" : imageData.alt || ""}
               />
             </div>
           </SwiperSlide>
         ))}
+
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-1 rounded-sm z-10 opacity-70">
+          {currentIndex + 1}/{images.length}
+        </div>
       </Swiper>
 
       <Swiper
@@ -81,15 +113,17 @@ const Slider = ({ images }: SliderProps) => {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Thumbs]}
-        className="justify-center items-center w-1/2 my-5 rounded-lg"
+        className="w-1/2 my-5 rounded-lg"
       >
-        {images.map((image) => (
-          <SwiperSlide key={image.fileKey ?? image.url}>
-            <div className="flex justify-center items-center">
+        {images.map((imageData, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative flex h-full w-full items-center justify-center">
               <img
-                src={image.fileKey ? `/assets/${image.fileKey}` : image.url}
-                className="w-full h-40 object-cover rounded-lg"
-                alt={image.alt || ""}
+                width={300}
+                height={300}
+                src={isOldFormat(imageData) ? imageData.image.url : imageData.url}
+                className="block h-full w-full object-cover"
+                alt={isOldFormat(imageData) ? imageData.image.alt || "" : imageData.alt || ""}
               />
             </div>
           </SwiperSlide>
