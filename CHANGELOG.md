@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://github.com/explore-siargao/es-main/compare/v0.8.0...v0.9.0) (2024-08-20)
+
+
+### Features
+
+* **web:** Added earnings bar graphs with some filters ([fe60831](https://github.com/explore-siargao/es-main/commit/fe6083186158b633b405f838cf12a2a942fee12a))
+
+
+### Bug Fixes
+
+* **web:** Fixed error on creating new property ([2664cc1](https://github.com/explore-siargao/es-main/commit/2664cc15a85edeb07d134a7020c4a1339953de64))
+
 ## [0.8.0](https://github.com/explore-siargao/es-main/compare/v0.7.0...v0.8.0) (2024-08-16)
 
 ### Features
