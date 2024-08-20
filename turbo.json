@@ -40,6 +40,9 @@
         "REDIS_URL",
         "REDIS_PASSWORD",
         "WINDY_KEY",
+        "PAYLOAD_PORT",
+        "PAYLOAD_DATABASE_URI",
+        "PAYLOAD_SECRET",
         "PAYLOAD_URL"
       ]
     },

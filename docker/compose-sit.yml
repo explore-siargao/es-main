@@ -71,7 +71,7 @@ services:
     container_name: es-cms-sit
     restart: unless-stopped
     ports:
-      - 5000:5000
+      - 3001:3001
     networks:
       - es-network
 
