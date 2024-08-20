@@ -41,6 +41,6 @@ RUN pnpm add -g typescript
 RUN pnpm install
 RUN pnpm run build
  
-EXPOSE 5000
+EXPOSE 3001
  
 CMD [ "pnpm", "run", "start" ]
