@@ -151,9 +151,7 @@ const ListingLocation = ({ pageType }: Prop) => {
             })
           }
           if (pageType === "setup") {
-            router.push(
-              `/hosting/listings/properties/setup/${listingId}/facilities`
-            )
+            router.push(`/hosting/listings/rentals/setup/${listingId}/summary`)
           }
         } else {
           toast.error(String(data.message))
