@@ -1,6 +1,5 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import useGetThisMonthEarnings from "../hooks/useGetThisMonthEarnings"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import ThisMonthChart from "./components/ThisMonthChart"
 
