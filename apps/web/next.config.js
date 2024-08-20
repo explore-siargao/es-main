@@ -33,8 +33,8 @@ module.exports = {
         destination: `${process.env.PAYLOAD_URL}/cms/admin/:path*`,
       },
       {
-        source: "/api/locations/:path*",
-        destination: `${process.env.PAYLOAD_URL}/api/locations/:path*`,
+        source: "/api/restaurants/:path*",
+        destination: `${process.env.PAYLOAD_URL}/api/restaurants/:path*`,
       },
     ]
   },
