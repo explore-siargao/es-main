@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react"
 import EarningsThisMonth from "./EarningsThisMonth"
 import EarningsUpcoming from "./EarningsUpcoming"
-import EarningsPaid from "./EarningsPaid"
 import { Typography } from "@/common/components/ui/Typography"
 import Tabs from "@/common/components/Tabs"
 import YearToDateSummary from "./components/YearToDateSummaryBox"

@@ -24,9 +24,6 @@ const earningsGraphDescription = (
   </Typography>
 )
 const EarningsThisMonth = ({ data }: T_Prop) => {
-  const { data: thisMonth, isPending: thisMonthIsPending } =
-    useGetThisMonthEarnings()
-
   return (
     <div>
       {data ? (

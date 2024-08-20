@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import useGetAllBookings from "../LandingPage/hooks/useGetAllBookings"
 import useSessionStore from "@/common/store/useSessionStore"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
