@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/explore-siargao/es-main/compare/v0.9.0...v0.10.0) (2024-08-20)
+
+### Features
+
+- Add cms folder in apps for Payload CMS integration([d10afcd](https://github.com/explore-siargao/es-main/commit/d10afcd2416869cb8f319e212fe05cc518767dae))
+- **web:** Re-setup new empty CMS ([555279e](https://github.com/explore-siargao/es-main/commit/555279ea00f3faa29da81aa39443ca604018f7b0))
+
 ## [0.9.0](https://github.com/explore-siargao/es-main/compare/v0.8.0...v0.9.0) (2024-08-20)
 
 ### Features
