@@ -23,8 +23,7 @@ type T_Prop = {
 }
 
 const EarningsUpcoming = ({ data }: T_Prop) => {
-  const { data: upcoming } =
-    useGetUpcomingEarnings()
+  const { data: upcoming } = useGetUpcomingEarnings()
   const currentDate = new Date()
   const summaryData = [
     ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
