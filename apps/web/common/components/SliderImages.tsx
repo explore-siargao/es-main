@@ -41,7 +41,7 @@ const Slider = ({ images }: SliderProps) => {
   }
 
   const isOldFormat = (imageData: any): imageData is ImageData => {
-    return imageData.image && imageData.image.url
+    return imageData.image?.url;
   }
 
   return (
@@ -86,8 +86,8 @@ const Slider = ({ images }: SliderProps) => {
           }
         `}</style>
 
-        {images.map((imageData, index) => (
-          <SwiperSlide key={index}>
+        {images.map((imageData) => (
+          <SwiperSlide key={imageData.fileKey}>
             <div className="relative flex h-full w-full items-center justify-center">
               <img
                 width={300}
@@ -121,8 +121,8 @@ const Slider = ({ images }: SliderProps) => {
         modules={[FreeMode, Thumbs]}
         className="w-1/2 my-5 rounded-lg"
       >
-        {images.map((imageData, index) => (
-          <SwiperSlide key={index}>
+        {images.map((imageData) => (
+          <SwiperSlide key={imageData.fileKey}>
             <div className="relative flex h-full w-full items-center justify-center">
               <img
                 width={300}
