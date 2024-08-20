@@ -41,7 +41,7 @@ const Slider = ({ images }: SliderProps) => {
   }
 
   const isOldFormat = (imageData: any): imageData is ImageData => {
-    return imageData.image?.url;
+    return imageData.image?.url
   }
 
   return (
