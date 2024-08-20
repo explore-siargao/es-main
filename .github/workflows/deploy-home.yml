@@ -2,7 +2,7 @@ name: deploy-home
 
 on:
   push:
-    branches: ["main", "combine-cms"]
+    branches: ["main"]
 
 jobs:
   deployment:
