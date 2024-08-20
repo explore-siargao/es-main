@@ -426,6 +426,7 @@ const LandingPage = () => {
             groupCards={groupCardsDummyTravelStyle}
             isGuide={false}
             itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -435,6 +436,7 @@ const LandingPage = () => {
             groupCards={groupCardsDummyRecommendedPlaceToStay}
             isGuide={false}
             itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -444,6 +446,7 @@ const LandingPage = () => {
             groupCards={groupCardsDummySomethingToDo}
             isGuide={false}
             itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -453,6 +456,7 @@ const LandingPage = () => {
             groupCards={groupCardsDummyReliableCars}
             isGuide={false}
             itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10 mb-8 pl-5">

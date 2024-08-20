@@ -45,7 +45,7 @@ const TravelSlider = ({
           </Typography>
         )}
       </div>
-      <div>
+      <div className="ml-5">
         <Slider
           cards={formattedGroupCards}
           isGuide={isGuide}
