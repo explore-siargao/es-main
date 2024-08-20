@@ -5,7 +5,7 @@
 
 ### Features
 
-* **web:** Added earnings bar graphs with some filters ([fe60831](https://github.com/explore-siargao/es-main/commit/fe6083186158b633b405f838cf12a2a942fee12a))
+* **web:** Added earnings bar graphs with some filters ([fe60831](https://github.com/explore-siargao/es-main/commit/fe6083186158b633b405f838cf12a2a942fee12a), [f8df0dd](https://github.com/explore-siargao/es-main/commit/cbf5b50227917d19b4fed2a4f1ced4e8d34b8e8c))
 
 
 ### Bug Fixes
