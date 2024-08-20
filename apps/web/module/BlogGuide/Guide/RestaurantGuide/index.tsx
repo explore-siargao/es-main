@@ -1,6 +1,5 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import BookingDescription from "@/module/Accommodation/components/BookingDescription"
 import SectionInfo from "./SectionInfo"
 import RestaurantLocation from "./RestaurantLocation"
 import { Separator } from "@/common/components/ui/Separator"
@@ -143,18 +142,6 @@ export const RestaurantGuide = () => {
           <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12 mt-[11px]">
             <div className="flex-1 md:w-1/2 2xl:w-full">
               <div>
-                <div className="pb-6 flex flex-col">
-                  <h1 className="text-2xl font-bold">About</h1>
-                  <div className="mt-4">
-                    <BookingDescription
-                      generalDescription={guideData.about.aboutPlace}
-                      aboutSpace={guideData.about.aboutSpace}
-                      aboutGuestAccess={guideData.about.aboutGuestAccess}
-                      otherThingsNote={guideData.about.otherThings}
-                    />
-                  </div>
-                </div>
-                <Separator orientation="horizontal" className="bg-gray-300" />
                 <ChefsNote chefNote={guideData.content.chefNote} />
                 <Separator orientation="horizontal" className="bg-gray-300" />
                 <div className="py-8">
