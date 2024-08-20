@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import useGetAllBookings from "../LandingPage/hooks/useGetAllBookings"
 import useSessionStore from "@/common/store/useSessionStore"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
@@ -31,7 +30,6 @@ const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
   const path = usePathname()
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-  const { data, isPending } = useGetAllBookings()
   const { search, checkIn, checkOut, numberOfGuest, date } = useSearchStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
