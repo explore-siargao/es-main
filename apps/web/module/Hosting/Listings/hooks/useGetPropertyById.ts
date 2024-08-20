@@ -3,7 +3,7 @@ import { API_URL_PROPERTIES } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
 
 export async function getPropertyById(id: number | undefined) {
-  const apiService = new ApiService("mock")
+  const apiService = new ApiService("v2")
   return await apiService.get(`${API_URL_PROPERTIES}/${id}`)
 }
 
