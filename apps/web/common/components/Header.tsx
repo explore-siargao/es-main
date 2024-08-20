@@ -61,37 +61,37 @@ function Header({
               alt={APP_NAME}
             />
           </Link>
-          <div className="flex gap-2 rounded-full items-center px-2 py-1">
-            <Button
-              variant="link"
-              size="sm"
-              onClick={() => router.push(LINK_LOGIN)}
-            >
-              Support
-            </Button>
-            <Button
-              variant="link"
-              size="sm"
-              onClick={() => router.push(LINK_LOGIN)}
-            >
-              ExploreSiargao
-            </Button>
-            <Button
-              variant="link"
-              size="sm"
-              onClick={() => router.push(LINK_LOGIN)}
-            >
-              Destinations
-            </Button>
-            <Button
-              variant="link"
-              size="sm"
-              onClick={() => router.push(LINK_LOGIN)}
-            >
-              Partner with us
-            </Button>
-          </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 items-center relative">
+            <div className="flex gap-2 rounded-full items-center px-2 py-1">
+              <Button
+                variant="link"
+                size="sm"
+                onClick={() => router.push(LINK_LOGIN)}
+              >
+                Support
+              </Button>
+              <Button
+                variant="link"
+                size="sm"
+                onClick={() => router.push(LINK_LOGIN)}
+              >
+                ExploreSiargao
+              </Button>
+              <Button
+                variant="link"
+                size="sm"
+                onClick={() => router.push(LINK_LOGIN)}
+              >
+                Destinations
+              </Button>
+              <Button
+                variant="link"
+                size="sm"
+                onClick={() => router.push(LINK_LOGIN)}
+              >
+                Partner with us
+              </Button>
+            </div>
             {!session.id && (
               <div className="flex gap-1 rounded-full items-center px-2 py-1">
                 <Button

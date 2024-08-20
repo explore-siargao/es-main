@@ -467,7 +467,7 @@ const LandingPage = () => {
             Let us help you make the most out of your time in Siargao island
           </Typography>
         </div>
-        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 px-5">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 pl-5 pr-0">
           <ImageTextCard
             imageKey={foodImage}
             title={"Restaurants, cafes & bars"}
