@@ -34,9 +34,12 @@ jobs:
       FACEBOOK_CLIENT_ID: ${{secrets.FACEBOOK_CLIENT_ID}}
       FACEBOOK_SECRET_ID: ${{secrets.FACEBOOK_SECRET_ID}}
       CLIENT_ORIGINS: ${{secrets.CLIENT_ORIGINS}}
-      PAYLOAD_URL: ${{secrets.PAYLOAD_URL}}
       DATABASE_URL: ${{secrets.DATABASE_URL}}
       SHADOW_DATABASE_URL: ${{secrets.SHADOW_DATABASE_URL}}
+      PAYLOAD_PORT: ${{secrets.PAYLOAD_PORT}}
+      PAYLOAD_DATABASE_URI: ${{secrets.PAYLOAD_DATABASE_URI}}
+      PAYLOAD_SECRET: ${{secrets.PAYLOAD_SECRET}}
+      PAYLOAD_URL: ${{secrets.PAYLOAD_URL}}
 
     steps:
       - uses: actions/checkout@v3
