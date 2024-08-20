@@ -41,7 +41,7 @@ const Slider = ({ images }: SliderProps) => {
   }
 
   const isOldFormat = (imageData: any): imageData is ImageData => {
-    return imageData.image && imageData.image.url;
+    return imageData.image && imageData.image.url
   }
 
   return (
@@ -92,9 +92,15 @@ const Slider = ({ images }: SliderProps) => {
               <img
                 width={300}
                 height={300}
-                src={isOldFormat(imageData) ? imageData.image.url : imageData.url}
+                src={
+                  isOldFormat(imageData) ? imageData.image.url : imageData.url
+                }
                 className="block h-full w-full object-cover"
-                alt={isOldFormat(imageData) ? imageData.image.alt || "" : imageData.alt || ""}
+                alt={
+                  isOldFormat(imageData)
+                    ? imageData.image.alt || ""
+                    : imageData.alt || ""
+                }
               />
             </div>
           </SwiperSlide>
@@ -121,9 +127,15 @@ const Slider = ({ images }: SliderProps) => {
               <img
                 width={300}
                 height={300}
-                src={isOldFormat(imageData) ? imageData.image.url : imageData.url}
+                src={
+                  isOldFormat(imageData) ? imageData.image.url : imageData.url
+                }
                 className="block h-full w-full object-cover"
-                alt={isOldFormat(imageData) ? imageData.image.alt || "" : imageData.alt || ""}
+                alt={
+                  isOldFormat(imageData)
+                    ? imageData.image.alt || ""
+                    : imageData.alt || ""
+                }
               />
             </div>
           </SwiperSlide>

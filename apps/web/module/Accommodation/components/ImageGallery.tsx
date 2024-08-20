@@ -1,10 +1,10 @@
-import { Button } from "@/common/components/ui/Button";
-import Image from "next/image";
-import { Grip } from "lucide-react";
-import { T_ImagesProps } from "../types/SectionInfo";
-import { Dialog } from "@headlessui/react";
-import { useState } from "react";
-import SliderImages from "@/common/components/SliderImages";
+import { Button } from "@/common/components/ui/Button"
+import Image from "next/image"
+import { Grip } from "lucide-react"
+import { T_ImagesProps } from "../types/SectionInfo"
+import { Dialog } from "@headlessui/react"
+import { useState } from "react"
+import SliderImages from "@/common/components/SliderImages"
 
 const ImageGallery = ({
   images,
@@ -13,13 +13,13 @@ const ImageGallery = ({
   isRoundedEdge,
 }: T_ImagesProps) => {
   const getImgSrc = (index: number) => {
-    const image = images[index];
-    const imgSrc = image?.key ? `/assets/${image.key}` : image?.image?.url || "";
-    const imgAlt = image?.description || image?.image?.alt || "";
-    return { src: imgSrc, alt: imgAlt };
-  };
+    const image = images[index]
+    const imgSrc = image?.key ? `/assets/${image.key}` : image?.image?.url || ""
+    const imgAlt = image?.description || image?.image?.alt || ""
+    return { src: imgSrc, alt: imgAlt }
+  }
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative bg-gray-200 ${additionalClasses}`}>
@@ -32,7 +32,7 @@ const ImageGallery = ({
         className={`${isRoundedEdge && index === 0 ? "rounded-l-xl" : isRoundedEdge && index === 2 ? "rounded-tr-xl" : isRoundedEdge && index === 4 ? "rounded-br-xl" : ""} cursor-pointer`}
       />
     </div>
-  );
+  )
 
   const renderButton = () => (
     <Button
@@ -43,7 +43,7 @@ const ImageGallery = ({
       <Grip className="h-2 w-2 mr-1 mb-0.5" />
       Show all photos
     </Button>
-  );
+  )
 
   if (showThreeOnly) {
     return (
@@ -60,7 +60,7 @@ const ImageGallery = ({
         </div>
         {isViewModal && renderButton()}
       </div>
-    );
+    )
   }
 
   return (
@@ -101,9 +101,10 @@ const ImageGallery = ({
       >
         <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80" />
         <div className="relative w-full h-full bg-white bg-opacity-10">
-          <SliderImages 
-          //@ts-ignore
-          images={images} />
+          <SliderImages
+            //@ts-ignore
+            images={images}
+          />
           <button
             onClick={() => setIsOpen(false)}
             className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full hover:bg-gray-400 focus:outline-none"
@@ -126,7 +127,7 @@ const ImageGallery = ({
         </div>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default ImageGallery;
+export default ImageGallery
