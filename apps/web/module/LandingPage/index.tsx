@@ -426,7 +426,6 @@ const LandingPage = () => {
             groupCards={groupCardsDummyTravelStyle}
             isGuide={false}
             itemsNumber={4}
-            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -436,7 +435,6 @@ const LandingPage = () => {
             groupCards={groupCardsDummyRecommendedPlaceToStay}
             isGuide={false}
             itemsNumber={4}
-            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -446,7 +444,6 @@ const LandingPage = () => {
             groupCards={groupCardsDummySomethingToDo}
             isGuide={false}
             itemsNumber={4}
-            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -456,7 +453,6 @@ const LandingPage = () => {
             groupCards={groupCardsDummyReliableCars}
             isGuide={false}
             itemsNumber={4}
-            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10 mb-8 pl-5">
@@ -467,7 +463,7 @@ const LandingPage = () => {
             Let us help you make the most out of your time in Siargao island
           </Typography>
         </div>
-        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 px-5">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 pl-5 pr-0">
           <ImageTextCard
             imageKey={foodImage}
             title={"Restaurants, cafes & bars"}
