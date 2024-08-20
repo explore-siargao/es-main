@@ -31,7 +31,6 @@ const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
   const path = usePathname()
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-  const { data, isPending } = useGetAllBookings()
   const { search, checkIn, checkOut, numberOfGuest, date } = useSearchStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
