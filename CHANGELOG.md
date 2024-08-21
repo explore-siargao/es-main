@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/explore-siargao/es-main/compare/v0.11.0...v0.12.0) (2024-08-21)
+
+
+### Features
+
+* Update local database setup instructions and remove test message ([8eb9125](https://github.com/explore-siargao/es-main/commit/8eb91256b1e02459069fe209c8d72c83b971924a))
+
 ## [0.11.0](https://github.com/explore-siargao/es-main/compare/v0.10.0...v0.11.0) (2024-08-21)
 
 ### Features
