@@ -2,11 +2,10 @@
 
 ## [0.11.0](https://github.com/explore-siargao/es-main/compare/v0.10.0...v0.11.0) (2024-08-21)
 
-
 ### Features
 
-* Added S3 as file storage for PayloadCMS ([943d766](https://github.com/explore-siargao/es-main/commit/943d766c1f5146c719d865a06238908a1d715b05))
-* Update cms Dockerfile and compose files to include AWS credentials in environment variables ([2ad4b00](https://github.com/explore-siargao/es-main/commit/943d766c1f5146c719d865a06238908a1d715b05](https://github.com/explore-siargao/es-main/commit/2ad4b002879af9383ada2354b795840970f889ef))) 
+- Added S3 as file storage for PayloadCMS ([943d766](https://github.com/explore-siargao/es-main/commit/943d766c1f5146c719d865a06238908a1d715b05))
+- Update cms Dockerfile and compose files to include AWS credentials in environment variables ([2ad4b00](<https://github.com/explore-siargao/es-main/commit/943d766c1f5146c719d865a06238908a1d715b05](https://github.com/explore-siargao/es-main/commit/2ad4b002879af9383ada2354b795840970f889ef)>))
 
 ## [0.10.0](https://github.com/explore-siargao/es-main/compare/v0.9.0...v0.10.0) (2024-08-20)
 
