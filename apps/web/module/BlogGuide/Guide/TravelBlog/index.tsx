@@ -37,7 +37,7 @@ const TravelGuideContent = ({ guideData }: { guideData: any }) => {
                     className="mb-5 bg-gray-300"
                   />
                   <ul
-                      className="list-disc list-inside space-y-3 max-h-40 w-full overflow-y-auto pr-2"
+                    className="list-disc list-inside space-y-3 max-h-40 w-full overflow-y-auto pr-2"
                     style={{
                       scrollbarWidth: "none",
                       msOverflowStyle: "none",
