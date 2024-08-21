@@ -335,6 +335,26 @@ const WholePlace = ({ pageType }: Prop) => {
     }
   }, [data])
 
+  const { resetBedroom } = useBedroomStore()
+
+  useEffect(() => {
+    if (
+      (unitType === "Studio" && !data?.item?.singleLivingRoom?.name) ||
+      (unitType !== "Studio" && !data?.item?.singleBedRoom?.name)
+    ) {
+      resetBedroom()
+      console.log("Reset triggered")
+    }
+
+    if (unitType === "Studio" && data?.item?.singleLivingRoom?.name) {
+      updateBedrooms(data.item.livingRooms)
+    }
+
+    if (unitType !== "Studio" && data?.item?.singleBedRoom?.name) {
+      updateBedrooms(data.item.bedRooms)
+    }
+  }, [unitType])
+
   return (
     <>
       {isPending || isFetching ? (
