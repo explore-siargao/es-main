@@ -58,6 +58,23 @@ services:
     networks:
       - es-network
 
+  es-cms:
+    build:
+      context: ../
+      dockerfile: ./docker/cms/Dockerfile.arm
+      args:
+        PAYLOAD_PORT: ${PAYLOAD_PORT}
+        PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        PAYLOAD_URL: ${PAYLOAD_URL}
+        WEB_URL: ${WEB_URL}
+    container_name: es-cms-sit
+    restart: unless-stopped
+    ports:
+      - 3001:3001
+    networks:
+      - es-network
+
 networks:
   es-network:
     driver: bridge

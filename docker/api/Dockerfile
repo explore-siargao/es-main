@@ -79,7 +79,6 @@ RUN pnpm add -g typescript
 
 # Run setup
 RUN pnpm install
-RUN pnpm run db:generate
 RUN pnpm run build
  
 EXPOSE 9000

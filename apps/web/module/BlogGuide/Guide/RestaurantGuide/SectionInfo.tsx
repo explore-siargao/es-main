@@ -41,7 +41,7 @@ const SectionInfo = ({
         </div>
         <ShareSave />
       </div>
-      <div className="flex items-center space-x-3 mt-2">
+      <div className="flex items-center space-x-3 mt-2 flex-wrap">
         <Link href="#reviews">
           <div className="flex items-center space-x-1.5">
             <StarIcon className="h-3 w-3" fill="#000" />

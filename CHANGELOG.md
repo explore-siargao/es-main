@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.0](https://github.com/explore-siargao/es-main/compare/v0.9.0...v0.10.0) (2024-08-20)
+
+### Features
+
+- Add cms folder in apps for Payload CMS integration([d10afcd](https://github.com/explore-siargao/es-main/commit/d10afcd2416869cb8f319e212fe05cc518767dae))
+- **web:** Re-setup new empty CMS ([555279e](https://github.com/explore-siargao/es-main/commit/555279ea00f3faa29da81aa39443ca604018f7b0))
+
+## [0.9.0](https://github.com/explore-siargao/es-main/compare/v0.8.0...v0.9.0) (2024-08-20)
+
+### Features
+
+- **web:** Added earnings bar graphs with some filters ([fe60831](https://github.com/explore-siargao/es-main/commit/fe6083186158b633b405f838cf12a2a942fee12a), [f8df0dd](https://github.com/explore-siargao/es-main/commit/cbf5b50227917d19b4fed2a4f1ced4e8d34b8e8c))
+
+### Bug Fixes
+
+- **web:** Fixed error on creating new property ([2664cc1](https://github.com/explore-siargao/es-main/commit/2664cc15a85edeb07d134a7020c4a1339953de64))
+
 ## [0.8.0](https://github.com/explore-siargao/es-main/compare/v0.7.0...v0.8.0) (2024-08-16)
 
 ### Features
