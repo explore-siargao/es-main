@@ -1,16 +1,15 @@
-import { S3UploadCollectionConfig } from 'payload-s3-upload';
+import { S3UploadCollectionConfig } from "payload-s3-upload"
 
 export const Media: S3UploadCollectionConfig = {
   slug: "media",
   upload: {
-    staticURL: '/assets',
-    staticDir: 'assets',
+    staticURL: "/assets",
+    staticDir: "assets",
     disableLocalStorage: true,
     s3: {
       bucket: process.env.AWS_S3_BUCKET,
     },
-    adminThumbnail: ({ doc }) =>
-      `/${doc.filename}`,
+    adminThumbnail: ({ doc }) => `/${doc.filename}`,
   },
   access: {
     read: () => true,
@@ -22,8 +21,8 @@ export const Media: S3UploadCollectionConfig = {
       required: true,
     },
     {
-      name: 'url',
-      type: 'text',
+      name: "url",
+      type: "text",
       access: {
         create: () => false,
       },
@@ -31,10 +30,7 @@ export const Media: S3UploadCollectionConfig = {
         disabled: true,
       },
       hooks: {
-        afterRead: [
-          ({ data: doc }) =>
-            `/${doc.filename}`,
-        ],
+        afterRead: [({ data: doc }) => `/${doc.filename}`],
       },
     },
   ],
