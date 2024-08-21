@@ -84,6 +84,10 @@ const bookableUnitTypes = new Schema({
     },
   ],
   qty: Number,
+  ids: {
+    type: [mongoose.Schema.ObjectId],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

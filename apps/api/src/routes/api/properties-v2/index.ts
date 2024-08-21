@@ -53,6 +53,7 @@ import {
   updateBookableUnitTypeAmenities,
 } from './services/amenities'
 import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
+import { getRoomCalendar } from './services/calendar'
 
 const router = express.Router()
 
@@ -344,6 +345,15 @@ router.patch(
   isUserLoggedIn,
   isHostPropertyOwner,
   updateStatus
+)
+
+//calendars
+router.get(
+  '/calendar/room',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getRoomCalendar
 )
 
 export default router
