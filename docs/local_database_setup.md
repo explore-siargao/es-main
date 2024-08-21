@@ -1,6 +1,6 @@
 ## Local Database Setup (will be deprecated in June 2024)
 
-We need to setup a local database for our development, the database and GUI we will be using is MySQL Server and MySQL Workbench. These are the links to download the softwares. Test message
+We need to setup a local database for our development, the database and GUI we will be using is MySQL Server and MySQL Workbench. These are the links to download the softwares.
 
 ### Windows:
 
