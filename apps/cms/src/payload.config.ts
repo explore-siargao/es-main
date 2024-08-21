@@ -1,4 +1,6 @@
 import path from "path"
+import { S3Client } from '@aws-sdk/client-s3';
+import s3Upload from 'payload-s3-upload';
 
 import { payloadCloud } from "@payloadcms/plugin-cloud"
 import { mongooseAdapter } from "@payloadcms/db-mongodb"
@@ -33,7 +35,16 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
-  plugins: [payloadCloud()],
+  plugins: [
+    payloadCloud(),
+    s3Upload(new S3Client({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    })),
+  ],
   db: mongooseAdapter({
     url: process.env.PAYLOAD_DATABASE_URI,
   }),

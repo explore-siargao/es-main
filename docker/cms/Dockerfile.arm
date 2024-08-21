@@ -7,6 +7,7 @@ ARG PAYLOAD_PORT
 ARG PAYLOAD_DATABASE_URI
 ARG PAYLOAD_SECRET
 ARG PAYLOAD_URL
+ARG AWS_S3_BUCKET
 ARG WEB_URL
 
 ENV PNPM_HOME="/root/.local/share/pnpm"
@@ -18,6 +19,7 @@ RUN echo "PAYLOAD_PORT=$PAYLOAD_PORT" > .env && \
     echo "PAYLOAD_DATABASE_URI=${PAYLOAD_DATABASE_URI}" >> .env && \
     echo "PAYLOAD_SECRET=${PAYLOAD_SECRET}" >> .env && \
     echo "PAYLOAD_URL=${PAYLOAD_URL}" >> .env && \
+    echo "AWS_S3_BUCKET=${AWS_S3_BUCKET}" >> .env && \
     echo "WEB_URL=${WEB_URL}" >> .env
 
 # Copy root folders files

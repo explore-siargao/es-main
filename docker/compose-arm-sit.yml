@@ -16,6 +16,7 @@ services:
         AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
         AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
         AWS_REGION: ${AWS_REGION}
+        AWS_S3_BUCKET: ${AWS_S3_BUCKET}
         XENDIT_URL: ${XENDIT_URL}
         XENDIT_SECRET: ${XENDIT_SECRET}
         GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
@@ -67,6 +68,7 @@ services:
         PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
         PAYLOAD_SECRET: ${PAYLOAD_SECRET}
         PAYLOAD_URL: ${PAYLOAD_URL}
+        AWS_S3_BUCKET: ${AWS_S3_BUCKET}
         WEB_URL: ${WEB_URL}
     container_name: es-cms-sit
     restart: unless-stopped
