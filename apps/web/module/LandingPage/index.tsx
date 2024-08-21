@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import useGetAllBookings from "../LandingPage/hooks/useGetAllBookings"
 import useSessionStore from "@/common/store/useSessionStore"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"
@@ -31,7 +30,6 @@ const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
   const path = usePathname()
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-  const { data, isPending } = useGetAllBookings()
   const { search, checkIn, checkOut, numberOfGuest, date } = useSearchStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -78,32 +76,32 @@ const LandingPage = () => {
     {
       imageKey: "/assets/cf7c14dc-d3f5-46e8-b813-01cf04200519",
       title: "Hostels",
-      url: "/properties/hostel",
+      url: "/listings?category=property&type=Hostels",
     },
     {
       imageKey: "/assets/f57a9104-b3bc-4c6c-8e7b-ff15ac529b06",
       title: "Apartments",
-      url: "/properties/apartment",
+      url: "/listings?category=property&type=Apartments",
     },
     {
       imageKey: "/assets/4.jpg",
       title: "Homestay",
-      url: "/properties/homestay",
+      url: "/listings?category=property&type=Homestay",
     },
     {
       imageKey: "/assets/ac0d3e85-f3da-4f30-8db5-e8bdb98385df",
       title: "Hotels",
-      url: "/properties/hotel",
+      url: "/listings?category=property&type=Hotels",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Resorts",
-      url: "/properties/resort",
+      url: "/listings?category=property&type=Resorts",
     },
     {
       imageKey: "/assets/1.jpg",
       title: "Villas",
-      url: "/properties/villa",
+      url: "/listings?category=property&type=Villas",
     },
   ]
 
@@ -228,27 +226,28 @@ const LandingPage = () => {
   const groupCardsDummySomethingToDo = [
     {
       imageKey: il8,
-      title: "Surfing",
+      title: "Sightseeing",
+      url: "/listings?category=activities&type=Sightseeing",
     },
     {
       imageKey: il9,
-      title: "Kayaking",
+      title: "Walking",
+      url: "/listings?category=activities&type=Walking",
     },
     {
       imageKey: il5,
-      title: "Diving",
+      title: "Sunset view",
+      url: "/listings?category=activities&type=Sunset%20view",
     },
     {
       imageKey: il4,
-      title: "Wing Foiling",
+      title: "Sceneries",
+      url: "/listings?category=activities&type=Sceneries",
     },
     {
       imageKey: il6,
-      title: "Paddle Boarding",
-    },
-    {
-      imageKey: il7,
-      title: "Wonder surfing",
+      title: "Visit",
+      url: "/listings?category=activities&type=Visit",
     },
   ]
 
@@ -256,26 +255,32 @@ const LandingPage = () => {
     {
       imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
       title: "2021 Suzuki R150 Fi MT",
+      url: "/listings?category=rentals&type=Motorbikes",
     },
     {
       imageKey: "/assets/fe65c50d-2cde-46e6-8c9b-58a73c59e768",
       title: "2018 Honda Civic AT",
+      url: "/listings?category=rentals&type=Cars",
     },
     {
       imageKey: "/assets/b57d645a-a3bb-4d23-9e9b-d5caa3f0ae69",
       title: "2023 Toyota Wigo G CVT",
+      url: "/listings?category=rentals&type=Bicycle",
     },
     {
       imageKey: "/assets/2a820a6a-9baf-4b7c-884a-217f86e7e657",
       title: "2020 CBR500RXZ Honda MT",
+      url: "/listings?category=rentals&type=Cars",
     },
     {
       imageKey: "/assets/099843f0-d626-42fb-899e-62c6687614a2",
       title: "2000 CBR500R Honda SAT",
+      url: "/listings?category=rentals&type=Cars",
     },
     {
       imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
       title: "2020 Suzuki R150 Fi MT",
+      url: "/listings?category=rentals&type=Motorbikes",
     },
   ]
 
@@ -418,7 +423,8 @@ const LandingPage = () => {
             description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummyTravelStyle}
             isGuide={false}
-            itemsNumber={6}
+            itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -427,7 +433,8 @@ const LandingPage = () => {
             description="Hand-picked properties just for you"
             groupCards={groupCardsDummyRecommendedPlaceToStay}
             isGuide={false}
-            itemsNumber={6}
+            itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -436,7 +443,8 @@ const LandingPage = () => {
             description="We've partnered the islands for tour and activity providers."
             groupCards={groupCardsDummySomethingToDo}
             isGuide={false}
-            itemsNumber={6}
+            itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
@@ -445,7 +453,8 @@ const LandingPage = () => {
             description="Take the road, let's travel with one of our trusted rental partners."
             groupCards={groupCardsDummyReliableCars}
             isGuide={false}
-            itemsNumber={6}
+            itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10 mb-8 pl-5">

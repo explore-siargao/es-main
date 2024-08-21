@@ -10,7 +10,7 @@ function RentalsSearchBar() {
   const { register } = useFormContext()
   const categories = ["Car", "Motorbike", "Bicycle"]
   return (
-    <div className="flex gap-2 w-[931px] justify-between rounded-xl items-center py-2 pl-2 pr-[19px] border bg-white border-gray-300 mb-4">
+    <div className="flex gap-2 w-full justify-between rounded-xl items-center py-2 pl-2 pr-[19px] border bg-white border-gray-300 mb-4">
       <Select
         className="w-64 rounded-l-full ring-0 bg-inherit focus-within:ring-0"
         label={"Category"}

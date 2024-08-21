@@ -38,7 +38,12 @@
         "CSRF_SIGN_KEY",
         "GOOGLE_APIS_URL",
         "REDIS_URL",
-        "REDIS_PASSWORD"
+        "REDIS_PASSWORD",
+        "WINDY_KEY",
+        "PAYLOAD_PORT",
+        "PAYLOAD_DATABASE_URI",
+        "PAYLOAD_SECRET",
+        "PAYLOAD_URL"
       ]
     },
     "lint": {
@@ -53,21 +58,6 @@
     "start": {
       "cache": false,
       "persistent": true
-    },
-    "db:generate": {
-      "cache": false
-    },
-    "db:push:local": {
-      "cache": false
-    },
-    "db:push:development": {
-      "cache": false
-    },
-    "db:seed:local": {
-      "cache": false
-    },
-    "db:seed:development": {
-      "cache": false
     }
   }
 }

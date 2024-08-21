@@ -1,0 +1,82 @@
+services:
+  es-api:
+    build:
+      context: ../
+      dockerfile: ./docker/api/Dockerfile.arm
+      args:
+        API_PORT: ${API_PORT}
+        PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
+        CARD_ENCRYPT_KEY: ${CARD_ENCRYPT_KEY}
+        CSRF_SIGN_KEY: ${CSRF_SIGN_KEY}
+        ALLOWED_CLIENTS: ${ALLOWED_CLIENTS}
+        WEB_URL: ${WEB_URL}
+        API_URL: ${API_URL}
+        API_MOCK_URL: ${API_MOCK_URL}
+        RECAPTCHA_KEY_SECRET: ${RECAPTCHA_KEY_SECRET}
+        AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+        AWS_REGION: ${AWS_REGION}
+        XENDIT_URL: ${XENDIT_URL}
+        XENDIT_SECRET: ${XENDIT_SECRET}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_SECRET_ID: ${GOOGLE_SECRET_ID}
+        GOOGLE_APIS_URL: ${GOOGLE_APIS_URL}
+        REDIS_URL: ${REDIS_URL}
+        WINDY_KEY: ${WINDY_KEY}
+        MONGO_URL: ${MONGO_URL}
+        CLIENT_ORIGINS: ${CLIENT_ORIGINS}
+    container_name: es-api-sit
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    networks:
+      - es-network
+
+  es-web:
+    build:
+      context: ../
+      dockerfile: ./docker/web/Dockerfile.arm
+      args:
+        API_URL: ${API_URL}
+        API_AUTH_URL: ${API_AUTH_URL}
+        API_MOCK_URL: ${API_MOCK_URL}
+        WEB_URL: ${WEB_URL}
+        RECAPTCHA_KEY: ${RECAPTCHA_KEY}
+        RECAPTCHA_KEY_SECRET: ${RECAPTCHA_KEY_SECRET}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_SECRET_ID: ${GOOGLE_SECRET_ID}
+        FACEBOOK_CLIENT_ID: ${FACEBOOK_CLIENT_ID}
+        FACEBOOK_SECRET_ID: ${FACEBOOK_SECRET_ID}
+        CARD_ENCRYPT_KEY: ${CARD_ENCRYPT_KEY}
+        PASSWORD_ENCRYPT_KEY: ${PASSWORD_ENCRYPT_KEY}
+        WINDY_KEY: ${WINDY_KEY}
+        PAYLOAD_URL: ${PAYLOAD_URL}
+    container_name: es-web-sit
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - es-network
+
+  es-cms:
+    build:
+      context: ../
+      dockerfile: ./docker/cms/Dockerfile.arm
+      args:
+        PAYLOAD_PORT: ${PAYLOAD_PORT}
+        PAYLOAD_DATABASE_URI: ${PAYLOAD_DATABASE_URI}
+        PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+        PAYLOAD_URL: ${PAYLOAD_URL}
+        WEB_URL: ${WEB_URL}
+    container_name: es-cms-sit
+    restart: unless-stopped
+    ports:
+      - 3001:3001
+    networks:
+      - es-network
+
+networks:
+  es-network:
+    driver: bridge
+
+

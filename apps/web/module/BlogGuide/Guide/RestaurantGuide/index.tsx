@@ -1,136 +1,17 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import { StarIcon } from "lucide-react"
 import BookingDescription from "@/module/Accommodation/components/BookingDescription"
-import PlaceOffers from "@/module/Accommodation/components/PlaceOffers"
-import UserReviews from "@/module/Accommodation/components/Reviews/UserReviews"
 import SectionInfo from "./SectionInfo"
-import RestaurantLocation from "./CheckoutBox"
-import Image from "next/image"
+import RestaurantLocation from "./RestaurantLocation"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
-import OpeningHours from "./components/OpeningHours"
-import SocialMediaContacts from "./components/Contacts"
-import PriceLevel from "./components/PriceLevel"
-import OffersCuisine from "./components/OffersCuisine"
 import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { Spinner } from "@/common/components/ui/Spinner"
+import NearbyAccommodation from "./components/NearbyAccommodation"
 import ChefsNote from "./components/ChefsNote"
-
-const imageGallery = [
-  {
-    fileKey: "1.jpg",
-    alt: "Image 1",
-  },
-  {
-    fileKey: "2.jpg",
-    alt: "Image 2",
-  },
-  {
-    fileKey: "3.jpg",
-    alt: "Image 3",
-  },
-  {
-    fileKey: "4.jpg",
-    alt: "Image 4",
-  },
-  {
-    fileKey: "5.jpg",
-    alt: "Image 5",
-  },
-]
-
-const description = {
-  generalDescription:
-    "Welcome to this stunning private villa located just near one of the most beautiful  beaches of Siargao. Enjoy scenic private outdoor pool views & stylishly furnished spacious  indoor  with a touch of local art. All hidden in 800 m2 tropical garden.",
-  aboutSpace:
-    "Welcome to this stunning private villa located just near one of the most beautiful beaches of Siargao. Enjoy scenic private outdoor pool views & stylishly furnished spacious indoor with a touch of local art. All hidden in 800 m2 tropical garden. The unique mixture of modern design & tropical nature provides comfort and privacy whilst offering unique experience of luxurious getaway in a jungle paradise.",
-  aboutGuestAccess:
-    "This spacious 1-bedroom villa is for full and exclusive use of our guests, which have 24h access to the property provided during their stay. To keep our Guests' privacy and safety the building is fenced and can be locked from inside and outside. The guests have unlimited access to private outdoor pool and bath tube with hot water. Free access to WiFi connection is provided.",
-  otherThingsNote:
-    "We recommend to our guests to have a motorbike or scooter to reach the house or get there by van from the airport (we can arrange this for you). Please be aware that the last part of the road to the villa is through a dirt road, that usually gets muddy during heavy rains, which occur between December and February. Please make sure you are comfortable driving a scooter/motorbike on a dirt road or rent a trike from General Luna.",
-}
-
-const offers = [
-  {
-    icon: "check",
-    description: "WiFi",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "Free street parking",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "No smoking",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "Smoke alarm",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "Bed",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "Angry people",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "Alarm clock",
-    isNotIncluded: false,
-  },
-  {
-    icon: "check",
-    description: "No bugs",
-    isNotIncluded: false,
-  },
-]
-
-const group = [
-  {
-    title: "Entertainment",
-    offers: [
-      { description: "WiFi", icon: "wifi", isNotIncluded: false },
-      {
-        description: "Free street parking",
-        icon: "wifi",
-        isNotIncluded: false,
-      },
-    ],
-  },
-  {
-    title: "Bedroom and laundry",
-    offers: [
-      { description: "Bed", icon: "wifi", isNotIncluded: false },
-      { description: "Angry people", icon: "wifi", isNotIncluded: false },
-    ],
-  },
-  {
-    title: "Family",
-    offers: [
-      { description: "Alarm", icon: "wifi", isNotIncluded: false },
-      { description: "Smoke alarm", icon: "wifi", isNotIncluded: false },
-    ],
-  },
-  {
-    title: "Not Included",
-    offers: [
-      { description: "Bug", icon: "wifi", isNotIncluded: true },
-      {
-        description: "Cigarette off",
-        icon: "wifi",
-        isNotIncluded: true,
-      },
-    ],
-  },
-]
+import AmenityList from "./components/AmenityList"
 
 export const ratingSummary = {
   ratings: 5,
@@ -212,156 +93,122 @@ export const userReviews = [
   },
 ]
 
-const coordinates = [9.802, 126.1366]
-
-const sampleSchedules = [
-  { day: "Monday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Tuesday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Wednesday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Thursday", open: "09:00 AM", close: "06:00 PM" },
-  { day: "Friday", open: "09:00 AM", close: "08:00 PM" },
-  { day: "Saturday", open: "10:00 AM", close: "08:00 PM" },
-  { day: "Sunday", open: "10:00 AM", close: "06:00 PM" },
-]
-
-const sampleSocialMediaData = [
-  {
-    icon: "facebook",
-    description: "Facebook",
-    isNotIncluded: false,
-    link: "https://facebook.com",
-  },
-  {
-    icon: "twitter",
-    description: "Twitter",
-    isNotIncluded: false,
-    link: "https://twitter.com",
-  },
-  {
-    icon: "instagram",
-    description: "Instagram",
-    isNotIncluded: false,
-    link: "https://instagram.com",
-  },
-]
-
-const priceLevel = [
-  { level: 2, product: "Matcha Latte" },
-  { level: 4, product: "Mocha Latte" },
-  { level: 1, product: "Espresso" },
-  { level: 3, product: "Cappuccino" },
-  { level: 2, product: "Americano" },
-  { level: 4, product: "Flat White" },
-]
-
-const offersCuisine = [
-  { icon: "check", description: "Vegetarian options", isNotIncluded: false },
-  { icon: "check", description: "Vegan options", isNotIncluded: false },
-  { icon: "check", description: "Gluten-free options", isNotIncluded: false },
-  { icon: "check", description: "Dairy-free options", isNotIncluded: false },
-  { icon: "check", description: "Halal options", isNotIncluded: false },
-  { icon: "check", description: "Kosher options", isNotIncluded: false },
-]
-
 export const RestaurantGuide = () => {
+  const params = useParams()
+  const guideName = params.guideName
+
+  const [guideData, setGuideData] = useState<any>([])
+  const [guideDataLoading, setGuideDataLoading] = useState(true)
+
+  const getGuideData = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/cms/api/restaurants/guide/${guideName}`
+      )
+
+      if (!res.ok) {
+        throw new Error(`Response status: ${res.status}`)
+      }
+
+      const data = await res.json()
+      setGuideData(data.docs[0])
+      setGuideDataLoading(false)
+    } catch (err) {
+      console.log(err)
+      setGuideDataLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getGuideData()
+  }, [])
+
   return (
     <WidthWrapper width="small" className="mt-10">
-      <h1 className="text-2xl font-bold mb-4">RESTAURANT GUIDE</h1>
-      <SectionInfo images={imageGallery} title="Kermit Siargao" />
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-        <div className="flex-1 md:w-1/2 2xl:w-full">
-          <div>
-            <div className="pb-6 flex flex-col gap-8">
-              <h1 className="text-2xl font-bold">ABOUT</h1>
+      {guideDataLoading && <Spinner variant="primary" middle />}
+      {!guideDataLoading && guideData && (
+        <>
+          <SectionInfo
+            images={guideData.hero.images}
+            title={guideData.title}
+            ratings={ratingSummary.ratings}
+            reviews={ratingSummary.reviews}
+            priceRangeLow={guideData.hero.priceRangeLow}
+            priceRangeHigh={guideData.hero.priceRangeHigh}
+            location={guideData.locations.address}
+            cuisine={guideData.hero.cuisine}
+            menus={guideData.hero.menus}
+            events={guideData.hero.specialAndEvents}
+          />
+          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12 mt-[11px]">
+            <div className="flex-1 md:w-1/2 2xl:w-full">
               <div>
-                <BookingDescription {...description} />
+                <div className="pb-6 flex flex-col">
+                  <h1 className="text-2xl font-bold">About</h1>
+                  <div className="mt-4">
+                    <BookingDescription
+                      generalDescription={guideData.about.aboutPlace}
+                      aboutSpace={guideData.about.aboutSpace}
+                      aboutGuestAccess={guideData.about.aboutGuestAccess}
+                      otherThingsNote={guideData.about.otherThings}
+                    />
+                  </div>
+                </div>
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <ChefsNote chefNote={guideData.content.chefNote} />
+                <Separator orientation="horizontal" className="bg-gray-300" />
+                <div className="py-8">
+                  <AmenityList amenities={guideData.content.amenities} />
+                </div>
               </div>
             </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <PlaceOffers offers={offers} group={group} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <PriceLevel priceLevel={priceLevel} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <SocialMediaContacts contacts={sampleSocialMediaData} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <OpeningHours schedules={sampleSchedules} />
-            </div>
-            <Separator orientation="horizontal" className="bg-gray-300" />
-            <div className="py-6 ">
-              <OffersCuisine offers={offersCuisine} />
-            </div>
-          </div>
-        </div>
-        <div className="md:w-96 md:relative">
-          <div className="md:sticky md:top-6">
-            <RestaurantLocation coordinates={coordinates} />
-          </div>
-        </div>
-      </div>
-
-      <Separator orientation="horizontal" className="bg-gray-300" />
-      <ListingReviews />
-
-      <Separator orientation="horizontal" className="bg-gray-300" />
-      <ChefsNote />
-
-      <Separator orientation="horizontal" className="bg-gray-300" />
-      <div>
-        <div className="py-8">
-          <h1 className="text-2xl font-bold">ACCOMMODATION NEARBY</h1>
-          <div className="w-full flex gap-8 mt-8">
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image
-                  src={"/assets/1.jpg"}
-                  className="h-full w-full object-cover"
-                  width={500}
-                  height={500}
-                  alt=""
+            <div className="md:w-96 md:relative" id="location">
+              <div className="md:sticky md:top-6">
+                <RestaurantLocation
+                  coordinates={[
+                    guideData.locations.location[1],
+                    guideData.locations.location[0],
+                  ]}
+                  address={guideData.locations.address}
+                  phoneNumber={guideData.locations.phoneNumber}
+                  emailAddress={guideData.locations.emailAddress}
+                  businessHours={guideData.locations.businessHours}
+                  facebookLink={guideData.locations.facebookLink}
+                  instagramLink={guideData.locations.instagramLink}
                 />
               </div>
-              <Typography variant="h3" fontWeight="semibold">
-                BLISS Restaurant Siargao
-              </Typography>
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image
-                  src={"/assets/1.jpg"}
-                  className="h-full w-full object-cover"
-                  width={500}
-                  height={500}
-                  alt=""
-                />
-              </div>
-              <Typography variant="h3" fontWeight="semibold">
-                Abukay
-              </Typography>
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
-                <Image
-                  src={"/assets/1.jpg"}
-                  className="h-full w-full object-cover"
-                  width={500}
-                  height={500}
-                  alt=""
-                />
-              </div>
-              <Typography variant="h3" fontWeight="semibold">
-                Ocean 101 Beach Resort Restaurant
-              </Typography>
             </div>
           </div>
-        </div>
-      </div>
+          <Separator
+            orientation="horizontal"
+            className="bg-gray-300"
+            id="#reviews"
+          />
+          <ListingReviews customMargin="mt-[31px]" fontWeight="bold" />
+          <Separator orientation="horizontal" className="bg-gray-300" />
+          <div>
+            <div className="py-8">
+              <h1 className="text-2xl font-bold">Accommodation Nearby</h1>
+              <div className="w-full flex gap-8 mt-8">
+                {guideData.content.nearbyAccommodations.map(
+                  (data: any, index: number) => (
+                    <NearbyAccommodation
+                      key={"accommodation-" + index}
+                      name={data.accommodationName}
+                      image={data.accommodationImage.url}
+                      url={data.accommodationLink}
+                      index={index}
+                    />
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      {!guideDataLoading && !guideData && (
+        <Typography>No data was found.</Typography>
+      )}
     </WidthWrapper>
   )
 }

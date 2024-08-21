@@ -99,9 +99,16 @@ type T_Filter = {
 type SideFilterProps = {
   onFiltersChange: (filters: T_Filter[]) => void
   onBudgetChange: (minValue: number, maxValue: number) => void
+  listingCategory: string
+  filterItemType?: string
 }
 
-const SideFilter = ({ onFiltersChange, onBudgetChange }: SideFilterProps) => {
+const SideFilter = ({
+  onFiltersChange,
+  onBudgetChange,
+  listingCategory,
+  filterItemType,
+}: SideFilterProps) => {
   const handleBudgetSliderChange = (minValue: number, maxValue: number) => {
     onBudgetChange(minValue, maxValue)
   }
@@ -110,19 +117,34 @@ const SideFilter = ({ onFiltersChange, onBudgetChange }: SideFilterProps) => {
     onFiltersChange(filters)
   }
 
+  const filterCategory =
+    listingCategory === "property"
+      ? "Properties"
+      : listingCategory === "activities"
+        ? "Activities"
+        : listingCategory === "rentals"
+          ? "Rentals"
+          : ""
+
   return (
     <div>
-      <div className="mb-1">
+      <div className="mb-4">
         <Minimap />
       </div>
-      <div className="h-10 w-80 rounded-tl-md rounded-tr-md border flex items-center p-4">
+      <div className="h-10 w-80 rounded-tl-md rounded-tr-md border border-gray-300 flex items-center p-4">
         <Typography variant="h2" fontWeight="semibold">
           Filter by:
         </Typography>
       </div>
       <div>
         {Array.from(
-          new Set(filterPrimaryData.map((item) => item.category)),
+          new Set(
+            filterPrimaryData
+              .filter(
+                (item) => !filterCategory || item.category === filterCategory
+              )
+              .map((item) => item.category)
+          ),
           (category) => (
             <CheckBoxFilter
               key={category}
@@ -131,6 +153,7 @@ const SideFilter = ({ onFiltersChange, onBudgetChange }: SideFilterProps) => {
                 (item) => item.category === category
               )}
               onFilterChange={handleFilterChange}
+              defaultChecked={filterItemType}
             />
           )
         )}

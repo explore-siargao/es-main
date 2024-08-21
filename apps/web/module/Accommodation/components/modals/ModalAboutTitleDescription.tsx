@@ -14,7 +14,9 @@ const ModalAboutTitleDescription = ({
           About this place
         </Typography>
         <div>
-          <Typography>{listingDescription.generalDescription}</Typography>
+          <Typography className="whitespace-pre-wrap">
+            {listingDescription.generalDescription}
+          </Typography>
           {listingDescription.aboutSpace && (
             <div>
               <Typography
@@ -24,7 +26,9 @@ const ModalAboutTitleDescription = ({
               >
                 About space
               </Typography>
-              <Typography>{listingDescription.aboutSpace}</Typography>
+              <Typography className="whitespace-pre-wrap">
+                {listingDescription.aboutSpace}
+              </Typography>
             </div>
           )}
           {listingDescription.aboutGuestAccess && (
@@ -36,7 +40,9 @@ const ModalAboutTitleDescription = ({
               >
                 About guest access
               </Typography>
-              <Typography>{listingDescription.aboutGuestAccess}</Typography>
+              <Typography className="whitespace-pre-wrap">
+                {listingDescription.aboutGuestAccess}
+              </Typography>
             </div>
           )}
           {listingDescription.otherThingsNote && (
@@ -48,7 +54,9 @@ const ModalAboutTitleDescription = ({
               >
                 Other things to note
               </Typography>
-              <Typography>{listingDescription.otherThingsNote}</Typography>
+              <Typography className="whitespace-pre-wrap">
+                {listingDescription.otherThingsNote}
+              </Typography>
             </div>
           )}
         </div>
