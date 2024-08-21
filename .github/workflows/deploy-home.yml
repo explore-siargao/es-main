@@ -2,7 +2,7 @@ name: deploy-home
 
 on:
   push:
-    branches: ["main", "payload-asset-aws"]
+    branches: ["main"]
 
 jobs:
   deployment:
