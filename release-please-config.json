@@ -1,0 +1,17 @@
+{
+  "changelogSections": [
+    {
+      "type": "feat",
+      "section": "🚀 Features"
+    },
+    {
+      "type": "fix",
+      "section": "🛠️ Fixes"
+    },
+    {
+      "type": "chore",
+      "section": "🧰 Maintenance"
+    }
+  ],
+  "changelogEntryTemplate": "- {{message}} by @{{author}}"
+}
