@@ -25,6 +25,8 @@ yarn-error.log*
 # env files
 .env
 .env.development
+.env-new
+.env-old
 .env.cms
 .env.cms.development
 
