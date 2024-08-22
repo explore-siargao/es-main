@@ -180,6 +180,29 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
       )
     }
 
+    // Step 1: Retrieve the current document
+    const currentBed = await dbBookableUnitTypes.findOne(
+      { _id: bookableUnitId, category: 'Bed', deletedAt: null },
+      { ids: 1 } // Only retrieve the ids field
+    )
+
+    if (!currentBed) {
+      // Handle case where the document is not found
+      return res.status(404).json({ error: 'Bed not found' })
+    }
+
+    // Step 2: Calculate the number of new ObjectIds needed
+    const currentIdsCount = currentBed.ids.length
+    const newIdsNeeded = qty - currentIdsCount
+
+    let newIds: mongoose.Types.ObjectId[] = []
+    if (newIdsNeeded > 0) {
+      newIds = Array.from(
+        { length: newIdsNeeded },
+        () => new mongoose.Types.ObjectId()
+      )
+    }
+    //Step 3
     const updateBedBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
       { _id: bookableUnitId, category: 'Bed', deletedAt: null },
       {
@@ -191,6 +214,11 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
           totalSize: totalSize,
           updatedAt: Date.now(),
         },
+        ...(newIdsNeeded > 0 && {
+          $push: {
+            ids: { $each: newIds },
+          },
+        }),
       },
       { new: true }
     )
