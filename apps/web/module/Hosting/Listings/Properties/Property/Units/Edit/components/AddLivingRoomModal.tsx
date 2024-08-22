@@ -1,21 +1,21 @@
-import ModalContainer from "@/common/components/ModalContainer";
-import { Button } from "@/common/components/ui/Button";
-import { Typography } from "@/common/components/ui/Typography";
-import toast from "react-hot-toast";
-import { MinusIcon, PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { defaultBedroom } from "../../constants";
-import { IBedroom } from "../../types";
-import { useLivingroomStore } from "../store/useLivingroomStore";
+import ModalContainer from "@/common/components/ModalContainer"
+import { Button } from "@/common/components/ui/Button"
+import { Typography } from "@/common/components/ui/Typography"
+import toast from "react-hot-toast"
+import { MinusIcon, PlusIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { defaultBedroom } from "../../constants"
+import { IBedroom } from "../../types"
+import { useLivingroomStore } from "../store/useLivingroomStore"
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-  mode: "add" | "edit";
-  selectedIndex?: number;
-  unitType: string;
-  onUpdate: (updatedLivingroom: IBedroom[]) => void;
-};
+  isOpen: boolean
+  onClose: () => void
+  mode: "add" | "edit"
+  selectedIndex?: number
+  unitType: string
+  onUpdate: (updatedLivingroom: IBedroom[]) => void
+}
 
 const AddLivingroomModal = ({
   isOpen,
@@ -23,69 +23,69 @@ const AddLivingroomModal = ({
   mode,
   selectedIndex,
   unitType,
-  onUpdate
+  onUpdate,
 }: Props) => {
-  const [fields, setFields] = useState<IBedroom>(defaultBedroom);
-  const livingroom = useLivingroomStore((state) => state.livingroom);
+  const [fields, setFields] = useState<IBedroom>(defaultBedroom)
+  const livingroom = useLivingroomStore((state) => state.livingroom)
 
   const handleBedCountChange = (bedIndex: number, value: string) => {
-    const newBeds = [...fields.beds];
-    const bed = newBeds[bedIndex];
+    const newBeds = [...fields.beds]
+    const bed = newBeds[bedIndex]
     if (bed) {
-      bed.qty = parseInt(value, 10) || 0;
-      setFields({ ...fields, beds: newBeds });
+      bed.qty = parseInt(value, 10) || 0
+      setFields({ ...fields, beds: newBeds })
     }
-  };
+  }
 
   const resetBedQuantities = () => {
     setFields((prev) => ({
       ...prev,
       beds: prev.beds.map((bed) => ({ ...bed, qty: 0 })),
-    }));
-  };
+    }))
+  }
 
   useEffect(() => {
     if (isOpen) {
       if (mode === "edit" && selectedIndex !== undefined) {
-        const livingroomToEdit = livingroom[selectedIndex];
+        const livingroomToEdit = livingroom[selectedIndex]
         if (livingroomToEdit) {
-          setFields(deepCopyLivingroom(livingroomToEdit));
+          setFields(deepCopyLivingroom(livingroomToEdit))
         }
       } else {
-        resetBedQuantities();
+        resetBedQuantities()
       }
     }
-  }, [isOpen, mode, selectedIndex, livingroom]);
+  }, [isOpen, mode, selectedIndex, livingroom])
 
   const onSubmit = () => {
-    let updatedLivingroom = [...livingroom];
+    let updatedLivingroom = [...livingroom]
 
     if (mode === "edit" && selectedIndex !== undefined) {
-      updatedLivingroom[selectedIndex] = deepCopyLivingroom(fields);
+      updatedLivingroom[selectedIndex] = deepCopyLivingroom(fields)
     } else if (mode === "add") {
-      updatedLivingroom.push(deepCopyLivingroom(fields));
+      updatedLivingroom.push(deepCopyLivingroom(fields))
     }
 
-    resetBedQuantities();
-    onUpdate(updatedLivingroom);
+    resetBedQuantities()
+    onUpdate(updatedLivingroom)
 
     toast.success(
       mode === "edit"
         ? "Livingroom updated successfully"
         : "Livingroom added successfully"
-    );
+    )
 
-    onClose();
-  };
+    onClose()
+  }
 
   function deepCopyLivingroom(bedroom: IBedroom): IBedroom {
     return {
       roomName: bedroom.roomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
-    };
+    }
   }
 
-  let unitName = unitType !== "Studio" ? "Living Room" : "Bedroom";
+  let unitName = unitType !== "Studio" ? "Living Room" : "Bedroom"
 
   return (
     <ModalContainer
@@ -109,11 +109,11 @@ const AddLivingroomModal = ({
                   className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
-                    const newBeds = [...fields.beds];
-                    const bed = newBeds[index];
+                    const newBeds = [...fields.beds]
+                    const bed = newBeds[index]
                     if (bed && bed.qty > 0) {
-                      bed.qty--;
-                      setFields({ ...fields, beds: newBeds });
+                      bed.qty--
+                      setFields({ ...fields, beds: newBeds })
                     }
                   }}
                 >
@@ -131,11 +131,11 @@ const AddLivingroomModal = ({
                   className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
-                    const newBeds = [...fields.beds];
-                    const bed = newBeds[index];
+                    const newBeds = [...fields.beds]
+                    const bed = newBeds[index]
                     if (bed) {
-                      bed.qty++;
-                      setFields({ ...fields, beds: newBeds });
+                      bed.qty++
+                      setFields({ ...fields, beds: newBeds })
                     }
                   }}
                 >
@@ -152,7 +152,7 @@ const AddLivingroomModal = ({
         </div>
       </div>
     </ModalContainer>
-  );
-};
+  )
+}
 
-export default AddLivingroomModal;
+export default AddLivingroomModal
