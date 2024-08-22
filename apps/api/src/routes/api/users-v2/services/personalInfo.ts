@@ -245,12 +245,12 @@ export const addEmergencyContact = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const getUser = await dbUsers.findById(userId)
   const { email, phoneNumber, name, relationship } = req.body
+
   try {
     if (name && phoneNumber && email && relationship) {
       const getPersonalInfo = await dbGuests
         .findOne({ _id: getUser?.guest, deletedAt: null })
-        .populate('emergencyContacts')
-
+    
       if (getPersonalInfo) {
         let returnEmergencyContact = null
         const newEmergencyContact = new dbEmergencyContacts({
