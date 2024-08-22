@@ -134,9 +134,11 @@ export const getRoomCalendar = async (req: Request, res: Response) => {
       }
     })
 
+    const removedUnknown = items.filter((item: any) => item.name !== 'Unknown')
+
     res.json(
       response.success({
-        items,
+        items: removedUnknown,
         allItemCount: items.length,
         message: 'Room calendar fetched successfully.',
       })
