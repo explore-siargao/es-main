@@ -202,7 +202,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
         () => new mongoose.Types.ObjectId()
       )
     }
-//Step 3
+    //Step 3
     const updateBedBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
       { _id: bookableUnitId, category: 'Bed', deletedAt: null },
       {
