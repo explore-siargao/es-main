@@ -277,6 +277,8 @@ const WholePlace = ({ pageType }: Prop) => {
       } else {
         toast.error("Please select at least one amenity")
       }
+
+      refetch()
     } catch (error) {
       toast.error("An error occurred while saving data")
     }
@@ -336,6 +338,7 @@ const WholePlace = ({ pageType }: Prop) => {
   }, [data])
 
   const { resetBedroom } = useBedroomStore()
+  const { resetLivingroom } = useLivingroomStore()
 
   useEffect(() => {
     if (
@@ -343,7 +346,7 @@ const WholePlace = ({ pageType }: Prop) => {
       (unitType !== "Studio" && !data?.item?.singleBedRoom?.name)
     ) {
       resetBedroom()
-      console.log("Reset triggered")
+      resetLivingroom()
     }
 
     if (unitType === "Studio" && data?.item?.singleLivingRoom?.name) {

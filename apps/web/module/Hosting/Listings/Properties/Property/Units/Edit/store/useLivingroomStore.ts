@@ -6,6 +6,7 @@ type BedroomStore = {
   setInitialLivingrooms: (livingroom: IBedroom[]) => void
   updateLivingrooms: (newBedrooms: IBedroom[]) => void
   deleteLivingroom: (index: number) => void
+  resetLivingroom: () => void
 }
 
 export const useLivingroomStore = create<BedroomStore>((set) => ({
@@ -18,6 +19,7 @@ export const useLivingroomStore = create<BedroomStore>((set) => ({
     set((state) => ({
       livingroom: state.livingroom.filter((_, idx) => idx !== index),
     })),
+  resetLivingroom: () => set({ livingroom: [] }),
 }))
 
 function deepCopyLivingroom(livingroom: IBedroom[]): IBedroom[] {
