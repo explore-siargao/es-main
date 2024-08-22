@@ -53,7 +53,7 @@ import {
   updateBookableUnitTypeAmenities,
 } from './services/amenities'
 import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
-import { getRoomCalendar } from './services/calendar'
+import { getRoomCalendar, getWholePlaceCalendar } from './services/calendar'
 
 const router = express.Router()
 
@@ -355,6 +355,16 @@ router.get(
   isCsrfTokenValid,
   getRoomCalendar
 )
+
+router.get(
+  '/calendar/whole-place',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getWholePlaceCalendar
+)
+
+
 
 export default router
 
