@@ -4,7 +4,10 @@ import { Typography } from "@/common/components/ui/Typography"
 import toast from "react-hot-toast"
 import { MinusIcon, PlusIcon } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useBedroomStore, useBedroomStudioStore } from "../store/useBedroomStore"
+import {
+  useBedroomStore,
+  useBedroomStudioStore,
+} from "../store/useBedroomStore"
 import { defaultBedroom } from "../../constants"
 import { IBedroom } from "../../types"
 
@@ -27,7 +30,9 @@ const AddBedroomModal = ({
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
-  const updateBedroomsStudio = useBedroomStudioStore((state) => state.updateBedroomsStudio)
+  const updateBedroomsStudio = useBedroomStudioStore(
+    (state) => state.updateBedroomsStudio
+  )
 
   const handleBedCountChange = (bedIndex: number, value: string) => {
     const newBeds = [...fields.beds]
@@ -48,39 +53,38 @@ const AddBedroomModal = ({
     resetBedQuantities()
   }, [])
   const onSubmit = () => {
-    let updatedBedrooms = [...bedrooms];
+    let updatedBedrooms = [...bedrooms]
     if (mode === "edit" && selectedIndex !== undefined) {
-      updatedBedrooms[selectedIndex] = deepCopyBedroom(fields);
+      updatedBedrooms[selectedIndex] = deepCopyBedroom(fields)
     } else if (mode === "add") {
-      updatedBedrooms.push(deepCopyBedroom(fields));
+      updatedBedrooms.push(deepCopyBedroom(fields))
     }
-  
+
     // Log the current state of fields and updatedBedroomsStudio before updating the store
     if (unitType === "Studio") {
-      let updatedBedroomsStudio = [...bedroomsStudio];
+      let updatedBedroomsStudio = [...bedroomsStudio]
       if (mode === "edit" && selectedIndex !== undefined) {
-        updatedBedroomsStudio[selectedIndex] = deepCopyBedroomStudio(fields);
+        updatedBedroomsStudio[selectedIndex] = deepCopyBedroomStudio(fields)
       } else if (mode === "add") {
-        updatedBedroomsStudio.push(deepCopyBedroomStudio(fields));
+        updatedBedroomsStudio.push(deepCopyBedroomStudio(fields))
       }
-  
-      console.log("Fields being sent to bedroomsStudio:", fields);
-      console.log("Updated bedroomsStudio array:", updatedBedroomsStudio);
-  
-      updateBedroomsStudio(updatedBedroomsStudio);
+
+      console.log("Fields being sent to bedroomsStudio:", fields)
+      console.log("Updated bedroomsStudio array:", updatedBedroomsStudio)
+
+      updateBedroomsStudio(updatedBedroomsStudio)
     }
-  
-    resetBedQuantities();
-    updateBedrooms(updatedBedrooms);
-  
+
+    resetBedQuantities()
+    updateBedrooms(updatedBedrooms)
+
     toast.success(
       mode === "edit"
         ? "Bedroom updated successfully"
         : "Bedroom added successfully"
-    );
-    onClose();
-  };
-  
+    )
+    onClose()
+  }
 
   useEffect(() => {
     if (mode === "edit" && selectedIndex !== undefined) {
@@ -99,19 +103,18 @@ const AddBedroomModal = ({
     }
   }
 
-  
   useEffect(() => {
     if (mode === "edit" && selectedIndex !== undefined) {
-      const bedroomStudioToEdit = bedroomsStudio[selectedIndex];
+      const bedroomStudioToEdit = bedroomsStudio[selectedIndex]
       if (bedroomStudioToEdit) {
-        console.log("Editing bedroomStudio:", bedroomStudioToEdit);
-        setFields(deepCopyBedroomStudio(bedroomStudioToEdit));
+        console.log("Editing bedroomStudio:", bedroomStudioToEdit)
+        setFields(deepCopyBedroomStudio(bedroomStudioToEdit))
       }
     } else {
-      resetBedQuantities();
+      resetBedQuantities()
     }
-  }, [isOpen, mode, selectedIndex, bedroomsStudio]);
-  
+  }, [isOpen, mode, selectedIndex, bedroomsStudio])
+
   function deepCopyBedroomStudio(bedroomStudio: IBedroom): IBedroom {
     return {
       roomName: bedroomStudio.roomName,

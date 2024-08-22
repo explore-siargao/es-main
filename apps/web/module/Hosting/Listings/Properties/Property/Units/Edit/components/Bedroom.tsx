@@ -2,7 +2,10 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucidePlus } from "lucide-react"
 import React, { useState } from "react"
 import AddBedroomModal from "./AddBedroomModal"
-import { useBedroomStore, useBedroomStudioStore } from "../store/useBedroomStore"
+import {
+  useBedroomStore,
+  useBedroomStudioStore,
+} from "../store/useBedroomStore"
 import { Button } from "@/common/components/ui/Button"
 
 type T_Prop = {
