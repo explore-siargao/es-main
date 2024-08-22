@@ -57,6 +57,10 @@ const bookableUnitTypes = new Schema({
     type: [livingRooms],
     required: false,
   },
+  bedroomStudio: {
+    type: [bedRooms],
+    required: false,
+  },
   singleLivingRoom: {
     type: bed,
     required: false,

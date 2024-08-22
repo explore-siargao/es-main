@@ -4,12 +4,9 @@ import { Typography } from "@/common/components/ui/Typography"
 import toast from "react-hot-toast"
 import { MinusIcon, PlusIcon } from "lucide-react"
 import { useEffect, useState } from "react"
-import {
-  useBedroomStore,
-  useBedroomStudioStore,
-} from "../store/useBedroomStore"
 import { defaultBedroom } from "../../constants"
 import { IBedroom } from "../../types"
+import { useLivingroomStore } from "../store/useLivingroomStore"
 
 type Props = {
   isOpen: boolean
@@ -17,22 +14,19 @@ type Props = {
   mode: "add" | "edit"
   selectedIndex?: number
   unitType: string
+  onUpdate: (updatedLivingroom: IBedroom[]) => void
 }
 
-const AddBedroomModal = ({
+const AddLivingroomModal = ({
   isOpen,
   onClose,
   mode,
   selectedIndex,
   unitType,
+  onUpdate,
 }: Props) => {
   const [fields, setFields] = useState<IBedroom>(defaultBedroom)
-  const bedrooms = useBedroomStore((state) => state.bedrooms)
-  const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
-  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
-  const updateBedroomsStudio = useBedroomStudioStore(
-    (state) => state.updateBedroomsStudio
-  )
+  const livingroom = useLivingroomStore((state) => state.livingroom)
 
   const handleBedCountChange = (bedIndex: number, value: string) => {
     const newBeds = [...fields.beds]
@@ -49,86 +43,49 @@ const AddBedroomModal = ({
       beds: prev.beds.map((bed) => ({ ...bed, qty: 0 })),
     }))
   }
+
   useEffect(() => {
-    resetBedQuantities()
-  }, [])
-  const onSubmit = () => {
-    let updatedBedrooms = [...bedrooms]
-    if (mode === "edit" && selectedIndex !== undefined) {
-      updatedBedrooms[selectedIndex] = deepCopyBedroom(fields)
-    } else if (mode === "add") {
-      updatedBedrooms.push(deepCopyBedroom(fields))
-    }
-
-    // Log the current state of fields and updatedBedroomsStudio before updating the store
-    if (unitType === "Studio") {
-      let updatedBedroomsStudio = [...bedroomsStudio]
+    if (isOpen) {
       if (mode === "edit" && selectedIndex !== undefined) {
-        updatedBedroomsStudio[selectedIndex] = deepCopyBedroomStudio(fields)
-      } else if (mode === "add") {
-        updatedBedroomsStudio.push(deepCopyBedroomStudio(fields))
+        const livingroomToEdit = livingroom[selectedIndex]
+        if (livingroomToEdit) {
+          setFields(deepCopyLivingroom(livingroomToEdit))
+        }
+      } else {
+        resetBedQuantities()
       }
+    }
+  }, [isOpen, mode, selectedIndex, livingroom])
 
-      console.log("Fields being sent to bedroomsStudio:", fields)
-      console.log("Updated bedroomsStudio array:", updatedBedroomsStudio)
+  const onSubmit = () => {
+    let updatedLivingroom = [...livingroom]
 
-      updateBedroomsStudio(updatedBedroomsStudio)
+    if (mode === "edit" && selectedIndex !== undefined) {
+      updatedLivingroom[selectedIndex] = deepCopyLivingroom(fields)
+    } else if (mode === "add") {
+      updatedLivingroom.push(deepCopyLivingroom(fields))
     }
 
     resetBedQuantities()
-    updateBedrooms(updatedBedrooms)
+    onUpdate(updatedLivingroom)
 
     toast.success(
       mode === "edit"
-        ? "Bedroom updated successfully"
-        : "Bedroom added successfully"
+        ? "Livingroom updated successfully"
+        : "Livingroom added successfully"
     )
+
     onClose()
   }
 
-  useEffect(() => {
-    if (mode === "edit" && selectedIndex !== undefined) {
-      const bedroomToEdit = bedrooms[selectedIndex]
-      if (bedroomToEdit) {
-        setFields(deepCopyBedroom(bedroomToEdit))
-      }
-    } else {
-      resetBedQuantities()
-    }
-  }, [isOpen, mode, selectedIndex, bedrooms])
-  function deepCopyBedroom(bedroom: IBedroom): IBedroom {
+  function deepCopyLivingroom(bedroom: IBedroom): IBedroom {
     return {
       roomName: bedroom.roomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
     }
   }
 
-  useEffect(() => {
-    if (mode === "edit" && selectedIndex !== undefined) {
-      const bedroomStudioToEdit = bedroomsStudio[selectedIndex]
-      if (bedroomStudioToEdit) {
-        console.log("Editing bedroomStudio:", bedroomStudioToEdit)
-        setFields(deepCopyBedroomStudio(bedroomStudioToEdit))
-      }
-    } else {
-      resetBedQuantities()
-    }
-  }, [isOpen, mode, selectedIndex, bedroomsStudio])
-
-  function deepCopyBedroomStudio(bedroomStudio: IBedroom): IBedroom {
-    return {
-      roomName: bedroomStudio.roomName,
-      beds: bedroomStudio.beds.map((bed) => ({ ...bed })),
-    }
-  }
-
-  let unitName
-
-  if (unitType === "Studio") {
-    unitName = "Living Room"
-  } else {
-    unitName = "Bedroom"
-  }
+  let unitName = unitType !== "Studio" ? "Living Room" : "Bedroom"
 
   return (
     <ModalContainer
@@ -143,7 +100,7 @@ const AddBedroomModal = ({
         </Typography>
         <div>
           {fields.beds.map((bed, index) => (
-            <div className="grid grid-cols-2 my-3  items-center" key={bed.name}>
+            <div className="grid grid-cols-2 my-3 items-center" key={bed.name}>
               <Typography variant="h4" fontWeight="semibold">
                 {bed.name}
               </Typography>
@@ -170,7 +127,6 @@ const AddBedroomModal = ({
                   min={0}
                   onChange={(e) => handleBedCountChange(index, e.target.value)}
                 />
-
                 <button
                   className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
@@ -191,7 +147,7 @@ const AddBedroomModal = ({
         </div>
         <div className="flex justify-center mt-5">
           <Button onClick={onSubmit}>
-            {mode === "edit" ? "Confirm" : "Add Bedroom"}
+            {mode === "edit" ? "Confirm" : "Save"}
           </Button>
         </div>
       </div>
@@ -199,4 +155,4 @@ const AddBedroomModal = ({
   )
 }
 
-export default AddBedroomModal
+export default AddLivingroomModal
