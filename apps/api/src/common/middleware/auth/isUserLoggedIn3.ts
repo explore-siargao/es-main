@@ -32,6 +32,7 @@ const isUserLoggedIn3 = async (
             {
               path: 'emergencyContacts',
               model: 'EmergencyContacts',
+              match: { deletedAt: null }
             },
             {
               path: 'address',
