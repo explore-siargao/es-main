@@ -13,7 +13,7 @@ export interface Booking {
 }
 
 export interface SelectedReservation {
-  room?:string
+  room?: string
   rooms?: string
   motorcycles?: string
   bicyles?: string
