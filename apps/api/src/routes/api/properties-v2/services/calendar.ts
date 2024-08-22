@@ -152,13 +152,11 @@ export const getRoomCalendar = async (req: Request, res: Response) => {
   }
 }
 
-
 export const getWholePlaceCalendar = async (req: Request, res: Response) => {
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
 
   try {
-
     const roomProperties = await dbProperties
       .find({
         type: { $in: ['Villa', 'Resort', 'Apartment'] },
@@ -166,9 +164,10 @@ export const getWholePlaceCalendar = async (req: Request, res: Response) => {
       })
       .populate('bookableUnits')
 
-
     const filteredUnits = roomProperties.flatMap((property: any) =>
-      property.bookableUnits.filter((unit: any) => unit?.category === 'Whole-Place')
+      property.bookableUnits.filter(
+        (unit: any) => unit?.category === 'Whole-Place'
+      )
     )
 
     if (!filteredUnits.length) {
@@ -180,26 +179,28 @@ export const getWholePlaceCalendar = async (req: Request, res: Response) => {
       )
     }
 
-
-    const allWholePlaceIds = filteredUnits.flatMap((wholePlace) => wholePlace.ids)
+    const allWholePlaceIds = filteredUnits.flatMap(
+      (wholePlace) => wholePlace.ids
+    )
 
     const reservations = await dbReservations
       .find({
         wholePlaceId: { $in: allWholePlaceIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest') 
-
+      .populate('guest')
 
     const items: any = filteredUnits.map((wholePlace) => {
-      const wholePlaces: Room[] = wholePlace.ids.map((id: string, index: number) => {
-        const abbr = `${wholePlace.title} ${index + 1}`
-        return {
-          abbr,
-          status: 'available',
-          reservations: [],
+      const wholePlaces: Room[] = wholePlace.ids.map(
+        (id: string, index: number) => {
+          const abbr = `${wholePlace.title} ${index + 1}`
+          return {
+            abbr,
+            status: 'available',
+            reservations: [],
+          }
         }
-      })
+      )
 
       reservations.forEach((reservation: any) => {
         if (reservation.guest) {
@@ -212,16 +213,15 @@ export const getWholePlaceCalendar = async (req: Request, res: Response) => {
           }
 
           for (let i = 0; i < wholePlaces.length; i++) {
-            const wholePlace = wholePlaces[i] 
+            const wholePlace = wholePlaces[i]
 
-       
             if (wholePlace) {
-              const currentReservations = wholePlace.reservations ?? [] 
+              const currentReservations = wholePlace.reservations ?? []
 
               if (!hasDateConflict(currentReservations, reservationItem)) {
-                wholePlace.reservations.push(reservationItem) 
-                wholePlace.status = 'occupied' 
-                break 
+                wholePlace.reservations.push(reservationItem)
+                wholePlace.status = 'occupied'
+                break
               }
             }
           }
@@ -231,8 +231,8 @@ export const getWholePlaceCalendar = async (req: Request, res: Response) => {
       return {
         name: wholePlace.title === '' ? 'Unknown' : `${wholePlace.title}`,
         //@ts-ignore
-        price: wholePlace.pricing?.dayRate ?? 0, 
-        "whole-places" : wholePlaces,
+        price: wholePlace.pricing?.dayRate ?? 0,
+        'whole-places': wholePlaces,
       }
     })
 
