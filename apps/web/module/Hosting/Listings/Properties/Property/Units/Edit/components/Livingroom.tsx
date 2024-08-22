@@ -36,6 +36,13 @@ const Livingroom = ({ unitType, onLivingroomUpdate }: T_Prop) => {
   const mode = unitType !== "Studio" && isSingleBedroom ? "edit" : "add"
   const selectedIndex = isSingleBedroom ? 0 : undefined
 
+  const buttonText =
+    unitType !== "Studio"
+      ? isSingleBedroom
+        ? "Edit Living Room"
+        : "Add Living Room"
+      : "Add Bedroom"
+
   return (
     <div>
       <div>
@@ -43,7 +50,7 @@ const Livingroom = ({ unitType, onLivingroomUpdate }: T_Prop) => {
         <div className="grid grid-cols-2 gap-x-7 gap-y-2">
           {displayLivingroom.map((bedroomArray, index) => (
             <React.Fragment key={bedroomArray.roomName}>
-              <div className="mt-2 rounded-lg p-4 border w-full border-text-200">
+              <div className="mt-2 rounded-lg px-3 py-2 border w-full border-text-200">
                 <Typography variant="h4">
                   {unitType !== "Studio"
                     ? "Living Room"
@@ -67,11 +74,7 @@ const Livingroom = ({ unitType, onLivingroomUpdate }: T_Prop) => {
           className="text-text-400 text-sm flex items-center gap-2 p-2 mt-2 hover:font-semibold transition"
         >
           <LucidePlus className="h-4 w-4" />
-          {unitType !== "Studio"
-            ? isSingleBedroom
-              ? "Edit Living Room"
-              : "Add Living Room"
-            : "Add Bedroom"}
+          {buttonText}
         </button>
       </div>
       <AddLivingroomModal

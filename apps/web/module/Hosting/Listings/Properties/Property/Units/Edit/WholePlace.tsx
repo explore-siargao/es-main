@@ -80,7 +80,6 @@ const WholePlace = ({ pageType }: Prop) => {
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
-  const [livingroom, setLivingroom] = useState<IBedroom[]>([])
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
@@ -294,7 +293,6 @@ const WholePlace = ({ pageType }: Prop) => {
       setAmenties(data.item?.amenities)
       handleSqmChange(data.item?.totalSize)
       const livingRooms = data.item?.livingRooms || []
-      const bedroomsStudio = data.item?.bedroomStudio || []
       setLivingroomData(livingRooms)
       setHasSleepingSpaces(livingRooms.length > 0 ? "yes" : "no")
     }
