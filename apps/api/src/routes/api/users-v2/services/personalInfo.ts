@@ -248,9 +248,11 @@ export const addEmergencyContact = async (req: Request, res: Response) => {
 
   try {
     if (name && phoneNumber && email && relationship) {
-      const getPersonalInfo = await dbGuests
-        .findOne({ _id: getUser?.guest, deletedAt: null })
-    
+      const getPersonalInfo = await dbGuests.findOne({
+        _id: getUser?.guest,
+        deletedAt: null,
+      })
+
       if (getPersonalInfo) {
         let returnEmergencyContact = null
         const newEmergencyContact = new dbEmergencyContacts({
