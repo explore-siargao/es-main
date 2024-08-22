@@ -10,7 +10,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import CustomSquareSlider from "@/common/components/CustomSquareSlider"
 
-
 type BoxContainerProps = {
   listingId: number
   imageKey: {
