@@ -29,6 +29,13 @@ export interface Room {
   bookings: Booking[]
 }
 
+export interface WholePlace {
+  abbr: string
+  status: string
+  reservations: Reservation[]
+  bookings: Booking[]
+}
+
 export interface Rental {
   abbr: string
   status: string
@@ -39,6 +46,7 @@ export interface Category {
   name: string
   price: string
   rooms?: Room[]
+  wholePlaces?: WholePlace[]
   motorcycles?: Rental[]
   bicycles?: Rental[]
   cars?: Rental[]
