@@ -91,6 +91,7 @@ const Slider = ({
         isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)
       }
       breakpoints={slidesPerViewBreakpoints}
+      spaceBetween={40}
     >
       <style>{`
   .swiper {
@@ -140,7 +141,7 @@ const Slider = ({
 `}</style>
 
       {cards.map((card) => (
-        <SwiperSlide key={card.title} className="pl-5 pr-5">
+        <SwiperSlide key={card.title}>
           <SliderItem
             imageKey={card.imageKey}
             title={card.title}

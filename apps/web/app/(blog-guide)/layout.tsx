@@ -11,6 +11,7 @@ import AuthStateProvider from "@/common/components/AuthStateProvider"
 import BlogHeader from "@/common/components/BlogHeader"
 import Footer from "@/common/components/Footer"
 import GuideBlogHeader from "@/module/BlogGuide/Header"
+import SearchBar from "@/common/components/SearchBar/SearchBar"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -31,6 +32,11 @@ export default async function BlogGuideLayout({
           <AuthStateProvider>
             <GlobalModalWrapper>
               <BlogHeader contentWidth="small" isFixed={false} />
+              <SearchBar
+                contentWidth="small"
+                customClass="bg-gray-100 items-center"
+                searchBarWidth="w-[800px]"
+              />
               <GuideBlogHeader contentWidth="small" />
               {children}
               <Footer contentWidth="small" />

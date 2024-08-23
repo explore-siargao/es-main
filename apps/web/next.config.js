@@ -24,6 +24,10 @@ module.exports = {
         source: "/cms/:path*",
         destination: `${process.env.PAYLOAD_URL}/cms/:path*`,
       },
+      {
+        source: "/api/surfs/:path*",
+        destination: `${process.env.PAYLOAD_URL}/api/surfs/:path*`,
+      },
     ]
   },
   env: {
