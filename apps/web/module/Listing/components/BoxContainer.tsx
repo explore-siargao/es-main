@@ -1,15 +1,14 @@
-"use client"
 import React, { useEffect, useState } from "react"
 import { HeartIcon } from "@heroicons/react/24/outline"
 import { StarIcon } from "@heroicons/react/20/solid"
 import { Typography } from "../../../common/components/ui/Typography"
 import AddWishlistModal from "@/module/AccountSettings/components/modals/AddWishlistModal"
 import useSessionStore from "../../../common/store/useSessionStore"
-import Slider from "../../../common/components/Slider"
 import toast from "react-hot-toast"
 import useRemoveFromWishGroup from "@/module/AccountSettings/hooks/useRemoveFromWishGroup"
 import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
+import CustomSquareSlider from "@/common/components/CustomSquareSlider"
 
 type BoxContainerProps = {
   listingId: number
@@ -39,7 +38,6 @@ const BoxContainer = ({
 }: BoxContainerProps) => {
   const [addWIshlistModal, setAddWIshlistModal] = useState(false)
   const userId = useSessionStore((state) => state).id
-
   const [isAdded, setIsAdded] = useState(false)
 
   const { mutate } = useRemoveFromWishGroup()
@@ -49,14 +47,12 @@ const BoxContainer = ({
     onSuccess: (data: any) => {
       if (!data.error) {
         setIsAdded(false)
-
         queryClient.invalidateQueries({
           queryKey: ["wish-group"],
         })
         queryClient.invalidateQueries({
           queryKey: ["wish-group-count"],
         })
-
         toast.success("Wishlist successfully removed from the group")
       } else {
         toast.error(String(data.message))
@@ -89,7 +85,7 @@ const BoxContainer = ({
     <>
       <li className="relative rounded-lg overflow-hidden h-full list-none">
         <Link href={`/accommodation/${listingId}`} target="_blank">
-          <div className="h-48 w-full relative">
+          <div className="h-auto w-full relative">
             <button
               onClick={(e) => {
                 e.preventDefault()
@@ -103,9 +99,9 @@ const BoxContainer = ({
                 }`}
               />
             </button>
-            <Slider images={imageKey} />
+            <CustomSquareSlider images={imageKey} />
           </div>
-          <div className="p-4">
+          <div className="pt-4">
             <div className="flex justify-between">
               <Typography
                 variant="h3"
