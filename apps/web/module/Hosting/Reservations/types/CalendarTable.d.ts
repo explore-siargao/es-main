@@ -46,7 +46,7 @@ export interface Category {
   name: string
   price: string
   rooms?: Room[]
-  wholePlaces?:WholePlace[]
+  wholePlaces?: WholePlace[]
   motorcycles?: Rental[]
   bicycles?: Rental[]
   cars?: Rental[]
