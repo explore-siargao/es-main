@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { AtSign, Clock, Facebook, Instagram, MapPin, Phone } from "lucide-react"
+import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react"
 import SpecificMap from "@/common/components/SpecificMap"
 import Link from "next/link"
 import BusinessHoursModal from "./components/modals/BusinessHoursModal"
@@ -71,32 +71,17 @@ const RestaurantLocation = ({
               Business Hours
             </div>
           </button>
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <AtSign />
-            <div className="group-hover:underline group-hover:underline-offset-2">
-              {emailAddress}
-            </div>
-          </div>
-          <Link href={facebookLink} target="_blank" className="w-[180px] group">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-4">
+            <Link href={`mailto: ${emailAddress}`}>
+              <Mail />
+            </Link>
+            <Link href={facebookLink} target="_blank">
               <Facebook />
-              <Typography className="group-hover:underline group-hover:underline-offset-2">
-                /facebook-page
-              </Typography>
-            </div>
-          </Link>
-          <Link
-            href={instagramLink}
-            target="_blank"
-            className="w-[180px] group"
-          >
-            <div className="flex items-center gap-4">
+            </Link>
+            <Link href={instagramLink} target="_blank">
               <Instagram />
-              <Typography className="group-hover:underline group-hover:underline-offset-2">
-                /instagram-account
-              </Typography>
-            </div>
-          </Link>
+            </Link>
+          </div>
         </div>
         <div className="mt-8">
           <Button variant={"primary"} className="w-full">

@@ -44,7 +44,7 @@ function RentalsSearchBar() {
       </div> */}
       <Button
         variant={"primary"}
-        className="h-full px-4 py-3 justify-center items-center rounded-xl gap-x-2"
+        className="h-full px-4 py-3 justify-center items-center rounded-lg gap-x-2"
       >
         <Search className="text-white h-5 w-5" />
         Search
