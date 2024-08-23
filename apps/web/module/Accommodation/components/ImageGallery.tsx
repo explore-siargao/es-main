@@ -14,7 +14,7 @@ const ImageGallery = ({
 }: T_ImagesProps) => {
   const getImgSrc = (index: number) => {
     const image = images[index]
-    const imgSrc = image?.key ? `/assets/${image.key}` : image?.image?.url || ""
+    const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`
     const imgAlt = image?.description || image?.image?.alt || ""
     return { src: imgSrc, alt: imgAlt }
   }

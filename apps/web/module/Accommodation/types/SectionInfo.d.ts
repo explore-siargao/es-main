@@ -12,6 +12,7 @@ export type T_Image = {
   fileKey?: string
   alt?: string
   image?: {
+    filename?: string
     url?: string
     alt?: string
   }
