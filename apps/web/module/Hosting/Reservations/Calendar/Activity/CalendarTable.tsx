@@ -34,6 +34,7 @@ const ActivitiesCalendarTable = () => {
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
+  //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
@@ -106,6 +107,7 @@ const ActivitiesCalendarTable = () => {
           })),
         })),
       }
+      //@ts-ignore
       setFilteredData(newFilteredData)
     }
 
