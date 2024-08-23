@@ -13,10 +13,6 @@ module.exports = {
         destination: `${process.env.API_URL}/assets/:path*`,
       },
       {
-        source: "/api/v1/:path*",
-        destination: `${process.env.API_URL}/api/v1/:path*`,
-      },
-      {
         source: "/api/v2/:path*",
         destination: `${process.env.API_URL}/api/v2/:path*`,
       },
@@ -25,12 +21,8 @@ module.exports = {
         destination: `${process.env.API_MOCK_URL}/mock/v1/:path*`,
       },
       {
-        source: "/cms/api/:path*",
-        destination: `${process.env.PAYLOAD_URL}/cms/api/:path*`,
-      },
-      {
-        source: "/cms/admin/:path*",
-        destination: `${process.env.PAYLOAD_URL}/cms/admin/:path*`,
+        source: "/cms/:path*",
+        destination: `${process.env.PAYLOAD_URL}/cms/:path*`,
       },
       {
         source: "/api/surfs/:path*",

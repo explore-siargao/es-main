@@ -102,7 +102,7 @@ export const RestaurantGuide = () => {
   const getGuideData = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/restaurants/guide/${guideName}`
+        `http://localhost:3000/cms/api/restaurants/guide/${guideName}`
       )
 
       if (!res.ok) {

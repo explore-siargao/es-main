@@ -67,7 +67,7 @@ function TravelBlog() {
   const getTravelCms = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/locations/guide/${travelName}`
+        `http://localhost:3000/cms/api/locations/guide/${travelName}`
       )
 
       if (!res.ok) {
