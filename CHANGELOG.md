@@ -2,33 +2,31 @@
 
 ## [0.12.0](https://github.com/explore-siargao/es-main/compare/v0.11.0...v0.12.0) (2024-08-23)
 
-
 ### Features
 
-* **api:** Added endpoint for get calendar reservations for beds ([4966e0a](https://github.com/explore-siargao/es-main/commit/4966e0a63b80944129afe82b22a663faf7c68e73))
-* **api:** create endpoint for calendar unit whole place reservations ([86fee15](https://github.com/explore-siargao/es-main/commit/86fee15ea167e229b0e6724d6288f1ebdc4c0198))
-* Update local database setup instructions and remove test message ([8eb9125](https://github.com/explore-siargao/es-main/commit/8eb91256b1e02459069fe209c8d72c83b971924a))
-* **web:** Added calendar reservation room view connected to backend ([e72024c](https://github.com/explore-siargao/es-main/commit/e72024c61f06536a5540e5313b895e6382d098dd))
-* **web:** Added custom hook for get calendar bed reservations ([73e1988](https://github.com/explore-siargao/es-main/commit/73e1988dfbd34ba7213429bacdda66b8c2b372b9))
-* **web:** Added search bar for guide pages ([be9ed89](https://github.com/explore-siargao/es-main/commit/be9ed898727aca6793b06c0ed251ab06d348a991))
-* **web:** Added search bar for surf guide ([f619220](https://github.com/explore-siargao/es-main/commit/f619220b7eb143f2b21c880b7569c62bce819690))
-* **web:** Added search bar for surf guide ([e15ea97](https://github.com/explore-siargao/es-main/commit/e15ea97ff2799730054505748bee6307e429cc32))
-* **web:** Added search bar for surf guide ([527df47](https://github.com/explore-siargao/es-main/commit/527df479e6a96631e091780b8a65d6542e89e271))
-* **web:** connect calendar unit whole place reservation backend to frontend ([cb44a5a](https://github.com/explore-siargao/es-main/commit/cb44a5a284988f2a016a6554016176063be780a3))
-* **web:** Connected calendar reservation beds  frontend to backend ([edde414](https://github.com/explore-siargao/es-main/commit/edde414391fd630bfdd8cee5098755a1c684cd6d))
-* **web:** Connected calendar whole place reservation backend to frontend ([a6b83d2](https://github.com/explore-siargao/es-main/commit/a6b83d2d0befb2991795ed1dbf4d88811f9e837a))
-* **web:** create custom hooks for get calendar unit whole place reservations ([54c3fba](https://github.com/explore-siargao/es-main/commit/54c3fbae41e54a08284284133af483fc4e2634a7))
-* **web:** Created calendar tabs for each category of the page ([203c34a](https://github.com/explore-siargao/es-main/commit/203c34a12add6278920953d0d08856d5536be512))
-* **web:** Created calendar tabs for each category of the page ([2bfc6b1](https://github.com/explore-siargao/es-main/commit/2bfc6b1d078ea6bdffceb100f8721ec8258efcdc))
-* **web:** Improved whole place units ([46569f1](https://github.com/explore-siargao/es-main/commit/46569f1bb90bba24641c57e330c70aef03896e60))
-* **web:** Improved whole place units ([f564b1c](https://github.com/explore-siargao/es-main/commit/f564b1c6016372df0093219bc6adac49577df866))
-* **web:** make the listbox square shape ([f7ac6e9](https://github.com/explore-siargao/es-main/commit/f7ac6e97525aeb70ae7c28f264e8bbcac25f6ccc))
-
+- **api:** Added endpoint for get calendar reservations for beds ([4966e0a](https://github.com/explore-siargao/es-main/commit/4966e0a63b80944129afe82b22a663faf7c68e73))
+- **api:** create endpoint for calendar unit whole place reservations ([86fee15](https://github.com/explore-siargao/es-main/commit/86fee15ea167e229b0e6724d6288f1ebdc4c0198))
+- Update local database setup instructions and remove test message ([8eb9125](https://github.com/explore-siargao/es-main/commit/8eb91256b1e02459069fe209c8d72c83b971924a))
+- **web:** Added calendar reservation room view connected to backend ([e72024c](https://github.com/explore-siargao/es-main/commit/e72024c61f06536a5540e5313b895e6382d098dd))
+- **web:** Added custom hook for get calendar bed reservations ([73e1988](https://github.com/explore-siargao/es-main/commit/73e1988dfbd34ba7213429bacdda66b8c2b372b9))
+- **web:** Added search bar for guide pages ([be9ed89](https://github.com/explore-siargao/es-main/commit/be9ed898727aca6793b06c0ed251ab06d348a991))
+- **web:** Added search bar for surf guide ([f619220](https://github.com/explore-siargao/es-main/commit/f619220b7eb143f2b21c880b7569c62bce819690))
+- **web:** Added search bar for surf guide ([e15ea97](https://github.com/explore-siargao/es-main/commit/e15ea97ff2799730054505748bee6307e429cc32))
+- **web:** Added search bar for surf guide ([527df47](https://github.com/explore-siargao/es-main/commit/527df479e6a96631e091780b8a65d6542e89e271))
+- **web:** connect calendar unit whole place reservation backend to frontend ([cb44a5a](https://github.com/explore-siargao/es-main/commit/cb44a5a284988f2a016a6554016176063be780a3))
+- **web:** Connected calendar reservation beds frontend to backend ([edde414](https://github.com/explore-siargao/es-main/commit/edde414391fd630bfdd8cee5098755a1c684cd6d))
+- **web:** Connected calendar whole place reservation backend to frontend ([a6b83d2](https://github.com/explore-siargao/es-main/commit/a6b83d2d0befb2991795ed1dbf4d88811f9e837a))
+- **web:** create custom hooks for get calendar unit whole place reservations ([54c3fba](https://github.com/explore-siargao/es-main/commit/54c3fbae41e54a08284284133af483fc4e2634a7))
+- **web:** Created calendar tabs for each category of the page ([203c34a](https://github.com/explore-siargao/es-main/commit/203c34a12add6278920953d0d08856d5536be512))
+- **web:** Created calendar tabs for each category of the page ([2bfc6b1](https://github.com/explore-siargao/es-main/commit/2bfc6b1d078ea6bdffceb100f8721ec8258efcdc))
+- **web:** Improved whole place units ([46569f1](https://github.com/explore-siargao/es-main/commit/46569f1bb90bba24641c57e330c70aef03896e60))
+- **web:** Improved whole place units ([f564b1c](https://github.com/explore-siargao/es-main/commit/f564b1c6016372df0093219bc6adac49577df866))
+- **web:** make the listbox square shape ([f7ac6e9](https://github.com/explore-siargao/es-main/commit/f7ac6e97525aeb70ae7c28f264e8bbcac25f6ccc))
 
 ### Bug Fixes
 
-* **api:** savings of emergencycontact not working ([78deff6](https://github.com/explore-siargao/es-main/commit/78deff6f799c161943db42975af38c8b78db0d87))
-* **api:** savings of emergencycontact not working ([c90c231](https://github.com/explore-siargao/es-main/commit/c90c231b1f90f276aeb5e5c20597630bea7c2093))
+- **api:** savings of emergencycontact not working ([78deff6](https://github.com/explore-siargao/es-main/commit/78deff6f799c161943db42975af38c8b78db0d87))
+- **api:** savings of emergencycontact not working ([c90c231](https://github.com/explore-siargao/es-main/commit/c90c231b1f90f276aeb5e5c20597630bea7c2093))
 
 ## [0.11.0](https://github.com/explore-siargao/es-main/compare/v0.10.0...v0.11.0) (2024-08-21)
 
