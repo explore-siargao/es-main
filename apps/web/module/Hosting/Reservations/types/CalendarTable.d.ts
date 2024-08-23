@@ -30,7 +30,6 @@ export interface Room {
   bookings: Booking[]
 }
 
-
 export interface WholePlace {
   abbr: string
   status: string
