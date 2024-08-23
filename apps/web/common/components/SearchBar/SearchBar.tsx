@@ -79,7 +79,7 @@ function SearchBarNoHero({
         aria-label="Global"
       >
         <div className="flex flex-col w-full gap-4">
-          <div className="flex gap-8 rounded-full">
+          <div className="flex gap-8 rounded-full ml-0.5">
             <Button
               variant="link"
               size="sm"
