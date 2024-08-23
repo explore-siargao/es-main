@@ -27,8 +27,8 @@ const TravelGuideContent = ({ guideData }: { guideData: any }) => {
           </div>
 
           <div>
-            <PopularGuides />
             <div className="sticky top-2">
+              <PopularGuides />
               <div className="flex w-60 flex-col">
                 <div>
                   <h1 className="mt-10 text-xl font-bold">Page Summary</h1>
