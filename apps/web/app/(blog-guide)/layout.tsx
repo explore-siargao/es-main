@@ -32,7 +32,11 @@ export default async function BlogGuideLayout({
           <AuthStateProvider>
             <GlobalModalWrapper>
               <BlogHeader contentWidth="small" isFixed={false} />
-              <SearchBar contentWidth="small" customClass="bg-gray-100" />
+              <SearchBar
+                contentWidth="small"
+                customClass="bg-gray-100 items-center"
+                searchBarWidth="w-[800px]"
+              />
               <GuideBlogHeader contentWidth="small" />
               {children}
               <Footer contentWidth="small" />

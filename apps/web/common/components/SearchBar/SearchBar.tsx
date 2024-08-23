@@ -23,10 +23,12 @@ function SearchBarNoHero({
   contentWidth,
   isFixed = true,
   customClass,
+  searchBarWidth,
 }: {
   contentWidth: "medium" | "small" | "wide" | "full"
   isFixed?: boolean
   customClass?: string
+  searchBarWidth?: string
 }) {
   const session = useSessionStore((state) => state)
   const path = usePathname()
@@ -67,7 +69,7 @@ function SearchBarNoHero({
   return (
     <WidthWrapper width={contentWidth} className={customClass}>
       <nav
-        className="flex items-center justify-center py-2 my-2 w-full"
+        className={`flex items-center justify-center py-2 my-2 ${searchBarWidth ? searchBarWidth : "w-full"}`}
         aria-label="Global"
       >
         <div className="flex flex-col w-full gap-4">
@@ -75,30 +77,24 @@ function SearchBarNoHero({
             <Button
               variant="link"
               size="sm"
-              onClick={() => {
-                router.push("/listings?category=property")
-              }}
-              className={`${category === "property" ? "font-bold underline" : ""} hover:text-gray-300 px-0`}
+              onClick={() => setPageProperty(1)}
+              className={`${pageProperty === 1 ? "font-bold underline" : ""} hover:text-gray-300 px-0`}
             >
               Places to stay
             </Button>
             <Button
               variant="link"
               size="sm"
-              onClick={() => {
-                router.push("/listings?category=activities")
-              }}
-              className={`${category === "activities" ? "font-bold underline" : ""} hover:text-gray-300 px-0`}
+              onClick={() => setPageProperty(2)}
+              className={`${pageProperty === 2 ? "font-bold underline" : ""} hover:text-gray-300 px-0`}
             >
               Activities
             </Button>
             <Button
               variant="link"
               size="sm"
-              onClick={() => {
-                router.push("/listings?category=rentals")
-              }}
-              className={`${category === "rentals" ? "font-bold underline" : ""} hover:text-gray-300 px-0`}
+              onClick={() => setPageProperty(3)}
+              className={`${pageProperty === 3 ? "font-bold underline" : ""} hover:text-gray-300 px-0`}
             >
               Rentals
             </Button>
