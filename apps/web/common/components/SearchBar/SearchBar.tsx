@@ -36,6 +36,9 @@ function SearchBarNoHero({
   const searchParams = useSearchParams()
   const category = searchParams.get("category") || ""
 
+  const routeNames = path.split("/")
+  const [firstRoute, secondRoute] = routeNames.slice(1, 3)
+
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
 
@@ -67,7 +70,10 @@ function SearchBarNoHero({
   }, [category])
 
   return (
-    <WidthWrapper width={contentWidth} className={customClass}>
+    <WidthWrapper
+      width={contentWidth}
+      className={`${customClass} ${firstRoute === "guide" && secondRoute !== "surf" && "hidden"}`}
+    >
       <nav
         className={`flex items-center justify-center py-2 my-2 ${searchBarWidth ? searchBarWidth : "w-full"}`}
         aria-label="Global"
