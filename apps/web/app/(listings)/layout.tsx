@@ -10,7 +10,7 @@ import { APP_NAME } from "@repo/constants"
 import Header from "@/common/components/Header"
 import Footer from "@/common/components/Footer"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
-import SearchBarNoHero from "@/common/components/SearchBar/SearchBarNoHero"
+import SearchBar from "@/common/components/SearchBar/SearchBar"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -30,10 +30,12 @@ export default async function RootLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <div className="flex flex-col gap-2">
                 <Header contentWidth="medium" />
-                <SearchBarNoHero />
-              </div>
+                <SearchBar
+                  contentWidth="small"
+                  customClass="bg-gray-100 items-center mt-[7.4rem]"
+                  searchBarWidth="w-[900px]"
+                />
               <div className="min-h-screen">{children}</div>
               <Footer />
             </GlobalModalWrapper>

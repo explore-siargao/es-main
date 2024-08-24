@@ -8,7 +8,7 @@ import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
-import BlogHeader from "@/common/components/BlogHeader"
+import BlogHeader from "@/common/components/Header"
 import Footer from "@/common/components/Footer"
 import GuideBlogHeader from "@/module/BlogGuide/Header"
 import SearchBar from "@/common/components/SearchBar/SearchBar"
@@ -31,15 +31,15 @@ export default async function BlogGuideLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <BlogHeader contentWidth="small" isFixed={false} />
+              <BlogHeader contentWidth="medium" isFixed={false} />
               <SearchBar
                 contentWidth="small"
                 customClass="bg-gray-100 items-center"
-                searchBarWidth="w-[800px]"
+                searchBarWidth="w-[900px]"
               />
-              <GuideBlogHeader contentWidth="small" />
+              <GuideBlogHeader contentWidth="medium" />
               {children}
-              <Footer contentWidth="small" />
+              <Footer contentWidth="medium" />
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>
