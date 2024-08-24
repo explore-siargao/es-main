@@ -55,7 +55,7 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
   }, [minValue, maxValue, onValueChange])
 
   return (
-    <div className="border border-gray-300 max-w-xs p-4 shadow-sm overflow-hidden">
+    <div className="max-w-xs p-4 overflow-hidden">
       <Typography fontWeight="bold">{title}</Typography>
       <label
         htmlFor="budget-range"

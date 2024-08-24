@@ -19,7 +19,7 @@ type T_Search_Form = {
   numberOfGuest: number
 }
 
-function SearchBarNoHero({
+function SearchBar({
   contentWidth,
   isFixed = true,
   customClass,
@@ -118,4 +118,4 @@ function SearchBarNoHero({
   )
 }
 
-export default SearchBarNoHero
+export default SearchBar

@@ -33,7 +33,7 @@ export default async function RootLayout({
                 <Header contentWidth="medium" />
                 <SearchBar
                   contentWidth="small"
-                  customClass="bg-gray-100 items-center mt-[7.4rem]"
+                  customClass="bg-primary-50 items-center mt-[7.4rem]"
                   searchBarWidth="w-[900px]"
                 />
               <div className="min-h-screen">{children}</div>

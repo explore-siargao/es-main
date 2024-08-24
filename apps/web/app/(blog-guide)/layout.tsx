@@ -34,7 +34,7 @@ export default async function BlogGuideLayout({
               <BlogHeader contentWidth="medium" isFixed={false} />
               <SearchBar
                 contentWidth="small"
-                customClass="bg-gray-100 items-center"
+                customClass="bg-primary-50 items-center"
                 searchBarWidth="w-[900px]"
               />
               <GuideBlogHeader contentWidth="medium" />

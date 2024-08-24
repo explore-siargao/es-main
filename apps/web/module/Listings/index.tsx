@@ -236,8 +236,8 @@ const ListingsPage = () => {
   }, [filters])
 
   return (
-    <WidthWrapper width="medium" className="">
-      <div className="flex gap-x-10 mt-14">
+    <WidthWrapper width="medium" className="mt-8">
+      <div className="flex gap-x-6">
         <div className="w-[30%]">
           <SideFilter
             onFiltersChange={handleFiltersChange}
@@ -246,7 +246,7 @@ const ListingsPage = () => {
             filterItemType={type ? type : ""}
           />
         </div>
-        <div className="w-70%">
+        <div>
           {filteredData.length > 0 ? (
             <div className="grid grid-cols-4 gap-6">
               {filteredData.map((item: any) => (

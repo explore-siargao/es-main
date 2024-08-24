@@ -61,7 +61,7 @@ const CheckBoxFilter = ({
   }, [])
 
   return (
-    <div className="border border-gray-300 max-w-xs p-4">
+    <div className="max-w-xs p-4">
       <Typography className="mb-1" fontWeight="bold">
         {category}
       </Typography>
