@@ -30,12 +30,12 @@ export default async function RootLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-                <Header contentWidth="medium" />
-                <SearchBar
-                  contentWidth="small"
-                  customClass="bg-primary-50 items-center mt-[7.4rem]"
-                  searchBarWidth="w-[900px]"
-                />
+              <Header contentWidth="medium" />
+              <SearchBar
+                contentWidth="small"
+                customClass="bg-primary-50 items-center mt-[7.4rem]"
+                searchBarWidth="w-[900px]"
+              />
               <div className="min-h-screen">{children}</div>
               <Footer />
             </GlobalModalWrapper>

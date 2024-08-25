@@ -132,9 +132,7 @@ const SideFilter = ({
         <Minimap />
       </div>
       <div className="rounded-tl-xl rounded-tr-xl border-t border-r border-l border-gray-300 flex items-center py-2 px-4">
-        <Typography fontWeight="semibold">
-          Filters
-        </Typography>
+        <Typography fontWeight="semibold">Filters</Typography>
       </div>
       <div className="border-t border-r border-l border-gray-300">
         {Array.from(

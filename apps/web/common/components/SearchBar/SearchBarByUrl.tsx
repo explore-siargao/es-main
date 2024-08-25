@@ -27,10 +27,10 @@ function SearchBarByUrl({
   customClass?: string
   searchBarWidth?: string
 }) {
-  const propertyEnum = E_Listing_Category.Property;
-  const activityEnum = E_Listing_Category.Activity;
-  const rentalEnum = E_Listing_Category.Rental;
-  const pathname = usePathname();
+  const propertyEnum = E_Listing_Category.Property
+  const activityEnum = E_Listing_Category.Activity
+  const rentalEnum = E_Listing_Category.Rental
+  const pathname = usePathname()
   const path = usePathname()
   const searchParams = useSearchParams()
   const category = searchParams.get("category") || ""
@@ -88,7 +88,9 @@ function SearchBarByUrl({
           </div>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              {category !== activityEnum && category !== rentalEnum ? <PropertySearchBar /> : null}
+              {category !== activityEnum && category !== rentalEnum ? (
+                <PropertySearchBar />
+              ) : null}
               {category === activityEnum && <ActivitiesSearchBar />}
               {category === rentalEnum && <RentalsSearchBar />}
             </form>

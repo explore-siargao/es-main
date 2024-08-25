@@ -67,15 +67,11 @@ function Header({
               <GuidesMenu />
               <div>
                 {session.role !== E_UserRole.Admin &&
-                  !session.isHost &&
-                  !path.includes("/hosting") ? (
-                    <Button
-                      variant="link"
-                      size="sm"
-                      onClick={applyToHost}
-                    >
-                      Become a host
-                    </Button>
+                !session.isHost &&
+                !path.includes("/hosting") ? (
+                  <Button variant="link" size="sm" onClick={applyToHost}>
+                    Become a host
+                  </Button>
                 ) : null}
               </div>
               {!session.id && (
