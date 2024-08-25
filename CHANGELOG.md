@@ -7,11 +7,16 @@
 
 * **web:** Update header and search bar widths in blog guide and listings layouts ([b63b36f](https://github.com/explore-siargao/es-main/commit/b63b36f6298d8d23c9ce22ef98ae8a3e345a811d))
 
-
 ### Bug Fixes
 
 * Remove unused "url" field in Media collection configuration and update ImageGallery component to handle image filenames ([5e454fc](https://github.com/explore-siargao/es-main/commit/5e454fc2f9e5b78bdf96aa6e5db0a0d7c6731b7a))
 * **web:** Fixed fetch issue. Changed localhost URL to WEB_URL ([90b2a04](https://github.com/explore-siargao/es-main/commit/90b2a045364a9b5009f0c715953e07a22d0a3493))
+
+### Maintenance
+
+* Fix type errors for headless ui by removing overlay ([a0ecb85](https://github.com/explore-siargao/es-main/commit/a0ecb8520b3876eb35ef1fe0c8d08aa5760c28d8))
+* Major UI cleanup ([f09183b](https://github.com/explore-siargao/es-main/commit/f09183bf66d12aba12dd1d0e635f496ac46278e5))
+* Update header and search bar widths in blog guide and listings layouts ([a4bd77e](https://github.com/explore-siargao/es-main/commit/a4bd77e26f853a2739c0811b0ddd9a9d53ea5896))
 
 ## [0.12.0](https://github.com/explore-siargao/es-main/compare/v0.11.0...v0.12.0) (2024-08-23)
 
