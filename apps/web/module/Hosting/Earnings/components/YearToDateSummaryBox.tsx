@@ -20,7 +20,7 @@ const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({ excelData }) => {
     ],
   ]
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 sticky top-36">
+    <div className="bg-white rounded-xl shadow-lg p-8 sticky top-36">
       <Typography variant="h2" fontWeight="semibold">
         Year-to-date summary
       </Typography>

@@ -65,7 +65,7 @@ const NumericFilter = ({ category, filters, onFilterChange }: T_Props) => {
   }
 
   return (
-    <div className="border border-gray-300 max-w-xs p-4 rounded-bl-md rounded-br-md">
+    <div className="max-w-xs p-4 rounded-bl-md rounded-br-md">
       <Typography className="mb-2" fontWeight="bold">
         {category}
       </Typography>

@@ -44,7 +44,7 @@ const HostingTodayUpcoming: React.FC<HostingPageProps> = () => {
 
         <div>
           <OvalTab tabs={TABS} />
-          <div className="flex bg-gray-100 min-h-fit w-full mt-5 items-center justify-center rounded-lg p-12">
+          <div className="flex bg-gray-100 min-h-fit w-full mt-5 items-center justify-center rounded-xl p-12">
             <div className="text-text-200">
               <div className="flex items-center justify-center mb-5">
                 {icon}

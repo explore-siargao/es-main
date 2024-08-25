@@ -4,12 +4,12 @@ const insightsTabs = [
   {
     name: "General",
     icon: <AreaChart className="w-5" />,
-    link: "/hosting/insights",
+    link: "/hosting/insights/general",
   },
   {
     name: "Earnings",
     icon: <LucideHandCoins className="w-5" />,
-    link: "/hosting/earnings/graph",
+    link: "/hosting/insights/earnings",
   },
 ]
 

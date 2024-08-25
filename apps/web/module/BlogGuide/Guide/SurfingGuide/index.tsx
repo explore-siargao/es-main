@@ -79,7 +79,7 @@ const SurfingGuide = () => {
     content = <Typography className="mt-10">No data was found.</Typography>
   }
 
-  return <WidthWrapper width={"small"}>{content}</WidthWrapper>
+  return <WidthWrapper width="medium">{content}</WidthWrapper>
 }
 
 export default SurfingGuide

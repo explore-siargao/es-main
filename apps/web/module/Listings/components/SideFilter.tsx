@@ -128,15 +128,13 @@ const SideFilter = ({
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="mb-6">
         <Minimap />
       </div>
-      <div className="h-10 w-80 rounded-tl-md rounded-tr-md border border-gray-300 flex items-center p-4">
-        <Typography variant="h2" fontWeight="semibold">
-          Filter by:
-        </Typography>
+      <div className="rounded-tl-xl rounded-tr-xl border-t border-r border-l border-gray-300 flex items-center py-2 px-4">
+        <Typography fontWeight="semibold">Filters</Typography>
       </div>
-      <div>
+      <div className="border-t border-r border-l border-gray-300">
         {Array.from(
           new Set(
             filterPrimaryData
@@ -158,15 +156,17 @@ const SideFilter = ({
           )
         )}
       </div>
-      <BudgetSlider
-        title="Budget Range"
-        min={0}
-        max={10000}
-        initialMinValue={1000}
-        initialMaxValue={9000}
-        onValueChange={handleBudgetSliderChange}
-      />
-      <div>
+      {/* <div className="border-t border-r border-l border-gray-300">
+        <BudgetSlider
+          title="Budget Range"
+          min={0}
+          max={10000}
+          initialMinValue={1000}
+          initialMaxValue={9000}
+          onValueChange={handleBudgetSliderChange}
+        />
+      </div> */}
+      <div className="border border-gray-300 rounded-bl-xl rounded-br-xl">
         <NumericFilter
           category="Rooms and beds"
           filters={numericFilterData}

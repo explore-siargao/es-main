@@ -13,7 +13,7 @@ const NearbyAccommodation = ({ name, image, url, index }: T_Props) => {
   return (
     <Link href={url} target="_blank" key={"accommodation-" + index}>
       <div className="w-full flex flex-col gap-2">
-        <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-lg overflow-hidden hover:shadow-lg hover:cursor-pointer">
+        <div className="w-full bg-gray-200 h-80 flex items-center justify-center rounded-xl overflow-hidden hover:shadow-lg hover:cursor-pointer">
           <Image
             src={image}
             className="h-full w-full object-cover"

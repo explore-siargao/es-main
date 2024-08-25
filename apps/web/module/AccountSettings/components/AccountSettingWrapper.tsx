@@ -10,7 +10,7 @@ type Props = {
 const AccountSettingWrapper = ({ children, className }: Props) => {
   return (
     <WidthWrapper
-      width="small"
+      width="medium"
       className={cn("mt-24 md:mt-36 lg:mt-40", className)}
     >
       {children}

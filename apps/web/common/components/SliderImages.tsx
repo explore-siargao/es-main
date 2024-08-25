@@ -53,7 +53,7 @@ const Slider = ({ images }: SliderProps) => {
         modules={[Navigation, Pagination, Thumbs]}
         thumbs={{ swiper: thumbsSwiper }}
         onSlideChange={updateCurrentIndex}
-        className="relative h-3/4 w-1/2 my-5 rounded-lg"
+        className="relative h-3/4 w-1/2 my-5 rounded-xl"
       >
         <style>{`
           .swiper-button-prev, .swiper-button-next {
@@ -119,7 +119,7 @@ const Slider = ({ images }: SliderProps) => {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Thumbs]}
-        className="w-1/2 my-5 rounded-lg"
+        className="w-1/2 my-5 rounded-xl"
       >
         {images.map((imageData) => (
           <SwiperSlide key={imageData.fileKey}>

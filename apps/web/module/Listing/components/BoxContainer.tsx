@@ -83,7 +83,7 @@ const BoxContainer = ({
 
   return (
     <>
-      <li className="relative rounded-lg overflow-hidden h-full list-none">
+      <li className="relative rounded-xl overflow-hidden h-full list-none">
         <Link href={`/accommodation/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             <button

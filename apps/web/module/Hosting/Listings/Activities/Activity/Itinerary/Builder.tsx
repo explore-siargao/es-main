@@ -35,7 +35,7 @@ const Builder = () => {
             <>
               <div className="ml-4 w-[2px] h-12 bg-primary-600 mt-2"></div>
               <div
-                className={`mt-2 shadow-md rounded-lg p-4 border ${segment.transfer ? "border-secondary-200" : "border-primary-500"} `}
+                className={`mt-2 shadow-md rounded-xl p-4 border ${segment.transfer ? "border-secondary-200" : "border-primary-500"} `}
               >
                 <Typography variant="h4">
                   {segment.transfer

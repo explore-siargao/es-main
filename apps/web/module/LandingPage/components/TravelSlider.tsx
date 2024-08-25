@@ -33,7 +33,7 @@ const TravelSlider = ({
 
   return (
     <div className="mb-5">
-      <div className="pl-5 mb-8">
+      <div className="mb-8">
         {title && (
           <Typography variant="h2" fontWeight="semibold" className="text-left">
             {title}
@@ -45,7 +45,7 @@ const TravelSlider = ({
           </Typography>
         )}
       </div>
-      <div className="ml-5">
+      <div>
         <Slider
           cards={formattedGroupCards}
           isGuide={isGuide}
