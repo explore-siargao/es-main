@@ -92,8 +92,6 @@ const EarningGraphTab = () => {
 
   const { data: EarningsReport } = useGetEarningsReport()
 
-  console.log("Marker: ", EarningsReport)
-
   const [upcomingEarnings, setUpcomingEarnings] = useState<any>([])
 
   useEffect(() => {
@@ -114,7 +112,7 @@ const EarningGraphTab = () => {
     <div className="mt-20 mb-14">
       <Tabs tabs={insightsTabs} />
       <div className="my-4"></div>
-      <div className="grid grid-cols-6 gap-4 my-4 border-b pb-4">
+      <div className="grid grid-cols-6 gap-4 mt-4 mb-2">
         <Select
           label="Year"
           required
@@ -177,10 +175,6 @@ const EarningGraphTab = () => {
           </Select>
         )}
       </div>
-
-      <Typography variant="h1" fontWeight="semibold">
-        Earning
-      </Typography>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-14">
         <div className="lg:col-span-3">
           <div className="mt-3"></div>

@@ -127,11 +127,11 @@ const SideFilter = ({
           : ""
 
   return (
-    <div className="w-80">
+    <div>
       <div className="mb-6">
         <Minimap />
       </div>
-      <div className="rounded-tl-md rounded-tr-lg border-t border-r border-l border-gray-300 flex items-center py-2 px-4">
+      <div className="rounded-tl-xl rounded-tr-xl border-t border-r border-l border-gray-300 flex items-center py-2 px-4">
         <Typography fontWeight="semibold">
           Filters
         </Typography>
@@ -158,7 +158,7 @@ const SideFilter = ({
           )
         )}
       </div>
-      <div className="border-t border-r border-l border-gray-300">
+      {/* <div className="border-t border-r border-l border-gray-300">
         <BudgetSlider
           title="Budget Range"
           min={0}
@@ -167,8 +167,8 @@ const SideFilter = ({
           initialMaxValue={9000}
           onValueChange={handleBudgetSliderChange}
         />
-      </div>
-      <div className="border border-gray-300 rounded-bl-md rounded-br-lg">
+      </div> */}
+      <div className="border border-gray-300 rounded-bl-xl rounded-br-xl">
         <NumericFilter
           category="Rooms and beds"
           filters={numericFilterData}

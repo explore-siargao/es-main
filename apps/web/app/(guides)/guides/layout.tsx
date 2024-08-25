@@ -9,7 +9,9 @@ import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import Footer from "@/common/components/Footer"
-import GuideHeader from "@/module/Guides/components/Header"
+import GuideHeader from "@/common/components/Header"
+import GuideBlogHeader from "@/common/components/Header"
+import SearchBar from "@/common/components/SearchBar/SearchBarByState"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -29,9 +31,15 @@ export default async function RootLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <GuideHeader />
+              <GuideHeader contentWidth="medium" isFixed={false} />
+              <SearchBar
+                contentWidth="small"
+                customClass="bg-primary-50 items-center"
+                searchBarWidth="w-[900px]"
+              />
+              <GuideBlogHeader contentWidth="medium" />
               {children}
-              <Footer contentWidth="small" />
+              <Footer contentWidth="medium" />
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>

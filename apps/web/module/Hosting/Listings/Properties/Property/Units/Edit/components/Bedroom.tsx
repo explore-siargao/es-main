@@ -32,7 +32,7 @@ const Bedroom = ({ unitType }: T_Prop) => {
           {displayBedrooms.map((bedroomArray, index) => {
             return (
               <React.Fragment key={bedroomArray.roomName}>
-                <div className="mt-2 rounded-lg px-3 py-2 border w-full border-text-200">
+                <div className="mt-2 rounded-xl px-3 py-2 border w-full border-text-200">
                   <Typography variant="h4">
                     {unitType === "Studio"
                       ? "Living Room"

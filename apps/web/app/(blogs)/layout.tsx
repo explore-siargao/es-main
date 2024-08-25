@@ -10,8 +10,8 @@ import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import BlogHeader from "@/common/components/Header"
 import Footer from "@/common/components/Footer"
-import GuideBlogHeader from "@/module/BlogGuide/Header"
-import SearchBar from "@/common/components/SearchBar/SearchBar"
+import GuideBlogHeader from "@/common/components/Header"
+import SearchBar from "@/common/components/SearchBar/SearchBarByState"
 
 export const metadata: Metadata = {
   title: APP_NAME,

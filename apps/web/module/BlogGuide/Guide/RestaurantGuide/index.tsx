@@ -114,7 +114,6 @@ export const RestaurantGuide = () => {
       setGuideData(data.docs[0])
       setGuideDataLoading(false)
     } catch (err) {
-      console.log(err)
       setGuideDataLoading(false)
     }
   }
@@ -124,7 +123,7 @@ export const RestaurantGuide = () => {
   }, [])
 
   return (
-    <WidthWrapper width="small" className="mt-10">
+    <WidthWrapper width="small" className="mt-24 md:mt-36 lg:mt-44">
       {guideDataLoading && <Spinner variant="primary" middle />}
       {!guideDataLoading && guideData && (
         <>

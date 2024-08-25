@@ -31,28 +31,28 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
     [min, max]
   )
 
-  useEffect(() => {
-    const minPercent = getPercent(minValue)
-    const maxPercent = getPercent(maxValRef.current)
+  // useEffect(() => {
+  //   const minPercent = getPercent(minValue)
+  //   const maxPercent = getPercent(maxValRef.current)
 
-    if (range.current) {
-      range.current.style.left = `${minPercent}%`
-      range.current.style.width = `${maxPercent - minPercent}%`
-    }
-  }, [minValue, getPercent])
+  //   if (range.current) {
+  //     range.current.style.left = `${minPercent}%`
+  //     range.current.style.width = `${maxPercent - minPercent}%`
+  //   }
+  // }, [minValue, getPercent])
 
-  useEffect(() => {
-    const minPercent = getPercent(minValRef.current)
-    const maxPercent = getPercent(maxValue)
+  // useEffect(() => {
+  //   const minPercent = getPercent(minValRef.current)
+  //   const maxPercent = getPercent(maxValue)
 
-    if (range.current) {
-      range.current.style.width = `${maxPercent - minPercent}%`
-    }
-  }, [maxValue, getPercent])
+  //   if (range.current) {
+  //     range.current.style.width = `${maxPercent - minPercent}%`
+  //   }
+  // }, [maxValue, getPercent])
 
-  useEffect(() => {
-    onValueChange(minValue, maxValue)
-  }, [minValue, maxValue, onValueChange])
+  // useEffect(() => {
+  //   onValueChange(minValue, maxValue)
+  // }, [minValue, maxValue, onValueChange])
 
   return (
     <div className="max-w-xs p-4 overflow-hidden">

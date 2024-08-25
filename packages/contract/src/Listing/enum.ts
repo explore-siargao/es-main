@@ -10,3 +10,10 @@ export enum E_ListingStatus {
   Live = "Live",
   Incomplete = "Incomplete",
 }
+
+export enum E_Listing_Category {
+  Property = "Property",
+  Activity = "Activity",
+  Rental = "Rental",
+}
+

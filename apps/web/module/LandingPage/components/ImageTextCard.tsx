@@ -20,7 +20,7 @@ const ImageTextCard = ({
   url,
 }: ICardItems) => {
   return (
-    <div className="bg-white rounded-lg shadow-md mx-auto">
+    <div className="bg-white rounded-xl shadow-md mx-auto">
       <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-56">
         <Image
           src={imageKey}

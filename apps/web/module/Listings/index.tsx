@@ -213,7 +213,6 @@ const ListingsPage = () => {
 
   useEffect(() => {
     if (category && type) {
-      console.log(`Category: ${category}, Type: ${type}`)
       setFilters([
         {
           type: type,
@@ -238,7 +237,7 @@ const ListingsPage = () => {
   return (
     <WidthWrapper width="medium" className="mt-8">
       <div className="flex gap-x-6">
-        <div className="w-[30%]">
+        <div className="w-1/3">
           <SideFilter
             onFiltersChange={handleFiltersChange}
             onBudgetChange={handleBudgetChange}

@@ -67,41 +67,37 @@ const LandingPage = () => {
   items.forEach((element) => {
     formData.append("item[]", element.id)
   })
-  formData.forEach((value, key) => {
-    console.log("key", key)
-    console.log("value", value)
-  })
 
   const groupCardsDummyTravelStyle = [
     {
       imageKey: "/assets/cf7c14dc-d3f5-46e8-b813-01cf04200519",
       title: "Hostels",
-      url: "/listings?category=property&type=Hostels",
+      url: "/search?category=Property&type=Hostels",
     },
     {
       imageKey: "/assets/f57a9104-b3bc-4c6c-8e7b-ff15ac529b06",
       title: "Apartments",
-      url: "/listings?category=property&type=Apartments",
+      url: "/search?category=Property&type=Apartments",
     },
     {
       imageKey: "/assets/4.jpg",
       title: "Homestay",
-      url: "/listings?category=property&type=Homestay",
+      url: "/search?category=Property&type=Homestay",
     },
     {
       imageKey: "/assets/ac0d3e85-f3da-4f30-8db5-e8bdb98385df",
       title: "Hotels",
-      url: "/listings?category=property&type=Hotels",
+      url: "/search?category=Property&type=Hotels",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Resorts",
-      url: "/listings?category=property&type=Resorts",
+      url: "/search?category=Property&type=Resorts",
     },
     {
       imageKey: "/assets/1.jpg",
       title: "Villas",
-      url: "/listings?category=property&type=Villas",
+      url: "/search?category=Property&type=Villas",
     },
   ]
 
@@ -110,73 +106,73 @@ const LandingPage = () => {
       imageKey: il1,
       title: "Anajawan",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il2,
       title: "Cabitoonan",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il3,
       title: "Catangnan",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il4,
       title: "Consuelo",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il5,
       title: "Corazon",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il6,
       title: "Daku",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il7,
       title: "Catangnan",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il8,
       title: "Malinao",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il9,
       title: "Libertad",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il10,
       title: "Magsaysay",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il11,
       title: "Santa Fe",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il12,
       title: "Suyangan",
       subTitle: "General Luna",
-      url: "/guide/travel/general-luna",
+      url: "/guides/locations/general-luna",
     },
   ]
 
@@ -227,27 +223,27 @@ const LandingPage = () => {
     {
       imageKey: il8,
       title: "Sightseeing",
-      url: "/listings?category=activities&type=Sightseeing",
+      url: "/search?category=Activity&type=Sightseeing",
     },
     {
       imageKey: il9,
       title: "Walking",
-      url: "/listings?category=activities&type=Walking",
+      url: "/search?category=Activity&type=Walking",
     },
     {
       imageKey: il5,
       title: "Sunset view",
-      url: "/listings?category=activities&type=Sunset%20view",
+      url: "/search?category=Activity&type=Sunset%20view",
     },
     {
       imageKey: il4,
       title: "Sceneries",
-      url: "/listings?category=activities&type=Sceneries",
+      url: "/search?category=Activity&type=Sceneries",
     },
     {
       imageKey: il6,
       title: "Visit",
-      url: "/listings?category=activities&type=Visit",
+      url: "/search?category=Activity&type=Visit",
     },
   ]
 
@@ -255,32 +251,32 @@ const LandingPage = () => {
     {
       imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
       title: "2021 Suzuki R150 Fi MT",
-      url: "/listings?category=rentals&type=Motorbikes",
+      url: "/search?category=Rental&type=Motorbikes",
     },
     {
       imageKey: "/assets/fe65c50d-2cde-46e6-8c9b-58a73c59e768",
       title: "2018 Honda Civic AT",
-      url: "/listings?category=rentals&type=Cars",
+      url: "/search?category=Rental&type=Cars",
     },
     {
       imageKey: "/assets/b57d645a-a3bb-4d23-9e9b-d5caa3f0ae69",
       title: "2023 Toyota Wigo G CVT",
-      url: "/listings?category=rentals&type=Bicycle",
+      url: "/search?category=Rental&type=Bicycle",
     },
     {
       imageKey: "/assets/2a820a6a-9baf-4b7c-884a-217f86e7e657",
       title: "2020 CBR500RXZ Honda MT",
-      url: "/listings?category=rentals&type=Cars",
+      url: "/search?category=Rental&type=Cars",
     },
     {
       imageKey: "/assets/099843f0-d626-42fb-899e-62c6687614a2",
       title: "2000 CBR500R Honda SAT",
-      url: "/listings?category=rentals&type=Cars",
+      url: "/search?category=Rental&type=Cars",
     },
     {
       imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
       title: "2020 Suzuki R150 Fi MT",
-      url: "/listings?category=rentals&type=Motorbikes",
+      url: "/search?category=Rental&type=Motorbikes",
     },
   ]
 
@@ -473,7 +469,7 @@ const LandingPage = () => {
               "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multicultural restaurants, cafes and bars will indulge your senses."
             }
             linkTitle={"View foodie guide"}
-            url={"/guides/restaurants/restaurant-name"}
+            url="/guides/restaurants"
           />
           <ImageTextCard
             imageKey={surfImage}
@@ -482,7 +478,7 @@ const LandingPage = () => {
               "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecasts and connect with local instructors."
             }
             linkTitle={"Check the best surf spots"}
-            url={"/guides/surfing/surf-name"}
+            url="/guides/surfing"
           />
           <ImageTextCard
             imageKey={airport}
@@ -491,7 +487,7 @@ const LandingPage = () => {
               "Borders are finally open and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
             }
             linkTitle={"Essential travel info"}
-            url={"/guides/locations/location-name"}
+            url="/guides/islands"
           />
         </div>
 

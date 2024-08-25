@@ -246,13 +246,13 @@ const BedCalendarTable = () => {
     setEditingRoom(null)
   }
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
+    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (
         <Spinner size="md">Loading...</Spinner>
       ) : (
         <div>
           <div className="overflow-auto">
-            <table className="min-w-max w-full rounded-lg">
+            <table className="min-w-max w-full rounded-xl">
               <thead className="">
                 <tr className="uppercase text-sm leading-normal">
                   <td colSpan={1} rowSpan={2} className="">
@@ -391,7 +391,7 @@ const BedCalendarTable = () => {
                                       reservation: booking,
                                     })
                                   }}
-                                  className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                                  className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
                                 >
                                   <span className="text-white text-sm truncate px-2">
                                     {booking.name}
