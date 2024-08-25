@@ -17,9 +17,9 @@ type T_Search_Form = {
   numberOfGuest: number
 }
 
-const propertyEnum = E_Listing_Category.Property;
-const activityEnum = E_Listing_Category.Activity;
-const rentalEnum = E_Listing_Category.Rental;
+const propertyEnum = E_Listing_Category.Property
+const activityEnum = E_Listing_Category.Activity
+const rentalEnum = E_Listing_Category.Rental
 
 function SearchBarByUrl({
   contentWidth,
@@ -30,7 +30,7 @@ function SearchBarByUrl({
   customClass?: string
   searchBarWidth?: string
 }) {
-  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum);
+  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
 
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
@@ -51,10 +51,7 @@ function SearchBarByUrl({
   }
 
   return (
-    <WidthWrapper
-      width={contentWidth}
-      className={`${customClass}`}
-    >
+    <WidthWrapper width={contentWidth} className={`${customClass}`}>
       <nav
         className={`flex items-center justify-center py-2 mb-2 mt-4 ${searchBarWidth ? searchBarWidth : "w-full"}`}
         aria-label="Global"
@@ -68,9 +65,11 @@ function SearchBarByUrl({
           </div>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                {category !== activityEnum && category !== rentalEnum ? <PropertySearchBar /> : null}
-                {category === activityEnum && <ActivitiesSearchBar />}
-                {category === rentalEnum && <RentalsSearchBar />}
+              {category !== activityEnum && category !== rentalEnum ? (
+                <PropertySearchBar />
+              ) : null}
+              {category === activityEnum && <ActivitiesSearchBar />}
+              {category === rentalEnum && <RentalsSearchBar />}
             </form>
           </FormProvider>
         </div>

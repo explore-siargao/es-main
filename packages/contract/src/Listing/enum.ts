@@ -16,4 +16,3 @@ export enum E_Listing_Category {
   Activity = "Activity",
   Rental = "Rental",
 }
-

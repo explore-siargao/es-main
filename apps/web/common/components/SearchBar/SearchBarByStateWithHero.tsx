@@ -20,13 +20,13 @@ type T_Search_Form = {
   numberOfGuest: number
 }
 
-const propertyEnum = E_Listing_Category.Property;
-const activityEnum = E_Listing_Category.Activity;
-const rentalEnum = E_Listing_Category.Rental;
+const propertyEnum = E_Listing_Category.Property
+const activityEnum = E_Listing_Category.Activity
+const rentalEnum = E_Listing_Category.Rental
 
 function SearchBarByStateWithHero() {
   const path = usePathname()
-  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum);
+  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
 
   const form = useForm<T_Search_Form>()
   const { setSearchValues, clearSearchValues } = useSearchStore()
@@ -103,7 +103,7 @@ function SearchBarByStateWithHero() {
       </WidthWrapper>
       <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
     </div>
-  )  
+  )
 }
 
 export default SearchBarByStateWithHero
