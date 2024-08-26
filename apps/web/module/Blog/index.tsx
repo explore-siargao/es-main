@@ -60,7 +60,7 @@ function Blog() {
   const [blogDataLoading, setBlogDataLoading] = useState(true)
   const getBlogCms = async () => {
     try {
-      const res = await fetch(`${WEB_URL}/cms/api/blogs/guide/${blogName}`)
+      const res = await fetch(`${WEB_URL}/cms/api/blogs/general/${blogName}`)
 
       if (!res.ok) {
         throw new Error(`Response status: ${res.status}`)

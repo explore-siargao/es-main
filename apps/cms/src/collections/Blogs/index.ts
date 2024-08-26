@@ -60,7 +60,7 @@ export const Blogs: CollectionConfig = {
   ],
   endpoints: [
     {
-      path: "/guide/:slug",
+      path: "/general/:slug",
       method: "get",
       handler: async (req, res) => {
         const { slug } = req.params
