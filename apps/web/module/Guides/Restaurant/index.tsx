@@ -60,6 +60,7 @@ const RestaurantGuide = () => {
         contentTitle="Restaurant, Cafe, Bars in Siargao"
         contentText={contentText}
         markers={markers}
+        iconMarker="restaurant"
       />
       <Separator orientation="horizontal" className="my-12 bg-gray-300" />
       <Guides title="Restaurant, Cafe, Bars Guides" guides={guides} />

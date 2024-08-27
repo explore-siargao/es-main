@@ -365,6 +365,7 @@ const Itinerary = ({ pageType }: Prop) => {
             onMarkerSet={handleMarkerSetter}
             className="relative z-0"
             scrollWheelZoomEnabled
+            isPriceMarker={true}
           />
         </div>
         <div className="pl-4">
