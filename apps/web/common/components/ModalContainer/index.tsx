@@ -54,7 +54,7 @@ const ModalContainer = ({
             >
               <Dialog.Panel
                 className={cn(
-                  "relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all",
+                  "relative transform overflow-hidden rounded-xl bg-white text-left shadow-xl transition-all",
                   {
                     "m-5 w-full h-auto md:w-4/12": size === "sm",
                     "m-5 w-full h-auto md:w-8/12": size === "md",

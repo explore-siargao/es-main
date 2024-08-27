@@ -18,7 +18,7 @@ const Slider = ({ images }: SliderProps) => {
       navigation
       pagination={{ type: "bullets", clickable: true }}
       modules={[Navigation, Pagination]}
-      className="h-full w-full rounded-lg"
+      className="h-full w-full rounded-xl"
     >
       <style>{`
         .swiper-button-prev, .swiper-button-next {

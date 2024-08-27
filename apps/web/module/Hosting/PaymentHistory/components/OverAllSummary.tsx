@@ -26,7 +26,7 @@ const OverAllSummary: React.FC<OverAllSummaryProps> = ({
   excelData,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 sticky top-36">
+    <div className="bg-white rounded-xl shadow-lg p-8 sticky top-36">
       <Typography variant="h2" fontWeight="semibold" className="mb-2">
         Summary (
         {filterData?.date[1] !== "all" ? `${filterData?.date[1]} ` : null}

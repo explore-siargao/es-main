@@ -4,7 +4,10 @@ import { Typography } from "@/common/components/ui/Typography"
 import toast from "react-hot-toast"
 import { MinusIcon, PlusIcon } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useBedroomStore } from "../store/useBedroomStore"
+import {
+  useBedroomStore,
+  useBedroomStudioStore,
+} from "../store/useBedroomStore"
 import { defaultBedroom } from "../../constants"
 import { IBedroom } from "../../types"
 
@@ -25,7 +28,11 @@ const AddBedroomModal = ({
 }: Props) => {
   const [fields, setFields] = useState<IBedroom>(defaultBedroom)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
+  const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
+  const updateBedroomsStudio = useBedroomStudioStore(
+    (state) => state.updateBedroomsStudio
+  )
 
   const handleBedCountChange = (bedIndex: number, value: string) => {
     const newBeds = [...fields.beds]
@@ -52,6 +59,22 @@ const AddBedroomModal = ({
     } else if (mode === "add") {
       updatedBedrooms.push(deepCopyBedroom(fields))
     }
+
+    // Log the current state of fields and updatedBedroomsStudio before updating the store
+    if (unitType === "Studio") {
+      let updatedBedroomsStudio = [...bedroomsStudio]
+      if (mode === "edit" && selectedIndex !== undefined) {
+        updatedBedroomsStudio[selectedIndex] = deepCopyBedroomStudio(fields)
+      } else if (mode === "add") {
+        updatedBedroomsStudio.push(deepCopyBedroomStudio(fields))
+      }
+
+      console.log("Fields being sent to bedroomsStudio:", fields)
+      console.log("Updated bedroomsStudio array:", updatedBedroomsStudio)
+
+      updateBedroomsStudio(updatedBedroomsStudio)
+    }
+
     resetBedQuantities()
     updateBedrooms(updatedBedrooms)
 
@@ -77,6 +100,25 @@ const AddBedroomModal = ({
     return {
       roomName: bedroom.roomName,
       beds: bedroom.beds.map((bed) => ({ ...bed })),
+    }
+  }
+
+  useEffect(() => {
+    if (mode === "edit" && selectedIndex !== undefined) {
+      const bedroomStudioToEdit = bedroomsStudio[selectedIndex]
+      if (bedroomStudioToEdit) {
+        console.log("Editing bedroomStudio:", bedroomStudioToEdit)
+        setFields(deepCopyBedroomStudio(bedroomStudioToEdit))
+      }
+    } else {
+      resetBedQuantities()
+    }
+  }, [isOpen, mode, selectedIndex, bedroomsStudio])
+
+  function deepCopyBedroomStudio(bedroomStudio: IBedroom): IBedroom {
+    return {
+      roomName: bedroomStudio.roomName,
+      beds: bedroomStudio.beds.map((bed) => ({ ...bed })),
     }
   }
 

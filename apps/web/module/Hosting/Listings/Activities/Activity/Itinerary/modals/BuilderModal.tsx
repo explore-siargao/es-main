@@ -118,7 +118,7 @@ const BuilderModal = ({
             {activities.length > 0 && (
               <div className="flex gap-4 pt-4">
                 {activities.map((activity) => (
-                  <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-lg text-xs flex gap-2 items-center">
+                  <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-xl text-xs flex gap-2 items-center">
                     {activity}
                     <button
                       type="button"

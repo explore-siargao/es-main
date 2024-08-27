@@ -336,12 +336,20 @@ export const updateWholePlaceUnitBasicInfo = async (
     totalSize,
     numBathRooms,
     bedRooms,
+    bedroomStudio,
     qty,
     livingRooms,
     singleBedRoom,
     singleLivingRoom,
   } = req.body
-  if (!title || !numBathRooms || !totalSize || !bedRooms || !qty) {
+  if (
+    !title ||
+    !numBathRooms ||
+    !totalSize ||
+    !bedRooms ||
+    !qty ||
+    !livingRooms
+  ) {
     console.log(REQUIRED_VALUE_EMPTY)
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
@@ -379,6 +387,7 @@ export const updateWholePlaceUnitBasicInfo = async (
             numBedRooms: 0,
             numBathRooms: numBathRooms,
             bedRooms: bedRooms,
+            bedroomStudio: bedroomStudio,
             livingRooms: livingRooms,
             singleBedRoom: singleBedRoom,
             singleLivingRoom: singleLivingRoom,

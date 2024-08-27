@@ -30,7 +30,7 @@ export class FileService {
     this.AWS_REGION = process.env.AWS_REGION || ''
     this.AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY || ''
     this.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || ''
-    this.BUCKET_NAME = 'exploresiargao-dev'
+    this.BUCKET_NAME = process.env.AWS_S3_BUCKET || ''
 
     this.config = {
       region: this.AWS_REGION,

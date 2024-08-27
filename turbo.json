@@ -18,6 +18,7 @@
         "AWS_ACCESS_KEY",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_REGION",
+        "AWS_S3_BUCKET",
         "API_URL",
         "API_PORT",
         "PASSWORD_ENCRYPT_KEY",
@@ -40,6 +41,9 @@
         "REDIS_URL",
         "REDIS_PASSWORD",
         "WINDY_KEY",
+        "PAYLOAD_PORT",
+        "PAYLOAD_DATABASE_URI",
+        "PAYLOAD_SECRET",
         "PAYLOAD_URL"
       ]
     },

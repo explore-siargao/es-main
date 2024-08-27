@@ -21,9 +21,9 @@ function PropertySearchBar() {
   ]
 
   return (
-    <div className="flex gap-2 w-full justify-between rounded-xl items-center py-2 pl-2 pr-[19px] border bg-white border-gray-300 mb-4">
+    <div className="flex gap-2 rounded-xl items-center py-2 px-2 border bg-primary-100 border-primary-300 mb-4">
       <Select
-        className="w-64 rounded-l-full ring-0 bg-inherit focus-within:ring-0"
+        className="w-64 ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
         label={"Location"}
         {...register("search")}
       >
@@ -34,24 +34,24 @@ function PropertySearchBar() {
           </Option>
         ))}
       </Select>
-      <Separator orientation="vertical" className="bg-gray-300 h-8" />
+      {/* <Separator orientation="vertical" className="bg-gray-300 h-8" /> */}
       <Input
         type="date"
-        className="w-full rounded-none ring-0 bg-inherit focus-within:ring-0"
+        className="w-full ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
         label={"Check in"}
         {...register("checkIn")}
       />
-      <Separator orientation="vertical" className="bg-gray-300 h-8" />
+      {/* <Separator orientation="vertical" className="bg-gray-300 h-8" /> */}
       <Input
         type="date"
-        className="w-full rounded-none ring-0 bg-inherit focus-within:ring-0"
+        className="w-full ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
         label={"Check out"}
         {...register("checkOut")}
       />
-      <Separator orientation="vertical" className="bg-gray-300 h-8" />
+      {/* <Separator orientation="vertical" className="bg-gray-300 h-8" /> */}
       <Input
         type="number"
-        className="rounded-r-full ring-0 bg-inherit focus-within:ring-0"
+        className="ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
         label={"Number of Guest/s"}
         placeholder="1"
         defaultValue={"1"}
@@ -62,7 +62,7 @@ function PropertySearchBar() {
       </div> */}
       <Button
         variant={"primary"}
-        className="h-full px-4 py-3 justify-center items-center rounded-xl gap-x-2"
+        className="h-[3.3rem] justify-center items-center gap-x-2 mr-[0.4rem]"
       >
         <Search className="text-white h-5 w-5" />
         Search

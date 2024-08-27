@@ -121,7 +121,7 @@ const AddNoteModal = ({
               rows={7}
               id={String(id)}
               {...register("note")}
-              className={`text-sm block w-full resize-none bg-transparent rounded-lg ${
+              className={`text-sm block w-full resize-none bg-transparent rounded-xl ${
                 inputValue.replace(/\s/g, "").length > 250
                   ? "border-error-400 border-2 focus:border-error-400 focus:ring-error-400 ring-error-400"
                   : "focus:border-text-500 border-2 focus:ring-text-500"

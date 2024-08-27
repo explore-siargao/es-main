@@ -294,7 +294,7 @@ const Inclusions = ({ pageType }: Prop) => {
               {selectedFoods.length > 0 && (
                 <div className="flex gap-4 pt-4">
                   {selectedFoods.map((food) => (
-                    <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-lg text-xs flex gap-2 items-center">
+                    <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-xl text-xs flex gap-2 items-center">
                       {food}
                       <button type="button" onClick={() => removeFood(food)}>
                         <LucideX className="h-4 w-4" />
@@ -366,7 +366,7 @@ const Inclusions = ({ pageType }: Prop) => {
               {selectedAlcohols.length > 0 && (
                 <div className="flex gap-4 pt-4">
                   {selectedAlcohols.map((alcohol) => (
-                    <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-lg text-xs flex gap-2 items-center">
+                    <div className="bg-primary-400 text-text-500 font-semibold py-2 px-3 rounded-xl text-xs flex gap-2 items-center">
                       {alcohol}
                       <button
                         type="button"

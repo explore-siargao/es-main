@@ -8,38 +8,49 @@ import PopularGuides from "./PopularGuides"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 import serialize from "./components/RichText/serialize"
+import { WEB_URL } from "@/common/constants/ev"
 
 const TravelGuideContent = ({ guideData }: { guideData: any }) => {
   return (
-    <div className="mt-2">
-      <div className="py-8 flex">
-        <div className="lg:mr-20 mr-10 space-y-10">
-          <TravelImages
-            title={guideData.title}
-            images={guideData.hero.images}
-          />
-          <div className="prose max-w-full">
-            {serialize(guideData?.content?.mainContent)}
+    <div>
+      <div className="mt-2">
+        <div className="py-8 flex">
+          <div className="lg:w-3/4 w-full lg:mr-20 mr-10 space-y-10">
+            <TravelImages
+              title={guideData.title}
+              images={guideData.hero.images}
+            />
+            <div className="max-w-auto">
+              <div className="prose">
+                {serialize(guideData?.content?.mainContent)}
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div>
-          <PopularGuides />
-          <div className="sticky top-2">
-            <div className="grid w-60">
-              <div>
-                <h1 className="mt-10 text-xl font-bold">Page Summary</h1>
-                <Separator
-                  orientation="horizontal"
-                  className="mb-5 bg-gray-300"
-                />
-                <ul className="grid list-disc ml-5 space-y-5">
-                  {guideData.sideContent.pageSummary.map(
-                    (note: any, index: number) => (
-                      <li key={index}>{note.item}</li>
-                    )
-                  )}
-                </ul>
+          <div>
+            <div className="sticky top-2">
+              <PopularGuides />
+              <div className="flex w-60 flex-col">
+                <div>
+                  <h1 className="mt-10 text-xl font-bold">Page Summary</h1>
+                  <Separator
+                    orientation="horizontal"
+                    className="mb-5 bg-gray-300"
+                  />
+                  <ul
+                    className="list-disc list-inside space-y-3 max-h-40 w-full overflow-y-auto pr-2"
+                    style={{
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  >
+                    {guideData.sideContent.pageSummary.map(
+                      (note: any, index: number) => (
+                        <li key={index}>{note.item}</li>
+                      )
+                    )}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -48,6 +59,7 @@ const TravelGuideContent = ({ guideData }: { guideData: any }) => {
     </div>
   )
 }
+
 function TravelBlog() {
   const params = useParams()
   const travelName = params.travelName
@@ -56,7 +68,7 @@ function TravelBlog() {
   const getTravelCms = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/locations/guide/${travelName}`
+        `${WEB_URL}/cms/api/locations/guide/${travelName}`
       )
 
       if (!res.ok) {
@@ -67,7 +79,6 @@ function TravelBlog() {
       setTravelData(data.docs[0])
       setTravelDataLoading(false)
     } catch (err) {
-      console.log(err)
       setTravelDataLoading(false)
     }
   }
@@ -86,7 +97,7 @@ function TravelBlog() {
     content = <Typography className="mt-10">No data was found.</Typography>
   }
 
-  return <WidthWrapper width={"small"}>{content}</WidthWrapper>
+  return <WidthWrapper width="medium">{content}</WidthWrapper>
 }
 
 export default TravelBlog
