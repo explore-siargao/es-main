@@ -12,9 +12,15 @@ type T_Props = {
   contentTitle: string
   contentText: string[]
   markers: T_Markers[]
+  iconMarker?: "surf" | "restaurant"
 }
 
-const GuideContent = ({ contentTitle, contentText, markers }: T_Props) => {
+const GuideContent = ({
+  contentTitle,
+  contentText,
+  markers,
+  iconMarker,
+}: T_Props) => {
   const images = data.surfGuide.images
   return (
     <div className="grid md:grid-cols-2 gap-12">
@@ -43,6 +49,7 @@ const GuideContent = ({ contentTitle, contentText, markers }: T_Props) => {
           mapHeight={"h-80 sm:h-[735px] md:h-[470px] lg:h-[500px]"}
           mapWidth={"w-full"}
           zoom={11}
+          iconMarker={iconMarker}
         />
       </div>
     </div>

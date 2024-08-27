@@ -33,11 +33,26 @@ interface MultipleMarkerMapProps {
   scrollWheelZoomEnabled?: boolean
   imagePlace?: string
   isSurfGuide?: boolean
+  iconMarker?: "surf" | "restaurant"
 }
 
 const markerIcon = new Icon({
   iconUrl: `${WEB_URL}/marker.png`,
   iconSize: [35, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const surfMarkerIcon = new Icon({
+  iconUrl: `${WEB_URL}/surf-map-icon.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const restaurantMarkerIcon = new Icon({
+  iconUrl: `${WEB_URL}/restaurant-map-icon.png`,
+  iconSize: [28, 35],
   iconAnchor: [18, 18],
   popupAnchor: [0, -20],
 })
@@ -53,6 +68,7 @@ const MultipleMarkerMap = ({
   scrollWheelZoomEnabled,
   imagePlace,
   isSurfGuide,
+  iconMarker,
 }: MultipleMarkerMapProps) => {
   const { setCoordinates } = useCoordinatesStore()
   const [placeNames, setPlaceNames] = useState<{ [key: number]: string }>({})
@@ -153,7 +169,13 @@ const MultipleMarkerMap = ({
 
                 return (
                   <Marker
-                    icon={markerIcon}
+                    icon={
+                      iconMarker === "surf"
+                        ? surfMarkerIcon
+                        : iconMarker === "restaurant"
+                          ? restaurantMarkerIcon
+                          : markerIcon
+                    }
                     position={[location.lat, location.long] as LatLngTuple}
                     draggable={false}
                     key={index}
