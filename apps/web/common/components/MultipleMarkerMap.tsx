@@ -42,6 +42,20 @@ const markerIcon = new Icon({
   popupAnchor: [0, -20],
 })
 
+const surfMarkerIcon = new Icon({
+  iconUrl: `${WEB_URL}/surf-map-icon.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const restaurantMarkerIcon = new Icon({
+  iconUrl: `${WEB_URL}/restaurant-map-icon.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
 const MultipleMarkerMap = ({
   center,
   markerLocations,
@@ -153,7 +167,7 @@ const MultipleMarkerMap = ({
 
                 return (
                   <Marker
-                    icon={markerIcon}
+                    icon={restaurantMarkerIcon}
                     position={[location.lat, location.long] as LatLngTuple}
                     draggable={false}
                     key={index}
