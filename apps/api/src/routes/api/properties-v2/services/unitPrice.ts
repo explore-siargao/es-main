@@ -5,97 +5,85 @@ import { dbBookableUnitTypes, dbProperties, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
-export const updateUnitPrice = async (req: Request, res: Response) => {
-  const userId = res.locals.user?.id
-  const propertyId = req.params.propertyId
-  const unitPrices: T_UnitPrice[] = req.body
-  const getProperty = await dbProperties
+  export const updateUnitPrice = async (req: Request, res: Response) => {
+    const userId = res.locals.user?.id;
+    const propertyId = req.params.propertyId;
+    const unitPrice: T_UnitPrice = req.body.unitPrice;
 
-    .findOne({ _id: propertyId, offerBy: userId, deletedAt: null })
-    .populate({
-      path: 'bookableUnits',
-      populate: {
-        path: 'unitPrice',
-        model: 'UnitPrice',
-      },
-    })
-  if (!getProperty) {
-    return res.json(response.error({ message: 'This property not exist' }))
-  }
+    const getProperty = await dbProperties
+      .findOne({ _id: propertyId, offerBy: userId, deletedAt: null })
+      .populate({
+        path: 'bookableUnits',
+        populate: {
+          path: 'unitPrice',
+          model: 'UnitPrices',
+        },
+      });
 
-  if (!unitPrices || !Array.isArray(unitPrices)) {
-    return res.json(
-      response.error({
-        message: REQUIRED_VALUE_EMPTY + ' or invalid data format',
-      })
-    )
-  }
+    if (!getProperty) {
+      return res.json(response.error({ message: 'This property does not exist' }));
+    }
 
-  const unitPriceWithId = unitPrices.filter((item) => '_id' in item)
-  const unitPriceWithoutId = unitPrices.filter((item) => !('_id' in item))
+    if (!unitPrice) {
+      return res.json(
+        response.error({
+          message: REQUIRED_VALUE_EMPTY + ' or invalid data format',
+        })
+      );
+    }
 
-  if (unitPriceWithId.length > 0) {
-    unitPriceWithId.forEach(async (item) => {
+    // Handle updating existing unitPrice if _id is provided
+    if (unitPrice._id) {
       await dbUnitPrices.findByIdAndUpdate(
-        item._id,
+        unitPrice._id,
         {
           $set: {
-            baseRate: item.baseRate,
-            baseRateMaxCapacity: item.baseRateMaxCapacity,
-            maximumCapacity: item.maximumCapacity,
-            pricePerAdditionalPerson: item.pricePerAdditionalPerson,
-            discountedMonthlyRate: item.discountMonthlyRate,
-            discountedWeeklyRate: item.discountedWeekLyRate,
+            baseRate: unitPrice.baseRate,
+            baseRateMaxCapacity: unitPrice.baseRateMaxCapacity,
+            maximumCapacity: unitPrice.maximumCapacity,
+            pricePerAdditionalPerson: unitPrice.pricePerAdditionalPerson,
+            discountedWeeklyRate: unitPrice.discountedWeekLyRate,
             updatedAt: Date.now(),
           },
         },
         { new: true }
-      )
-    })
-  }
-
-  if (unitPriceWithoutId.length > 0) {
-    getProperty.bookableUnits.forEach(async (item, index) => {
+      );
+    } else {
+      // Handle creating a new unitPrice
       const newUnitPrice = new dbUnitPrices({
-        baseRate: unitPriceWithoutId[index]?.baseRate,
-        baseRateMaxCapacity: unitPrices[index]?.baseRateMaxCapacity,
-        maximumCapacity: unitPriceWithoutId[index]?.maximumCapacity,
-        pricePerAdditionalPerson:
-          unitPriceWithoutId[index]?.pricePerAdditionalPerson,
-        discountedMonthlyRate: unitPriceWithoutId[index]?.discountMonthlyRate,
-        discountedWeeklyRate: unitPriceWithoutId[index]?.discountedWeekLyRate,
+        baseRate: unitPrice.baseRate,
+        baseRateMaxCapacity: unitPrice.baseRateMaxCapacity,
+        maximumCapacity: unitPrice.maximumCapacity,
+        pricePerAdditionalPerson: unitPrice.pricePerAdditionalPerson,
+        discountedWeeklyRate: unitPrice.discountedWeekLyRate,
         createdAt: Date.now(),
         updatedAt: null,
         deletedAt: null,
-      })
+      });
 
-      if (
-        unitPriceWithoutId[index] &&
-        //@ts-ignore
-        !getProperty?.bookableUnits[index]?.unitPrice
-      ) {
-        await newUnitPrice.save()
-        await dbBookableUnitTypes.findByIdAndUpdate(
-          item._id,
-          {
-            $set: {
-              unitPrice: newUnitPrice._id,
-              updatedAt: Date.now(),
-            },
+      await newUnitPrice.save();
+
+      // Update the bookableUnit with the new unitPrice
+      await dbBookableUnitTypes.findByIdAndUpdate(
+        getProperty.bookableUnits[0]?._id, // Assuming there is at least one bookable unit
+        {
+          $set: {
+            unitPrice: newUnitPrice._id,
+            updatedAt: Date.now(),
           },
-          { new: true }
-        )
-      }
-    })
-  }
+        },
+        { new: true }
+      );
+    }
 
-  res.json(
-    response.success({
-      item: unitPrices,
-      message: 'Unit Prices successfully updated',
-    })
-  )
-}
+    res.json(
+      response.success({
+        item: unitPrice,
+        message: 'Unit Price successfully updated',
+      })
+    );
+  };
+
 
 export const getUnitPrice = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
@@ -105,7 +93,7 @@ export const getUnitPrice = async (req: Request, res: Response) => {
       path: 'bookableUnits',
       populate: {
         path: 'unitPrice',
-        model: 'UnitPrice',
+        model: 'UnitPrices',
       },
     })
   if (!getProperty) {

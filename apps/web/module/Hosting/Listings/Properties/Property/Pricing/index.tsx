@@ -38,18 +38,17 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     useUpdatePropertyFinishedSection(listingId)
   const { fields, update } = useFieldArray({
     control,
-    name: "unitPrices",
+    name: "unitPrice",
     keyName: "key",
   })
-
   const onSubmit = (data: any) => {
-    const cleanedUnitPrices = data.unitPrices.map((item: any) => ({
+    const cleanedUnitPrices = data.unitPrice?.map((item: any) => ({
       ...item,
       unitName: item.unitName.startsWith("Custom: ")
         ? item.unitName.slice("Custom: ".length)
         : item.unitName,
     }))
-
+    console.log("CleanedUnitPrices:", cleanedUnitPrices)
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -88,7 +87,13 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   }
 
   useEffect(() => {
-    if (!isLoading && !isPending && !data?.error && data?.item) {
+    if (
+      !isLoading &&
+      !isPending &&
+      !data?.error &&
+      data?.item &&
+      unitPriceData?.items?.length
+    ) {
       const items = unitPriceData?.items?.map((item: any, index: number) => ({
         _id: item._id,
         unitName: item.unitName.startsWith("Custom: ")
@@ -99,7 +104,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
         },
       }))
 
-      reset({ unitPrices: items })
+      reset({ unitPrice: items })
     }
   }, [data, isLoading, unitPriceData])
 

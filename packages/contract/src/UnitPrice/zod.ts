@@ -8,7 +8,7 @@ export const Z_UnitPrice = z.object({
   maximumCapacity: z.number(),
   pricePerAdditionalPerson: z.number(),
   discountedWeekLyRate: z.number(),
-  discountMonthlyRate: z.number(),
+  discountMonthlyRate: z.number().optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),

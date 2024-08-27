@@ -14,7 +14,6 @@ type Props = {
       maximumCapacity: number
       pricePerAdditionalPerson: number
       discountedWeeklyRate: number
-      discountedMonthlyRate: number
     }
   }
   update: Function
@@ -27,31 +26,32 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
     ? unitName.replace("Custom: ", "")
     : unitName
 
-  const [baseRatePrice, setBaseRatePrice] = useState(unitPrice.baseRate ?? null)
+  const [baseRatePrice, setBaseRatePrice] = useState(unitPrice?.baseRate ?? null)
   const [baseRateMax, setBaseRateMax] = useState(
-    unitPrice.baseRateMaxCapacity ?? 1
+    unitPrice?.baseRateMaxCapacity ?? 1
   )
-  const [maxCapacity, setMaxCapacity] = useState(unitPrice.maximumCapacity ?? 1)
+  const [maxCapacity, setMaxCapacity] = useState(unitPrice?.maximumCapacity ?? 1)
   const [pricePerAddPerson, setPricePerAddPerson] = useState(
-    unitPrice.pricePerAdditionalPerson ?? null
+    unitPrice?.pricePerAdditionalPerson ?? null
   )
   const [weeklyDiscountRate, setWeeklyDiscountRate] = useState(
-    unitPrice.discountedWeeklyRate ?? null
+    unitPrice?.discountedWeeklyRate ?? null
   )
+
 
   useEffect(() => {
     update(index, {
       _id: _id,
       unitName: cleanUnitName,
       unitPrice: {
-        _id: unitPrice._id,
+        _id: unitPrice?._id,
         baseRate: baseRatePrice,
         baseRateMaxCapacity: baseRateMax,
         maximumCapacity: maxCapacity,
         pricePerAdditionalPerson: pricePerAddPerson,
         discountedWeeklyRate: weeklyDiscountRate,
-        discountedMonthlyRate: unitPrice.discountedMonthlyRate,
       },
+      
     })
   }, [
     baseRatePrice,
