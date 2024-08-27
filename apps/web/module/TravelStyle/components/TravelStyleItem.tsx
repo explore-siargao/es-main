@@ -13,7 +13,7 @@ const TravelStyleItem = ({ imageKey, title, description, type }: T_Props) => {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/listings?category=property&type=${type}`)
+    router.push(`/search?category=Property&type=${type}`)
   }
 
   return (

@@ -17,6 +17,7 @@ function Directions({ latitude, longitude, locationGuide }: T_Props) {
           mapWidth={"w-full"}
           zoom={11}
           setCoordinates={(lat, long) => {}}
+          isRoundedEdge={true}
         />
         <div>
           <h2 className="text-xl font-bold mb-2">How to get there</h2>

@@ -9,20 +9,21 @@ import IdealConditions from "./IdealConditions"
 import Forecast from "./Forecast"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
+import { WEB_URL } from "@/common/constants/ev"
 
 const GuideContent = ({ guideData }: { guideData: any }) => {
   return (
     <div className="mt-10">
       <SurfGuide
-        title={guideData?.title}
-        guideText={guideData?.hero?.guide[0]?.children[0]?.text}
-        images={guideData?.hero?.images}
+        title={guideData.title}
+        guideText={guideData.hero.guide}
+        images={guideData.hero.images}
       />
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
       <Directions
-        longitude={guideData?.location[0]}
-        latitude={guideData?.location[1]}
-        locationGuide={guideData?.locationGuide[0]?.children[0]?.text}
+        longitude={guideData.content.location[0]}
+        latitude={guideData.content.location[1]}
+        locationGuide={guideData.content.locationGuide}
       />
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
       <IdealConditions />
@@ -48,9 +49,7 @@ const SurfingGuide = () => {
 
   const getGuidePost = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/posts/guide/${guideName}`
-      )
+      const res = await fetch(`${WEB_URL}/cms/api/surfs/guide/${guideName}`)
 
       if (!res.ok) {
         throw new Error(`Response status: ${res.status}`)
@@ -80,7 +79,7 @@ const SurfingGuide = () => {
     content = <Typography className="mt-10">No data was found.</Typography>
   }
 
-  return <WidthWrapper width={"small"}>{content}</WidthWrapper>
+  return <WidthWrapper width="medium">{content}</WidthWrapper>
 }
 
 export default SurfingGuide

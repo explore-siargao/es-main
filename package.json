@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.13.0",
   "name": "es-main",
   "author": "Zkript Solutions",
   "private": true,
@@ -10,21 +10,8 @@
     "start": "turbo start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate": "turbo db:generate",
-    "db:seed:local": "turbo db:seed:local",
-    "db:seed:development": "turbo db:seed:development",
-    "db:push:local": "turbo db:push:local",
-    "db:push:development": "turbo db:push:development",
-    "pdb:push": "npx prisma db push",
     "dr:redis": "sudo docker container stop redis ; sudo docker container stop redis_insight ; sudo docker container rm redis ; sudo docker container rm redis_insight ; sudo docker compose -f ./docker/redis/compose.yml up -d && sudo docker ps",
-    "dr:api": "sudo docker container stop es-api-dev ; sudo docker container rm es-api-dev ; sudo docker image rm jpmadrigal/es-api-dev:latest ; sudo docker pull jpmadrigal/es-api-dev:latest && sudo docker compose -f ./docker/api/compose.yml up -d && sudo docker ps",
-    "dr:web": "sudo docker container stop es-web-dev ; sudo docker container rm es-web-dev ; sudo docker image rm jpmadrigal/es-web-dev:latest ; sudo docker pull jpmadrigal/es-web-dev:latest && sudo docker compose -f ./docker/web/compose.yml up -d && sudo docker ps",
-    "dbp:web": "docker image rm jpmadrigal/es-web-dev:latest ; docker compose -f ./docker/web/compose-build.yml --env-file .env.development build --no-cache && docker push jpmadrigal/es-web-dev:latest",
-    "db:web-arm": "docker image rm jpmadrigal/es-web-dev-arm:latest ; docker compose -f ./docker/web/compose-build-arm.yml --env-file .env build --no-cache",
-    "dc:web-arm": "docker compose -f ./docker/web/compose-arm.yml up -d && docker ps",
-    "dbp:api": "docker image rm jpmadrigal/es-api-dev:latest ; docker build --no-cache -f ./docker/api/Dockerfile -t jpmadrigal/es-api-dev . && docker push jpmadrigal/es-api-dev:latest",
-    "db:api-arm": "docker image rm jpmadrigal/es-api-dev-arm:latest ; docker build --no-cache -f ./docker/api/Dockerfile.arm -t jpmadrigal/es-api-dev-arm .",
-    "dc:api-arm": "docker compose -f ./docker/api/compose-arm.yml up -d && docker ps"
+    "dc:es-sit": "docker compose -p es-sit -f ./docker/compose-sit.yml up -d && docker ps && docker system prune -f"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

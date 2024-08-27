@@ -17,7 +17,7 @@ const Minimap = () => {
   const [currentCoords] = useState<[number, number]>([9.913431, 126.049483])
 
   return (
-    <div className="border max-w-xs shadow-sm rounded-md overflow-hidden">
+    <div className="border border-gray-300 max-w-xs shadow-sm rounded-xl overflow-hidden">
       <div className="relative flex items-center justify-center h-40">
         <MapContainer
           center={currentCoords}

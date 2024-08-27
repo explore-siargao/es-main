@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation"
+"use client"
 import { Typography } from "@/common/components/ui/Typography"
 import Slider from "./Slider"
 import { StaticImageData } from "next/image"
@@ -9,24 +9,31 @@ type TravelSliderProps = {
   groupCards: {
     imageKey: StaticImageData | string
     title: string
-    url: string
+    subTitle?: string
+    url?: string
   }[]
+  url?: string
+  isGuide: boolean
+  itemsNumber: number
+  isLastItemFull?: boolean
 }
 
 const TravelSlider = ({
   title,
   description,
   groupCards,
+  isGuide,
+  itemsNumber,
+  isLastItemFull,
 }: TravelSliderProps) => {
-  const router = useRouter()
-
-  const handleCardClick = (url: string) => {
-    router.push(url)
-  }
+  const formattedGroupCards = groupCards.map((card) => ({
+    ...card,
+    subTitle: card.subTitle || "",
+  }))
 
   return (
     <div className="mb-5">
-      <div className="pl-5 mb-8">
+      <div className="mb-8">
         {title && (
           <Typography variant="h2" fontWeight="semibold" className="text-left">
             {title}
@@ -40,12 +47,10 @@ const TravelSlider = ({
       </div>
       <div>
         <Slider
-          cards={groupCards.map((card) => ({
-            ...card,
-            onClick: () => handleCardClick(card.url),
-          }))}
-          isGuide={false}
-          itemsNumber={0}
+          cards={formattedGroupCards}
+          isGuide={isGuide}
+          itemsNumber={itemsNumber}
+          isLastItemFull={isLastItemFull}
         />
       </div>
     </div>

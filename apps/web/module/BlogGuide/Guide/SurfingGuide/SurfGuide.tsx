@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import data from "../../data.json"
 import ImageGallery from "@/module/Accommodation/components/ImageGallery"
 import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
 import { Typography } from "@/common/components/ui/Typography"
@@ -38,6 +37,7 @@ function SurfGuide({ title, guideText, images }: T_Props) {
           images={images}
           openModal={openModal}
           isViewModal={true}
+          isRoundedEdge={true}
         />
       </div>
       <h2 className="text-xl font-bold mb-2">Guide</h2>

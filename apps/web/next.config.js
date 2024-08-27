@@ -1,6 +1,7 @@
 /** @type {import("next").NextConfig} */
+const path = require("path")
 require("dotenv").config({
-  path: "../../.env",
+  path: path.join(__dirname, "../../.env"),
 })
 
 module.exports = {
@@ -12,20 +13,20 @@ module.exports = {
         destination: `${process.env.API_URL}/assets/:path*`,
       },
       {
-        source: "/api/v1/:path*",
-        destination: `${process.env.API_URL}/api/v1/:path*`,
-      },
-      {
         source: "/api/v2/:path*",
         destination: `${process.env.API_URL}/api/v2/:path*`,
       },
       {
-        source: "/api/posts/:path*",
-        destination: `${process.env.PAYLOAD_URL}/api/posts/:path*`,
+        source: "/mock/v1/:path*",
+        destination: `${process.env.API_MOCK_URL}/mock/v1/:path*`,
       },
       {
-        source: "/mock/v1/:path*",
-        destination: `${process.env.API_URL}/mock/v1/:path*`,
+        source: "/cms/:path*",
+        destination: `${process.env.PAYLOAD_URL}/cms/:path*`,
+      },
+      {
+        source: "/api/surfs/:path*",
+        destination: `${process.env.PAYLOAD_URL}/api/surfs/:path*`,
       },
     ]
   },
@@ -43,6 +44,7 @@ module.exports = {
     CARD_ENCRYPT_KEY: process.env.CARD_ENCRYPT_KEY,
     PASSWORD_ENCRYPT_KEY: process.env.PASSWORD_ENCRYPT_KEY,
     WINDY_KEY: process.env.WINDY_KEY,
+    PAYLOAD_URL: process.env.PAYLOAD_URL,
   },
   images: {
     remotePatterns: [

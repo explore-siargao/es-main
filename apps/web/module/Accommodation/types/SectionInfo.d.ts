@@ -12,6 +12,7 @@ export type T_Image = {
   fileKey?: string
   alt?: string
   image?: {
+    filename?: string
     url?: string
     alt?: string
   }
@@ -20,6 +21,14 @@ export type T_Image = {
 export type T_SectionInfoProps = {
   title: string
   images: T_Image[]
+  ratings?: number
+  reviews?: number
+  priceRangeLow?: number
+  priceRangeHigh?: number
+  location?: string
+  cuisine?: string
+  menus?: any
+  events?: any
 }
 
 export type T_ImagesProps = {
@@ -27,6 +36,7 @@ export type T_ImagesProps = {
   images: T_Image[]
   isViewModal: boolean
   showThreeOnly?: boolean
+  isRoundedEdge?: boolean
 }
 
 export type T_ImageGalleryModalProps = {

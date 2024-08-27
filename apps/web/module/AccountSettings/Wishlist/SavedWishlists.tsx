@@ -71,7 +71,7 @@ const SavedWishlists = ({
         isHearted={true}
       />
       <div
-        className={`${note && "bg-gray-100 px-3 py-2"} w-full mt-2 rounded-lg`}
+        className={`${note && "bg-gray-100 px-3 py-2"} w-full mt-2 rounded-xl`}
       >
         {note === null ? (
           <AddEditNoteButton onClick={showAddNote} id={"addNoteBtn" + itemId} />

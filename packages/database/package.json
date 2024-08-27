@@ -5,20 +5,13 @@
   "types": "./build/index.d.ts",
   "scripts": {
     "build": "npx tsc",
-    "dev": "npx tsc --watch",
-    "db:generate": "prisma generate",
-    "db:seed:local": "dotenv -e ../../.env -- prisma db push --force-reset && dotenv -e ../../.env -- ts-node prisma/seed",
-    "db:seed:development": "dotenv -e ../../.env.development -- prisma db push --force-reset && dotenv -e ../../.env.development -- ts-node prisma/seed",
-    "db:push:local": "dotenv -e ../../.env -- prisma db push --skip-generate",
-    "db:push:development": "dotenv -e ../../.env.development -- prisma db push --skip-generate"
+    "dev": "npx tsc --watch"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.4"
   },
   "devDependencies": {
-    "prisma": "^5.14.0",
     "dotenv": "^16.3.1",
     "@types/node": "^17.0.12",
     "crypto-js": "^4.2.0",

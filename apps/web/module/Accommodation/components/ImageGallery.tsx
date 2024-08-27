@@ -10,33 +10,17 @@ const ImageGallery = ({
   images,
   isViewModal,
   showThreeOnly,
+  isRoundedEdge,
 }: T_ImagesProps) => {
   const getImgSrc = (index: number) => {
     const image = images[index]
-    const imgSrc = image?.key ? `/assets/${image.key}` : image?.image?.url || ""
+    const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`
     const imgAlt = image?.description || image?.image?.alt || ""
     return { src: imgSrc, alt: imgAlt }
   }
+
   const [isOpen, setIsOpen] = useState(false)
-  const DummyImage = [
-    {
-      fileKey: "1.jpg",
-      url: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
-    },
-    {
-      fileKey: "2.jpg",
-      url: "https://images.unsplash.com/photo-1491553895911-0055eca6402d",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    },
-    {
-      url: "https://www.blisssiargao.com/wp-content/uploads/2023/07/Siargao-Beaches.jpg",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1486915309851-b0cc1f8a0084",
-    },
-  ]
+
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative bg-gray-200 ${additionalClasses}`}>
       <Image
@@ -45,7 +29,7 @@ const ImageGallery = ({
         layout="fill"
         objectFit="cover"
         alt={images ? getImgSrc(index).alt : ""}
-        className="cursor-pointer"
+        className={`${isRoundedEdge && index === 0 ? "rounded-l-xl" : isRoundedEdge && index === 2 ? "rounded-tr-xl" : isRoundedEdge && index === 4 ? "rounded-br-xl" : ""} cursor-pointer`}
       />
     </div>
   )
@@ -115,9 +99,11 @@ const ImageGallery = ({
         onClose={() => setIsOpen(false)}
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
-        <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80" />
         <div className="relative w-full h-full bg-white bg-opacity-10">
-          <SliderImages images={DummyImage} />
+          <SliderImages
+            //@ts-ignore
+            images={images}
+          />
           <button
             onClick={() => setIsOpen(false)}
             className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full hover:bg-gray-400 focus:outline-none"

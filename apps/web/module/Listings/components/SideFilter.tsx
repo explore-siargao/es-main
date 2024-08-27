@@ -99,9 +99,16 @@ type T_Filter = {
 type SideFilterProps = {
   onFiltersChange: (filters: T_Filter[]) => void
   onBudgetChange: (minValue: number, maxValue: number) => void
+  listingCategory: string
+  filterItemType?: string
 }
 
-const SideFilter = ({ onFiltersChange, onBudgetChange }: SideFilterProps) => {
+const SideFilter = ({
+  onFiltersChange,
+  onBudgetChange,
+  listingCategory,
+  filterItemType,
+}: SideFilterProps) => {
   const handleBudgetSliderChange = (minValue: number, maxValue: number) => {
     onBudgetChange(minValue, maxValue)
   }
@@ -110,19 +117,32 @@ const SideFilter = ({ onFiltersChange, onBudgetChange }: SideFilterProps) => {
     onFiltersChange(filters)
   }
 
+  const filterCategory =
+    listingCategory === "property"
+      ? "Properties"
+      : listingCategory === "activities"
+        ? "Activities"
+        : listingCategory === "rentals"
+          ? "Rentals"
+          : ""
+
   return (
     <div>
-      <div className="mb-1">
+      <div className="mb-6">
         <Minimap />
       </div>
-      <div className="h-10 w-80 rounded-tl-md rounded-tr-md border flex items-center p-4">
-        <Typography variant="h2" fontWeight="semibold">
-          Filter by:
-        </Typography>
+      <div className="rounded-tl-xl rounded-tr-xl border-t border-r border-l border-gray-300 flex items-center py-2 px-4">
+        <Typography fontWeight="semibold">Filters</Typography>
       </div>
-      <div>
+      <div className="border-t border-r border-l border-gray-300">
         {Array.from(
-          new Set(filterPrimaryData.map((item) => item.category)),
+          new Set(
+            filterPrimaryData
+              .filter(
+                (item) => !filterCategory || item.category === filterCategory
+              )
+              .map((item) => item.category)
+          ),
           (category) => (
             <CheckBoxFilter
               key={category}
@@ -131,19 +151,22 @@ const SideFilter = ({ onFiltersChange, onBudgetChange }: SideFilterProps) => {
                 (item) => item.category === category
               )}
               onFilterChange={handleFilterChange}
+              defaultChecked={filterItemType}
             />
           )
         )}
       </div>
-      <BudgetSlider
-        title="Budget Range"
-        min={0}
-        max={10000}
-        initialMinValue={1000}
-        initialMaxValue={9000}
-        onValueChange={handleBudgetSliderChange}
-      />
-      <div>
+      {/* <div className="border-t border-r border-l border-gray-300">
+        <BudgetSlider
+          title="Budget Range"
+          min={0}
+          max={10000}
+          initialMinValue={1000}
+          initialMaxValue={9000}
+          onValueChange={handleBudgetSliderChange}
+        />
+      </div> */}
+      <div className="border border-gray-300 rounded-bl-xl rounded-br-xl">
         <NumericFilter
           category="Rooms and beds"
           filters={numericFilterData}

@@ -1,11 +1,10 @@
 "use client"
+import React, { useEffect, useState } from "react"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import foodImage from "../../common/assets/sample/image1.jpg"
-import surfImage from "../../common/assets/sample/surf.jpg"
-import airport from "../../common/assets/sample/airport.jpg"
-import TravelSlider from "./components/TravelSlider"
-import ImageTextCard from "./components/ImageTextCard"
-import { Typography } from "@/common/components/ui/Typography"
+import useSessionStore from "@/common/store/useSessionStore"
+import useOptMessageStore from "@/common/store/useOptMessageStore"
+import { useSearchStore } from "@/common/store/useSearchStore"
+import { usePathname } from "next/navigation"
 import il1 from "../../common/assets/sample/island-1.jpg"
 import il2 from "../../common/assets/sample/island-2.jpg"
 import il3 from "../../common/assets/sample/island-3.jpg"
@@ -18,156 +17,400 @@ import il9 from "../../common/assets/sample/island-9.jpg"
 import il10 from "../../common/assets/sample/island-10.jpg"
 import il11 from "../../common/assets/sample/island-11.jpg"
 import il12 from "../../common/assets/sample/island-12.jpg"
-import TravelStyleSlider from "./components/TravelStyleSlider"
+import foodImage from "../../common/assets/sample/image1.jpg"
+import surfImage from "../../common/assets/sample/surf.jpg"
+import airport from "../../common/assets/sample/airport.jpg"
+import TravelSlider from "./components/TravelSlider"
+import ImageTextCard from "./components/ImageTextCard"
+import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
+import { Typography } from "@/common/components/ui/Typography"
+import CardList, { Filters } from "../Listings/components/CardList"
 
 const LandingPage = () => {
+  const userId = useSessionStore((state) => state).id
+  const path = usePathname()
+  const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
+  const { search, checkIn, checkOut, numberOfGuest, date } = useSearchStore()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    setIsLoading(true)
+
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [search, checkIn, checkOut, numberOfGuest, date])
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const welcome = localStorage.getItem("welcome")
+      if (welcome) {
+        setIsOpen()
+        localStorage.removeItem("welcome")
+      }
+    }
+  }, [])
+
+  const items = [
+    {
+      id: "Test1",
+    },
+    {
+      id: "Test2",
+    },
+  ]
+  const formData = new FormData()
+  items.forEach((element) => {
+    formData.append("item[]", element.id)
+  })
+
   const groupCardsDummyTravelStyle = [
     {
       imageKey: "/assets/cf7c14dc-d3f5-46e8-b813-01cf04200519",
       title: "Hostels",
-      url: "/listings?category=property&type=hostel",
+      url: "/search?category=Property&type=Hostels",
     },
     {
       imageKey: "/assets/f57a9104-b3bc-4c6c-8e7b-ff15ac529b06",
       title: "Apartments",
-      url: "/listings?category=property&type=apartment",
+      url: "/search?category=Property&type=Apartments",
     },
     {
       imageKey: "/assets/4.jpg",
       title: "Homestay",
-      url: "/listings?category=property&type=homestay",
+      url: "/search?category=Property&type=Homestay",
     },
     {
       imageKey: "/assets/ac0d3e85-f3da-4f30-8db5-e8bdb98385df",
       title: "Hotels",
-      url: "/listings?category=property&type=hotel",
+      url: "/search?category=Property&type=Hotels",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Resorts",
-      url: "/listings?category=property&type=resort",
+      url: "/search?category=Property&type=Resorts",
     },
     {
       imageKey: "/assets/1.jpg",
       title: "Villas",
-      url: "/listings?category=property&type=villa",
+      url: "/search?category=Property&type=Villas",
     },
   ]
 
   const groupCardsDummy = [
     {
       imageKey: il1,
-      title: "General Luna",
-      url: "Town Centre",
+      title: "Anajawan",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il2,
-      title: "Catangnan",
-      url: "General Luna",
+      title: "Cabitoonan",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il3,
-      title: "Malinao",
-      url: "General Luna",
+      title: "Catangnan",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il4,
-      title: "Pacifico",
-      url: "North Siargao",
+      title: "Consuelo",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il5,
-      title: "Islands",
-      url: "Popular Trips",
+      title: "Corazon",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il6,
-      title: "General Luna",
-      url: "Town Centre",
+      title: "Daku",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il7,
       title: "Catangnan",
-      url: "General Luna",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il8,
       title: "Malinao",
-      url: "General Luna",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il9,
-      title: "Pacifico",
-      url: "North Siargao",
+      title: "Libertad",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il10,
-      title: "Islands",
-      url: "Popular Trips",
+      title: "Magsaysay",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il11,
-      title: "General Luna",
-      url: "Popular Trips",
+      title: "Santa Fe",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
     {
       imageKey: il12,
-      title: "Islands",
-      url: "Popular Trips",
+      title: "Suyangan",
+      subTitle: "General Luna",
+      url: "/guides/locations/general-luna",
     },
   ]
 
   const groupCardsDummyRecommendedPlaceToStay = [
     {
-      imageKey: "/assets/1.jpg",
-      url: "/",
+      imageKey: "/assets/5.jpg",
+      title: "Siargao Seasky Resort",
     },
     {
       imageKey: "/assets/2.jpg",
-      url: "/",
+      title: "Mad Monkey Siargao",
     },
     {
       imageKey: "/assets/3.jpg",
-      url: "/",
+      title: "Patrick's on the Beach",
     },
     {
       imageKey: "/assets/4.jpg",
-      url: "/",
+      title: "Strangers Inn & Bar",
     },
     {
       imageKey: "/assets/4.jpg",
-      url: "/",
+      title: "Kaha Island Stay",
     },
     {
       imageKey: "/assets/2.jpg",
-      url: "/",
+      title: "Beachfront Kubo",
     },
     {
       imageKey: "/assets/1.jpg",
-      url: "/",
+      title: "G Villas Siargao",
     },
     {
       imageKey: "/assets/3.jpg",
-      url: "/",
+      title: "Suyog Life Siargao",
     },
     {
       imageKey: "/assets/2.jpg",
-      url: "/",
+      title: "Bohemian Beach House",
     },
     {
       imageKey: "/assets/3.jpg",
-      url: "/",
+      title: "Siargao Residency",
     },
   ]
 
+  const groupCardsDummySomethingToDo = [
+    {
+      imageKey: il8,
+      title: "Sightseeing",
+      url: "/search?category=Activity&type=Sightseeing",
+    },
+    {
+      imageKey: il9,
+      title: "Walking",
+      url: "/search?category=Activity&type=Walking",
+    },
+    {
+      imageKey: il5,
+      title: "Sunset view",
+      url: "/search?category=Activity&type=Sunset%20view",
+    },
+    {
+      imageKey: il4,
+      title: "Sceneries",
+      url: "/search?category=Activity&type=Sceneries",
+    },
+    {
+      imageKey: il6,
+      title: "Visit",
+      url: "/search?category=Activity&type=Visit",
+    },
+  ]
+
+  const groupCardsDummyReliableCars = [
+    {
+      imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
+      title: "2021 Suzuki R150 Fi MT",
+      url: "/search?category=Rental&type=Motorbikes",
+    },
+    {
+      imageKey: "/assets/fe65c50d-2cde-46e6-8c9b-58a73c59e768",
+      title: "2018 Honda Civic AT",
+      url: "/search?category=Rental&type=Cars",
+    },
+    {
+      imageKey: "/assets/b57d645a-a3bb-4d23-9e9b-d5caa3f0ae69",
+      title: "2023 Toyota Wigo G CVT",
+      url: "/search?category=Rental&type=Bicycle",
+    },
+    {
+      imageKey: "/assets/2a820a6a-9baf-4b7c-884a-217f86e7e657",
+      title: "2020 CBR500RXZ Honda MT",
+      url: "/search?category=Rental&type=Cars",
+    },
+    {
+      imageKey: "/assets/099843f0-d626-42fb-899e-62c6687614a2",
+      title: "2000 CBR500R Honda SAT",
+      url: "/search?category=Rental&type=Cars",
+    },
+    {
+      imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
+      title: "2020 Suzuki R150 Fi MT",
+      url: "/search?category=Rental&type=Motorbikes",
+    },
+  ]
+
+  const groupCardsDummyInspiration = [
+    {
+      imageKey: il9,
+      title: "Boat Trip",
+    },
+    {
+      imageKey: il7,
+      title: "Beto Spring",
+    },
+    {
+      imageKey: il3,
+      title: "Coconut Tree Lookout",
+    },
+    {
+      imageKey: il2,
+      title: "Cloud 9",
+    },
+    {
+      imageKey: il6,
+      title: "Alegria Beach",
+    },
+    {
+      imageKey: il5,
+      title: "Pacifico Beach",
+    },
+  ]
+
+  const ASSET_ROOT = "/assets"
+  const dummyCards = [
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Balcony",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Balcony",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Beach Front",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/1.jpg`,
+      title: "Villa Juarez",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Popular Filter",
+      type: "Free WiFi",
+    },
+    {
+      imageKey: `${ASSET_ROOT}/2.jpg`,
+      title: "Villa Maria",
+      description: "General Luna, Philippines",
+      category: "Facilities",
+      type: "Beach Front",
+    },
+  ]
+
+  const dummyFilters: Filters[] = [{ type: "Free WiFi" }]
+
   return (
     <>
+      {/* {isPending || isLoading ? (
+        <Spinner variant="primary" middle />
+      ) : ( */}
+
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
         <div className="sm:mt-20">
           <TravelSlider
             title="Explore Siargao Island"
             description="Essential travel information for your island vacation"
             groupCards={groupCardsDummy}
+            isGuide={true}
+            itemsNumber={6}
           />
         </div>
         <div className="sm:mt-10">
@@ -175,16 +418,42 @@ const LandingPage = () => {
             title="What's your travel style?"
             description="Browse by property type to find the perfect space"
             groupCards={groupCardsDummyTravelStyle}
+            isGuide={false}
+            itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
         <div className="sm:mt-10">
-          <TravelStyleSlider
-            title={"Recommended places to stay"}
+          <TravelSlider
+            title="Recommended places to stay"
             description="Hand-picked properties just for you"
             groupCards={groupCardsDummyRecommendedPlaceToStay}
+            isGuide={false}
+            itemsNumber={4}
+            isLastItemFull={true}
           />
         </div>
-        <div className="sm:mt-10 mb-8 pl-5">
+        <div className="sm:mt-10">
+          <TravelSlider
+            title="Looking for something to do in Siargao?"
+            description="We've partnered the islands for tour and activity providers."
+            groupCards={groupCardsDummySomethingToDo}
+            isGuide={false}
+            itemsNumber={4}
+            isLastItemFull={true}
+          />
+        </div>
+        <div className="sm:mt-10">
+          <TravelSlider
+            title="Reliable cars, motorbikes and more"
+            description="Take the road, let's travel with one of our trusted rental partners."
+            groupCards={groupCardsDummyReliableCars}
+            isGuide={false}
+            itemsNumber={4}
+            isLastItemFull={true}
+          />
+        </div>
+        <div className="sm:mt-10 mb-8">
           <Typography variant="h2" fontWeight="semibold" className="text-left">
             Inspiration for your trip
           </Typography>
@@ -192,7 +461,7 @@ const LandingPage = () => {
             Let us help you make the most out of your time in Siargao island
           </Typography>
         </div>
-        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 px-5">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 pr-0">
           <ImageTextCard
             imageKey={foodImage}
             title={"Restaurants, cafes & bars"}
@@ -200,7 +469,7 @@ const LandingPage = () => {
               "Whether you're here to drink or dine, are a foodie or a newbie, Siargao's multicultural restaurants, cafes and bars will indulge your senses."
             }
             linkTitle={"View foodie guide"}
-            url={"/guides/restaurants/restaurant-name"}
+            url="/guides/restaurants"
           />
           <ImageTextCard
             imageKey={surfImage}
@@ -209,7 +478,7 @@ const LandingPage = () => {
               "Make the most out of your surfing vacation. Browse our comprehensive surf guide, check live surf forecasts and connect with local instructors."
             }
             linkTitle={"Check the best surf spots"}
-            url={"/guides/surfing/surf-name"}
+            url="/guides/surfing"
           />
           <ImageTextCard
             imageKey={airport}
@@ -218,9 +487,134 @@ const LandingPage = () => {
               "Borders are finally open and we've done our research so you don't have to. Discover the fastest route to Siargao, travel requirements and much more."
             }
             linkTitle={"Essential travel info"}
-            url={"/guides/locations/location-name"}
+            url="/guides/islands"
           />
         </div>
+
+        {/* {search || checkIn || checkOut || numberOfGuest ? (
+            <div className="flex flex-col gap-4">
+              {path === "/" && (
+                <Typography variant={"h5"} className="text-gray-500">
+                  {data?.items?.length} results for "{search}"
+                </Typography>
+              )}
+              {path === "/activities" && (
+                <Typography variant={"h5"} className="text-gray-500">
+                  Activities available for {numberOfGuest} guest/s on {date}
+                </Typography>
+              )}
+              {path === "/rentals" && (
+                <Typography variant={"h5"} className="text-gray-500">
+                  Rentals available for {numberOfGuest} guest/s on {date}
+                </Typography>
+              )}
+              <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
+                {data?.items?.map((item: any) => (
+                  <Listing
+                    key={item.id}
+                    listingId={item.id}
+                    location={item.address}
+                    date={item.description}
+                    distance={"100 kilometers away"}
+                    price={"₱" + item.price}
+                    imageKey={item.images}
+                    dayTime={item.price.isNight ? "Night" : ""}
+                    ratings={item.ratings}
+                    isHearted={
+                      item.wishes.filter(
+                        (value: any) => value.userId === userId
+                      ).length !== 0
+                    }
+                  />
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Typography variant={"h1"} fontWeight={"semibold"}>
+                  Surf
+                </Typography>
+                <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
+                  {data?.items?.map((item: any) => (
+                    <Listing
+                      key={item.id}
+                      listingId={item.id}
+                      location={item.address}
+                      date={item.description}
+                      distance={"100 kilometers away"}
+                      price={"₱" + item.price}
+                      imageKey={item.images}
+                      dayTime={item.price.isNight ? "Night" : ""}
+                      ratings={item.ratings}
+                      isHearted={
+                        item.wishes.filter(
+                          (value: any) => value.userId === userId
+                        ).length !== 0
+                      }
+                    />
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Typography variant={"h1"} fontWeight={"semibold"}>
+                  Travel
+                </Typography>
+                <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
+                  {data?.items?.map((item: any) => (
+                    <Listing
+                      key={item.id}
+                      listingId={item.id}
+                      location={item.address}
+                      date={item.description}
+                      distance={"100 kilometers away"}
+                      price={"₱" + item.price}
+                      imageKey={item.images}
+                      dayTime={item.price.isNight ? "Night" : ""}
+                      ratings={item.ratings}
+                      isHearted={
+                        item.wishes.filter(
+                          (value: any) => value.userId === userId
+                        ).length !== 0
+                      }
+                    />
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Typography variant={"h1"} fontWeight={"semibold"}>
+                  Restaurant
+                </Typography>
+                <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
+                  {data?.items?.map((item: any) => (
+                    <Listing
+                      key={item.id}
+                      listingId={item.id}
+                      location={item.address}
+                      date={item.description}
+                      distance={"100 kilometers away"}
+                      price={"₱" + item.price}
+                      imageKey={item.images}
+                      dayTime={item.price.isNight ? "Night" : ""}
+                      ratings={item.ratings}
+                      isHearted={
+                        item.wishes.filter(
+                          (value: any) => value.userId === userId
+                        ).length !== 0
+                      }
+                    />
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-20">
+                <TravelStyleSlider
+                  title="What's your travel style?"
+                  description="Browse by property type to find the perfect space"
+                  groupCards={groupCardsDummy}
+                />
+              </div>
+            </div>
+          )} */}
       </WidthWrapper>
     </>
   )
