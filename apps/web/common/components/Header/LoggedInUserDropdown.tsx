@@ -28,7 +28,7 @@ const LoggedInUserDropdown = () => {
           name: WISHLISTS,
           href: LINK_ACCOUNT_WISHLIST,
         },
-      ]
+      ],
     },
     {
       group: "Manage Account and Host Account",
@@ -45,9 +45,10 @@ const LoggedInUserDropdown = () => {
         {
           name: "Administration",
           href: "/admin/dashboard",
-          isExcluded: session.role !== E_UserRole.Admin || path.includes("/admin"),
+          isExcluded:
+            session.role !== E_UserRole.Admin || path.includes("/admin"),
         },
-      ]
+      ],
     },
     {
       group: "Log out",
@@ -56,8 +57,8 @@ const LoggedInUserDropdown = () => {
           name: "Log out",
           href: LINK_LOGOUT,
         },
-      ]
-    }
+      ],
+    },
   ]
 
   return (
@@ -79,20 +80,21 @@ const LoggedInUserDropdown = () => {
           <div className="w-screen max-w-[200px] flex-auto bg-white text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-xl py-2">
             {groupedAuthMenus.map((group, groupIndex) => (
               <div key={group.group}>
-                {group.items.map((item) =>
-                  !item.isExcluded && (
-                    <div
-                      key={item.name}
-                      className="relative rounded-xl hover:bg-gray-50 px-5 py-2"
-                    >
-                      <Popover.Button as="a" href={item.href}>
-                        <div className="font-semibold text-gray-800">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </div>
-                      </Popover.Button>
-                    </div>
-                  )
+                {group.items.map(
+                  (item) =>
+                    !item.isExcluded && (
+                      <div
+                        key={item.name}
+                        className="relative rounded-xl hover:bg-gray-50 px-5 py-2"
+                      >
+                        <Popover.Button as="a" href={item.href}>
+                          <div className="font-semibold text-gray-800">
+                            {item.name}
+                            <span className="absolute inset-0" />
+                          </div>
+                        </Popover.Button>
+                      </div>
+                    )
                 )}
                 {groupIndex < groupedAuthMenus.length - 1 && (
                   <div className="my-2 border-t border-gray-200 mx-5" />
