@@ -1,21 +1,23 @@
-import { hero } from "../../fields/surfs/hero"
-import { slugField } from "../../fields/slug"
-import { CollectionConfig } from "payload/types"
-import { content } from "../../fields/surfs/content"
-import payload from "payload"
+import type { CollectionConfig } from "payload/types"
 
-const Surfs: CollectionConfig = {
-  slug: "surfs",
+import { slugField } from "../../fields/slug"
+import { hero } from "../../fields/blogs/hero"
+import { content } from "../../fields/blogs/content"
+import { sideContent } from "../../fields/blogs/sideContent"
+
+export const Blogs: CollectionConfig = {
+  slug: "blogs",
   admin: {
     useAsTitle: "title",
+    defaultColumns: ["title", "slug", "updatedAt"],
   },
   versions: {
     drafts: true,
   },
   fields: [
     {
-      type: "text",
       name: "title",
+      type: "text",
       required: true,
     },
     slugField(),
@@ -30,7 +32,7 @@ const Surfs: CollectionConfig = {
       },
       defaultValue: async () => {
         const response = await fetch(
-          "/cms/api/categories?limit=1&where[id][equals]=66c3f09f0e847de16240bbf7"
+          "/cms/api/categories?limit=1&where[id][equals]=66cbe82510950265d1a3c400"
         )
         const data = await response.json()
         const [category] = data.docs
@@ -49,17 +51,21 @@ const Surfs: CollectionConfig = {
           label: "Content",
           fields: [content],
         },
+        {
+          label: "Side Content",
+          fields: [sideContent],
+        },
       ],
     },
   ],
   endpoints: [
     {
-      path: "/guide/:slug",
+      path: "/general/:slug",
       method: "get",
       handler: async (req, res) => {
         const { slug } = req.params
         const data = await req.payload.find({
-          collection: "surfs",
+          collection: "blogs",
           where: {
             slug: {
               equals: slug,
@@ -77,4 +83,4 @@ const Surfs: CollectionConfig = {
   ],
 }
 
-export default Surfs
+export default Blogs

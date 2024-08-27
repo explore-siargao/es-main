@@ -9,13 +9,16 @@ type T_GridImageProps = {
 function GridImage({ src, alt, text }: T_GridImageProps) {
   return (
     <div className="grid grid-cols-2">
-      <Image
-        width={100}
-        height={100}
-        src={`/assets/${src}`}
-        alt={alt}
-        className="cursor-pointer rounded-xl"
-      />
+      <div className="relative w-24 h-16 rounded-xl">
+        <Image
+          fill
+          objectFit="cover"
+          src={`/assets/${src}`}
+          alt={alt}
+          className="cursor-pointer rounded-xl"
+        />
+      </div>
+
       <p className="text-sm">{text}</p>
     </div>
   )
