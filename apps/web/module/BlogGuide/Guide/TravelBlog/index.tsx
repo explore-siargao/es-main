@@ -7,7 +7,7 @@ import TravelImages from "./TravelImages"
 import PopularGuides from "./PopularGuides"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
-import serialize from "./components/RichText/serialize"
+import serialize from "../../../../common/components/RichText/serialize"
 import { WEB_URL } from "@/common/constants/ev"
 
 const TravelGuideContent = ({ guideData }: { guideData: any }) => {
