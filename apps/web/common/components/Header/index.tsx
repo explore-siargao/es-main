@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import Image from "next/image"
 import Logo from "@/common/assets/logo.png"
 import { Button } from "@/common/components/ui/Button"
-import LandingPageMenu from "@/common/components/ui/LandingPageMenu"
+import LoggedInUserDropdown from "./LoggedInUserDropdown"
 import { APP_NAME } from "@repo/constants"
 import { usePathname, useRouter } from "next/navigation"
 import { LINK_LOGIN } from "@/common/constants/links"
@@ -11,12 +11,13 @@ import Link from "next/link"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { Typography } from "@/common/components/ui/Typography"
 import { cn } from "@/common/helpers/cn"
-import ApplyToHostModal from "../../module/LandingPage/components/ApplyToHostModal"
 import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
+import GuidesMenu from "./GuidesMenu"
+import ApplyToHostModal from "@/module/LandingPage/components/ApplyToHostModal"
 
-function BlogHeader({
-  contentWidth = "wide",
+function Header({
+  contentWidth = "medium",
   isFixed = true,
 }: {
   readonly contentWidth?: "medium" | "small" | "wide" | "full"
@@ -61,6 +62,32 @@ function BlogHeader({
               alt={APP_NAME}
             />
           </Link>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 items-center relative">
+            <div className="flex gap-2 rounded-full items-center px-2 py-1">
+              <GuidesMenu />
+              <div>
+                {session.role !== E_UserRole.Admin &&
+                !session.isHost &&
+                !path.includes("/hosting") ? (
+                  <Button variant="link" size="sm" onClick={applyToHost}>
+                    Become a host
+                  </Button>
+                ) : null}
+              </div>
+              {!session.id && (
+                <div className="flex gap-1 rounded-full items-center px-2 py-1">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => router.push(LINK_LOGIN)}
+                  >
+                    Login | Sign up
+                  </Button>
+                </div>
+              )}
+            </div>
+            {session.id && <LoggedInUserDropdown />}
+          </div>
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
@@ -68,4 +95,4 @@ function BlogHeader({
   )
 }
 
-export default BlogHeader
+export default Header

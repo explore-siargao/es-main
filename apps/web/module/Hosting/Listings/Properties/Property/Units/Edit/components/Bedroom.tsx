@@ -2,7 +2,10 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucidePlus } from "lucide-react"
 import React, { useState } from "react"
 import AddBedroomModal from "./AddBedroomModal"
-import { useBedroomStore } from "../store/useBedroomStore"
+import {
+  useBedroomStore,
+  useBedroomStudioStore,
+} from "../store/useBedroomStore"
 import { Button } from "@/common/components/ui/Button"
 
 type T_Prop = {
@@ -29,7 +32,7 @@ const Bedroom = ({ unitType }: T_Prop) => {
           {displayBedrooms.map((bedroomArray, index) => {
             return (
               <React.Fragment key={bedroomArray.roomName}>
-                <div className="mt-2 rounded-lg p-4 border w-full border-text-200">
+                <div className="mt-2 rounded-xl px-3 py-2 border w-full border-text-200">
                   <Typography variant="h4">
                     {unitType === "Studio"
                       ? "Living Room"

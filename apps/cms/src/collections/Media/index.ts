@@ -20,18 +20,5 @@ export const Media: S3UploadCollectionConfig = {
       type: "text",
       required: true,
     },
-    {
-      name: "url",
-      type: "text",
-      access: {
-        create: () => false,
-      },
-      admin: {
-        disabled: true,
-      },
-      hooks: {
-        afterRead: [({ data: doc }) => `/${doc.filename}`],
-      },
-    },
   ],
 }

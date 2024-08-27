@@ -29,9 +29,9 @@ export default async function AccountSettingsLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <Header contentWidth="small" />
+              <Header />
               <div className="min-h-screen">{children}</div>
-              <Footer contentWidth="small" />
+              <Footer />
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>

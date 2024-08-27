@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import CalendarTable from "./CalendarTable"
+import CalendarTable from "./WholePlaceCalendarTable"
 import { Table } from "lucide-react"
 import { Button } from "@/common/components/ui/Button"
 import { useRouter } from "next/navigation"

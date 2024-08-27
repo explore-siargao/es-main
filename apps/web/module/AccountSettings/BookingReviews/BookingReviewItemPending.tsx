@@ -39,12 +39,12 @@ const BookingReviewItemPending = ({
   return (
     <div key={id} className="flex w-full p-6 gap-x-4 items-center">
       <div className="flex w-full gap-x-4 items-center">
-        <div className="h-24 w-24 rounded-lg bg-primary-100 relative">
+        <div className="h-24 w-24 rounded-xl bg-primary-100 relative">
           <Image
             src={`${ASSET_ROOT}/${image}`}
             layout="fill"
             objectFit="cover"
-            className="rounded-lg"
+            className="rounded-xl"
             alt="booking-image"
           />
         </div>

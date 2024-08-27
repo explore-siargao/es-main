@@ -14,7 +14,7 @@ function GridImage({ src, alt, text }: T_GridImageProps) {
         height={100}
         src={`/assets/${src}`}
         alt={alt}
-        className="cursor-pointer rounded-lg"
+        className="cursor-pointer rounded-xl"
       />
       <p className="text-sm">{text}</p>
     </div>

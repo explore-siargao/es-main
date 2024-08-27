@@ -8,6 +8,7 @@ import PopularGuides from "./PopularGuides"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 import serialize from "./components/RichText/serialize"
+import { WEB_URL } from "@/common/constants/ev"
 
 const TravelGuideContent = ({ guideData }: { guideData: any }) => {
   return (
@@ -67,7 +68,7 @@ function TravelBlog() {
   const getTravelCms = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/cms/api/locations/guide/${travelName}`
+        `${WEB_URL}/cms/api/locations/guide/${travelName}`
       )
 
       if (!res.ok) {
@@ -78,7 +79,6 @@ function TravelBlog() {
       setTravelData(data.docs[0])
       setTravelDataLoading(false)
     } catch (err) {
-      console.log(err)
       setTravelDataLoading(false)
     }
   }
@@ -97,7 +97,7 @@ function TravelBlog() {
     content = <Typography className="mt-10">No data was found.</Typography>
   }
 
-  return <WidthWrapper width={"small"}>{content}</WidthWrapper>
+  return <WidthWrapper width="medium">{content}</WidthWrapper>
 }
 
 export default TravelBlog

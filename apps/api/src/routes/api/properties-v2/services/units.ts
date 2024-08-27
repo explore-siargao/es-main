@@ -180,6 +180,29 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
       )
     }
 
+    // Step 1: Retrieve the current document
+    const currentBed = await dbBookableUnitTypes.findOne(
+      { _id: bookableUnitId, category: 'Bed', deletedAt: null },
+      { ids: 1 } // Only retrieve the ids field
+    )
+
+    if (!currentBed) {
+      // Handle case where the document is not found
+      return res.status(404).json({ error: 'Bed not found' })
+    }
+
+    // Step 2: Calculate the number of new ObjectIds needed
+    const currentIdsCount = currentBed.ids.length
+    const newIdsNeeded = qty - currentIdsCount
+
+    let newIds: mongoose.Types.ObjectId[] = []
+    if (newIdsNeeded > 0) {
+      newIds = Array.from(
+        { length: newIdsNeeded },
+        () => new mongoose.Types.ObjectId()
+      )
+    }
+    //Step 3
     const updateBedBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
       { _id: bookableUnitId, category: 'Bed', deletedAt: null },
       {
@@ -191,6 +214,11 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
           totalSize: totalSize,
           updatedAt: Date.now(),
         },
+        ...(newIdsNeeded > 0 && {
+          $push: {
+            ids: { $each: newIds },
+          },
+        }),
       },
       { new: true }
     )
@@ -240,6 +268,30 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       )
     }
 
+    // Step 1: Retrieve the current document
+    const currentRoom = await dbBookableUnitTypes.findOne(
+      { _id: bookableUnitId, category: 'Room', deletedAt: null },
+      { ids: 1 } // Only retrieve the ids field
+    )
+
+    if (!currentRoom) {
+      // Handle case where the document is not found
+      return res.status(404).json({ error: 'Room not found' })
+    }
+
+    // Step 2: Calculate the number of new ObjectIds needed
+    const currentIdsCount = currentRoom.ids.length
+    const newIdsNeeded = qty - currentIdsCount
+
+    let newIds: mongoose.Types.ObjectId[] = []
+    if (newIdsNeeded > 0) {
+      newIds = Array.from(
+        { length: newIdsNeeded },
+        () => new mongoose.Types.ObjectId()
+      )
+    }
+
+    // Step 3: Update the document by adding new ObjectIds
     const updateRoomBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
       { _id: bookableUnitId, category: 'Room', deletedAt: null },
       {
@@ -249,6 +301,11 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
           qty: qty,
           updatedAt: Date.now(),
         },
+        ...(newIdsNeeded > 0 && {
+          $push: {
+            ids: { $each: newIds },
+          },
+        }),
       },
       { new: true }
     )
@@ -279,12 +336,20 @@ export const updateWholePlaceUnitBasicInfo = async (
     totalSize,
     numBathRooms,
     bedRooms,
+    bedroomStudio,
     qty,
     livingRooms,
     singleBedRoom,
     singleLivingRoom,
   } = req.body
-  if (!title || !numBathRooms || !totalSize || !bedRooms || !qty) {
+  if (
+    !title ||
+    !numBathRooms ||
+    !totalSize ||
+    !bedRooms ||
+    !qty ||
+    !livingRooms
+  ) {
     console.log(REQUIRED_VALUE_EMPTY)
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
@@ -322,6 +387,7 @@ export const updateWholePlaceUnitBasicInfo = async (
             numBedRooms: 0,
             numBathRooms: numBathRooms,
             bedRooms: bedRooms,
+            bedroomStudio: bedroomStudio,
             livingRooms: livingRooms,
             singleBedRoom: singleBedRoom,
             singleLivingRoom: singleLivingRoom,

@@ -50,12 +50,12 @@ const ReviewCard = () => {
                 </div>
                 <div className="flex-none w-18 h-14">
                   <div className={imageContainer()}>
-                    <div className={`${imageShape()}rounded-lg`}>
+                    <div className={`${imageShape()}rounded-xl`}>
                       <Image
                         src={`/assets/${review.listing.image}`}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-lg"
+                        className="rounded-xl"
                         alt="Reviewer's profile"
                       />
                     </div>

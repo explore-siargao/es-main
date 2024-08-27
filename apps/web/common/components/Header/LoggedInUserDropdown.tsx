@@ -1,23 +1,35 @@
 "use client"
-import { LINK_ACCOUNT, LINK_LOGOUT } from "@/common/constants/links"
+import {
+  LINK_ACCOUNT,
+  LINK_ACCOUNT_WISHLIST,
+  LINK_LOGOUT,
+} from "@/common/constants/links"
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/20/solid"
 import React, { Fragment } from "react"
 import { Popover, Transition } from "@headlessui/react"
-import { ACCOUNT } from "@/common/constants"
+import { ACCOUNT, WISHLISTS } from "@/common/constants"
 import useSessionStore from "@/common/store/useSessionStore"
 import { usePathname } from "next/navigation"
 import { E_UserRole } from "@repo/contract"
 
-const LandingPageMenu = () => {
+const LoggedInUserDropdown = () => {
   const path = usePathname()
   const session = useSessionStore((state) => state)
   const authMenus = [
+    {
+      name: "My bookings",
+      href: "/bookings",
+    },
+    {
+      name: WISHLISTS,
+      href: LINK_ACCOUNT_WISHLIST,
+    },
     {
       name: ACCOUNT,
       href: LINK_ACCOUNT,
     },
     {
-      name: "Manage Listings",
+      name: "Host account",
       href: "/hosting/today",
       isExcluded: !session.isHost || path.includes("/hosting"),
     },
@@ -47,13 +59,13 @@ const LandingPageMenu = () => {
         leaveTo="opacity-0 translate-y-1"
       >
         <Popover.Panel className="absolute right-0 top-9 z-10 mt-5 flex w-screen max-w-max">
-          <div className="w-screen max-w-[200px] flex-auto bg-white text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-md">
+          <div className="w-screen max-w-[200px] flex-auto bg-white text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-xl">
             {authMenus.map(
               (item) =>
                 !item.isExcluded && (
                   <div
                     key={item.name}
-                    className="relative rounded hover:bg-gray-50 px-5 py-2"
+                    className="relative rounded-xl hover:bg-gray-50 px-5 py-2"
                   >
                     <Popover.Button as="a" href={item.href}>
                       <div className="font-semibold text-gray-800">
@@ -71,4 +83,4 @@ const LandingPageMenu = () => {
   )
 }
 
-export default LandingPageMenu
+export default LoggedInUserDropdown

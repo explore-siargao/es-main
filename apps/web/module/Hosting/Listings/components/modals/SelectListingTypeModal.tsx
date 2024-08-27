@@ -116,7 +116,7 @@ const SelectListingTypeModal = ({ isOpen, onClose }: Props) => {
                   isListingAddPending ? "cursor-progress opacity-70" : ""
                 )}
               >
-                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-lg p-4">
+                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-xl p-4">
                   <Typography
                     variant="h4"
                     fontWeight="semibold"

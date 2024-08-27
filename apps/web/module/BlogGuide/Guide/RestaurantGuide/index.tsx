@@ -11,6 +11,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import NearbyAccommodation from "./components/NearbyAccommodation"
 import ChefsNote from "./components/ChefsNote"
 import AmenityList from "./components/AmenityList"
+import { WEB_URL } from "@/common/constants/ev"
 
 export const ratingSummary = {
   ratings: 5,
@@ -102,7 +103,7 @@ export const RestaurantGuide = () => {
   const getGuideData = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/cms/api/restaurants/guide/${guideName}`
+        `${WEB_URL}/cms/api/restaurants/guide/${guideName}`
       )
 
       if (!res.ok) {
@@ -113,7 +114,6 @@ export const RestaurantGuide = () => {
       setGuideData(data.docs[0])
       setGuideDataLoading(false)
     } catch (err) {
-      console.log(err)
       setGuideDataLoading(false)
     }
   }
@@ -123,7 +123,7 @@ export const RestaurantGuide = () => {
   }, [])
 
   return (
-    <WidthWrapper width="small" className="mt-10">
+    <WidthWrapper width="small" className="mt-24 md:mt-36 lg:mt-44">
       {guideDataLoading && <Spinner variant="primary" middle />}
       {!guideDataLoading && guideData && (
         <>

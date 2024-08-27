@@ -19,7 +19,7 @@ const Insights = () => {
   return (
     <div className="mt-20">
       <Tabs tabs={insightsTabs} />
-      <div className="grid grid-cols-6 gap-4 my-4 border-b pb-4">
+      <div className="grid grid-cols-6 gap-4 mt-4 mb-2">
         <Select
           label="Category"
           required
@@ -72,7 +72,7 @@ const Insights = () => {
           <Option value={"Dec"}>December</Option>
         </Select>
       </div>
-      <div className="my-4">
+      <div className="mt-7">
         <Typography
           variant="h1"
           fontWeight="semibold"
@@ -93,19 +93,19 @@ const Insights = () => {
       </div>
 
       <div className="flex gap-4 mb-4">
-        <div className="p-6 border border-primary-500 rounded-lg w-1/6">
+        <div className="p-6 border border-primary-500 rounded-xl w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
             {filteredInsights ? filteredInsights[0]?.views : 0}
           </Typography>
           <Typography className="text-text-500">Views</Typography>
         </div>
-        <div className="p-6 border border-primary-500 rounded-lg w-1/6">
+        <div className="p-6 border border-primary-500 rounded-xl w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
             0
           </Typography>
           <Typography className="text-text-500">New bookings</Typography>
         </div>
-        <div className="p-6 border border-primary-500 rounded-lg w-1/6">
+        <div className="p-6 border border-primary-500 rounded-xl w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
             {filteredInsights ? filteredInsights[0]?.bookingRate : 0}%
           </Typography>

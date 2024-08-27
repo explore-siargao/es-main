@@ -24,7 +24,6 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
     data: filteredPaymentHistory,
     isPending: filteredPaymentHistoryIsPending,
   } = useGetFilteredPaymentHistory(category, listing, year, month)
-  console.log(filteredPaymentHistory)
   const { data: paymentHistoryReport } = useGetPaymentHistoryReport(
     category,
     listing
@@ -96,7 +95,7 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
     ),
   }
   return (
-    <div className="mt-20 mb-14">
+    <div className="mt-10 mb-14">
       <Typography variant="h1" fontWeight="semibold">
         Payment History
       </Typography>

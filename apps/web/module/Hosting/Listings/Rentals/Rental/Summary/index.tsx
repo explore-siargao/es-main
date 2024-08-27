@@ -123,7 +123,7 @@ const RentalSummary = () => {
                 )}
                 <div
                   className={cn(
-                    `relative h-52 w-full bg-primary-50 rounded-lg`,
+                    `relative h-52 w-full bg-primary-50 rounded-xl`,
                     photo.isMain && "border-2 border-secondary-500"
                   )}
                 >
@@ -133,7 +133,7 @@ const RentalSummary = () => {
                     layout="fill"
                     objectFit="cover"
                     objectPosition="center"
-                    className="rounded-lg"
+                    className="rounded-xl"
                   />
                 </div>
                 <Typography

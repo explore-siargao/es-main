@@ -57,6 +57,10 @@ const bookableUnitTypes = new Schema({
     type: [livingRooms],
     required: false,
   },
+  bedroomStudio: {
+    type: [bedRooms],
+    required: false,
+  },
   singleLivingRoom: {
     type: bed,
     required: false,
@@ -84,6 +88,10 @@ const bookableUnitTypes = new Schema({
     },
   ],
   qty: Number,
+  ids: {
+    type: [mongoose.Schema.ObjectId],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

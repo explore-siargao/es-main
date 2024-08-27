@@ -14,7 +14,7 @@ const ImageGallery = ({
 }: T_ImagesProps) => {
   const getImgSrc = (index: number) => {
     const image = images[index]
-    const imgSrc = image?.key ? `/assets/${image.key}` : image?.image?.url || ""
+    const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`
     const imgAlt = image?.description || image?.image?.alt || ""
     return { src: imgSrc, alt: imgAlt }
   }
@@ -99,7 +99,6 @@ const ImageGallery = ({
         onClose={() => setIsOpen(false)}
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
-        <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80" />
         <div className="relative w-full h-full bg-white bg-opacity-10">
           <SliderImages
             //@ts-ignore

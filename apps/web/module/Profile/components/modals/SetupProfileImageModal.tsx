@@ -70,14 +70,14 @@ const SetupProfileImageModal = ({
       <div className="px-4 pb-4">
         <div className="w-300 h-300 mx-auto">
           {file ? (
-            <div className="flex justify-center my-6 bg-primary-50 rounded-lg border border-primary-200">
+            <div className="flex justify-center my-6 bg-primary-50 rounded-xl border border-primary-200">
               <div className="relative h-96">
                 <Image
                   src={file?.preview ?? "/assets/1.jpg"}
                   alt={`Profile picture`}
                   width={300}
                   height={300}
-                  className="object-cover h-full w-full rounded-lg"
+                  className="object-cover h-full w-full rounded-xl"
                 />
               </div>
             </div>
@@ -88,7 +88,7 @@ const SetupProfileImageModal = ({
               className={cn(
                 // isPending && "opacity-50",
                 isFocused && "opacity-80",
-                "flex flex-col items-center justify-center w-full h-64 border-2 border-primary-300 border-dashed rounded-lg cursor-pointer bg-primary-50 hover:bg-primary-100 mt-4"
+                "flex flex-col items-center justify-center w-full h-64 border-2 border-primary-300 border-dashed rounded-xl cursor-pointer bg-primary-50 hover:bg-primary-100 mt-4"
               )}
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
