@@ -6,13 +6,14 @@ type T_Markers = {
   long: number
   name: string
   causine?: string
+  isCity?: boolean
 }
 
 type T_Props = {
   contentTitle: string
   contentText: string[]
   markers: T_Markers[]
-  iconMarker?: "surf" | "restaurant"
+  iconMarker?: "surf" | "restaurant" | "island"
 }
 
 const GuideContent = ({

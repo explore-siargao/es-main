@@ -20,6 +20,7 @@ interface MarkerLocation {
   name: string
   surfingLevel?: string
   cuisine?: string
+  isCity?: boolean
 }
 
 interface MultipleMarkerMapProps {
@@ -33,7 +34,7 @@ interface MultipleMarkerMapProps {
   scrollWheelZoomEnabled?: boolean
   imagePlace?: string
   isSurfGuide?: boolean
-  iconMarker?: "surf" | "restaurant"
+  iconMarker?: "surf" | "restaurant" | "island"
 }
 
 const markerIcon = new Icon({
@@ -52,6 +53,20 @@ const surfMarkerIcon = new Icon({
 
 const restaurantMarkerIcon = new Icon({
   iconUrl: `${WEB_URL}/restaurant-map-icon.png`,
+  iconSize: [28, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const islandMarkerIcon1 = new Icon({
+  iconUrl: `${WEB_URL}/island-map-icon-1.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const islandMarkerIcon2 = new Icon({
+  iconUrl: `${WEB_URL}/island-map-icon-2.png`,
   iconSize: [28, 35],
   iconAnchor: [18, 18],
   popupAnchor: [0, -20],
@@ -174,7 +189,11 @@ const MultipleMarkerMap = ({
                         ? surfMarkerIcon
                         : iconMarker === "restaurant"
                           ? restaurantMarkerIcon
-                          : markerIcon
+                          : iconMarker === "island" && location.isCity
+                            ? islandMarkerIcon2
+                            : iconMarker === "island" && !location.isCity
+                              ? islandMarkerIcon1
+                              : markerIcon
                     }
                     position={[location.lat, location.long] as LatLngTuple}
                     draggable={false}
