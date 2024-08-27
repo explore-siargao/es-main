@@ -314,3 +314,27 @@ export const deleteRental = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getRentalCounts = async (req: Request, res: Response) => {
+  try {
+    const hostId = res.locals.user?.id
+    const filteredDataGetAllRentals = await dbRentals
+      .find({ host: hostId })
+      .sort({ _id: -1 })
+      .populate('photos')
+      .populate('location')
+
+    return res.json(
+      response.success({
+        items: filteredDataGetAllRentals,
+        allItemCount: filteredDataGetAllRentals.length,
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
