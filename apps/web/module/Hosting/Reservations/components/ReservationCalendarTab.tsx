@@ -10,18 +10,18 @@ const ReservationCalendarTab = () => {
 
   if (rentalCountsData && !rentalCountsPending) {
     if (
-      rentalCountsData?.item?.bicycles === 0 &&
+      rentalCountsData?.item?.cars === 0 &&
       rentalCountsData?.item?.motorbikes === 0 &&
-      rentalCountsData?.item?.cars > 0
+      rentalCountsData?.item?.bicycles > 0
     ) {
-      rentalLink = "cars"
+      rentalLink = "bicycles"
     } else if (
-      rentalCountsData?.item?.bicycles === 0 &&
+      rentalCountsData?.item?.cars === 0 &&
       rentalCountsData?.item?.motorbikes > 0
     ) {
       rentalLink = "motorcycles"
     } else {
-      rentalLink = "bicycles"
+      rentalLink = "cars"
     }
   }
 

@@ -30,10 +30,10 @@ const CalendarTab = () => {
   const rentalTabs = []
 
   if (rentalCountsData && !rentalCountsPending) {
-    if (rentalCountsData?.item?.bicycles > 0) {
+    if (rentalCountsData?.item?.cars > 0) {
       rentalTabs.push({
-        name: "Bicycles",
-        link: "/hosting/reservations/calendar/rentals/bicycles",
+        name: "Cars",
+        link: "/hosting/reservations/calendar/rentals/cars",
       })
     }
     if (rentalCountsData?.item?.motorbikes > 0) {
@@ -42,10 +42,10 @@ const CalendarTab = () => {
         link: "/hosting/reservations/calendar/rentals/motorcycles",
       })
     }
-    if (rentalCountsData?.item?.cars > 0) {
+    if (rentalCountsData?.item?.bicycles > 0) {
       rentalTabs.push({
-        name: "Cars",
-        link: "/hosting/reservations/calendar/rentals/cars",
+        name: "Bicycles",
+        link: "/hosting/reservations/calendar/rentals/bicycles",
       })
     }
   }
