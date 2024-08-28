@@ -45,7 +45,7 @@ export interface Bed {
 }
 
 export interface Rental {
-  id:string
+  id: string
   abbr: string
   status: string
   reservations: Reservation[]

@@ -28,7 +28,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 
 const MotorCalendarTable = () => {
-  const {mutate} = useUpdateVehicleName()
+  const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -237,7 +237,7 @@ const MotorCalendarTable = () => {
       //@ts-ignore
       const motorcycle = category?.motorcycles[motorIndex]
       if (motorcycle) {
-        mutate({id:motorcycle.id,name:tempMotorAbbr})
+        mutate({ id: motorcycle.id, name: tempMotorAbbr })
         motorcycle.abbr = tempMotorAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
@@ -337,9 +337,7 @@ const MotorCalendarTable = () => {
                                 <Input
                                   type="text"
                                   value={tempMotorAbbr}
-                                  onChange={(e) =>
-                                    setMotorAbbr(e.target.value)
-                                  }
+                                  onChange={(e) => setMotorAbbr(e.target.value)}
                                   autoFocus
                                   className="mr-2"
                                   label={""}

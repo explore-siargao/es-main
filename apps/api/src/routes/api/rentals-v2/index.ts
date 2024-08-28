@@ -37,7 +37,8 @@ import {
 const router = express.Router()
 
 //Rentals
-router.patch('/update-vehicle',
+router.patch(
+  '/update-vehicle',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
@@ -246,7 +247,5 @@ router.get(
   isCsrfTokenValid,
   getCarCalendar
 )
-
-
 
 export default router

@@ -27,7 +27,7 @@ import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 
 const CarCalendarTable = () => {
-  const {mutate} = useUpdateVehicleName()
+  const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -235,7 +235,7 @@ const CarCalendarTable = () => {
       //@ts-ignore
       const car = category?.cars[carIndex]
       if (car) {
-        mutate({id:car.id, name:tempCarAbbr})
+        mutate({ id: car.id, name: tempCarAbbr })
         car.abbr = tempCarAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")

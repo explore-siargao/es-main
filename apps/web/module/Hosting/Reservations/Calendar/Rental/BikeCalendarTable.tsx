@@ -34,7 +34,7 @@ const BikeCalendarTable = () => {
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
-  const {mutate} = useUpdateVehicleName()
+  const { mutate } = useUpdateVehicleName()
 
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
@@ -260,7 +260,7 @@ const BikeCalendarTable = () => {
       const bicycle = category?.bicycles[bikeIndex]
       console.log(bicycle)
       if (bicycle) {
-        mutate({id:bicycle.id, name:tempBikeAbbr})
+        mutate({ id: bicycle.id, name: tempBikeAbbr })
         bicycle.abbr = tempBikeAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
@@ -376,7 +376,11 @@ const BikeCalendarTable = () => {
                                   variant={"link"}
                                   onClick={() =>
                                     //@ts-ignore
-                                    handleSaveVehicle(category.name, bikeIndex, category?.bicycles[bikeIndex]?.id)
+                                    handleSaveVehicle(
+                                      category.name,
+                                      bikeIndex,
+                                      category?.bicycles[bikeIndex]?.id
+                                    )
                                   }
                                 >
                                   <Save className="text-gray-500 w-5" />
