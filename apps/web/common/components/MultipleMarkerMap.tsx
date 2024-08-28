@@ -20,6 +20,7 @@ interface MarkerLocation {
   name: string
   surfingLevel?: string
   cuisine?: string
+  isCity?: boolean
 }
 
 interface MultipleMarkerMapProps {
@@ -33,7 +34,7 @@ interface MultipleMarkerMapProps {
   scrollWheelZoomEnabled?: boolean
   imagePlace?: string
   isSurfGuide?: boolean
-  iconMarker?: "surf" | "restaurant"
+  iconMarker?: "surf" | "restaurant" | "island"
 }
 
 const markerIcon = new Icon({
@@ -56,6 +57,41 @@ const restaurantMarkerIcon = new Icon({
   iconAnchor: [18, 18],
   popupAnchor: [0, -20],
 })
+
+const islandMarkerIcon1 = new Icon({
+  iconUrl: `${WEB_URL}/island-map-icon-1.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const islandMarkerIcon2 = new Icon({
+  iconUrl: `${WEB_URL}/island-map-icon-2.png`,
+  iconSize: [28, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const getMarkerIcon = (
+  iconMarker: string | undefined,
+  isCity: boolean | undefined
+) => {
+  let markerIconToUse
+
+  if (iconMarker === "surf") {
+    markerIconToUse = surfMarkerIcon
+  } else if (iconMarker === "restaurant") {
+    markerIconToUse = restaurantMarkerIcon
+  } else if (iconMarker === "island" && isCity) {
+    markerIconToUse = islandMarkerIcon2
+  } else if (iconMarker === "island" && !isCity) {
+    markerIconToUse = islandMarkerIcon1
+  } else {
+    markerIconToUse = markerIcon
+  }
+
+  return markerIconToUse
+}
 
 const MultipleMarkerMap = ({
   center,
@@ -169,13 +205,7 @@ const MultipleMarkerMap = ({
 
                 return (
                   <Marker
-                    icon={
-                      iconMarker === "surf"
-                        ? surfMarkerIcon
-                        : iconMarker === "restaurant"
-                          ? restaurantMarkerIcon
-                          : markerIcon
-                    }
+                    icon={getMarkerIcon(iconMarker, location.isCity)}
                     position={[location.lat, location.long] as LatLngTuple}
                     draggable={false}
                     key={index}
