@@ -55,310 +55,153 @@ const hasDateConflict = (
   })
 }
 
-export const getRoomCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
+
+export const getPropertyCalendar = async (req: Request, res: Response) => {
+  const startDate = new Date(req.query.startDate as string);
+  const endDate = new Date(req.query.endDate as string);
 
   try {
-    // Retrieve all properties of the specified types by the host
-    const roomProperties = await dbProperties
+    const bedProperties = await dbProperties
       .find({
-        type: { $in: ['Hostel', 'Hotel', 'Homestay', 'Resort'] },
         offerBy: res.locals.user.id,
       })
-      .populate('bookableUnits')
+      .populate('bookableUnits');
 
-    // Flatten the bookableUnits and filter only those with category "Room"
-    const filteredUnits = roomProperties.flatMap((property: any) =>
-      property.bookableUnits.filter((unit: any) => unit?.category === 'Room')
-    )
+    const roomIds: string[] = [];
+    const wholePlaceIds: string[] = [];
+    const bedIds: string[] = [];
 
-    if (!filteredUnits.length) {
-      return res.json(
-        response.success({
-          items: [],
-          message: 'No room units found.',
-        })
-      )
-    }
-
-    // Extract all ids from bicycle rentals
-    const allRoomIds = filteredUnits.flatMap((room) => room.ids)
-
-    const reservations = await dbReservations
-      .find({
-        roomId: { $in: allRoomIds },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
-      })
-      .populate('guest') // Ensure guest field is populated
-
-    //Structure the data in the specified format
-    const items: any = filteredUnits.map((room) => {
-      const rooms: Room[] = room.ids.map((id: string, index: number) => {
-        const abbr = `${room.title} ${index + 1}`
-        return {
-          abbr,
-          status: 'available',
-          reservations: [],
+    bedProperties.forEach((property: any) => {
+      property.bookableUnits.forEach((unit: any) => {
+        if (unit.category === 'Room') {
+          roomIds.push(...unit.ids);
+        } else if (unit.category === 'Whole-Place') {
+          wholePlaceIds.push(...unit.ids);
+        } else if (unit.category === 'Bed') {
+          bedIds.push(...unit.ids);
         }
-      })
+      });
+    });
 
-      //Distribute reservations across bicycles
-      reservations.forEach((reservation: any) => {
-        if (reservation.guest) {
-          const reservationItem: Reservation = {
-            name:
-              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
-            startDate: reservation.startDate ?? new Date(),
-            endDate: reservation.endDate ?? new Date(),
-            guestCount: reservation.guestCount ?? 0,
-          }
-
-          for (let i = 0; i < rooms.length; i++) {
-            const room = rooms[i] // Store the current bicycle in a local variable
-
-            // Ensure the car is not undefined
-            if (room) {
-              const currentReservations = room.reservations ?? [] // Ensure it's an array
-
-              if (!hasDateConflict(currentReservations, reservationItem)) {
-                room.reservations.push(reservationItem) // Access the reservations array
-                room.status = 'occupied' // Update the status
-                break // Exit the loop after assigning
-              }
-            }
-          }
-        }
-      })
-
-      return {
-        name: room.title === '' ? 'Unknown' : `${room.title}`,
-        // Ensure name is always a string
-        //@ts-ignore
-        price: room.pricing?.dayRate ?? 0, // Ensure price is always a string
-        rooms,
-      }
-    })
-
-    const removedUnknown = items.filter((item: any) => item.name !== 'Unknown')
-
-    res.json(
-      response.success({
-        items: removedUnknown,
-        allItemCount: items.length,
-        message: 'Room calendar fetched successfully.',
-      })
-    )
-  } catch (err: any) {
-    return res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
-  }
-}
-
-export const getWholePlaceCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
-
-  try {
-    const roomProperties = await dbProperties
-      .find({
-        type: { $in: ['Villa', 'Resort', 'Apartment'] },
-        offerBy: res.locals.user.id,
-      })
-      .populate('bookableUnits')
-
-    const filteredUnits = roomProperties.flatMap((property: any) =>
-      property.bookableUnits.filter(
-        (unit: any) => unit?.category === 'Whole-Place'
-      )
-    )
-
-    if (!filteredUnits.length) {
-      return res.json(
-        response.success({
-          items: [],
-          message: 'No room units found.',
-        })
-      )
-    }
-
-    const allWholePlaceIds = filteredUnits.flatMap(
-      (wholePlace) => wholePlace.ids
-    )
-
-    const reservations = await dbReservations
-      .find({
-        wholePlaceId: { $in: allWholePlaceIds },
+    // Fetch reservations for each category
+    const [roomReservations, wholePlaceReservations, bedReservations] = await Promise.all([
+      dbReservations.find({
+        roomId: { $in: roomIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
-      })
-      .populate('guest')
+      }).populate('guest'),
+      dbReservations.find({
+        wholePlaceId: { $in: wholePlaceIds },
+        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+      }).populate('guest'),
+      dbReservations.find({
+        bedId: { $in: bedIds },
+        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+      }).populate('guest'),
+    ]);
 
-    const items: any = filteredUnits.map((wholePlace) => {
-      const wholePlaces: Room[] = wholePlace.ids.map(
-        (id: string, index: number) => {
-          const abbr = `${wholePlace.title} ${index + 1}`
+
+    const formatUnits = (units: any[], reservations: any[], idField: string, propertyName: string) =>
+      units.map((unit: any) => {
+        const formattedItems = unit.ids.map((id: string, index: number) => {
+          const abbr = `${unit.title} ${index + 1}`;
           return {
             abbr,
             status: 'available',
             reservations: [],
-          }
-        }
-      )
+          };
+        });
 
-      reservations.forEach((reservation: any) => {
-        if (reservation.guest) {
-          const reservationItem: Reservation = {
-            name:
-              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
-            startDate: reservation.startDate ?? new Date(),
-            endDate: reservation.endDate ?? new Date(),
-            guestCount: reservation.guestCount ?? 0,
-          }
 
-          for (let i = 0; i < wholePlaces.length; i++) {
-            const wholePlace = wholePlaces[i]
+        reservations.forEach((reservation: any) => {
+          if (reservation.guest) {
+            const reservationItem: Reservation = {
+              name: reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
+              startDate: reservation.startDate ?? new Date(),
+              endDate: reservation.endDate ?? new Date(),
+              guestCount: reservation.guestCount ?? 0,
+            };
 
-            if (wholePlace) {
-              const currentReservations = wholePlace.reservations ?? []
+            for (let i = 0; i < formattedItems.length; i++) {
+              const item = formattedItems[i];
 
-              if (!hasDateConflict(currentReservations, reservationItem)) {
-                wholePlace.reservations.push(reservationItem)
-                wholePlace.status = 'occupied'
-                break
+              if (item) {
+                const currentReservations = item.reservations ?? [];
+
+                if (!hasDateConflict(currentReservations, reservationItem)) {
+                  item.reservations.push(reservationItem);
+                  item.status = 'occupied';
+                  break;
+                }
               }
             }
           }
-        }
-      })
+        });
 
-      return {
-        name: wholePlace.title === '' ? 'Unknown' : `${wholePlace.title}`,
-        //@ts-ignore
-        price: wholePlace.pricing?.dayRate ?? 0,
-        'whole-places': wholePlaces,
-      }
-    })
-
-    const removedUnknown = items.filter((item: any) => item.name !== 'Unknown')
-
-    res.json(
-      response.success({
-        items: removedUnknown,
-        allItemCount: items.length,
-        message: 'Whole Place calendar fetched successfully.',
-      })
-    )
-  } catch (err: any) {
-    return res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
-  }
-}
-
-export const getBedCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
-
-  try {
-    // Retrieve all properties of the specified types by the host
-    const bedProperties = await dbProperties
-      .find({
-        type: { $in: ['Hostel', 'Resort', 'Homestay'] },
-        offerBy: res.locals.user.id,
-      })
-      .populate('bookableUnits')
-
-    // Flatten the bookableUnits and filter only those with category "Room"
-    const filteredUnits = bedProperties.flatMap((property: any) =>
-      property.bookableUnits.filter((unit: any) => unit?.category === 'Bed')
-    )
-
-    if (!filteredUnits.length) {
-      return res.json(
-        response.success({
-          items: [],
-          message: 'No bed units found.',
-        })
-      )
-    }
-
-    // Extract all ids from bicycle rentals
-    const allBedIds = filteredUnits.flatMap((bed) => bed.ids)
-
-    const reservations = await dbReservations
-      .find({
-        bedId: { $in: allBedIds },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
-      })
-      .populate('guest') // Ensure guest field is populated
-
-    //Structure the data in the specified format
-    const items: any = filteredUnits.map((bed) => {
-      const beds: Bed[] = bed.ids.map((id: string, index: number) => {
-        const abbr = `${bed.title} ${index + 1}`
         return {
-          abbr,
-          status: 'available',
-          reservations: [],
-        }
-      })
+          name: unit.title || 'Unknown',
+          price: unit.pricing?.dayRate ?? 0,
+          [propertyName]: formattedItems,
+        };
+      });
 
-      //Distribute reservations across bicycles
-      reservations.forEach((reservation: any) => {
-        if (reservation.guest) {
-          const reservationItem: Reservation = {
-            name:
-              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
-            startDate: reservation.startDate ?? new Date(),
-            endDate: reservation.endDate ?? new Date(),
-            guestCount: reservation.guestCount ?? 0,
-          }
 
-          for (let i = 0; i < beds.length; i++) {
-            const bed = beds[i] // Store the current bicycle in a local variable
+    const groupedByProperty: any = {};
 
-            // Ensure the car is not undefined
-            if (bed) {
-              const currentReservations = bed.reservations ?? [] // Ensure it's an array
+    bedProperties.forEach((property: any) => {
+      const bookableUnits = [];
 
-              if (!hasDateConflict(currentReservations, reservationItem)) {
-                bed.reservations.push(reservationItem) // Access the reservations array
-                bed.status = 'occupied' // Update the status
-                break // Exit the loop after assigning
-              }
-            }
-          }
-        }
-      })
+      bookableUnits.push(
+        ...formatUnits(
+          property.bookableUnits.filter((unit: any) => unit?.category === 'Whole-Place'),
+          wholePlaceReservations,
+          'wholePlaceId',
+          'wholePlaces' 
+        )
+      );
 
-      return {
-        name: bed.title === '' ? 'Unknown' : `${bed.title}`,
-        // Ensure name is always a string
-        //@ts-ignore
-        price: bed.pricing?.dayRate ?? 0, // Ensure price is always a string
-        beds,
-      }
-    })
+      bookableUnits.push(
+        ...formatUnits(
+          property.bookableUnits.filter((unit: any) => unit?.category === 'Room'),
+          roomReservations,
+          'roomId',
+          'rooms' 
+        )
+      );
 
-    const removedUnknown = items.filter((item: any) => item.name !== 'Unknown')
+      bookableUnits.push(
+        ...formatUnits(
+          property.bookableUnits.filter((unit: any) => unit?.category === 'Bed'),
+          bedReservations,
+          'bedId',
+          'beds' 
+        )
+      );
+
+      groupedByProperty[property.title] = bookableUnits;
+    });
+
+    const items = Object.keys(groupedByProperty).map((propertyTitle) => ({
+      propertyTitle,
+      bookableUnitTypes: groupedByProperty[propertyTitle],
+    }));
 
     res.json(
       response.success({
-        items: removedUnknown,
+        items,
         allItemCount: items.length,
-        message: 'Room calendar fetched successfully.',
+        message: 'Property calendar fetched successfully.',
       })
-    )
+    );
   } catch (err: any) {
     return res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
-    )
+    );
   }
-}
+};
+
+
+
+
+

@@ -54,9 +54,7 @@ import {
 } from './services/amenities'
 import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
 import {
-  getBedCalendar,
-  getRoomCalendar,
-  getWholePlaceCalendar,
+  getPropertyCalendar,
 } from './services/calendar'
 
 const router = express.Router()
@@ -353,28 +351,13 @@ router.patch(
 
 //calendars
 router.get(
-  '/calendar/room',
+  '/calendar/property',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  getRoomCalendar
+  getPropertyCalendar
 )
 
-router.get(
-  '/calendar/whole-place',
-  isOriginValid,
-  isUserLoggedIn,
-  isCsrfTokenValid,
-  getWholePlaceCalendar
-)
-
-router.get(
-  '/calendar/bed',
-  isOriginValid,
-  isUserLoggedIn,
-  isCsrfTokenValid,
-  getBedCalendar
-)
 
 export default router
 
