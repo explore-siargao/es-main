@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/common/components/ui/Button"
 import { Table } from "lucide-react"
 import ReservationCalendarTab from "../../components/ReservationCalendarTab"
+import CalendarLegend from "../../components/CalendarLegend"
 
 const ActivitiesReservationCalendar = () => {
   const router = useRouter()
@@ -34,6 +35,9 @@ const ActivitiesReservationCalendar = () => {
 
         <div className="flex mt-2">
           <ActivitiesCalendarTable />
+        </div>
+        <div className="fixed bottom-4 right-4 z-10">
+          <CalendarLegend />
         </div>
       </div>
     </div>
