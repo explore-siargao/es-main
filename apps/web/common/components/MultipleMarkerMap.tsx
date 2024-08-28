@@ -72,6 +72,27 @@ const islandMarkerIcon2 = new Icon({
   popupAnchor: [0, -20],
 })
 
+const getMarkerIcon = (
+  iconMarker: string | undefined,
+  isCity: boolean | undefined
+) => {
+  let markerIconToUse
+
+  if (iconMarker === "surf") {
+    markerIconToUse = surfMarkerIcon
+  } else if (iconMarker === "restaurant") {
+    markerIconToUse = restaurantMarkerIcon
+  } else if (iconMarker === "island" && isCity) {
+    markerIconToUse = islandMarkerIcon2
+  } else if (iconMarker === "island" && !isCity) {
+    markerIconToUse = islandMarkerIcon1
+  } else {
+    markerIconToUse = markerIcon
+  }
+
+  return markerIconToUse
+}
+
 const MultipleMarkerMap = ({
   center,
   markerLocations,
@@ -184,17 +205,7 @@ const MultipleMarkerMap = ({
 
                 return (
                   <Marker
-                    icon={
-                      iconMarker === "surf"
-                        ? surfMarkerIcon
-                        : iconMarker === "restaurant"
-                          ? restaurantMarkerIcon
-                          : iconMarker === "island" && location.isCity
-                            ? islandMarkerIcon2
-                            : iconMarker === "island" && !location.isCity
-                              ? islandMarkerIcon1
-                              : markerIcon
-                    }
+                    icon={getMarkerIcon(iconMarker, location.isCity)}
                     position={[location.lat, location.long] as LatLngTuple}
                     draggable={false}
                     key={index}
