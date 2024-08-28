@@ -53,9 +53,7 @@ import {
   updateBookableUnitTypeAmenities,
 } from './services/amenities'
 import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
-import {
-  getPropertyCalendar,
-} from './services/calendar'
+import { getPropertyCalendar } from './services/calendar'
 
 const router = express.Router()
 
@@ -357,7 +355,6 @@ router.get(
   isCsrfTokenValid,
   getPropertyCalendar
 )
-
 
 export default router
 
