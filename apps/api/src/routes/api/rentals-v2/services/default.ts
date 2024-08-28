@@ -318,16 +318,29 @@ export const deleteRental = async (req: Request, res: Response) => {
 export const getRentalCounts = async (req: Request, res: Response) => {
   try {
     const hostId = res.locals.user?.id
-    const filteredDataGetAllRentals = await dbRentals
-      .find({ host: hostId })
-      .sort({ _id: -1 })
-      .populate('photos')
-      .populate('location')
+
+    const motorbikeCount = await dbRentals.countDocuments({
+      category: 'Motorbike',
+      host: hostId,
+    })
+
+    const bicycleCount = await dbRentals.countDocuments({
+      category: 'Bicycle',
+      host: hostId,
+    })
+
+    const carCount = await dbRentals.countDocuments({
+      category: 'Car',
+      host: hostId,
+    })
 
     return res.json(
       response.success({
-        items: filteredDataGetAllRentals,
-        allItemCount: filteredDataGetAllRentals.length,
+        item: {
+          cars: carCount,
+          motorbikes: motorbikeCount,
+          bicycles: bicycleCount,
+        },
       })
     )
   } catch (err: any) {
