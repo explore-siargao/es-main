@@ -95,14 +95,20 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.transmission = transmission || rental.transmission
         ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
         rental.ids = rental.ids
+         // Generate the name based on year, make, modelBadge, and transmission
+         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
+         const nameBase = `${year} ${make} ${modelBadge} ${transShort}`
         if (rental.qty) {
           for (let i = 0; i < rental.qty; i++) {
-            if (rental.ids[i] === undefined) {
-              const objectId = new mongoose.Types.ObjectId()
-              rental.ids.push(objectId)
+            if (!rental.ids[i]) {
+              rental.ids.push({
+                _id: new mongoose.Types.ObjectId(),
+                name: `${nameBase} ${i + 1}`,
+              })
             }
           }
         }
+          
       } else if (category === 'Motorbike' || category === 'Bicycle') {
         rental.category =
           rental.category === '' || rental.category === null
@@ -119,11 +125,17 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.year = category === 'Motorbike' ? year || rental.year : null
         rental.qty = qty || rental.qty
         rental.ids = rental.ids
+         // Generate the name based on year, make, modelBadge, and transmission
+         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
+         const nameBase =  rental.category==="Motorbike" ?`${year} ${make} ${modelBadge} ${transShort}`: rental.make
+
         if (rental.qty) {
-          for (let i = 0; i < rental.qty; i++) {
-            if (rental.ids[i] === undefined) {
-              const objectId = new mongoose.Types.ObjectId()
-              rental.ids.push(objectId)
+         for (let i = 0; i < rental.qty; i++) {
+            if (!rental.ids[i]) {
+              rental.ids.push({
+                _id: new mongoose.Types.ObjectId(),
+                name: `${nameBase} ${i + 1}`,
+              })
             }
           }
         }

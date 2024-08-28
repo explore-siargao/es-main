@@ -24,8 +24,10 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarCar from "../hooks/useGetCalendarCar"
+import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 
 const CarCalendarTable = () => {
+  const {mutate} = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -45,7 +47,7 @@ const CarCalendarTable = () => {
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
+  const [tempCarAbbr, setTempCarAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -220,7 +222,7 @@ const CarCalendarTable = () => {
 
   const handleEditRoom = (abbr: string) => {
     setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+    setTempCarAbbr(abbr)
   }
 
   const handleSaveRoom = (categoryName: string, carIndex: number) => {
@@ -233,7 +235,8 @@ const CarCalendarTable = () => {
       //@ts-ignore
       const car = category?.cars[carIndex]
       if (car) {
-        car.abbr = tempRoomAbbr
+        mutate({id:car.id, name:tempCarAbbr})
+        car.abbr = tempCarAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -331,9 +334,9 @@ const CarCalendarTable = () => {
                               {editingRoom === car.abbr ? (
                                 <Input
                                   type="text"
-                                  value={tempRoomAbbr}
+                                  value={tempCarAbbr}
                                   onChange={(e) =>
-                                    setTempRoomAbbr(e.target.value)
+                                    setTempCarAbbr(e.target.value)
                                   }
                                   autoFocus
                                   className="mr-2"

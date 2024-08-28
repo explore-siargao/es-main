@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
-import { dbRentals, dbReservations } from '@repo/database'
+import { dbProperties, dbRentals, dbReservations } from '@repo/database'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 
 const response = new ResponseService()
 
@@ -55,99 +56,98 @@ const hasDateConflict = (
 }
 
 export const getCarCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
+  const startDate = new Date(req.query.startDate as string);
+  const endDate = new Date(req.query.endDate as string);
+
   try {
-    //Retrieve all bicycle rentals by host
+    // Retrieve all car rentals by host
     const carRentals = await dbRentals
-      .find({ category: 'Car', host: res.locals.user.id })
-      .populate('pricing')
-      .populate('pricing')
+      .find({ category: "Car", host: res.locals.user.id })
+      .populate("pricing");
 
     if (!carRentals.length) {
       return res.json(
         response.success({
           items: [],
-          message: 'No car rentals found.',
+          message: "No car rentals found.",
         })
-      )
+      );
     }
 
-    // Extract all ids from bicycle rentals
-    const allRentalIds = carRentals.flatMap((rental) => rental.ids)
+    // Extract all rental IDs from the `ids` array in car rentals
+    const allRentalIds = carRentals.flatMap((rental) => rental.ids.map((idObj) => idObj._id));
 
+    // Find reservations that overlap with the given date range and match the rental IDs
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest') // Ensure guest field is populated
+      .populate("guest");
 
-    //Structure the data in the specified format
-    const items: any = carRentals.map((rental) => {
-      const transmission = rental.transmission === 'Automatic' ? 'AT' : 'MT'
-      const cars: Car[] = rental.ids.map((id, index) => {
-        const abbr = `${rental.year + ' ' + rental.make + ' ' + rental.modelBadge + ' ' + transmission} ${index + 1}`
-        return {
-          abbr,
-          status: 'available',
+    // Structure the data in the specified format
+    const items = carRentals.map((rental) => {
+      const cars = rental.ids.map((idObj) => {
+        
+         return {
+          id:idObj._id,
+          abbr: idObj.name ? idObj.name : "Unknown",
+          status: "available",
           reservations: [],
-        }
-      })
+        };
+      });
 
-      //Distribute reservations across bicycles
+      // Distribute reservations across cars
       reservations.forEach((reservation: any) => {
         if (reservation.guest) {
           const reservationItem: Reservation = {
-            name:
-              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
+            name: `${reservation.guest.firstName} ${reservation.guest.lastName}`,
             startDate: reservation.startDate ?? new Date(),
             endDate: reservation.endDate ?? new Date(),
             guestCount: reservation.guestCount ?? 0,
-          }
+          };
 
           for (let i = 0; i < cars.length; i++) {
-            const car = cars[i] // Store the current bicycle in a local variable
+            const car = cars[i];
 
-            // Ensure the car is not undefined
             if (car) {
-              const currentReservations = car.reservations ?? [] // Ensure it's an array
+              const currentReservations = car.reservations ?? [];
 
               if (!hasDateConflict(currentReservations, reservationItem)) {
-                car.reservations.push(reservationItem) // Access the reservations array
-                car.status = 'occupied' // Update the status
-                break // Exit the loop after assigning
+                //@ts-ignore
+                car.reservations.push(reservationItem);
+                car.status = "occupied";
+                break; // Exit the loop after assigning
               }
             }
           }
         }
-      })
+      });
 
       return {
-        name:
-          `${rental.year + ' ' + rental.make + ' ' + rental.modelBadge + ' ' + transmission}` ??
-          'Unknown', // Ensure name is always a string
+        name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
-        cars,
-      }
-    })
+        price: rental.pricing?.dayRate ?? 0,
+        cars: cars.filter((car) => car.abbr !== "Unknown")
+      };
+    });
 
     res.json(
       response.success({
         items,
         allItemCount: items.length,
-        message: 'Cars calendar fetched successfully.',
+        message: "Cars calendar fetched successfully.",
       })
-    )
+    );
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message || 'Unknown error occurred.',
+        message: err.message || "Unknown error occurred.",
       })
-    )
+    );
   }
-}
+};
+
 
 export const getBikeCalendar = async (req: Request, res: Response) => {
   const startDate = new Date(req.query.startDate as string)
@@ -156,7 +156,6 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     //Retrieve all bicycle rentals by host
     const bicycleRentals = await dbRentals
       .find({ category: 'Bicycle', host: res.locals.user.id })
-      .populate('pricing')
       .populate('pricing')
 
     if (!bicycleRentals.length) {
@@ -180,14 +179,16 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
 
     //Structure the data in the specified format
     const items: any = bicycleRentals.map((rental) => {
-      const bicycles: Bicycle[] = rental.ids.map((id, index) => {
-        const abbr = `${rental.make} ${index + 1}`
+      const bicycles:Bicycle[] = rental.ids.map((idObj) => {
+        
         return {
-          abbr,
-          status: 'available',
-          reservations: [],
-        }
-      })
+         id:idObj._id,
+         abbr: idObj.name ? idObj.name : "Unknown",
+         status: "available",
+         reservations: [],
+       };
+     });
+
 
       //Distribute reservations across bicycles
       reservations.forEach((reservation: any) => {
@@ -221,7 +222,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
         name: rental.make ?? 'Unknown', // Ensure name is always a string
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
-        bicycles,
+        bicycles: bicycles.filter((bike) => bike.abbr !== "Unknown")
       }
     })
 
@@ -272,14 +273,15 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
 
     //Structure the data in the specified format
     const items: any = motorcycleRentals.map((rental) => {
-      const motorcycles: Bicycle[] = rental.ids.map((id, index) => {
-        const abbr = `${rental.make} ${rental.modelBadge} ${index + 1}`
+      const motorcycles:Bicycle[] = rental.ids.map((idObj) => {
+        
         return {
-          abbr,
-          status: 'available',
-          reservations: [],
-        }
-      })
+         id:idObj._id,
+         abbr: idObj.name ? idObj.name : "Unknown",
+         status: "available",
+         reservations: [],
+       };
+     });
 
       //Distribute reservations across motorcycle
       reservations.forEach((reservation: any) => {
@@ -310,10 +312,10 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       })
 
       return {
-        name: rental.make + ' ' + rental.modelBadge ?? 'Unknown', // Ensure name is always a string
+        name: rental.year+' '+rental.make + ' ' + rental.modelBadge +' '+ `${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ?? 'Unknown', // Ensure name is always a string
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
-        motorcycles,
+        motorcycles: motorcycles.filter((motor) => motor.abbr !== "Unknown")
       }
     })
 
@@ -331,4 +333,23 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       })
     )
   }
+}
+
+export const editChildName = async(req:Request, res:Response)=>{
+  const {id,name} = req.body
+  try {
+    const updateVehicle = await dbRentals.findOneAndUpdate(
+      {"ids._id":id},
+      {$set:{"ids.$.name": name}},
+      {new:true}
+    )
+    if (!updateVehicle) {
+      return res.json(response.error({ message: "Rental vehicle not found" }));
+    }
+    return res.json(response.success({item:updateVehicle, message:"Successfully changed rental vehicle name"}))
+
+  } catch (err:any) {
+    return res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+  }
+
 }
