@@ -42,7 +42,7 @@ const topLinks = [
   {
     title: "Reservations",
     icon: <LucideListChecks className="h-5 w-5" />,
-    link: "/hosting/reservations/calendar/properties/rooms",
+    link: "/hosting/reservations/calendar/properties",
     basePath: "/hosting/reservations",
   },
   {

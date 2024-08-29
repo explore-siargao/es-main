@@ -9,7 +9,7 @@ const reservationCalendarTabs = [
   {
     name: "Properties",
     icon: <LucideBuilding2 className="w-5" />,
-    link: "/hosting/reservations/calendar/properties/rooms",
+    link: "/hosting/reservations/calendar/properties",
   },
   {
     name: "Rentals",
