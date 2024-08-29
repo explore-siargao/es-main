@@ -314,3 +314,40 @@ export const deleteRental = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getRentalCounts = async (req: Request, res: Response) => {
+  try {
+    const hostId = res.locals.user?.id
+
+    const motorbikeCount = await dbRentals.countDocuments({
+      category: 'Motorbike',
+      host: hostId,
+    })
+
+    const bicycleCount = await dbRentals.countDocuments({
+      category: 'Bicycle',
+      host: hostId,
+    })
+
+    const carCount = await dbRentals.countDocuments({
+      category: 'Car',
+      host: hostId,
+    })
+
+    return res.json(
+      response.success({
+        item: {
+          cars: carCount,
+          motorbikes: motorbikeCount,
+          bicycles: bicycleCount,
+        },
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}

@@ -78,10 +78,18 @@ const rentals = new Schema({
     type: [String],
     default: [],
   },
-  ids: {
-    type: [mongoose.Schema.ObjectId],
-    default: [],
-  },
+  ids: [
+    {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),

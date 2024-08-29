@@ -7,6 +7,7 @@ import {
   getRental,
   deleteRental,
   getAllRentalsByHostId,
+  getRentalCounts,
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
@@ -28,6 +29,7 @@ import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
 import {
+  editChildName,
   getBikeCalendar,
   getCarCalendar,
   getMotorcycleCalendar,
@@ -36,6 +38,14 @@ import {
 const router = express.Router()
 
 //Rentals
+router.patch(
+  '/update-vehicle',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editChildName
+)
+
 router.get('/', isOriginValid, isUserLoggedIn, getAllRentals)
 
 router.get(
@@ -238,5 +248,8 @@ router.get(
   isCsrfTokenValid,
   getCarCalendar
 )
+
+// rental counts
+router.get('/counts/all', isOriginValid, isUserLoggedIn, getRentalCounts)
 
 export default router

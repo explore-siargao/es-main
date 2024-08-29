@@ -10,6 +10,7 @@ export interface Booking {
   start_date: string
   end_date: string
   guest_count: number
+  status: string
 }
 
 export interface SelectedReservation {
@@ -45,6 +46,7 @@ export interface Bed {
 }
 
 export interface Rental {
+  id: string
   abbr: string
   status: string
   reservations: Reservation[]
