@@ -9,16 +9,18 @@
           "status": "occupied",
           "bookings": [
             {
-              "name": "Alice",
-              "start_date": "2024-06-03",
-              "end_date": "2024-06-04",
-              "guest_count": 1
+              "name": "Jett",
+              "start_date": "2024-08-04",
+              "end_date": "2024-08-05",
+              "guest_count": 1,
+              "status": "confirmed"
             },
             {
-              "name": "Bob",
-              "start_date": "2024-06-04",
-              "end_date": "2024-06-05",
-              "guest_count": 2
+              "name": "Yoru",
+              "start_date": "2024-08-06",
+              "end_date": "2024-08-10",
+              "guest_count": 2,
+              "status": "checked-out"
             }
           ]
         },
@@ -32,10 +34,11 @@
           "status": "occupied",
           "bookings": [
             {
-              "name": "Charlie",
-              "start_date": "2024-06-05",
-              "end_date": "2024-06-06",
-              "guest_count": 3
+              "name": "Reyna",
+              "start_date": "2024-08-05",
+              "end_date": "2024-08-06",
+              "guest_count": 3,
+              "status": "out-of-service"
             }
           ]
         },
@@ -55,10 +58,11 @@
           "status": "available",
           "bookings": [
             {
-              "name": "David",
-              "start_date": "2024-06-12",
-              "end_date": "2024-06-13",
-              "guest_count": 1
+              "name": "Brimstone",
+              "start_date": "2024-08-12",
+              "end_date": "2024-08-14",
+              "guest_count": 1,
+              "status": "in-house"
             }
           ]
         },
@@ -83,16 +87,18 @@
           "status": "occupied",
           "bookings": [
             {
-              "name": "Eve",
-              "start_date": "2024-05-29",
-              "end_date": "2024-05-30",
-              "guest_count": 1
+              "name": "Fade",
+              "start_date": "2024-08-10",
+              "end_date": "2024-08-14",
+              "guest_count": 1,
+              "status": "blocked-date"
             },
             {
-              "name": "Frank",
-              "start_date": "2024-07-06",
-              "end_date": "2024-07-07",
-              "guest_count": 1
+              "name": "Raze",
+              "start_date": "2024-08-01",
+              "end_date": "2024-08-03",
+              "guest_count": 1,
+              "status": "other"
             }
           ]
         },
