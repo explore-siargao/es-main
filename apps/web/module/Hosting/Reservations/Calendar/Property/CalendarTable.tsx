@@ -36,10 +36,6 @@ const BedCalendarTable = () => {
     endDate.toLocaleDateString()
   )
 
-  useEffect(() => {
-    console.log(sampleData)
-  }, [sampleData, isPending])
-
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
