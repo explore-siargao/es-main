@@ -20,6 +20,7 @@ interface MarkerLocation {
   name: string
   surfingLevel?: string
   cuisine?: string
+  isCity?: boolean
 }
 
 interface MultipleMarkerMapProps {
@@ -33,6 +34,7 @@ interface MultipleMarkerMapProps {
   scrollWheelZoomEnabled?: boolean
   imagePlace?: string
   isSurfGuide?: boolean
+  iconMarker?: "surf" | "restaurant" | "island"
 }
 
 const markerIcon = new Icon({
@@ -41,6 +43,55 @@ const markerIcon = new Icon({
   iconAnchor: [18, 18],
   popupAnchor: [0, -20],
 })
+
+const surfMarkerIcon = new Icon({
+  iconUrl: `${WEB_URL}/surf-map-icon.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const restaurantMarkerIcon = new Icon({
+  iconUrl: `${WEB_URL}/restaurant-map-icon.png`,
+  iconSize: [28, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const islandMarkerIcon1 = new Icon({
+  iconUrl: `${WEB_URL}/island-map-icon-1.png`,
+  iconSize: [30, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const islandMarkerIcon2 = new Icon({
+  iconUrl: `${WEB_URL}/island-map-icon-2.png`,
+  iconSize: [28, 35],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20],
+})
+
+const getMarkerIcon = (
+  iconMarker: string | undefined,
+  isCity: boolean | undefined
+) => {
+  let markerIconToUse
+
+  if (iconMarker === "surf") {
+    markerIconToUse = surfMarkerIcon
+  } else if (iconMarker === "restaurant") {
+    markerIconToUse = restaurantMarkerIcon
+  } else if (iconMarker === "island" && isCity) {
+    markerIconToUse = islandMarkerIcon2
+  } else if (iconMarker === "island" && !isCity) {
+    markerIconToUse = islandMarkerIcon1
+  } else {
+    markerIconToUse = markerIcon
+  }
+
+  return markerIconToUse
+}
 
 const MultipleMarkerMap = ({
   center,
@@ -53,6 +104,7 @@ const MultipleMarkerMap = ({
   scrollWheelZoomEnabled,
   imagePlace,
   isSurfGuide,
+  iconMarker,
 }: MultipleMarkerMapProps) => {
   const { setCoordinates } = useCoordinatesStore()
   const [placeNames, setPlaceNames] = useState<{ [key: number]: string }>({})
@@ -153,7 +205,7 @@ const MultipleMarkerMap = ({
 
                 return (
                   <Marker
-                    icon={markerIcon}
+                    icon={getMarkerIcon(iconMarker, location.isCity)}
                     position={[location.lat, location.long] as LatLngTuple}
                     draggable={false}
                     key={index}

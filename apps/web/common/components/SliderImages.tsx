@@ -130,7 +130,7 @@ const Slider = ({ images }: SliderProps) => {
                 src={
                   isOldFormat(imageData) ? imageData.image.url : imageData.url
                 }
-                className="block h-full w-full object-cover"
+                className="block h-44 w-full object-cover"
                 alt={
                   isOldFormat(imageData)
                     ? imageData.image.alt || ""

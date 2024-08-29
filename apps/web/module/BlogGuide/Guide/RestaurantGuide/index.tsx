@@ -123,7 +123,7 @@ export const RestaurantGuide = () => {
   }, [])
 
   return (
-    <WidthWrapper width="small" className="mt-24 md:mt-36 lg:mt-44">
+    <WidthWrapper width="medium" className="mt-10">
       {guideDataLoading && <Spinner variant="primary" middle />}
       {!guideDataLoading && guideData && (
         <>
