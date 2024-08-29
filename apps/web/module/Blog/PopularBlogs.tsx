@@ -1,43 +1,50 @@
 "use client"
-import { useParams } from "next/navigation"
 import React from "react"
 import { Separator } from "@/common/components/ui/Separator"
-
-import data from "./data.json"
 import GridImage from "./components/GridImage"
 
-function PopularBlogs() {
-  const params = useParams()
-  const travelName = params.travelName
-  const images = data.travelBlog.images
+type T_Props = {
+  data: {
+    title: string
+    image: {
+      alt: string
+      filename: string
+    }
+  }[]
+}
+
+function PopularBlogs({ data }: T_Props) {
   return (
     <div className="grid w-60">
       <div>
         <h1 className=" text-xl font-bold">Popular Blogs</h1>
-        <Separator orientation="horizontal" className="mb-5 bg-gray-300" />
-        <GridImage
-          src={images[0]?.fileKey}
-          alt={String(images[0]?.alt)}
-          text="Surfing Paradise: Riding the Waves of Cloud Nine"
-        />
-        <Separator orientation="horizontal" className="my-5 bg-gray-300" />
-        <GridImage
-          src={images[0]?.fileKey}
-          alt={String(images[0]?.alt)}
-          text="Sunrise to Sunset: A Day in the Life of Siargao"
-        />
-        <Separator orientation="horizontal" className="my-5 bg-gray-300" />
-        <GridImage
-          src={images[0]?.fileKey}
-          alt={String(images[0]?.alt)}
-          text="Culinary Delights of Siargao: A Foodie's Journey"
-        />
-        <Separator orientation="horizontal" className="my-5 bg-gray-300" />
-        <GridImage
-          src={images[0]?.fileKey}
-          alt={String(images[0]?.alt)}
-          text="Beyond the Beach: Discovering Siargao's Inland Treasures"
-        />
+        <div
+          className="max-h-96 overflow-y-auto space-y-5"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+        >
+          <div
+            style={{
+              overflow: "hidden",
+            }}
+          >
+            {data.map((item, index) => (
+              <div key={item.image.alt}>
+                <Separator
+                  orientation="horizontal"
+                  className={`${index > 0 ? "my-5" : "mb-5"} bg-gray-300`}
+                />
+                <GridImage
+                  src={item.image.filename}
+                  alt={item.image.alt}
+                  text={item.title}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

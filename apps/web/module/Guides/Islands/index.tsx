@@ -16,16 +16,19 @@ const IslandsGuide = () => {
       lat: 9.67361,
       long: 125.94833,
       name: "Sohoton Cove National Park",
+      isCity: true,
     },
     {
       lat: 9.7411837,
       long: 126.1640441,
       name: "Daku Island",
+      isCity: false,
     },
     {
       lat: 9.765,
       long: 126.16778,
       name: "Guyam Island",
+      isCity: false,
     },
   ]
 
@@ -58,6 +61,7 @@ const IslandsGuide = () => {
         contentTitle="Island in Siargao"
         contentText={contentText}
         markers={markers}
+        iconMarker="island"
       />
       <Separator orientation="horizontal" className="my-12 bg-gray-300" />
       <Guides title="Island Guides" guides={guides} />
