@@ -63,9 +63,9 @@ const Sidebar = ({
           <ChevronRight />
         </Button>
       </div>
-      <div className="normal-case">
+      {/* <div className="normal-case">
         <CalendarTab />
-      </div>
+      </div> */}
     </div>
   )
 }
