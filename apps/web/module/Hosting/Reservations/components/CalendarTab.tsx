@@ -1,10 +1,14 @@
 import Tabs from "@/common/components/Tabs"
 import { usePathname } from "next/navigation"
+import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 
 const CalendarTab = () => {
   const pathName = usePathname()
   const routeNames = pathName.split("/")
   const pathType = routeNames[4]
+
+  const { data: rentalCountsData, isPending: rentalCountsPending } =
+    useGetRentalCounts()
 
   let tabs
 
@@ -23,20 +27,28 @@ const CalendarTab = () => {
     },
   ]
 
-  const rentalTabs = [
-    {
-      name: "Bicycles",
-      link: "/hosting/reservations/calendar/rentals/bicycles",
-    },
-    {
-      name: "Motorcycles",
-      link: "/hosting/reservations/calendar/rentals/motorcycles",
-    },
-    {
-      name: "Cars",
-      link: "/hosting/reservations/calendar/rentals/cars",
-    },
-  ]
+  const rentalTabs = []
+
+  if (rentalCountsData && !rentalCountsPending) {
+    if (rentalCountsData?.item?.cars > 0) {
+      rentalTabs.push({
+        name: "Cars",
+        link: "/hosting/reservations/calendar/rentals/cars",
+      })
+    }
+    if (rentalCountsData?.item?.motorbikes > 0) {
+      rentalTabs.push({
+        name: "Motorcycles",
+        link: "/hosting/reservations/calendar/rentals/motorcycles",
+      })
+    }
+    if (rentalCountsData?.item?.bicycles > 0) {
+      rentalTabs.push({
+        name: "Bicycles",
+        link: "/hosting/reservations/calendar/rentals/bicycles",
+      })
+    }
+  }
 
   if (pathType === "properties") {
     tabs = propertyTabs
@@ -44,7 +56,16 @@ const CalendarTab = () => {
     tabs = rentalTabs
   }
 
-  return <>{pathType === "activities" ? <></> : <Tabs tabs={tabs ?? []} />}</>
+  return (
+    <>
+      {pathType === "activities" ? (
+        <></>
+      ) : (
+        // @ts-ignore
+        tabs.length > 0 && <Tabs tabs={tabs} />
+      )}
+    </>
+  )
 }
 
 export default CalendarTab

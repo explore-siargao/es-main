@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.0](https://github.com/explore-siargao/es-main/compare/v0.13.0...v0.14.0) (2024-08-29)
+
+### Features
+
+- **web:** Added divider on user dropdown menu on header ([fa12a2e](https://github.com/explore-siargao/es-main/commit/fa12a2ea701646e37d882a067e3d8632d731c6c0))
+- **web:** Added legends for reservation calendar ([f2e1678](https://github.com/explore-siargao/es-main/commit/f2e16781a24fa39c539282e99fdcff3f79641342))
+- **web:** Changed calendar rentals tab into dynamic ([a300181](https://github.com/explore-siargao/es-main/commit/a30018120741ea42971c41b4ef1f141c5810cc5c),[1ec2500](https://github.com/explore-siargao/es-main/commit/1ec2500657f2a392b9c40a3d48007831337e743d),[dd5e145](https://github.com/explore-siargao/es-main/commit/dd5e14526bb8d435fc407436ba517186d138bde3))
+
 ## [0.13.0](https://github.com/explore-siargao/es-main/compare/v0.12.0...v0.13.0) (2024-08-25)
 
 ### Features
