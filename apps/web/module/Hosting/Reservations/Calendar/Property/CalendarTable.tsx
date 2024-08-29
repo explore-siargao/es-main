@@ -26,7 +26,6 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
-import useGetCalendarBed from "../hooks/useGetCalendarBed"
 
 const BedCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -36,10 +35,10 @@ const BedCalendarTable = () => {
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
-  // const { data: sampleData, isPending } = useGetCalendarBed(
-  //   startDate.toLocaleDateString(),
-  //   endDate.toLocaleDateString()
-  // )
+
+  useEffect(() => {
+    console.log(sampleData)
+  }, [sampleData, isPending])
 
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
@@ -66,7 +65,7 @@ const BedCalendarTable = () => {
   })
   const daysPerPage = 13
   console.log(sampleData)
- 
+
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
@@ -107,82 +106,101 @@ const BedCalendarTable = () => {
 
   useEffect(() => {
     const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1);
+      const calendarEnd = addDays(startDate, daysPerPage - 1)
 
       const newFilteredData = {
         items: sampleData?.items?.map((item) => {
           // Transform bookableUnitTypes into the desired structure
-          const transformedBookableUnitTypes = item.bookableUnitTypes.map((unitType: { beds: any[]; rooms: any[]; wholePlaces: any[] }) => {
-            // Depending on the category of bookable units, flatten them into bookableUnitTypes
-            const bookableUnits = [];
+          const transformedBookableUnitTypes = item.bookableUnitTypes
+            .map(
+              (unitType: { beds: any[]; rooms: any[]; wholePlaces: any[] }) => {
+                // Depending on the category of bookable units, flatten them into bookableUnitTypes
+                const bookableUnits = []
 
-            if (unitType.beds) {
-              bookableUnits.push(
-                ...unitType.beds.map((bed) => ({
-                  abbr: bed.abbr,
-                  status: bed.status,
-                  reservations: bed.reservations.filter((reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
-                    const bookingStart = new Date(reservation.startDate);
-                    const bookingEnd = new Date(reservation.endDate);
-                    return !(
-                      isAfter(bookingStart, calendarEnd) ||
-                      isBefore(bookingEnd, startDate)
-                    );
-                  }),
-                }))
-              );
-            }
+                if (unitType.beds) {
+                  bookableUnits.push(
+                    ...unitType.beds.map((bed) => ({
+                      abbr: bed.abbr,
+                      status: bed.status,
+                      reservations: bed.reservations.filter(
+                        (reservation: {
+                          startDate: string | number | Date
+                          endDate: string | number | Date
+                        }) => {
+                          const bookingStart = new Date(reservation.startDate)
+                          const bookingEnd = new Date(reservation.endDate)
+                          return !(
+                            isAfter(bookingStart, calendarEnd) ||
+                            isBefore(bookingEnd, startDate)
+                          )
+                        }
+                      ),
+                    }))
+                  )
+                }
 
-            if (unitType.rooms) {
-              bookableUnits.push(
-                ...unitType.rooms.map((room) => ({
-                  abbr: room.abbr,
-                  status: room.status,
-                  reservations: room.reservations.filter((reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
-                    const bookingStart = new Date(reservation.startDate);
-                    const bookingEnd = new Date(reservation.endDate);
-                    return !(
-                      isAfter(bookingStart, calendarEnd) ||
-                      isBefore(bookingEnd, startDate)
-                    );
-                  }),
-                }))
-              );
-            }
+                if (unitType.rooms) {
+                  bookableUnits.push(
+                    ...unitType.rooms.map((room) => ({
+                      abbr: room.abbr,
+                      status: room.status,
+                      reservations: room.reservations.filter(
+                        (reservation: {
+                          startDate: string | number | Date
+                          endDate: string | number | Date
+                        }) => {
+                          const bookingStart = new Date(reservation.startDate)
+                          const bookingEnd = new Date(reservation.endDate)
+                          return !(
+                            isAfter(bookingStart, calendarEnd) ||
+                            isBefore(bookingEnd, startDate)
+                          )
+                        }
+                      ),
+                    }))
+                  )
+                }
 
-            if (unitType.wholePlaces) {
-              bookableUnits.push(
-                ...unitType.wholePlaces.map((wholePlace) => ({
-                  abbr: wholePlace.abbr,
-                  status: wholePlace.status,
-                  reservations: wholePlace.reservations.filter((reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
-                    const bookingStart = new Date(reservation.startDate);
-                    const bookingEnd = new Date(reservation.endDate);
-                    return !(
-                      isAfter(bookingStart, calendarEnd) ||
-                      isBefore(bookingEnd, startDate)
-                    );
-                  }),
-                }))
-              );
-            }
+                if (unitType.wholePlaces) {
+                  bookableUnits.push(
+                    ...unitType.wholePlaces.map((wholePlace) => ({
+                      abbr: wholePlace.abbr,
+                      status: wholePlace.status,
+                      reservations: wholePlace.reservations.filter(
+                        (reservation: {
+                          startDate: string | number | Date
+                          endDate: string | number | Date
+                        }) => {
+                          const bookingStart = new Date(reservation.startDate)
+                          const bookingEnd = new Date(reservation.endDate)
+                          return !(
+                            isAfter(bookingStart, calendarEnd) ||
+                            isBefore(bookingEnd, startDate)
+                          )
+                        }
+                      ),
+                    }))
+                  )
+                }
 
-            return bookableUnits;
-          }).flat(); 
+                return bookableUnits
+              }
+            )
+            .flat()
 
           return {
-            name: item.propertyTitle, 
+            name: item.propertyTitle,
             price: 0,
-            bookableUnitTypes: transformedBookableUnitTypes, 
-          };
+            bookableUnitTypes: transformedBookableUnitTypes,
+          }
         }),
-      };
+      }
 
-      setTestData(newFilteredData);
-    };
+      setTestData(newFilteredData)
+    }
 
-    filterDataByDate();
-  }, [startDate, daysPerPage, sampleData?.items]);
+    filterDataByDate()
+  }, [startDate, daysPerPage, sampleData?.items])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -331,7 +349,7 @@ const BedCalendarTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {testData?.items?.map((category:any, index:number) => (
+                {testData?.items?.map((category: any, index: number) => (
                   <React.Fragment key={category.name}>
                     <tr
                       className="hover:bg-gray-100 cursor-pointer"
@@ -383,90 +401,92 @@ const BedCalendarTable = () => {
                       })}
                     </tr>
                     {!collapsed[category.name] &&
-                      category?.bookableUnitTypes?.map((bed: Room, bedIndex: number) => (
-                        <tr
-                          key={bed.abbr}
-                          className="hover:bg-gray-100 relative"
-                        >
-                          <td className="border p-4 text-left border-l-0">
-                            <div className="flex justify-between items-center">
-                              {editingRoom === bed.abbr ? (
-                                <Input
-                                  type="text"
-                                  value={tempRoomAbbr}
-                                  onChange={(e) =>
-                                    setTempRoomAbbr(e.target.value)
-                                  }
-                                  autoFocus
-                                  className="mr-2"
-                                  label={""}
-                                />
-                              ) : (
-                                <span>{bed.abbr}</span>
-                              )}
-                              {editingRoom === bed.abbr ? (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() =>
-                                    handleSaveRoom(category.name, bedIndex)
-                                  }
-                                >
-                                  <Save className="text-gray-500 w-5" />
-                                </Button>
-                              ) : (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() => handleEditRoom(bed.abbr)}
-                                >
-                                  <Edit3 className="text-gray-500 w-5" />
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                          <td
-                            colSpan={daysPerPage}
-                            className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                      category?.bookableUnitTypes?.map(
+                        (bed: Room, bedIndex: number) => (
+                          <tr
+                            key={bed.abbr}
+                            className="hover:bg-gray-100 relative"
                           >
-                            {bed.reservations.map((booking: Reservation) => {
-                              const style = getBookingStyle(
-                                startDate,
-                                daysPerPage,
-                                booking
-                              )
-                              if (!style) return null
+                            <td className="border p-4 text-left border-l-0">
+                              <div className="flex justify-between items-center">
+                                {editingRoom === bed.abbr ? (
+                                  <Input
+                                    type="text"
+                                    value={tempRoomAbbr}
+                                    onChange={(e) =>
+                                      setTempRoomAbbr(e.target.value)
+                                    }
+                                    autoFocus
+                                    className="mr-2"
+                                    label={""}
+                                  />
+                                ) : (
+                                  <span>{bed.abbr}</span>
+                                )}
+                                {editingRoom === bed.abbr ? (
+                                  <Button
+                                    size={"icon"}
+                                    variant={"link"}
+                                    onClick={() =>
+                                      handleSaveRoom(category.name, bedIndex)
+                                    }
+                                  >
+                                    <Save className="text-gray-500 w-5" />
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size={"icon"}
+                                    variant={"link"}
+                                    onClick={() => handleEditRoom(bed.abbr)}
+                                  >
+                                    <Edit3 className="text-gray-500 w-5" />
+                                  </Button>
+                                )}
+                              </div>
+                            </td>
+                            <td
+                              colSpan={daysPerPage}
+                              className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                            >
+                              {bed.reservations.map((booking: Reservation) => {
+                                const style = getBookingStyle(
+                                  startDate,
+                                  daysPerPage,
+                                  booking
+                                )
+                                if (!style) return null
 
-                              const { startCol, colSpan } = style
+                                const { startCol, colSpan } = style
 
-                              return (
-                                <div
-                                  key={booking.name}
-                                  style={{
-                                    left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                    width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                                  }}
-                                  onClick={() => {
-                                    setIsReservationModalOpen(true)
-                                    setSelectedReservation({
-                                      beds: bed.abbr,
-                                      reservation: booking,
-                                    })
-                                  }}
-                                  className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
-                                >
-                                  <span className="text-white text-sm truncate px-2">
-                                    {booking.name}
-                                  </span>
-                                </div>
-                              )
-                            })}
-                            <div className="absolute inset-0 z-10 flex h-full">
-                              {generateCalendarRowBorder()}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                                return (
+                                  <div
+                                    key={booking.name}
+                                    style={{
+                                      left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                      width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                    }}
+                                    onClick={() => {
+                                      setIsReservationModalOpen(true)
+                                      setSelectedReservation({
+                                        beds: bed.abbr,
+                                        reservation: booking,
+                                      })
+                                    }}
+                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                  >
+                                    <span className="text-white text-sm truncate px-2">
+                                      {booking.name}
+                                    </span>
+                                  </div>
+                                )
+                              })}
+                              <div className="absolute inset-0 z-10 flex h-full">
+                                {generateCalendarRowBorder()}
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      )}
                   </React.Fragment>
                 ))}
               </tbody>

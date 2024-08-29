@@ -377,6 +377,30 @@ export const updateWholePlaceUnitBasicInfo = async (
       )
     }
 
+    // Step 1: Retrieve the current document
+    const currentWholePlace = await dbBookableUnitTypes.findOne(
+      { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
+      { ids: 1 } // Only retrieve the ids field
+    )
+
+    if (!currentWholePlace) {
+      // Handle case where the document is not found
+      return res.status(404).json({ error: 'Whole place not found' })
+    }
+
+    // Step 2: Calculate the number of new ObjectIds needed
+    const currentIdsCount = currentWholePlace.ids.length
+    const newIdsNeeded = qty - currentIdsCount
+
+    let newIds: mongoose.Types.ObjectId[] = []
+    if (newIdsNeeded > 0) {
+      newIds = Array.from(
+        { length: newIdsNeeded },
+        () => new mongoose.Types.ObjectId()
+      )
+    }
+
+    // Step 3: Update data
     const updateWholePlaceBasicInfo =
       await dbBookableUnitTypes.findOneAndUpdate(
         { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
@@ -394,6 +418,11 @@ export const updateWholePlaceUnitBasicInfo = async (
             qty: qty,
             updatedAt: Date.now(),
           },
+          ...(newIdsNeeded > 0 && {
+            $push: {
+              ids: { $each: newIds },
+            },
+          }),
         },
         { new: true }
       )
