@@ -27,7 +27,16 @@ export default buildConfig({
     api: "/cms/api",
   },
   editor: slateEditor({}),
-  collections: [Blogs, Surfs, Restaurants, Locations, Legal, Media, Categories, Users],
+  collections: [
+    Blogs,
+    Surfs,
+    Restaurants,
+    Locations,
+    Legal,
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [process.env.PAYLOAD_URL || "", process.env.WEB_URL || ""].filter(
     Boolean
   ),
