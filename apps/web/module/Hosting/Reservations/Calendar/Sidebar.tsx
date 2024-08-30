@@ -1,8 +1,6 @@
 import { Button } from "@/common/components/ui/Button"
-import { Input } from "@/common/components/ui/Input"
 import {
   Calendar,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   LayoutList,
@@ -63,6 +61,7 @@ const Sidebar = ({
           <ChevronRight />
         </Button>
       </div>
+
       <div className="normal-case">
         <CalendarTab />
       </div>

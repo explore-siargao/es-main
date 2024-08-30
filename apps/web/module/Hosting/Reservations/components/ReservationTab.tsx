@@ -2,7 +2,7 @@ import { LucideBuilding2, LucideCarFront, LucidePalmtree } from "lucide-react"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 import Tabs from "@/common/components/Tabs"
 
-const ReservationCalendarTab = () => {
+const ReservationTab = () => {
   const { data: rentalCountsData, isPending: rentalCountsPending } =
     useGetRentalCounts()
 
@@ -29,7 +29,7 @@ const ReservationCalendarTab = () => {
     {
       name: "Properties",
       icon: <LucideBuilding2 className="w-5" />,
-      link: "/hosting/reservations/calendar/properties/rooms",
+      link: "/hosting/reservations/calendar/properties",
     },
     {
       name: "Rentals",
@@ -46,4 +46,4 @@ const ReservationCalendarTab = () => {
   return <Tabs tabs={tabs} />
 }
 
-export default ReservationCalendarTab
+export default ReservationTab

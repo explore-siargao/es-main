@@ -1,13 +1,13 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import { useRouter } from "next/navigation"
-import { Button } from "@/common/components/ui/Button"
+import CalendarTable from "./CalendarTable"
 import { Table } from "lucide-react"
-import MotorCalendarTable from "./MotorCalendarTable"
+import { Button } from "@/common/components/ui/Button"
+import { useRouter } from "next/navigation"
 import ReservationTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
 
-const MotorReservationCalendar = () => {
+const ReservationCalendar = () => {
   const router = useRouter()
   return (
     <div className="mt-20">
@@ -34,7 +34,7 @@ const MotorReservationCalendar = () => {
         </div>
 
         <div className="flex mt-2">
-          <MotorCalendarTable />
+          <CalendarTable />
         </div>
 
         <div className="fixed bottom-4 right-4 z-20">
@@ -45,4 +45,4 @@ const MotorReservationCalendar = () => {
   )
 }
 
-export default MotorReservationCalendar
+export default ReservationCalendar

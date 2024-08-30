@@ -5,6 +5,9 @@ import { useState } from "react"
 
 const CalendarLegend = () => {
   const [legendModalOpen, setLegendModalOpen] = useState(false)
+
+  const date = new Date()
+
   return (
     <>
       <div
@@ -21,6 +24,7 @@ const CalendarLegend = () => {
       <LegendModal
         isOpen={legendModalOpen}
         onClose={() => setLegendModalOpen(false)}
+        date={date}
       />
     </>
   )

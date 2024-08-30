@@ -19,22 +19,22 @@ import {
   SelectedReservation,
   SampleData,
   Reservation,
-  Rental,
+  Room,
+  Bed,
+  WholePlace,
 } from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useGetCalendarBike from "../hooks/useGetCalendarBike"
-import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 
-const BikeCalendarTable = () => {
+const BedCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
-  const { data: sampleData, isPending } = useGetCalendarBike(
+  const { data: sampleData, isPending } = useGetCalendarProperty(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
-  const { mutate } = useUpdateVehicleName()
 
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
@@ -47,8 +47,9 @@ const BikeCalendarTable = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
+  const [testData, setTestData] = useState<any>()
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
-  const [tempBikeAbbr, setTempBikeAbbr] = useState<string>("")
+  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -82,11 +83,11 @@ const BikeCalendarTable = () => {
       //@ts-ignore
       const selectedCategory = category[0]
       if (selectedCategory) {
-        const bicycle = selectedCategory?.bicycles?.find(
-          (rm) => rm.abbr === newReservation.bicycle
+        const bed = selectedCategory?.beds?.find(
+          (rm) => rm.abbr === newReservation.bed
         )
-        if (bicycle) {
-          bicycle.reservations.push(newReservation)
+        if (bed) {
+          bed.reservations.push(newReservation)
           setFilteredData(updatedData)
           toast.success("Reservation added successfully")
           reset()
@@ -101,28 +102,100 @@ const BikeCalendarTable = () => {
   useEffect(() => {
     const filterDataByDate = () => {
       const calendarEnd = addDays(startDate, daysPerPage - 1)
+
       const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          bicycles: category.bicycles.map((bicycle: Rental) => ({
-            ...bicycle,
-            reservations: bicycle.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
+        items: sampleData?.items?.map((item) => {
+          // Transform bookableUnitTypes into the desired structure
+          const transformedBookableUnitTypes = item.bookableUnitTypes
+            .map(
+              (unitType: { beds: any[]; rooms: any[]; wholePlaces: any[] }) => {
+                // Depending on the category of bookable units, flatten them into bookableUnitTypes
+                const bookableUnits = []
+
+                if (unitType.beds) {
+                  bookableUnits.push(
+                    ...unitType.beds.map((bed) => ({
+                      abbr: bed.abbr,
+                      status: bed.status,
+                      reservations: bed.reservations.filter(
+                        (reservation: {
+                          startDate: string | number | Date
+                          endDate: string | number | Date
+                        }) => {
+                          const bookingStart = new Date(reservation.startDate)
+                          const bookingEnd = new Date(reservation.endDate)
+                          return !(
+                            isAfter(bookingStart, calendarEnd) ||
+                            isBefore(bookingEnd, startDate)
+                          )
+                        }
+                      ),
+                    }))
+                  )
+                }
+
+                if (unitType.rooms) {
+                  bookableUnits.push(
+                    ...unitType.rooms.map((room) => ({
+                      abbr: room.abbr,
+                      status: room.status,
+                      reservations: room.reservations.filter(
+                        (reservation: {
+                          startDate: string | number | Date
+                          endDate: string | number | Date
+                        }) => {
+                          const bookingStart = new Date(reservation.startDate)
+                          const bookingEnd = new Date(reservation.endDate)
+                          return !(
+                            isAfter(bookingStart, calendarEnd) ||
+                            isBefore(bookingEnd, startDate)
+                          )
+                        }
+                      ),
+                    }))
+                  )
+                }
+
+                if (unitType.wholePlaces) {
+                  bookableUnits.push(
+                    ...unitType.wholePlaces.map((wholePlace) => ({
+                      abbr: wholePlace.abbr,
+                      status: wholePlace.status,
+                      reservations: wholePlace.reservations.filter(
+                        (reservation: {
+                          startDate: string | number | Date
+                          endDate: string | number | Date
+                        }) => {
+                          const bookingStart = new Date(reservation.startDate)
+                          const bookingEnd = new Date(reservation.endDate)
+                          return !(
+                            isAfter(bookingStart, calendarEnd) ||
+                            isBefore(bookingEnd, startDate)
+                          )
+                        }
+                      ),
+                    }))
+                  )
+                }
+
+                return bookableUnits
+              }
+            )
+            .flat()
+
+          return {
+            name: item.propertyTitle,
+            price: 0,
+            bookableUnitTypes: transformedBookableUnitTypes,
+          }
+        }),
       }
-      //@ts-ignore
-      setFilteredData(newFilteredData)
+
+      setTestData(newFilteredData)
     }
 
     filterDataByDate()
-  }, [startDate, sampleData?.items])
+  }, [startDate, daysPerPage, sampleData?.items])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -223,49 +296,23 @@ const BikeCalendarTable = () => {
 
   const handleEditRoom = (abbr: string) => {
     setEditingRoom(abbr)
-    setTempBikeAbbr(abbr)
+    setTempRoomAbbr(abbr)
   }
 
-  const handleSaveRoom = (categoryName: string, bikeIndex: number) => {
+  const handleSaveRoom = (categoryName: string, bedIndex: number) => {
     const newFilteredData = { ...filteredData }
     const category = newFilteredData?.items?.find(
       (category) => category.name === categoryName
     )
-
     if (category) {
       //@ts-ignore
-      const bicycle = category?.bicycles[bikeIndex]
-      if (bicycle) {
-        bicycle.abbr = tempBikeAbbr
+      const bed = category?.beds[bedIndex]
+      if (bed) {
+        bed.abbr = tempRoomAbbr
         setFilteredData(newFilteredData)
-        toast.success("Successfully changed rental vehicle name")
+        toast.success("Successfully changed room property name")
       } else {
-        toast.error("Rental vehicle not found in category")
-      }
-    } else {
-      toast.error("Category not found")
-    }
-
-    setEditingRoom(null)
-  }
-
-  const handleSaveVehicle = (categoryName: string, bikeIndex: number) => {
-    const newFilteredData = { ...filteredData }
-    const category = newFilteredData?.items?.find(
-      (category) => category.name === categoryName
-    )
-    console.log(category)
-    if (category) {
-      //@ts-ignore
-      const bicycle = category?.bicycles[bikeIndex]
-      console.log(bicycle)
-      if (bicycle) {
-        mutate({ id: bicycle.id, name: tempBikeAbbr })
-        bicycle.abbr = tempBikeAbbr
-        setFilteredData(newFilteredData)
-        toast.success("Successfully changed rental vehicle name")
-      } else {
-        toast.error("Rental vehicle not found in category")
+        toast.error("Property room not found in category")
       }
     } else {
       toast.error("Category not found")
@@ -297,7 +344,7 @@ const BikeCalendarTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredData?.items?.map((category, index) => (
+                {testData?.items?.map((category: any, index: number) => (
                   <React.Fragment key={category.name}>
                     <tr
                       className="hover:bg-gray-100 cursor-pointer"
@@ -349,60 +396,54 @@ const BikeCalendarTable = () => {
                       })}
                     </tr>
                     {!collapsed[category.name] &&
-                      category?.bicycles?.map((bicycle, bikeIndex) => (
-                        <tr
-                          key={bicycle.abbr}
-                          className="hover:bg-gray-100 relative"
-                        >
-                          <td className="border p-4 text-left border-l-0">
-                            <div className="flex justify-between items-center">
-                              {editingRoom === bicycle.abbr ? (
-                                <Input
-                                  type="text"
-                                  value={tempBikeAbbr}
-                                  onChange={(e) =>
-                                    setTempBikeAbbr(e.target.value)
-                                  }
-                                  autoFocus
-                                  className="mr-2"
-                                  label={""}
-                                />
-                              ) : (
-                                <span>{bicycle.abbr}</span>
-                              )}
-                              {editingRoom === bicycle.abbr ? (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() =>
-                                    //@ts-ignore
-                                    handleSaveVehicle(
-                                      category.name,
-                                      bikeIndex,
-                                      // @ts-ignore
-                                      category?.bicycles[bikeIndex]?.id
-                                    )
-                                  }
-                                >
-                                  <Save className="text-gray-500 w-5" />
-                                </Button>
-                              ) : (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() => handleEditRoom(bicycle.abbr)}
-                                >
-                                  <Edit3 className="text-gray-500 w-5" />
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                          <td
-                            colSpan={daysPerPage}
-                            className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                      category?.bookableUnitTypes?.map(
+                        (bed: Room, bedIndex: number) => (
+                          <tr
+                            key={bed.abbr}
+                            className="hover:bg-gray-100 relative"
                           >
-                            {bicycle.reservations.map(
-                              (booking: Reservation) => {
+                            <td className="border p-4 text-left border-l-0">
+                              <div className="flex justify-between items-center">
+                                {editingRoom === bed.abbr ? (
+                                  <Input
+                                    type="text"
+                                    value={tempRoomAbbr}
+                                    onChange={(e) =>
+                                      setTempRoomAbbr(e.target.value)
+                                    }
+                                    autoFocus
+                                    className="mr-2"
+                                    label={""}
+                                  />
+                                ) : (
+                                  <span>{bed.abbr}</span>
+                                )}
+                                {editingRoom === bed.abbr ? (
+                                  <Button
+                                    size={"icon"}
+                                    variant={"link"}
+                                    onClick={() =>
+                                      handleSaveRoom(category.name, bedIndex)
+                                    }
+                                  >
+                                    <Save className="text-gray-500 w-5" />
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size={"icon"}
+                                    variant={"link"}
+                                    onClick={() => handleEditRoom(bed.abbr)}
+                                  >
+                                    <Edit3 className="text-gray-500 w-5" />
+                                  </Button>
+                                )}
+                              </div>
+                            </td>
+                            <td
+                              colSpan={daysPerPage}
+                              className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                            >
+                              {bed.reservations.map((booking: Reservation) => {
                                 const style = getBookingStyle(
                                   startDate,
                                   daysPerPage,
@@ -422,7 +463,7 @@ const BikeCalendarTable = () => {
                                     onClick={() => {
                                       setIsReservationModalOpen(true)
                                       setSelectedReservation({
-                                        bicyles: bicycle.abbr,
+                                        beds: bed.abbr,
                                         reservation: booking,
                                       })
                                     }}
@@ -433,14 +474,14 @@ const BikeCalendarTable = () => {
                                     </span>
                                   </div>
                                 )
-                              }
-                            )}
-                            <div className="absolute inset-0 z-10 flex h-full">
-                              {generateCalendarRowBorder()}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                              })}
+                              <div className="absolute inset-0 z-10 flex h-full">
+                                {generateCalendarRowBorder()}
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      )}
                   </React.Fragment>
                 ))}
               </tbody>
@@ -473,4 +514,4 @@ const BikeCalendarTable = () => {
   )
 }
 
-export default BikeCalendarTable
+export default BedCalendarTable
