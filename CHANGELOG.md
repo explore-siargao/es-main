@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.15.0](https://github.com/explore-siargao/es-main/compare/v0.14.0...v0.15.0) (2024-08-30)
+
+
+### Features
+
+* **web:** Added global error page/component ([cccbeef](https://github.com/explore-siargao/es-main/commit/cccbeef9fb7e5a5a8ba47050b5a2b19a54f82516))
+* **web:** Added legends in property and rental calendar. ([206ad59](https://github.com/explore-siargao/es-main/commit/206ad599a8c61c40a9a1356561a7b0b6a77b74c7))
+* **web:** adjusted listing units pagination to make the pagination work ([32fcb55](https://github.com/explore-siargao/es-main/commit/32fcb55c9203cdd22dc3bb68fed86916521f39a5))
+* **web:** Changed border radius of inputs to standard (rounded-xl) ([92c2dbe](https://github.com/explore-siargao/es-main/commit/92c2dbeeadd3b92ae62f679be0a691f3d8b00ee9))
+
+
+### Bug Fixes
+
+* Remove unused npm package, update dependencies and fix mongo mapping ([d7adae9](https://github.com/explore-siargao/es-main/commit/d7adae950101dfe2804c0aeeb2b24e0362582d4c))
+
 ## [0.14.0](https://github.com/explore-siargao/es-main/compare/v0.13.0...v0.14.0) (2024-08-29)
 
 ### Features
