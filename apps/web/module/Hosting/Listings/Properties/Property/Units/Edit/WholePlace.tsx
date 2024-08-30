@@ -527,7 +527,11 @@ const WholePlace = ({ pageType }: Prop) => {
                         </>
                       ) : (
                         <>
-                          <Typography variant="h4" fontWeight="semibold">
+                          <Typography
+                            variant="h4"
+                            fontWeight="semibold"
+                            className="mt-3"
+                          >
                             Living room
                           </Typography>
                           <Typography
@@ -557,10 +561,10 @@ const WholePlace = ({ pageType }: Prop) => {
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
                   How many bathrooms are in this unit?
                 </Typography>
-                <div className="flex rounded-md">
+                <div className="flex">
                   <button
                     disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                    className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                     type="button"
                     onClick={() => {
                       bathroomCount > 0 &&
@@ -585,7 +589,7 @@ const WholePlace = ({ pageType }: Prop) => {
                   />
                   <button
                     disabled={isPending || isFetching}
-                    className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                    className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                     type="button"
                     onClick={() =>
                       setBathroomCount(
@@ -646,10 +650,10 @@ const WholePlace = ({ pageType }: Prop) => {
               >
                 Identical amenities, bedrooms, bathrooms, etc.
               </Typography>
-              <div className="flex rounded-md">
+              <div className="flex">
                 <button
                   disabled={isPending || isFetching}
-                  className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
                     exactUnitCount > 0 &&
@@ -674,7 +678,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 />
                 <button
                   disabled={isPending || isFetching}
-                  className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() =>
                     setExactUnitCount(
