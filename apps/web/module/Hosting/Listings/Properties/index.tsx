@@ -140,7 +140,7 @@ const HostListing = () => {
         <Tabs tabs={listingTabs} />
       </div>
       <Table
-        data={data?.items || []}
+        data={paginatedData() || []}
         columns={columns}
         pageIndex={pageIndex}
         pageCount={Math.ceil((data?.items?.length || 0) / pageSize)}
