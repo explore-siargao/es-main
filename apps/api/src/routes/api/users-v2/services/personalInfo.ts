@@ -200,7 +200,7 @@ export const editAddress = async (req: Request, res: Response) => {
       if (personalInfo) {
         const updateAddress = await dbAddresses.findOneAndUpdate(
           {
-            personalInfoId: personalInfo._id,
+            _id: personalInfo.address,
           },
           {
             streetAddress: streetAddress,
@@ -429,7 +429,7 @@ export const updateLanguage = async (req: Request, res: Response) => {
     if (!language) {
       return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
-    const getPersonalInfo = await dbGuests.findOne({ id: personalInfoId })
+    const getPersonalInfo = await dbGuests.findOne({ _id: personalInfoId })
     if (getPersonalInfo) {
       return res.json(response.error({ message: 'Personal info not found' }))
     }

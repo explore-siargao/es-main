@@ -87,7 +87,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       await Promise.all([
         dbReservations
           .find({
-            roomId: { $in: roomIds },
+            unitId: { $in: roomIds },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -95,7 +95,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           .populate('guest'),
         dbReservations
           .find({
-            wholePlaceId: { $in: wholePlaceIds },
+            unitId: { $in: wholePlaceIds },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -103,7 +103,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           .populate('guest'),
         dbReservations
           .find({
-            bedId: { $in: bedIds },
+            unitId: { $in: bedIds },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],

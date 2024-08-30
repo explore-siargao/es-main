@@ -170,7 +170,7 @@ export const getPropertyType = async (req: Request, res: Response) => {
 
   try {
     const propertyType = await dbProperties.findOne(
-      { _id: propertyId, host: hostId, deletedAt: null },
+      { _id: propertyId, offerBy: hostId, deletedAt: null },
       'type'
     )
 

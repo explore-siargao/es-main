@@ -377,9 +377,6 @@ export const forgotVerify = async (req: Request, res: Response) => {
         email: email,
         code: String(code),
         used: false,
-        expiredAt: {
-          gte: Date.now(),
-        },
       })
       if (userforgotPassword) {
         await dbForgotPasswords.findByIdAndUpdate(
@@ -397,9 +394,7 @@ export const forgotVerify = async (req: Request, res: Response) => {
         await dbUsers
           .findOneAndUpdate({
             email: email,
-            data: {
-              password: String(encryptPassword),
-            },
+            password: String(encryptPassword),
           })
           .populate('guests')
         res.json(response.success({ message: 'Password successfully updated' }))
@@ -447,9 +442,6 @@ export const forgot = async (req: Request, res: Response) => {
       const userForgotPassword = await dbForgotPasswords.findOne({
         email: email,
         used: false,
-        expiredAt: {
-          gte: new Date(),
-        },
       })
 
       const code = Math.floor(100000 + randomNumber() * 900000)
@@ -585,7 +577,7 @@ export const mfaVerify = async (req: Request, res: Response) => {
         throw new Error('Invalid account')
       }
       const multiFactor = await dbMultiFactorAuths.findOne({
-        userId: userId,
+        user: userId,
         code: String(code),
         type: 'test',
         used: false,
