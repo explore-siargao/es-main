@@ -379,6 +379,7 @@ const BikeCalendarTable = () => {
                                     handleSaveVehicle(
                                       category.name,
                                       bikeIndex,
+                                      // @ts-ignore
                                       category?.bicycles[bikeIndex]?.id
                                     )
                                   }

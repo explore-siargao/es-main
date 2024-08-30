@@ -60,7 +60,6 @@ const BedCalendarTable = () => {
     ],
   })
   const daysPerPage = 13
-  console.log(sampleData)
 
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)

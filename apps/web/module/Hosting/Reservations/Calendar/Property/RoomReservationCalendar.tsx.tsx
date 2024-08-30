@@ -4,7 +4,7 @@ import CalendarTable from "./RoomCalendarTable"
 import { Table } from "lucide-react"
 import { Button } from "@/common/components/ui/Button"
 import { useRouter } from "next/navigation"
-import ReservationCalendarTab from "../../components/ReservationCalendarTab"
+import ReservationTab from "../../components/ReservationTab"
 
 const ReservationCalendar = () => {
   const router = useRouter()
@@ -29,7 +29,7 @@ const ReservationCalendar = () => {
               Table View
             </Button>
           </div>
-          <ReservationCalendarTab />
+          <ReservationTab />
         </div>
 
         <div className="flex mt-2">
