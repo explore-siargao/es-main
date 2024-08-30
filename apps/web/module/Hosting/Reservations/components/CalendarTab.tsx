@@ -10,23 +10,6 @@ const CalendarTab = () => {
   const { data: rentalCountsData, isPending: rentalCountsPending } =
     useGetRentalCounts()
 
-  let tabs
-
-  const propertyTabs = [
-    {
-      name: "Whole Places",
-      link: "/hosting/reservations/calendar/properties/whole-places",
-    },
-    {
-      name: "Rooms",
-      link: "/hosting/reservations/calendar/properties/rooms",
-    },
-    {
-      name: "Beds",
-      link: "/hosting/reservations/calendar/properties/beds",
-    },
-  ]
-
   const rentalTabs = []
 
   if (rentalCountsData && !rentalCountsPending) {
@@ -50,19 +33,13 @@ const CalendarTab = () => {
     }
   }
 
-  if (pathType === "properties") {
-    tabs = propertyTabs
-  } else if (pathType === "rentals") {
-    tabs = rentalTabs
-  }
-
   return (
     <>
-      {pathType === "activities" ? (
-        <></>
-      ) : (
+      {pathType === "rentals" ? (
         // @ts-ignore
-        tabs.length > 0 && <Tabs tabs={tabs} />
+        tabs.length > 0 && <Tabs tabs={rentalTabs} />
+      ) : (
+        <></>
       )}
     </>
   )

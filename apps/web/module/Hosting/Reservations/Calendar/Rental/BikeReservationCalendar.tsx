@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/common/components/ui/Button"
 import { Table } from "lucide-react"
 import BikeCalendarTable from "./BikeCalendarTable"
-import ReservationCalendarTab from "../../components/ReservationCalendarTab"
+import ReservationTab from "../../components/ReservationTab"
+import CalendarLegend from "../../components/CalendarLegend"
 
 const BikeReservationCalendar = () => {
   const router = useRouter()
@@ -29,11 +30,15 @@ const BikeReservationCalendar = () => {
               Table View
             </Button>
           </div>
-          <ReservationCalendarTab />
+          <ReservationTab />
         </div>
 
         <div className="flex mt-2">
           <BikeCalendarTable />
+        </div>
+
+        <div className="fixed bottom-4 right-4 z-20">
+          <CalendarLegend />
         </div>
       </div>
     </div>
