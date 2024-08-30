@@ -18,11 +18,17 @@ import { useQueryClient } from "@tanstack/react-query"
 import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
 import useGetPropertyUnitPricesById from "../../hooks/useGetPropertyUnitPricesById"
 import useUpdatePropertyUnitPriceById from "../../hooks/useUpdatePropertyUnitPriceById"
+import { T_UnitPrice } from "@repo/contract"
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
   pageType?: string
   identifier?: string
+}
+
+interface FormData {
+  unitPrice: T_UnitPrice[]
+  _id: string
 }
 
 const Pricing = ({ pageType }: PricingContentProps) => {
@@ -31,7 +37,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
-  const { handleSubmit, control, reset } = useForm()
+  const { handleSubmit, control, reset } = useForm<FormData>()
   const { mutate, isPending } = useUpdatePropertyUnitPriceById(listingId)
   const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId)
   const { mutateAsync: updateFinishedSection } =
@@ -41,18 +47,19 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     name: "unitPrice",
     keyName: "key",
   })
+
   const onSubmit = (data: any) => {
-    const cleanedUnitPrices = data.unitPrice?.map((item: any) => ({
-      ...item,
-      unitName: item.unitName.startsWith("Custom: ")
-        ? item.unitName.slice("Custom: ".length)
-        : item.unitName,
-    }))
-    console.log("CleanedUnitPrices:", cleanedUnitPrices)
+    const unitPriceData = data.unitPrice[0]
+
+    const payload = {
+      ...unitPriceData,
+      _id: data._id,
+    }
+    console.log("Payload to be submitted:", payload);
     const callBackReq = {
-      onSuccess: (data: any) => {
-        if (!data.error) {
-          toast.success(data.message)
+      onSuccess: (response: any) => {
+        if (!response.error) {
+          toast.success(response.message)
           queryClient.invalidateQueries({
             queryKey: ["property-finished-sections", listingId],
           })
@@ -60,7 +67,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
             queryKey: ["property-unit-pricing", listingId],
           })
         } else {
-          toast.error(String(data.message))
+          toast.error(String(response.message))
         }
       },
       onError: (err: any) => {
@@ -72,13 +79,18 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       pageType === "setup" &&
       !data?.item?.finishedSections?.includes("pricing")
     ) {
-      mutate(cleanedUnitPrices, callBackReq)
-      updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
+      try {
+        mutate(payload, callBackReq)
+        console.log("After calling mutate for `setup`...")
+        updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
+      } catch (error) {}
     } else {
-      mutate(cleanedUnitPrices, callBackReq)
-      queryClient.invalidateQueries({
-        queryKey: ["property", listingId],
-      })
+      try {
+        mutate(payload, callBackReq)
+        queryClient.invalidateQueries({
+          queryKey: ["property", listingId],
+        })
+      } catch (error) {}
     }
 
     if (pageType === "setup") {

@@ -5,7 +5,7 @@ const unitPrices = new Schema({
   baseRateMaxCapacity: Number,
   maximumCapacity: Number,
   pricePerAdditionalPerson: Number,
-  discountedWeeklyRate: Number,
+  discountedWeekLyRate: Number,
   discountedMonthlyRate: Number,
   createdAt: {
     type: Date,
