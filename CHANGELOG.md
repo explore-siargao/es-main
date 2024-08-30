@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.15.0](https://github.com/explore-siargao/es-main/compare/v0.14.0...v0.15.0) (2024-08-30)
+
+### Features
+
+- **web:** Added global error page/component ([cccbeef](https://github.com/explore-siargao/es-main/commit/cccbeef9fb7e5a5a8ba47050b5a2b19a54f82516))
+- **web:** Added legends in property and rental calendar. ([206ad59](https://github.com/explore-siargao/es-main/commit/206ad599a8c61c40a9a1356561a7b0b6a77b74c7))
+- **web:** adjusted listing units pagination to make the pagination work ([32fcb55](https://github.com/explore-siargao/es-main/commit/32fcb55c9203cdd22dc3bb68fed86916521f39a5))
+- **web:** Changed border radius of inputs to standard (rounded-xl) ([92c2dbe](https://github.com/explore-siargao/es-main/commit/92c2dbeeadd3b92ae62f679be0a691f3d8b00ee9))
+- **web:** Added legal page and its CMS (terms and use) ([75c87a5](https://github.com/explore-siargao/es-main/commit/75c87a53f89939361bf97ee881fd6a1a786c41a4))
+- **web:** Created general blog page and its CMS. Added some improvements in some guides pages ([9cde2fc](https://github.com/explore-siargao/es-main/commit/9cde2fcd4ba236a807ba65a81cecd5fc80b3d902),[bd1617e](https://github.com/explore-siargao/es-main/commit/bd1617eac2423ed489786347f9ef0e8db22baf7d))
+- **web:** Changed map marker icons based on there categories ([14b489c](https://github.com/explore-siargao/es-main/commit/14b489c1a684d88d8b1d8c65ea94e1a83039ea8c),[c4d0fba](https://github.com/explore-siargao/es-main/commit/c4d0fba8b1ef6235d5c494da2e7e705d675e011b),[6377e88](https://github.com/explore-siargao/es-main/commit/6377e8856f2473e43e63424a9552e790f2b2d378),[5caed67](https://github.com/explore-siargao/es-main/commit/5caed676d138aaa671ba8f697d362aa5c29fa313))
+
+### Bug Fixes
+
+- Remove unused npm package, update dependencies and fix mongo mapping ([d7adae9](https://github.com/explore-siargao/es-main/commit/d7adae950101dfe2804c0aeeb2b24e0362582d4c))
+- **web:** Fixed lightbox bottom image height ([96bfa32](https://github.com/explore-siargao/es-main/commit/96bfa32f19f270908afa67672518d4e90ee8254e))
+
 ## [0.14.0](https://github.com/explore-siargao/es-main/compare/v0.13.0...v0.14.0) (2024-08-29)
 
 ### Features
