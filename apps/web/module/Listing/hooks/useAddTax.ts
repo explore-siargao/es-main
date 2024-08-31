@@ -4,7 +4,7 @@ import { ApiService } from "@/common/service/api"
 import { T_Taxes } from "@repo/contract"
 
 export async function addTax(props: T_Taxes) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(`${API_URL_TAX}`, props)
 }
 

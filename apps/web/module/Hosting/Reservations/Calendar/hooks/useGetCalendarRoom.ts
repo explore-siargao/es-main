@@ -3,7 +3,7 @@ import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 
 export async function getRoomCalendar(startDate: string, endDate: string) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.get(
     `${API_URL_PROPERTIES}/calendar/room?startDate=${startDate}&endDate=${endDate}`
   )

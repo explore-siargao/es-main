@@ -7,7 +7,7 @@ export async function updateActivityPhoto(
   activityId: string | undefined,
   props: T_Photo
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_ACTIVITIES}/${activityId}/photo/${props._id}`,
     props

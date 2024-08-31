@@ -3,7 +3,7 @@ import { ApiService } from "@/common/service/api"
 import { useMutation } from "@tanstack/react-query"
 
 export async function addBlankProperty() {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(`${API_URL_PROPERTIES}`, {})
 }
 

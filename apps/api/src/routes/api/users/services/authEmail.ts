@@ -1,7 +1,7 @@
 import { render } from '@react-email/render'
 import { EmailService } from '@/common/service/email'
-import ForgotPasswordEmail from '@/routes/api/users-v2/email-template/auth/ForgotPasswordEmail'
-import MultiFactorAuth from '@/routes/api/users-v2/email-template/auth/MultiFactorAuth'
+import ForgotPasswordEmail from '@/routes/api/users/email-template/auth/ForgotPasswordEmail'
+import MultiFactorAuth from '@/routes/api/users/email-template/auth/MultiFactorAuth'
 
 export type TSendEmailParams = {
   to: string[] | string

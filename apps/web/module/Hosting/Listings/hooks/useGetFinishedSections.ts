@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query"
 type Props = { listingId: string; type: "property" | "rental" | "activity" }
 
 export async function getFinishedSections({ listingId, type }: Props) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   const baseUrl = {
     property: API_URL_PROPERTIES,
     rental: API_URL_RENTALS,

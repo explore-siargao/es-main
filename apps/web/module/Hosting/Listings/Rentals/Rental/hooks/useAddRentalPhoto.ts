@@ -12,7 +12,7 @@ export async function addRentalPhotos(
   formData.append("isMain", String(props.isMain))
   formData.append("description", props.description)
   formData.append("tags", props.tags)
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(
     `${API_URL_RENTALS}/${rentalId}/photo`,
     formData,

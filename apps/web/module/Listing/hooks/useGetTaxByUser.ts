@@ -8,7 +8,7 @@ type T_DBReturn = Omit<T_BackendResponse, "item"> & {
 }
 
 export async function geTaxId(userId: string | undefined) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.get<T_DBReturn>(`${API_URL_TAX}/${userId}`)
 }
 

@@ -1,6 +1,6 @@
 import { render } from '@react-email/render'
 import { EmailService } from '@/common/service/email'
-import { BecomeHostEmailConfirmation } from '@/routes/api/users-v2/email-template/host/BecomeHostEmailConfirmation'
+import { BecomeHostEmailConfirmation } from '@/routes/api/users/email-template/host/BecomeHostEmailConfirmation'
 
 export type TSendEmailParams = {
   to: string[] | string

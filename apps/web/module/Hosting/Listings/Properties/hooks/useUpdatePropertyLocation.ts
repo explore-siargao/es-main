@@ -7,7 +7,7 @@ export async function updatePropertyLocation(
   _id: string | undefined,
   props: T_Listing_Location
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(`${API_URL_PROPERTIES}/${_id}/location`, props)
 }
 
