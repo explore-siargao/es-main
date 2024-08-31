@@ -3,11 +3,11 @@ import { Input } from "@/common/components/ui/Input"
 import { Typography } from "@/common/components/ui/Typography"
 import { Dispatch } from "react"
 import toast from "react-hot-toast"
-import InputMaxLength from "@/common/helpers/InputMaxLength"
+import inputMaxLength from "@/common/helpers/inputMaxLength"
 import useProfileEditStore from "../store/useProfileEditStore"
 
 const MyWorkContent = ({ setIsOpen }: { setIsOpen: Dispatch<boolean> }) => {
-  const { value: workName, onChange: handleInputChange } = InputMaxLength(
+  const { value: workName, onChange: handleInputChange } = inputMaxLength(
     "",
     20
   )
