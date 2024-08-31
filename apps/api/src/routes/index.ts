@@ -27,7 +27,7 @@ import MockActivitiesRoute from '@/routes/mock/activities'
 export default function (app: Application) {
   app.use(`/assets`, AssetsRoute)
 
-  // API V2
+  // API
   app.use(`${API_ROOT}/users`, UsersRoute)
   app.use(`${API_ROOT}/payments`, PaymentsRoute)
   app.use(`${API_ROOT}/taxes`, TaxesRoute)

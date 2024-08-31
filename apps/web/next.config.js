@@ -13,8 +13,8 @@ module.exports = {
         destination: `${process.env.API_URL}/assets/:path*`,
       },
       {
-        source: "/api/v2/:path*",
-        destination: `${process.env.API_URL}/api/v2/:path*`,
+        source: "/api/v1/:path*",
+        destination: `${process.env.API_URL}/api/v1/:path*`,
       },
       {
         source: "/mock/v1/:path*",
