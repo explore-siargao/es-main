@@ -6,7 +6,7 @@ import { Button } from "@/common/components/ui/Button"
 import LoggedInUserDropdown from "./LoggedInUserDropdown"
 import { APP_NAME } from "@repo/constants"
 import { usePathname, useRouter } from "next/navigation"
-import { LINK_LOGIN } from "@/common/constants/links"
+import { LINK_HOME, LINK_LOGIN } from "@/common/constants"
 import Link from "next/link"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { Typography } from "@/common/components/ui/Typography"
@@ -53,7 +53,7 @@ function Header({
           className="flex items-center justify-between py-2 my-2 w-full"
           aria-label="Global"
         >
-          <Link href="/" className="-m-1.5 gap-2 flex lg:flex-1 items-center">
+          <Link href={LINK_HOME} className="-m-1.5 gap-2 flex lg:flex-1 items-center">
             <Image
               className="h-12 w-auto"
               src={Logo}

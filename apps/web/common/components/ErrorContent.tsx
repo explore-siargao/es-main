@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
+import { LINK_HOME } from '../constants'
 
 const ErrorContent = ({ mainError, errorDesc }: { mainError: string, errorDesc: string }) => {
   return (
@@ -15,7 +16,7 @@ const ErrorContent = ({ mainError, errorDesc }: { mainError: string, errorDesc: 
       <Typography className="max-w-sm text-center mt-2">
         {errorDesc}
       </Typography>
-      <Link href={"/"}>
+      <Link href={LINK_HOME}>
         <Button variant="primary" size="lg" className="mt-8">
           Go to homepage
         </Button>

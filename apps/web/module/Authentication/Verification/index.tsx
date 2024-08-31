@@ -8,6 +8,7 @@ import useMultiFactor from "../hooks/useMultiFactor"
 import useVerifyMultiFactor from "../hooks/useVerifyMultiFactor"
 import { useRouter } from "next/navigation"
 import { Typography } from "@/common/components/ui/Typography"
+import { LINK_HOME } from "@/common/constants"
 
 let currentOTPIndex: number = 0
 
@@ -50,7 +51,7 @@ const Verification = () => {
           if (!data.error) {
             if (data.item && !isVerifyMultiFactorPending) {
               toast.success(data.message)
-              router.push("/")
+              router.push(LINK_HOME)
             }
           } else {
             toast.error(String(data.message))

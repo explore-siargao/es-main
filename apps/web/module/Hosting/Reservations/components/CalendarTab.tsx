@@ -1,10 +1,11 @@
 import Tabs from "@/common/components/Tabs"
 import { usePathname } from "next/navigation"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
+import { LINK_HOME } from "@/common/constants"
 
 const CalendarTab = () => {
   const pathName = usePathname()
-  const routeNames = pathName.split("/")
+  const routeNames = pathName.split(LINK_HOME)
   const pathType = routeNames[4]
 
   const { data: rentalCountsData, isPending: rentalCountsPending } =

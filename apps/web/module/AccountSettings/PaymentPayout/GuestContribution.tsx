@@ -1,5 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
+import { LINK_HOME } from "@/common/constants"
 import { cn } from "@/common/helpers/cn"
 import { Switch } from "@headlessui/react"
 import { APP_NAME } from "@repo/constants"
@@ -45,7 +46,7 @@ const GuestContribution = () => {
       <Typography fontWeight="light" className="mt-10">
         100% of all contributions will be deposited into your payout account,
         unless you have an account balance. Your payout is subject to the{" "}
-        <Link href="/" className="font-semibold">
+        <Link href={LINK_HOME} className="font-semibold">
           Payment Terms of Service.
         </Link>{" "}
         Please note that contributions may not be tax deductible or eligible for
