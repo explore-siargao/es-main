@@ -48,7 +48,7 @@ const topLinks = [
   {
     title: "Insights",
     icon: <LucideAreaChart className="h-5 w-5" />,
-    link: "/hosting/insights",
+    link: "/hosting/insights/general",
     basePath: "/hosting/insights",
   },
 ]

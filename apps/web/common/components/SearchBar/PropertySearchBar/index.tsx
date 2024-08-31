@@ -62,7 +62,7 @@ function PropertySearchBar() {
       </div> */}
       <Button
         variant={"primary"}
-        className="h-[3.3rem] justify-center items-center gap-x-2 mr-[0.4rem]"
+        className="h-[3.3rem] justify-center items-center gap-x-2 mr-[0.4rem] rounded-xl"
       >
         <Search className="text-white h-5 w-5" />
         Search
