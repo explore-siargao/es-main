@@ -8,6 +8,8 @@ export const CONTINUE = "Continue"
 
 export const ASSET_ROOT = "/assets"
 
+export const MESSAGE_404 = "The page you are looking for might be removed or temporarily unavailable."
+
 export const BOTTOM_LINKS = [
   {
     title: "Documentation",

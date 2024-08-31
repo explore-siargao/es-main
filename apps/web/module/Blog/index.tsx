@@ -8,7 +8,8 @@ import PopularBlogs from "./PopularBlogs"
 import { WEB_URL } from "@/common/constants/ev"
 import serialize from "../../common/components/RichText/serialize"
 import { Spinner } from "@/common/components/ui/Spinner"
-import { Typography } from "@/common/components/ui/Typography"
+import { MESSAGE_404 } from "@/common/constants"
+import ErrorContent from "@/common/components/ErrorContent"
 
 const BlogContent = ({ blogData }: { blogData: any }) => {
   return (
@@ -85,7 +86,7 @@ function Blog() {
   } else if (blogData) {
     content = <BlogContent blogData={blogData} />
   } else {
-    content = <Typography className="mt-10">No data was found.</Typography>
+    content = <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
   }
 
   return <WidthWrapper width="medium">{content}</WidthWrapper>

@@ -1,11 +1,11 @@
 "use client"
+import ErrorContent from "@/common/components/ErrorContent"
 
-export default function GlobalError({ reset }: { reset: () => void }) {
+export default function GlobalError() {
   return (
     <html>
       <body>
-        <h2>Something went wrong. Please contact the administrator.</h2>
-        <button onClick={() => reset()}>Try again</button>
+        <ErrorContent mainError="500 - UNEXPECTED ERROR" errorDesc="The page you are looking for encountered an unexpected error." />
       </body>
     </html>
   )

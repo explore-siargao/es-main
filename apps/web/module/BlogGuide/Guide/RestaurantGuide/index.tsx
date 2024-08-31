@@ -3,7 +3,6 @@ import { WidthWrapper } from "@/common/components/WidthWrapper"
 import SectionInfo from "./SectionInfo"
 import RestaurantLocation from "./RestaurantLocation"
 import { Separator } from "@/common/components/ui/Separator"
-import { Typography } from "@/common/components/ui/Typography"
 import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -12,6 +11,8 @@ import NearbyAccommodation from "./components/NearbyAccommodation"
 import ChefsNote from "./components/ChefsNote"
 import AmenityList from "./components/AmenityList"
 import { WEB_URL } from "@/common/constants/ev"
+import ErrorContent from "@/common/components/ErrorContent"
+import { MESSAGE_404 } from "@/common/constants"
 
 export const ratingSummary = {
   ratings: 5,
@@ -194,7 +195,7 @@ export const RestaurantGuide = () => {
         </>
       )}
       {!guideDataLoading && !guideData && (
-        <Typography>No data was found.</Typography>
+        <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
       )}
     </WidthWrapper>
   )

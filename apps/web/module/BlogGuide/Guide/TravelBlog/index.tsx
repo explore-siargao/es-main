@@ -6,9 +6,10 @@ import { Separator } from "@/common/components/ui/Separator"
 import TravelImages from "./TravelImages"
 import PopularGuides from "./PopularGuides"
 import { Spinner } from "@/common/components/ui/Spinner"
-import { Typography } from "@/common/components/ui/Typography"
+import { MESSAGE_404 } from "@/common/constants"
 import serialize from "../../../../common/components/RichText/serialize"
 import { WEB_URL } from "@/common/constants/ev"
+import ErrorContent from "@/common/components/ErrorContent"
 
 const TravelGuideContent = ({ guideData }: { guideData: any }) => {
   return (
@@ -90,7 +91,7 @@ function TravelBlog() {
   } else if (travelData) {
     content = <TravelGuideContent guideData={travelData} />
   } else {
-    content = <Typography className="mt-10">No data was found.</Typography>
+    content = <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
   }
 
   return <WidthWrapper width="medium">{content}</WidthWrapper>

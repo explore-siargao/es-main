@@ -8,8 +8,9 @@ import Directions from "./Directions"
 import IdealConditions from "./IdealConditions"
 import Forecast from "./Forecast"
 import { Spinner } from "@/common/components/ui/Spinner"
-import { Typography } from "@/common/components/ui/Typography"
+import { MESSAGE_404 } from "@/common/constants"
 import { WEB_URL } from "@/common/constants/ev"
+import ErrorContent from "@/common/components/ErrorContent"
 
 const GuideContent = ({ guideData }: { guideData: any }) => {
   return (
@@ -76,7 +77,7 @@ const SurfingGuide = () => {
   } else if (guideData) {
     content = <GuideContent guideData={guideData} />
   } else {
-    content = <Typography className="mt-10">No data was found.</Typography>
+    content = <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
   }
 
   return <WidthWrapper width="medium">{content}</WidthWrapper>
