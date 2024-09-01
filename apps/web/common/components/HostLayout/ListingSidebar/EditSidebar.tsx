@@ -1,11 +1,21 @@
-import React from 'react'
+import React from "react"
 import Link from "next/link"
 import { Typography } from "../../ui/Typography"
 import LinkIndicator from "../LinkIndicator"
-import { getActivityLinks, getPropertyLinks, getRentalLinks } from "./links/edit"
+import {
+  getActivityLinks,
+  getPropertyLinks,
+  getRentalLinks,
+} from "./links/edit"
 import { E_Listing_Category } from "@repo/contract"
 
-const EditSidebar = ({ category, listingId }: { category: E_Listing_Category, listingId: string }) => {
+const EditSidebar = ({
+  category,
+  listingId,
+}: {
+  category: E_Listing_Category
+  listingId: string
+}) => {
   const links = {
     [E_Listing_Category.Property]: getPropertyLinks(listingId),
     [E_Listing_Category.Activity]: getActivityLinks(listingId),

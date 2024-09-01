@@ -195,7 +195,10 @@ export const RestaurantGuide = () => {
         </>
       )}
       {!guideDataLoading && !guideData && (
-        <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
+        <ErrorContent
+          mainError="404 - PAGE NOT FOUND"
+          errorDesc={MESSAGE_404}
+        />
       )}
     </WidthWrapper>
   )

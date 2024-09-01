@@ -31,8 +31,13 @@ export default async function HostListingPropertyLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <ListingHeader listingStatus={E_Listing_Status.edit} category={E_Listing_Category.Property} />
-              <ListingSidebar category={E_Listing_Category.Property}>{children}</ListingSidebar>
+              <ListingHeader
+                listingStatus={E_Listing_Status.edit}
+                category={E_Listing_Category.Property}
+              />
+              <ListingSidebar category={E_Listing_Category.Property}>
+                {children}
+              </ListingSidebar>
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>

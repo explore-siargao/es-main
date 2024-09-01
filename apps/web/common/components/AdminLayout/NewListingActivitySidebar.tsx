@@ -22,7 +22,10 @@ interface HostSidebarProps {
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data } = useGetFinishedSections({ listingId, category: E_Listing_Category.Activity })
+  const { data } = useGetFinishedSections({
+    listingId,
+    category: E_Listing_Category.Activity,
+  })
   const finishedSections = data?.item?.finishedSections || []
   const ACTIVITY_SETUP_BASE_PATH = "/hosting/listings/activities/setup"
   const SECTION_LINKS = [

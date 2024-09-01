@@ -6,4 +6,4 @@ const listingCategoryPluralMap = {
   [E_Listing_Category.Rental]: "Rentals",
 }
 
-export default listingCategoryPluralMap;
+export default listingCategoryPluralMap

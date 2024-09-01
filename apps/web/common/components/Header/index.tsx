@@ -53,7 +53,10 @@ function Header({
           className="flex items-center justify-between py-2 my-2 w-full"
           aria-label="Global"
         >
-          <Link href={LINK_HOME} className="-m-1.5 gap-2 flex lg:flex-1 items-center">
+          <Link
+            href={LINK_HOME}
+            className="-m-1.5 gap-2 flex lg:flex-1 items-center"
+          >
             <Image
               className="h-12 w-auto"
               src={Logo}

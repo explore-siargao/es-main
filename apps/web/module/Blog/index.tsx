@@ -86,7 +86,9 @@ function Blog() {
   } else if (blogData) {
     content = <BlogContent blogData={blogData} />
   } else {
-    content = <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
+    content = (
+      <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
+    )
   }
 
   return <WidthWrapper width="medium">{content}</WidthWrapper>

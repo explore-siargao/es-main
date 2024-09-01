@@ -77,7 +77,9 @@ const SurfingGuide = () => {
   } else if (guideData) {
     content = <GuideContent guideData={guideData} />
   } else {
-    content = <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
+    content = (
+      <ErrorContent mainError="404 - PAGE NOT FOUND" errorDesc={MESSAGE_404} />
+    )
   }
 
   return <WidthWrapper width="medium">{content}</WidthWrapper>

@@ -10,18 +10,22 @@ import SetupSidebar from "./SetupSidebar"
 
 interface HostListingSidebarProps {
   category: E_Listing_Category
-  status?: 'setup' | 'edit'
+  status?: "setup" | "edit"
   children: React.ReactNode
 }
 
-const ListingSidebar = ({ category, status = 'edit', children }: HostListingSidebarProps) => {
+const ListingSidebar = ({
+  category,
+  status = "edit",
+  children,
+}: HostListingSidebarProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const renderLinks = {
     setup: <SetupSidebar category={category} listingId={listingId} />,
     edit: <EditSidebar category={category} listingId={listingId} />,
   }
-  
+
   return (
     <WidthWrapper width="wide">
       <div className="flex gap-14">

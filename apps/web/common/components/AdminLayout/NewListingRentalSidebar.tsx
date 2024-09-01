@@ -24,7 +24,10 @@ interface HostSidebarProps {
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data } = useGetFinishedSections({ listingId, category: E_Listing_Category.Rental })
+  const { data } = useGetFinishedSections({
+    listingId,
+    category: E_Listing_Category.Rental,
+  })
   const finishedSections = data?.item?.finishedSections || []
   const RENTAL_SETUP_BASE_PATH = "/hosting/listings/rentals/setup"
   const SECTION_LINKS = [

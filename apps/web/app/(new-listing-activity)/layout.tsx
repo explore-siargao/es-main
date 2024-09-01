@@ -31,8 +31,16 @@ export default async function HostNewListingActivityLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <ListingHeader listingStatus={E_Listing_Status.setup} category={E_Listing_Category.Activity} />
-              <ListingSidebar status="setup" category={E_Listing_Category.Activity}>{children}</ListingSidebar>
+              <ListingHeader
+                listingStatus={E_Listing_Status.setup}
+                category={E_Listing_Category.Activity}
+              />
+              <ListingSidebar
+                status="setup"
+                category={E_Listing_Category.Activity}
+              >
+                {children}
+              </ListingSidebar>
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>

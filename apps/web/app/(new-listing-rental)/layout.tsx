@@ -31,8 +31,16 @@ export default async function HostNewListingRentalLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <ListingHeader listingStatus={E_Listing_Status.setup} category={E_Listing_Category.Rental} />
-              <ListingSidebar status="setup" category={E_Listing_Category.Rental}>{children}</ListingSidebar>
+              <ListingHeader
+                listingStatus={E_Listing_Status.setup}
+                category={E_Listing_Category.Rental}
+              />
+              <ListingSidebar
+                status="setup"
+                category={E_Listing_Category.Rental}
+              >
+                {children}
+              </ListingSidebar>
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>

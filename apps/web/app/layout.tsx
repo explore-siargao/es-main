@@ -18,9 +18,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

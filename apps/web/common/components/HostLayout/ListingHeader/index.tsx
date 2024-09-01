@@ -23,7 +23,7 @@ import { useParams } from "next/navigation"
 import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
 import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
 import { E_Listing_Category } from "@repo/contract"
-import { E_Listing_Status } from '@/common/types/global';
+import { E_Listing_Status } from "@/common/types/global"
 import listingCategoryPluralMap from "@/common/helpers/listingCategoryPluralMap"
 
 const unAuthMenus = [
@@ -109,7 +109,11 @@ function ListingHeader({
                 <Typography>Hosting Account</Typography>
               </Link>
               <span className="text-gray-400">/</span>
-              <Typography className="px-2">{listingStatus === E_Listing_Status.edit ? data?.item?.title : `Setup new listing (${category})`}</Typography>
+              <Typography className="px-2">
+                {listingStatus === E_Listing_Status.edit
+                  ? data?.item?.title
+                  : `Setup new listing (${category})`}
+              </Typography>
             </div>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 gap-3 items-center relative">

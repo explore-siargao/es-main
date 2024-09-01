@@ -1,13 +1,23 @@
 "use client"
-import React from 'react'
+import React from "react"
 import Link from "next/link"
 import { Typography } from "@/common/components/ui/Typography"
-import { getActivityLinks, getPropertyLinks, getRentalLinks } from "./links/setup"
+import {
+  getActivityLinks,
+  getPropertyLinks,
+  getRentalLinks,
+} from "./links/setup"
 import { E_Listing_Category } from "@repo/contract"
-import useGetFinishedSections from '@/module/Hosting/Listings/hooks/useGetFinishedSections'
+import useGetFinishedSections from "@/module/Hosting/Listings/hooks/useGetFinishedSections"
 import NewListingEditIndicator from "./NewListingEditIndicator"
 
-const SetupSidebar = ({ category, listingId }: { category: E_Listing_Category, listingId: string }) => {
+const SetupSidebar = ({
+  category,
+  listingId,
+}: {
+  category: E_Listing_Category
+  listingId: string
+}) => {
   const { data } = useGetFinishedSections({ listingId, category })
   const finishedSections = data?.item?.finishedSections || []
   const links = {
@@ -22,8 +32,7 @@ const SetupSidebar = ({ category, listingId }: { category: E_Listing_Category, l
         const isSectionFinished = finishedSections.includes(item.id)
         return (
           <li key={item.title}>
-            {isSectionFinished ||
-              finishedSections.length + 1 === index + 1 ? (
+            {isSectionFinished || finishedSections.length + 1 === index + 1 ? (
               <Link
                 href={item.link}
                 passHref={true}
@@ -69,7 +78,7 @@ const SetupSidebar = ({ category, listingId }: { category: E_Listing_Category, l
               </div>
             )}
             {isSectionFinished &&
-              finishedSections.length < SECTION_LINKS.length ? (
+            finishedSections.length < SECTION_LINKS.length ? (
               <div className="ml-4 w-[2px] h-6 bg-primary-600 mt-2"></div>
             ) : finishedSections.length < SECTION_LINKS.length &&
               SECTION_LINKS.length > index + 1 ? (

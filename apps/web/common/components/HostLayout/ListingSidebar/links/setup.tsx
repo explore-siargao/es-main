@@ -13,7 +13,7 @@ import {
   LucideTableProperties,
   LucideNotepadText,
   LucideBlocks,
-  LucideScrollText
+  LucideScrollText,
 } from "lucide-react"
 
 const PROPERTY_SETUP_BASE_PATH = `${LINK_HOSTING_LISTINGS}/properties/setup`

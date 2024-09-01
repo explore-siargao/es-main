@@ -8,7 +8,10 @@ const Login = () => {
   const router = useRouter()
 
   return (
-    <AuthContainer title="Login or sign up" onBack={() => router.push(LINK_HOME)}>
+    <AuthContainer
+      title="Login or sign up"
+      onBack={() => router.push(LINK_HOME)}
+    >
       <LoginForm />
     </AuthContainer>
   )
