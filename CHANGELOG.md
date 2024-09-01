@@ -2,23 +2,22 @@
 
 ## [0.16.0](https://github.com/explore-siargao/es-main/compare/v0.15.0...v0.16.0) (2024-09-01)
 
-
 ### Features
 
-* Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
+- Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
 
 ### Maintenance
 
-* Made host listing header reusable for all category ([a92330a](https://github.com/explore-siargao/es-main/commit/6d69329bdfd9f99a46d89f19a3c0ae702adc94c9))
-* Made Host Listing Sidebar reusable for all category ([a92330a](https://github.com/explore-siargao/es-main/commit/b4f09d63e6b1e1b725894d4d2e79ef1316e95ed1))
-* Update URL for insights and change button radius ([a92330a](https://github.com/explore-siargao/es-main/commit/d2833d6c09f7b250833ef749c3dd9faf17989655))
-* Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
-* Move links constants to index ([a92330a](https://github.com/explore-siargao/es-main/commit/efcc596eed179b3521e29a1730eef1e55987baac))
-* Remove getCookie helper function ([a92330a](https://github.com/explore-siargao/es-main/commit/803908c2b50bb3df77844748771b56214d9704e8))
-* Rename InputMaxLength to inputMaxLength for consistency ([a92330a](https://github.com/explore-siargao/es-main/commit/1ad70bd075ee6069006b20afd9da011815750ed8))
-* Update loading component to use spinner animation ([a92330a](https://github.com/explore-siargao/es-main/commit/d2b3354dc0c3d7a7859e83d7b13bd4f64ee7609c))
-* Update next.config.js to use API v1 instead of v2 ([a92330a](https://github.com/explore-siargao/es-main/commit/3c401e514f0bf86b0bc0898480ed25899b8ea172))
-* Move api v2 to main (v1 api) for fe and be ([a92330a](https://github.com/explore-siargao/es-main/commit/0218ff638970fdcad8fb9317e082dd64ada1e7f2))
+- Made host listing header reusable for all category ([a92330a](https://github.com/explore-siargao/es-main/commit/6d69329bdfd9f99a46d89f19a3c0ae702adc94c9))
+- Made Host Listing Sidebar reusable for all category ([a92330a](https://github.com/explore-siargao/es-main/commit/b4f09d63e6b1e1b725894d4d2e79ef1316e95ed1))
+- Update URL for insights and change button radius ([a92330a](https://github.com/explore-siargao/es-main/commit/d2833d6c09f7b250833ef749c3dd9faf17989655))
+- Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
+- Move links constants to index ([a92330a](https://github.com/explore-siargao/es-main/commit/efcc596eed179b3521e29a1730eef1e55987baac))
+- Remove getCookie helper function ([a92330a](https://github.com/explore-siargao/es-main/commit/803908c2b50bb3df77844748771b56214d9704e8))
+- Rename InputMaxLength to inputMaxLength for consistency ([a92330a](https://github.com/explore-siargao/es-main/commit/1ad70bd075ee6069006b20afd9da011815750ed8))
+- Update loading component to use spinner animation ([a92330a](https://github.com/explore-siargao/es-main/commit/d2b3354dc0c3d7a7859e83d7b13bd4f64ee7609c))
+- Update next.config.js to use API v1 instead of v2 ([a92330a](https://github.com/explore-siargao/es-main/commit/3c401e514f0bf86b0bc0898480ed25899b8ea172))
+- Move api v2 to main (v1 api) for fe and be ([a92330a](https://github.com/explore-siargao/es-main/commit/0218ff638970fdcad8fb9317e082dd64ada1e7f2))
 
 ## [0.15.0](https://github.com/explore-siargao/es-main/compare/v0.14.0...v0.15.0) (2024-08-30)
 
