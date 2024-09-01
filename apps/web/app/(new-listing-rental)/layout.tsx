@@ -7,10 +7,11 @@ import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
-import Header from "@/common/components/HostLayout/NewListingRentalHeader"
+import ListingHeader from "@/common/components/HostLayout/ListingHeader"
 import ListingSidebar from "@/common/components/HostLayout/ListingSidebar"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import { E_Listing_Category } from "@repo/contract"
+import { E_Listing_Status } from "@/common/types/global"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -30,7 +31,7 @@ export default async function HostNewListingRentalLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <Header />
+              <ListingHeader listingStatus={E_Listing_Status.setup} category={E_Listing_Category.Rental} />
               <ListingSidebar status="setup" category={E_Listing_Category.Rental}>{children}</ListingSidebar>
             </GlobalModalWrapper>
           </AuthStateProvider>
