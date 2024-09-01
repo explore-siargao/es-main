@@ -7,7 +7,7 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { Typography } from "@/common/components/ui/Typography"
 import AccountSettingWrapper from "@/module/AccountSettings/components/AccountSettingWrapper"
-import { LINK_ACCOUNT } from "@/common/constants/links"
+import { LINK_ACCOUNT } from "@/common/constants"
 import { ACCOUNT, WISHLISTS } from "@/common/constants"
 
 const Wishlist = () => {

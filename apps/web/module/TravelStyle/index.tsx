@@ -2,7 +2,8 @@
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import TravelStyleContainer from "./components/TravelStyleContainer"
 import { useSearchParams } from "next/navigation"
-import { Typography } from "@/common/components/ui/Typography"
+import ErrorContent from "@/common/components/ErrorContent"
+import { MESSAGE_404 } from "@/common/constants"
 
 const dummyDataHostel = [
   {
@@ -202,7 +203,10 @@ const TravelStyle = () => {
           items={travelStyleItems}
         />
       ) : (
-        <Typography>No data was found.</Typography>
+        <ErrorContent
+          mainError="404 - PAGE NOT FOUND"
+          errorDesc={MESSAGE_404}
+        />
       )}
     </WidthWrapper>
   )

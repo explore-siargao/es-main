@@ -7,7 +7,7 @@ export async function addEmergencyContact(
   guestId: string | undefined,
   props: T_AddEmergencyContact
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(
     `${API_URL_USERS}/${guestId}/emergency-contact/add`,
     props

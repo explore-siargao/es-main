@@ -1,22 +1,30 @@
 "use client"
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import Image from "next/image"
 import Logo from "@/common/assets/es-logo.png"
 import { APP_NAME } from "@repo/constants"
 import {
   LINK_ACCOUNT,
   LINK_CREATE_ACCOUNT,
+  LINK_HOME,
+  LINK_HOSTING_LISTINGS,
   LINK_LOGIN,
   LINK_LOGOUT,
-} from "@/common/constants/links"
+} from "@/common/constants"
 import Link from "next/link"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { cn } from "@/common/helpers/cn"
 import { Popover, Transition } from "@headlessui/react"
-import { LucideArrowLeft, LucideEye } from "lucide-react"
+import { LucideArrowLeft, LucideEye, LucidePlus } from "lucide-react"
 import useSessionStore from "@/common/store/useSessionStore"
 import { Button } from "@/common/components/ui/Button"
-import { Typography } from "../ui/Typography"
+import { Typography } from "@/common/components/ui/Typography"
+import { useParams } from "next/navigation"
+import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
+import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
+import { E_Listing_Category } from "@repo/contract"
+import { E_Listing_Status } from "@/common/types/global"
+import listingCategoryPluralMap from "@/common/helpers/listingCategoryPluralMap"
 
 const unAuthMenus = [
   {
@@ -40,16 +48,24 @@ const authMenus = [
   },
 ]
 
-function NewListingHeader({
+function ListingHeader({
+  category,
+  listingStatus = E_Listing_Status.edit,
   contentWidth = "wide",
   isFixed = true,
 }: {
+  readonly category: E_Listing_Category
+  readonly listingStatus: E_Listing_Status
   readonly contentWidth?: "medium" | "small" | "wide" | "full"
   readonly isFixed?: boolean
 }) {
+  const [isSelectListingTypeModalOpen, setIsSelectListingTypeModalOpen] =
+    useState(false)
+  const params = useParams<{ listingId: string }>()
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
-  const current = "Hosting Account"
+  const listingId = String(params.listingId)
+  const { data } = useGetPropertyById(listingId)
 
   const renderTransition = (children: React.ReactNode) => (
     <Transition
@@ -75,7 +91,7 @@ function NewListingHeader({
       <WidthWrapper width={contentWidth}>
         <nav className="flex items-center py-2 w-full">
           <div className="flex gap-2 items-center">
-            <Link href="/" className="">
+            <Link href={LINK_HOME} className="">
               <Image
                 className="h-10 w-auto"
                 src={Logo}
@@ -86,7 +102,7 @@ function NewListingHeader({
             </Link>
             <div className="col-span-2 flex gap-2 items-center">
               <Link
-                href="/hosting/listings/activities"
+                href={`${LINK_HOSTING_LISTINGS}/${listingCategoryPluralMap[category].toLocaleLowerCase()}`}
                 className="flex gap-2 px-2 items-center hover:bg-primary-100"
               >
                 <LucideArrowLeft className="h-4 w-4" />
@@ -94,7 +110,9 @@ function NewListingHeader({
               </Link>
               <span className="text-gray-400">/</span>
               <Typography className="px-2">
-                Setup new listing (Activity)
+                {listingStatus === E_Listing_Status.edit
+                  ? data?.item?.title
+                  : `Setup new listing (${category})`}
               </Typography>
             </div>
           </div>
@@ -104,6 +122,16 @@ function NewListingHeader({
                 <LucideEye className="h-4 w-4" /> Preview listing
               </Button>
             </Link>
+            {listingStatus === E_Listing_Status.edit && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setIsSelectListingTypeModalOpen(true)}
+                className="flex gap-2"
+              >
+                <LucidePlus className="h-4 w-4" /> New listing
+              </Button>
+            )}
             {session.id && (
               <Popover className="relative">
                 <Popover.Button className="flex items-center px-2 py-1 focus:outline-none">
@@ -141,9 +169,15 @@ function NewListingHeader({
             )}
           </div>
         </nav>
+        <SelectListingTypeModal
+          isOpen={isSelectListingTypeModalOpen}
+          onClose={() =>
+            setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
+          }
+        />
       </WidthWrapper>
     </header>
   )
 }
 
-export default NewListingHeader
+export default ListingHeader

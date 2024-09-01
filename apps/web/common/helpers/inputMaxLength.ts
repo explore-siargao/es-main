@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const InputMaxLength = (initialValue: string, maxLength: number) => {
+const inputMaxLength = (initialValue: string, maxLength: number) => {
   const [value, setValue] = useState(initialValue)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,4 +13,4 @@ const InputMaxLength = (initialValue: string, maxLength: number) => {
   return { value, onChange: handleChange }
 }
 
-export default InputMaxLength
+export default inputMaxLength

@@ -2,6 +2,7 @@
 import React from "react"
 import { useRouter, usePathname } from "next/navigation"
 import useSessionStore from "../store/useSessionStore"
+import { LINK_HOME } from "../constants"
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
@@ -9,7 +10,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const session = useSessionStore((state) => state)
 
   if (!session.id) {
-    const redirect = pathname !== "/" ? `?redirect_to=${pathname}` : ``
+    const redirect = pathname !== LINK_HOME ? `?redirect_to=${pathname}` : ``
     router.push(`/login${redirect}`)
   }
 

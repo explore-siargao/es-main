@@ -3,11 +3,11 @@ import { Input } from "@/common/components/ui/Input"
 import { Typography } from "@/common/components/ui/Typography"
 import { Dispatch } from "react"
 import toast from "react-hot-toast"
-import InputMaxLength from "@/common/helpers/InputMaxLength"
+import inputMaxLength from "@/common/helpers/inputMaxLength"
 import useProfileEditStore from "../store/useProfileEditStore"
 
 const MyFunFactContent = ({ setIsOpen }: { setIsOpen: Dispatch<boolean> }) => {
-  const { value: funFact, onChange: handleInputChange } = InputMaxLength("", 40)
+  const { value: funFact, onChange: handleInputChange } = inputMaxLength("", 40)
   const setFunFactStore = useProfileEditStore((state) => state.setFunFact)
   const save = () => {
     if (funFact) {

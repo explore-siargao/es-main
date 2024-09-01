@@ -2,7 +2,7 @@
 import React from "react"
 import AuthContainer from "@/common/components/AuthContainer"
 import { useParams, useRouter } from "next/navigation"
-import { LINK_LOGIN } from "@/common/constants/links"
+import { LINK_LOGIN } from "@/common/constants"
 import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
 import SignUpForm from "@/module/Authentication/components/SignUpForm"
 

@@ -7,7 +7,7 @@ export async function updateAdditionalInfoActivities(
   id: string | undefined,
   props: T_Activity
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_ACTIVITIES}/${id}/additional-info`,
     props

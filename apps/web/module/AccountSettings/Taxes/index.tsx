@@ -2,7 +2,7 @@
 import AccountSettingWrapper from "@/module/AccountSettings/components/AccountSettingWrapper"
 import React, { useState } from "react"
 import { Breadcrumb } from "@/common/components/ui/Breadcrumb"
-import { LINK_ACCOUNT } from "@/common/constants/links"
+import { LINK_ACCOUNT } from "@/common/constants"
 import { cn } from "@/common/helpers/cn"
 import Taxpayers from "./Taxpayers"
 import TaxDocuments from "./TaxDocuments"

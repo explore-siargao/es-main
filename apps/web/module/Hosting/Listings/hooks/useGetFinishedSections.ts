@@ -4,24 +4,30 @@ import {
   API_URL_RENTALS,
 } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
+import { E_Listing_Category } from "@repo/contract"
 import { useQuery } from "@tanstack/react-query"
 
-type Props = { listingId: string; type: "property" | "rental" | "activity" }
+type Props = { listingId: string; category: E_Listing_Category }
 
-export async function getFinishedSections({ listingId, type }: Props) {
-  const apiService = new ApiService("v2")
+export async function getFinishedSections({ listingId, category }: Props) {
+  const apiService = new ApiService()
   const baseUrl = {
-    property: API_URL_PROPERTIES,
-    rental: API_URL_RENTALS,
-    activity: API_URL_ACTIVITIES,
+    [E_Listing_Category.Property]: API_URL_PROPERTIES,
+    [E_Listing_Category.Rental]: API_URL_RENTALS,
+    [E_Listing_Category.Activity]: API_URL_ACTIVITIES,
   }
-  return await apiService.get(`${baseUrl[type]}/${listingId}/finished-sections`)
+  return await apiService.get(
+    `${baseUrl[category]}/${listingId}/finished-sections`
+  )
 }
 
-function useGetFinishedSections({ listingId, type = "property" }: Props) {
+function useGetFinishedSections({
+  listingId,
+  category = E_Listing_Category.Property,
+}: Props) {
   const query = useQuery({
-    queryKey: [`${type}-finished-sections`, listingId],
-    queryFn: () => getFinishedSections({ listingId, type }),
+    queryKey: [`${category.toLocaleLowerCase()}-finished-sections`, listingId],
+    queryFn: () => getFinishedSections({ listingId, category }),
     enabled: !!listingId,
   })
   return query

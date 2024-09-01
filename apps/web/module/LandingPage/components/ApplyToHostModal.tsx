@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import useSessionStore from "@/common/store/useSessionStore"
-import { LINK_LOGIN } from "@/common/constants/links"
+import { LINK_LOGIN } from "@/common/constants"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean

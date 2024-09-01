@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import toast from "react-hot-toast"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGoogleRedirect from "../hooks/useGoogleRedirect"
+import { LINK_HOME } from "@/common/constants"
 
 const SessionVerifier = () => {
   const router = useRouter()
@@ -17,7 +18,7 @@ const SessionVerifier = () => {
     router.push(data?.action?.link)
   }
   if (googleError) {
-    router.push("/")
+    router.push(LINK_HOME)
   }
   return <Spinner variant="primary" middle />
 }
