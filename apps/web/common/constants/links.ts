@@ -5,6 +5,7 @@ export const LINK_SIGNUP = "/signup"
 export const LINK_LOGOUT = "/logout"
 export const LINK_GIFT = "/gift"
 export const LINK_ACCOUNT = "/account-settings"
+export const LINK_HOSTING = "/hosting"
 
 export const LINK_ACCOUNT_PERSONAL_INFO = `${LINK_ACCOUNT}/personal-info`
 export const LINK_ACCOUNT_PAYMENT_PAYOUT = `${LINK_ACCOUNT}/payment-payout`
@@ -16,3 +17,5 @@ export const LINK_ACCOUNT_BOOKINGS = `${LINK_ACCOUNT}/bookings`
 export const LINK_ACCOUNT_NOTIFICATIONS = `${LINK_ACCOUNT}/notifications`
 export const LINK_ACCOUNT_TAXES = `${LINK_ACCOUNT}/taxes`
 export const LINK_ACCOUNT_GLOBAL_PREFERENCES = `${LINK_ACCOUNT}/global-preferences`
+
+export const LINK_HOSTING_LISTINGS = `${LINK_HOSTING}/listings`

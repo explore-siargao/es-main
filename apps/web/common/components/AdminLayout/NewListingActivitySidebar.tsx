@@ -13,6 +13,7 @@ import NewListingEditIndicator from "./NewListingEditIndicator"
 import { BOTTOM_LINKS } from "@/common/constants"
 import { useParams } from "next/navigation"
 import useGetFinishedSections from "@/module/Hosting/Listings/hooks/useGetFinishedSections"
+import { E_Listing_Category } from "@repo/contract"
 
 interface HostSidebarProps {
   children: React.ReactNode
@@ -21,7 +22,7 @@ interface HostSidebarProps {
 const Sidebar = ({ children }: HostSidebarProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data } = useGetFinishedSections({ listingId, type: "activity" })
+  const { data } = useGetFinishedSections({ listingId, category: E_Listing_Category.Activity })
   const finishedSections = data?.item?.finishedSections || []
   const ACTIVITY_SETUP_BASE_PATH = "/hosting/listings/activities/setup"
   const SECTION_LINKS = [

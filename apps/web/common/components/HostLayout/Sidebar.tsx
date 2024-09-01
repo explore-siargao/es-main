@@ -4,13 +4,9 @@ import { WidthWrapper } from "../WidthWrapper"
 import {
   LucideAreaChart,
   LucideBookOpenCheck,
-  LucideCalendar,
-  LucideCoins,
-  LucideHandCoins,
   LucideList,
   LucideListChecks,
   LucideMessagesSquare,
-  LucideStar,
 } from "lucide-react"
 import LinkIndicator from "./LinkIndicator"
 import { BOTTOM_LINKS } from "@/common/constants"
@@ -19,7 +15,7 @@ interface HostSidebarProps {
   children: React.ReactNode
 }
 
-const topLinks = [
+const TOP_LINKS = [
   {
     title: "Today",
     icon: <LucideBookOpenCheck className="h-5 w-5" />,
@@ -61,7 +57,7 @@ const Sidebar = ({ children }: HostSidebarProps) => {
           <div className="h-screen pt-16 sticky top-0">
             <nav className="md:flex-col h-full justify-between flex py-2">
               <ul className="lg:space-x-0 lg:space-y-1 flex flex-wrap md:flex-col justify-between">
-                {topLinks.map((item) => (
+                {TOP_LINKS.map((item) => (
                   <li key={item.title}>
                     <LinkIndicator basePath={item.basePath} />
                     <Link
