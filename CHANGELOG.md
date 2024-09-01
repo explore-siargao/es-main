@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/explore-siargao/es-main/compare/v0.15.0...v0.16.0) (2024-09-01)
+
+
+### Features
+
+* Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
+
 ## [0.15.0](https://github.com/explore-siargao/es-main/compare/v0.14.0...v0.15.0) (2024-08-30)
 
 ### Features
