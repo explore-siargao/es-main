@@ -11,9 +11,6 @@ import AmenityList from "./components/AmenityList"
 type T_Props = {
   data: any
 }
-import { WEB_URL } from "@/common/constants/ev"
-import ErrorContent from "@/common/components/ErrorContent"
-import { MESSAGE_404 } from "@/common/constants"
 
 export const ratingSummary = {
   ratings: 5,

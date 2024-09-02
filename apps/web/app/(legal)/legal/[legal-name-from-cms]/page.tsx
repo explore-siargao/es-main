@@ -1,6 +1,6 @@
-import { getGuideBlogs } from "@/common/helpers/getGuideBlogs"
-import GlobalError from "@/module/Error/global-error"
+import { getRequestCMS } from "@/common/helpers/getRequestCMS"
 import Legal from "@/module/Legal"
+import { notFound } from "next/navigation"
 import React from "react"
 
 type T_Props = {
@@ -11,10 +11,10 @@ type T_Props = {
 
 const LegalPage = async ({ params }: T_Props) => {
   const legalName = params["legal-name-from-cms"]
-  const content = await getGuideBlogs(legalName, "legal")
+  const content = await getRequestCMS(`/legals/about/${legalName}`)
 
   if (!content) {
-    return <GlobalError />
+    notFound()
   }
 
   return <Legal data={content} />

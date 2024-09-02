@@ -32,7 +32,7 @@ export default async function RootLayout({
               <div className="flex flex-col gap-2">
                 <Header />
               </div>
-              <div className="min-h-[60vh]">{children}</div>
+              <div>{children}</div>
               <Footer />
             </GlobalModalWrapper>
           </AuthStateProvider>

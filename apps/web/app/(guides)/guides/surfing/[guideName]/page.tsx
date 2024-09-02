@@ -1,6 +1,6 @@
-import { getGuideBlogs } from "@/common/helpers/getGuideBlogs"
+import { getRequestCMS } from "@/common/helpers/getRequestCMS"
 import SurfingGuide from "@/module/BlogGuide/Guide/SurfingGuide"
-import GlobalError from "@/module/Error/global-error"
+import { notFound } from "next/navigation"
 import React from "react"
 
 type T_Props = {
@@ -10,10 +10,10 @@ type T_Props = {
 }
 
 const SurfingGuidePage = async ({ params: { guideName } }: T_Props) => {
-  const content = await getGuideBlogs(guideName, "surf")
+  const content = await getRequestCMS(`/surfs/guide/${guideName}`)
 
   if (!content) {
-    return <GlobalError />
+    notFound()
   }
 
   return <SurfingGuide data={content} />
