@@ -8,6 +8,9 @@ import {
   LINK_CREATE_ACCOUNT,
   LINK_HOME,
   LINK_HOSTING_LISTINGS,
+  LINK_LISTINGS_ACTIVITY,
+  LINK_LISTINGS_PROPERTY,
+  LINK_LISTINGS_RENTAL,
   LINK_LOGIN,
   LINK_LOGOUT,
 } from "@/common/constants"
@@ -117,7 +120,10 @@ function ListingHeader({
             </div>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 gap-3 items-center relative">
-            <Link href="/accommodation/1" target="_blank">
+            <Link
+              href={`${category === "Activity" ? LINK_LISTINGS_ACTIVITY : category === "Rental" ? LINK_LISTINGS_RENTAL : LINK_LISTINGS_PROPERTY}/${listingId}`}
+              target="_blank"
+            >
               <Button variant="secondary" size="sm" className="flex gap-2">
                 <LucideEye className="h-4 w-4" /> Preview listing
               </Button>

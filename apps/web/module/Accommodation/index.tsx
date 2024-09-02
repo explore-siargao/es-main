@@ -16,8 +16,8 @@ import { useState } from "react"
 import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import AvailableBooking from "./components/AvailableBooking"
-import { T_BookableUnitType, T_HouseRule, T_UnitPrice } from "@repo/contract"
-import { useParams } from "next/navigation"
+import { T_BookableUnitType } from "@repo/contract"
+import { notFound, useParams } from "next/navigation"
 import useGetPropertyById from "../Hosting/Listings/Properties/hooks/useGetPropertyById"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { format, parseISO } from "date-fns"
@@ -694,27 +694,22 @@ export const SingleView = () => {
     ? format(parseISO(offerBy.createdAt), "MMMM d, yyyy")
     : ""
 
-  if (
-    !data ||
-    !data.item ||
-    !data.item.bookableUnits ||
-    data.item.bookableUnits.length === 0
-  ) {
-    return <p>No bookable units available</p>
+  if ((!isPending && !data) || (!isPending && !data.item)) {
+    notFound()
   }
 
   const bookableUnit =
     selectedBookableUnit ||
-    (data?.item?.bookableUnits?.length > 0 && data.item.bookableUnits[0])
+    (data?.item?.bookableUnits?.length > 0 && data?.item?.bookableUnits[0])
   const latitude = data?.item?.location?.latitude
   const longitude = data?.item?.location?.longitude
 
   return (
-    <>
+    <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       {isPending ? (
-        <Spinner>Loading...</Spinner>
+        <></>
       ) : (
-        <WidthWrapper width="small" className="mt-4 lg:mt-8">
+        <>
           <SectionInfo images={data?.item?.photos} title={data?.item?.title} />
 
           <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
@@ -829,9 +824,9 @@ export const SingleView = () => {
             </div>
           </div>
           <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-        </WidthWrapper>
+        </>
       )}
-    </>
+    </WidthWrapper>
   )
 }
 export default SingleView
