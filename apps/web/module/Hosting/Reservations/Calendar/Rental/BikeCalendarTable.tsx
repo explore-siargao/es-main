@@ -24,6 +24,7 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarBike from "../hooks/useGetCalendarBike"
+import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 
 const BikeCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -33,6 +34,8 @@ const BikeCalendarTable = () => {
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
+  const { mutate } = useUpdateVehicleName()
+
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -45,7 +48,7 @@ const BikeCalendarTable = () => {
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
+  const [tempBikeAbbr, setTempBikeAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -220,7 +223,7 @@ const BikeCalendarTable = () => {
 
   const handleEditRoom = (abbr: string) => {
     setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+    setTempBikeAbbr(abbr)
   }
 
   const handleSaveRoom = (categoryName: string, bikeIndex: number) => {
@@ -233,7 +236,32 @@ const BikeCalendarTable = () => {
       //@ts-ignore
       const bicycle = category?.bicycles[bikeIndex]
       if (bicycle) {
-        bicycle.abbr = tempRoomAbbr
+        bicycle.abbr = tempBikeAbbr
+        setFilteredData(newFilteredData)
+        toast.success("Successfully changed rental vehicle name")
+      } else {
+        toast.error("Rental vehicle not found in category")
+      }
+    } else {
+      toast.error("Category not found")
+    }
+
+    setEditingRoom(null)
+  }
+
+  const handleSaveVehicle = (categoryName: string, bikeIndex: number) => {
+    const newFilteredData = { ...filteredData }
+    const category = newFilteredData?.items?.find(
+      (category) => category.name === categoryName
+    )
+    console.log(category)
+    if (category) {
+      //@ts-ignore
+      const bicycle = category?.bicycles[bikeIndex]
+      console.log(bicycle)
+      if (bicycle) {
+        mutate({ id: bicycle.id, name: tempBikeAbbr })
+        bicycle.abbr = tempBikeAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -246,13 +274,13 @@ const BikeCalendarTable = () => {
     setEditingRoom(null)
   }
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
+    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (
         <Spinner size="md">Loading...</Spinner>
       ) : (
         <div>
           <div className="overflow-auto">
-            <table className="min-w-max w-full rounded-lg">
+            <table className="min-w-max w-full rounded-xl">
               <thead className="">
                 <tr className="uppercase text-sm leading-normal">
                   <td colSpan={1} rowSpan={2} className="">
@@ -331,9 +359,9 @@ const BikeCalendarTable = () => {
                               {editingRoom === bicycle.abbr ? (
                                 <Input
                                   type="text"
-                                  value={tempRoomAbbr}
+                                  value={tempBikeAbbr}
                                   onChange={(e) =>
-                                    setTempRoomAbbr(e.target.value)
+                                    setTempBikeAbbr(e.target.value)
                                   }
                                   autoFocus
                                   className="mr-2"
@@ -347,7 +375,13 @@ const BikeCalendarTable = () => {
                                   size={"icon"}
                                   variant={"link"}
                                   onClick={() =>
-                                    handleSaveRoom(category.name, bikeIndex)
+                                    //@ts-ignore
+                                    handleSaveVehicle(
+                                      category.name,
+                                      bikeIndex,
+                                      // @ts-ignore
+                                      category?.bicycles[bikeIndex]?.id
+                                    )
                                   }
                                 >
                                   <Save className="text-gray-500 w-5" />
@@ -392,7 +426,7 @@ const BikeCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}

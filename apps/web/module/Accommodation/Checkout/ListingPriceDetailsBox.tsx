@@ -11,7 +11,7 @@ const ListingPriceDetailsBox = () => {
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   return (
     <div className="flex">
-      <div className="border p-6 rounded-lg flex flex-col">
+      <div className="border p-6 rounded-xl flex flex-col">
         <div className="flex gap-x-4 items-center">
           <div className="flex h-20 w-24 items-center justify-center rounded-md">
             <Image

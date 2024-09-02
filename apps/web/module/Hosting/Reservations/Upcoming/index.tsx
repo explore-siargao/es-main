@@ -168,7 +168,7 @@ const Upcoming = () => {
   return (
     <div className="mt-20">
       <div className="mb-4">
-        <Link href="/hosting/reservations/calendar/properties">
+        <Link href="/hosting/reservations/calendar/properties/rooms">
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
         <div className="flex gap-2 items-center mt-4">

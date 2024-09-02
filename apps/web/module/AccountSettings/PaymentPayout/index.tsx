@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import AccountSettingWrapper from "@/module/AccountSettings/components/AccountSettingWrapper"
-import { LINK_ACCOUNT } from "@/common/constants/links"
+import { LINK_ACCOUNT } from "@/common/constants"
 import { cn } from "@/common/helpers/cn"
 import Payments from "./Payments"
 import Payouts from "./Payouts"

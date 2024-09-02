@@ -347,6 +347,8 @@ const ListingLocation = ({ pageType }: Prop) => {
             onMarkerSet={handleMarkerSetter}
             className="relative z-0"
             scrollWheelZoomEnabled
+            isPriceMarker={true}
+            priceData={data?.item?.pricing?.dayRate}
           />
         </div>
         <div className="pl-4">

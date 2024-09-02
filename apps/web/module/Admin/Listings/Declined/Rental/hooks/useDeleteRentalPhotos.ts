@@ -6,7 +6,7 @@ export async function deleteRentalPhotos(
   id: string | undefined,
   photoId: string | undefined
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.delete(`${API_URL_RENTALS}/${id}/photos/${photoId}`)
 }
 

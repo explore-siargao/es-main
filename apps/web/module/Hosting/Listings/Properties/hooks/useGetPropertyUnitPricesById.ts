@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 export async function getPropertyUnitPricesById(
   propertyId: string | undefined
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.get(
     `${API_URL_PROPERTIES}/${propertyId}/units/pricing/list`
   )

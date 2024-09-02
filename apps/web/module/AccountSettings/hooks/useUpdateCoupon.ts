@@ -4,7 +4,7 @@ import { API_URL_PAYMENTS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function updateCoupon(props: ICoupon, id: string) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(`${API_URL_PAYMENTS}/coupon/${id}`, props)
 }
 

@@ -3,7 +3,7 @@ import { API_URL_USERS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function beAHost() {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(`${API_URL_USERS}/be-host`)
 }
 

@@ -7,7 +7,7 @@ export async function addAddress(
   personalInfoId: string | undefined,
   props: T_AddUpdateAddress
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(
     `${API_URL_USERS}/${personalInfoId}/address/add`,
     props

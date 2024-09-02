@@ -25,8 +25,10 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
+import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 
 const MotorCalendarTable = () => {
+  const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -46,7 +48,7 @@ const MotorCalendarTable = () => {
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
+  const [tempMotorAbbr, setMotorAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -222,7 +224,7 @@ const MotorCalendarTable = () => {
 
   const handleEditRoom = (abbr: string) => {
     setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+    setMotorAbbr(abbr)
   }
 
   const handleSaveRoom = (categoryName: string, motorIndex: number) => {
@@ -235,7 +237,8 @@ const MotorCalendarTable = () => {
       //@ts-ignore
       const motorcycle = category?.motorcycles[motorIndex]
       if (motorcycle) {
-        motorcycle.abbr = tempRoomAbbr
+        mutate({ id: motorcycle.id, name: tempMotorAbbr })
+        motorcycle.abbr = tempMotorAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -248,13 +251,13 @@ const MotorCalendarTable = () => {
     setEditingRoom(null)
   }
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
+    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (
         <Spinner size="md">Loading...</Spinner>
       ) : (
         <div>
           <div className="overflow-auto">
-            <table className="min-w-max w-full rounded-lg">
+            <table className="min-w-max w-full rounded-xl">
               <thead className="">
                 <tr className="uppercase text-sm leading-normal">
                   <td colSpan={1} rowSpan={2} className="">
@@ -333,10 +336,8 @@ const MotorCalendarTable = () => {
                               {editingRoom === motorcycle.abbr ? (
                                 <Input
                                   type="text"
-                                  value={tempRoomAbbr}
-                                  onChange={(e) =>
-                                    setTempRoomAbbr(e.target.value)
-                                  }
+                                  value={tempMotorAbbr}
+                                  onChange={(e) => setMotorAbbr(e.target.value)}
                                   autoFocus
                                   className="mr-2"
                                   label={""}
@@ -396,7 +397,7 @@ const MotorCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}

@@ -1,12 +1,11 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import { useRouter } from "next/navigation"
-import reservationCalendarTabs from "../../helpers/reservationCalendarTabs"
-import Tabs from "@/common/components/Tabs"
 import { Button } from "@/common/components/ui/Button"
 import { Table } from "lucide-react"
-import BikeCalendarTable from "./BikeCalendarTable"
 import CarCalendarTable from "./CarCalendarTable"
+import ReservationTab from "../../components/ReservationTab"
+import CalendarLegend from "../../components/CalendarLegend"
 
 const CarReservationCalendar = () => {
   const router = useRouter()
@@ -31,11 +30,15 @@ const CarReservationCalendar = () => {
               Table View
             </Button>
           </div>
-          <Tabs tabs={reservationCalendarTabs} />
+          <ReservationTab />
         </div>
 
         <div className="flex mt-2">
           <CarCalendarTable />
+        </div>
+
+        <div className="fixed bottom-4 right-4 z-20">
+          <CalendarLegend />
         </div>
       </div>
     </div>

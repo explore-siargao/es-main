@@ -16,7 +16,7 @@ import { IWishGroup } from "@/common/types/global"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { LINK_ACCOUNT_WISHLIST } from "@/common/constants/links"
+import { LINK_ACCOUNT_WISHLIST } from "@/common/constants"
 import useDeleteWishGroupByTitle from "../../hooks/useDeleteWishGroupByTitle"
 
 interface MenuProps {

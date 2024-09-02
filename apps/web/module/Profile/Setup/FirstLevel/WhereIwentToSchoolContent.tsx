@@ -3,7 +3,7 @@ import { Input } from "@/common/components/ui/Input"
 import { Typography } from "@/common/components/ui/Typography"
 import { Dispatch } from "react"
 import toast from "react-hot-toast"
-import InputMaxLength from "../../../../common/helpers/InputMaxLength"
+import inputMaxLength from "@/common/helpers/inputMaxLength"
 import useProfileEditStore from "../store/useProfileEditStore"
 
 const WhereIWentToSchoolContent = ({
@@ -11,7 +11,7 @@ const WhereIWentToSchoolContent = ({
 }: {
   setIsOpen: Dispatch<boolean>
 }) => {
-  const { value: schoolName, onChange: handleInputChange } = InputMaxLength(
+  const { value: schoolName, onChange: handleInputChange } = inputMaxLength(
     "",
     40
   )

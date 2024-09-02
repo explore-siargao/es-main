@@ -27,8 +27,18 @@ const Restaurants: CollectionConfig = {
       type: "relationship",
       relationTo: "categories",
       required: true,
+      hasMany: true,
       admin: {
         position: "sidebar",
+      },
+      defaultValue: async () => {
+        const response = await fetch(
+          "/cms/api/categories?limit=1&where[id][equals]=66c3f0ac0e847de16240bc0c"
+        )
+        const data = await response.json()
+        const [category] = data.docs
+
+        return [category.id]
       },
     },
     {

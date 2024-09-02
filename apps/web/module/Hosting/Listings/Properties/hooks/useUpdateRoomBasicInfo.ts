@@ -14,7 +14,7 @@ export async function updateRoomBasicInfo(
   _id: string | undefined,
   props: IRoomBasicInfo
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${_id}/${props._id}/room/basic-info`,
     props

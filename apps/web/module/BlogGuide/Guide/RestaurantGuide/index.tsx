@@ -1,10 +1,8 @@
 "use client"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
-import BookingDescription from "@/module/Accommodation/components/BookingDescription"
 import SectionInfo from "./SectionInfo"
 import RestaurantLocation from "./RestaurantLocation"
 import { Separator } from "@/common/components/ui/Separator"
-import { Typography } from "@/common/components/ui/Typography"
 import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -12,6 +10,9 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import NearbyAccommodation from "./components/NearbyAccommodation"
 import ChefsNote from "./components/ChefsNote"
 import AmenityList from "./components/AmenityList"
+import { WEB_URL } from "@/common/constants/ev"
+import ErrorContent from "@/common/components/ErrorContent"
+import { MESSAGE_404 } from "@/common/constants"
 
 export const ratingSummary = {
   ratings: 5,
@@ -103,7 +104,7 @@ export const RestaurantGuide = () => {
   const getGuideData = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/cms/api/restaurants/guide/${guideName}`
+        `${WEB_URL}/cms/api/restaurants/guide/${guideName}`
       )
 
       if (!res.ok) {
@@ -114,7 +115,6 @@ export const RestaurantGuide = () => {
       setGuideData(data.docs[0])
       setGuideDataLoading(false)
     } catch (err) {
-      console.log(err)
       setGuideDataLoading(false)
     }
   }
@@ -124,7 +124,7 @@ export const RestaurantGuide = () => {
   }, [])
 
   return (
-    <WidthWrapper width="small" className="mt-10">
+    <WidthWrapper width="medium" className="mt-10">
       {guideDataLoading && <Spinner variant="primary" middle />}
       {!guideDataLoading && guideData && (
         <>
@@ -143,18 +143,6 @@ export const RestaurantGuide = () => {
           <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12 mt-[11px]">
             <div className="flex-1 md:w-1/2 2xl:w-full">
               <div>
-                <div className="pb-6 flex flex-col">
-                  <h1 className="text-2xl font-bold">About</h1>
-                  <div className="mt-4">
-                    <BookingDescription
-                      generalDescription={guideData.about.aboutPlace}
-                      aboutSpace={guideData.about.aboutSpace}
-                      aboutGuestAccess={guideData.about.aboutGuestAccess}
-                      otherThingsNote={guideData.about.otherThings}
-                    />
-                  </div>
-                </div>
-                <Separator orientation="horizontal" className="bg-gray-300" />
                 <ChefsNote chefNote={guideData.content.chefNote} />
                 <Separator orientation="horizontal" className="bg-gray-300" />
                 <div className="py-8">
@@ -207,7 +195,10 @@ export const RestaurantGuide = () => {
         </>
       )}
       {!guideDataLoading && !guideData && (
-        <Typography>No data was found.</Typography>
+        <ErrorContent
+          mainError="404 - PAGE NOT FOUND"
+          errorDesc={MESSAGE_404}
+        />
       )}
     </WidthWrapper>
   )

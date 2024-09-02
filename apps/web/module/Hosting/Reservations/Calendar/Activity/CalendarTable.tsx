@@ -34,6 +34,7 @@ const ActivitiesCalendarTable = () => {
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
+  //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
@@ -106,6 +107,7 @@ const ActivitiesCalendarTable = () => {
           })),
         })),
       }
+      //@ts-ignore
       setFilteredData(newFilteredData)
     }
 
@@ -238,9 +240,9 @@ const ActivitiesCalendarTable = () => {
   }
 
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
+    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       <div className="overflow-auto">
-        <table className="min-w-max w-full rounded-lg">
+        <table className="min-w-max w-full rounded-xl">
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
@@ -367,7 +369,7 @@ const ActivitiesCalendarTable = () => {
                                   booking: booking,
                                 })
                               }}
-                              className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                              className={`booking-block hover:cursor-pointer flex z-20 ${booking.status === "confirmed" ? "bg-primary-500 hover:bg-primary-700" : booking.status === "out-of-service" ? "bg-red-500 hover:bg-red-600" : booking.status === "checked-in" ? "bg-green-500 hover:bg-green-600" : booking.status === "checked-out" ? "bg-gray-300 hover:bg-gray-400" : booking.status === "blocked-date" ? "bg-gray-500 hover:bg-gray-600" : ""} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                             >
                               <span className="text-white text-sm truncate px-2">
                                 {booking.name}

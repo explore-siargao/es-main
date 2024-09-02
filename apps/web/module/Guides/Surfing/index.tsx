@@ -48,11 +48,12 @@ const SurfingGuide = () => {
   ]
 
   return (
-    <WidthWrapper width="small" className="mt-24 md:mt-36 lg:mt-44">
+    <WidthWrapper width="medium" className="mt-10">
       <GuideContent
         contentTitle="Surfing in Siargao"
         contentText={contentText}
         markers={markers}
+        iconMarker="surf"
       />
       <Separator orientation="horizontal" className="my-12 bg-gray-300" />
       <Guides title="Surf Guides" guides={guides} />

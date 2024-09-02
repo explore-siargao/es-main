@@ -26,8 +26,18 @@ export const Locations: CollectionConfig = {
       type: "relationship",
       relationTo: "categories",
       required: true,
+      hasMany: true,
       admin: {
         position: "sidebar",
+      },
+      defaultValue: async () => {
+        const response = await fetch(
+          "/cms/api/categories?limit=1&where[id][equals]=66c411c3cc32a1ba4f9951dd"
+        )
+        const data = await response.json()
+        const [category] = data.docs
+
+        return [category.id]
       },
     },
     {

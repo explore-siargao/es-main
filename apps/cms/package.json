@@ -15,6 +15,7 @@
     "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.490.0",
     "@payloadcms/bundler-webpack": "^1.0.0",
     "@payloadcms/db-mongodb": "^1.0.0",
     "@payloadcms/plugin-cloud": "^3.0.0",
@@ -22,7 +23,8 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
-    "payload": "^2.0.0"
+    "payload": "^2.0.0",
+    "payload-s3-upload": "^2.1.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",

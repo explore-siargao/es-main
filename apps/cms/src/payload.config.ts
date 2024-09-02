@@ -1,4 +1,6 @@
 import path from "path"
+import { S3Client } from "@aws-sdk/client-s3"
+import s3Upload from "payload-s3-upload"
 
 import { payloadCloud } from "@payloadcms/plugin-cloud"
 import { mongooseAdapter } from "@payloadcms/db-mongodb"
@@ -12,6 +14,8 @@ import Restaurants from "./collections/Restaurants"
 import Locations from "./collections/Locations"
 import Categories from "./collections/Categories"
 import { Media } from "./collections/Media"
+import Legal from "./collections/Legal"
+import Blogs from "./collections/Blogs"
 
 export default buildConfig({
   admin: {
@@ -23,7 +27,16 @@ export default buildConfig({
     api: "/cms/api",
   },
   editor: slateEditor({}),
-  collections: [Surfs, Restaurants, Locations, Media, Categories, Users],
+  collections: [
+    Blogs,
+    Surfs,
+    Restaurants,
+    Locations,
+    Legal,
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [process.env.PAYLOAD_URL || "", process.env.WEB_URL || ""].filter(
     Boolean
   ),
@@ -33,7 +46,18 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
   },
-  plugins: [payloadCloud()],
+  plugins: [
+    payloadCloud(),
+    s3Upload(
+      new S3Client({
+        region: process.env.AWS_REGION,
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        },
+      })
+    ),
+  ],
   db: mongooseAdapter({
     url: process.env.PAYLOAD_DATABASE_URI,
   }),

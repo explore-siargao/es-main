@@ -23,7 +23,7 @@ const GovernmentIdModal = ({
             alt={governmentId?.type}
             width={300}
             height={300}
-            className="object-cover h-full w-full rounded-lg"
+            className="object-cover h-full w-full rounded-xl"
           />
         </div>
       </div>

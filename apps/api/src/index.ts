@@ -21,5 +21,5 @@ es.use(
 initMongo()
 routes(es)
 es.listen(API_PORT, () => {
-  console.log(`API server is running at http://localhost:${API_PORT}`)
+  console.log(`API server is running at PORT ${API_PORT}`)
 })

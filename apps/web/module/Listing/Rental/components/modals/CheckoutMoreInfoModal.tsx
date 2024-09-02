@@ -45,7 +45,7 @@ const CheckoutMoreInfoModal = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-sm">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-xl bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-sm">
                 <div className="bg-white shadow rounded-2xl">
                   <div className="flex border-b-gray-200 border-b p-4">
                     <div>

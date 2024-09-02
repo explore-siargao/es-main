@@ -73,10 +73,10 @@ const HostListing = () => {
       header: "Action",
       cell: (context) => (
         <div className="flex gap-2">
-          <button className="py-1 text-sm px-3 bg-primary-400 rounded-lg text-text-500 hover:bg-primary-600 transition">
+          <button className="py-1 text-sm px-3 bg-primary-400 rounded-xl text-text-500 hover:bg-primary-600 transition">
             Mark as Live
           </button>
-          <button className="py-1 text-sm px-3 bg-secondary-400 rounded-lg text-text-500 hover:bg-secondary-600 transition">
+          <button className="py-1 text-sm px-3 bg-secondary-400 rounded-xl text-text-500 hover:bg-secondary-600 transition">
             Mark as For Review
           </button>
         </div>

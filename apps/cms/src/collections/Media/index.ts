@@ -1,10 +1,15 @@
-import path from "path"
-import type { CollectionConfig } from "payload/types"
+import { S3UploadCollectionConfig } from "payload-s3-upload"
 
-export const Media: CollectionConfig = {
+export const Media: S3UploadCollectionConfig = {
   slug: "media",
   upload: {
-    staticDir: path.resolve(__dirname, "../../../media"),
+    staticURL: "/assets",
+    staticDir: "assets",
+    disableLocalStorage: true,
+    s3: {
+      bucket: process.env.AWS_S3_BUCKET,
+    },
+    adminThumbnail: ({ doc }) => `/${doc.filename}`,
   },
   access: {
     read: () => true,

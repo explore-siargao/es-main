@@ -11,7 +11,7 @@ import {
   LINK_ACCOUNT_TAXES,
   LINK_ACCOUNT_GLOBAL_PREFERENCES,
   LINK_ACCOUNT_NOTIFICATIONS,
-} from "@/common/constants/links"
+} from "@/common/constants"
 import { Typography } from "@/common/components/ui/Typography"
 import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
 import { ChevronRightIcon } from "@heroicons/react/20/solid"
