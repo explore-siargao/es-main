@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 import { T_Photo } from "@repo/contract"
 
 export async function updateUnitPhoto(propertyId: string, props: T_Photo) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/photo/${props._id}`,
     props

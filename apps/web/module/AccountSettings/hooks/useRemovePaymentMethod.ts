@@ -7,7 +7,7 @@ export async function removePaymentMethod(
   userid: string,
   paymentMethodId: string
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.delete(
     `${API_URL_PAYMENTS}/${userid}/payment-method/${paymentMethodId}`
   )

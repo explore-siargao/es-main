@@ -7,7 +7,7 @@ export async function updatePropertyUnitPriceById(
   propertyId: string | undefined,
   unitPrices: T_UnitPrice[]
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/units/pricing`,
     unitPrices

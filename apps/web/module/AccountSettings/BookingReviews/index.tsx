@@ -3,7 +3,7 @@ import AccountSettingWrapper from "@/module/AccountSettings/components/AccountSe
 import React, { useState } from "react"
 import BookingReviewItem from "./BookingReviewItem"
 import { Breadcrumb } from "@/common/components/ui/Breadcrumb"
-import { LINK_ACCOUNT } from "@/common/constants/links"
+import { LINK_ACCOUNT } from "@/common/constants"
 import { cn } from "@/common/helpers/cn"
 import BookingReviewItemPending from "./BookingReviewItemPending"
 import useGetReviewsByUserId from "../../Listing/hooks/useGetReviewsByUserId"

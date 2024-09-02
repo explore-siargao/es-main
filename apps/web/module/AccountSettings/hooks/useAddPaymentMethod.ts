@@ -7,7 +7,7 @@ export async function addPaymentMethod(
   userId: string | undefined,
   props: T_AddPaymentMethod
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(
     `${API_URL_PAYMENTS}/${userId}/payment-method`,
     props

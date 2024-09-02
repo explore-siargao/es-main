@@ -1,6 +1,6 @@
 "use client"
 import AccountSettingWrapper from "@/module/AccountSettings/components/AccountSettingWrapper"
-import { LINK_ACCOUNT } from "@/common/constants/links"
+import { LINK_ACCOUNT } from "@/common/constants"
 import React from "react"
 import { Breadcrumb } from "@/common/components/ui/Breadcrumb"
 import OptIn from "./OptIn"

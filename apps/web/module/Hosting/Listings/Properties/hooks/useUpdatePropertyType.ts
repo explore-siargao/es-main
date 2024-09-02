@@ -10,7 +10,7 @@ export async function updatePropertyType(
   propertyId: string | undefined,
   props: Props
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/property-type`,
     props

@@ -3,7 +3,7 @@ import { API_URL_PAYMENTS } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
 
 export async function getPaymentMethods() {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.get(`${API_URL_PAYMENTS}/payment-method`)
 }
 

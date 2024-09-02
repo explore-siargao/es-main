@@ -9,6 +9,7 @@ import ActivitiesSearchBar from "./ActivitiesSearchBar"
 import RentalsSearchBar from "./RentalsSearchBar"
 import Link from "next/link"
 import { E_Listing_Category } from "@repo/contract"
+import { LINK_HOME } from "@/common/constants"
 
 type T_Search_Form = {
   search: string
@@ -35,7 +36,7 @@ function SearchBarByUrl({
   const searchParams = useSearchParams()
   const category = searchParams.get("category") || ""
 
-  const routeNames = path.split("/")
+  const routeNames = path.split(LINK_HOME)
   const [firstRoute, secondRoute] = routeNames.slice(1, 3)
 
   const form = useForm<T_Search_Form>()

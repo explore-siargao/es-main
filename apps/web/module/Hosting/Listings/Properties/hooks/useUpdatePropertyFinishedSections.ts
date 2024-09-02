@@ -10,7 +10,7 @@ export async function updatePropertyFinishedSections(
   propertyId: string | undefined,
   props: T_Finished_Sections
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/finished-sections`,
     props

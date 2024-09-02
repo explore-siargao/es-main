@@ -8,7 +8,7 @@ export type TForgotPassword = {
 }
 
 export async function forgotPassword(props: TForgotPassword) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(API_AUTH_FORGOT_PASSWORD, props)
 }
 

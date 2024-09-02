@@ -3,6 +3,7 @@ import React, { useEffect } from "react"
 import { Spinner } from "./ui/Spinner"
 import useLogout from "@/module/Authentication/hooks/useLogout"
 import toast from "react-hot-toast"
+import { LINK_HOME } from "../constants"
 
 const Logout = () => {
   const { mutate } = useLogout()
@@ -16,12 +17,12 @@ const Logout = () => {
             }
           } else {
             toast.error(String(data.message))
-            window.location.replace("/")
+            window.location.replace(LINK_HOME)
           }
         },
         onError: (err: any) => {
           toast.error(String(err))
-          window.location.replace("/")
+          window.location.replace(LINK_HOME)
         },
       }
       mutate(undefined, callBackReq)

@@ -7,7 +7,7 @@ export async function updatePropertyBasicInfo(
   id: string | undefined,
   props: T_Property_Basic_Info
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(`${API_URL_PROPERTIES}/${id}/basic-info`, props)
 }
 

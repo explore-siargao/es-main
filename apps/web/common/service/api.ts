@@ -1,17 +1,14 @@
-import { API_ROOT, API_ROOT_V2, MOCK_ROOT } from "@repo/constants"
+import { API_ROOT, MOCK_ROOT } from "@repo/constants"
 import { T_BackendResponse } from "@repo/contract"
 
 export class ApiService {
   private BASE_URL: string | undefined
   private ROOT_PATH: string | undefined
 
-  constructor(source: "main" | "v2" | "auth" | "mock" = "main") {
+  constructor(source: "main" | "auth" | "mock" = "main") {
     if (source === "main") {
       this.BASE_URL = process.env.WEB_URL
       this.ROOT_PATH = API_ROOT
-    } else if (source === "v2") {
-      this.BASE_URL = process.env.WEB_URL
-      this.ROOT_PATH = API_ROOT_V2
     } else if (source === "auth") {
       this.BASE_URL = process.env.API_AUTH_URL
       this.ROOT_PATH = API_ROOT
