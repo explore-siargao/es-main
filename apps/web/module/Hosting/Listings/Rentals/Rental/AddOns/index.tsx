@@ -213,7 +213,7 @@ const AddOns = ({ pageType }: Prop) => {
             )}
             <div className="mt-2">
               <Input
-                className="p-2 rounded-md"
+                className="p-2"
                 type="text"
                 label="Add-On"
                 value={newAddOn}

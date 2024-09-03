@@ -203,7 +203,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 </Typography>
               </div>
               <div>
-                <div className="mt-2 relative rounded-md ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
+                <div className="mt-2 relative rounded-xl ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
                   <label
                     htmlFor="descriptionTextarea"
                     className="block text-xs font-medium text-text-900 px-3 pt-2"
@@ -251,7 +251,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 )}
                 <div className="mt-2">
                   <Input
-                    className="p-2 rounded-md"
+                    className="p-2"
                     value={
                       itemData.length > 0 ? itemData[0]?.itemName || "" : ""
                     }
@@ -297,7 +297,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </Typography>
                     <div className="flex rounded-md">
                       <button
-                        className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() => {
                           durationHour > 0 &&
@@ -319,7 +319,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                         }}
                       />
                       <button
-                        className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() =>
                           setDurationHour((durationHour) => durationHour + 1)
@@ -335,7 +335,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </Typography>
                     <div className="flex rounded-md">
                       <button
-                        className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() => {
                           durationMinute > 0 &&
@@ -358,7 +358,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                         }}
                       />
                       <button
-                        className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() =>
                           setDurationMinute(
