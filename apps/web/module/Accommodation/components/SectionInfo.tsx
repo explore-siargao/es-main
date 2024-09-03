@@ -26,6 +26,7 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
           images={images}
           openModal={openModal}
           isViewModal={true}
+          isRoundedEdge={true}
         />
       </div>
       <ImageGalleryModal

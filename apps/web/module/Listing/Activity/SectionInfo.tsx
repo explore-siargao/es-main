@@ -3,8 +3,8 @@ import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Accommodation/components/ShareSave"
 import React, { useState } from "react"
 import { T_SectionInfoProps } from "../types/SectionInfo"
-import ImageGallery from "./ImageGallery"
-import ImageGalleryModal from "./ImageGalleryModal"
+import ImageGallery from "@/module/Accommodation/components/ImageGallery"
+import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
 
 const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
@@ -26,6 +26,7 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
           images={images}
           openModal={openModal}
           isViewModal={true}
+          isRoundedEdge={true}
         />
       </div>
       <ImageGalleryModal
