@@ -38,7 +38,7 @@ const CalendarTab = () => {
     <>
       {pathType === "rentals" ? (
         // @ts-ignore
-        tabs.length > 0 && <Tabs tabs={rentalTabs} />
+        tabs.length > 0 && <Tabs tabs={rentalTabs} hoverColor="dark-gray" />
       ) : (
         <></>
       )}
