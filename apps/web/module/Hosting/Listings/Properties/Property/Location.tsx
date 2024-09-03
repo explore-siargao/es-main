@@ -180,7 +180,7 @@ const ListingLocation = ({ pageType }: Prop) => {
         <Spinner size="md">Loading...</Spinner>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="form-container">
-          <div className="mb-8">
+          <div className="pb-2">
             <Typography
               variant="h1"
               fontWeight="semibold"
@@ -189,16 +189,24 @@ const ListingLocation = ({ pageType }: Prop) => {
               Location
             </Typography>
           </div>
-          <Button
-            variant="primary"
-            type="button"
-            className="focus:outline-none focus:ring-0"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Show Map
-          </Button>{" "}
-          <div className="flex mt-8 gap-12 flex-wrap">
-            <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg mb-24">
+          <div className="py-2"  onClick={() => setIsModalOpen(true)} >
+          <SpecificMap
+            disablePinMovement={true}
+            center={initialCoords}
+            mapHeight="h-[450px]"
+            mapWidth="w-full"
+            zoom={11}
+            className="relative z-0"
+            
+           
+          />
+           <Typography variant="h5" fontWeight="normal" className="text-gray-500 pt-2 italic">
+           Click to open map and pin where exactly where your listing is. This will help your customers to find your locations.
+              </Typography>
+          </div>
+  
+          <div className="flex mt-2 gap-12 flex-wrap">
+            <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
               <Typography variant="h3" fontWeight="semibold">
                 Address
               </Typography>
@@ -250,25 +258,7 @@ const ListingLocation = ({ pageType }: Prop) => {
                 ))}
               </Select>
 
-              <div className="mt-2">
-                <Typography variant="h3" fontWeight="semibold">
-                  How to get there *
-                </Typography>
-                <Textarea
-                  className="mt-1"
-                  placeholder="Explain in detail how to get to your location. This will help your customers find you!"
-                  required
-                  {...register("howToGetThere", {
-                    required: "This input is required.",
-                    minLength: {
-                      value: 100,
-                      message: "This field has minimum of 100 characters",
-                    },
-                  })}
-                  value={howToGetThere}
-                  onChange={handleHowToGetThereChange}
-                />
-              </div>
+        
               <ErrorMessage
                 errors={errors}
                 name="howToGetThere"
@@ -318,7 +308,29 @@ const ListingLocation = ({ pageType }: Prop) => {
                 </Link>
               </div>
             </div>
+            
           </div>
+          <div className="mt-2">
+                <Typography variant="h3" fontWeight="semibold">
+                  How to get there *
+                </Typography>
+                <div className="flex flex-col w-full xl:w-1/2 gap-2 mb-24">
+                <Textarea
+                  className="flex mt-1 h-[550px]"
+                  placeholder="Explain in detail how to get to your location. This will help your customers find you!"
+                  required
+                  {...register("howToGetThere", {
+                    required: "This input is required.",
+                    minLength: {
+                      value: 100,
+                      message: "This field has minimum of 100 characters",
+                    },
+                  })}
+                  value={howToGetThere}
+                  onChange={handleHowToGetThereChange}
+                />
+             </div>
+              </div>
           <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
             <Button
               size="sm"
@@ -349,7 +361,7 @@ const ListingLocation = ({ pageType }: Prop) => {
             onMarkerSet={handleMarkerSetter}
             className="relative z-0"
             scrollWheelZoomEnabled
-            isPriceMarker={true}
+
           />
         </div>
         <div className="pl-4">
@@ -357,6 +369,10 @@ const ListingLocation = ({ pageType }: Prop) => {
             You can drag and drop the yellow marker above to set your exact
             location on the map
           </Typography>
+          <Typography variant="p" className="italic text-gray-500 text-xs mt-2 mr-3">
+          Once you have pinned your locations in our map you can open it with google or apple map to make sure it is on the right locations.
+          </Typography>
+      
         </div>
         <div className="p-4 flex justify-end">
           <Button
