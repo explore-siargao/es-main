@@ -12,7 +12,7 @@ function RentalsSearchBar() {
   return (
     <div className="flex gap-2 w-full justify-between rounded-xl items-center py-2 pl-2 pr-[19px] border bg-white border-gray-300 mb-4">
       <Select
-        className="w-64 rounded-l-full ring-0 bg-inherit focus-within:ring-0"
+        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
         label={"Category"}
         {...register("search")}
       >
@@ -26,14 +26,14 @@ function RentalsSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full rounded-l-full ring-0 bg-inherit focus-within:ring-0"
+        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
         label={"Pickup Date"}
         {...register("date")}
       />
 
       <Input
         type="date"
-        className="w-full rounded-l-full ring-0 bg-inherit focus-within:ring-0"
+        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
         label={"Pickup Drop Date"}
         {...register("date")}
       />

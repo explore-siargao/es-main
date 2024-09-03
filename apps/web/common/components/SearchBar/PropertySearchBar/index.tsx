@@ -1,7 +1,6 @@
 import React from "react"
 import { Option, Select } from "@/common/components/ui/Select"
 import { Search } from "lucide-react"
-import { Separator } from "../../ui/Separator"
 import { Input } from "../../ui/Input"
 import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
@@ -23,7 +22,7 @@ function PropertySearchBar() {
   return (
     <div className="flex gap-2 rounded-xl items-center py-2 px-2 border bg-primary-100 border-primary-300 mb-4">
       <Select
-        className="w-64 ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
+        className="w-64 ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500 hover:bg-gray-200"
         label={"Location"}
         {...register("search")}
       >
@@ -37,21 +36,21 @@ function PropertySearchBar() {
       {/* <Separator orientation="vertical" className="bg-gray-300 h-8" /> */}
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
+        className="w-full ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500 hover:bg-gray-200"
         label={"Check in"}
         {...register("checkIn")}
       />
       {/* <Separator orientation="vertical" className="bg-gray-300 h-8" /> */}
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
+        className="w-full ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500 hover:bg-gray-200"
         label={"Check out"}
         {...register("checkOut")}
       />
       {/* <Separator orientation="vertical" className="bg-gray-300 h-8" /> */}
       <Input
         type="number"
-        className="ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500"
+        className="ring-0 bg-inherit rounded-xl focus-within:ring-0 bg-white flex-1 border-2 border-solid border-primary-100 focus-within:border-2 focus-within:border-primary-500 hover:bg-gray-200"
         label={"Number of Guest/s"}
         placeholder="1"
         defaultValue={"1"}
