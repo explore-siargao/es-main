@@ -1,5 +1,10 @@
 import { T_GovernmentId } from "@repo/contract"
 
+export enum E_Listing_Status {
+  edit = "edit",
+  setup = "setup",
+}
+
 export interface IUser {
   id?: number
   role?: UserRole

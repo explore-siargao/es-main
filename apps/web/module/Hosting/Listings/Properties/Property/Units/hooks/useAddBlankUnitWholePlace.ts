@@ -3,7 +3,7 @@ import { API_URL_PROPERTIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 
 export async function addBlankUnitWholePlace(propertyId: string) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.post(
     `${API_URL_PROPERTIES}/${propertyId}/units/whole-place`,
     {}

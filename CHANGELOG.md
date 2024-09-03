@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.16.0](https://github.com/explore-siargao/es-main/compare/v0.15.0...v0.16.0) (2024-09-01)
+
+### Features
+
+- Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
+
+### Maintenance
+
+- Made host listing header reusable for all category ([a92330a](https://github.com/explore-siargao/es-main/commit/6d69329bdfd9f99a46d89f19a3c0ae702adc94c9))
+- Made Host Listing Sidebar reusable for all category ([a92330a](https://github.com/explore-siargao/es-main/commit/b4f09d63e6b1e1b725894d4d2e79ef1316e95ed1))
+- Update URL for insights and change button radius ([a92330a](https://github.com/explore-siargao/es-main/commit/d2833d6c09f7b250833ef749c3dd9faf17989655))
+- Make error boundary pages consistent to the theme ([a92330a](https://github.com/explore-siargao/es-main/commit/a92330accae0e322f1257328f92df8f8def3e054))
+- Move links constants to index ([a92330a](https://github.com/explore-siargao/es-main/commit/efcc596eed179b3521e29a1730eef1e55987baac))
+- Remove getCookie helper function ([a92330a](https://github.com/explore-siargao/es-main/commit/803908c2b50bb3df77844748771b56214d9704e8))
+- Rename InputMaxLength to inputMaxLength for consistency ([a92330a](https://github.com/explore-siargao/es-main/commit/1ad70bd075ee6069006b20afd9da011815750ed8))
+- Update loading component to use spinner animation ([a92330a](https://github.com/explore-siargao/es-main/commit/d2b3354dc0c3d7a7859e83d7b13bd4f64ee7609c))
+- Update next.config.js to use API v1 instead of v2 ([a92330a](https://github.com/explore-siargao/es-main/commit/3c401e514f0bf86b0bc0898480ed25899b8ea172))
+- Move api v2 to main (v1 api) for fe and be ([a92330a](https://github.com/explore-siargao/es-main/commit/0218ff638970fdcad8fb9317e082dd64ada1e7f2))
+
+## [0.15.0](https://github.com/explore-siargao/es-main/compare/v0.14.0...v0.15.0) (2024-08-30)
+
+### Features
+
+- **web:** Added global error page/component ([cccbeef](https://github.com/explore-siargao/es-main/commit/cccbeef9fb7e5a5a8ba47050b5a2b19a54f82516))
+- **web:** Added legends in property and rental calendar. ([206ad59](https://github.com/explore-siargao/es-main/commit/206ad599a8c61c40a9a1356561a7b0b6a77b74c7))
+- **web:** adjusted listing units pagination to make the pagination work ([32fcb55](https://github.com/explore-siargao/es-main/commit/32fcb55c9203cdd22dc3bb68fed86916521f39a5))
+- **web:** Changed border radius of inputs to standard (rounded-xl) ([92c2dbe](https://github.com/explore-siargao/es-main/commit/92c2dbeeadd3b92ae62f679be0a691f3d8b00ee9))
+- **web:** Added legal page and its CMS (terms and use) ([75c87a5](https://github.com/explore-siargao/es-main/commit/75c87a53f89939361bf97ee881fd6a1a786c41a4))
+- **web:** Created general blog page and its CMS. Added some improvements in some guides pages ([9cde2fc](https://github.com/explore-siargao/es-main/commit/9cde2fcd4ba236a807ba65a81cecd5fc80b3d902),[bd1617e](https://github.com/explore-siargao/es-main/commit/bd1617eac2423ed489786347f9ef0e8db22baf7d))
+- **web:** Changed map marker icons based on there categories ([14b489c](https://github.com/explore-siargao/es-main/commit/14b489c1a684d88d8b1d8c65ea94e1a83039ea8c),[c4d0fba](https://github.com/explore-siargao/es-main/commit/c4d0fba8b1ef6235d5c494da2e7e705d675e011b),[6377e88](https://github.com/explore-siargao/es-main/commit/6377e8856f2473e43e63424a9552e790f2b2d378),[5caed67](https://github.com/explore-siargao/es-main/commit/5caed676d138aaa671ba8f697d362aa5c29fa313))
+
+### Bug Fixes
+
+- Remove unused npm package, update dependencies and fix mongo mapping ([d7adae9](https://github.com/explore-siargao/es-main/commit/d7adae950101dfe2804c0aeeb2b24e0362582d4c))
+- **web:** Fixed lightbox bottom image height ([96bfa32](https://github.com/explore-siargao/es-main/commit/96bfa32f19f270908afa67672518d4e90ee8254e))
+
+## [0.14.0](https://github.com/explore-siargao/es-main/compare/v0.13.0...v0.14.0) (2024-08-29)
+
+### Features
+
+- **web:** Added divider on user dropdown menu on header ([fa12a2e](https://github.com/explore-siargao/es-main/commit/fa12a2ea701646e37d882a067e3d8632d731c6c0))
+- **web:** Added legends for reservation calendar ([f2e1678](https://github.com/explore-siargao/es-main/commit/f2e16781a24fa39c539282e99fdcff3f79641342))
+- **web:** Changed calendar rentals tab into dynamic ([a300181](https://github.com/explore-siargao/es-main/commit/a30018120741ea42971c41b4ef1f141c5810cc5c),[1ec2500](https://github.com/explore-siargao/es-main/commit/1ec2500657f2a392b9c40a3d48007831337e743d),[dd5e145](https://github.com/explore-siargao/es-main/commit/dd5e14526bb8d435fc407436ba517186d138bde3))
+
 ## [0.13.0](https://github.com/explore-siargao/es-main/compare/v0.12.0...v0.13.0) (2024-08-25)
 
 ### Features

@@ -20,7 +20,7 @@
               "start_date": "2024-08-06",
               "end_date": "2024-08-10",
               "guest_count": 2,
-              "status": "checked-out"
+              "status": "checked-in"
             }
           ]
         },
@@ -38,7 +38,7 @@
               "start_date": "2024-08-05",
               "end_date": "2024-08-06",
               "guest_count": 3,
-              "status": "out-of-service"
+              "status": "checked-out"
             }
           ]
         },
@@ -62,7 +62,7 @@
               "start_date": "2024-08-12",
               "end_date": "2024-08-14",
               "guest_count": 1,
-              "status": "in-house"
+              "status": "out-of-service"
             }
           ]
         },
@@ -95,10 +95,10 @@
             },
             {
               "name": "Raze",
-              "start_date": "2024-08-01",
-              "end_date": "2024-08-03",
+              "start_date": "2024-07-01",
+              "end_date": "2024-07-03",
               "guest_count": 1,
-              "status": "other"
+              "status": "blocked-date"
             }
           ]
         },
@@ -110,13 +110,15 @@
               "name": "Grace",
               "start_date": "2024-06-29",
               "end_date": "2024-06-30",
-              "guest_count": 1
+              "guest_count": 1,
+              "status": "blocked-date"
             },
             {
               "name": "Hank",
               "start_date": "2024-06-01",
               "end_date": "2024-06-02",
-              "guest_count": 1
+              "guest_count": 1,
+              "status": "blocked-date"
             }
           ]
         },

@@ -14,6 +14,8 @@ import Restaurants from "./collections/Restaurants"
 import Locations from "./collections/Locations"
 import Categories from "./collections/Categories"
 import { Media } from "./collections/Media"
+import Legal from "./collections/Legal"
+import Blogs from "./collections/Blogs"
 
 export default buildConfig({
   admin: {
@@ -25,7 +27,16 @@ export default buildConfig({
     api: "/cms/api",
   },
   editor: slateEditor({}),
-  collections: [Surfs, Restaurants, Locations, Media, Categories, Users],
+  collections: [
+    Blogs,
+    Surfs,
+    Restaurants,
+    Locations,
+    Legal,
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [process.env.PAYLOAD_URL || "", process.env.WEB_URL || ""].filter(
     Boolean
   ),

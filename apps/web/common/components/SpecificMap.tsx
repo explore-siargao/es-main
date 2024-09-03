@@ -8,11 +8,12 @@ import {
 } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
-import { Icon, LatLngTuple } from "leaflet"
+import { divIcon, Icon, LatLngTuple } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { WEB_URL } from "../constants/ev"
 import Image from "next/image"
 import { Button } from "./ui/Button"
+import formatCurrency from "../helpers/formatCurrency"
 
 interface SpecificMapProps {
   center: [number, number]
@@ -23,6 +24,8 @@ interface SpecificMapProps {
   onMarkerSet?: (coords: { lat: number; lng: number }) => void | undefined
   scrollWheelZoomEnabled?: boolean
   imagePlace?: string
+  isPriceMarker?: boolean
+  priceData?: number
 }
 
 const markerIcon = new Icon({
@@ -31,6 +34,25 @@ const markerIcon = new Icon({
   iconAnchor: [18, 18],
   popupAnchor: [0, -20],
 })
+
+const priceMarkerIcon = (price?: number) =>
+  divIcon({
+    className: "custom-marker",
+    html: `<div class="relative min-w-20 min-h-7 bg-white rounded-full shadow-lg">
+  <div class="flex items-center justify-center p-1">
+  <strong>
+  ${price ? formatCurrency(price, "Philippines") : "&#8369;0.00"}
+  </strong>
+  </div>
+  <div class="flex justify-center">
+  <div class="absolute bottom-0 translate-y-2"
+   style="border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #fff;">
+  </div>
+  </div>
+  </div>`,
+    iconAnchor: [40, 18],
+    popupAnchor: [0, -20],
+  })
 
 const SpecificMap = ({
   center,
@@ -41,6 +63,8 @@ const SpecificMap = ({
   className,
   scrollWheelZoomEnabled,
   imagePlace,
+  isPriceMarker,
+  priceData,
 }: SpecificMapProps) => {
   const { setCoordinates } = useCoordinatesStore()
   const [position, setPosition] = useState<[number, number] | null>(null)
@@ -149,7 +173,7 @@ const SpecificMap = ({
               />
 
               <Marker
-                icon={markerIcon}
+                icon={isPriceMarker ? priceMarkerIcon(priceData) : markerIcon}
                 position={(position ? position : center) as LatLngTuple}
                 draggable={true}
                 eventHandlers={{

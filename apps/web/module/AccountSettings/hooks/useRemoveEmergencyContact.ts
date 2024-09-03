@@ -4,7 +4,7 @@ import { API_URL_USERS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 
 export async function removeEmergencyContact(id: string) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.delete(`${API_URL_USERS}/emergency-contact/${id}`)
 }
 

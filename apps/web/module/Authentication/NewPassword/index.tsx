@@ -11,6 +11,7 @@ import useVerifyForgotPassword, {
 } from "../hooks/useVerifyForgotPassword2"
 import toast from "react-hot-toast"
 import { EncryptionService } from "@repo/services/"
+import { LINK_HOME } from "@/common/constants"
 
 type TForm = TVerifyForgotPassword & { confirmPassword: string }
 
@@ -54,7 +55,7 @@ const NewPassword = () => {
   }
 
   if (!email || !code) {
-    router.push("/")
+    router.push(LINK_HOME)
   }
 
   return (

@@ -7,7 +7,7 @@ export async function updatePropertyFacilities(
   propertyId: string | undefined,
   props: { facilities: T_Property_Facility[] }
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/facilities`,
     props

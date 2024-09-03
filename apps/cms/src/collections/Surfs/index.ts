@@ -2,6 +2,7 @@ import { hero } from "../../fields/surfs/hero"
 import { slugField } from "../../fields/slug"
 import { CollectionConfig } from "payload/types"
 import { content } from "../../fields/surfs/content"
+import payload from "payload"
 
 const Surfs: CollectionConfig = {
   slug: "surfs",
@@ -23,8 +24,18 @@ const Surfs: CollectionConfig = {
       type: "relationship",
       relationTo: "categories",
       required: true,
+      hasMany: true,
       admin: {
         position: "sidebar",
+      },
+      defaultValue: async () => {
+        const response = await fetch(
+          "/cms/api/categories?limit=1&where[id][equals]=66c3f09f0e847de16240bbf7"
+        )
+        const data = await response.json()
+        const [category] = data.docs
+
+        return [category.id]
       },
     },
     {

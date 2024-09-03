@@ -5,8 +5,12 @@ import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Accommodation/components/ShareSave"
 import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
 
-function TravelBlog() {
-  const images = data.surfGuide.images
+type T_Props = {
+  readonly title: string
+  readonly images: any
+}
+
+function GeneralBlog({ title, images }: T_Props) {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const openModal = () => {
     setGalleryModalOpen(true)
@@ -17,7 +21,7 @@ function TravelBlog() {
       <div className="justify-between md:flex text-start items-center">
         <div>
           <Typography variant="h1" fontWeight="semibold">
-            Siargao, dream island of the Philippines
+            {title}
           </Typography>
         </div>
         <ShareSave />
@@ -27,17 +31,9 @@ function TravelBlog() {
           images={images}
           openModal={openModal}
           isViewModal={true}
+          isRoundedEdge={true}
         />
       </div>
-      <h2 className="text-xl font-bold mb-2">About Blog</h2>
-      <p className="mb-8">
-        A special atmosphere, with a lot of young people with a surfing spirit /
-        good vibes and beautiful landscapes. Even before touching the ground,
-        you will realize the beauty of the island. Indeed, from the air, you
-        will see hundreds of thousands of palm trees, as far as the eye can see.
-        There are many things to do in Siargao, that is what we will detail in
-        this article.
-      </p>
       <ImageGalleryModal
         images={images}
         isOpen={galleryModalOpen}
@@ -47,4 +43,4 @@ function TravelBlog() {
   )
 }
 
-export default TravelBlog
+export default GeneralBlog

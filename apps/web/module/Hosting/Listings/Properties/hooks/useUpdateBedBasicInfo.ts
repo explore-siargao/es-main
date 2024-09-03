@@ -16,7 +16,7 @@ export async function updateBedBasicInfo(
   _id: string | undefined,
   props: T_Update_Bed_Basic_Info
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${_id}/${props._id}/bed/basic-info`,
     props

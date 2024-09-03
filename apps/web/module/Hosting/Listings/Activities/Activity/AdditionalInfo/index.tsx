@@ -169,7 +169,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                 )}
                 <div className="mt-2">
                   <Input
-                    className="p-2 rounded-md"
+                    className="p-2"
                     type="text"
                     label="Bring"
                     value={whatToBringName}
@@ -230,7 +230,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                 )}
                 <div className="mt-2">
                   <Input
-                    className="p-2 rounded-md"
+                    className="p-2"
                     type="text"
                     label="Allow"
                     value={notAllowedName}
@@ -293,7 +293,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                 )}
                 <div className="mt-2">
                   <Input
-                    className="p-2 rounded-md"
+                    className="p-2"
                     type="text"
                     label="Policy"
                     value={policyName}

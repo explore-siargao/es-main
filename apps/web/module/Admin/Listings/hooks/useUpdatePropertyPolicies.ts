@@ -7,7 +7,7 @@ export async function updatePropertyPolicies(
   id: string | undefined,
   props: { policies: T_Property_Policy[] }
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(`${API_URL_PROPERTIES}/${id}/policies`, props)
 }
 

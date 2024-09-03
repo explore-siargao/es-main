@@ -85,7 +85,7 @@ export const cardSingleUse = async (req: Request, res: Response) => {
         },
         reusability: 'ONE_TIME_USE',
       }
-      const req = await apiXendit.post(`/v2/payment_methods`, data, false, true)
+      const req = await apiXendit.post(`/v1/payment_methods`, data, false, true)
       return res.json(response.success({ item: req }))
     } catch (err: any) {
       return res.json(response.error({ message: err.message }))

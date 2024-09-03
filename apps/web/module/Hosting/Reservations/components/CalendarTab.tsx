@@ -1,31 +1,15 @@
 import Tabs from "@/common/components/Tabs"
 import { usePathname } from "next/navigation"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
+import { LINK_HOME } from "@/common/constants"
 
 const CalendarTab = () => {
   const pathName = usePathname()
-  const routeNames = pathName.split("/")
+  const routeNames = pathName.split(LINK_HOME)
   const pathType = routeNames[4]
 
   const { data: rentalCountsData, isPending: rentalCountsPending } =
     useGetRentalCounts()
-
-  let tabs
-
-  const propertyTabs = [
-    {
-      name: "Whole Places",
-      link: "/hosting/reservations/calendar/properties/whole-places",
-    },
-    {
-      name: "Rooms",
-      link: "/hosting/reservations/calendar/properties/rooms",
-    },
-    {
-      name: "Beds",
-      link: "/hosting/reservations/calendar/properties/beds",
-    },
-  ]
 
   const rentalTabs = []
 
@@ -50,19 +34,13 @@ const CalendarTab = () => {
     }
   }
 
-  if (pathType === "properties") {
-    tabs = propertyTabs
-  } else if (pathType === "rentals") {
-    tabs = rentalTabs
-  }
-
   return (
     <>
-      {pathType === "activities" ? (
-        <></>
-      ) : (
+      {pathType === "rentals" ? (
         // @ts-ignore
-        tabs.length > 0 && <Tabs tabs={tabs} />
+        tabs.length > 0 && <Tabs tabs={rentalTabs} />
+      ) : (
+        <></>
       )}
     </>
   )

@@ -7,7 +7,7 @@ export async function updateRentalPhoto(
   rentalId: string | undefined,
   props: T_Photo
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_RENTALS}/${rentalId}/photo/${props._id}`,
     props

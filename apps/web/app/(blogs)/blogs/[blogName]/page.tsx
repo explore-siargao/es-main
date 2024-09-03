@@ -1,8 +1,22 @@
+import { getRequestCMS } from "@/common/helpers/getRequestCMS"
 import Blog from "@/module/Blog"
+import { notFound } from "next/navigation"
 import React from "react"
 
-function page() {
-  return <Blog />
+type T_Props = {
+  params: {
+    blogName: string
+  }
 }
 
-export default page
+const BlogPage = async ({ params: { blogName } }: T_Props) => {
+  const content = await getRequestCMS(`/blogs/general/${blogName}`)
+
+  if (!content) {
+    notFound()
+  }
+
+  return <Blog data={content} />
+}
+
+export default BlogPage

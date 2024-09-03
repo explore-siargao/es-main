@@ -8,7 +8,7 @@ export async function updateAmenities(
   bookableUnitId: string | undefined,
   props: { amenities: T_Property_Amenity[] }
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/${bookableUnitId}/amenities`,
     props

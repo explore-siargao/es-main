@@ -32,7 +32,6 @@ RUN echo "PAYLOAD_PORT=$PAYLOAD_PORT" > .env && \
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY pnpm-workspace.yaml ./
-COPY .npmrc ./
 COPY tsconfig.json ./
 COPY turbo.json ./
  

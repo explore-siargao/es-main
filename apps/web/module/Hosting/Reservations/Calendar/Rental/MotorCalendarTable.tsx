@@ -25,8 +25,10 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
+import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 
 const MotorCalendarTable = () => {
+  const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -46,7 +48,7 @@ const MotorCalendarTable = () => {
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
-  const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
+  const [tempMotorAbbr, setMotorAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
     defaultQuantity: 5,
     customQuantity: [
@@ -222,7 +224,7 @@ const MotorCalendarTable = () => {
 
   const handleEditRoom = (abbr: string) => {
     setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+    setMotorAbbr(abbr)
   }
 
   const handleSaveRoom = (categoryName: string, motorIndex: number) => {
@@ -235,7 +237,8 @@ const MotorCalendarTable = () => {
       //@ts-ignore
       const motorcycle = category?.motorcycles[motorIndex]
       if (motorcycle) {
-        motorcycle.abbr = tempRoomAbbr
+        mutate({ id: motorcycle.id, name: tempMotorAbbr })
+        motorcycle.abbr = tempMotorAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -333,10 +336,8 @@ const MotorCalendarTable = () => {
                               {editingRoom === motorcycle.abbr ? (
                                 <Input
                                   type="text"
-                                  value={tempRoomAbbr}
-                                  onChange={(e) =>
-                                    setTempRoomAbbr(e.target.value)
-                                  }
+                                  value={tempMotorAbbr}
+                                  onChange={(e) => setMotorAbbr(e.target.value)}
                                   autoFocus
                                   className="mr-2"
                                   label={""}

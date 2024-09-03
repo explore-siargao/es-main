@@ -7,7 +7,7 @@ export async function updatePropertyStatus(
   propertyId: string | undefined,
   props: T_Property_Status
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_PROPERTIES}/${propertyId}/status`,
     props

@@ -3,7 +3,7 @@ import {
   LINK_ACCOUNT,
   LINK_ACCOUNT_WISHLIST,
   LINK_LOGOUT,
-} from "@/common/constants/links"
+} from "@/common/constants"
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/20/solid"
 import React, { Fragment } from "react"
 import { Popover, Transition } from "@headlessui/react"

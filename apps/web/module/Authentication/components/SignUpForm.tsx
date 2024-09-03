@@ -28,6 +28,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query"
 import useRegister2 from "../hooks/useRegister2"
 import { addMinutes } from "date-fns"
+import { LINK_HOME } from "@/common/constants"
 type Props = {
   isSocial?: boolean
 }
@@ -71,7 +72,7 @@ const SignUpForm = ({ isSocial = false }: Props) => {
             localStorage.setItem("welcome", "newUser")
             router.push(data.action.link)
           }
-          router.push("/")
+          router.push(LINK_HOME)
         } else {
           toast.error(String(data.message))
         }

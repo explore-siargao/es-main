@@ -6,7 +6,7 @@ export async function setReceivedEmail(
   userId: number | string,
   canReceive: boolean
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(`${API_URL_USERS}/${userId}/received-email`, {
     canReceive,
   })

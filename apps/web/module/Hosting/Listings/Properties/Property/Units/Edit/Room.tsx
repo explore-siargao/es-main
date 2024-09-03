@@ -231,7 +231,7 @@ const Room = ({ pageType }: Prop) => {
                         field.onChange(`Custom: ${e.target.value}`)
                       }}
                       placeholder="Enter custom name"
-                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      className="mt-2 block w-full border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                       required
                     />
                   )}
@@ -305,9 +305,9 @@ const Room = ({ pageType }: Prop) => {
             <Typography variant="h4" fontWeight="semibold" className="mb-2">
               How many of this type you have?
             </Typography>
-            <div className="flex rounded-md">
+            <div className="flex">
               <button
-                className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => {
                   typeCount > 0 && setTypeCount((typeCount) => typeCount - 1)
@@ -329,7 +329,7 @@ const Room = ({ pageType }: Prop) => {
                 required
               />
               <button
-                className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => setTypeCount((typeCount) => typeCount + 1)}
               >
