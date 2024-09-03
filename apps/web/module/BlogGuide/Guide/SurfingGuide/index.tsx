@@ -14,32 +14,21 @@ type T_Props = {
 const SurfingGuide = ({ data }: T_Props) => {
   return (
     <WidthWrapper width="medium">
-      <div className="mt-10">
-        <SurfGuide
-          title={data.title}
-          guideText={data.hero.guide}
-          images={data.hero.images}
-        />
-        <Separator
-          orientation="horizontal"
-          className="mt-10 mb-6 bg-gray-300"
-        />
-        <Directions
-          longitude={data.content.location[0]}
-          latitude={data.content.location[1]}
-          locationGuide={data.content.locationGuide}
-        />
-        <Separator
-          orientation="horizontal"
-          className="mt-10 mb-6 bg-gray-300"
-        />
-        <IdealConditions />
-        <Separator
-          orientation="horizontal"
-          className="mt-10 mb-6 bg-gray-300"
-        />
-        <Forecast />
-      </div>
+      <SurfGuide
+        title={data.title}
+        guideText={data.hero.guide}
+        images={data.hero.images}
+      />
+      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <Directions
+        longitude={data.content.location[0]}
+        latitude={data.content.location[1]}
+        locationGuide={data.content.locationGuide}
+      />
+      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <IdealConditions />
+      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <Forecast />
     </WidthWrapper>
   )
 }
