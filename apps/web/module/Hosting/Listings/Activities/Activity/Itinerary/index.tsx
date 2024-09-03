@@ -205,22 +205,25 @@ const Itinerary = ({ pageType }: Prop) => {
               Itinerary
             </Typography>
           </div>
-          <div className="py-2"  onClick={() => setIsModalOpen(true)} >
-          <SpecificMap
-            disablePinMovement={true}
-            center={initialCoords}
-            mapHeight="h-[450px]"
-            mapWidth="w-full"
-            zoom={11}
-            className="relative z-0"
-            
-           
-          />
-           <Typography variant="h5" fontWeight="normal" className="text-gray-500 pt-2 italic">
-           Click to open map and pin where exactly where your listing is. This will help your customers to find your locations.
-              </Typography>
+          <div className="py-2" onClick={() => setIsModalOpen(true)}>
+            <SpecificMap
+              disablePinMovement={true}
+              center={initialCoords}
+              mapHeight="h-[450px]"
+              mapWidth="w-full"
+              zoom={11}
+              className="relative z-0"
+            />
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-2 italic"
+            >
+              Click to open map and pin where exactly where your listing is.
+              This will help your customers to find your locations.
+            </Typography>
           </div>
-        
+
           <div className="flex mt-2 gap-12 flex-wrap">
             <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
               <Typography variant="h3" fontWeight="semibold">
@@ -275,7 +278,7 @@ const Itinerary = ({ pageType }: Prop) => {
                   </Option>
                 ))}
               </Select>
-        
+
               <ErrorMessage
                 errors={errors}
                 name="meetingPoint.howToGetThere"
@@ -318,25 +321,25 @@ const Itinerary = ({ pageType }: Prop) => {
             </div>
           </div>
           <div className="mt-2">
-                <Typography variant="h3" fontWeight="semibold">
-                  How to get there *
-                </Typography>
-                <div className="flex flex-col w-full xl:w-1/2 gap-2">
-                <Textarea
-                   className="flex mt-1 h-[550px]"
-                  placeholder="Explain in detail how to get to your location. This will help your customers find you!"
-                  required
-                  {...register("meetingPoint.howToGetThere", {
-                    required: "This input is required.",
-                    minLength: {
-                      value: 100,
-                      message: "This field has minimum of 100 characters",
-                    },
-                  })}
-                  value={howToGetThere}
-                />
-                </div>
-              </div>
+            <Typography variant="h3" fontWeight="semibold">
+              How to get there *
+            </Typography>
+            <div className="flex flex-col w-full xl:w-1/2 gap-2">
+              <Textarea
+                className="flex mt-1 h-[550px]"
+                placeholder="Explain in detail how to get to your location. This will help your customers find you!"
+                required
+                {...register("meetingPoint.howToGetThere", {
+                  required: "This input is required.",
+                  minLength: {
+                    value: 100,
+                    message: "This field has minimum of 100 characters",
+                  },
+                })}
+                value={howToGetThere}
+              />
+            </div>
+          </div>
           <div className="flex gap-4 mt-8">
             <ToggleSwitch
               checked={isToggled}
@@ -346,7 +349,7 @@ const Itinerary = ({ pageType }: Prop) => {
             <Typography>Enable itinerary builder</Typography>
           </div>
           {isToggled && <Builder />}
-          
+
           <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
             <Button
               size="sm"

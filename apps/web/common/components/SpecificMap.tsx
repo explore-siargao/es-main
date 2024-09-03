@@ -26,7 +26,7 @@ interface SpecificMapProps {
   imagePlace?: string
   isPriceMarker?: boolean
   priceData?: number
-  disablePinMovement?: boolean 
+  disablePinMovement?: boolean
 }
 
 const markerIcon = new Icon({
@@ -66,7 +66,7 @@ const SpecificMap = ({
   imagePlace,
   isPriceMarker,
   priceData,
-  disablePinMovement = false
+  disablePinMovement = false,
 }: SpecificMapProps) => {
   const { setCoordinates } = useCoordinatesStore()
   const [position, setPosition] = useState<[number, number] | null>(null)
@@ -101,14 +101,14 @@ const SpecificMap = ({
 
   const handleMapClick = (event: L.LeafletMouseEvent) => {
     if (!disablePinMovement) {
-    const newCoordinates = event.latlng
-    setPosition([newCoordinates.lat, newCoordinates.lng])
-    setCoordinates(newCoordinates.lat, newCoordinates.lng)
-    fetchPlaceName(newCoordinates.lat, newCoordinates.lng)
-    if (onMarkerSet) {
-      onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
+      const newCoordinates = event.latlng
+      setPosition([newCoordinates.lat, newCoordinates.lng])
+      setCoordinates(newCoordinates.lat, newCoordinates.lng)
+      fetchPlaceName(newCoordinates.lat, newCoordinates.lng)
+      if (onMarkerSet) {
+        onMarkerSet({ lat: newCoordinates.lat, lng: newCoordinates.lng })
+      }
     }
-  }
   }
 
   const handleMarkerEvents = (marker: L.Marker) => {
