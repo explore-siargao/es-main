@@ -7,7 +7,7 @@ const statusEnum = [
   "Checked-Out",
   "No-Show",
   "Blocked-Dates",
-  "Out-of-Service"
+  "Out-of-Service",
 ]
 const reservations = new Schema({
   unitId: {
@@ -28,7 +28,7 @@ const reservations = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Guests",
     required: false,
-    default:null
+    default: null,
   },
   paymentType: String,
   cardType: String,
@@ -37,27 +37,27 @@ const reservations = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "PaymentMethods",
     required: false,
-    default:null
+    default: null,
   },
   xendItPaymentMethodId: {
     type: String,
     required: false,
-    default:false
+    default: false,
   },
   xendItPaymentRequestId: {
     type: String,
     required: false,
-    default:null
+    default: null,
   },
   xendItPaymentReferenceId: {
     type: String,
     required: false,
-    default:null
+    default: null,
   },
   guestCount: {
     type: Number,
     required: false,
-    default:0
+    default: 0,
   },
   status: {
     type: String,
