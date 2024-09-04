@@ -7,27 +7,29 @@ import {
   Rental,
   SelectedReservation,
 } from "../../../../types/CalendarTable"
+import useGetRentalNamesByCategory from "../../../hooks/useGetRentalNamesByCategory"
+import { useState } from "react"
+import useGetVehiclesByRentalId from "../../../hooks/useGetVehiclesByRentalId"
 
 interface IRentalReservationFormProps {
-  selectedCategory: string
-  setSelectedCategory: (category: string) => void
-  data: any
-  filteredRooms: Rental[]
   handleRentalCancel: () => void
   handleSave: (data: any) => void
   setIsLegendTypeSelected: (data: boolean) => void
 }
 
+const rentalTypes = ['Car', 'Motorbike', 'Bicycle']
+
 function RentalReservationForm({
-  selectedCategory,
-  setSelectedCategory,
-  data,
-  filteredRooms,
   handleSave,
   handleRentalCancel,
   setIsLegendTypeSelected
 }: IRentalReservationFormProps) {
+  const [selectedRentalType, setSelectedRentalType] = useState("")
+  const [selectedRentalId, setSelectedRentalId] = useState("")
   const { register } = useFormContext()
+  const { data: rentalNamesByCategory, isLoading: isRentalNamesByCategoryLoading } = useGetRentalNamesByCategory(selectedRentalType)
+  const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } = useGetVehiclesByRentalId(selectedRentalId)
+  console.log(rentalNamesByCategory)
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -40,37 +42,59 @@ function RentalReservationForm({
               {...register("rentalType", {
                 required: "This field is required",
               })}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => setSelectedRentalType(e.target.value)}
             >
               <Option value="">Select</Option>
-              {data &&
-                data?.categories?.map((category: Category) => (
-                  <Option key={category.name} value={category.name}>
-                    {category.name}
+              {rentalTypes.map((type: string) => (
+                  <Option key={type} value={type}>
+                    {type}
                   </Option>
                 ))}
             </Select>
           </div>
           <div className="flex flex-col w-full">
             <Select
-              label="Subcategory"
-              id="room"
+              label="Vehicle"
+              id="vehicle"
               required
-              disabled={selectedCategory ? false : true}
-              {...register("room", {
+              disabled={selectedRentalType ? false : true || isRentalNamesByCategoryLoading || rentalNamesByCategory?.items?.length! > 0}
+              {...register("vehicle", {
                 required: "This field is required",
               })}
+              onChange={(e) => setSelectedRentalId(e.target.value)}
             >
               <Option value="">Select</Option>
-              {filteredRooms.map((room: Rental) => (
-                <Option key={room.abbr} value={room.abbr}>
-                  {room.abbr}
+              {rentalNamesByCategory &&
+                rentalNamesByCategory?.items?.map((vehicle: any) => (
+                  <Option key={vehicle} value={vehicle}>
+                    {vehicle}
+                  </Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <div className="flex flex-col w-full">
+            <Select
+              label="Available Units"
+              id="unit"
+              required
+              disabled={selectedRentalId ? false : true || isVehiclesByRentalIdLoading || vehiclesByRentalId?.items?.length! > 0}
+              {...register("unit", {
+                required: "This field is required",
+              })}
+              onChange={(e) => setSelectedRentalType(e.target.value)}
+            >
+              <Option value="">Select</Option>
+              {rentalTypes.map((type: string) => (
+                <Option key={type} value={type}>
+                  {type}
                 </Option>
               ))}
             </Select>
           </div>
         </div>
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-4 w-full border-t border-gray-200 md:pt-4">
           <div className="flex flex-col w-full">
             <Input
               id="name"
@@ -98,8 +122,8 @@ function RentalReservationForm({
           <div className="flex flex-col w-full">
             <Input
               type="date"
-              id="guest"
-              label="Check in Date"
+              id="startDate"
+              label="Start Date"
               {...register("start_date", {
                 required: "This field is required",
               })}
@@ -109,8 +133,8 @@ function RentalReservationForm({
           <div className="flex flex-col w-full">
             <Input
               type="date"
-              id="guest"
-              label="Check out Date"
+              id="endDate"
+              label="End Date"
               {...register("end_date", {
                 required: "This field is required",
               })}

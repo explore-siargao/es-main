@@ -29,7 +29,7 @@ function RentalSelectLegendTypeForm({
     "Blocked-Dates",
     "Out-of-Service",
   ]
-  console.log(getValues())
+  
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">

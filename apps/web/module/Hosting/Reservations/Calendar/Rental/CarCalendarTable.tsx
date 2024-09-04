@@ -25,6 +25,7 @@ import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import AddRentalReservationModal from "../AddReservationModal/Rental"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -442,7 +443,7 @@ const CarCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddReservationModal
+          <AddRentalReservationModal
             isModalOpen={isAddReservationModalOpen}
             onClose={closeAddReservationModal}
             onSave={handleSaveNewReservation}
