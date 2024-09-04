@@ -102,16 +102,22 @@ const BedCalendarTable = () => {
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    const isReservationWithinRange = (reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
-    const transformUnitType = (unitType: { beds: any; rooms: any; wholePlaces: any }) => {
+    const transformUnitType = (unitType: {
+      beds: any
+      rooms: any
+      wholePlaces: any
+    }) => {
       const bookableUnits = []
 
       if (unitType.beds) {
@@ -136,7 +142,7 @@ const BedCalendarTable = () => {
         reservations: unit.reservations.filter(isReservationWithinRange),
       }))
 
-    const filterItems = (items: any[]) => 
+    const filterItems = (items: any[]) =>
       items
         .map((item: { propertyTitle: any; bookableUnitTypes: any[] }) => ({
           name: item.propertyTitle,
@@ -145,7 +151,10 @@ const BedCalendarTable = () => {
             .map(transformUnitType)
             .flat(),
         }))
-        .filter((item: { bookableUnitTypes: string | any[] }) => item.bookableUnitTypes.length > 0)
+        .filter(
+          (item: { bookableUnitTypes: string | any[] }) =>
+            item.bookableUnitTypes.length > 0
+        )
 
     const newFilteredData = {
       items: filterItems(sampleData?.items ?? []),

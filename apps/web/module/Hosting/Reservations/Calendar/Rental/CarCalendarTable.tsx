@@ -100,12 +100,14 @@ const CarCalendarTable = () => {
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    const isReservationWithinRange = (reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
@@ -124,7 +126,9 @@ const CarCalendarTable = () => {
           ...category,
           cars: filterCars(category.cars),
         }))
-        .filter((category: { cars: string | any[] }) => category.cars.length > 0)
+        .filter(
+          (category: { cars: string | any[] }) => category.cars.length > 0
+        )
 
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
@@ -132,7 +136,6 @@ const CarCalendarTable = () => {
     //@ts-ignore
     setFilteredData(newFilteredData)
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
-  
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))

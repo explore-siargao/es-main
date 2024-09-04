@@ -97,16 +97,18 @@ const MotorCalendarTable = () => {
     }
     closeAddReservationModal()
   }
-  
+
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    const isReservationWithinRange = (reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
@@ -125,7 +127,10 @@ const MotorCalendarTable = () => {
           ...category,
           motorcycles: filterMotorcycles(category.motorcycles),
         }))
-        .filter((category: { motorcycles: string | any[] }) => category.motorcycles.length > 0)
+        .filter(
+          (category: { motorcycles: string | any[] }) =>
+            category.motorcycles.length > 0
+        )
 
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
@@ -133,7 +138,7 @@ const MotorCalendarTable = () => {
     //@ts-ignore
     setFilteredData(newFilteredData)
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
- 
+
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }

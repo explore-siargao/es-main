@@ -98,17 +98,17 @@ const BikeCalendarTable = () => {
     closeAddReservationModal()
   }
 
-
-  
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    const isReservationWithinRange = (reservation: { startDate: string | number | Date; endDate: string | number | Date }) => {
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
@@ -127,7 +127,10 @@ const BikeCalendarTable = () => {
           ...category,
           bicycles: filterBicycles(category.bicycles),
         }))
-        .filter((category: { bicycles: string | any[] }) => category.bicycles.length > 0)
+        .filter(
+          (category: { bicycles: string | any[] }) =>
+            category.bicycles.length > 0
+        )
 
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
@@ -135,7 +138,6 @@ const BikeCalendarTable = () => {
     //@ts-ignore
     setFilteredData(newFilteredData)
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
-  
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
