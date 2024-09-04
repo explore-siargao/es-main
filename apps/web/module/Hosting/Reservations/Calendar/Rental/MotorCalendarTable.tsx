@@ -100,30 +100,39 @@ const MotorCalendarTable = () => {
 
   useEffect(() => {
     const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
+      const calendarEnd = addDays(startDate, daysPerPage - 1);
+  
       const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          motorcycles: category.motorcycles.map((motorcycle: Rental) => ({
-            ...motorcycle,
-            reservations: motorcycle.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
+        items: (sampleData?.items ?? []).map((category) => {
+          const filteredMotorcycles = category.motorcycles
+            .map((motorcycle: Rental) => ({
+              ...motorcycle,
+              reservations: motorcycle.reservations.filter((reservation) => {
+                const bookingStart = new Date(reservation.startDate);
+                const bookingEnd = new Date(reservation.endDate);
+                return !(
+                  isAfter(bookingStart, calendarEnd) ||
+                  isBefore(bookingEnd, startDate)
+                );
+              }),
+            }))
+  
+          return {
+            ...category,
+            motorcycles: filteredMotorcycles,
+          };
+        })
+        .filter((category) => category.motorcycles.length > 0), 
+      };
+  
       //@ts-ignore
-      setFilteredData(newFilteredData)
-    }
-
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
-
+      setFilteredData(newFilteredData);
+    };
+  
+    filterDataByDate();
+  }, [startDate, sampleData?.items]);
+  
+  console.log(filteredData)
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }

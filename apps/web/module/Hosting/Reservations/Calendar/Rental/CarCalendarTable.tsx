@@ -99,29 +99,38 @@ const CarCalendarTable = () => {
 
   useEffect(() => {
     const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
+      const calendarEnd = addDays(startDate, daysPerPage - 1);
+  
       const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          cars: category.cars.map((car: Rental) => ({
-            ...car,
-            reservations: car.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
+        items: (sampleData?.items ?? []).map((category) => {
+          const filteredCars = category.cars
+            .map((car: Rental) => ({
+              ...car,
+              reservations: car.reservations.filter((reservation) => {
+                const bookingStart = new Date(reservation.startDate);
+                const bookingEnd = new Date(reservation.endDate);
+                return !(
+                  isAfter(bookingStart, calendarEnd) ||
+                  isBefore(bookingEnd, startDate)
+                );
+              }),
+            }))
+  
+          return {
+            ...category,
+            cars: filteredCars,
+          };
+        })
+        .filter((category) => category.cars.length > 0), 
+      };
+  
       //@ts-ignore
-      setFilteredData(newFilteredData)
-    }
-
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
+      setFilteredData(newFilteredData);
+    };
+  
+    filterDataByDate();
+  }, [startDate, sampleData?.items]);
+  
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
