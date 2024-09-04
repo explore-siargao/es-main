@@ -7,6 +7,7 @@ import {
   getRental,
   deleteRental,
   getAllRentalsByHostId,
+  getRentalCounts,
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
@@ -247,6 +248,15 @@ router.get(
   isUserLoggedIn,
   isCsrfTokenValid,
   getCarCalendar
+)
+
+//rental counts
+router.get(
+  '/counts/all',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getRentalCounts
 )
 
 // rentals
