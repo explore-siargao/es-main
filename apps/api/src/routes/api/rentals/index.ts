@@ -34,6 +34,7 @@ import {
   getCarCalendar,
   getMotorcycleCalendar,
 } from './services/calendar'
+import { getRentalsByHostAndCategory } from './services/rentals'
 
 const router = express.Router()
 
@@ -249,7 +250,13 @@ router.get(
   getCarCalendar
 )
 
-// rental counts
-router.get('/counts/all', isOriginValid, isUserLoggedIn, getRentalCounts)
+// rentals
+router.get(
+  '/:category/list',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getRentalsByHostAndCategory
+)
 
 export default router
