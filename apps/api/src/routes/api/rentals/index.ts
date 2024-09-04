@@ -6,8 +6,7 @@ import {
   getRentalDetails,
   getRental,
   deleteRental,
-  getAllRentalsByHostId,
-  getRentalCounts,
+  getAllRentalsByHostId
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
