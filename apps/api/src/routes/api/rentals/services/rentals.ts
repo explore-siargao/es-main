@@ -45,3 +45,37 @@ export const getRentalsByHostAndCategory = async (
     )
   }
 }
+
+export const getRentalIds = async (req: Request, res: Response) => {
+  try {
+    const { rentalId } = req.params
+
+    if (!rentalId) {
+      return res.json(
+        response.error({
+          message: 'Rental ID is required.',
+        })
+      )
+    }
+
+    const rental = await dbRentals.findById(rentalId)
+
+    if (!rental) {
+      return res.json(
+        response.error({
+          message: 'Rental not found.',
+        })
+      )
+    }
+
+    const ids = rental.ids
+
+    return res.json(response.success({ items: ids, allItemCount: ids.length }))
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
