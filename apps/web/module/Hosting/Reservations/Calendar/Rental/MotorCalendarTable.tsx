@@ -99,30 +99,45 @@ const MotorCalendarTable = () => {
   }
 
   useEffect(() => {
-    const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
-      const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          motorcycles: category.motorcycles.map((motorcycle: Rental) => ({
-            ...motorcycle,
-            reservations: motorcycle.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
-      //@ts-ignore
-      setFilteredData(newFilteredData)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
+
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
     }
 
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange)
+
+    const filterMotorcycles = (motorcycles: any[]) =>
+      motorcycles.map((motorcycles: { reservations: any }) => ({
+        ...motorcycles,
+        reservations: filterReservations(motorcycles.reservations),
+      }))
+
+    const filterCategories = (categories: any[]) =>
+      categories
+        .map((category: { motorcycles: any }) => ({
+          ...category,
+          motorcycles: filterMotorcycles(category.motorcycles),
+        }))
+        .filter(
+          (category: { motorcycles: string | any[] }) =>
+            category.motorcycles.length > 0
+        )
+
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    }
+    //@ts-ignore
+    setFilteredData(newFilteredData)
+  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
