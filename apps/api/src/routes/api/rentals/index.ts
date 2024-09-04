@@ -6,8 +6,7 @@ import {
   getRentalDetails,
   getRental,
   deleteRental,
-  getAllRentalsByHostId,
-  getRentalCounts,
+  getAllRentalsByHostId
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
@@ -34,6 +33,7 @@ import {
   getCarCalendar,
   getMotorcycleCalendar,
 } from './services/calendar'
+import { getRentalsByHostAndCategory } from './services/rentals'
 
 const router = express.Router()
 
@@ -249,7 +249,13 @@ router.get(
   getCarCalendar
 )
 
-// rental counts
-router.get('/counts/all', isOriginValid, isUserLoggedIn, getRentalCounts)
+// rentals
+router.get(
+  '/:category/list',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getRentalsByHostAndCategory
+)
 
 export default router
