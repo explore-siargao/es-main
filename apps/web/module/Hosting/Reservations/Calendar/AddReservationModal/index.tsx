@@ -2,13 +2,15 @@ import { useEffect, useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
-import { useForm } from "react-hook-form"
+import { FormProvider, useForm } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
 import {
   Category,
   Rental,
   SelectedReservation,
 } from "../../types/CalendarTable"
+import RentalReservationForm from "./Rental/RentalReservationForm"
+import RentalSelectLegendTypeForm from "./Rental/RentalSelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
@@ -25,16 +27,25 @@ const AddReservationModal = ({
 }: IReservationCalendarModalProps) => {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [filteredRooms, setFilteredRooms] = useState<Rental[]>([])
+  const [selectedLegendType, setSelectedLegendType] = useState<string>("")
+  const [isLegendTypeSelected, setIsLegendTypeSelected] = useState<boolean>(false)
 
   const handleSave = (data: any) => {
     const resetform = () => {
-      reset()
+      form.reset()
       setSelectedCategory("")
     }
     onSave(data, resetform)
   }
 
-  const { register, reset, handleSubmit } = useForm()
+  const handleRentalCancel = () => {
+    onClose()
+    form.setValue("status", "")
+    setSelectedLegendType("")
+    setIsLegendTypeSelected(false)
+  }
+
+  const form = useForm()
 
   useEffect(() => {
     if (data && selectedCategory) {
@@ -57,7 +68,7 @@ const AddReservationModal = ({
       setFilteredRooms([])
     }
   }, [selectedCategory, data])
-
+  
   return (
     <ModalContainer
       onClose={onClose}
@@ -65,108 +76,26 @@ const AddReservationModal = ({
       size="sm"
       title="Add Reservation"
     >
-      <form onSubmit={handleSubmit(handleSave)}>
-        <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
-          <div className="flex flex-col gap-4 pb-4">
-            <div className="flex gap-4">
-              <div className="flex flex-col w-full">
-                <Select
-                  label="Category"
-                  id="category"
-                  required
-                  {...register("category", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                  <Option value="">Select</Option>
-                  {data &&
-                    data?.categories?.map((category: Category) => (
-                      <Option key={category.name} value={category.name}>
-                        {category.name}
-                      </Option>
-                    ))}
-                </Select>
-              </div>
-              <div className="flex flex-col w-full">
-                <Select
-                  label="Subcategory"
-                  id="room"
-                  required
-                  disabled={selectedCategory ? false : true}
-                  {...register("room", {
-                    required: "This field is required",
-                  })}
-                >
-                  <Option value="">Select</Option>
-                  {filteredRooms.map((room: Rental) => (
-                    <Option key={room.abbr} value={room.abbr}>
-                      {room.abbr}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div className="flex gap-4 w-full">
-              <div className="flex flex-col w-full">
-                <Input
-                  id="name"
-                  label="Guest Name"
-                  {...register("name", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <Input
-                  className="w-full"
-                  id="guest"
-                  type="number"
-                  label="Number of Guests"
-                  {...register("guest_count", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex flex-col w-full">
-                <Input
-                  type="date"
-                  id="guest"
-                  label="Check in Date"
-                  {...register("start_date", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <Input
-                  type="date"
-                  id="guest"
-                  label="Check out Date"
-                  {...register("end_date", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
-            <div className="flex justify-end gap-2 w-full">
-              <Button variant="danger" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="primary" onClick={handleSave}>
-                Save
-              </Button>
-            </div>
-          </div>
-        </div>
+      <form onSubmit={form.handleSubmit(handleSave)}>
+      <FormProvider {...form}>
+        {
+          isLegendTypeSelected ? 
+          <RentalReservationForm 
+            selectedCategory={selectedCategory} 
+            setSelectedCategory={setSelectedCategory} 
+            data={data} 
+            filteredRooms={filteredRooms} 
+            handleSave={handleSave}
+            handleRentalCancel={handleRentalCancel}
+            setIsLegendTypeSelected={setIsLegendTypeSelected}
+          /> : 
+          <RentalSelectLegendTypeForm
+            setSelectedLegendType={setSelectedLegendType}
+            setIsLegendTypeSelected={setIsLegendTypeSelected}
+            handleRentalCancel={handleRentalCancel}
+          />
+        }
+      </FormProvider>
       </form>
     </ModalContainer>
   )
