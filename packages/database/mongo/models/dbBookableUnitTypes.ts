@@ -18,6 +18,7 @@ const livingRooms = new Schema({
 const bookableUnitTypes = new Schema({
   category: String,
   title: String,
+  subtitle: String,
   totalSize: Number,
   isHaveSharedBathRoom: {
     type: String,

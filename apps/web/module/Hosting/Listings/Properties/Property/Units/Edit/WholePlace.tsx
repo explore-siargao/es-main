@@ -42,6 +42,7 @@ import { useLivingroomStore } from "./store/useLivingroomStore"
 
 type T_WholePlaceUnit = {
   title: string
+  subtitle: string
   bedCount: number
   bedRooms: IBedroom[]
   bedroomStudio: IBedroom[]
@@ -212,6 +213,7 @@ const WholePlace = ({ pageType }: Prop) => {
       const commonProps = {
         _id: wholePlaceId,
         title: formData.title,
+        subtitle: formData.subtitle,
         numBathRooms: bathroomCount,
         totalSize: formData.size,
         qty: Number(exactUnitCount),
@@ -286,6 +288,7 @@ const WholePlace = ({ pageType }: Prop) => {
   useEffect(() => {
     if (!isPending && !isFetching && data?.item) {
       setValue("title", data?.item?.title)
+      setValue("subtitle", data?.item?.subtitle)
       setValue("size", data?.item?.totalSize)
       setBathroomCount(Number(data?.item.numBathRooms))
       setExactUnitCount(Number(data?.item.qty))
@@ -373,11 +376,24 @@ const WholePlace = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-4 gap-x-6 my-5">
+          <Input
+                  label="Title"
+                  id="size"
+                  type="text"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+              </div>
             <div className="grid grid-cols-4 gap-x-6">
+              
               <Select
                 label="Unit Type"
                 disabled={isPending || isFetching}
-                {...register("title", {
+                {...register("subtitle", {
                   required: "This field is required",
                 })}
                 onChange={(e) => setUnitType(e.currentTarget.value)}
