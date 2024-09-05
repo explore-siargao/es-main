@@ -8,12 +8,11 @@ const router = express.Router()
 
 //add reservation
 router.post(
-    '/rental',
-    isOriginValid,
-    isUserLoggedIn,
-    isCsrfTokenValid,
-    addRentalReservation
+  '/rental',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addRentalReservation
 )
-
 
 export default router
