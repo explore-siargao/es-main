@@ -166,7 +166,7 @@ const BedCalendarTable = () => {
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-
+  console.log(unitData)
   const generateCalendarHeader = () => {
     const headers = []
     for (let i = 0; i < daysPerPage; i++) {

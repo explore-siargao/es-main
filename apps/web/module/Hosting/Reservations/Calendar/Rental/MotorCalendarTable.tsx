@@ -26,6 +26,7 @@ import AddReservationModal from "../AddReservationModal"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import { getColorClasses } from "../../helpers/legends"
 
 const MotorCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -397,7 +398,8 @@ const MotorCalendarTable = () => {
                                 if (!style) return null
 
                                 const { startCol, colSpan } = style
-
+                                const { colorClass, hoverColorClass } =
+                                  getColorClasses(booking.status)
                                 return (
                                   <div
                                     key={booking.name}
@@ -412,7 +414,7 @@ const MotorCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} hover:${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}
