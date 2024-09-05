@@ -11,7 +11,7 @@ function useGetVehiclesByRentalId(id: string) {
   const query = useQuery({
     queryKey: ["rental-vehicles-ids", id],
     queryFn: () => getVehiclesByRentalId(id),
-    enabled: !!id
+    enabled: !!id,
   })
   return query
 }

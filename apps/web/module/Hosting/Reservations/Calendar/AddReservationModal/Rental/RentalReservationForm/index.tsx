@@ -18,20 +18,24 @@ interface IRentalReservationFormProps {
   selectedLegendType: string
 }
 
-const rentalTypes = ['Car', 'Motorbike', 'Bicycle']
+const rentalTypes = ["Car", "Motorbike", "Bicycle"]
 
 function RentalReservationForm({
   handleSave,
   handleRentalCancel,
   setIsLegendTypeSelected,
-  selectedLegendType
+  selectedLegendType,
 }: IRentalReservationFormProps) {
   const [selectedRentalType, setSelectedRentalType] = useState("")
   const [selectedRentalId, setSelectedRentalId] = useState("")
   const { register, reset } = useFormContext()
-  const { data: rentalNamesByCategory, isLoading: isRentalNamesByCategoryLoading } = useGetRentalNamesByCategory(selectedRentalType)
-  const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } = useGetVehiclesByRentalId(selectedRentalId)
-  
+  const {
+    data: rentalNamesByCategory,
+    isLoading: isRentalNamesByCategoryLoading,
+  } = useGetRentalNamesByCategory(selectedRentalType)
+  const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } =
+    useGetVehiclesByRentalId(selectedRentalId)
+
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -48,10 +52,10 @@ function RentalReservationForm({
             >
               <Option value="">Select</Option>
               {rentalTypes.map((type: string) => (
-                  <Option key={type} value={type}>
-                    {type}
-                  </Option>
-                ))}
+                <Option key={type} value={type}>
+                  {type}
+                </Option>
+              ))}
             </Select>
           </div>
           <div className="flex flex-col w-full">
@@ -59,7 +63,13 @@ function RentalReservationForm({
               label="Vehicle"
               id="vehicle"
               required
-              disabled={selectedRentalType ? false : true || isRentalNamesByCategoryLoading || rentalNamesByCategory?.items?.length! === 0}
+              disabled={
+                selectedRentalType
+                  ? false
+                  : true ||
+                    isRentalNamesByCategoryLoading ||
+                    rentalNamesByCategory?.items?.length! === 0
+              }
               onChange={(e) => setSelectedRentalId(e.target.value)}
             >
               <Option value="">Select</Option>
@@ -68,7 +78,7 @@ function RentalReservationForm({
                   <Option key={vehicle.id} value={vehicle.id}>
                     {vehicle.name}
                   </Option>
-              ))}
+                ))}
             </Select>
           </div>
         </div>
@@ -78,7 +88,13 @@ function RentalReservationForm({
               label="Available Units"
               id="unit"
               required
-              disabled={selectedRentalId ? false : true || isVehiclesByRentalIdLoading || vehiclesByRentalId?.items?.length! === 0}
+              disabled={
+                selectedRentalId
+                  ? false
+                  : true ||
+                    isVehiclesByRentalIdLoading ||
+                    vehiclesByRentalId?.items?.length! === 0
+              }
               {...register("unit", {
                 required: "This field is required",
               })}
@@ -89,38 +105,38 @@ function RentalReservationForm({
                   <Option key={vehicle._id} value={vehicle._id}>
                     {vehicle.name}
                   </Option>
-              ))}
+                ))}
             </Select>
           </div>
         </div>
-        {
-          selectedLegendType !== "Out-of-Service" && selectedLegendType !== "Blocked-Dates" &&
-          <div className="flex gap-4 w-full">
-            <div className="flex flex-col w-full">
-              <Input
-                id="name"
-                label="Guest Name"
-                {...register("name", {
-                  required: "This field is required",
-                })}
-                required
-              />
+        {selectedLegendType !== "Out-of-Service" &&
+          selectedLegendType !== "Blocked-Dates" && (
+            <div className="flex gap-4 w-full">
+              <div className="flex flex-col w-full">
+                <Input
+                  id="name"
+                  label="Guest Name"
+                  {...register("name", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <Input
+                  className="w-full"
+                  id="guest"
+                  type="number"
+                  label="Number of Guests"
+                  {...register("guest_count", {
+                    required: "This field is required",
+                  })}
+                  required
+                />
+              </div>
             </div>
-            <div className="flex flex-col w-full">
-              <Input
-                className="w-full"
-                id="guest"
-                type="number"
-                label="Number of Guests"
-                {...register("guest_count", {
-                  required: "This field is required",
-                })}
-                required
-              />
-            </div>
-          </div>
-        }
-        
+          )}
+
         <div className="flex gap-4">
           <div className="flex flex-col w-full">
             <Input
@@ -148,12 +164,23 @@ function RentalReservationForm({
       </div>
       <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
         <div>
-          <Button type="button" variant="default" onClick={() => setIsLegendTypeSelected(false)}>
+          <Button
+            type="button"
+            variant="default"
+            onClick={() => setIsLegendTypeSelected(false)}
+          >
             Back
           </Button>
         </div>
         <div className="flex justify-end gap-2 w-full">
-          <Button type="button" variant="danger" onClick={() => {handleRentalCancel(); reset()}}>
+          <Button
+            type="button"
+            variant="danger"
+            onClick={() => {
+              handleRentalCancel()
+              reset()
+            }}
+          >
             Cancel
           </Button>
           <Button type="submit" variant="primary" onClick={handleSave}>

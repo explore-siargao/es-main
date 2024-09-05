@@ -27,7 +27,8 @@ const AddRentalReservationModal = ({
 }: IReservationCalendarModalProps) => {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
-  const [isLegendTypeSelected, setIsLegendTypeSelected] = useState<boolean>(false)
+  const [isLegendTypeSelected, setIsLegendTypeSelected] =
+    useState<boolean>(false)
 
   const handleSave = (data: any) => {
     console.log(data)
@@ -42,14 +43,14 @@ const AddRentalReservationModal = ({
     onClose()
 
     setTimeout(() => {
-      form.setValue("status", "");
-      setSelectedLegendType("");
-      setIsLegendTypeSelected(false);
-    }, 200);
+      form.setValue("status", "")
+      setSelectedLegendType("")
+      setIsLegendTypeSelected(false)
+    }, 200)
   }
 
   const form = useForm()
-  
+
   return (
     <ModalContainer
       onClose={onClose}
@@ -58,23 +59,23 @@ const AddRentalReservationModal = ({
       title="Add Reservation"
     >
       <form onSubmit={form.handleSubmit(handleSave)}>
-      <FormProvider {...form}>
-        {
-          isLegendTypeSelected ? 
-          <RentalReservationForm
-            handleSave={handleSave}
-            handleRentalCancel={handleRentalCancel}
-            setIsLegendTypeSelected={setIsLegendTypeSelected}
-            selectedLegendType={selectedLegendType}
-          /> : 
-          <RentalSelectLegendTypeForm
-            selectedLegendType={selectedLegendType}
-            setSelectedLegendType={setSelectedLegendType}
-            setIsLegendTypeSelected={setIsLegendTypeSelected}
-            handleRentalCancel={handleRentalCancel}
-          />
-        }
-      </FormProvider>
+        <FormProvider {...form}>
+          {isLegendTypeSelected ? (
+            <RentalReservationForm
+              handleSave={handleSave}
+              handleRentalCancel={handleRentalCancel}
+              setIsLegendTypeSelected={setIsLegendTypeSelected}
+              selectedLegendType={selectedLegendType}
+            />
+          ) : (
+            <RentalSelectLegendTypeForm
+              selectedLegendType={selectedLegendType}
+              setSelectedLegendType={setSelectedLegendType}
+              setIsLegendTypeSelected={setIsLegendTypeSelected}
+              handleRentalCancel={handleRentalCancel}
+            />
+          )}
+        </FormProvider>
       </form>
     </ModalContainer>
   )

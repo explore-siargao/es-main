@@ -13,7 +13,7 @@ function RentalSelectLegendTypeForm({
   selectedLegendType,
   setSelectedLegendType,
   setIsLegendTypeSelected,
-  handleRentalCancel
+  handleRentalCancel,
 }: IRentalReservationFormProps) {
   const { register } = useFormContext()
 
@@ -31,7 +31,7 @@ function RentalSelectLegendTypeForm({
     "Blocked-Dates",
     "Out-of-Service",
   ]
-  
+
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -48,10 +48,10 @@ function RentalSelectLegendTypeForm({
             >
               <Option value="">Select</Option>
               {statusEnum.map((status: string) => (
-                  <Option key={status} value={status}>
-                    {status}
-                  </Option>
-                ))}
+                <Option key={status} value={status}>
+                  {status}
+                </Option>
+              ))}
             </Select>
           </div>
         </div>
@@ -61,7 +61,12 @@ function RentalSelectLegendTypeForm({
           <Button type="button" variant="danger" onClick={handleRentalCancel}>
             Cancel
           </Button>
-          <Button type="button" variant="primary" onClick={handleConfirm} disabled={selectedLegendType === ""}>
+          <Button
+            type="button"
+            variant="primary"
+            onClick={handleConfirm}
+            disabled={selectedLegendType === ""}
+          >
             Confirm
           </Button>
         </div>

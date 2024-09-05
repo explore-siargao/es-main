@@ -11,7 +11,7 @@ function useGetRentalNamesByCategory(category: string) {
   const query = useQuery({
     queryKey: ["rental-category-list", category],
     queryFn: () => getRentalNamesBycategory(category),
-    enabled: !!category
+    enabled: !!category,
   })
   return query
 }
