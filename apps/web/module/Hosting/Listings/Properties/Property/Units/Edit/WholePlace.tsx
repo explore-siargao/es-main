@@ -80,8 +80,6 @@ const WholePlace = ({ pageType }: Prop) => {
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
-  const searchParams = useSearchParams()
-  // const propertyType = searchParams.get("propertyType")
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
@@ -366,6 +364,91 @@ const WholePlace = ({ pageType }: Prop) => {
     [propertyType]
   )
 
+  const renderUnitTypeSelect = () => {
+    switch (propertyType) {
+      case "Hotel":
+        return (
+          <Select
+            label="Unit Type"
+            disabled={isPending || isFetching}
+            {...register("title", {
+              required: "This field is required",
+            })}
+            onChange={(e) => setUnitType(e.currentTarget.value)}
+          >
+            <Option value="Villa">Villa</Option>
+            <Option value="Apartment">Apartment</Option>
+            <Option value="Studio">Studio apartment</Option>
+            <Option value="Condominium">Bungalow</Option>
+          </Select>
+        )
+      case "Resort":
+        return (
+          <Select
+            label="Unit Type"
+            disabled={isPending || isFetching}
+            {...register("title", {
+              required: "This field is required",
+            })}
+            onChange={(e) => setUnitType(e.currentTarget.value)}
+          >
+            <Option value="Villa">Villa</Option>
+            <Option value="Apartment">Apartment</Option>
+            <Option value="Studio">Studio Apartment</Option>
+            <Option value="House">House</Option>
+            <Option value="Condominium">Bungalow</Option>
+          </Select>
+        )
+      case "Whole place":
+        return (
+          <Select
+            label="Unit Type"
+            disabled={isPending || isFetching}
+            {...register("title", {
+              required: "This field is required",
+            })}
+            onChange={(e) => setUnitType(e.currentTarget.value)}
+          >
+            <Option value="Villa">Villa</Option>
+            <Option value="House">House</Option>
+            <Option value="Condominium">Bungalow</Option>
+            <Option value="Cottage">Cottage</Option>
+          </Select>
+        )
+      case "Apartment":
+        return (
+          <Select
+            label="Unit Type"
+            disabled={isPending || isFetching}
+            {...register("title", {
+              required: "This field is required",
+            })}
+            onChange={(e) => setUnitType(e.currentTarget.value)}
+          >
+            <Option value="Apartment">Apartment</Option>
+            <Option value="Studio">Studio Apartment</Option>
+          </Select>
+        )
+      default:
+        return (
+          <Select
+            label="Unit Type"
+            disabled={isPending || isFetching}
+            {...register("title", {
+              required: "This field is required",
+            })}
+            onChange={(e) => setUnitType(e.currentTarget.value)}
+          >
+            <Option value="Villa">Villa</Option>
+            <Option value="Apartment">Apartment</Option>
+            <Option value="Studio">Studio apartment</Option>
+            <Option value="House">House</Option>
+            <Option value="Condominium">Condominium</Option>
+          </Select>
+        )
+    }
+  }
+
   return (
     <>
       {isPending || isFetching ? (
@@ -384,77 +467,7 @@ const WholePlace = ({ pageType }: Prop) => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-4 gap-x-6">
-              {propertyType === "Hotel" ? (
-                <Select
-                  label="Unit Type"
-                  disabled={isPending || isFetching}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => setUnitType(e.currentTarget.value)}
-                >
-                  <Option value="Villa">Villa</Option>
-                  <Option value="Apartment">Apartment</Option>
-                  <Option value="Studio">Studio apartment</Option>
-                  <Option value="Condominium">Bungalow</Option>
-                </Select>
-              ) : propertyType === "Resort" ? (
-                <Select
-                  label="Unit Type"
-                  disabled={isPending || isFetching}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => setUnitType(e.currentTarget.value)}
-                >
-                  <Option value="Villa">Villa</Option>
-                  <Option value="Apartment">Apartment</Option>
-                  <Option value="Studio">Studio Apartment</Option>
-                  <Option value="House">House</Option>
-                  <Option value="Condominium">Bungalow</Option>
-                </Select>
-              ) : propertyType === "Whole place" ? (
-                <Select
-                  label="Unit Type"
-                  disabled={isPending || isFetching}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => setUnitType(e.currentTarget.value)}
-                >
-                  <Option value="Villa">Villa</Option>
-                  <Option value="House">House</Option>
-                  <Option value="Condominium">Bungalow</Option>
-                  <Option value="Cottage">Cottage</Option>
-                </Select>
-              ) : propertyType === "Apartment" ? (
-                <Select
-                  label="Unit Type"
-                  disabled={isPending || isFetching}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => setUnitType(e.currentTarget.value)}
-                >
-                  <Option value="Apartment">Apartment</Option>
-                  <Option value="Studio">Studio Apartment</Option>
-                </Select>
-              ) : (
-                <Select
-                  label="Unit Type"
-                  disabled={isPending || isFetching}
-                  {...register("title", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => setUnitType(e.currentTarget.value)}
-                >
-                  <Option value="Villa">Villa</Option>
-                  <Option value="Apartment">Apartment</Option>
-                  <Option value="Studio">Studio apartment</Option>
-                  <Option value="House">House</Option>
-                  <Option value="Condominium">Condominium</Option>
-                </Select>
-              )}
+              {renderUnitTypeSelect()}
             </div>
             <div>
               {unitType !== "Studio" && (
