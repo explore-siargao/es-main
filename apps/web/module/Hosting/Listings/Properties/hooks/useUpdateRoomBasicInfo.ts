@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query"
 interface IRoomBasicInfo {
   _id: string
   title: string
+  subtitle: string
   totalSize: number
   description: string
   qty: number
