@@ -60,7 +60,7 @@ const CarCalendarTable = () => {
     ],
   })
   const daysPerPage = 13
-  
+
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
@@ -395,8 +395,9 @@ const CarCalendarTable = () => {
                               if (!style) return null
 
                               const { startCol, colSpan } = style
-                              const { colorClass, hoverColorClass } = getColorClasses(booking.status);
-                          
+                              const { colorClass, hoverColorClass } =
+                                getColorClasses(booking.status)
+
                               return (
                                 <div
                                   key={booking.name}

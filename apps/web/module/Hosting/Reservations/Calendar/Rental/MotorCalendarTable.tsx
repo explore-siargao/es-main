@@ -398,7 +398,8 @@ const MotorCalendarTable = () => {
                                 if (!style) return null
 
                                 const { startCol, colSpan } = style
-                                const { colorClass, hoverColorClass } = getColorClasses(booking.status);
+                                const { colorClass, hoverColorClass } =
+                                  getColorClasses(booking.status)
                                 return (
                                   <div
                                     key={booking.name}

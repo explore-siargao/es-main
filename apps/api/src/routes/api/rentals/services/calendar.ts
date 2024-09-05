@@ -39,7 +39,7 @@ type Item = {
   bicycles: Bicycle[]
 }
 
-const STATUS_DISPLAY = ["Out of service", "Blocked dates"];
+const STATUS_DISPLAY = ['Out of service', 'Blocked dates']
 
 // Function to check for date overlap
 const hasDateConflict = (
@@ -59,13 +59,13 @@ const hasDateConflict = (
 }
 
 export const getCarCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string);
-  const endDate = new Date(req.query.endDate as string);
+  const startDate = new Date(req.query.startDate as string)
+  const endDate = new Date(req.query.endDate as string)
 
   try {
     const carRentals = await dbRentals
       .find({ category: 'Car', host: res.locals.user.id })
-      .populate('pricing');
+      .populate('pricing')
 
     if (!carRentals.length) {
       return res.json(
@@ -73,62 +73,62 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           items: [],
           message: 'No car rentals found.',
         })
-      );
+      )
     }
 
     const allRentalIds = carRentals.flatMap((rental) =>
       rental.ids.map((idObj) => idObj._id)
-    );
+    )
 
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest');
+      .populate('guest')
 
-      const reservationMap: Record<string, Reservation[]> = {};
-      reservations.forEach((reservation: any) => {
-        const guest = reservation.guest;
-        const reservationItem: Reservation = {
-          name: STATUS_DISPLAY.includes(reservation.status)
-            ? reservation.status
-            : guest
-              ? `${guest.firstName} ${guest.lastName}`
-              : reservation.guestName || 'Unknown',
-          startDate: reservation.startDate ?? new Date(),
-          endDate: reservation.endDate ?? new Date(),
-          guestCount: reservation.guestCount ?? 0,
-          status: reservation.status
-        };
-      
-        if (!reservationMap[reservation.rentalId.toString()]) {
-          reservationMap[reservation.rentalId.toString()] = [];
-        }
-        reservationMap[reservation.rentalId.toString()]?.push(reservationItem);
-      });
+    const reservationMap: Record<string, Reservation[]> = {}
+    reservations.forEach((reservation: any) => {
+      const guest = reservation.guest
+      const reservationItem: Reservation = {
+        name: STATUS_DISPLAY.includes(reservation.status)
+          ? reservation.status
+          : guest
+            ? `${guest.firstName} ${guest.lastName}`
+            : reservation.guestName || 'Unknown',
+        startDate: reservation.startDate ?? new Date(),
+        endDate: reservation.endDate ?? new Date(),
+        guestCount: reservation.guestCount ?? 0,
+        status: reservation.status,
+      }
+
+      if (!reservationMap[reservation.rentalId.toString()]) {
+        reservationMap[reservation.rentalId.toString()] = []
+      }
+      reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
+    })
 
     const items = carRentals.map((rental) => {
       const cars = rental.ids.map((idObj) => {
-        const carReservations = reservationMap[idObj._id.toString()] || [];
+        const carReservations = reservationMap[idObj._id.toString()] || []
 
-        const isOccupied = carReservations.length > 0;
+        const isOccupied = carReservations.length > 0
 
         return {
           id: idObj._id,
           abbr: idObj.name ? idObj.name : 'Unknown',
           status: isOccupied ? 'occupied' : 'available',
           reservations: carReservations,
-        };
-      });
+        }
+      })
 
       return {
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
         cars: cars.filter((car) => car.abbr !== 'Unknown'),
-      };
-    });
+      }
+    })
 
     res.json(
       response.success({
@@ -136,25 +136,24 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         allItemCount: items.length,
         message: 'Cars calendar fetched successfully.',
       })
-    );
+    )
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message || 'Unknown error occurred.',
       })
-    );
+    )
   }
-};
-
+}
 
 export const getBikeCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string);
-  const endDate = new Date(req.query.endDate as string);
+  const startDate = new Date(req.query.startDate as string)
+  const endDate = new Date(req.query.endDate as string)
 
   try {
     const bicycleRentals = await dbRentals
       .find({ category: 'Bicycle', host: res.locals.user.id })
-      .populate('pricing');
+      .populate('pricing')
 
     if (!bicycleRentals.length) {
       return res.json(
@@ -162,63 +161,62 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           items: [],
           message: 'No bicycle rentals found.',
         })
-      );
+      )
     }
 
     const allRentalIds = bicycleRentals.flatMap((rental) =>
       rental.ids.map((idObj) => idObj._id)
-    );
+    )
 
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest'); 
+      .populate('guest')
 
-      const reservationMap: Record<string, Reservation[]> = {};
-      reservations.forEach((reservation: any) => {
-        const guest = reservation.guest;
-        const reservationItem: Reservation = {
-          name: STATUS_DISPLAY.includes(reservation.status)
-            ? reservation.status
-            : guest
-              ? `${guest.firstName} ${guest.lastName}`
-              : reservation.guestName || 'Unknown',
-          startDate: reservation.startDate ?? new Date(),
-          endDate: reservation.endDate ?? new Date(),
-          guestCount: reservation.guestCount ?? 0,
-          status: reservation.status
-        };
-      
-        if (!reservationMap[reservation.rentalId.toString()]) {
-          reservationMap[reservation.rentalId.toString()] = [];
-        }
-        reservationMap[reservation.rentalId.toString()]?.push(reservationItem);
-      });
+    const reservationMap: Record<string, Reservation[]> = {}
+    reservations.forEach((reservation: any) => {
+      const guest = reservation.guest
+      const reservationItem: Reservation = {
+        name: STATUS_DISPLAY.includes(reservation.status)
+          ? reservation.status
+          : guest
+            ? `${guest.firstName} ${guest.lastName}`
+            : reservation.guestName || 'Unknown',
+        startDate: reservation.startDate ?? new Date(),
+        endDate: reservation.endDate ?? new Date(),
+        guestCount: reservation.guestCount ?? 0,
+        status: reservation.status,
+      }
+
+      if (!reservationMap[reservation.rentalId.toString()]) {
+        reservationMap[reservation.rentalId.toString()] = []
+      }
+      reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
+    })
 
     const items = bicycleRentals.map((rental) => {
       const bicycles = rental.ids.map((idObj) => {
-        const bicycleReservations = reservationMap[idObj._id.toString()] || [];
+        const bicycleReservations = reservationMap[idObj._id.toString()] || []
 
-   
-        const isOccupied = bicycleReservations.length > 0;
+        const isOccupied = bicycleReservations.length > 0
 
         return {
           id: idObj._id,
           abbr: idObj.name ? idObj.name : 'Unknown',
           status: isOccupied ? 'occupied' : 'available',
           reservations: bicycleReservations,
-        };
-      });
+        }
+      })
 
       return {
         name: rental.make ?? 'Unknown',
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
         bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
-      };
-    });
+      }
+    })
 
     res.json(
       response.success({
@@ -226,25 +224,24 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
         allItemCount: items.length,
         message: 'Bicycle calendar fetched successfully.',
       })
-    );
+    )
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message || 'Unknown error occurred.',
       })
-    );
+    )
   }
-};
-
+}
 
 export const getMotorcycleCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string);
-  const endDate = new Date(req.query.endDate as string);
+  const startDate = new Date(req.query.startDate as string)
+  const endDate = new Date(req.query.endDate as string)
 
   try {
     const motorcycleRentals = await dbRentals
       .find({ category: 'Motorbike', host: res.locals.user.id })
-      .populate('pricing');
+      .populate('pricing')
 
     if (!motorcycleRentals.length) {
       return res.json(
@@ -252,61 +249,64 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           items: [],
           message: 'No motorcycle rentals found.',
         })
-      );
+      )
     }
 
     const allRentalIds = motorcycleRentals.flatMap((rental) =>
       rental.ids.map((idObj) => idObj._id)
-    );
+    )
 
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest');
+      .populate('guest')
 
-      const reservationMap: Record<string, Reservation[]> = {};
-      reservations.forEach((reservation: any) => {
-        const guest = reservation.guest;
-        const reservationItem: Reservation = {
-          name: STATUS_DISPLAY.includes(reservation.status)
-            ? reservation.status
-            : guest
-              ? `${guest.firstName} ${guest.lastName}`
-              : reservation.guestName || 'Unknown',
-          startDate: reservation.startDate ?? new Date(),
-          endDate: reservation.endDate ?? new Date(),
-          guestCount: reservation.guestCount ?? 0,
-          status: reservation.status
-        };
-      
-        if (!reservationMap[reservation.rentalId.toString()]) {
-          reservationMap[reservation.rentalId.toString()] = [];
-        }
-        reservationMap[reservation.rentalId.toString()]?.push(reservationItem);
-      });
+    const reservationMap: Record<string, Reservation[]> = {}
+    reservations.forEach((reservation: any) => {
+      const guest = reservation.guest
+      const reservationItem: Reservation = {
+        name: STATUS_DISPLAY.includes(reservation.status)
+          ? reservation.status
+          : guest
+            ? `${guest.firstName} ${guest.lastName}`
+            : reservation.guestName || 'Unknown',
+        startDate: reservation.startDate ?? new Date(),
+        endDate: reservation.endDate ?? new Date(),
+        guestCount: reservation.guestCount ?? 0,
+        status: reservation.status,
+      }
+
+      if (!reservationMap[reservation.rentalId.toString()]) {
+        reservationMap[reservation.rentalId.toString()] = []
+      }
+      reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
+    })
 
     const items = motorcycleRentals.map((rental) => {
       const motorcycles = rental.ids.map((idObj) => {
-        const motorcycleReservations = reservationMap[idObj._id.toString()] || [];
-        const isOccupied = motorcycleReservations.length > 0;
+        const motorcycleReservations =
+          reservationMap[idObj._id.toString()] || []
+        const isOccupied = motorcycleReservations.length > 0
 
         return {
           id: idObj._id,
           abbr: idObj.name ? idObj.name : 'Unknown',
           status: isOccupied ? 'occupied' : 'available',
           reservations: motorcycleReservations,
-        };
-      });
+        }
+      })
 
       return {
-        name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ?? 'Unknown',
+        name:
+          `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ??
+          'Unknown',
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
         motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
-      };
-    });
+      }
+    })
 
     res.json(
       response.success({
@@ -314,17 +314,15 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
         allItemCount: items.length,
         message: 'Motorcycle calendar fetched successfully.',
       })
-    );
+    )
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message || 'Unknown error occurred.',
       })
-    );
+    )
   }
-};
-
-
+}
 
 export const editChildName = async (req: Request, res: Response) => {
   const { id, name } = req.body

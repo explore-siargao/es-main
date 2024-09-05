@@ -134,7 +134,7 @@ const BedCalendarTable = () => {
 
       return bookableUnits
     }
-    
+
     const transformUnits = (units: any[]) =>
       units.map((unit: { abbr: any; status: any; reservations: any[] }) => ({
         abbr: unit.abbr,
