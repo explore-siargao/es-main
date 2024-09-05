@@ -204,42 +204,39 @@ const Bed = ({ pageType }: Prop) => {
           Units / Edit Bed
         </Typography>
       </div>
-  
 
       <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography
-                    variant="h4"
-                    fontWeight="semibold"
-                    className="mb-2"
-                  >
-                    What is the name you want to display for your unit? (Optional)
-                  </Typography>
+        <Typography variant="h4" fontWeight="semibold" className="mb-2">
+          What is the name you want to display for your unit? (Optional)
+        </Typography>
         <div className="grid grid-cols-4 gap-x-6 mb-4">
           <div>
-             
-          <div className="mb-4">
-            
-          <Input
-                  label="Title"
-                  id="size"
-                  type="text"
-                  minLength={5}
-                  maxLength={30}
-                  disabled={isPending || isFetching}
-                  {...register("title")}
-                />
+            <div className="mb-4">
+              <Input
+                label="Title"
+                id="size"
+                type="text"
+                minLength={5}
+                maxLength={30}
+                disabled={isPending || isFetching}
+                {...register("title")}
+              />
+            </div>
+            <Typography
+              variant="h4"
+              fontWeight="semibold"
+              className="flex mb-2"
+            >
+              What type of dorm room do you have?
+              <div className="relative group">
+                <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
+                <div className="absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Typography variant="h5" className="italic">
+                    Contact us if you can't find your shared space/dorm type
+                  </Typography>
+                </div>
               </div>
-              <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
-        What type of dorm room do you have?
-        <div className="relative group">
-          <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
-          <div className="absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] opacity-0 group-hover:opacity-100 transition-opacity">
-            <Typography variant="h5" className="italic">
-              Contact us if you can't find your shared space/dorm type
             </Typography>
-          </div>
-        </div>
-      </Typography>
             <Controller
               control={control}
               name="subtitle"

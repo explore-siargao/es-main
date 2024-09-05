@@ -22,7 +22,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
   const newBookableUnitType = new dbBookableUnitTypes({
     category: 'Whole-Place',
     title: '',
-    subtitle: "",
+    subtitle: '',
     numBedRooms: 0,
     numBathRooms: 0,
     bedRooms: [],
@@ -148,8 +148,14 @@ export const addBedUnit = async (req: Request, res: Response) => {
 export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, subtitle, qty, isHaveSharedBathRoom, isSmokingAllowed, totalSize } =
-    req.body
+  const {
+    title,
+    subtitle,
+    qty,
+    isHaveSharedBathRoom,
+    isSmokingAllowed,
+    totalSize,
+  } = req.body
 
   if (
     !subtitle ||
@@ -356,7 +362,6 @@ export const updateWholePlaceUnitBasicInfo = async (
     !qty ||
     !livingRooms
   ) {
-  
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
