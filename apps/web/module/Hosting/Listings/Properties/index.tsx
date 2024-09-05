@@ -4,7 +4,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { createColumnHelper } from "@tanstack/react-table"
 import Link from "next/link"
 import Table from "@/common/components/Table"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Tabs from "@/common/components/Tabs"
 import { StatusDot } from "../../components/StatusDot"
 import listingTabs from "../helpers/listingTabs"
@@ -15,6 +15,26 @@ import { T_Photo } from "@repo/contract"
 const HostListing = () => {
   const { data } = useGetPropertyByHost()
   const columnHelper = createColumnHelper<any>()
+
+  const [propertyType, setPropertyType] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const storedType = localStorage.getItem("propertyType") || ""
+      console.log("Retrieved propertyType from localStorage:", storedType)
+      return storedType
+    }
+    return ""
+  })
+
+  useEffect(() => {
+    if (propertyType) {
+      localStorage.setItem("propertyType", propertyType)
+      console.log(
+        "Updated propertyType in localStorage from property:",
+        propertyType
+      )
+    }
+  }, [propertyType])
+
   const columns = [
     columnHelper.accessor("photos", {
       header: "Listing",
@@ -27,6 +47,11 @@ const HostListing = () => {
           <Link
             href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
             className="flex items-center gap-5"
+            onClick={() => {
+              const type = context.row.original.type
+              setPropertyType(type)
+              console.log("Selected propertyType:", type)
+            }}
           >
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
               {photo ? (
@@ -55,6 +80,11 @@ const HostListing = () => {
         <Link
           href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
           className="flex items-center gap-5"
+          onClick={() => {
+            const type = context.row.original.type
+            setPropertyType(type)
+            console.log("Selected propertyType:", type)
+          }}
         >
           <Typography variant="p">
             {context.getValue() && context.getValue().street
@@ -73,6 +103,11 @@ const HostListing = () => {
         <Link
           href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
           className="flex items-center gap-4"
+          onClick={() => {
+            const type = context.row.original.type
+            setPropertyType(type)
+            console.log("Selected propertyType:", type)
+          }}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
@@ -86,6 +121,11 @@ const HostListing = () => {
         <Link
           href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
           className="flex items-center"
+          onClick={() => {
+            const type = context.row.original.type
+            setPropertyType(type)
+            console.log("Selected propertyType:", type)
+          }}
         >
           <StatusDot
             variant={

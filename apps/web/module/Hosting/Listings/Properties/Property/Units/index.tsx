@@ -69,6 +69,7 @@ const Units = ({ pageType }: Prop) => {
   }
 
   const propertyType = data?.item?.type
+
   return (
     <div className="mt-20 mb-14">
       <Typography
