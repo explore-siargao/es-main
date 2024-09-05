@@ -18,6 +18,7 @@ type Reservation = {
   startDate: Date
   endDate: Date
   guestCount: number
+  status: string
 }
 
 type Bicycle = {
@@ -38,6 +39,8 @@ type Item = {
   bicycles: Bicycle[]
 }
 
+const STATUS_DISPLAY = ["Out of service", "Blocked dates"];
+
 // Function to check for date overlap
 const hasDateConflict = (
   existingReservations: Reservation[],
@@ -56,14 +59,13 @@ const hasDateConflict = (
 }
 
 export const getCarCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
+  const startDate = new Date(req.query.startDate as string);
+  const endDate = new Date(req.query.endDate as string);
 
   try {
-    // Retrieve all car rentals by host
     const carRentals = await dbRentals
       .find({ category: 'Car', host: res.locals.user.id })
-      .populate('pricing')
+      .populate('pricing');
 
     if (!carRentals.length) {
       return res.json(
@@ -71,67 +73,62 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           items: [],
           message: 'No car rentals found.',
         })
-      )
+      );
     }
 
-    // Extract all rental IDs from the `ids` array in car rentals
     const allRentalIds = carRentals.flatMap((rental) =>
       rental.ids.map((idObj) => idObj._id)
-    )
+    );
 
-    // Find reservations that overlap with the given date range and match the rental IDs
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest')
+      .populate('guest');
 
-    // Structure the data in the specified format
+      const reservationMap: Record<string, Reservation[]> = {};
+      reservations.forEach((reservation: any) => {
+        const guest = reservation.guest;
+        const reservationItem: Reservation = {
+          name: STATUS_DISPLAY.includes(reservation.status)
+            ? reservation.status
+            : guest
+              ? `${guest.firstName} ${guest.lastName}`
+              : reservation.guestName || 'Unknown',
+          startDate: reservation.startDate ?? new Date(),
+          endDate: reservation.endDate ?? new Date(),
+          guestCount: reservation.guestCount ?? 0,
+          status: reservation.status
+        };
+      
+        if (!reservationMap[reservation.rentalId.toString()]) {
+          reservationMap[reservation.rentalId.toString()] = [];
+        }
+        reservationMap[reservation.rentalId.toString()]?.push(reservationItem);
+      });
+
     const items = carRentals.map((rental) => {
       const cars = rental.ids.map((idObj) => {
+        const carReservations = reservationMap[idObj._id.toString()] || [];
+
+        const isOccupied = carReservations.length > 0;
+
         return {
           id: idObj._id,
           abbr: idObj.name ? idObj.name : 'Unknown',
-          status: 'available',
-          reservations: [],
-        }
-      })
-
-      // Distribute reservations across cars
-      reservations.forEach((reservation: any) => {
-        if (reservation.guest) {
-          const reservationItem: Reservation = {
-            name: `${reservation.guest.firstName} ${reservation.guest.lastName}`,
-            startDate: reservation.startDate ?? new Date(),
-            endDate: reservation.endDate ?? new Date(),
-            guestCount: reservation.guestCount ?? 0,
-          }
-
-          for (let i = 0; i < cars.length; i++) {
-            const car = cars[i]
-
-            if (car) {
-              const currentReservations = car.reservations ?? []
-
-              if (!hasDateConflict(currentReservations, reservationItem)) {
-                //@ts-ignore
-                car.reservations.push(reservationItem)
-                car.status = 'occupied'
-                break // Exit the loop after assigning
-              }
-            }
-          }
-        }
-      })
+          status: isOccupied ? 'occupied' : 'available',
+          reservations: carReservations,
+        };
+      });
 
       return {
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
         cars: cars.filter((car) => car.abbr !== 'Unknown'),
-      }
-    })
+      };
+    });
 
     res.json(
       response.success({
@@ -139,24 +136,25 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         allItemCount: items.length,
         message: 'Cars calendar fetched successfully.',
       })
-    )
+    );
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message || 'Unknown error occurred.',
       })
-    )
+    );
   }
-}
+};
+
 
 export const getBikeCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
+  const startDate = new Date(req.query.startDate as string);
+  const endDate = new Date(req.query.endDate as string);
+
   try {
-    //Retrieve all bicycle rentals by host
     const bicycleRentals = await dbRentals
       .find({ category: 'Bicycle', host: res.locals.user.id })
-      .populate('pricing')
+      .populate('pricing');
 
     if (!bicycleRentals.length) {
       return res.json(
@@ -164,65 +162,63 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           items: [],
           message: 'No bicycle rentals found.',
         })
-      )
+      );
     }
 
-    // Extract all ids from bicycle rentals
-    const allRentalIds = bicycleRentals.flatMap((rental) => rental.ids)
+    const allRentalIds = bicycleRentals.flatMap((rental) =>
+      rental.ids.map((idObj) => idObj._id)
+    );
 
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest') // Ensure guest field is populated
+      .populate('guest'); 
 
-    //Structure the data in the specified format
-    const items: any = bicycleRentals.map((rental) => {
-      const bicycles: Bicycle[] = rental.ids.map((idObj) => {
+      const reservationMap: Record<string, Reservation[]> = {};
+      reservations.forEach((reservation: any) => {
+        const guest = reservation.guest;
+        const reservationItem: Reservation = {
+          name: STATUS_DISPLAY.includes(reservation.status)
+            ? reservation.status
+            : guest
+              ? `${guest.firstName} ${guest.lastName}`
+              : reservation.guestName || 'Unknown',
+          startDate: reservation.startDate ?? new Date(),
+          endDate: reservation.endDate ?? new Date(),
+          guestCount: reservation.guestCount ?? 0,
+          status: reservation.status
+        };
+      
+        if (!reservationMap[reservation.rentalId.toString()]) {
+          reservationMap[reservation.rentalId.toString()] = [];
+        }
+        reservationMap[reservation.rentalId.toString()]?.push(reservationItem);
+      });
+
+    const items = bicycleRentals.map((rental) => {
+      const bicycles = rental.ids.map((idObj) => {
+        const bicycleReservations = reservationMap[idObj._id.toString()] || [];
+
+   
+        const isOccupied = bicycleReservations.length > 0;
+
         return {
           id: idObj._id,
           abbr: idObj.name ? idObj.name : 'Unknown',
-          status: 'available',
-          reservations: [],
-        }
-      })
-
-      //Distribute reservations across bicycles
-      reservations.forEach((reservation: any) => {
-        if (reservation.guest) {
-          const reservationItem: Reservation = {
-            name:
-              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
-            startDate: reservation.startDate ?? new Date(),
-            endDate: reservation.endDate ?? new Date(),
-            guestCount: reservation.guestCount ?? 0,
-          }
-
-          for (let i = 0; i < bicycles.length; i++) {
-            const bicycle = bicycles[i] // Store the current bicycle in a local variable
-
-            // Ensure the bicycle is not undefined
-            if (bicycle) {
-              const currentReservations = bicycle.reservations ?? [] // Ensure it's an array
-
-              if (!hasDateConflict(currentReservations, reservationItem)) {
-                bicycle.reservations.push(reservationItem) // Access the reservations array
-                bicycle.status = 'occupied' // Update the status
-                break // Exit the loop after assigning
-              }
-            }
-          }
-        }
-      })
+          status: isOccupied ? 'occupied' : 'available',
+          reservations: bicycleReservations,
+        };
+      });
 
       return {
-        name: rental.make ?? 'Unknown', // Ensure name is always a string
+        name: rental.make ?? 'Unknown',
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
+        price: rental.pricing?.dayRate ?? 0,
         bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
-      }
-    })
+      };
+    });
 
     res.json(
       response.success({
@@ -230,25 +226,25 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
         allItemCount: items.length,
         message: 'Bicycle calendar fetched successfully.',
       })
-    )
+    );
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message || 'Unknown error occurred.',
       })
-    )
+    );
   }
-}
+};
+
 
 export const getMotorcycleCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string)
-  const endDate = new Date(req.query.endDate as string)
+  const startDate = new Date(req.query.startDate as string);
+  const endDate = new Date(req.query.endDate as string);
+
   try {
-    //Retrieve all motorcycle rentals by host
     const motorcycleRentals = await dbRentals
       .find({ category: 'Motorbike', host: res.locals.user.id })
-      .populate('pricing')
-      .populate('pricing')
+      .populate('pricing');
 
     if (!motorcycleRentals.length) {
       return res.json(
@@ -256,88 +252,79 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           items: [],
           message: 'No motorcycle rentals found.',
         })
-      )
+      );
     }
 
-    // Extract all ids from motorcycle rentals
-    const allRentalIds = motorcycleRentals.flatMap((rental) => rental.ids)
+    const allRentalIds = motorcycleRentals.flatMap((rental) =>
+      rental.ids.map((idObj) => idObj._id)
+    );
 
     const reservations = await dbReservations
       .find({
         rentalId: { $in: allRentalIds },
         $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
       })
-      .populate('guest') // Ensure guest field is populated
+      .populate('guest');
 
-    //Structure the data in the specified format
-    const items: any = motorcycleRentals.map((rental) => {
-      const motorcycles: Bicycle[] = rental.ids.map((idObj) => {
+      const reservationMap: Record<string, Reservation[]> = {};
+      reservations.forEach((reservation: any) => {
+        const guest = reservation.guest;
+        const reservationItem: Reservation = {
+          name: STATUS_DISPLAY.includes(reservation.status)
+            ? reservation.status
+            : guest
+              ? `${guest.firstName} ${guest.lastName}`
+              : reservation.guestName || 'Unknown',
+          startDate: reservation.startDate ?? new Date(),
+          endDate: reservation.endDate ?? new Date(),
+          guestCount: reservation.guestCount ?? 0,
+          status: reservation.status
+        };
+      
+        if (!reservationMap[reservation.rentalId.toString()]) {
+          reservationMap[reservation.rentalId.toString()] = [];
+        }
+        reservationMap[reservation.rentalId.toString()]?.push(reservationItem);
+      });
+
+    const items = motorcycleRentals.map((rental) => {
+      const motorcycles = rental.ids.map((idObj) => {
+        const motorcycleReservations = reservationMap[idObj._id.toString()] || [];
+        const isOccupied = motorcycleReservations.length > 0;
+
         return {
           id: idObj._id,
           abbr: idObj.name ? idObj.name : 'Unknown',
-          status: 'available',
-          reservations: [],
-        }
-      })
-
-      //Distribute reservations across motorcycle
-      reservations.forEach((reservation: any) => {
-        if (reservation.guest) {
-          const reservationItem: Reservation = {
-            name:
-              reservation?.guest.firstName + ' ' + reservation?.guest.lastName,
-            startDate: reservation.startDate ?? new Date(),
-            endDate: reservation.endDate ?? new Date(),
-            guestCount: reservation.guestCount ?? 0,
-          }
-
-          for (let i = 0; i < motorcycles.length; i++) {
-            const motorcycle = motorcycles[i] // Store the current bicycle in a local variable
-
-            // Ensure the bicycle is not undefined
-            if (motorcycle) {
-              const currentReservations = motorcycle.reservations ?? [] // Ensure it's an array
-
-              if (!hasDateConflict(currentReservations, reservationItem)) {
-                motorcycle.reservations.push(reservationItem) // Access the reservations array
-                motorcycle.status = 'occupied' // Update the status
-                break // Exit the loop after assigning
-              }
-            }
-          }
-        }
-      })
+          status: isOccupied ? 'occupied' : 'available',
+          reservations: motorcycleReservations,
+        };
+      });
 
       return {
-        name:
-          rental.year +
-            ' ' +
-            rental.make +
-            ' ' +
-            rental.modelBadge +
-            ' ' +
-            `${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ?? 'Unknown', // Ensure name is always a string
+        name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ?? 'Unknown',
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 0, // Ensure price is always a string
+        price: rental.pricing?.dayRate ?? 0,
         motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
-      }
-    })
+      };
+    });
 
     res.json(
       response.success({
         items,
         allItemCount: items.length,
-        message: 'Bicycle calendar fetched successfully.',
+        message: 'Motorcycle calendar fetched successfully.',
       })
-    )
+    );
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message || 'Unknown error occurred.',
       })
-    )
+    );
   }
-}
+};
+
+
 
 export const editChildName = async (req: Request, res: Response) => {
   const { id, name } = req.body

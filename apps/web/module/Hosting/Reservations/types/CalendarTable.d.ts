@@ -1,5 +1,6 @@
 export interface Reservation {
   name: string
+  status:string
   startDate: string
   endDate: string
   guestCount: number

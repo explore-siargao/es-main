@@ -179,7 +179,7 @@ const Room = ({ pageType }: Prop) => {
       }
     }
   }, [data, isPending])
-
+  
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
@@ -193,20 +193,25 @@ const Room = ({ pageType }: Prop) => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h4" fontWeight="semibold" className="mb-2">
-          What is the name you want to display for your unit? (Optional)
-        </Typography>
-        <div className="grid grid-cols-4 gap-x-6 mb-5">
+      <Typography
+                    variant="h4"
+                    fontWeight="semibold"
+                    className="mb-2"
+                  >
+                    What is the name you want to display for your unit? (Optional)
+                  </Typography>
+          <div className="grid grid-cols-4 gap-x-6 mb-5">
+            
           <Input
-            label="Title"
-            id="title"
-            type="text"
-            minLength={5}
-            maxLength={30}
-            disabled={isPending}
-            {...register("title")}
-          />
-        </div>
+                  label="Title"
+                  id="title"
+                  type="text"
+                  minLength={5}
+                  maxLength={30}
+                  disabled={isPending}
+                  {...register("title")}
+                />
+              </div>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
             <Controller
