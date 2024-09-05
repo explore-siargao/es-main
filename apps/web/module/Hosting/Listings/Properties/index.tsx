@@ -17,18 +17,21 @@ const HostListing = () => {
   const columnHelper = createColumnHelper<any>()
 
   const [propertyType, setPropertyType] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const storedType = localStorage.getItem('propertyType') || ''
-      console.log('Retrieved propertyType from localStorage:', storedType)
+    if (typeof window !== "undefined") {
+      const storedType = localStorage.getItem("propertyType") || ""
+      console.log("Retrieved propertyType from localStorage:", storedType)
       return storedType
     }
-    return ''
+    return ""
   })
 
   useEffect(() => {
     if (propertyType) {
-      localStorage.setItem('propertyType', propertyType)
-      console.log('Updated propertyType in localStorage from property:', propertyType)
+      localStorage.setItem("propertyType", propertyType)
+      console.log(
+        "Updated propertyType in localStorage from property:",
+        propertyType
+      )
     }
   }, [propertyType])
 
@@ -47,7 +50,7 @@ const HostListing = () => {
             onClick={() => {
               const type = context.row.original.type
               setPropertyType(type)
-              console.log('Selected propertyType:', type)
+              console.log("Selected propertyType:", type)
             }}
           >
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
@@ -80,7 +83,7 @@ const HostListing = () => {
           onClick={() => {
             const type = context.row.original.type
             setPropertyType(type)
-            console.log('Selected propertyType:', type)
+            console.log("Selected propertyType:", type)
           }}
         >
           <Typography variant="p">
@@ -103,7 +106,7 @@ const HostListing = () => {
           onClick={() => {
             const type = context.row.original.type
             setPropertyType(type)
-            console.log('Selected propertyType:', type)
+            console.log("Selected propertyType:", type)
           }}
         >
           <Typography variant="p">
@@ -121,7 +124,7 @@ const HostListing = () => {
           onClick={() => {
             const type = context.row.original.type
             setPropertyType(type)
-            console.log('Selected propertyType:', type)
+            console.log("Selected propertyType:", type)
           }}
         >
           <StatusDot
