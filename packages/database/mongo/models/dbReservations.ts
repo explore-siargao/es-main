@@ -30,6 +30,11 @@ const reservations = new Schema({
     required: false,
     default: null,
   },
+  guestName: {
+    type: String,
+    required: false,
+    default: "",
+  },
   paymentType: String,
   cardType: String,
   cardInfo: String,
