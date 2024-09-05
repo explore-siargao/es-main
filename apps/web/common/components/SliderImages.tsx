@@ -9,6 +9,7 @@ import { useState } from "react"
 interface SliderProps {
   images: {
     fileKey?: string
+    key?: string
     alt?: string
     url?: string
   }[]
@@ -93,7 +94,11 @@ const Slider = ({ images }: SliderProps) => {
                 width={300}
                 height={300}
                 src={
-                  isOldFormat(imageData) ? imageData.image.url : imageData.url
+                  isOldFormat(imageData)
+                    ? imageData.image.url
+                    : imageData.key
+                      ? `/assets/${imageData.key}`
+                      : imageData.url
                 }
                 className="block h-full w-full object-cover"
                 alt={
@@ -128,7 +133,11 @@ const Slider = ({ images }: SliderProps) => {
                 width={300}
                 height={300}
                 src={
-                  isOldFormat(imageData) ? imageData.image.url : imageData.url
+                  isOldFormat(imageData)
+                    ? imageData.image.url
+                    : imageData.key
+                      ? `/assets/${imageData.key}`
+                      : imageData.url
                 }
                 className="block h-44 w-full object-cover"
                 alt={

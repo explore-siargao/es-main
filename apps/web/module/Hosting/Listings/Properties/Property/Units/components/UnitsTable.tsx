@@ -57,6 +57,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
         const numBedrooms = context.row.original.bedRooms
           ? context.row.original.bedRooms.length
           : 0
+          const title = context.row.original.title
         const value = context.getValue() || ""
         const cleanValue = value.startsWith("Custom: ")
           ? value.slice("Custom: ".length)
@@ -66,9 +67,10 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
             href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
           >
             <Typography variant="p">
-              {category === E_Property_Category.WholePlace
+              {title ? title : category === E_Property_Category.WholePlace
                 ? `${capitalizeFirstLetter(numWords(numBedrooms))}-bedroom ${cleanValue}`
                 : cleanValue}
+              {}
             </Typography>
           </Link>
         )

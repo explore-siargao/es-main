@@ -25,6 +25,7 @@ import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import AddRentalReservationModal from "../AddReservationModal/Rental"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -98,30 +99,44 @@ const CarCalendarTable = () => {
   }
 
   useEffect(() => {
-    const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
-      const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          cars: category.cars.map((car: Rental) => ({
-            ...car,
-            reservations: car.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
-      //@ts-ignore
-      setFilteredData(newFilteredData)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
+
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
     }
 
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange)
+
+    const filterCars = (cars: any[]) =>
+      cars.map((car: { reservations: any }) => ({
+        ...car,
+        reservations: filterReservations(car.reservations),
+      }))
+
+    const filterCategories = (categories: any[]) =>
+      categories
+        .map((category: { cars: any }) => ({
+          ...category,
+          cars: filterCars(category.cars),
+        }))
+        .filter(
+          (category: { cars: string | any[] }) => category.cars.length > 0
+        )
+
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    }
+    //@ts-ignore
+    setFilteredData(newFilteredData)
+  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -428,7 +443,7 @@ const CarCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddReservationModal
+          <AddRentalReservationModal
             isModalOpen={isAddReservationModalOpen}
             onClose={closeAddReservationModal}
             onSave={handleSaveNewReservation}

@@ -29,9 +29,9 @@ export default async function AccommodationLayout({
         <QueryClientWrapper>
           <AuthStateProvider>
             <GlobalModalWrapper>
-              <Header contentWidth="small" isFixed={false} />
+              <Header contentWidth="medium" isFixed={false} />
               <div className="min-h-screen">{children}</div>
-              <Footer contentWidth="small" />
+              <Footer contentWidth="medium" />
             </GlobalModalWrapper>
           </AuthStateProvider>
         </QueryClientWrapper>

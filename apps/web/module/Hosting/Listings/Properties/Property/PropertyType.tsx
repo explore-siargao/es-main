@@ -102,11 +102,11 @@ const PropertyType = ({ pageType }: Prop) => {
       isSelected: data?.item?.type === "Resort",
     },
     {
-      type: "Villa",
+      type: "Whole place",
       description:
         "A standalone, self-contained residence with multiple common areas, bedrooms and bathrooms.",
       icon: <Building2 className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Villa",
+      isSelected: data?.item?.type === "Whole place",
     },
   ]
 
