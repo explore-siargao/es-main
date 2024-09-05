@@ -26,23 +26,26 @@ const AddRentalReservationModal = ({
   data,
 }: IReservationCalendarModalProps) => {
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [filteredRooms, setFilteredRooms] = useState<Rental[]>([])
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] = useState<boolean>(false)
 
   const handleSave = (data: any) => {
+    console.log(data)
     const resetform = () => {
       form.reset()
       setSelectedCategory("")
     }
-    onSave(data, resetform)
+    // onSave(data, resetform)
   }
 
   const handleRentalCancel = () => {
     onClose()
-    form.setValue("status", "")
-    setSelectedLegendType("")
-    setIsLegendTypeSelected(false)
+
+    setTimeout(() => {
+      form.setValue("status", "");
+      setSelectedLegendType("");
+      setIsLegendTypeSelected(false);
+    }, 200);
   }
 
   const form = useForm()
@@ -62,8 +65,10 @@ const AddRentalReservationModal = ({
             handleSave={handleSave}
             handleRentalCancel={handleRentalCancel}
             setIsLegendTypeSelected={setIsLegendTypeSelected}
+            selectedLegendType={selectedLegendType}
           /> : 
           <RentalSelectLegendTypeForm
+            selectedLegendType={selectedLegendType}
             setSelectedLegendType={setSelectedLegendType}
             setIsLegendTypeSelected={setIsLegendTypeSelected}
             handleRentalCancel={handleRentalCancel}

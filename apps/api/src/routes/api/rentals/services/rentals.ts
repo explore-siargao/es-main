@@ -26,10 +26,12 @@ export const getRentalsByHostAndCategory = async (
     let results: any = null
     if (category === 'Car' || category === 'Motorbike') {
       results = rentals.map((rental) => ({
+        id: rental._id,
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
       }))
     } else {
       results = rentals.map((rental) => ({
+        id: rental._id,
         name: `${rental.make}`,
       }))
     }

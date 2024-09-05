@@ -3,17 +3,19 @@ import { useFormContext } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
 
 interface IRentalReservationFormProps {
+  selectedLegendType: string
   setSelectedLegendType: (data: string) => void
   setIsLegendTypeSelected: (data: boolean) => void
   handleRentalCancel: () => void
 }
 
 function RentalSelectLegendTypeForm({
+  selectedLegendType,
   setSelectedLegendType,
   setIsLegendTypeSelected,
   handleRentalCancel
 }: IRentalReservationFormProps) {
-  const { register, getValues } = useFormContext()
+  const { register } = useFormContext()
 
   const handleConfirm = () => {
     setIsLegendTypeSelected(true)
@@ -59,7 +61,7 @@ function RentalSelectLegendTypeForm({
           <Button type="button" variant="danger" onClick={handleRentalCancel}>
             Cancel
           </Button>
-          <Button type="button" variant="primary" onClick={handleConfirm}>
+          <Button type="button" variant="primary" onClick={handleConfirm} disabled={selectedLegendType === ""}>
             Confirm
           </Button>
         </div>
