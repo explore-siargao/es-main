@@ -170,7 +170,7 @@ const WholePlace = ({ pageType }: Prop) => {
         toast.error(String(err))
       })
   }
- 
+
   const handleSavePhotos = async () => {
     const activePhotos = photos.filter((photo) => !photo.isDeleted)
     if (activePhotos.length >= 3) {
