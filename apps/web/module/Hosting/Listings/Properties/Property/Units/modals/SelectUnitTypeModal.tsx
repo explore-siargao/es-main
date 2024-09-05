@@ -12,7 +12,7 @@ import { cn } from "@/common/helpers/cn"
 type Props = {
   isOpen: boolean
   onClose: () => void
-  propertyType: E_Property_Type
+  propertyType: E_Property_Type | undefined
   propertyId: string
   pageType: "setup" | "edit"
 }
@@ -26,6 +26,7 @@ const SelectUnitTypeModal = ({
   const router = useRouter()
   const params = useParams<{ listingId: string }>()
   const listingId = params.listingId
+
   const { mutate: addBlankUnitBed, isPending: isAddBlankUnitBedPending } =
     useAddBlankUnitBed(listingId)
   const { mutate: addBlankUnitRoom, isPending: isAddBlankUnitRoomPending } =
@@ -34,12 +35,13 @@ const SelectUnitTypeModal = ({
     mutate: addBlankUnitWholePlace,
     isPending: isAddBlankUnitWholePlacePending,
   } = useAddBlankUnitWholePlace(listingId)
+
   const addUnitBed = () => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           router.push(
-            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/beds/${data.item._id}/edit`
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/beds/${data.item._id}/edit?propertyType=${propertyType}`
           )
         } else {
           toast.error(String(data.message))
@@ -51,12 +53,13 @@ const SelectUnitTypeModal = ({
     }
     addBlankUnitBed(undefined, callBackReq)
   }
+
   const addUnitRoom = () => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           router.push(
-            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/rooms/${data.item._id}/edit`
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/rooms/${data.item._id}/edit?propertyType=${propertyType}`
           )
         } else {
           toast.error(String(data.message))
@@ -68,12 +71,13 @@ const SelectUnitTypeModal = ({
     }
     addBlankUnitRoom(undefined, callBackReq)
   }
+
   const addUnitWholePlace = () => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           router.push(
-            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit`
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit?propertyType=${propertyType}`
           )
         } else {
           toast.error(String(data.message))
@@ -85,6 +89,7 @@ const SelectUnitTypeModal = ({
     }
     addBlankUnitWholePlace(undefined, callBackReq)
   }
+
   return (
     <ModalContainer
       size="sm"
@@ -94,9 +99,10 @@ const SelectUnitTypeModal = ({
     >
       <div className="py-5 px-5 max-w-4xl">
         <div className="flex gap-6">
-          {propertyType === "Hostel" ||
-          propertyType === "Homestay" ||
-          propertyType === "Resort" ? (
+          {propertyType === E_Property_Type.Hostel ||
+          propertyType === E_Property_Type.Homestay ||
+          propertyType === E_Property_Type.Hotel ||
+          propertyType === E_Property_Type.Resort ? (
             <>
               <button
                 type="button"
@@ -147,10 +153,8 @@ const SelectUnitTypeModal = ({
                 </div>
               </button>
             </>
-          ) : (
-            ""
-          )}
-          {propertyType === "Hotel" && (
+          ) : null}
+          {propertyType === E_Property_Type.Apartment ? (
             <>
               <button
                 type="button"
@@ -177,44 +181,42 @@ const SelectUnitTypeModal = ({
                 </div>
               </button>
             </>
-          )}
-          {propertyType === "Resort" ||
-          propertyType === "Apartment" ||
-          propertyType === "Villa" ? (
-            <>
-              <button
-                type="button"
-                onClick={
-                  isAddBlankUnitWholePlacePending
-                    ? () => null
-                    : () => addUnitWholePlace()
-                }
-                className={cn(
-                  "text-left flex-1",
-                  isAddBlankUnitWholePlacePending
-                    ? "cursor-progress opacity-70"
-                    : ""
-                )}
-              >
-                <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-xl p-4">
-                  <Typography
-                    variant="h4"
-                    fontWeight="semibold"
-                    className="uppercase mb-3"
-                  >
-                    New whole space
-                  </Typography>
-                  <Typography variant="h5">
-                    A fully self-contained accommodation such as a villa,
-                    apartment or bungalow with its own bathroom, kitchen, and
-                    living area.
-                  </Typography>
-                </div>
-              </button>
-            </>
-          ) : (
-            ""
-          )}
+          ) : null}
+
+          {propertyType === E_Property_Type.Resort ||
+          propertyType === E_Property_Type.Apartment ||
+          propertyType === E_Property_Type.Hotel ||
+          propertyType === E_Property_Type.Villa ? (
+            <button
+              type="button"
+              onClick={
+                isAddBlankUnitWholePlacePending
+                  ? () => null
+                  : () => addUnitWholePlace()
+              }
+              className={cn(
+                "text-left flex-1",
+                isAddBlankUnitWholePlacePending
+                  ? "cursor-progress opacity-70"
+                  : ""
+              )}
+            >
+              <div className="flex-1 border h-52 border-gray-300 hover:border-secondary-600 rounded-xl p-4">
+                <Typography
+                  variant="h4"
+                  fontWeight="semibold"
+                  className="uppercase mb-3"
+                >
+                  New whole space
+                </Typography>
+                <Typography variant="h5">
+                  A fully self-contained accommodation such as a villa,
+                  apartment or bungalow with its own bathroom, kitchen, and
+                  living area.
+                </Typography>
+              </div>
+            </button>
+          ) : null}
         </div>
       </div>
     </ModalContainer>

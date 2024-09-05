@@ -17,7 +17,7 @@ import { useEffect, useState } from "react"
 import useSelectAmenityStore from "@/module/Hosting/Listings/Properties/Property/Units/store/useSelectAmenityStore"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/common/components/ui/Input"
 import AmenitiesCheckboxes from "../components/AmenitiesCheckboxes"
 import usePhotoStore from "@/module/Hosting/Listings/store/usePhotoStore"
@@ -80,6 +80,8 @@ const WholePlace = ({ pageType }: Prop) => {
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
+  const searchParams = useSearchParams()
+  // const propertyType = searchParams.get("propertyType")
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
@@ -217,8 +219,6 @@ const WholePlace = ({ pageType }: Prop) => {
         qty: Number(exactUnitCount),
       }
 
-      //test
-
       if (bedroomsStudio.length > 0) {
         formData.bedroomStudio = bedroomsStudio
         console.log("bedroomStudio data to be saved:", bedroomsStudio)
@@ -318,6 +318,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const [singleRoomBed, setSingleRoomBed] = useState("Single Bed")
   const [singleRoomBedCount, setSingleRoomBedCount] = useState(0)
   const [hasSleepingSpaces, setHasSleepingSpaces] = useState("")
+  const [propertyType, setPropertyType] = useState<string | null>(null)
 
   const isLivingRoomVisible =
     unitType === "Studio" || hasSleepingSpaces === "yes"
@@ -355,6 +356,15 @@ const WholePlace = ({ pageType }: Prop) => {
       updateBedrooms(data.item.bedRooms)
     }
   }, [unitType])
+  useEffect(() => {
+    const storedPropertyType = localStorage.getItem("propertyType")
+    setPropertyType(storedPropertyType)
+  }, [])
+
+  useEffect(
+    () => console.log("selected property type: ", propertyType),
+    [propertyType]
+  )
 
   return (
     <>
@@ -374,20 +384,77 @@ const WholePlace = ({ pageType }: Prop) => {
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-4 gap-x-6">
-              <Select
-                label="Unit Type"
-                disabled={isPending || isFetching}
-                {...register("title", {
-                  required: "This field is required",
-                })}
-                onChange={(e) => setUnitType(e.currentTarget.value)}
-              >
-                <Option value="Villa">Villa</Option>
-                <Option value="Apartment">Apartment</Option>
-                <Option value="Studio">Studio apartment</Option>
-                <Option value="House">House</Option>
-                <Option value="Condominium">Condominium</Option>
-              </Select>
+              {propertyType === "Hotel" ? (
+                <Select
+                  label="Unit Type"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => setUnitType(e.currentTarget.value)}
+                >
+                  <Option value="Villa">Villa</Option>
+                  <Option value="Apartment">Apartment</Option>
+                  <Option value="Studio">Studio apartment</Option>
+                  <Option value="Condominium">Bungalow</Option>
+                </Select>
+              ) : propertyType === "Resort" ? (
+                <Select
+                  label="Unit Type"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => setUnitType(e.currentTarget.value)}
+                >
+                  <Option value="Villa">Villa</Option>
+                  <Option value="Apartment">Apartment</Option>
+                  <Option value="Studio">Studio Apartment</Option>
+                  <Option value="House">House</Option>
+                  <Option value="Condominium">Bungalow</Option>
+                </Select>
+              ) : propertyType === "Whole place" ? (
+                <Select
+                  label="Unit Type"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => setUnitType(e.currentTarget.value)}
+                >
+                  <Option value="Villa">Villa</Option>
+                  <Option value="House">House</Option>
+                  <Option value="Condominium">Bungalow</Option>
+                  <Option value="Cottage">Cottage</Option>
+                </Select>
+              ) : propertyType === "Apartment" ? (
+                <Select
+                  label="Unit Type"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => setUnitType(e.currentTarget.value)}
+                >
+                  <Option value="Apartment">Apartment</Option>
+                  <Option value="Studio">Studio Apartment</Option>
+                </Select>
+              ) : (
+                <Select
+                  label="Unit Type"
+                  disabled={isPending || isFetching}
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => setUnitType(e.currentTarget.value)}
+                >
+                  <Option value="Villa">Villa</Option>
+                  <Option value="Apartment">Apartment</Option>
+                  <Option value="Studio">Studio apartment</Option>
+                  <Option value="House">House</Option>
+                  <Option value="Condominium">Condominium</Option>
+                </Select>
+              )}
             </div>
             <div>
               {unitType !== "Studio" && (
