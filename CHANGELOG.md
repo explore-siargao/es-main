@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.17.0](https://github.com/explore-siargao/es-main/compare/v0.16.0...v0.17.0) (2024-09-04)
+
+### Features
+
+- **api:** Added endpoint for getting all ids in rental ([4086102](https://github.com/explore-siargao/es-main/commit/4086102c798ef86a94cc50f59d607c59d305713f))
+- **api:** Added endpoint for getting rentals names by host and category ([5e3725b](https://github.com/explore-siargao/es-main/commit/5e3725b2979c33eacd33b8332382c44f997eaed4))
+- **api:** Added endpoint for getting rentals names by host and category ([eef20fe](https://github.com/explore-siargao/es-main/commit/eef20fe3d22f2141ad3e4c22604c60d22ddd0e16))
+- **api:** Modified reservation db model ([8c9376a](https://github.com/explore-siargao/es-main/commit/8c9376a1e75134131a03edd8d7b7c66a86c58fe3))
+- **web:** Added custom hooks for getting rentals by categories and vehicles by rental id ([b7245ea](https://github.com/explore-siargao/es-main/commit/b7245ea239d3a2ceb388916bbbcf24659a510347))
+- **web:** Added expand legends text and dynamic hover in rental tabs ([e38c988](https://github.com/explore-siargao/es-main/commit/e38c988994a9cb5a04fedc27cbda2901011d78a1))
+- **web:** Added new version of header with search bar ([fac80cc](https://github.com/explore-siargao/es-main/commit/fac80cca2ec0bd026f583aa9f78559dd7e08206f))
+- **web:** Changed villa to whole place in property type selections ([13294c9](https://github.com/explore-siargao/es-main/commit/13294c9ba83de45dbebc8bf48f242958926ef1c1))
+- **web:** Converted CMS pages fetch to server-side ([d8a17d9](https://github.com/explore-siargao/es-main/commit/d8a17d96d353c789f1c69406b5a0190524fd9340))
+- **web:** Listing main public page UI cleanup (universal margin, photos rounded, lightbox display, not found error) ([ea8a968](https://github.com/explore-siargao/es-main/commit/ea8a968204eee3e207ffd66890bfbd9ac79414ee))
+- **web:** Modified favicons colors of map ([6c20c47](https://github.com/explore-siargao/es-main/commit/6c20c47c0d047199b682af9c419df4bd7891b495))
+- **web:** modify listing setup locations ([8f309ce](https://github.com/explore-siargao/es-main/commit/8f309ce27047788be965bbf218b2e93544c47289))
+
+### Bug Fixes
+
+- **web:** Changed inputs border radius from md to xl ([8e69b2e](https://github.com/explore-siargao/es-main/commit/8e69b2e1ea89e1b18c7ba6f6e231174fe1737908))
+- **web:** if no units do not show parent property in the list ([e22a828](https://github.com/explore-siargao/es-main/commit/e22a828f66b187862c98ea948ce4a5ff83abfed3))
+- **web:** if no units do not show parent property in the list ([6abae30](https://github.com/explore-siargao/es-main/commit/6abae304c3f21d2be51c1c0302a2791e9faf1aa5))
+
 ## [0.16.0](https://github.com/explore-siargao/es-main/compare/v0.15.0...v0.16.0) (2024-09-01)
 
 ### Features
