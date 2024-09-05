@@ -10,6 +10,7 @@ import ReportsRoute from '@/routes/api/reports'
 import RentalsRoute from '@/routes/api/rentals'
 import ActivitiesRoute from '@/routes/api/activities'
 import PropertiesRoute from '@/routes/api/properties'
+import ReservationRoute from '@/routes/api/reservations'
 
 // mock
 import MockUsersRoute from '@/routes/mock/users'
@@ -35,6 +36,7 @@ export default function (app: Application) {
   app.use(`${API_ROOT}/rentals`, RentalsRoute)
   app.use(`${API_ROOT}/activities`, ActivitiesRoute)
   app.use(`${API_ROOT}/properties`, PropertiesRoute)
+  app.use(`${API_ROOT}/reservations`, ReservationRoute)
 
   // MOCK
   app.use(`${MOCK_ROOT}/users`, MockUsersRoute)
