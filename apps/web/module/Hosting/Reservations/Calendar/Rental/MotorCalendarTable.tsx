@@ -27,12 +27,13 @@ import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import { getColorClasses } from "../../helpers/legends"
+import { useQueryClient } from "@tanstack/react-query"
 
 const MotorCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
+  endDate.setDate(startDate.getDate() + 13)
   const { data: sampleData, isPending } = useGetCalendarMotor(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
@@ -60,7 +61,7 @@ const MotorCalendarTable = () => {
     ],
   })
   const daysPerPage = 13
-
+  const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
@@ -212,6 +213,9 @@ const MotorCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-motor"],
+    })
     setStartDate(addDays(startDate, direction))
   }
 
@@ -400,6 +404,7 @@ const MotorCalendarTable = () => {
                                 const { startCol, colSpan } = style
                                 const { colorClass, hoverColorClass } =
                                   getColorClasses(booking.status)
+                                const testHoverColor = hoverColorClass
                                 return (
                                   <div
                                     key={booking.name}
@@ -414,7 +419,7 @@ const MotorCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} hover:${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${testHoverColor} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}

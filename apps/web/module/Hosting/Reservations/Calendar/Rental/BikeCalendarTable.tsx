@@ -26,11 +26,12 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarBike from "../hooks/useGetCalendarBike"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import { getColorClasses } from "../../helpers/legends"
+import { useQueryClient } from "@tanstack/react-query"
 
 const BikeCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
+  endDate.setDate(startDate.getDate() + 13)
   const { data: sampleData, isPending } = useGetCalendarBike(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
@@ -60,7 +61,7 @@ const BikeCalendarTable = () => {
     ],
   })
   const daysPerPage = 13
-
+  const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
@@ -211,6 +212,9 @@ const BikeCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-bike"],
+    })
     setStartDate(addDays(startDate, direction))
   }
 
@@ -443,7 +447,7 @@ const BikeCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} hover:${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}
