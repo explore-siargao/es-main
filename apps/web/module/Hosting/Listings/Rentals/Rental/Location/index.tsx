@@ -201,8 +201,9 @@ const ListingLocation = ({ pageType }: Prop) => {
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              Click anywhere in the map for the modal editor to open to pin exactly where your listing is.
-              This will help your customers to find your locations.
+              Click anywhere in the map for the modal editor to open to pin
+              exactly where your listing is. This will help your customers to
+              find your locations.
             </Typography>
           </div>{" "}
           <div className="flex mt-2 gap-12 flex-wrap">
@@ -216,7 +217,8 @@ const ListingLocation = ({ pageType }: Prop) => {
                   fontWeight="normal"
                   className="text-gray-500 pt-2 italic"
                 >
-                  Click the icons below to open the location you set above in your preferred map
+                  Click the icons below to open the location you set above in
+                  your preferred map
                 </Typography>
                 <div className="flex-none flex place-items-start mt-2 gap-4">
                   <Link
@@ -302,13 +304,13 @@ const ListingLocation = ({ pageType }: Prop) => {
                 render={({ messages }) => {
                   return messages
                     ? Object.entries(messages).map(([type, message]) =>
-                      typeof message === "string" ? (
-                        <p className="text-red-600 text-xs " key={type}>
-                          {" "}
-                          <i>{message}</i>{" "}
-                        </p>
-                      ) : null
-                    )
+                        typeof message === "string" ? (
+                          <p className="text-red-600 text-xs " key={type}>
+                            {" "}
+                            <i>{message}</i>{" "}
+                          </p>
+                        ) : null
+                      )
                     : null
                 }}
               />

@@ -235,7 +235,8 @@ const Itinerary = ({ pageType }: Prop) => {
                   fontWeight="normal"
                   className="text-gray-500 pt-2 italic"
                 >
-                  Click the icons below to open the location you set above in your preferred map
+                  Click the icons below to open the location you set above in
+                  your preferred map
                 </Typography>
                 <div className="flex-none flex place-items-start mt-2 gap-4">
                   <Link

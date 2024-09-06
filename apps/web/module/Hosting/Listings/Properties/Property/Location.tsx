@@ -210,7 +210,7 @@ const ListingLocation = ({ pageType }: Prop) => {
 
           <div className="flex mt-2 gap-12 flex-wrap">
             <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
-            <div className="flex-wrap mb-4">
+              <div className="flex-wrap mb-4">
                 <Typography variant="h3" fontWeight="semibold">
                   Open with
                 </Typography>
@@ -219,7 +219,8 @@ const ListingLocation = ({ pageType }: Prop) => {
                   fontWeight="normal"
                   className="text-gray-500 pt-2 italic"
                 >
-                  Click the icons below to open the location you set above in your preferred map
+                  Click the icons below to open the location you set above in
+                  your preferred map
                 </Typography>
                 <div className="flex-none flex place-items-start mt-2 gap-4">
                   <Link
