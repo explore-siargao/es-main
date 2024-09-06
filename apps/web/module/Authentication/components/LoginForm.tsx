@@ -20,6 +20,7 @@ import useGlobalInputEmail from "../store/useGlobalInputEmail"
 import { Typography } from "@/common/components/ui/Typography"
 import { EncryptionService } from "@repo/services/"
 import useGoogleLogin from "../hooks/useGoogleLogin"
+import { useQueryClient } from "@tanstack/react-query"
 
 enum Position {
   "end",
@@ -35,11 +36,16 @@ const LoginForm = () => {
   const { mutate, isPending } = useGoogleLogin()
   const { mutate: loginUser, isPending: isLoginPending } = useLogin()
   const { register, handleSubmit, getValues } = useForm<IUser>()
-  const onSubmit = (formData: IUser) => {
+  const queryClient = useQueryClient()
+  const onSubmit = async (formData: IUser) => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error && !isLoginPending) {
           if (data.action && data.action.link) {
+            queryClient.invalidateQueries({
+              queryKey: ["session-user"],
+            })
+
             router.push(data.action.link)
           }
         } else {
@@ -50,7 +56,7 @@ const LoginForm = () => {
         toast.error(String(err))
       },
     }
-    loginUser(
+    await loginUser(
       {
         ...formData,
         password: encryptionService.encrypt(getValues("password") as string),
@@ -59,7 +65,7 @@ const LoginForm = () => {
     )
   }
 
-  const googleLogin = () => {
+  const googleLogin = async () => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error && !isPending) {
@@ -72,7 +78,7 @@ const LoginForm = () => {
         toast.error(String(err))
       },
     }
-    mutate(redirectTo ? redirectTo : undefined, callBackReq)
+    await mutate(redirectTo ?? undefined, callBackReq)
   }
 
   return (
