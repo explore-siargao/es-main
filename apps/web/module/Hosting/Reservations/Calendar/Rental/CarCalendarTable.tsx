@@ -25,16 +25,18 @@ import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
 import { getColorClasses } from "../../helpers/legends"
+import { useQueryClient } from "@tanstack/react-query"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
-  const { data: sampleData, isPending } = useGetCalendarCar(
+  endDate.setDate(startDate.getDate() + 13)
+  const { data: sampleData, isPending} = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
+  const queryClient = useQueryClient()
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -182,6 +184,9 @@ const CarCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-car"],
+    })
     setStartDate(addDays(startDate, direction))
   }
 
@@ -384,7 +389,7 @@ const CarCalendarTable = () => {
                                       reservation: booking,
                                     })
                                   }}
-                                  className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} hover:${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                  className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                 >
                                   <span className="text-white text-sm truncate px-2">
                                     {booking.name}
