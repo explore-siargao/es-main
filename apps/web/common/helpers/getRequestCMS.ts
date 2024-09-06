@@ -1,9 +1,9 @@
-import { CACHE_ONE_MINUTE } from "next/dist/lib/constants"
 import { WEB_URL } from "../constants/ev"
 
+const CACHE_REVALIDATE = 60
 export const getRequestCMS = async (endpoint: string) => {
   const res = await fetch(`${WEB_URL}/cms/api${endpoint}`, {
-    next: { revalidate: CACHE_ONE_MINUTE },
+    next: { revalidate: CACHE_REVALIDATE },
   })
 
   if (!res.ok) {

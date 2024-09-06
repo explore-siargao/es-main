@@ -205,14 +205,14 @@ const Itinerary = ({ pageType }: Prop) => {
               Itinerary
             </Typography>
           </div>
-          <div className="py-2" onClick={() => setIsModalOpen(true)}>
+          <div className="py-2  w-1/2" onClick={() => setIsModalOpen(true)}>
             <SpecificMap
               disablePinMovement={true}
               center={initialCoords}
               mapHeight="h-[450px]"
               mapWidth="w-full"
               zoom={11}
-              className="relative z-0"
+              className="relative z-0 w-1/4"
             />
             <Typography
               variant="h5"
@@ -226,6 +226,45 @@ const Itinerary = ({ pageType }: Prop) => {
 
           <div className="flex mt-2 gap-12 flex-wrap">
             <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
+              <div className="flex-wrap mb-4">
+                <Typography variant="h3" fontWeight="semibold">
+                  Open with
+                </Typography>
+                <Typography
+                  variant="h5"
+                  fontWeight="normal"
+                  className="text-gray-500 pt-2 italic"
+                >
+                  Click the icons below to open the location you set above in
+                  your preferred map
+                </Typography>
+                <div className="flex-none flex place-items-start mt-2 gap-4">
+                  <Link
+                    href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={GoogleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="google map icon"
+                      className="object-cover w-16 h-16"
+                    />
+                  </Link>
+                  <Link
+                    href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={AppleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="apple map icon"
+                      className="mx-2 object-cover w-16 h-16"
+                    />
+                  </Link>
+                </div>
+              </div>
               <Typography variant="h3" fontWeight="semibold">
                 Address
               </Typography>
