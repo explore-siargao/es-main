@@ -187,7 +187,7 @@ const ListingLocation = ({ pageType }: Prop) => {
               Location
             </Typography>
           </div>
-          <div className="py-2" onClick={() => setIsModalOpen(true)}>
+          <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
             <SpecificMap
               disablePinMovement={true}
               center={initialCoords}
@@ -201,12 +201,50 @@ const ListingLocation = ({ pageType }: Prop) => {
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              Click to open map and pin where exactly where your listing is.
+              Click anywhere in the map for the modal editor to open to pin exactly where your listing is.
               This will help your customers to find your locations.
             </Typography>
           </div>{" "}
           <div className="flex mt-2 gap-12 flex-wrap">
             <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
+              <div className="flex-wrap mb-4">
+                <Typography variant="h3" fontWeight="semibold">
+                  Open with
+                </Typography>
+                <Typography
+                  variant="h5"
+                  fontWeight="normal"
+                  className="text-gray-500 pt-2 italic"
+                >
+                  Click the icons below to open the location you set above in your preferred map
+                </Typography>
+                <div className="flex-none flex place-items-start mt-2 gap-4">
+                  <Link
+                    href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={GoogleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="google map icon"
+                      className="object-cover w-16 h-16"
+                    />
+                  </Link>
+                  <Link
+                    href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={AppleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="apple map icon"
+                      className="mx-2 object-cover w-16 h-16"
+                    />
+                  </Link>
+                </div>
+              </div>
               <Typography variant="h3" fontWeight="semibold">
                 Address
               </Typography>
@@ -264,51 +302,19 @@ const ListingLocation = ({ pageType }: Prop) => {
                 render={({ messages }) => {
                   return messages
                     ? Object.entries(messages).map(([type, message]) =>
-                        typeof message === "string" ? (
-                          <p className="text-red-600 text-xs " key={type}>
-                            {" "}
-                            <i>{message}</i>{" "}
-                          </p>
-                        ) : null
-                      )
+                      typeof message === "string" ? (
+                        <p className="text-red-600 text-xs " key={type}>
+                          {" "}
+                          <i>{message}</i>{" "}
+                        </p>
+                      ) : null
+                    )
                     : null
                 }}
               />
             </div>
-
-            <div className="flex-wrap">
-              <Typography variant="h3" fontWeight="semibold" className="ml-2">
-                Open with
-              </Typography>
-              <div className="flex-none flex place-items-start mt-8 gap-4">
-                <Link
-                  href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={GoogleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="google map icon"
-                    className="object-cover w-16 h-16"
-                  />
-                </Link>
-                <Link
-                  href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={AppleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="apple map icon"
-                    className="mx-2 object-cover w-16 h-16"
-                  />
-                </Link>
-              </div>
-            </div>
           </div>
-          <div className="mt-2">
+          <div className="mt-6">
             <Typography variant="h3" fontWeight="semibold">
               How to get there *
             </Typography>
