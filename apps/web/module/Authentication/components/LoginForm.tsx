@@ -78,7 +78,7 @@ const LoginForm = () => {
         toast.error(String(err))
       },
     }
-    await mutate(redirectTo ? redirectTo : undefined, callBackReq)
+    await mutate(redirectTo??undefined, callBackReq)
   }
 
   return (
