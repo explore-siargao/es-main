@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.18.0](https://github.com/explore-siargao/es-main/compare/v0.17.0...v0.18.0) (2024-09-06)
+
+
+### Features
+
+* Add free text to all units basic info ([75a642e](https://github.com/explore-siargao/es-main/commit/75a642ebe3c481c0bb36967e408bf088e7656f6b))
+* Add logic for displaying calendar bar colors base from reservation status ([4df6852](https://github.com/explore-siargao/es-main/commit/4df6852468bf42d8ca297324944314dd63dda05a))
+* Add Modal for adding rental calendar reservation ([891aa08](https://github.com/explore-siargao/es-main/commit/891aa089d260c0eaf400c095a7cff79f237f7824))
+* **api:** Added endpoint for adding rental reservations ([835b7a0](https://github.com/explore-siargao/es-main/commit/835b7a01e05618c9a42085c78d3d6d611deaad28))
+* Connect Add Rental Reservation Modal frontend to backend ([b66c254](https://github.com/explore-siargao/es-main/commit/b66c2540c62fae0a9d1ac6bbcbb394fcfbf7ceee))
+* Connect Add Rental Reservation Modal frontend to backend ([78f1922](https://github.com/explore-siargao/es-main/commit/78f19224ac496972148a29c009ffd32da868995a))
+* **web:** Added custom hook for adding new rental reservation ([d5f880e](https://github.com/explore-siargao/es-main/commit/d5f880e8f3d8dda97a28f5047b3e6466bbb9691a))
+* **web:** Changed url slugs ([e9867ca](https://github.com/explore-siargao/es-main/commit/e9867ca4805173d1601e5d125a600b6db95ed292))
+* **web:** made adjustments for the unit types to be  specific to the property ([b593e09](https://github.com/explore-siargao/es-main/commit/b593e09c805f061da0614d0b634113508ed7f41a))
+* **web:** made adjustments for the unit types to be  specific to the property ([c8a8b43](https://github.com/explore-siargao/es-main/commit/c8a8b430caf0577738d6bb940fa82fb1616da283))
+* **web:** made adjustments for the unit types to be  specific to the property ([a38f998](https://github.com/explore-siargao/es-main/commit/a38f998b33cdb75cb7053d8d5f470693127549ca))
+* **web:** made adjustments for the unit types to be  specific to the property ([b356bb8](https://github.com/explore-siargao/es-main/commit/b356bb81d270cf91f49950388af74e7cf8f194a4))
+* WIP add rental reservation ([c81378d](https://github.com/explore-siargao/es-main/commit/c81378d8ccb46a6e52deea961adfe6ff62c92def))
+* WIP rental reservation form inputs ([21b1c42](https://github.com/explore-siargao/es-main/commit/21b1c42b3e023ae0330cad7e011d6b6c72fdf9f1))
+
+
+### Bug Fixes
+
+* **api:** Fixed allowing adding  overlap dates in same rental reservation ([ce7599e](https://github.com/explore-siargao/es-main/commit/ce7599e73cde5a29b097b97278e2156c06f30d73))
+* Saving of property unit price not displaying on UI ([dc8baa7](https://github.com/explore-siargao/es-main/commit/dc8baa7c53f837740cab467a67a76de1aece6ced))
+* **web:** After login login button still showing ([6b01c2c](https://github.com/explore-siargao/es-main/commit/6b01c2c760319d8dbf40689a2add16d03c6a1bbd))
+* **web:** After login login button still showing ([7ef5f53](https://github.com/explore-siargao/es-main/commit/7ef5f535193eb571fd3dfcb05ac3cd41906b2150))
+* **web:** After login login button still showing ([a173bbd](https://github.com/explore-siargao/es-main/commit/a173bbd34357008b35dedf4067db9ccf71cf780e))
+* **web:** Bug fix error not showing bar on previous dates ([2e47ddc](https://github.com/explore-siargao/es-main/commit/2e47ddc312eaa4de3c315e62ca8a178d87bc5c3b))
+
 ## [0.17.0](https://github.com/explore-siargao/es-main/compare/v0.16.0...v0.17.0) (2024-09-04)
 
 ### Features
