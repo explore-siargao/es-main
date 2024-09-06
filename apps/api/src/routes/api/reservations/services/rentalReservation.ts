@@ -22,6 +22,34 @@ export const addRentalReservation = async (req: Request, res: Response) => {
       return res.json(response.error({ message: 'Invalid status' }))
     }
 
+    // Check if required fields are provided
+    if (!start_date || !end_date || !status || !unit) {
+      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    }
+
+    // Check for overlapping reservations on the same rentalId
+    const overlappingReservation = await dbReservations.findOne({
+      rentalId: unit,
+      $or: [
+        {
+          startDate: { $lt: end_date },
+          endDate: { $gt: start_date },
+        },
+        {
+          startDate: { $lte: end_date, $gte: start_date },
+        },
+      ],
+    })
+
+    if (overlappingReservation) {
+      return res.json(
+        response.error({
+          message: 'Reservation dates overlap with an existing reservation.',
+        })
+      )
+    }
+
+    // Create a new reservation
     const newRentalReservation = new dbReservations({
       startDate: start_date,
       endDate: end_date,
@@ -31,10 +59,6 @@ export const addRentalReservation = async (req: Request, res: Response) => {
       guestCount: guest_count || null,
       createdAt: Date.now(),
     })
-
-    if (!start_date || !end_date || !status || !unit) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
 
     await newRentalReservation.save()
     return res.json(
