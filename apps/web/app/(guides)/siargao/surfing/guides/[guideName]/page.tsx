@@ -17,11 +17,11 @@ const SurfingGuidePage = async ({ params: { guideName } }: T_Props) => {
     notFound()
   }
 
-  return(
+  return (
     <div>
-    <SurfingGuide data={content}/>
-  </div>
-  ) 
+      <SurfingGuide data={content} />
+    </div>
+  )
 }
 
 export default SurfingGuidePage
