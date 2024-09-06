@@ -34,7 +34,7 @@ const MotorCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  const { data: sampleData, isPending} = useGetCalendarMotor(
+  const { data: sampleData, isPending } = useGetCalendarMotor(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -213,7 +213,6 @@ const MotorCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
-
     queryClient.invalidateQueries({
       queryKey: ["calendar-motor"],
     })
@@ -394,18 +393,18 @@ const MotorCalendarTable = () => {
                             className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
                           >
                             {motorcycle.reservations.map(
-                              (booking: Reservation) => { 
+                              (booking: Reservation) => {
                                 const style = getBookingStyle(
                                   startDate,
                                   daysPerPage,
                                   booking
                                 )
                                 if (!style) return null
-      
+
                                 const { startCol, colSpan } = style
                                 const { colorClass, hoverColorClass } =
                                   getColorClasses(booking.status)
-                                  const testHoverColor = hoverColorClass
+                                const testHoverColor = hoverColorClass
                                 return (
                                   <div
                                     key={booking.name}

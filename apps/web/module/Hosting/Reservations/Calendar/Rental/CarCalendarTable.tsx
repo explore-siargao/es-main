@@ -32,7 +32,7 @@ const CarCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  const { data: sampleData, isPending} = useGetCalendarCar(
+  const { data: sampleData, isPending } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
