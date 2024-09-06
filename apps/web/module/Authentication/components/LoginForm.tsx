@@ -45,7 +45,7 @@ const LoginForm = () => {
             queryClient.invalidateQueries({
               queryKey: ["session-user"],
             })
-            
+
             router.push(data.action.link)
           }
         } else {
@@ -69,7 +69,7 @@ const LoginForm = () => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error && !isPending) {
-         window.location.href = data.action.link
+          window.location.href = data.action.link
         } else {
           toast.error(String(data.message))
         }
@@ -78,7 +78,7 @@ const LoginForm = () => {
         toast.error(String(err))
       },
     }
-    await mutate(redirectTo??undefined, callBackReq)
+    await mutate(redirectTo ?? undefined, callBackReq)
   }
 
   return (
