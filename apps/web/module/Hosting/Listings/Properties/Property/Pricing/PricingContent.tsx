@@ -1,42 +1,36 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { MinusIcon, PlusIcon } from "lucide-react"
 import React, { useEffect, useState } from "react"
+import { T_UnitPrice } from "@repo/contract"
 
 type Props = {
   index: number
   field: {
-    _id: number
+    _id: string
     unitName: string
-    unitPrice: {
-      _id: number
-      baseRate: number
-      baseRateMaxCapacity: number
-      maximumCapacity: number
-      pricePerAdditionalPerson: number
-      discountedWeeklyRate: number
-      discountedMonthlyRate: number
-    }
+    unitPrice: T_UnitPrice
   }
-  update: Function
+  update: (index: number, updatedField: any) => void
 }
 
 const PricingContent: React.FC<Props> = ({ index, field, update }) => {
   const { _id, unitName, unitPrice } = field
-
   const cleanUnitName = unitName.startsWith("Custom: ")
     ? unitName.replace("Custom: ", "")
     : unitName
 
-  const [baseRatePrice, setBaseRatePrice] = useState(unitPrice.baseRate ?? null)
+  const [baseRatePrice, setBaseRatePrice] = useState(unitPrice?.baseRate ?? 0)
   const [baseRateMax, setBaseRateMax] = useState(
-    unitPrice.baseRateMaxCapacity ?? 1
+    unitPrice?.baseRateMaxCapacity ?? 1
   )
-  const [maxCapacity, setMaxCapacity] = useState(unitPrice.maximumCapacity ?? 1)
+  const [maxCapacity, setMaxCapacity] = useState(
+    unitPrice?.maximumCapacity ?? 1
+  )
   const [pricePerAddPerson, setPricePerAddPerson] = useState(
-    unitPrice.pricePerAdditionalPerson ?? null
+    unitPrice?.pricePerAdditionalPerson ?? 0
   )
   const [weeklyDiscountRate, setWeeklyDiscountRate] = useState(
-    unitPrice.discountedWeeklyRate ?? null
+    unitPrice?.discountedWeekLyRate ?? 0
   )
 
   useEffect(() => {
@@ -44,13 +38,12 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
       _id: _id,
       unitName: cleanUnitName,
       unitPrice: {
-        _id: unitPrice._id,
+        _id: unitPrice?._id,
         baseRate: baseRatePrice,
         baseRateMaxCapacity: baseRateMax,
         maximumCapacity: maxCapacity,
         pricePerAdditionalPerson: pricePerAddPerson,
-        discountedWeeklyRate: weeklyDiscountRate,
-        discountedMonthlyRate: unitPrice.discountedMonthlyRate,
+        discountedWeekLyRate: weeklyDiscountRate,
       },
     })
   }, [

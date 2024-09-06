@@ -18,11 +18,17 @@ import { useQueryClient } from "@tanstack/react-query"
 import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinishedSections"
 import useGetPropertyUnitPricesById from "../../hooks/useGetPropertyUnitPricesById"
 import useUpdatePropertyUnitPriceById from "../../hooks/useUpdatePropertyUnitPriceById"
+import { T_UnitPrice } from "@repo/contract"
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
   pageType?: string
   identifier?: string
+}
+
+interface FormData {
+  unitPrice: T_UnitPrice[]
+  _id: string
 }
 
 const Pricing = ({ pageType }: PricingContentProps) => {
@@ -31,29 +37,28 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   const params = useParams<{ listingId: string }>()
   const listingId = params.listingId
   const { data, isLoading } = useGetPropertyById(listingId)
-  const { handleSubmit, control, reset } = useForm()
+  const { handleSubmit, control, reset } = useForm<FormData>()
   const { mutate, isPending } = useUpdatePropertyUnitPriceById(listingId)
   const { data: unitPriceData } = useGetPropertyUnitPricesById(listingId)
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
   const { fields, update } = useFieldArray({
     control,
-    name: "unitPrices",
+    name: "unitPrice",
     keyName: "key",
   })
 
-  const onSubmit = (data: any) => {
-    const cleanedUnitPrices = data.unitPrices.map((item: any) => ({
-      ...item,
-      unitName: item.unitName.startsWith("Custom: ")
-        ? item.unitName.slice("Custom: ".length)
-        : item.unitName,
+  const onSubmit = async (data: any) => {
+    const unitPriceDataList = data.unitPrice
+    const payloads = unitPriceDataList.map((unitPriceData: any) => ({
+      ...unitPriceData,
+      bookableUnitId: data._id,
     }))
 
     const callBackReq = {
-      onSuccess: (data: any) => {
-        if (!data.error) {
-          toast.success(data.message)
+      onSuccess: (response: any) => {
+        if (!response.error) {
+          toast.success(response.message)
           queryClient.invalidateQueries({
             queryKey: ["property-finished-sections", listingId],
           })
@@ -61,7 +66,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
             queryKey: ["property-unit-pricing", listingId],
           })
         } else {
-          toast.error(String(data.message))
+          toast.error(String(response.message))
         }
       },
       onError: (err: any) => {
@@ -69,17 +74,31 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       },
     }
 
+    const handleMutate = async () => {
+      try {
+        for (const payload of payloads) {
+          await mutate(payload, callBackReq)
+        }
+        queryClient.invalidateQueries({
+          queryKey: ["property", listingId],
+        })
+      } catch (error) {
+        toast.error(String(error))
+      }
+    }
+
     if (
       pageType === "setup" &&
       !data?.item?.finishedSections?.includes("pricing")
     ) {
-      mutate(cleanedUnitPrices, callBackReq)
-      updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
+      try {
+        await handleMutate()
+        updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
+      } catch (error) {
+        toast.error(String(error))
+      }
     } else {
-      mutate(cleanedUnitPrices, callBackReq)
-      queryClient.invalidateQueries({
-        queryKey: ["property", listingId],
-      })
+      handleMutate()
     }
 
     if (pageType === "setup") {
@@ -88,7 +107,13 @@ const Pricing = ({ pageType }: PricingContentProps) => {
   }
 
   useEffect(() => {
-    if (!isLoading && !isPending && !data?.error && data?.item) {
+    if (
+      !isLoading &&
+      !isPending &&
+      !data?.error &&
+      data?.item &&
+      unitPriceData?.items?.length
+    ) {
       const items = unitPriceData?.items?.map((item: any, index: number) => ({
         _id: item._id,
         unitName: item.unitName.startsWith("Custom: ")
@@ -99,7 +124,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
         },
       }))
 
-      reset({ unitPrices: items })
+      reset({ unitPrice: items })
     }
   }, [data, isLoading, unitPriceData])
 

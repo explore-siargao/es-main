@@ -35,7 +35,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     adultsIncluded: 0,
     childrenIncluded: 0,
     isMultiRoomUnit: false,
-    unitPrices: null,
+    unitPrice: null,
     qty: 0,
   })
   await newBookableUnitType.save()
@@ -77,6 +77,7 @@ export const addRoomUnit = async (req: Request, res: Response) => {
     childrenIncluded: 0,
     isMultiRoomUnit: false,
     qty: 0,
+    unitPrice: null,
   })
 
   await newBookableUnitType.save()
@@ -122,6 +123,7 @@ export const addBedUnit = async (req: Request, res: Response) => {
     childrenIncluded: 0,
     isMultiRoomUnit: false,
     qty: 0,
+    unitPrice: null,
   })
   await newBookableUnitType.save()
   await dbProperties.findByIdAndUpdate(
