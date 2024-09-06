@@ -10,13 +10,11 @@ import { useQueryClient } from "@tanstack/react-query"
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
   onClose: () => void
-  data: any
 }
 
 const AddRentalReservationModal = ({
   isModalOpen,
   onClose,
-  data,
 }: IReservationCalendarModalProps) => {
   const queryClient = useQueryClient()
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
