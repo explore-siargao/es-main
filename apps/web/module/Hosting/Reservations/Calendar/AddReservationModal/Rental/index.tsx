@@ -22,7 +22,7 @@ const AddRentalReservationModal = ({
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
     useState<boolean>(false)
-    
+
   const { mutate } = useAddRentalReservation()
 
   const handleRentalCancel = () => {
@@ -37,12 +37,12 @@ const AddRentalReservationModal = ({
 
   const handleSave = (data: any) => {
     mutate(data, {
-      onSuccess:(data) => {
+      onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
             queryKey: ["calendar-car"],
           })
-          toast.success(data.message as string);
+          toast.success(data.message as string)
           handleRentalCancel()
           form.reset()
         } else {
