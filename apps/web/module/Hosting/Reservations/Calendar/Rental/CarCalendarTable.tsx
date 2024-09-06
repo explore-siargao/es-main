@@ -19,9 +19,7 @@ import {
   SelectedReservation,
   SampleData,
   Reservation,
-  Rental,
 } from "../../types/CalendarTable"
-import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
@@ -72,32 +70,6 @@ const CarCalendarTable = () => {
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
-
-  const handleSaveNewReservation = (newReservation: any, reset: Function) => {
-    const updatedData = { ...filteredData }
-    const category = updatedData?.items?.filter(
-      (category) => category.name === newReservation.category
-    )
-    //@ts-ignore
-    if (category?.length > 0) {
-      //@ts-ignore
-      const selectedCategory = category[0]
-      if (selectedCategory) {
-        const car = selectedCategory?.cars?.find(
-          (rm) => rm.abbr === newReservation.car
-        )
-        if (car) {
-          car.reservations.push(newReservation)
-          setFilteredData(updatedData)
-          toast.success("Reservation added successfully")
-          reset()
-        } else {
-          toast.error("Room not found")
-        }
-      }
-    }
-    closeAddReservationModal()
-  }
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -449,8 +421,6 @@ const CarCalendarTable = () => {
           <AddRentalReservationModal
             isModalOpen={isAddReservationModalOpen}
             onClose={closeAddReservationModal}
-            onSave={handleSaveNewReservation}
-            data={filteredData}
           />
         </div>
       )}
