@@ -62,8 +62,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
 
     await newUnitPrice.save()
 
-
-    const bookableUnit = await dbBookableUnitTypes.findById(bookableUnitId);
+    const bookableUnit = await dbBookableUnitTypes.findById(bookableUnitId)
     if (!bookableUnit?.unitPrice) {
       await dbBookableUnitTypes.findByIdAndUpdate(
         bookableUnitId,
@@ -74,10 +73,9 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
           },
         },
         { new: true }
-      );
+      )
     }
-        
-    }
+  }
 
   res.json(
     response.success({

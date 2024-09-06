@@ -1,37 +1,37 @@
-import { Typography } from "@/common/components/ui/Typography";
-import { MinusIcon, PlusIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { T_UnitPrice } from "@repo/contract"; 
+import { Typography } from "@/common/components/ui/Typography"
+import { MinusIcon, PlusIcon } from "lucide-react"
+import React, { useEffect, useState } from "react"
+import { T_UnitPrice } from "@repo/contract"
 
 type Props = {
-  index: number;
+  index: number
   field: {
-    _id: string;
-    unitName: string;
-    unitPrice: T_UnitPrice;
-  };
-  update: (index: number, updatedField: any) => void; 
-};
+    _id: string
+    unitName: string
+    unitPrice: T_UnitPrice
+  }
+  update: (index: number, updatedField: any) => void
+}
 
 const PricingContent: React.FC<Props> = ({ index, field, update }) => {
-  const { _id, unitName, unitPrice } = field;
+  const { _id, unitName, unitPrice } = field
   const cleanUnitName = unitName.startsWith("Custom: ")
     ? unitName.replace("Custom: ", "")
-    : unitName;
+    : unitName
 
-  const [baseRatePrice, setBaseRatePrice] = useState(unitPrice?.baseRate ?? 0);
+  const [baseRatePrice, setBaseRatePrice] = useState(unitPrice?.baseRate ?? 0)
   const [baseRateMax, setBaseRateMax] = useState(
     unitPrice?.baseRateMaxCapacity ?? 1
-  );
+  )
   const [maxCapacity, setMaxCapacity] = useState(
     unitPrice?.maximumCapacity ?? 1
-  );
+  )
   const [pricePerAddPerson, setPricePerAddPerson] = useState(
     unitPrice?.pricePerAdditionalPerson ?? 0
-  );
+  )
   const [weeklyDiscountRate, setWeeklyDiscountRate] = useState(
     unitPrice?.discountedWeekLyRate ?? 0
-  );
+  )
 
   useEffect(() => {
     update(index, {
@@ -45,14 +45,14 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         pricePerAdditionalPerson: pricePerAddPerson,
         discountedWeekLyRate: weeklyDiscountRate,
       },
-    });
+    })
   }, [
     baseRatePrice,
     baseRateMax,
     maxCapacity,
     pricePerAddPerson,
     weeklyDiscountRate,
-  ]);
+  ])
 
   return (
     <>
@@ -88,7 +88,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
           type="button"
           onClick={() => {
             if (baseRateMax > 1) {
-              setBaseRateMax((baseRateMax) => baseRateMax - 1);
+              setBaseRateMax((baseRateMax) => baseRateMax - 1)
             }
           }}
         >
@@ -122,7 +122,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
           type="button"
           onClick={() => {
             if (maxCapacity > 1) {
-              setMaxCapacity((maxCapacity) => maxCapacity - 1);
+              setMaxCapacity((maxCapacity) => maxCapacity - 1)
             }
           }}
         >
@@ -209,7 +209,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PricingContent;
+export default PricingContent
