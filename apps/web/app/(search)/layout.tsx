@@ -7,10 +7,10 @@ import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
-import Header from "@/common/components/Header"
+import Header from "@/common/components/Header/v2"
 import Footer from "@/common/components/Footer"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
-import SearchBar from "@/common/components/SearchBar/SearchBarByUrl"
+import YMarginWrapper from "@/common/components/YMarginWrapper"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -31,12 +31,7 @@ export default async function RootLayout({
           <AuthStateProvider>
             <GlobalModalWrapper>
               <Header contentWidth="medium" />
-              <SearchBar
-                contentWidth="small"
-                customClass="bg-primary-50 items-center mt-[7.4rem]"
-                searchBarWidth="w-[900px]"
-              />
-              <div className="min-h-screen">{children}</div>
+              <YMarginWrapper>{children}</YMarginWrapper>
               <Footer />
             </GlobalModalWrapper>
           </AuthStateProvider>

@@ -2,6 +2,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import LegendModal from "./LegendModal"
 import { legends } from "../helpers/legends"
 import { useState } from "react"
+import { Button } from "@/common/components/ui/Button"
 
 const CalendarLegend = () => {
   const [legendModalOpen, setLegendModalOpen] = useState(false)
@@ -9,9 +10,16 @@ const CalendarLegend = () => {
   const date = new Date()
 
   return (
-    <>
+    <div className="flex items-center bg-white p-1">
+      <Button
+        variant="link"
+        className="text-base text-blue-600 hover:text-blue-600"
+        onClick={() => setLegendModalOpen(true)}
+      >
+        Expand Legends
+      </Button>
       <div
-        className="flex items-center justify-end space-x-4 bg-white p-1 cursor-pointer"
+        className="flex items-center justify-end space-x-4 cursor-pointer"
         onClick={() => setLegendModalOpen(true)}
       >
         {legends.map((item) => (
@@ -26,7 +34,7 @@ const CalendarLegend = () => {
         onClose={() => setLegendModalOpen(false)}
         date={date}
       />
-    </>
+    </div>
   )
 }
 

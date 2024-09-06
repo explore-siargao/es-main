@@ -47,7 +47,7 @@ const BedCalendarTable = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
-  const [testData, setTestData] = useState<any>()
+  const [unitData, setUnitData] = useState<any>()
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
   const [roomQuantity, setRoomQuantity] = useState({
@@ -100,107 +100,73 @@ const BedCalendarTable = () => {
   }
 
   useEffect(() => {
-    const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-      const newFilteredData = {
-        items: sampleData?.items?.map((item) => {
-          // Transform bookableUnitTypes into the desired structure
-          const transformedBookableUnitTypes = item.bookableUnitTypes
-            .map(
-              (unitType: { beds: any[]; rooms: any[]; wholePlaces: any[] }) => {
-                // Depending on the category of bookable units, flatten them into bookableUnitTypes
-                const bookableUnits = []
-
-                if (unitType.beds) {
-                  bookableUnits.push(
-                    ...unitType.beds.map((bed) => ({
-                      abbr: bed.abbr,
-                      status: bed.status,
-                      reservations: bed.reservations.filter(
-                        (reservation: {
-                          startDate: string | number | Date
-                          endDate: string | number | Date
-                        }) => {
-                          const bookingStart = new Date(reservation.startDate)
-                          const bookingEnd = new Date(reservation.endDate)
-                          return !(
-                            isAfter(bookingStart, calendarEnd) ||
-                            isBefore(bookingEnd, startDate)
-                          )
-                        }
-                      ),
-                    }))
-                  )
-                }
-
-                if (unitType.rooms) {
-                  bookableUnits.push(
-                    ...unitType.rooms.map((room) => ({
-                      abbr: room.abbr,
-                      status: room.status,
-                      reservations: room.reservations.filter(
-                        (reservation: {
-                          startDate: string | number | Date
-                          endDate: string | number | Date
-                        }) => {
-                          const bookingStart = new Date(reservation.startDate)
-                          const bookingEnd = new Date(reservation.endDate)
-                          return !(
-                            isAfter(bookingStart, calendarEnd) ||
-                            isBefore(bookingEnd, startDate)
-                          )
-                        }
-                      ),
-                    }))
-                  )
-                }
-
-                if (unitType.wholePlaces) {
-                  bookableUnits.push(
-                    ...unitType.wholePlaces.map((wholePlace) => ({
-                      abbr: wholePlace.abbr,
-                      status: wholePlace.status,
-                      reservations: wholePlace.reservations.filter(
-                        (reservation: {
-                          startDate: string | number | Date
-                          endDate: string | number | Date
-                        }) => {
-                          const bookingStart = new Date(reservation.startDate)
-                          const bookingEnd = new Date(reservation.endDate)
-                          return !(
-                            isAfter(bookingStart, calendarEnd) ||
-                            isBefore(bookingEnd, startDate)
-                          )
-                        }
-                      ),
-                    }))
-                  )
-                }
-
-                return bookableUnits
-              }
-            )
-            .flat()
-
-          return {
-            name: item.propertyTitle,
-            price: 0,
-            bookableUnitTypes: transformedBookableUnitTypes,
-          }
-        }),
-      }
-
-      setTestData(newFilteredData)
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
     }
 
-    filterDataByDate()
-  }, [startDate, daysPerPage, sampleData?.items])
+    const transformUnitType = (unitType: {
+      beds: any
+      rooms: any
+      wholePlaces: any
+    }) => {
+      const bookableUnits = []
+
+      if (unitType.beds) {
+        bookableUnits.push(...transformUnits(unitType.beds))
+      }
+
+      if (unitType.rooms) {
+        bookableUnits.push(...transformUnits(unitType.rooms))
+      }
+
+      if (unitType.wholePlaces) {
+        bookableUnits.push(...transformUnits(unitType.wholePlaces))
+      }
+
+      return bookableUnits
+    }
+
+    const transformUnits = (units: any[]) =>
+      units.map((unit: { abbr: any; status: any; reservations: any[] }) => ({
+        abbr: unit.abbr,
+        status: unit.status,
+        reservations: unit.reservations.filter(isReservationWithinRange),
+      }))
+
+    const filterItems = (items: any[]) =>
+      items
+        .map((item: { propertyTitle: any; bookableUnitTypes: any[] }) => ({
+          name: item.propertyTitle,
+          price: 0,
+          bookableUnitTypes: item.bookableUnitTypes
+            .map(transformUnitType)
+            .flat(),
+        }))
+        .filter(
+          (item: { bookableUnitTypes: string | any[] }) =>
+            item.bookableUnitTypes.length > 0
+        )
+
+    const newFilteredData = {
+      items: filterItems(sampleData?.items ?? []),
+    }
+
+    setUnitData(newFilteredData)
+  }, [startDate, daysPerPage, sampleData?.items, setUnitData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-
+  console.log(unitData)
   const generateCalendarHeader = () => {
     const headers = []
     for (let i = 0; i < daysPerPage; i++) {
@@ -344,7 +310,7 @@ const BedCalendarTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {testData?.items?.map((category: any, index: number) => (
+                {unitData?.items?.map((category: any, index: number) => (
                   <React.Fragment key={category.name}>
                     <tr
                       className="hover:bg-gray-100 cursor-pointer"

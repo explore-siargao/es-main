@@ -26,12 +26,14 @@ import AddReservationModal from "../AddReservationModal"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import { getColorClasses } from "../../helpers/legends"
+import { useQueryClient } from "@tanstack/react-query"
 
 const MotorCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
+  endDate.setDate(startDate.getDate() + 13)
   const { data: sampleData, isPending } = useGetCalendarMotor(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
@@ -59,7 +61,7 @@ const MotorCalendarTable = () => {
     ],
   })
   const daysPerPage = 13
-
+  const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
@@ -99,30 +101,45 @@ const MotorCalendarTable = () => {
   }
 
   useEffect(() => {
-    const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
-      const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          motorcycles: category.motorcycles.map((motorcycle: Rental) => ({
-            ...motorcycle,
-            reservations: motorcycle.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
-      //@ts-ignore
-      setFilteredData(newFilteredData)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
+
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
     }
 
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange)
+
+    const filterMotorcycles = (motorcycles: any[]) =>
+      motorcycles.map((motorcycles: { reservations: any }) => ({
+        ...motorcycles,
+        reservations: filterReservations(motorcycles.reservations),
+      }))
+
+    const filterCategories = (categories: any[]) =>
+      categories
+        .map((category: { motorcycles: any }) => ({
+          ...category,
+          motorcycles: filterMotorcycles(category.motorcycles),
+        }))
+        .filter(
+          (category: { motorcycles: string | any[] }) =>
+            category.motorcycles.length > 0
+        )
+
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    }
+    //@ts-ignore
+    setFilteredData(newFilteredData)
+  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -196,6 +213,9 @@ const MotorCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-motor"],
+    })
     setStartDate(addDays(startDate, direction))
   }
 
@@ -382,7 +402,9 @@ const MotorCalendarTable = () => {
                                 if (!style) return null
 
                                 const { startCol, colSpan } = style
-
+                                const { colorClass, hoverColorClass } =
+                                  getColorClasses(booking.status)
+                                const testHoverColor = hoverColorClass
                                 return (
                                   <div
                                     key={booking.name}
@@ -397,7 +419,7 @@ const MotorCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${testHoverColor} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}

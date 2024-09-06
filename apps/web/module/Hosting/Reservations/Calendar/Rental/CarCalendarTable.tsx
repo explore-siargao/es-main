@@ -19,22 +19,24 @@ import {
   SelectedReservation,
   SampleData,
   Reservation,
-  Rental,
 } from "../../types/CalendarTable"
-import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import AddRentalReservationModal from "../AddReservationModal/Rental"
+import { getColorClasses } from "../../helpers/legends"
+import { useQueryClient } from "@tanstack/react-query"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
+  endDate.setDate(startDate.getDate() + 13)
   const { data: sampleData, isPending } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
+  const queryClient = useQueryClient()
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -71,57 +73,45 @@ const CarCalendarTable = () => {
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
 
-  const handleSaveNewReservation = (newReservation: any, reset: Function) => {
-    const updatedData = { ...filteredData }
-    const category = updatedData?.items?.filter(
-      (category) => category.name === newReservation.category
-    )
-    //@ts-ignore
-    if (category?.length > 0) {
-      //@ts-ignore
-      const selectedCategory = category[0]
-      if (selectedCategory) {
-        const car = selectedCategory?.cars?.find(
-          (rm) => rm.abbr === newReservation.car
-        )
-        if (car) {
-          car.reservations.push(newReservation)
-          setFilteredData(updatedData)
-          toast.success("Reservation added successfully")
-          reset()
-        } else {
-          toast.error("Room not found")
-        }
-      }
-    }
-    closeAddReservationModal()
-  }
-
   useEffect(() => {
-    const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
-      const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          cars: category.cars.map((car: Rental) => ({
-            ...car,
-            reservations: car.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
-      //@ts-ignore
-      setFilteredData(newFilteredData)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
+
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
     }
 
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange)
+
+    const filterCars = (cars: any[]) =>
+      cars.map((car: { reservations: any }) => ({
+        ...car,
+        reservations: filterReservations(car.reservations),
+      }))
+
+    const filterCategories = (categories: any[]) =>
+      categories
+        .map((category: { cars: any }) => ({
+          ...category,
+          cars: filterCars(category.cars),
+        }))
+        .filter(
+          (category: { cars: string | any[] }) => category.cars.length > 0
+        )
+
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    }
+    //@ts-ignore
+    setFilteredData(newFilteredData)
+  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -194,6 +184,9 @@ const CarCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-car"],
+    })
     setStartDate(addDays(startDate, direction))
   }
 
@@ -379,6 +372,8 @@ const CarCalendarTable = () => {
                               if (!style) return null
 
                               const { startCol, colSpan } = style
+                              const { colorClass, hoverColorClass } =
+                                getColorClasses(booking.status)
 
                               return (
                                 <div
@@ -394,7 +389,7 @@ const CarCalendarTable = () => {
                                       reservation: booking,
                                     })
                                   }}
-                                  className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                  className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                 >
                                   <span className="text-white text-sm truncate px-2">
                                     {booking.name}
@@ -428,11 +423,9 @@ const CarCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddReservationModal
+          <AddRentalReservationModal
             isModalOpen={isAddReservationModalOpen}
             onClose={closeAddReservationModal}
-            onSave={handleSaveNewReservation}
-            data={filteredData}
           />
         </div>
       )}

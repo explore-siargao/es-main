@@ -22,6 +22,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
   const newBookableUnitType = new dbBookableUnitTypes({
     category: 'Whole-Place',
     title: '',
+    subtitle: '',
     numBedRooms: 0,
     numBathRooms: 0,
     bedRooms: [],
@@ -108,6 +109,7 @@ export const addBedUnit = async (req: Request, res: Response) => {
   const newBookableUnitType = new dbBookableUnitTypes({
     category: 'Bed',
     title: '',
+    subtitle: '',
     isHaveSharedBathRoom: 'No',
     isSmokingAllowed: 'No',
     bedRooms: null,
@@ -148,11 +150,17 @@ export const addBedUnit = async (req: Request, res: Response) => {
 export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, qty, isHaveSharedBathRoom, isSmokingAllowed, totalSize } =
-    req.body
+  const {
+    title,
+    subtitle,
+    qty,
+    isHaveSharedBathRoom,
+    isSmokingAllowed,
+    totalSize,
+  } = req.body
 
   if (
-    !title ||
+    !subtitle ||
     !qty ||
     !isHaveSharedBathRoom ||
     !isSmokingAllowed ||
@@ -210,6 +218,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
       {
         $set: {
           title: title,
+          subtitle: subtitle,
           qty: qty,
           isHaveSharedBathRoom: isHaveSharedBathRoom,
           isSmokingAllowed: isSmokingAllowed,
@@ -243,9 +252,9 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
 export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const propertyId = new mongoose.Types.ObjectId(req.params.propertyId)
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
-  const { title, totalSize, qty } = req.body
+  const { title, subtitle, totalSize, description, qty } = req.body
 
-  if (!title || !totalSize || !qty) {
+  if (!subtitle || !totalSize || !qty || !description) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -299,6 +308,8 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       {
         $set: {
           title: title,
+          subtitle: subtitle,
+          description: description,
           totalSize: totalSize,
           qty: qty,
           updatedAt: Date.now(),
@@ -335,6 +346,7 @@ export const updateWholePlaceUnitBasicInfo = async (
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
   const {
     title,
+    subtitle,
     totalSize,
     numBathRooms,
     bedRooms,
@@ -345,14 +357,13 @@ export const updateWholePlaceUnitBasicInfo = async (
     singleLivingRoom,
   } = req.body
   if (
-    !title ||
+    !subtitle ||
     !numBathRooms ||
     !totalSize ||
     !bedRooms ||
     !qty ||
     !livingRooms
   ) {
-    console.log(REQUIRED_VALUE_EMPTY)
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
@@ -409,6 +420,7 @@ export const updateWholePlaceUnitBasicInfo = async (
         {
           $set: {
             title: title,
+            subtitle: subtitle,
             totalSize: totalSize,
             numBedRooms: 0,
             numBathRooms: numBathRooms,

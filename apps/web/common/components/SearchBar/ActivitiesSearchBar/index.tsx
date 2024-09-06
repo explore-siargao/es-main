@@ -14,14 +14,14 @@ function ActivitiesSearchBar() {
       <div className="flex items-center">
         <Input
           type="date"
-          className="w-full rounded-l-full ring-0 bg-inherit focus-within:ring-0"
+          className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200  "
           label={"Date"}
           {...register("date")}
         />
         <Separator orientation="vertical" className="bg-gray-300 h-8 mx-5" />
         <Input
           type="number"
-          className="rounded-r-full ring-0 bg-inherit focus-within:ring-0"
+          className="ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
           label={"Number of Guest/s"}
           placeholder="1"
           defaultValue={"1"}

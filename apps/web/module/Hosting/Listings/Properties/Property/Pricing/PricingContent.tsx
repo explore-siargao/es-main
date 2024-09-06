@@ -66,13 +66,13 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         <input
           type="number"
           id="base-rate"
-          className="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+          className="block w-full min-w-0 flex-1 rounded-none rounded-l-xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
           placeholder="0"
           value={baseRatePrice}
           onChange={(e) => setBaseRatePrice(parseInt(e.currentTarget.value))}
           required
         />
-        <span className="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
+        <span className="inline-flex items-center rounded-r-xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
           PHP
         </span>
       </div>
@@ -84,7 +84,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
       </Typography>
       <div className="flex rounded-md mb-8">
         <button
-          className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+          className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
           type="button"
           onClick={() => {
             if (baseRateMax > 1) {
@@ -102,7 +102,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
           onChange={() => null}
         />
         <button
-          className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+          className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
           type="button"
           onClick={() => setBaseRateMax((baseRateMax) => baseRateMax + 1)}
         >
@@ -118,7 +118,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
       </Typography>
       <div className="flex rounded-md mb-8">
         <button
-          className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+          className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
           type="button"
           onClick={() => {
             if (maxCapacity > 1) {
@@ -136,7 +136,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
           onChange={() => {}}
         />
         <button
-          className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+          className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
           type="button"
           onClick={() => setMaxCapacity((maxCapacity) => maxCapacity + 1)}
         >
@@ -153,14 +153,14 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         <input
           type="number"
           id="price-per-additional-person"
-          className="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+          className="block w-full min-w-0 flex-1 rounded-none rounded-l-xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
           placeholder="0"
           value={pricePerAddPerson}
           onChange={(e) =>
             setPricePerAddPerson(parseInt(e.currentTarget.value))
           }
         />
-        <span className="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
+        <span className="inline-flex items-center rounded-r-xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
           PHP
         </span>
       </div>
@@ -182,14 +182,14 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
           <input
             type="number"
             id="discount-percent"
-            className="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+            className="block w-full min-w-0 flex-1 rounded-none rounded-l-xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
             placeholder="0"
             value={weeklyDiscountRate}
             onChange={(e) =>
               setWeeklyDiscountRate(parseInt(e.currentTarget.value))
             }
           />
-          <span className="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
+          <span className="inline-flex items-center rounded-r-xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
             % OFF
           </span>
         </div>
@@ -197,13 +197,13 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
           <input
             type="number"
             id="discount-total"
-            className="block w-full min-w-0 flex-1 rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+            className="block w-full min-w-0 flex-1 rounded-none rounded-l-xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
             placeholder="0"
             value={(weeklyDiscountRate * baseRatePrice) / 100}
             onChange={() => {}}
             disabled
           />
-          <span className="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
+          <span className="inline-flex items-center rounded-r-xl border border-l-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
             PHP
           </span>
         </div>

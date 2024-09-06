@@ -25,11 +25,13 @@ import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarBike from "../hooks/useGetCalendarBike"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
+import { getColorClasses } from "../../helpers/legends"
+import { useQueryClient } from "@tanstack/react-query"
 
 const BikeCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
+  endDate.setDate(startDate.getDate() + 13)
   const { data: sampleData, isPending } = useGetCalendarBike(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
@@ -59,7 +61,7 @@ const BikeCalendarTable = () => {
     ],
   })
   const daysPerPage = 13
-
+  const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
@@ -99,30 +101,45 @@ const BikeCalendarTable = () => {
   }
 
   useEffect(() => {
-    const filterDataByDate = () => {
-      const calendarEnd = addDays(startDate, daysPerPage - 1)
-      const newFilteredData = {
-        items: sampleData?.items?.map((category) => ({
-          ...category,
-          bicycles: category.bicycles.map((bicycle: Rental) => ({
-            ...bicycle,
-            reservations: bicycle.reservations.filter((reservation) => {
-              const bookingStart = new Date(reservation.startDate)
-              const bookingEnd = new Date(reservation.endDate)
-              return !(
-                isAfter(bookingStart, calendarEnd) ||
-                isBefore(bookingEnd, startDate)
-              )
-            }),
-          })),
-        })),
-      }
-      //@ts-ignore
-      setFilteredData(newFilteredData)
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
+
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date
+      endDate: string | number | Date
+    }) => {
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
     }
 
-    filterDataByDate()
-  }, [startDate, sampleData?.items])
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange)
+
+    const filterBicycles = (bicycles: any[]) =>
+      bicycles.map((bicycles: { reservations: any }) => ({
+        ...bicycles,
+        reservations: filterReservations(bicycles.reservations),
+      }))
+
+    const filterCategories = (categories: any[]) =>
+      categories
+        .map((category: { bicycles: any }) => ({
+          ...category,
+          bicycles: filterBicycles(category.bicycles),
+        }))
+        .filter(
+          (category: { bicycles: string | any[] }) =>
+            category.bicycles.length > 0
+        )
+
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    }
+    //@ts-ignore
+    setFilteredData(newFilteredData)
+  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -195,6 +212,9 @@ const BikeCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-bike"],
+    })
     setStartDate(addDays(startDate, direction))
   }
 
@@ -411,7 +431,8 @@ const BikeCalendarTable = () => {
                                 if (!style) return null
 
                                 const { startCol, colSpan } = style
-
+                                const { colorClass, hoverColorClass } =
+                                  getColorClasses(booking.status)
                                 return (
                                   <div
                                     key={booking.name}
@@ -426,7 +447,7 @@ const BikeCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
                                       {booking.name}

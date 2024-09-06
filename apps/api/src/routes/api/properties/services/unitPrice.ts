@@ -1,6 +1,6 @@
 import { REQUIRED_VALUE_EMPTY } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { T_BookableUnitType, T_UnitPrice } from '@repo/contract'
+import { T_BookableUnitType } from '@repo/contract'
 import { dbBookableUnitTypes, dbProperties, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
@@ -9,8 +9,8 @@ const response = new ResponseService()
 export const updateUnitPrice = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const propertyId = req.params.propertyId
-  const unitPrice: T_UnitPrice = req.body.unitPrice
-
+  const unitPrice = req.body.unitPrice
+  const bookableUnitId = req.body._id
   const getProperty = await dbProperties
     .findOne({ _id: propertyId, offerBy: userId, deletedAt: null })
     .populate({
@@ -62,23 +62,22 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
 
     await newUnitPrice.save()
 
-    if (getProperty.bookableUnits.length > 0) {
-      await Promise.all(
-        getProperty.bookableUnits.map(async (unit) => {
-          await dbBookableUnitTypes.findByIdAndUpdate(
-            unit._id,
-            {
-              $set: {
-                unitPrice: newUnitPrice._id,
-                updatedAt: Date.now(),
-              },
-            },
-            { new: true }
-          )
-        })
-      )
+
+    const bookableUnit = await dbBookableUnitTypes.findById(bookableUnitId);
+    if (!bookableUnit?.unitPrice) {
+      await dbBookableUnitTypes.findByIdAndUpdate(
+        bookableUnitId,
+        {
+          $set: {
+            unitPrice: newUnitPrice._id,
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      );
     }
-  }
+        
+    }
 
   res.json(
     response.success({

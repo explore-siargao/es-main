@@ -58,7 +58,18 @@ const Units = ({ pageType }: Prop) => {
 
     router.push(`/hosting/listings/properties/setup/${listingId}/pricing`)
   }
+  const handleAddNewClick = () => {
+    if (data?.item?.type === "Whole place") {
+      router.push(
+        `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit`
+      )
+    } else {
+      setIsSelectUnitTypeModalOpen(true)
+    }
+  }
+
   const propertyType = data?.item?.type
+
   return (
     <div className="mt-20 mb-14">
       <Typography
@@ -78,11 +89,7 @@ const Units = ({ pageType }: Prop) => {
           Manage your <span className="font-bold">{propertyType}</span> units
         </span>
         <div className="flex-grow"></div>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => setIsSelectUnitTypeModalOpen(true)}
-        >
+        <Button variant="primary" size="sm" onClick={handleAddNewClick}>
           <LucidePlus className="mr-2 w-5" />
           <Typography variant="p" fontWeight="semibold" className="text-sm">
             Add new

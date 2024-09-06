@@ -20,7 +20,7 @@ import ThingsToKnow from "./ThingsToKnow"
 import MeetingPoint from "./MeetingPoint"
 import CheckoutBox from "./CheckoutBox"
 import Builder from "./Itinerary/Builder"
-import { useParams } from "next/navigation"
+import { notFound, useParams } from "next/navigation"
 import useGetActivityById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
 import { Spinner } from "@/common/components/ui/Spinner"
 
@@ -357,12 +357,16 @@ export const ActivitySingleView = () => {
 
   const subTitle = `${monthsDifference} ${monthsDifference === 1 ? "month" : "months"} hosting`
 
+  if ((!isPending && !data) || (!isPending && !data.item)) {
+    notFound()
+  }
+
   return (
-    <>
+    <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       {isPending ? (
-        <Spinner>Loading...</Spinner>
+        <></>
       ) : (
-        <WidthWrapper width="small" className="mt-10">
+        <>
           {data && (
             <SectionInfo
               images={data?.item?.photos}
@@ -542,9 +546,9 @@ export const ActivitySingleView = () => {
             </div>
           </div>
           <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-        </WidthWrapper>
+        </>
       )}
-    </>
+    </WidthWrapper>
   )
 }
 export default ActivitySingleView

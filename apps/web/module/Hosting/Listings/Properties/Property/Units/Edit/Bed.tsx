@@ -127,7 +127,7 @@ const Bed = ({ pageType }: Prop) => {
 
   const onSubmit = async (formData: T_Update_Bed_Basic_Info) => {
     formData.amenities = amenities
-    if (!formData.title) {
+    if (!formData.subtitle) {
       toast.error("Please fill out all required fields")
       return
     }
@@ -143,6 +143,7 @@ const Bed = ({ pageType }: Prop) => {
       const saveBasicInfo = updateBedBasicInfo({
         _id: bedId,
         title: formData.title,
+        subtitle: formData.subtitle,
         qty: Number(typeCount),
         isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
         isSmokingAllowed: formData.isSmokingAllowed,
@@ -168,6 +169,7 @@ const Bed = ({ pageType }: Prop) => {
   useEffect(() => {
     if (!isPending && data && data.item) {
       setValue("title", data?.item?.title)
+      setValue("subtitle", data?.item?.subtitle)
       setTypeCount(data?.item.qty)
       setValue("isHaveSharedBathRoom", data?.item?.isHaveSharedBathRoom)
       setValue("isSmokingAllowed", data?.item?.isSmokingAllowed)
@@ -202,24 +204,42 @@ const Bed = ({ pageType }: Prop) => {
           Units / Edit Bed
         </Typography>
       </div>
-      <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
-        What type of dorm room do you have?
-        <div className="relative group">
-          <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
-          <div className="absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] opacity-0 group-hover:opacity-100 transition-opacity">
-            <Typography variant="h5" className="italic">
-              Contact us if you can't find your shared space/dorm type
-            </Typography>
-          </div>
-        </div>
-      </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h4" fontWeight="semibold" className="mb-2">
+          What is the name you want to display for your unit? (Optional)
+        </Typography>
         <div className="grid grid-cols-4 gap-x-6 mb-4">
           <div>
+            <div className="mb-4">
+              <Input
+                label="Title"
+                id="size"
+                type="text"
+                minLength={5}
+                maxLength={30}
+                disabled={isPending || isFetching}
+                {...register("title")}
+              />
+            </div>
+            <Typography
+              variant="h4"
+              fontWeight="semibold"
+              className="flex mb-2"
+            >
+              What type of dorm room do you have?
+              <div className="relative group">
+                <LucideInfo className="cursor-pointer ml-1 w-5 h-5 hover:text-primary-600 transition-all" />
+                <div className="absolute z-10 w-64 bg-white p-4 shadow-lg rounded-md border border-primary-600 top-[-70px] left-[30px] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Typography variant="h5" className="italic">
+                    Contact us if you can't find your shared space/dorm type
+                  </Typography>
+                </div>
+              </div>
+            </Typography>
             <Controller
               control={control}
-              name="title"
+              name="subtitle"
               defaultValue={data?.item?.description || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
@@ -235,7 +255,7 @@ const Bed = ({ pageType }: Prop) => {
                     <Option
                       key={option}
                       value={option}
-                      selected={data?.item?.title === option}
+                      selected={data?.item?.subtitle === option}
                     >
                       {option}
                     </Option>

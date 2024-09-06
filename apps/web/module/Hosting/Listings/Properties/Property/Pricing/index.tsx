@@ -48,55 +48,62 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     keyName: "key",
   })
 
-  const onSubmit = (data: any) => {
-    const unitPriceData = data.unitPrice[0]
-
-    const payload = {
+  const onSubmit = async (data: any) => {
+    const unitPriceDataList = data.unitPrice;
+    const payloads = unitPriceDataList.map((unitPriceData: any) => ({
       ...unitPriceData,
-      _id: data._id,
-    }
-    console.log("Payload to be submitted:", payload);
+      bookableUnitId: data._id
+    }));
+  
+  
     const callBackReq = {
       onSuccess: (response: any) => {
         if (!response.error) {
-          toast.success(response.message)
+          toast.success(response.message);
           queryClient.invalidateQueries({
             queryKey: ["property-finished-sections", listingId],
-          })
+          });
           queryClient.invalidateQueries({
             queryKey: ["property-unit-pricing", listingId],
-          })
+          });
         } else {
-          toast.error(String(response.message))
+          toast.error(String(response.message));
         }
       },
       onError: (err: any) => {
-        toast.error(String(err))
+        toast.error(String(err));
       },
-    }
-
-    if (
-      pageType === "setup" &&
-      !data?.item?.finishedSections?.includes("pricing")
-    ) {
+    };
+  
+    const handleMutate = async () => {
       try {
-        mutate(payload, callBackReq)
-        console.log("After calling mutate for `setup`...")
-        updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq)
-      } catch (error) {}
-    } else {
-      try {
-        mutate(payload, callBackReq)
+        for (const payload of payloads) {
+          await mutate(payload, callBackReq);
+        }
         queryClient.invalidateQueries({
           queryKey: ["property", listingId],
-        })
-      } catch (error) {}
+        });
+      } catch (error) {
+        toast.error(String(error));
+      }
+    };
+  
+    if (pageType === "setup" && !data?.item?.finishedSections?.includes("pricing")) {
+      try {
+      
+        await handleMutate();
+        updateFinishedSection({ newFinishedSection: "pricing" }, callBackReq);
+      } catch (error) {
+        toast.error(String(error));
+      }
+    } else {
+      handleMutate();
     }
-
+  
     if (pageType === "setup") {
-      router.push(`/hosting/listings/properties/setup/${listingId}/photos`)
+      router.push(`/hosting/listings/properties/setup/${listingId}/photos`);
     }
-  }
+  };
 
   useEffect(() => {
     if (

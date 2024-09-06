@@ -35,6 +35,7 @@ import useGetUnitById from "../hooks/useGetUnitById"
 
 type T_RoomUnit = {
   title: string
+  subtitle: string
   description: string
   size: number
   typeCount: number
@@ -140,6 +141,7 @@ const Room = ({ pageType }: Prop) => {
       const saveBasicInfo = updateRoomBasicInfo({
         _id: unitId,
         title: formData.title,
+        subtitle: formData.subtitle,
         totalSize: Number(formData.size),
         description: formData.description,
         qty: Number(typeCount),
@@ -163,13 +165,14 @@ const Room = ({ pageType }: Prop) => {
   useEffect(() => {
     if (!isPending && data && data.item) {
       setValue("title", data?.item?.title || "")
+      setValue("subtitle", data?.item?.subtitle || "")
       setValue("description", data?.item?.description)
       setTypeCount(data?.item?.qty)
       setPhotos(data?.item?.photos)
       setAmenties(data?.item?.amenities)
       setValue("size", data?.item?.totalSize)
-      if (data?.item?.title?.startsWith("Custom: ", "")) {
-        setCustomTitle(data?.item?.title.replace("Custom: ", ""))
+      if (data?.item?.subtitle?.startsWith("Custom: ", "")) {
+        setCustomTitle(data?.item?.subtitle.replace("Custom: ", ""))
       }
       if (data?.item?.description?.startsWith("Custom: ")) {
         setCustomDescription(data?.item?.description.replace("Custom: ", ""))
@@ -190,12 +193,26 @@ const Room = ({ pageType }: Prop) => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h4" fontWeight="semibold" className="mb-2">
+          What is the name you want to display for your unit? (Optional)
+        </Typography>
+        <div className="grid grid-cols-4 gap-x-6 mb-5">
+          <Input
+            label="Title"
+            id="title"
+            type="text"
+            minLength={5}
+            maxLength={30}
+            disabled={isPending}
+            {...register("title")}
+          />
+        </div>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
             <Controller
               control={control}
-              name="title"
-              defaultValue={data?.item?.title || ""}
+              name="subtitle"
+              defaultValue={data?.item?.subtitle || ""}
               rules={{ required: "This field is required" }}
               render={({ field }) => (
                 <>
@@ -231,7 +248,7 @@ const Room = ({ pageType }: Prop) => {
                         field.onChange(`Custom: ${e.target.value}`)
                       }}
                       placeholder="Enter custom name"
-                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      className="mt-2 block w-full border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                       required
                     />
                   )}
@@ -305,9 +322,9 @@ const Room = ({ pageType }: Prop) => {
             <Typography variant="h4" fontWeight="semibold" className="mb-2">
               How many of this type you have?
             </Typography>
-            <div className="flex rounded-md">
+            <div className="flex">
               <button
-                className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => {
                   typeCount > 0 && setTypeCount((typeCount) => typeCount - 1)
@@ -329,7 +346,7 @@ const Room = ({ pageType }: Prop) => {
                 required
               />
               <button
-                className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => setTypeCount((typeCount) => typeCount + 1)}
               >
