@@ -449,7 +449,6 @@ const CarCalendarTable = () => {
           <AddRentalReservationModal
             isModalOpen={isAddReservationModalOpen}
             onClose={closeAddReservationModal}
-            onSave={handleSaveNewReservation}
             data={filteredData}
           />
         </div>

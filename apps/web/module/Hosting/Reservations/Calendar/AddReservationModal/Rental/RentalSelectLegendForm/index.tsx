@@ -22,14 +22,27 @@ function RentalSelectLegendTypeForm({
   }
 
   const statusEnum = [
-    "Confirmed",
-    "Not-Confirmed",
-    "Cancelled",
-    "Checked-In",
-    "Checked-Out",
-    "No-Show",
-    "Blocked-Dates",
-    "Out-of-Service",
+    {
+      value: "Confirmed",
+      text: "Confirmed"
+    },
+    {
+      value: "Checked-In",
+      text: "Checked in"
+    },
+    {
+      value: "Checked-Out",
+      text: "Checked out"
+    },
+    {
+      value: "Out-of-Service-Dates",
+      text: "Out of service"
+    },
+    {
+      value: "Blocked-Dates",
+      text: "Blocked"
+    }
+    
   ]
 
   return (
@@ -47,9 +60,9 @@ function RentalSelectLegendTypeForm({
               onChange={(e) => setSelectedLegendType(e.target.value)}
             >
               <Option value="">Select</Option>
-              {statusEnum.map((status: string) => (
-                <Option key={status} value={status}>
-                  {status}
+              {statusEnum.map((status: { value: string, text: string }) => (
+                <Option key={status.value} value={status.value}>
+                  {status.text}
                 </Option>
               ))}
             </Select>

@@ -1,43 +1,29 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
-import { Button } from "@/common/components/ui/Button"
-import { Input } from "@/common/components/ui/Input"
 import { FormProvider, useForm } from "react-hook-form"
-import { Option, Select } from "@/common/components/ui/Select"
-import {
-  Category,
-  Rental,
-  SelectedReservation,
-} from "../../../types/CalendarTable"
 import RentalReservationForm from "./RentalReservationForm"
 import RentalSelectLegendTypeForm from "./RentalSelectLegendForm"
+import useAddRentalReservation from "../../hooks/useAddRentalReservation"
+import toast from "react-hot-toast"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
   onClose: () => void
-  onSave: (reservation: SelectedReservation, reset: Function) => void
   data: any
 }
 
 const AddRentalReservationModal = ({
   isModalOpen,
   onClose,
-  onSave,
   data,
 }: IReservationCalendarModalProps) => {
-  const [selectedCategory, setSelectedCategory] = useState("")
+  const queryClient = useQueryClient()
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
     useState<boolean>(false)
-
-  const handleSave = (data: any) => {
-    console.log(data)
-    const resetform = () => {
-      form.reset()
-      setSelectedCategory("")
-    }
-    // onSave(data, resetform)
-  }
+    
+  const { mutate } = useAddRentalReservation()
 
   const handleRentalCancel = () => {
     onClose()
@@ -47,6 +33,23 @@ const AddRentalReservationModal = ({
       setSelectedLegendType("")
       setIsLegendTypeSelected(false)
     }, 200)
+  }
+
+  const handleSave = (data: any) => {
+    mutate(data, {
+      onSuccess:(data) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-car"],
+          })
+          toast.success(data.message as string);
+          handleRentalCancel()
+          form.reset()
+        } else {
+          toast.error(data.message as string)
+        }
+      },
+    })
   }
 
   const form = useForm()
