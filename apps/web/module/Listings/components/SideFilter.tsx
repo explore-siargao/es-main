@@ -1,10 +1,16 @@
 "use client"
 
-import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 import CheckBoxFilter from "@/common/components/Filters/CheckBoxFilter"
-import Minimap from "@/common/components/Filters/Minimap"
 import NumericFilter from "@/common/components/Filters/NumericFilter"
 import { Typography } from "@/common/components/ui/Typography"
+import dynamic from "next/dynamic"
+
+const DynamicMinimap = dynamic(
+  () => import("@/common/components/Filters/Minimap"),
+  {
+    ssr: false,
+  }
+)
 
 const filterPrimaryData = [
   {
@@ -129,7 +135,7 @@ const SideFilter = ({
   return (
     <div>
       <div className="mb-6">
-        <Minimap />
+        <DynamicMinimap />
       </div>
       <div className="rounded-tl-xl rounded-tr-xl border-t border-r border-l border-gray-300 flex items-center py-2 px-4">
         <Typography fontWeight="semibold">Filters</Typography>

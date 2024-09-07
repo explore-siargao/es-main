@@ -97,13 +97,11 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     )
   } catch (error) {
     console.error('Error updating unit price:', error)
-    res
-      .status(500)
-      .json(
-        response.error({
-          message: 'An error occurred while updating the unit price',
-        })
-      )
+    res.status(500).json(
+      response.error({
+        message: 'An error occurred while updating the unit price',
+      })
+    )
   }
 }
 export const getUnitPrice = async (req: Request, res: Response) => {

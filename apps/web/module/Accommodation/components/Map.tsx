@@ -4,7 +4,14 @@ import { Button } from "@/common/components/ui/Button"
 import WhereYouWillBeModal from "./WhereYouWillBeModal"
 import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
-import SpecificMap from "@/common/components/SpecificMap"
+import dynamic from "next/dynamic"
+
+const DynamicSpecificMap = dynamic(
+  () => import("@/common/components/SpecificMap"),
+  {
+    ssr: false,
+  }
+)
 
 interface ILocation {
   city: string
@@ -42,7 +49,7 @@ const WhereYoullBeDescription: React.FC<WhereYoullBeDescriptionProps> = ({
           Where you'll be
         </Typography>
         <div className="w-full h-[450px] bg-primary-200 mb-5">
-          <SpecificMap
+          <DynamicSpecificMap
             center={coordinates}
             mapHeight="h-[450px]"
             mapWidth="w-full"

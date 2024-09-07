@@ -1,5 +1,5 @@
 import React from "react"
-import { Option, Select } from "@/common/components/ui/Select"
+// import { Option, Select } from "@/common/components/ui/Select"
 import { Search } from "lucide-react"
 import { Separator } from "../../ui/Separator"
 import { Input } from "../../ui/Input"
@@ -10,7 +10,7 @@ function ActivitiesSearchBar() {
   const { register } = useFormContext()
 
   return (
-    <div className="flex gap-2 w-full justify-between items-center rounded-xl items-center py-2 pl-2 pr-[19px] border bg-white border-gray-300 mb-4">
+    <div className="flex gap-2 w-full justify-between items-center rounded-xl py-2 pl-2 pr-[19px] border bg-white border-gray-300 mb-4">
       <div className="flex items-center">
         <Input
           type="date"

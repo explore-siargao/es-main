@@ -1,6 +1,15 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import WhereYouWillBe from "./WhereYouWillBe"
-import SpecificMap from "@/common/components/SpecificMap"
+
+import dynamic from "next/dynamic"
+
+const DynamicSpecificMap = dynamic(
+  () => import("@/common/components/SpecificMap"),
+  {
+    ssr: false,
+  }
+)
+
 interface WhereYouWillBeModalProps {
   isOpen: boolean
   onClose: () => void
@@ -24,7 +33,7 @@ const WhereYouWillBeModal = ({
           />
         </div>
         <div className="md:col-span-8 lg:col-span-9 justify-center items-center">
-          <SpecificMap
+          <DynamicSpecificMap
             center={center}
             mapHeight="h-[25vh] md:h-[50vh] lg:h-[80vh]"
             mapWidth="w-full"
