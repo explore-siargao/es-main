@@ -10,7 +10,6 @@ import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import BlogHeader from "@/common/components/Header/v2"
 import Footer from "@/common/components/Footer"
-import SearchBar from "@/common/components/SearchBar/SearchBarByState"
 import YMarginWrapper from "@/common/components/YMarginWrapper"
 
 export const metadata: Metadata = {

@@ -1,6 +1,11 @@
-import MultipleMarkerMap from "@/common/components/MultipleMarkerMap"
 import { Typography } from "@/common/components/ui/Typography"
 import data from "../data.json"
+import dynamic from 'next/dynamic'
+ 
+const DynamicMultiMarkerMap = dynamic(() => import('./MultiMarkerMap'), {
+  ssr: false,
+})
+
 type T_Markers = {
   lat: number
   long: number
@@ -23,6 +28,26 @@ const GuideContent = ({
   iconMarker,
 }: T_Props) => {
   const images = data.surfGuide.images
+  const getMarkerFileName = (
+    iconMarker: string | undefined,
+    isCity: boolean | undefined
+  ) => {
+    let markerIconToUse
+  
+    if (iconMarker === "surf") {
+      markerIconToUse = "surf-map-icon.png"
+    } else if (iconMarker === "restaurant") {
+      markerIconToUse = "restaurant-map-icon.png"
+    } else if (iconMarker === "island" && isCity) {
+      markerIconToUse = "island-map-icon-2.png"
+    } else if (iconMarker === "island" && !isCity) {
+      markerIconToUse = "island-map-icon-1.png"
+    } else {
+      markerIconToUse = "marker.png"
+    }
+  
+    return markerIconToUse
+  }
   return (
     <div className="grid md:grid-cols-2 gap-12">
       <div>
@@ -43,14 +68,12 @@ const GuideContent = ({
         ))}
       </div>
       <div>
-        <MultipleMarkerMap
+        <DynamicMultiMarkerMap
           markerLocations={markers}
           center={[9.835667, 126.049483]}
           imagePlace={`/assets/${images[0]?.fileKey}`}
-          mapHeight={"h-80 sm:h-[735px] md:h-[470px] lg:h-[500px]"}
-          mapWidth={"w-full"}
           zoom={11}
-          iconMarker={iconMarker}
+          markerFileName={getMarkerFileName(iconMarker, markers[0]?.isCity)}
         />
       </div>
     </div>

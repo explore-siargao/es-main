@@ -13,7 +13,7 @@ type T_Props = {
   guides: T_Guides[]
 }
 
-const Guides = ({ title, guides }: T_Props) => {
+const RecommendedListing = ({ title, guides }: T_Props) => {
   return (
     <div>
       <Typography
@@ -43,4 +43,4 @@ const Guides = ({ title, guides }: T_Props) => {
   )
 }
 
-export default Guides
+export default RecommendedListing
