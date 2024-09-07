@@ -1,11 +1,14 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import WhereYouWillBe from "./WhereYouWillBe"
 
-import dynamic from 'next/dynamic'
- 
-const DynamicSpecificMap = dynamic(() => import('@/common/components/SpecificMap'), {
-  ssr: false,
-})
+import dynamic from "next/dynamic"
+
+const DynamicSpecificMap = dynamic(
+  () => import("@/common/components/SpecificMap"),
+  {
+    ssr: false,
+  }
+)
 
 interface WhereYouWillBeModalProps {
   isOpen: boolean
@@ -13,7 +16,6 @@ interface WhereYouWillBeModalProps {
   center: [number, number]
   locationDescription?: string
 }
-
 
 const WhereYouWillBeModal = ({
   isOpen,

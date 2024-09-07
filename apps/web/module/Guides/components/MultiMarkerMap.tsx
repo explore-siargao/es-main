@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
-import MapContainerWrapper from '@/common/components/MapContainerWrapper'
-import {
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvent,
-} from "react-leaflet"
+import MapContainerWrapper from "@/common/components/MapContainerWrapper"
+import { TileLayer, Marker, Popup, useMapEvent } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
@@ -99,7 +94,7 @@ const MultiMarkerMap = ({
     iconAnchor: [18, 18],
     popupAnchor: [0, -20],
   })
-  
+
   return (
     <MapContainerWrapper
       center={center}
@@ -155,12 +150,8 @@ const MultiMarkerMap = ({
                       className="bg-gray-200 rounded-md"
                     />
                   ) : null}
-                  <span className="mt-2 font-semibold">
-                    {location.name}
-                  </span>
-                  <span>
-                    {location.cuisine ? location.cuisine : ""}
-                  </span>
+                  <span className="mt-2 font-semibold">{location.name}</span>
+                  <span>{location.cuisine ? location.cuisine : ""}</span>
                   <span>
                     {location.surfingLevel ? location.surfingLevel : ""}
                   </span>

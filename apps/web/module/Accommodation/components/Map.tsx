@@ -4,11 +4,14 @@ import { Button } from "@/common/components/ui/Button"
 import WhereYouWillBeModal from "./WhereYouWillBeModal"
 import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
-import dynamic from 'next/dynamic'
- 
-const DynamicSpecificMap = dynamic(() => import('@/common/components/SpecificMap'), {
-  ssr: false,
-})
+import dynamic from "next/dynamic"
+
+const DynamicSpecificMap = dynamic(
+  () => import("@/common/components/SpecificMap"),
+  {
+    ssr: false,
+  }
+)
 
 interface ILocation {
   city: string

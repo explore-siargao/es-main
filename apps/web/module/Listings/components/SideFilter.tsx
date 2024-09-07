@@ -3,11 +3,14 @@
 import CheckBoxFilter from "@/common/components/Filters/CheckBoxFilter"
 import NumericFilter from "@/common/components/Filters/NumericFilter"
 import { Typography } from "@/common/components/ui/Typography"
-import dynamic from 'next/dynamic'
- 
-const DynamicMinimap = dynamic(() => import('@/common/components/Filters/Minimap'), {
-  ssr: false,
-})
+import dynamic from "next/dynamic"
+
+const DynamicMinimap = dynamic(
+  () => import("@/common/components/Filters/Minimap"),
+  {
+    ssr: false,
+  }
+)
 
 const filterPrimaryData = [
   {

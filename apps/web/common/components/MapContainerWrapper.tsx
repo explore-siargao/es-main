@@ -1,7 +1,5 @@
 import React from "react"
-import {
-  MapContainer,
-} from "react-leaflet"
+import { MapContainer } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 
 interface SpecificMapProps {
@@ -17,11 +15,13 @@ const MapContainerWrapper = ({
   zoom,
   scrollWheelZoom,
   className,
-  children
+  children,
 }: SpecificMapProps) => {
   const rounded = "rounded-2xl"
   return (
-    <div className={`${className} flex-1 block bg-primary-200 relative ${rounded}`}>
+    <div
+      className={`${className} flex-1 block bg-primary-200 relative ${rounded}`}
+    >
       <MapContainer
         center={center}
         zoom={zoom}

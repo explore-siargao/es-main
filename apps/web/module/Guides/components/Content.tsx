@@ -1,8 +1,8 @@
 import { Typography } from "@/common/components/ui/Typography"
 import data from "../data.json"
-import dynamic from 'next/dynamic'
- 
-const DynamicMultiMarkerMap = dynamic(() => import('./MultiMarkerMap'), {
+import dynamic from "next/dynamic"
+
+const DynamicMultiMarkerMap = dynamic(() => import("./MultiMarkerMap"), {
   ssr: false,
 })
 
@@ -33,7 +33,7 @@ const GuideContent = ({
     isCity: boolean | undefined
   ) => {
     let markerIconToUse
-  
+
     if (iconMarker === "surf") {
       markerIconToUse = "surf-map-icon.png"
     } else if (iconMarker === "restaurant") {
@@ -45,7 +45,7 @@ const GuideContent = ({
     } else {
       markerIconToUse = "marker.png"
     }
-  
+
     return markerIconToUse
   }
   return (
