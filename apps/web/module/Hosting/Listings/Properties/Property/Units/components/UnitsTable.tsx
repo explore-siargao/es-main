@@ -15,9 +15,10 @@ const numWords = require("num-words")
 
 interface UnitsTableProps {
   category?: string
+  pageType?: "setup" | "edit"
 }
 
-const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
+const UnitsTable: React.FC<UnitsTableProps> = ({ category, pageType = 'edit' }) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { data, isPending } = useGetPropertyById(listingId)
@@ -32,7 +33,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
             : null
         return (
           <Link
-            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+            href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
             className="flex items-center gap-5"
           >
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
@@ -64,7 +65,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
           : value
         return (
           <Link
-            href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+            href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
           >
             <Typography variant="p">
               {title
@@ -84,7 +85,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
       size: 400,
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.getValue().toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${context.getValue().toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
@@ -96,7 +97,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({ category }) => {
       header: "Quantity",
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties/setup/${listingId}/units/${context.row.original?.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${context.row.original?.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : 0}
