@@ -49,10 +49,7 @@ const WhereYoullBeDescription: React.FC<WhereYoullBeDescriptionProps> = ({
           Where you'll be
         </Typography>
         <div className="mb-5">
-          <DynamicMapWithPin
-            center={coordinates}
-            disablePinMovement={true}
-          />
+          <DynamicMapWithPin center={coordinates} disablePinMovement={true} />
         </div>
 
         {location && (

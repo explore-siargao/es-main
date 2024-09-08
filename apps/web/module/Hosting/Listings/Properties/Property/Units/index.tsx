@@ -96,7 +96,10 @@ const Units = ({ pageType }: Prop) => {
           </Typography>
         </Button>
       </Typography>
-      <UnitsTable category={E_Property_Category.WholePlace} pageType={pageType} />
+      <UnitsTable
+        category={E_Property_Category.WholePlace}
+        pageType={pageType}
+      />
       {pageType === "setup" && (
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button size="sm" onClick={handleSave}>

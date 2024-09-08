@@ -18,7 +18,10 @@ interface UnitsTableProps {
   pageType?: "setup" | "edit"
 }
 
-const UnitsTable: React.FC<UnitsTableProps> = ({ category, pageType = 'edit' }) => {
+const UnitsTable: React.FC<UnitsTableProps> = ({
+  category,
+  pageType = "edit",
+}) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { data, isPending } = useGetPropertyById(listingId)

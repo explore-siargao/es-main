@@ -6,9 +6,7 @@ interface WhereYouWillBe {
   locationDescription?: string
 }
 
-const WhereYouWillBe: React.FC<WhereYouWillBe> = ({
-  locationDescription,
-}) => {
+const WhereYouWillBe: React.FC<WhereYouWillBe> = ({ locationDescription }) => {
   return (
     <div>
       <Typography fontWeight="semibold" className="text-3xl px-4 mb-5">

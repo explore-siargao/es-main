@@ -1,9 +1,5 @@
 import React, { useState } from "react"
-import {
-  TileLayer,
-  Marker,
-  useMapEvent
-} from "react-leaflet"
+import { TileLayer, Marker, useMapEvent } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngTuple, LeafletEvent, LeafletMouseEvent } from "leaflet"
 import { WEB_URL } from "@/common/constants/ev"

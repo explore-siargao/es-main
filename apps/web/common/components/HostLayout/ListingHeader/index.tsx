@@ -74,7 +74,7 @@ function ListingHeader({
   const getListingHookMap = {
     [E_Listing_Category.Property]: useGetPropertyById,
     [E_Listing_Category.Activity]: useGetActivityById,
-    [E_Listing_Category.Rental]: useGetRentalById
+    [E_Listing_Category.Rental]: useGetRentalById,
   }
   const { data } = getListingHookMap[category](listingId)
 
@@ -94,7 +94,10 @@ function ListingHeader({
 
   const getHeaderListingName = () => {
     let listingName = ""
-    if (category === E_Listing_Category.Property || category === E_Listing_Category.Activity) {
+    if (
+      category === E_Listing_Category.Property ||
+      category === E_Listing_Category.Activity
+    ) {
       listingName = data?.item?.title
     } else if (category === E_Listing_Category.Rental) {
       listingName = `${data?.item?.year} ${data?.item?.make} ${data?.item?.modelBadge} ${transmissionAcronym(data?.item?.transmission)}`

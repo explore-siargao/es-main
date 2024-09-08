@@ -1,8 +1,5 @@
 import React from "react"
-import {
-  TileLayer,
-  Marker,
-} from "react-leaflet"
+import { TileLayer, Marker } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngTuple } from "leaflet"
 import { WEB_URL } from "@/common/constants/ev"
@@ -28,7 +25,6 @@ const MapWithPin = ({
   scrollWheelZoomEnabled,
   disablePinMovement = false,
 }: SpecificMapProps) => {
-
   return (
     <MapContainerWrapper
       center={center}

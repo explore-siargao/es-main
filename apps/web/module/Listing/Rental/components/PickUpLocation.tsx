@@ -19,7 +19,12 @@ const PickUpLocation = ({ mapData }: MapProps) => {
         </Typography>
         <div className="mb-3">
           <DynamicMapWithPin
-            center={[mapData?.latitude || 0.00, mapData?.longitude || 0.00] as [number, number]}
+            center={
+              [mapData?.latitude || 0.0, mapData?.longitude || 0.0] as [
+                number,
+                number,
+              ]
+            }
             disablePinMovement={true}
           />
         </div>

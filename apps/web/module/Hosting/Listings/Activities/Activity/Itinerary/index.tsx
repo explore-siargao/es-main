@@ -223,7 +223,9 @@ const Itinerary = ({ pageType }: Prop) => {
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              To edit the marker's location, click anywhere in the map above and the edit modal will show. This will help your customers to easily find your location.
+              To edit the marker's location, click anywhere in the map above and
+              the edit modal will show. This will help your customers to easily
+              find your location.
             </Typography>
           </div>
 
@@ -329,7 +331,6 @@ const Itinerary = ({ pageType }: Prop) => {
                 )}
               />
             </div>
-
           </div>
           <div className="mt-2">
             <Typography variant="h3" fontWeight="semibold">

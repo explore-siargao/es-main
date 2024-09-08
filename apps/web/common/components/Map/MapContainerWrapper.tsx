@@ -8,7 +8,7 @@ interface SpecificMapProps {
   scrollWheelZoom?: boolean
   className?: React.ReactNode
   children: React.ReactNode
-  rounded?: 'rounded-2xl' | 'rounded-none'
+  rounded?: "rounded-2xl" | "rounded-none"
 }
 
 const MapContainerWrapper = ({

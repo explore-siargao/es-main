@@ -25,12 +25,9 @@ import { ErrorMessage } from "@hookform/error-message"
 import dynamic from "next/dynamic"
 import LocationSetterModal from "../../components/modals/LocationSetterModal"
 
-const DynamicMapWithPin = dynamic(
-  () => import("../../components/MapWithPin"),
-  {
-    ssr: false,
-  }
-)
+const DynamicMapWithPin = dynamic(() => import("../../components/MapWithPin"), {
+  ssr: false,
+})
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -207,7 +204,9 @@ const ListingLocation = ({ pageType }: Prop) => {
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              To edit the marker's location, click anywhere in the map above and the edit modal will show. This will help your customers to easily find your location.
+              To edit the marker's location, click anywhere in the map above and
+              the edit modal will show. This will help your customers to easily
+              find your location.
             </Typography>
           </div>
 
@@ -357,7 +356,7 @@ const ListingLocation = ({ pageType }: Prop) => {
         </form>
       )}
 
-      <LocationSetterModal 
+      <LocationSetterModal
         isOpen={isModalOpen}
         onClose={closeModal}
         currentCoords={currentCoords}

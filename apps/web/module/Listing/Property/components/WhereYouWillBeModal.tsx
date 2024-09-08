@@ -16,20 +16,19 @@ const WhereYouWillBeModal = ({
   center,
   locationDescription,
 }: WhereYouWillBeModalProps) => {
-  const DynamicModalMapWithPin = useMemo(() => dynamic(
-    () => import('../../components/ModalMapWithPin'),
-    {
+  const DynamicModalMapWithPin = useMemo(
+    () =>
+      dynamic(() => import("../../components/ModalMapWithPin"), {
         loading: () => <p>Loading...</p>,
-        ssr: false
-    }
-  ), [isOpen])
+        ssr: false,
+      }),
+    [isOpen]
+  )
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose} size="full">
       <div className="md:grid grid-cols-12 h-[95vh]">
         <div className="md:col-span-4 lg:col-span-3 py-4 md:py-4">
-          <WhereYouWillBe
-            locationDescription={locationDescription}
-          />
+          <WhereYouWillBe locationDescription={locationDescription} />
         </div>
         <div className="md:col-span-8 lg:col-span-9 justify-center items-center">
           <DynamicModalMapWithPin
