@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import { cn } from "@/common/helpers/cn"
-import useGuestAdd from "@/module/Accommodation/store/useGuestsStore"
+import useGuestAdd from "@/module/Listing/Property/store/useGuestsStore"
 import { MinusCircle, PlusCircle } from "lucide-react"
 
 interface GuestAddModalProps {

@@ -3,7 +3,7 @@ import React from "react"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import { ACCOMODATION } from "@/common/constants"
-import Message from "@/module/Accommodation/Message"
+import Message from "@/module/Listing/Property/Message"
 
 export const metadata: Metadata = {
   title: `${ACCOMODATION} - ${APP_NAME}`,

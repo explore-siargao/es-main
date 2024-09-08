@@ -15,9 +15,7 @@ const TitleLists = ({
         {title}
       </Typography>
       <ul>
-        {safeRules.slice(0, 2).map((rule) => (
-          <li key={rule}>{rule}</li>
-        ))}
+        {safeRules?.slice(0, 2).map((rule) => <li key={rule}>{rule}</li>)}
       </ul>
     </div>
   )

@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "@/module/Accommodation/components/ShareSave"
+import ShareSave from "@/module/Listing/Property/components/ShareSave"
 import React, { useState } from "react"
 import ImageGallery from "./ImageGallery"
 import ImageGalleryModal from "./modals/ImageGalleryModal"

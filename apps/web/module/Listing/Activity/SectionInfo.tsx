@@ -1,10 +1,10 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "@/module/Accommodation/components/ShareSave"
+import ShareSave from "@/module/Listing/Property/components/ShareSave"
 import React, { useState } from "react"
 import { T_SectionInfoProps } from "../types/SectionInfo"
-import ImageGallery from "@/module/Accommodation/components/ImageGallery"
-import ImageGalleryModal from "@/module/Accommodation/components/modals/ImageGalleryModal"
+import ImageGallery from "@/module/Listing/Property/components/ImageGallery"
+import ImageGalleryModal from "@/module/Listing/Property/components/modals/ImageGalleryModal"
 
 const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)

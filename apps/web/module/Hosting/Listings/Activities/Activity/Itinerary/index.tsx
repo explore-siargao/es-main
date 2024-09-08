@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -24,8 +23,16 @@ import ToggleSwitch from "@/common/components/ui/Toggle"
 import { useSegmentsStore } from "./store/useSegmentsStore"
 import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
 import useGetActivityById from "../../hooks/useGetActivityById"
-import ModalContainer from "@/common/components/ModalContainer"
 import { ErrorMessage } from "@hookform/error-message"
+import dynamic from "next/dynamic"
+import LocationSetterModal from "../../../components/modals/LocationSetterModal"
+
+const DynamicMapWithPin = dynamic(
+  () => import("../../../components/MapWithPin"),
+  {
+    ssr: false,
+  }
+)
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -167,7 +174,7 @@ const Itinerary = ({ pageType }: Prop) => {
     setIsModalOpen(false)
   }
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setCoordinates(...initialCoords)
     setMarkerIsSet(false)
     setIsModalOpen(false)
@@ -205,22 +212,20 @@ const Itinerary = ({ pageType }: Prop) => {
               Itinerary
             </Typography>
           </div>
-          <div className="py-2  w-1/2" onClick={() => setIsModalOpen(true)}>
-            <SpecificMap
+          <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
+            <DynamicMapWithPin
               disablePinMovement={true}
               center={initialCoords}
-              mapHeight="h-[450px]"
-              mapWidth="w-full"
               zoom={11}
-              className="relative z-0 w-1/4"
             />
             <Typography
               variant="h5"
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              Click to open map and pin where exactly where your listing is.
-              This will help your customers to find your locations.
+              To edit the marker's location, click anywhere in the map above and
+              the edit modal will show. This will help your customers to easily
+              find your location.
             </Typography>
           </div>
 
@@ -326,38 +331,6 @@ const Itinerary = ({ pageType }: Prop) => {
                 )}
               />
             </div>
-
-            <div className="flex-wrap">
-              <Typography variant="h3" fontWeight="semibold" className="ml-2">
-                Open with
-              </Typography>
-              <div className="flex-none flex place-items-start mt-8 gap-4">
-                <Link
-                  href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={GoogleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="google map icon"
-                    className="object-cover w-16 h-16"
-                  />
-                </Link>
-                <Link
-                  href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={AppleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="apple map icon"
-                    className="mx-2 object-cover w-16 h-16"
-                  />
-                </Link>
-              </div>
-            </div>
           </div>
           <div className="mt-2">
             <Typography variant="h3" fontWeight="semibold">
@@ -404,44 +377,14 @@ const Itinerary = ({ pageType }: Prop) => {
         </form>
       )}
 
-      <ModalContainer
+      <LocationSetterModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title="Location"
-        size="sm"
-      >
-        <div className="pt-4 pl-4 pr-4">
-          <SpecificMap
-            center={currentCoords}
-            mapHeight="h-[450px]"
-            mapWidth="w-full"
-            zoom={11}
-            onMarkerSet={handleMarkerSetter}
-            className="relative z-0"
-            scrollWheelZoomEnabled
-          />
-        </div>
-        <div className="pl-4">
-          <Typography className="text-xs text-gray-500 italic mt-2">
-            Where will you meet your customers to begin the activity? Our
-            website doesn't support pickup location yet.
-          </Typography>
-          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
-            You can drag and drop the yellow marker above to set your exact
-            location on the map
-          </Typography>
-        </div>
-        <div className="p-4 flex justify-end">
-          <Button
-            variant="primary"
-            onClick={handleSaveLocation}
-            disabled={!markerIsSet}
-            className="focus:outline-none focus:ring-0"
-          >
-            Save Location
-          </Button>
-        </div>
-      </ModalContainer>
+        onClose={closeModal}
+        currentCoords={currentCoords}
+        handleMarkerSetter={handleMarkerSetter}
+        markerIsSet={markerIsSet}
+        setInitialCoords={setInitialCoords}
+      />
     </div>
   )
 }

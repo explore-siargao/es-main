@@ -1,3 +1,6 @@
+/**
+ * @deprecated This component is deprecated and will be removed in the future.
+ */
 import React, { useState, useEffect } from "react"
 import {
   MapContainer,

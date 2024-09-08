@@ -1,4 +1,4 @@
-import { TitleSection } from "@/module/Accommodation/components/TitleSection"
+import { TitleSection } from "@/module/Listing/Property/components/TitleSection"
 import { LanguagesIcon } from "lucide-react"
 
 const Languages = ({ languages }: { languages: string[] }) => {

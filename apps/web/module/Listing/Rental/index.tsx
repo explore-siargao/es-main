@@ -6,18 +6,17 @@ import SectionInfo from "./components/SectionInfo"
 import RatingSummary from "./components/Reviews/RatingSummary"
 import UserReviews from "./components/Reviews/UserReviews"
 import CheckoutBox from "./components/CheckoutBox"
-import WhereYoullBeDescription from "./components/Map"
+import PickUpLocation from "./components/PickUpLocation"
 import { Button } from "@/common/components/ui/Button"
 import { Flag, Tag } from "lucide-react"
 import { useEffect, useState } from "react"
-import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
+import ListingMark from "@/module/Listing/Property/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import Requirements from "./components/Requirements"
 import Inclusions from "./components/Inclusions"
 import SimilarRentals from "./components/SimilarRentals"
 import useGetRentalById from "@/module/Admin/Listings/hooks/useGetRentalById"
 import { notFound, useParams } from "next/navigation"
-import { Spinner } from "@/common/components/ui/Spinner"
 import { T_BookingAboutDescriptionProps } from "./types/BookingAboutDescription"
 
 export const ratingSummary = {
@@ -241,7 +240,7 @@ export const RentalSingleView = () => {
           </div>
           <div className="divide-y border-t">
             <div className="py-8">
-              <WhereYoullBeDescription mapData={data?.item?.location} />
+              <PickUpLocation mapData={data?.item?.location} />
             </div>
 
             <div className="py-8">

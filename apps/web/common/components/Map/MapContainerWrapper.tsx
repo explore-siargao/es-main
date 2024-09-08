@@ -8,6 +8,7 @@ interface SpecificMapProps {
   scrollWheelZoom?: boolean
   className?: React.ReactNode
   children: React.ReactNode
+  rounded?: "rounded-2xl" | "rounded-none"
 }
 
 const MapContainerWrapper = ({
@@ -16,9 +17,10 @@ const MapContainerWrapper = ({
   scrollWheelZoom,
   className,
   children,
+  rounded = "rounded-2xl",
 }: SpecificMapProps) => {
-  const rounded = "rounded-2xl"
   return (
+    // TODO: ADD LOADING SPINNER USING PROPS
     <div
       className={`${className} flex-1 block bg-primary-200 relative ${rounded}`}
     >

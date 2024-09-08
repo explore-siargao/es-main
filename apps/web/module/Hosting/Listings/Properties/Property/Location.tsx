@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect, ChangeEvent } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -21,9 +20,14 @@ import { useQueryClient } from "@tanstack/react-query"
 import useGetPropertyById from "../hooks/useGetPropertyById"
 import { T_Listing_Location } from "@repo/contract"
 import useUpdatePropertyFinishedSection from "../hooks/useUpdatePropertyFinishedSections"
-import ModalContainer from "@/common/components/ModalContainer"
 import { cn } from "@/common/helpers/cn"
 import { ErrorMessage } from "@hookform/error-message"
+import dynamic from "next/dynamic"
+import LocationSetterModal from "../../components/modals/LocationSetterModal"
+
+const DynamicMapWithPin = dynamic(() => import("../../components/MapWithPin"), {
+  ssr: false,
+})
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -190,21 +194,19 @@ const ListingLocation = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
-            <SpecificMap
+            <DynamicMapWithPin
               disablePinMovement={true}
               center={initialCoords}
-              mapHeight="h-[450px]"
-              mapWidth="w-full"
               zoom={11}
-              className="relative z-0"
             />
             <Typography
               variant="h5"
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              Click to open map and pin where exactly where your listing is.
-              This will help your customers to find your locations.
+              To edit the marker's location, click anywhere in the map above and
+              the edit modal will show. This will help your customers to easily
+              find your location.
             </Typography>
           </div>
 
@@ -299,26 +301,9 @@ const ListingLocation = ({ pageType }: Prop) => {
                   </Option>
                 ))}
               </Select>
-
-              <ErrorMessage
-                errors={errors}
-                name="howToGetThere"
-                render={({ messages }) => {
-                  return messages
-                    ? Object.entries(messages).map(([type, message]) =>
-                        typeof message === "string" ? (
-                          <p className="text-red-600 text-xs " key={type}>
-                            {" "}
-                            <i>{message}</i>{" "}
-                          </p>
-                        ) : null
-                      )
-                    : null
-                }}
-              />
             </div>
           </div>
-          <div className="mt-2">
+          <div className="mt-6">
             <Typography variant="h3" fontWeight="semibold">
               How to get there *
             </Typography>
@@ -337,6 +322,23 @@ const ListingLocation = ({ pageType }: Prop) => {
                 value={howToGetThere}
                 onChange={handleHowToGetThereChange}
               />
+              {/* TODO: ENHANCE THIS ERROR MESSAGE */}
+              <ErrorMessage
+                errors={errors}
+                name="howToGetThere"
+                render={({ messages }) => {
+                  return messages
+                    ? Object.entries(messages).map(([type, message]) =>
+                        typeof message === "string" ? (
+                          <p className="text-red-600 text-xs " key={type}>
+                            {" "}
+                            <i>{message}</i>{" "}
+                          </p>
+                        ) : null
+                      )
+                    : null
+                }}
+              />
             </div>
           </div>
           <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
@@ -354,52 +356,14 @@ const ListingLocation = ({ pageType }: Prop) => {
         </form>
       )}
 
-      <ModalContainer
+      <LocationSetterModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title="Location"
-        size="sm"
-      >
-        <div className="pt-4 pl-4 pr-4">
-          <SpecificMap
-            center={currentCoords}
-            mapHeight="h-[450px]"
-            mapWidth="w-full"
-            zoom={11}
-            onMarkerSet={handleMarkerSetter}
-            className="relative z-0"
-            scrollWheelZoomEnabled
-          />
-        </div>
-        <div className="pl-4">
-          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
-            You can drag and drop the yellow marker above to set your exact
-            location on the map
-          </Typography>
-          <Typography
-            variant="p"
-            className="italic text-gray-500 text-xs mt-2 mr-3"
-          >
-            Once you have pinned your locations in our map you can open it with
-            google or apple map to make sure it is on the right locations.
-          </Typography>
-        </div>
-        <div className="p-4 flex justify-end">
-          <Button
-            variant="primary"
-            onClick={() => {
-              if (markerIsSet) {
-                setInitialCoords(currentCoords)
-                closeModal()
-              }
-            }}
-            className="focus:outline-none focus:ring-0"
-            disabled={!markerIsSet}
-          >
-            Save Location
-          </Button>
-        </div>
-      </ModalContainer>
+        currentCoords={currentCoords}
+        handleMarkerSetter={handleMarkerSetter}
+        markerIsSet={markerIsSet}
+        setInitialCoords={setInitialCoords}
+      />
     </div>
   )
 }

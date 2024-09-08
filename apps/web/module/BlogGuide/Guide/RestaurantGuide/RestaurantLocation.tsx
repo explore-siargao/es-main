@@ -2,10 +2,17 @@
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react"
-import SpecificMap from "@/common/components/SpecificMap"
 import Link from "next/link"
 import BusinessHoursModal from "./components/modals/BusinessHoursModal"
 import { useState } from "react"
+import dynamic from "next/dynamic"
+
+const DynamicMapWithPin = dynamic(
+  () => import("@/common/components/Map/MapWithPin"),
+  {
+    ssr: false,
+  }
+)
 
 type T_Props = {
   coordinates: number[]
@@ -40,11 +47,12 @@ const RestaurantLocation = ({
         <Typography variant="h1" fontWeight="bold" className="mb-4">
           Location
         </Typography>
-        <div className="font-semibold h-64 w-full">
-          <SpecificMap
+        <div className="font-semibold">
+          <DynamicMapWithPin
             center={coordinates as [number, number]}
-            mapHeight="h-64"
-            mapWidth="w-full"
+            zoom={11}
+            disablePinMovement={true}
+            className="h-64"
           />
         </div>
         <div className="flex flex-col gap-4 mt-8">

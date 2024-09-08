@@ -1,9 +1,9 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import React from "react"
-import { TitleSection } from "../../../Accommodation/components/TitleSection"
-import IconDescription from "../../../Accommodation/components/IconDescription"
-import { T_Offer, T_OfferModal } from "../../../Accommodation/types/PlaceOffer"
+import { TitleSection } from "../../../Listing/Property/components/TitleSection"
+import IconDescription from "../../../Listing/Property/components/IconDescription"
 import { iconMap } from "@/common/helpers/iconMap"
+import { T_Offer, T_OfferModal } from "../../Property/types/PlaceOffer"
 
 interface PlaceOfferModalProps {
   isOpen: boolean

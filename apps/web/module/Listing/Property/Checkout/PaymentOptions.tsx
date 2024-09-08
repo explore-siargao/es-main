@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { RadioGroup } from "@headlessui/react"
 import { cn } from "@/common/helpers/cn"
-import PaymentMethodForm from "@/module/Accommodation/Checkout/PaymentMethodForm"
+import PaymentMethodForm from "@/module/Listing/Property/Checkout/PaymentMethodForm"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
 import useSessionStore from "@/common/store/useSessionStore"
 import usePaymentInfoStore from "./store/usePaymentInfoStore"
