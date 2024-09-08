@@ -28,6 +28,9 @@ import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGe
 import { E_Listing_Category } from "@repo/contract"
 import { E_Listing_Status } from "@/common/types/global"
 import listingCategoryPluralMap from "@/common/helpers/listingCategoryPluralMap"
+import transmissionAcronym from "@/module/Hosting/Listings/helpers/transmissionAcronym"
+import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
+import useGetActivityById from "@/module/Hosting/Listings/Activities/hooks/useGetActivityById"
 
 const unAuthMenus = [
   {
@@ -68,7 +71,12 @@ function ListingHeader({
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
   const listingId = String(params.listingId)
-  const { data } = useGetPropertyById(listingId)
+  const getListingHookMap = {
+    [E_Listing_Category.Property]: useGetPropertyById,
+    [E_Listing_Category.Activity]: useGetActivityById,
+    [E_Listing_Category.Rental]: useGetRentalById
+  }
+  const { data } = getListingHookMap[category](listingId)
 
   const renderTransition = (children: React.ReactNode) => (
     <Transition
@@ -83,6 +91,16 @@ function ListingHeader({
       {children}
     </Transition>
   )
+
+  const getHeaderListingName = () => {
+    let listingName = ""
+    if (category === E_Listing_Category.Property || category === E_Listing_Category.Activity) {
+      listingName = data?.item?.title
+    } else if (category === E_Listing_Category.Rental) {
+      listingName = `${data?.item?.year} ${data?.item?.make} ${data?.item?.modelBadge} ${transmissionAcronym(data?.item?.transmission)}`
+    }
+    return listingName
+  }
 
   return (
     <header
@@ -114,7 +132,7 @@ function ListingHeader({
               <span className="text-gray-400">/</span>
               <Typography className="px-2">
                 {listingStatus === E_Listing_Status.edit
-                  ? data?.item?.title
+                  ? getHeaderListingName()
                   : `Setup new listing (${category})`}
               </Typography>
             </div>
