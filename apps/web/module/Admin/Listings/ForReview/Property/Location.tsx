@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -95,14 +94,6 @@ const ListingLocation = ({ pageType }: Prop) => {
             >
               Location
             </Typography>
-          </div>
-          <div className="flex flex-col justify-center">
-            <SpecificMap
-              center={currentCoords}
-              mapHeight={"h-[450px]"}
-              mapWidth={"w-full"}
-              zoom={11}
-            />
           </div>
           <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
             You can drag and drop the yellow marker above to set your exact

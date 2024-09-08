@@ -7,7 +7,7 @@ import { useState } from "react"
 import dynamic from "next/dynamic"
 
 const DynamicMapWithPin = dynamic(
-  () => import("../../components/MapWithPin"),
+  () => import("../../../../common/components/Map/MapWithPin"),
   {
     ssr: false,
   }

@@ -22,7 +22,7 @@ const markerIcon = new Icon({
   popupAnchor: [0, -20],
 })
 
-const ModalMapWithPin = ({
+const MapWithPin = ({
   center,
   zoom,
   scrollWheelZoomEnabled,
@@ -34,8 +34,7 @@ const ModalMapWithPin = ({
       center={center}
       zoom={zoom ? zoom : 13}
       scrollWheelZoom={scrollWheelZoomEnabled}
-      className="h-full"
-      rounded="rounded-none"
+      className="h-80 sm:h-[735px] md:h-[470px] lg:h-[500px]"
     >
       <TileLayer
         attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
@@ -50,4 +49,4 @@ const ModalMapWithPin = ({
   )
 }
 
-export default ModalMapWithPin
+export default MapWithPin

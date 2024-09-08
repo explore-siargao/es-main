@@ -4,7 +4,7 @@ import { MapProps } from "@/module/Listing/Property/types/Map"
 import dynamic from "next/dynamic"
 
 const DynamicMapWithPin = dynamic(
-  () => import("../components/MapWithPin"),
+  () => import("../../../common/components/Map/MapWithPin"),
   {
     ssr: false,
   }

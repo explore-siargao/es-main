@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import MapContainerWrapper from "@/common/components/MapContainerWrapper"
+import MapContainerWrapper from "@/common/components/Map/MapContainerWrapper"
 import { TileLayer, Marker, Popup, useMapEvent } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngTuple, LeafletMouseEvent } from "leaflet"

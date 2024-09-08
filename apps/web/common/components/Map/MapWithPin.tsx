@@ -6,13 +6,14 @@ import {
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngTuple } from "leaflet"
 import { WEB_URL } from "@/common/constants/ev"
-import MapContainerWrapper from "@/common/components/MapContainerWrapper"
+import MapContainerWrapper from "@/common/components/Map/MapContainerWrapper"
 
 interface SpecificMapProps {
   center: [number, number]
   zoom?: number
   scrollWheelZoomEnabled?: boolean
   disablePinMovement?: boolean
+  className?: string
 }
 
 const markerIcon = new Icon({
@@ -27,6 +28,7 @@ const MapWithPin = ({
   zoom,
   scrollWheelZoomEnabled,
   disablePinMovement = false,
+  className,
 }: SpecificMapProps) => {
 
   return (
@@ -34,7 +36,7 @@ const MapWithPin = ({
       center={center}
       zoom={zoom ? zoom : 13}
       scrollWheelZoom={scrollWheelZoomEnabled}
-      className="h-80 sm:h-[735px] md:h-[470px] lg:h-[500px]"
+      className={`h-80 ${className}`}
     >
       <TileLayer
         attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}

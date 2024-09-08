@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect, ChangeEvent } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -18,12 +17,20 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import { T_Listing_Location } from "@repo/contract"
-import ModalContainer from "@/common/components/ModalContainer"
 import { cn } from "@/common/helpers/cn"
 import useUpdateRentalLocation from "../hooks/useUpdateRentalLocation"
 import useUpdateRentalFinishedSections from "../hooks/useUpdateRentalFinishedSections"
 import useGetRentalById from "../../../hooks/useGetRentalById"
 import { ErrorMessage } from "@hookform/error-message"
+import dynamic from "next/dynamic"
+import LocationSetterModal from "../../../components/modals/LocationSetterModal"
+
+const DynamicMapWithPin = dynamic(
+  () => import("../../../components/MapWithPin"),
+  {
+    ssr: false,
+  }
+)
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -188,22 +195,17 @@ const ListingLocation = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
-            <SpecificMap
+            <DynamicMapWithPin
               disablePinMovement={true}
               center={initialCoords}
-              mapHeight="h-[450px]"
-              mapWidth="w-full"
               zoom={11}
-              className="relative z-0"
             />
             <Typography
               variant="h5"
               fontWeight="normal"
               className="text-gray-500 pt-2 italic"
             >
-              Click anywhere in the map for the modal editor to open to pin
-              exactly where your listing is. This will help your customers to
-              find your locations.
+              To edit the marker's location, click anywhere in the map above and the edit modal will show. This will help your customers to easily find your location.
             </Typography>
           </div>{" "}
           <div className="flex mt-2 gap-12 flex-wrap">
@@ -352,46 +354,14 @@ const ListingLocation = ({ pageType }: Prop) => {
         </form>
       )}
 
-      <ModalContainer
+      <LocationSetterModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title="Location"
-        size="sm"
-      >
-        <div className="pt-4 pl-4 pr-4">
-          <SpecificMap
-            center={currentCoords}
-            mapHeight="h-[450px]"
-            mapWidth="w-full"
-            zoom={11}
-            onMarkerSet={handleMarkerSetter}
-            className="relative z-0"
-            scrollWheelZoomEnabled
-            priceData={data?.item?.pricing?.dayRate}
-          />
-        </div>
-        <div className="pl-4">
-          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
-            You can drag and drop the yellow marker above to set your exact
-            location on the map
-          </Typography>
-        </div>
-        <div className="p-4 flex justify-end">
-          <Button
-            variant="primary"
-            onClick={() => {
-              if (markerIsSet) {
-                setInitialCoords(currentCoords)
-                closeModal()
-              }
-            }}
-            className="focus:outline-none focus:ring-0"
-            disabled={!markerIsSet}
-          >
-            Save Location
-          </Button>
-        </div>
-      </ModalContainer>
+        currentCoords={currentCoords}
+        handleMarkerSetter={handleMarkerSetter}
+        markerIsSet={markerIsSet}
+        setInitialCoords={setInitialCoords}
+      />
     </div>
   )
 }
