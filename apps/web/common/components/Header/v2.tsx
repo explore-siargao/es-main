@@ -136,7 +136,7 @@ function Header({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
-      <div className="drop-shadow mb-2 min-w-[912px]">
+      <div className="drop-shadow-lg mb-2 min-w-[912px]">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             {category !== activityEnum && category !== rentalEnum ? (
