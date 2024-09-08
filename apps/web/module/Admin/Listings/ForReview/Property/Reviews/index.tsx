@@ -1,8 +1,8 @@
 "use client"
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { ratingSummary, userReviews } from "@/module/Accommodation"
-import RatingSummary from "@/module/Accommodation/components/Reviews/RatingSummary"
+import { ratingSummary, userReviews } from "@/module/Listing/Property"
+import RatingSummary from "@/module/Listing/Property/components/Reviews/RatingSummary"
 import UserReviews from "./UserReviews"
 
 const ListingReviews = () => {

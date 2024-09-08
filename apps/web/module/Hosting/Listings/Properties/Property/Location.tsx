@@ -299,23 +299,6 @@ const ListingLocation = ({ pageType }: Prop) => {
                   </Option>
                 ))}
               </Select>
-
-              <ErrorMessage
-                errors={errors}
-                name="howToGetThere"
-                render={({ messages }) => {
-                  return messages
-                    ? Object.entries(messages).map(([type, message]) =>
-                        typeof message === "string" ? (
-                          <p className="text-red-600 text-xs " key={type}>
-                            {" "}
-                            <i>{message}</i>{" "}
-                          </p>
-                        ) : null
-                      )
-                    : null
-                }}
-              />
             </div>
           </div>
           <div className="mt-2">
@@ -336,6 +319,23 @@ const ListingLocation = ({ pageType }: Prop) => {
                 })}
                 value={howToGetThere}
                 onChange={handleHowToGetThereChange}
+              />
+              {/* TODO: ENHANCE THIS ERROR MESSAGE */}
+              <ErrorMessage
+                errors={errors}
+                name="howToGetThere"
+                render={({ messages }) => {
+                  return messages
+                    ? Object.entries(messages).map(([type, message]) =>
+                        typeof message === "string" ? (
+                          <p className="text-red-600 text-xs " key={type}>
+                            {" "}
+                            <i>{message}</i>{" "}
+                          </p>
+                        ) : null
+                      )
+                    : null
+                }}
               />
             </div>
           </div>

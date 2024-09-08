@@ -1,7 +1,7 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideMapPin, Flag } from "lucide-react"
 import React from "react"
-import { TitleSection } from "@/module/Accommodation/components/TitleSection"
+import { TitleSection } from "@/module/Listing/Property/components/TitleSection"
 import { value } from ".."
 import { useParams } from "next/navigation"
 import useGetActivityById from "@/module/Admin/Activity/hooks/useGetActivitiesById"

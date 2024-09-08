@@ -1,6 +1,6 @@
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
-import Checkout from "@/module/Accommodation/Checkout"
+import Checkout from "@/module/Listing/Property/Checkout"
 import AuthGuard from "@/common/components/AuthGuard"
 
 export const metadata: Metadata = {

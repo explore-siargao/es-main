@@ -6,8 +6,8 @@ import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 
-const DynamicSpecificMap = dynamic(
-  () => import("@/common/components/SpecificMap"),
+const DynamicMapWithPin = dynamic(
+  () => import("../../components/MapWithPin"),
   {
     ssr: false,
   }
@@ -48,11 +48,10 @@ const WhereYoullBeDescription: React.FC<WhereYoullBeDescriptionProps> = ({
         <Typography variant="h2" fontWeight="semibold" className="mb-5">
           Where you'll be
         </Typography>
-        <div className="w-full h-[450px] bg-primary-200 mb-5">
-          <DynamicSpecificMap
+        <div className="mb-5">
+          <DynamicMapWithPin
             center={coordinates}
-            mapHeight="h-[450px]"
-            mapWidth="w-full"
+            disablePinMovement={true}
           />
         </div>
 

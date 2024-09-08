@@ -1,5 +1,5 @@
 import ModalContainer from "@/common/components/ModalContainer"
-import ShareSave from "@/module/Accommodation/components/ShareSave"
+import ShareSave from "@/module/Listing/Property/components/ShareSave"
 import Image from "next/image"
 import { T_ImageGalleryModalProps } from "../types/SectionInfo"
 

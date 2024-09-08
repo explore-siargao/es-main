@@ -5,7 +5,7 @@ import { StarIcon } from "@heroicons/react/20/solid"
 import React, { useState } from "react"
 import { APP_NAME } from "@repo/constants"
 import Image from "next/image"
-import CheckoutMoreInfoModal from "@/module/Accommodation/components/modals/CheckoutMoreInfoModal"
+import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
 
 const ListingPriceDetailsBox = () => {
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)

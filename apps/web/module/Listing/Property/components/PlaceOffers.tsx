@@ -2,9 +2,9 @@ import React, { useState } from "react"
 import IconDescription from "./IconDescription"
 import { Button } from "@/common/components/ui/Button"
 import { TitleSection } from "./TitleSection"
-import PlaceOfferModal from "../../Listing/components/modals/PlaceOfferModal"
 import { T_Offer, T_PlaceOfferProps } from "../types/PlaceOffer"
 import { iconMap } from "@/common/helpers/iconMap"
+import PlaceOfferModal from "@/module/Listing/components/modals/PlaceOfferModal"
 
 const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
   const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
