@@ -57,7 +57,6 @@ export const addRentalReservation = async (req: Request, res: Response) => {
       status: status,
       rentalId: unit,
       guestName: name || null,
-      guestCount: guest_count || null,
       notes: notes || null,
       createdAt: Date.now(),
     })
