@@ -36,7 +36,7 @@ function RentalReservationForm({
   } = useGetRentalNamesByCategory(selectedRentalType)
   const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } =
     useGetVehiclesByRentalId(selectedRentalId)
-
+  console.log(selectedLegendType)
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -110,21 +110,20 @@ function RentalReservationForm({
             </Select>
           </div>
         </div>
-        {selectedLegendType !== "Out-of-Service" &&
-          selectedLegendType !== "Blocked-Dates" && (
-            <div className="flex gap-4 w-full">
-              <div className="flex flex-col w-full">
-                <Input
-                  id="name"
-                  label="Guest Name"
-                  {...register("name", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
+        {selectedLegendType !== "Out-of-Service-Dates" && (
+          <div className="flex gap-4 w-full">
+            <div className="flex flex-col w-full">
+              <Input
+                id="name"
+                label="Guest Name"
+                {...register("name", {
+                  required: "This field is required",
+                })}
+                required
+              />
             </div>
-          )}
+          </div>
+        )}
 
         <div className="flex gap-4">
           <div className="flex flex-col w-full">
@@ -156,9 +155,7 @@ function RentalReservationForm({
             <Textarea
               id="notes"
               label="Notes"
-              {...register("notes", {
-                required: "This field is required",
-              })}
+              {...register("notes")}
               required={false}
             />
           </div>
