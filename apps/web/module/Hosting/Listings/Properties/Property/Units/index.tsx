@@ -94,9 +94,12 @@ const Units = ({ pageType }: Prop) => {
         queryKey: ["property", listingId],
       })
     }
-
-    router.push(`/hosting/listings/properties/setup/${listingId}/pricing`)
+  
+    router.push(
+      `/hosting/listings/properties/setup/${listingId}/pricing?unitType=${selectedUnitType}`
+    )
   }
+  
 
   const propertyType = data?.item?.type
 
@@ -175,7 +178,6 @@ const Units = ({ pageType }: Prop) => {
         }
         onSelect={handleSelectUnitType}
         propertyType={propertyType}
-        propertyId={data?.item?._id}
         pageType={pageType}
       />
     </div>

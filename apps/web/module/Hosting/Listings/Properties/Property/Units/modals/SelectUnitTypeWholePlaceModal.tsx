@@ -12,7 +12,6 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   propertyType: E_Property_Type | undefined
-  propertyId: string
   pageType: "setup" | "edit"
   onSelect: (unitType: E_WholePlace_Property_Type) => void
 }
@@ -22,7 +21,6 @@ const SelectUnitTypeWholePlaceModal = ({
   onClose,
   propertyType,
   pageType,
-  onSelect,
 }: Props) => {
   const router = useRouter()
   const params = useParams<{ listingId: string }>()

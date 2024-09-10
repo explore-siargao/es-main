@@ -110,8 +110,9 @@ const WholePlace = ({ pageType }: Prop) => {
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
-  const selectedUnitType: string | undefined =
-    String(useUnitTypeStore((state) => state.selectedUnitType)) ?? undefined
+  const selectedUnitType: string | undefined = String(
+    useUnitTypeStore((state) => state.selectedUnitType) ?? ""
+  )
 
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
   useEffect(() => {
@@ -229,7 +230,6 @@ const WholePlace = ({ pageType }: Prop) => {
 
       if (bedroomsStudio.length > 0) {
         formData.bedroomStudio = bedroomsStudio
-      } else {
       }
       const unitSpecificProps: Omit<IWholePlaceBasicInfo, "_id"> =
         unitType === "Studio"
@@ -258,10 +258,6 @@ const WholePlace = ({ pageType }: Prop) => {
               totalSize: formData.size,
               qty: Number(exactUnitCount),
             }
-
-      if (unitType !== "Studio" && bedroomsStudio.length > 0) {
-      }
-
       const saveBasicInfo = await updateWholePlaceBasicInfo({
         ...commonProps,
         ...unitSpecificProps,
@@ -405,9 +401,10 @@ const WholePlace = ({ pageType }: Prop) => {
         return pageType === "setup" ? (
           <Select
             label="Unit Type"
-            disabled={true}
-            value={selectedUnitType}
-            {...register("subtitle", {})}
+            disabled={isPending || isFetching}
+            {...register("subtitle", {
+              // required: "This field is required",
+            })}
             className="bg-gray-100 cursor-not-allowed"
           >
             <Option value="Villa">Villa</Option>
@@ -421,22 +418,6 @@ const WholePlace = ({ pageType }: Prop) => {
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
-            })}
-            className="bg-gray-100 cursor-not-allowed"
-          >
-            <Option value="Villa">Villa</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
-            <Option value="Cottage">Cottage</Option>
-          </Select>
-        )
-
-        return (
-          <Select
-            label="Unit Type"
-            disabled={isPending || isFetching}
-            {...register("subtitle", {
-              // required: "This field is required",
             })}
             className="bg-gray-100 cursor-not-allowed"
           >
