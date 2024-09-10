@@ -10,6 +10,7 @@ import {
 import useGetRentalNamesByCategory from "../../../hooks/useGetRentalNamesByCategory"
 import { useState } from "react"
 import useGetVehiclesByRentalId from "../../../hooks/useGetVehiclesByRentalId"
+import { Textarea } from "@/common/components/ui/Textarea"
 
 interface IRentalReservationFormProps {
   handleRentalCancel: () => void
@@ -158,6 +159,19 @@ function RentalReservationForm({
                 required: "This field is required",
               })}
               required
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-4">
+          <div className="flex flex-col w-full">
+            <Textarea
+              id="notes"
+              label="Notes"
+              {...register("notes", {
+                required: "This field is required",
+              })}
+              required={false}
             />
           </div>
         </div>

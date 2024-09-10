@@ -9,6 +9,7 @@ type T_RentalReservation = {
   name: string | null
   guest_count: string | null
   unit: string
+  notes: string
 }
 export async function addRentalReservation(props: T_RentalReservation) {
   const apiService = new ApiService()
