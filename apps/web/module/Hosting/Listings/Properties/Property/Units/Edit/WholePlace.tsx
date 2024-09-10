@@ -39,6 +39,7 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { RadioInput } from "@/module/Hosting/Listings/Activities/Activity/Inclusions"
 import Livingroom from "./components/Livingroom"
 import { useLivingroomStore } from "./store/useLivingroomStore"
+import useUnitTypeStore from "./store/useUnitTypeStore"
 
 type T_WholePlaceUnit = {
   title: string
@@ -109,6 +110,9 @@ const WholePlace = ({ pageType }: Prop) => {
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
+  const selectedUnitType: string | undefined =
+    String(useUnitTypeStore((state) => state.selectedUnitType)) ?? undefined
+
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
   useEffect(() => {
     if (data?.item?.bedRooms || data?.item?.livingRooms) {
@@ -210,6 +214,10 @@ const WholePlace = ({ pageType }: Prop) => {
         return
       }
 
+      if (propertyType === "Whole place") {
+        formData.subtitle = selectedUnitType ?? ""
+      }
+
       const commonProps = {
         _id: wholePlaceId,
         title: formData.title,
@@ -221,9 +229,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
       if (bedroomsStudio.length > 0) {
         formData.bedroomStudio = bedroomsStudio
-        console.log("bedroomStudio data to be saved:", bedroomsStudio)
       } else {
-        console.error("bedroomStudio data is empty at the time of saving.")
       }
       const unitSpecificProps: Omit<IWholePlaceBasicInfo, "_id"> =
         unitType === "Studio"
@@ -252,10 +258,8 @@ const WholePlace = ({ pageType }: Prop) => {
               totalSize: formData.size,
               qty: Number(exactUnitCount),
             }
-      console.log("Unit Specific Props to Save:", unitSpecificProps)
 
       if (unitType !== "Studio" && bedroomsStudio.length > 0) {
-        console.log("bedroomStudio data to be saved:", bedroomsStudio)
       }
 
       const saveBasicInfo = await updateWholePlaceBasicInfo({
@@ -362,11 +366,6 @@ const WholePlace = ({ pageType }: Prop) => {
     setPropertyType(storedPropertyType)
   }, [])
 
-  useEffect(
-    () => console.log("selected property type: ", propertyType),
-    [propertyType]
-  )
-
   const renderUnitTypeSelect = () => {
     switch (propertyType) {
       case "Hotel":
@@ -403,14 +402,27 @@ const WholePlace = ({ pageType }: Prop) => {
           </Select>
         )
       case "Whole place":
-        return (
+        return pageType === "setup" ? (
+          <Select
+            label="Unit Type"
+            disabled={true}
+            value={selectedUnitType}
+            {...register("subtitle", {})}
+            className="bg-gray-100 cursor-not-allowed"
+          >
+            <Option value="Villa">Villa</Option>
+            <Option value="House">House</Option>
+            <Option value="Condominium">Bungalow</Option>
+            <Option value="Cottage">Cottage</Option>
+          </Select>
+        ) : (
           <Select
             label="Unit Type"
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
             })}
-            onChange={(e) => setUnitType(e.currentTarget.value)}
+            className="bg-gray-100 cursor-not-allowed"
           >
             <Option value="Villa">Villa</Option>
             <Option value="House">House</Option>
@@ -418,6 +430,23 @@ const WholePlace = ({ pageType }: Prop) => {
             <Option value="Cottage">Cottage</Option>
           </Select>
         )
+
+        return (
+          <Select
+            label="Unit Type"
+            disabled={isPending || isFetching}
+            {...register("subtitle", {
+              // required: "This field is required",
+            })}
+            className="bg-gray-100 cursor-not-allowed"
+          >
+            <Option value="Villa">Villa</Option>
+            <Option value="House">House</Option>
+            <Option value="Condominium">Bungalow</Option>
+            <Option value="Cottage">Cottage</Option>
+          </Select>
+        )
+
       case "Apartment":
         return (
           <Select

@@ -83,12 +83,12 @@ const UnitsTable: React.FC<UnitsTableProps> = ({
       },
     }),
 
-    columnHelper.accessor("category", {
+    columnHelper.accessor("subtitle", {
       header: "Type",
       size: 400,
       cell: (context) => (
         <Link
-          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${context.getValue().toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${(context.getValue() || "").toLowerCase() + "s"}/${context.row.original?._id}/edit`}
         >
           <Typography variant="p">
             {context.getValue() ? context.getValue() : ""}
