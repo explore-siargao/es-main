@@ -14,8 +14,8 @@ const useUnitTypeStore = create<UnitTypeState>()(
       setSelectedUnitType: (unitType) => set({ selectedUnitType: unitType }),
     }),
     {
-      name: "selected-unit-type", 
-      getStorage: () => localStorage,   
+      name: "selected-unit-type",
+      getStorage: () => localStorage,
     }
   )
 )
