@@ -94,12 +94,11 @@ const Units = ({ pageType }: Prop) => {
         queryKey: ["property", listingId],
       })
     }
-  
+
     router.push(
       `/hosting/listings/properties/setup/${listingId}/pricing?unitType=${selectedUnitType}`
     )
   }
-  
 
   const propertyType = data?.item?.type
 
