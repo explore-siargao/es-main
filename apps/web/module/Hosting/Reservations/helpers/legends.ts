@@ -5,22 +5,22 @@ export const legends = [
     hoverColor: "hover:bg-primary-700",
   },
   {
-    legend: "Checked in",
+    legend: "Checked-In",
     color: "bg-green-500",
     hoverColor: "hover:bg-green-700",
   },
   {
-    legend: "Checked out",
+    legend: "Checked-Out",
     color: "bg-gray-300",
     hoverColor: "hover:bg-gray-500",
   },
   {
-    legend: "Out of service",
+    legend: "Out-of-Service-Dates",
     color: "bg-red-500",
     hoverColor: "hover:bg-red-700",
   },
   {
-    legend: "Blocked dates",
+    legend: "Blocked-Dates",
     color: "bg-gray-500",
     hoverColor: "hover:bg-gray-700",
   },

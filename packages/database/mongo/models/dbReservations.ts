@@ -7,7 +7,7 @@ const statusEnum = [
   "Checked-Out",
   "No-Show",
   "Blocked-Dates",
-  "Out-of-Service",
+  "Out-of-Service-Dates",
 ]
 const reservations = new Schema({
   unitId: {

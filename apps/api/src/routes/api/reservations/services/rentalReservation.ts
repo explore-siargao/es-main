@@ -15,7 +15,7 @@ export const addRentalReservation = async (req: Request, res: Response) => {
       'Checked-In',
       'Checked-Out',
       'Blocked-Dates',
-      'Out-of-Service',
+      'Out-of-Service-Dates',
     ]
 
     if (!validStatuses.includes(status)) {
