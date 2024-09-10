@@ -392,7 +392,9 @@ const CarCalendarTable = () => {
                                   className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                 >
                                   <span className="text-white text-sm truncate px-2">
-                                    {booking.status === "Out-of-Service-Dates" ? "Out of service" : booking.name}
+                                    {booking.status === "Out-of-Service-Dates"
+                                      ? "Out of service"
+                                      : booking.name}
                                   </span>
                                 </div>
                               )
