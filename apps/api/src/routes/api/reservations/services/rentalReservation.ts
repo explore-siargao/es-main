@@ -8,8 +8,7 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const addRentalReservation = async (req: Request, res: Response) => {
-  const { start_date, end_date, status, unit, name, guest_count, notes } =
-    req.body
+  const { start_date, end_date, status, unit, name, notes } = req.body
   try {
     const validStatuses = [
       'Confirmed',
@@ -57,7 +56,6 @@ export const addRentalReservation = async (req: Request, res: Response) => {
       status: status,
       rentalId: unit,
       guestName: name || null,
-      guestCount: guest_count || null,
       notes: notes || null,
       createdAt: Date.now(),
     })

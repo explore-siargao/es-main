@@ -123,18 +123,6 @@ function RentalReservationForm({
                   required
                 />
               </div>
-              <div className="flex flex-col w-full">
-                <Input
-                  className="w-full"
-                  id="guest"
-                  type="number"
-                  label="Number of Guests"
-                  {...register("guest_count", {
-                    required: "This field is required",
-                  })}
-                  required
-                />
-              </div>
             </div>
           )}
 
