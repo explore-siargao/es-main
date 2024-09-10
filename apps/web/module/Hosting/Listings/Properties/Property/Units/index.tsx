@@ -11,6 +11,9 @@ import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinis
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { E_Property_Category } from "./constants"
+import SelectUnitTypeWholePlaceModal from "./modals/SelectUnitTypeWholePlaceModal"
+import { E_WholePlace_Property_Type } from "@repo/contract"
+import useAddBlankUnitWholePlace from "./hooks/useAddBlankUnitWholePlace"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -24,8 +27,44 @@ const Units = ({ pageType }: Prop) => {
   const { data, isLoading } = useGetPropertyById(listingId)
   const [isSelectUnitTypeModalOpen, setIsSelectUnitTypeModalOpen] =
     useState(false)
+  const [
+    isSelectUnitTypeWholePlaceModalOpen,
+    setIsSelectUnitTypeWholePlaceModalOpen,
+  ] = useState(false)
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
+  const [selectedUnitType, setSelectedUnitType] =
+    useState<E_WholePlace_Property_Type | null>(null)
+
+  const handleSelectUnitType = (unitType: E_WholePlace_Property_Type) => {
+    setSelectedUnitType(unitType)
+    router.push(
+      `/hosting/listings/properties/setup/${listingId}/units/whole-places/${unitType}/edit`
+    )
+  }
+
+  const {
+    mutate: addBlankUnitWholePlace,
+    isPending: isAddBlankUnitWholePlacePending,
+  } = useAddBlankUnitWholePlace(listingId)
+
+  const addUnitWholePlace = () => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          router.push(
+            `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit?propertyType=${propertyType}`
+          )
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    addBlankUnitWholePlace(undefined, callBackReq)
+  }
 
   const handleSave = () => {
     if (
@@ -56,19 +95,26 @@ const Units = ({ pageType }: Prop) => {
       })
     }
 
-    router.push(`/hosting/listings/properties/setup/${listingId}/pricing`)
+    router.push(
+      `/hosting/listings/properties/setup/${listingId}/pricing?unitType=${selectedUnitType}`
+    )
   }
+
+  const propertyType = data?.item?.type
+
+  const bookableUnitsLength = data?.item?.bookableUnits?.length ?? 0
+
   const handleAddNewClick = () => {
     if (data?.item?.type === "Whole place") {
-      router.push(
-        `/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/whole-places/${data.item._id}/edit`
-      )
+      if (bookableUnitsLength === 0) {
+        setIsSelectUnitTypeWholePlaceModalOpen(true)
+      } else {
+        addUnitWholePlace()
+      }
     } else {
       setIsSelectUnitTypeModalOpen(true)
     }
   }
-
-  const propertyType = data?.item?.type
 
   return (
     <div className="mt-20 mb-14">
@@ -89,7 +135,15 @@ const Units = ({ pageType }: Prop) => {
           Manage your <span className="font-bold">{propertyType}</span> units
         </span>
         <div className="flex-grow"></div>
-        <Button variant="primary" size="sm" onClick={handleAddNewClick}>
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={
+            isAddBlankUnitWholePlacePending
+              ? () => null
+              : () => handleAddNewClick()
+          }
+        >
           <LucidePlus className="mr-2 w-5" />
           <Typography variant="p" fontWeight="semibold" className="text-sm">
             Add new
@@ -112,6 +166,17 @@ const Units = ({ pageType }: Prop) => {
         onClose={() => setIsSelectUnitTypeModalOpen(!isSelectUnitTypeModalOpen)}
         propertyType={propertyType}
         propertyId={data?.item?._id}
+        pageType={pageType}
+      />
+      <SelectUnitTypeWholePlaceModal
+        isOpen={isSelectUnitTypeWholePlaceModalOpen}
+        onClose={() =>
+          setIsSelectUnitTypeWholePlaceModalOpen(
+            !isSelectUnitTypeWholePlaceModalOpen
+          )
+        }
+        onSelect={handleSelectUnitType}
+        propertyType={propertyType}
         pageType={pageType}
       />
     </div>

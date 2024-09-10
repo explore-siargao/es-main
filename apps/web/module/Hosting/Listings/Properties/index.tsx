@@ -19,7 +19,6 @@ const HostListing = () => {
   const [propertyType, setPropertyType] = useState<string>(() => {
     if (typeof window !== "undefined") {
       const storedType = localStorage.getItem("propertyType") || ""
-      console.log("Retrieved propertyType from localStorage:", storedType)
       return storedType
     }
     return ""
@@ -28,10 +27,6 @@ const HostListing = () => {
   useEffect(() => {
     if (propertyType) {
       localStorage.setItem("propertyType", propertyType)
-      console.log(
-        "Updated propertyType in localStorage from property:",
-        propertyType
-      )
     }
   }, [propertyType])
 
