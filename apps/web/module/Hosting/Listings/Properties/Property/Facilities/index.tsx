@@ -86,6 +86,13 @@ const Facilities = ({ pageType }: Prop) => {
       <Typography variant="h1" fontWeight="semibold">
         Property Facilities
       </Typography>
+      <Typography
+              variant="h4"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+             Please select all of the facilities and amenities that your property has to offer guests. You can come back and edit this anytime.
+            </Typography>
       <div className="mt-6 mb-8 grid grid-cols-3 gap-6">
         <FacilitiesCheckboxes
           title="Most Popular"
