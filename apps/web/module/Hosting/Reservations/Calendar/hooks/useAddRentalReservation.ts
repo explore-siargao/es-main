@@ -8,7 +8,7 @@ type T_RentalReservation = {
   status: string
   name: string | null
   guest_count: string | null
-  unit: string,
+  unit: string
   notes: string
 }
 export async function addRentalReservation(props: T_RentalReservation) {

@@ -8,7 +8,8 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const addRentalReservation = async (req: Request, res: Response) => {
-  const { start_date, end_date, status, unit, name, guest_count, notes } = req.body
+  const { start_date, end_date, status, unit, name, guest_count, notes } =
+    req.body
   try {
     const validStatuses = [
       'Confirmed',
