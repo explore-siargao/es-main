@@ -24,17 +24,18 @@ const reservations = new Schema({
   },
   startDate: Date,
   endDate: Date,
+  guestName: {
+    type: String,
+    required: false,
+    default: "",
+  },
   guest: {
     type: mongoose.Schema.ObjectId,
     ref: "Guests",
     required: false,
     default: null,
   },
-  guestName: {
-    type: String,
-    required: false,
-    default: "",
-  },
+  notes: String,
   paymentType: String,
   cardType: String,
   cardInfo: String,
