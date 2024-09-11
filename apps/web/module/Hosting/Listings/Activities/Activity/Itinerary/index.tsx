@@ -213,7 +213,7 @@ const Itinerary = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
-          <Typography
+            <Typography
               variant="h5"
               fontWeight="normal"
               className="text-gray-500 pt-1 italic"
