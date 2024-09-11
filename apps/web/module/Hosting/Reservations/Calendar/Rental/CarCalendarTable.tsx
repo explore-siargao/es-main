@@ -13,7 +13,6 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import ReservationCalendarModal from "../ReservationCalendarModal"
 import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
@@ -26,6 +25,7 @@ import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
 import { getColorClasses } from "../../helpers/legends"
 import { useQueryClient } from "@tanstack/react-query"
+import RentalCalendarModal from "../RentalCalendarModal"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -411,7 +411,7 @@ const CarCalendarTable = () => {
             </table>
           </div>
           {selectedReservation && (
-            <ReservationCalendarModal
+            <RentalCalendarModal
               isModalOpen={isReservationModalOpen}
               onClose={closeReservationModal}
               selectedReservation={selectedReservation}
