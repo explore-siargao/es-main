@@ -127,6 +127,13 @@ const Bed = ({ pageType }: Prop) => {
 
   const onSubmit = async (formData: T_Update_Bed_Basic_Info) => {
     formData.amenities = amenities
+    const missingTags = photos.filter(
+      (photo) => !photo.tags || photo.tags.length === 0
+    )
+    const missingDescription = photos.filter(
+      (photo) => !photo.description || photo.description.length === 0
+    )
+
     if (!formData.subtitle) {
       toast.error("Please fill out all required fields")
       return
@@ -137,6 +144,14 @@ const Bed = ({ pageType }: Prop) => {
     }
     if (typeCount <= 0) {
       toast.error("Please fill out type count field")
+      return
+    }
+    if (missingDescription.length > 0) {
+      toast.error("Please add descriptions to all photos")
+      return
+    }
+    if (missingTags.length > 0) {
+      toast.error("Please add tags to all photos")
       return
     }
     try {
