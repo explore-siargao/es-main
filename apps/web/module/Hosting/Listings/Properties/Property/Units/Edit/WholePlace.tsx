@@ -54,6 +54,8 @@ type T_WholePlaceUnit = {
   amenities: T_Property_Amenity[]
   exactUnitCount: number
   livingRoom: IBedroom[]
+  description?: string
+  tags?: string
 }
 
 interface IWholePlaceBasicInfo {
@@ -179,6 +181,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const handleSavePhotos = async () => {
     const activePhotos = photos.filter((photo) => !photo.isDeleted)
+
     if (activePhotos.length >= 3) {
       await updatePhotosInDb()
       setIsSavings(false)
@@ -189,6 +192,13 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
+
+    const missingTags = photos.filter(
+      (photo) => !photo.tags || photo.tags.length === 0
+    )
+    const missingDescription = photos.filter(
+      (photo) => !photo.description || photo.description.length === 0
+    )
 
     if (formData.size <= 0) {
       toast.error("Please fill total size count field")
@@ -202,6 +212,14 @@ const WholePlace = ({ pageType }: Prop) => {
 
     if (bathroomCount <= 0) {
       toast.error("Please fill out bathroom count field")
+      return
+    }
+    if (missingDescription.length > 0) {
+      toast.error("Please add descriptions to all photos")
+      return
+    }
+    if (missingTags.length > 0) {
+      toast.error("Please add tags to all photos")
       return
     }
 
@@ -231,6 +249,7 @@ const WholePlace = ({ pageType }: Prop) => {
       if (bedroomsStudio.length > 0) {
         formData.bedroomStudio = bedroomsStudio
       }
+
       const unitSpecificProps: Omit<IWholePlaceBasicInfo, "_id"> =
         unitType === "Studio"
           ? {
@@ -258,6 +277,7 @@ const WholePlace = ({ pageType }: Prop) => {
               totalSize: formData.size,
               qty: Number(exactUnitCount),
             }
+
       const saveBasicInfo = await updateWholePlaceBasicInfo({
         ...commonProps,
         ...unitSpecificProps,
@@ -270,6 +290,8 @@ const WholePlace = ({ pageType }: Prop) => {
       )
 
       if (filterSelectedAmenities.length > 0) {
+        await updatePhotosInDb()
+        setIsSavings(false)
         await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
           handleSavePhotos()
         })
