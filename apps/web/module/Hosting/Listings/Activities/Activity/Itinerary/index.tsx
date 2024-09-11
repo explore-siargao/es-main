@@ -213,20 +213,19 @@ const Itinerary = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
+          <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+              Click to open map and drop a pin exactly where your listing or
+              meeting point is located. This will help your customers find you.
+            </Typography>
             <DynamicMapWithPin
               disablePinMovement={true}
               center={initialCoords}
               zoom={11}
             />
-            <Typography
-              variant="h5"
-              fontWeight="normal"
-              className="text-gray-500 pt-2 italic"
-            >
-              To edit the marker's location, click anywhere in the map above and
-              the edit modal will show. This will help your customers to easily
-              find your location.
-            </Typography>
           </div>
 
           <div className="flex mt-2 gap-12 flex-wrap">
@@ -336,10 +335,19 @@ const Itinerary = ({ pageType }: Prop) => {
             <Typography variant="h3" fontWeight="semibold">
               How to get there *
             </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+              Explain in detail how to get to your location. This will help your
+              customers find you!{" "}
+            </Typography>
             <div className="flex flex-col w-full xl:w-1/2 gap-2">
               <Textarea
-                className="flex mt-1 h-[550px]"
-                placeholder="Explain in detail how to get to your location. This will help your customers find you!"
+                className="flex mt-1 p-3 h-[550px]"
+                placeholder="Example: Upon arrival at Siargao Airport, you can take a van for 300 PHP per person directly to Exploresiargao Resort. The journey takes approximately 40 minutes if the van goes straight to our resort. Simply inform the driver of your destination, and they will take you directly to our doorstep. 
+                Alternatively, if you’re coming from General Luna town center, the resort is a quick 10-minute tricycle ride along Tourism Road. Pass by Siargao Bleu Resort, then you will see the Exploresiargao Resort signpost on your left. If you reach Kawayan surf school then you have gone too far."
                 required
                 {...register("meetingPoint.howToGetThere", {
                   required: "This input is required.",
