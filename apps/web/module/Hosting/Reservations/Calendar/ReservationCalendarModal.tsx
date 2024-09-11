@@ -15,6 +15,7 @@ const ReservationCalendarModal = ({
   onClose,
   selectedReservation,
 }: IReservationCalendarModalProps) => {
+  console.log(selectedReservation)
   return (
     <ModalContainer
       onClose={onClose}
