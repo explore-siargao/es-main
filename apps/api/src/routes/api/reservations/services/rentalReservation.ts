@@ -82,12 +82,12 @@ export const editRentalReservation = async (req: Request, res: Response) => {
 
   try {
     if (!startDate || !endDate || !notes) {
-        return res.json(
-          response.error({
-            message: REQUIRED_VALUE_EMPTY,
-          })
-        );
-      }
+      return res.json(
+        response.error({
+          message: REQUIRED_VALUE_EMPTY,
+        })
+      )
+    }
 
     const reservation = await dbReservations.findOne({
       _id: reservationId,
@@ -105,7 +105,6 @@ export const editRentalReservation = async (req: Request, res: Response) => {
         {
           startDate: { $lte: endDate, $gte: startDate },
         },
-    
       ],
     })
 
