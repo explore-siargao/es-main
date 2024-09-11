@@ -50,6 +50,16 @@ const Pricing = ({ pageType }: PricingContentProps) => {
 
   const onSubmit = async (data: any) => {
     const unitPriceDataList = data.unitPrice
+
+    const baseRateEmpty = unitPriceDataList.some(
+      (unitPriceData: any) => !unitPriceData.baseRate
+    )
+
+    if (baseRateEmpty) {
+      toast.error("Please fill in the base rate")
+      return
+    }
+
     const payloads = unitPriceDataList.map((unitPriceData: any) => ({
       ...unitPriceData,
       bookableUnitId: data._id,
