@@ -403,8 +403,7 @@ const WholePlace = ({ pageType }: Prop) => {
             label="Unit Type"
             disabled={true}
             value={selectedUnitType}
-            {...register("subtitle", {
-            })}
+            {...register("subtitle", {})}
             className="bg-gray-100 cursor-not-allowed"
           >
             <Option value="Villa">Villa</Option>
