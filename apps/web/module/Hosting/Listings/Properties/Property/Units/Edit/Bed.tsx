@@ -375,8 +375,8 @@ const Bed = ({ pageType }: Prop) => {
             How many of this type you have?
           </Typography>
           <Typography className="text-xs text-gray-500 italic mt-2 mb-2">
-          Identical units that will have the same price per night.
-        </Typography>
+            Identical units that will have the same price per night.
+          </Typography>
           <div className="flex rounded-md">
             <button
               disabled={isPending || isFetching}
