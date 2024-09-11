@@ -28,7 +28,7 @@ const RentalCalendarModal = ({
     console.log(data)
     setIsEditDate(false)
   }
-  
+
   return (
     <ModalContainer
       onClose={onClose}
@@ -56,12 +56,13 @@ const RentalCalendarModal = ({
                 </Typography>
                 <Typography variant="h3" className="text-gray-500">
                   {selectedReservation.cars && selectedReservation.cars}
-                  {selectedReservation.motorcycles && selectedReservation.motorcycles}
+                  {selectedReservation.motorcycles &&
+                    selectedReservation.motorcycles}
                   {selectedReservation.bicyles && selectedReservation.bicyles}
                 </Typography>
               </div>
             </div>
-            
+
             <div className="flex flex-col">
               <Typography variant="h4" className="font-semibold">
                 Guest
@@ -75,14 +76,19 @@ const RentalCalendarModal = ({
                 <Typography variant="h4" className="font-semibold">
                   Start date
                 </Typography>
-                {isEditDate ? 
+                {isEditDate ? (
                   <div className="flex flex-col gap-4 items-center">
                     <div className="flex flex-col w-full">
                       <Input
                         type="date"
                         id="startDate"
                         label="Start Date"
-                        defaultValue={(selectedReservation?.reservation?.startDate as string).split('T')[0]}
+                        defaultValue={
+                          (
+                            selectedReservation?.reservation
+                              ?.startDate as string
+                          ).split("T")[0]
+                        }
                         {...register("startDate", {
                           required: "This field is required",
                         })}
@@ -90,42 +96,40 @@ const RentalCalendarModal = ({
                       />
                     </div>
                   </div>
-                :
+                ) : (
                   <div className="flex gap-4 items-center">
                     <Typography variant="h3" className="text-gray-500">
-                      {
-                        getValues("startDate") ? 
+                      {getValues("startDate") ? (
+                        <>{format(getValues("startDate") as string, "PPPP")}</>
+                      ) : (
                         <>
                           {format(
-                            getValues("startDate") as string,
+                            selectedReservation?.reservation
+                              ?.startDate as string,
                             "PPPP"
                           )}
                         </>
-                        :
-                        <>
-                          {format(
-                            selectedReservation?.reservation?.startDate as string,
-                            "PPPP"
-                          )}
-                        </>
-                      }
-                      
+                      )}
                     </Typography>
                   </div>
-                }
+                )}
               </div>
               <div className="flex flex-col w-full">
                 <Typography variant="h4" className="font-semibold">
                   End date
                 </Typography>
-                {isEditDate ? 
+                {isEditDate ? (
                   <div className="flex flex-col gap-4 items-center">
                     <div className="flex flex-col w-full">
                       <Input
                         type="date"
                         id="endDate"
                         label="End Date"
-                        defaultValue={(selectedReservation?.reservation?.endDate as string).split('T')[0]}
+                        defaultValue={
+                          (
+                            selectedReservation?.reservation?.endDate as string
+                          ).split("T")[0]
+                        }
                         {...register("endDate", {
                           required: "This field is required",
                         })}
@@ -133,44 +137,47 @@ const RentalCalendarModal = ({
                       />
                     </div>
                   </div>
-                :
+                ) : (
                   <div className="flex gap-4 items-center">
                     <Typography variant="h3" className="text-gray-500">
-                      {
-                        getValues("endDate") ? 
-                        <>
-                          {format(
-                            getValues("endDate") as string,
-                            "PPPP"
-                          )}
-                        </>
-                        :
+                      {getValues("endDate") ? (
+                        <>{format(getValues("endDate") as string, "PPPP")}</>
+                      ) : (
                         <>
                           {format(
                             selectedReservation?.reservation?.endDate as string,
                             "PPPP"
                           )}
                         </>
-                      }
-                      
+                      )}
                     </Typography>
                   </div>
-                }
+                )}
               </div>
             </div>
           </div>
           <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
             <div className="flex justify-end gap-2 w-full">
-              {isEditDate ?
+              {isEditDate ? (
                 <>
-                  <Button type="submit" variant="primary">Save</Button>
-                </> 
-                :
-                <>
-                  <Button type="button" variant="danger">Request to Cancel</Button>
-                  <Button type="button" variant="primary" onClick={() => setIsEditDate(true)}>Edit</Button>
+                  <Button type="submit" variant="primary">
+                    Save
+                  </Button>
                 </>
-              }
+              ) : (
+                <>
+                  <Button type="button" variant="danger">
+                    Request to Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={() => setIsEditDate(true)}
+                  >
+                    Edit
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
