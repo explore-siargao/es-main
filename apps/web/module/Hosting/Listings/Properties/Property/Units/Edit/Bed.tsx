@@ -206,22 +206,8 @@ const Bed = ({ pageType }: Prop) => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h4" fontWeight="semibold" className="mb-2">
-          What is the name you want to display for your unit? (Optional)
-        </Typography>
         <div className="grid grid-cols-4 gap-x-6 mb-4">
           <div>
-            <div className="mb-4">
-              <Input
-                label="Title"
-                id="size"
-                type="text"
-                minLength={5}
-                maxLength={30}
-                disabled={isPending || isFetching}
-                {...register("title")}
-              />
-            </div>
             <Typography
               variant="h4"
               fontWeight="semibold"
@@ -387,6 +373,9 @@ const Bed = ({ pageType }: Prop) => {
         <div className="mt-6">
           <Typography variant="h4" fontWeight="semibold" className="mb-2">
             How many of this type you have?
+          </Typography>
+          <Typography className="text-xs text-gray-500 italic mt-2 mb-2">
+            Identical units that will have the same price per night.
           </Typography>
           <div className="flex rounded-md">
             <button
