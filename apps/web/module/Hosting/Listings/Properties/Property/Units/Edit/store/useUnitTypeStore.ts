@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { persist, createJSONStorage } from "zustand/middleware"
 import { E_WholePlace_Property_Type } from "@repo/contract"
 
 type UnitTypeState = {
@@ -15,7 +15,7 @@ const useUnitTypeStore = create<UnitTypeState>()(
     }),
     {
       name: "selected-unit-type",
-      getStorage: () => localStorage,
+      storage: createJSONStorage(() => localStorage),
     }
   )
 )

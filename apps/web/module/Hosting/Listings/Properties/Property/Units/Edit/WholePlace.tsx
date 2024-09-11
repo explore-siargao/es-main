@@ -401,9 +401,9 @@ const WholePlace = ({ pageType }: Prop) => {
         return pageType === "setup" ? (
           <Select
             label="Unit Type"
-            disabled={isPending || isFetching}
+            disabled={true}
+            value={selectedUnitType}
             {...register("subtitle", {
-              // required: "This field is required",
             })}
             className="bg-gray-100 cursor-not-allowed"
           >
