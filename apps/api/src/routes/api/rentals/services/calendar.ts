@@ -14,11 +14,13 @@ type Guest = {
 }
 
 type Reservation = {
+  id: string
   name: string // Ensure this is typed as Guest
   startDate: Date
   endDate: Date
   guestCount: number
   status: string
+  notes?: string
 }
 
 type Bicycle = {
@@ -91,6 +93,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
     reservations.forEach((reservation: any) => {
       const guest = reservation.guest
       const reservationItem: Reservation = {
+        id: reservation._id,
         name: STATUS_DISPLAY.includes(reservation.status)
           ? reservation.status
           : guest
@@ -100,6 +103,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         endDate: reservation.endDate ?? new Date(),
         guestCount: reservation.guestCount ?? 0,
         status: reservation.status,
+        notes: reservation.notes,
       }
 
       if (!reservationMap[reservation.rentalId.toString()]) {
@@ -179,6 +183,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     reservations.forEach((reservation: any) => {
       const guest = reservation.guest
       const reservationItem: Reservation = {
+        id: reservation._id,
         name: STATUS_DISPLAY.includes(reservation.status)
           ? reservation.status
           : guest
@@ -188,6 +193,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
         endDate: reservation.endDate ?? new Date(),
         guestCount: reservation.guestCount ?? 0,
         status: reservation.status,
+        notes: reservation.note,
       }
 
       if (!reservationMap[reservation.rentalId.toString()]) {
@@ -267,6 +273,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     reservations.forEach((reservation: any) => {
       const guest = reservation.guest
       const reservationItem: Reservation = {
+        id: reservation._id,
         name: STATUS_DISPLAY.includes(reservation.status)
           ? reservation.status
           : guest
@@ -276,6 +283,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
         endDate: reservation.endDate ?? new Date(),
         guestCount: reservation.guestCount ?? 0,
         status: reservation.status,
+        notes: reservation.notes,
       }
 
       if (!reservationMap[reservation.rentalId.toString()]) {
