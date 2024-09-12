@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.19.0](https://github.com/explore-siargao/es-main/compare/v0.18.0...v0.19.0) (2024-09-12)
+
+
+### Features
+
+* Add Guest name to blocked dates on add reservation modal in rental calendar ([df332eb](https://github.com/explore-siargao/es-main/commit/df332eba8fc00ce7e1866e3d1db2e4b54d8dd64d))
+* Add notes field for add reservation modal in rental calendar ([d7fb471](https://github.com/explore-siargao/es-main/commit/d7fb47146562cdea0ee715452ee6c63d9f187c32))
+* **api:** Added add unit reservation endpoint ([094b018](https://github.com/explore-siargao/es-main/commit/094b018d3b0fee36c453f58ce03d0d2998164e0c))
+* **api:** Added endpoint for modifying rental reservation ([de46e26](https://github.com/explore-siargao/es-main/commit/de46e2600f9b92b11f063bb6cf1fe2e4aea66239))
+* Connect Edit rental reservation modal to backend ([e230161](https://github.com/explore-siargao/es-main/commit/e2301618849a228444f6408d011f5763dab3dad6))
+* Connect Edit rental reservation modal to backend ([cb8b297](https://github.com/explore-siargao/es-main/commit/cb8b297e0d0d9c2d8bfe419e6ad346374939735d))
+* Create Add Property reservation modal ([a184519](https://github.com/explore-siargao/es-main/commit/a184519024e03906b3eceab6514ba7929d1ab653))
+* Remove Guest counts on add Reservation modal in rental reservation calendar ([4faa165](https://github.com/explore-siargao/es-main/commit/4faa165800da332584b06cce1f96b6839c9da57a))
+* Remove Guest counts on add Reservation modal in rental reservation calendar ([5b67769](https://github.com/explore-siargao/es-main/commit/5b677695c82cc5220e1c57d785d8e8c4bb1c8792))
+* Show all datas on reservation modal in rental reservation calendar ([ef91b0f](https://github.com/explore-siargao/es-main/commit/ef91b0fa3ea190d6d1937870f13a1a9c727a2a60))
+* **web:** Added descriptive text to Property Facilities ([d7b4f62](https://github.com/explore-siargao/es-main/commit/d7b4f621a3d19f70309999f00c8f108b993352f9))
+* **web:** Descriptions and tags for photos made mandatory ([f6415ab](https://github.com/explore-siargao/es-main/commit/f6415ab68d7486ede76b3faafeeec2f963e36a3f))
+* **web:** Modified Locations setup for all categories ([08d8287](https://github.com/explore-siargao/es-main/commit/08d8287ad58f271bdf8b24492e27e37a0a8c0f26))
+* **web:** Modified logic of whole place unit ([89dee78](https://github.com/explore-siargao/es-main/commit/89dee78946d8b6de83811172ee06da020d55a781))
+* **web:** Modified logic of whole place unit ([cdaf548](https://github.com/explore-siargao/es-main/commit/cdaf5482124c334dbb8db4ff5bc421e365ec8783))
+* **web:** Modified logic of whole place unit ([b2b4fbb](https://github.com/explore-siargao/es-main/commit/b2b4fbbeaca3f0eca0077d115d0cfe29b25a1dbe))
+* **web:** Modified unit bed setup UI ([effb869](https://github.com/explore-siargao/es-main/commit/effb869339ac9d5b0f5b4909522cee7bd894b1f6))
+* **web:** Modified visibility of preview listing button based on status ([51c7e9f](https://github.com/explore-siargao/es-main/commit/51c7e9fa121b97c98858cc04beac1ae37cd1bbb1))
+
+
+### Bug Fixes
+
+* Fix listing header setup and edit name ([c5564b5](https://github.com/explore-siargao/es-main/commit/c5564b5f2b9a843f6a04acd2a4b193b2ab313f99))
+* Fix url setup and edit for property units ([c0f3ba9](https://github.com/explore-siargao/es-main/commit/c0f3ba9b0923fd2692624155a121457582f74aaf))
+
 ## [0.18.0](https://github.com/explore-siargao/es-main/compare/v0.17.0...v0.18.0) (2024-09-06)
 
 ### Features
