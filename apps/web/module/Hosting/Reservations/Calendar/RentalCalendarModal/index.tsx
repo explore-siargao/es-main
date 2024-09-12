@@ -3,13 +3,12 @@ import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
 import { SelectedReservation } from "../../types/CalendarTable"
-import { useState } from "react"
 import { Input } from "@/common/components/ui/Input"
-import { useForm, useFormContext } from "react-hook-form"
 import useUpdateRentalReservation from "../hooks/useUpdateRentalReservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
+import { useFormContext } from "react-hook-form"
 
 interface IRentalCalendarModalProps {
   isModalOpen: boolean
@@ -29,7 +28,7 @@ const RentalCalendarModal = ({
   const queryClient = useQueryClient()
   
   const { register, handleSubmit, getValues } = useFormContext()
-  const { mutate } = useUpdateRentalReservation(selectedReservation.reservation?.id as string)
+  const { mutate } = useUpdateRentalReservation(String(selectedReservation.reservation?.id))
 
   const onSubmit = (data: any) => {
     mutate(data, {
@@ -190,7 +189,7 @@ const RentalCalendarModal = ({
                   <Textarea
                     id="notes"
                     label="Notes"
-                    defaultValue={selectedReservation?.reservation?.notes!}
+                    defaultValue={String(selectedReservation?.reservation?.notes)}
                     {...register("notes")}
                     required={false}
                   />
