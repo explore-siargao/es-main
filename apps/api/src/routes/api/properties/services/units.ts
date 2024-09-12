@@ -254,7 +254,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const bookableUnitId = new mongoose.Types.ObjectId(req.params.bookableUnitId)
   const { title, totalSize, qty, bedRooms } = req.body
 
-  if ( !totalSize || !qty || !bedRooms) {
+  if (!totalSize || !qty || !bedRooms) {
     return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
