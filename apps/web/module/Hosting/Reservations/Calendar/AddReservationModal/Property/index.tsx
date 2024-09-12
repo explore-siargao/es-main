@@ -2,7 +2,7 @@ import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
 import PropertyReservationForm from "./PropertyReservationForm"
-import PropertySelectLegendTypeForm from "./PropertylSelectLegendForm"
+import SelectLegendTypeForm from "../SelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
@@ -50,7 +50,7 @@ const AddPropertyReservationModal = ({
               selectedLegendType={selectedLegendType}
             />
           ) : (
-            <PropertySelectLegendTypeForm
+            <SelectLegendTypeForm
               selectedLegendType={selectedLegendType}
               setSelectedLegendType={setSelectedLegendType}
               setIsLegendTypeSelected={setIsLegendTypeSelected}
