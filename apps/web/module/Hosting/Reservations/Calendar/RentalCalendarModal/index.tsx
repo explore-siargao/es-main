@@ -28,7 +28,9 @@ const RentalCalendarModal = ({
   const queryClient = useQueryClient()
 
   const { register, handleSubmit, getValues } = useFormContext()
-  const { mutate } = useUpdateRentalReservation(String(selectedReservation.reservation?.id))
+  const { mutate } = useUpdateRentalReservation(
+    String(selectedReservation.reservation?.id)
+  )
 
   const onSubmit = (data: any) => {
     mutate(data, {
@@ -186,7 +188,9 @@ const RentalCalendarModal = ({
                   <Textarea
                     id="notes"
                     label="Notes"
-                    defaultValue={String(selectedReservation?.reservation?.notes)}
+                    defaultValue={String(
+                      selectedReservation?.reservation?.notes
+                    )}
                     {...register("notes")}
                     required={false}
                   />
