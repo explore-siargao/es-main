@@ -14,12 +14,12 @@ type Guest = {
 }
 
 type Reservation = {
-  id:String
+  id: String
   name: string // Ensure this is typed as Guest
   startDate: Date
   endDate: Date
   guestCount: number
-  notes?:String
+  notes?: String
 }
 
 type Room = {
@@ -132,19 +132,19 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         })
 
         reservations.forEach((reservation: any) => {
-          if (reservation.status!=="Cancelled") {
+          if (reservation.status !== 'Cancelled') {
             const guest = reservation.guest
             const reservationItem: Reservation = {
-             id: reservation._id,
-        name: STATUS_DISPLAY.includes(reservation.status)
-          ? reservation.status
-          : guest
-            ? `${guest.firstName} ${guest.lastName}`
-            : reservation.guestName || 'Unknown',
+              id: reservation._id,
+              name: STATUS_DISPLAY.includes(reservation.status)
+                ? reservation.status
+                : guest
+                  ? `${guest.firstName} ${guest.lastName}`
+                  : reservation.guestName || 'Unknown',
               startDate: reservation.startDate ?? new Date(),
               endDate: reservation.endDate ?? new Date(),
               guestCount: reservation.guestCount ?? 0,
-              notes:reservation.notes ?? ""
+              notes: reservation.notes ?? '',
             }
 
             for (let i = 0; i < formattedItems.length; i++) {
