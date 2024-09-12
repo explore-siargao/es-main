@@ -1,14 +1,16 @@
 import { API_URL_PROPERTIES } from "@/common/constants"
 import { ApiService } from "@/common/service/api"
 import { useMutation } from "@tanstack/react-query"
+import { IBedroom } from "../Property/Units/types"
 
 interface IRoomBasicInfo {
   _id: string
   title: string
-  subtitle: string
+  subtitle?: string | ""
   totalSize: number
-  description: string
+  description?: string | ""
   qty: number
+  bedRooms: IBedroom[]
 }
 
 export async function updateRoomBasicInfo(

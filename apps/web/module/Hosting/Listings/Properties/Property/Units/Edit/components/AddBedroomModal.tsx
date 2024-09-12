@@ -17,6 +17,7 @@ type Props = {
   mode: "add" | "edit"
   selectedIndex?: number
   unitType: string
+  category?: string
 }
 
 const AddBedroomModal = ({
@@ -25,6 +26,7 @@ const AddBedroomModal = ({
   mode,
   selectedIndex,
   unitType,
+  category,
 }: Props) => {
   const [fields, setFields] = useState<IBedroom>(defaultBedroom)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
@@ -60,7 +62,6 @@ const AddBedroomModal = ({
       updatedBedrooms.push(deepCopyBedroom(fields))
     }
 
-    // Log the current state of fields and updatedBedroomsStudio before updating the store
     if (unitType === "Studio") {
       let updatedBedroomsStudio = [...bedroomsStudio]
       if (mode === "edit" && selectedIndex !== undefined) {
@@ -126,6 +127,8 @@ const AddBedroomModal = ({
 
   if (unitType === "Studio") {
     unitName = "Living Room"
+  } else if (category === "Room") {
+    unitName = "Bed"
   } else {
     unitName = "Bedroom"
   }
@@ -191,7 +194,13 @@ const AddBedroomModal = ({
         </div>
         <div className="flex justify-center mt-5">
           <Button onClick={onSubmit}>
-            {mode === "edit" ? "Confirm" : "Add Bedroom"}
+            {category === "Room"
+              ? mode === "edit"
+                ? "Confirm"
+                : "Add Bed"
+              : mode === "edit"
+                ? "Confirm"
+                : "Add Bedroom"}
           </Button>
         </div>
       </div>

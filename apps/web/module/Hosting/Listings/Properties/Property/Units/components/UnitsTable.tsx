@@ -83,7 +83,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({
       },
     }),
 
-    columnHelper.accessor("subtitle", {
+    columnHelper.accessor("category", {
       header: "Type",
       size: 400,
       cell: (context) => (
