@@ -26,6 +26,7 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
+import AddPropertyReservationModal from "../AddReservationModal/Property"
 
 const BedCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -468,11 +469,9 @@ const BedCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddReservationModal
+          <AddPropertyReservationModal
             isModalOpen={isAddReservationModalOpen}
             onClose={closeAddReservationModal}
-            onSave={handleSaveNewReservation}
-            data={filteredData}
           />
         </div>
       )}
