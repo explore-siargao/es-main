@@ -40,6 +40,7 @@ import {
   addWholePlaceUnit,
   getPropertiesBookableUnits,
   getUnitById,
+  getUnitIds,
   updateBedUnitBasicInfo,
   updateRoomUnitBasicInfo,
   updateWholePlaceUnitBasicInfo,
@@ -354,6 +355,13 @@ router.get(
   isUserLoggedIn,
   isCsrfTokenValid,
   getPropertyCalendar
+)
+
+router.get(
+  '/units/:unitId',
+  isUserLoggedIn,
+  isOriginValid,
+  getUnitIds
 )
 
 export default router

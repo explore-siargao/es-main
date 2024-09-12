@@ -90,10 +90,21 @@ const bookableUnitTypes = new Schema({
     },
   ],
   qty: Number,
-  ids: {
-    type: [mongoose.Schema.ObjectId],
-    default: [],
-  },
+  ids:{
+    type: [
+    {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  default:[],
+},
   createdAt: {
     type: Date,
     default: Date.now(),

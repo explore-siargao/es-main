@@ -205,12 +205,12 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
     const currentIdsCount = currentBed.ids.length
     const newIdsNeeded = qty - currentIdsCount
 
-    let newIds: mongoose.Types.ObjectId[] = []
+    let newIds:{ _id: mongoose.Types.ObjectId; name: string }[] = []
     if (newIdsNeeded > 0) {
-      newIds = Array.from(
-        { length: newIdsNeeded },
-        () => new mongoose.Types.ObjectId()
-      )
+      newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
+        _id: new mongoose.Types.ObjectId(),
+        name: `${subtitle} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
+      }))
     }
     //Step 3
     const updateBedBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
@@ -294,12 +294,12 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
     const currentIdsCount = currentRoom.ids.length
     const newIdsNeeded = qty - currentIdsCount
 
-    let newIds: mongoose.Types.ObjectId[] = []
+    let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
     if (newIdsNeeded > 0) {
-      newIds = Array.from(
-        { length: newIdsNeeded },
-        () => new mongoose.Types.ObjectId()
-      )
+      newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
+        _id: new mongoose.Types.ObjectId(),
+        name: `${title} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
+      }))
     }
 
     // Step 3: Update the document by adding new ObjectIds
@@ -405,12 +405,12 @@ export const updateWholePlaceUnitBasicInfo = async (
     const currentIdsCount = currentWholePlace.ids.length
     const newIdsNeeded = qty - currentIdsCount
 
-    let newIds: mongoose.Types.ObjectId[] = []
+    let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
     if (newIdsNeeded > 0) {
-      newIds = Array.from(
-        { length: newIdsNeeded },
-        () => new mongoose.Types.ObjectId()
-      )
+      newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
+        _id: new mongoose.Types.ObjectId(),
+        name: `${title} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
+      }))
     }
 
     // Step 3: Update data
@@ -517,5 +517,19 @@ export const getUnitById = async (req: Request, res: Response) => {
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
+  }
+}
+
+export const getUnitIds = async(req:Request, res:Response)=>{
+  const unitId = req.params.unitId
+  try {
+    const bookableUnit = await dbBookableUnitTypes.findOne({_id:unitId, deletedAt:null})
+    if(!bookableUnit){
+      return res.json(response.error({message:"No bookable units found"}))
+    }
+    const units = bookableUnit.ids
+    return res.json(response.success({items:units, allItemCount:units.length}))
+  } catch (err:any) {
+    return res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
   }
 }
