@@ -14,23 +14,13 @@ interface IActivityReservationFormProps {
   selectedLegendType: string
 }
 
-const rentalTypes = ["Car", "Motorbike", "Bicycle"]
-
 function ActivityReservationForm({
   handleSave,
   handleRentalCancel,
   setIsLegendTypeSelected,
   selectedLegendType,
 }: IActivityReservationFormProps) {
-  const [selectedRentalType, setSelectedRentalType] = useState("")
-  const [selectedRentalId, setSelectedRentalId] = useState("")
   const { register, reset } = useFormContext()
-  const {
-    data: rentalNamesByCategory,
-    isLoading: isRentalNamesByCategoryLoading,
-  } = useGetRentalNamesByCategory(selectedRentalType)
-  const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } =
-    useGetVehiclesByRentalId(selectedRentalId)
 
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
@@ -44,14 +34,8 @@ function ActivityReservationForm({
               {...register("activity", {
                 required: "This field is required",
               })}
-              onChange={(e) => setSelectedRentalType(e.target.value)}
             >
               <Option value="">Select</Option>
-              {rentalTypes.map((type: string) => (
-                <Option key={type} value={type}>
-                  {type}
-                </Option>
-              ))}
             </Select>
           </div>
           <div className="flex flex-col w-full">
@@ -59,22 +43,8 @@ function ActivityReservationForm({
               label="Slot"
               id="slot"
               required
-              disabled={
-                selectedRentalType
-                  ? false
-                  : true ||
-                    isRentalNamesByCategoryLoading ||
-                    rentalNamesByCategory?.items?.length! === 0
-              }
-              onChange={(e) => setSelectedRentalId(e.target.value)}
             >
               <Option value="">Select</Option>
-              {rentalNamesByCategory &&
-                rentalNamesByCategory?.items?.map((vehicle: any) => (
-                  <Option key={vehicle.id} value={vehicle.id}>
-                    {vehicle.name}
-                  </Option>
-                ))}
             </Select>
           </div>
         </div>

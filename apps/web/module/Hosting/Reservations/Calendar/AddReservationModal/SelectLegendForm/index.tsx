@@ -2,19 +2,19 @@ import { Button } from "@/common/components/ui/Button"
 import { useFormContext } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
 
-interface IActivityReservationFormProps {
+interface IRentalReservationFormProps {
   selectedLegendType: string
   setSelectedLegendType: (data: string) => void
   setIsLegendTypeSelected: (data: boolean) => void
   handleRentalCancel: () => void
 }
 
-function ActivitySelectLegendTypeForm({
+function SelectLegendTypeForm({
   selectedLegendType,
   setSelectedLegendType,
   setIsLegendTypeSelected,
   handleRentalCancel,
-}: IActivityReservationFormProps) {
+}: IRentalReservationFormProps) {
   const { register } = useFormContext()
 
   const handleConfirm = () => {
@@ -87,4 +87,4 @@ function ActivitySelectLegendTypeForm({
   )
 }
 
-export default ActivitySelectLegendTypeForm
+export default SelectLegendTypeForm

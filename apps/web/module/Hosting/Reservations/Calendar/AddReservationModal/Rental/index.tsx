@@ -2,10 +2,10 @@ import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
 import RentalReservationForm from "./RentalReservationForm"
-import RentalSelectLegendTypeForm from "./RentalSelectLegendForm"
 import useAddRentalReservation from "../../hooks/useAddRentalReservation"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
+import SelectLegendTypeForm from "../SelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
@@ -69,7 +69,7 @@ const AddRentalReservationModal = ({
               selectedLegendType={selectedLegendType}
             />
           ) : (
-            <RentalSelectLegendTypeForm
+            <SelectLegendTypeForm
               selectedLegendType={selectedLegendType}
               setSelectedLegendType={setSelectedLegendType}
               setIsLegendTypeSelected={setIsLegendTypeSelected}
