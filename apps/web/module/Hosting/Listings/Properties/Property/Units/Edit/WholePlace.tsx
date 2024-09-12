@@ -514,9 +514,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 {...register("title")}
               />
             </div>
-            <div className="grid grid-cols-4 gap-x-6">
-              {renderUnitTypeSelect()}
-            </div>
+
             <div>
               {unitType !== "Studio" && (
                 <>
@@ -603,6 +601,14 @@ const WholePlace = ({ pageType }: Prop) => {
                   </div>
                 </>
               )}
+              <div className="grid grid-cols-4 gap-y-2 py-2">
+                <div className="flex flex-col space-y-2">
+                  <Typography variant="h4" fontWeight="semibold">
+                    Which unit type best represents your space?
+                  </Typography>
+                  {renderUnitTypeSelect()}
+                </div>
+              </div>
 
               {unitType != "" && (
                 <div className="mt-4">
@@ -684,6 +690,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 </div>
               )}
             </div>
+
             <div className="grid grid-cols-4 mt-4 gap-x-6">
               <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
