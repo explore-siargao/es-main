@@ -14,10 +14,12 @@ type Guest = {
 }
 
 type Reservation = {
+  id: String
   name: string // Ensure this is typed as Guest
   startDate: Date
   endDate: Date
   guestCount: number
+  notes?: String
 }
 
 type Room = {
@@ -37,6 +39,8 @@ type Item = {
   price: string
   rooms: Room[]
 }
+
+const STATUS_DISPLAY = ['Out of service', 'Blocked dates']
 
 // Function to check for date overlap
 const hasDateConflict = (
@@ -128,15 +132,19 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         })
 
         reservations.forEach((reservation: any) => {
-          if (reservation.guest) {
+          if (reservation.status !== 'Cancelled') {
+            const guest = reservation.guest
             const reservationItem: Reservation = {
-              name:
-                reservation?.guest.firstName +
-                ' ' +
-                reservation?.guest.lastName,
+              id: reservation._id,
+              name: STATUS_DISPLAY.includes(reservation.status)
+                ? reservation.status
+                : guest
+                  ? `${guest.firstName} ${guest.lastName}`
+                  : reservation.guestName || 'Unknown',
               startDate: reservation.startDate ?? new Date(),
               endDate: reservation.endDate ?? new Date(),
               guestCount: reservation.guestCount ?? 0,
+              notes: reservation.notes ?? '',
             }
 
             for (let i = 0; i < formattedItems.length; i++) {

@@ -6,6 +6,7 @@ import {
   addRentalReservation,
   editRentalReservation,
 } from './services/rentalReservation'
+import { addUnitReservation } from './services/unitsReservation'
 
 const router = express.Router()
 
@@ -16,6 +17,14 @@ router.post(
   isUserLoggedIn,
   isCsrfTokenValid,
   addRentalReservation
+)
+
+router.post(
+  '/unit',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addUnitReservation
 )
 
 //edit reservations
