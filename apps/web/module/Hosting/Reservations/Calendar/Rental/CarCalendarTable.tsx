@@ -26,9 +26,11 @@ import AddRentalReservationModal from "../AddReservationModal/Rental"
 import { getColorClasses } from "../../helpers/legends"
 import { useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
+import { FormProvider, useForm } from "react-hook-form"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
+  const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
@@ -59,9 +61,15 @@ const CarCalendarTable = () => {
       },
     ],
   })
+  const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+
   const daysPerPage = 13
 
-  const closeReservationModal = () => setIsReservationModalOpen(false)
+  const closeReservationModal = () => {
+    setIsReservationModalOpen(false)
+    setIsEditReservation(false)
+    form.reset()
+  }
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
@@ -377,7 +385,7 @@ const CarCalendarTable = () => {
 
                               return (
                                 <div
-                                  key={booking.name}
+                                  key={booking.id}
                                   style={{
                                     left: `${(startCol * 100) / daysPerPage + 4}%`,
                                     width: `${(colSpan * 100) / daysPerPage - 8}%`,
@@ -410,13 +418,20 @@ const CarCalendarTable = () => {
               </tbody>
             </table>
           </div>
-          {selectedReservation && (
-            <RentalCalendarModal
-              isModalOpen={isReservationModalOpen}
-              onClose={closeReservationModal}
-              selectedReservation={selectedReservation}
-            />
-          )}
+          <FormProvider {...form}>
+            <form>
+              {selectedReservation && (
+                <RentalCalendarModal
+                  isModalOpen={isReservationModalOpen}
+                  onClose={closeReservationModal}
+                  selectedReservation={selectedReservation}
+                  isEditReservation={isEditReservation}
+                  setIsEditReservation={setIsEditReservation}
+                />
+              )}
+            </form>
+          </FormProvider>
+
           <RoomQuantityEdit
             isModalOpen={isRoomQuantityEditOpen}
             onClose={closeRoomQuantityEditModal}

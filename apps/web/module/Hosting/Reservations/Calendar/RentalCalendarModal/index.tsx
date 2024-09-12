@@ -3,30 +3,52 @@ import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
 import { SelectedReservation } from "../../types/CalendarTable"
-import { useState } from "react"
-import { PencilLine } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
-import { useForm } from "react-hook-form"
+import useUpdateRentalReservation from "../hooks/useUpdateRentalReservation"
+import { useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
+import { Textarea } from "@/common/components/ui/Textarea"
+import { useFormContext } from "react-hook-form"
 
 interface IRentalCalendarModalProps {
   isModalOpen: boolean
   onClose: () => void
   selectedReservation: SelectedReservation
+  isEditReservation: boolean
+  setIsEditReservation: (data: boolean) => void
 }
 
 const RentalCalendarModal = ({
   isModalOpen,
   onClose,
   selectedReservation,
+  isEditReservation,
+  setIsEditReservation,
 }: IRentalCalendarModalProps) => {
-  const { register, handleSubmit, getValues } = useForm()
-  const [selectedStartDate, setSelectedStartDate] = useState("")
-  const [selectedEndDate, setSelectedEndDate] = useState("")
-  const [isEditDate, setIsEditDate] = useState<boolean>(false)
+  const queryClient = useQueryClient()
+
+  const { register, handleSubmit, getValues } = useFormContext()
+  const { mutate } = useUpdateRentalReservation(
+    String(selectedReservation.reservation?.id)
+  )
 
   const onSubmit = (data: any) => {
-    console.log(data)
-    setIsEditDate(false)
+    mutate(data, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-car"],
+          })
+          toast.success(data.message)
+          onClose()
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (data: any) => {
+        toast.error(String(data.message))
+      },
+    })
   }
 
   return (
@@ -62,21 +84,22 @@ const RentalCalendarModal = ({
                 </Typography>
               </div>
             </div>
-
-            <div className="flex flex-col">
-              <Typography variant="h4" className="font-semibold">
-                Guest
-              </Typography>
-              <Typography variant="h3" className="text-gray-500">
-                {selectedReservation?.reservation?.name}
-              </Typography>
-            </div>
+            {selectedReservation?.reservation?.name && (
+              <div className="flex flex-col">
+                <Typography variant="h4" className="font-semibold">
+                  Guest
+                </Typography>
+                <Typography variant="h3" className="text-gray-500">
+                  {selectedReservation?.reservation?.name}
+                </Typography>
+              </div>
+            )}
             <div className="flex gap-4">
               <div className="flex flex-col w-full">
                 <Typography variant="h4" className="font-semibold">
                   Start date
                 </Typography>
-                {isEditDate ? (
+                {isEditReservation ? (
                   <div className="flex flex-col gap-4 items-center">
                     <div className="flex flex-col w-full">
                       <Input
@@ -118,7 +141,7 @@ const RentalCalendarModal = ({
                 <Typography variant="h4" className="font-semibold">
                   End date
                 </Typography>
-                {isEditDate ? (
+                {isEditReservation ? (
                   <div className="flex flex-col gap-4 items-center">
                     <div className="flex flex-col w-full">
                       <Input
@@ -155,10 +178,35 @@ const RentalCalendarModal = ({
                 )}
               </div>
             </div>
+
+            <div className="flex flex-col">
+              <Typography variant="h4" className="font-semibold">
+                Notes
+              </Typography>
+              {isEditReservation ? (
+                <div className="flex flex-col w-full">
+                  <Textarea
+                    id="notes"
+                    label="Notes"
+                    defaultValue={String(
+                      selectedReservation?.reservation?.notes
+                    )}
+                    {...register("notes")}
+                    required={false}
+                  />
+                </div>
+              ) : (
+                <Typography variant="h3" className="text-gray-500">
+                  {selectedReservation?.reservation?.notes
+                    ? selectedReservation?.reservation?.notes
+                    : "No notes for this reservation"}
+                </Typography>
+              )}
+            </div>
           </div>
           <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
             <div className="flex justify-end gap-2 w-full">
-              {isEditDate ? (
+              {isEditReservation ? (
                 <>
                   <Button type="submit" variant="primary">
                     Save
@@ -172,7 +220,7 @@ const RentalCalendarModal = ({
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={() => setIsEditDate(true)}
+                    onClick={() => setIsEditReservation(true)}
                   >
                     Edit
                   </Button>

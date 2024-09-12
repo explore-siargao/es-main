@@ -81,7 +81,7 @@ export const editRentalReservation = async (req: Request, res: Response) => {
   const { startDate, endDate, notes } = req.body
 
   try {
-    if (!startDate || !endDate || !notes) {
+    if (!startDate || !endDate) {
       return res.json(
         response.error({
           message: REQUIRED_VALUE_EMPTY,
@@ -101,9 +101,6 @@ export const editRentalReservation = async (req: Request, res: Response) => {
         {
           startDate: { $lt: endDate },
           endDate: { $gt: startDate },
-        },
-        {
-          startDate: { $lte: endDate, $gte: startDate },
         },
       ],
     })
