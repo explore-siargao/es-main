@@ -29,6 +29,7 @@ export const useBedroomStore = create<BedroomStore>((set) => ({
 }))
 
 function deepCopyBedrooms(bedrooms: IBedroom[]): IBedroom[] {
+  if (!bedrooms) return []
   return bedrooms.map((bedroom) => ({
     roomName: bedroom.roomName,
     beds: bedroom.beds.map((bed) => ({ ...bed })),
