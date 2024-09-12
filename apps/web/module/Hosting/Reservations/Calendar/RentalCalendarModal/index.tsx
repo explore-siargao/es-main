@@ -24,17 +24,19 @@ const RentalCalendarModal = ({
   onClose,
   selectedReservation,
   isEditReservation,
-  setIsEditReservation
+  setIsEditReservation,
 }: IRentalCalendarModalProps) => {
   const queryClient = useQueryClient()
-  
+
   const { register, handleSubmit, getValues } = useFormContext()
-  const { mutate } = useUpdateRentalReservation(selectedReservation.reservation?.id as string)
+  const { mutate } = useUpdateRentalReservation(
+    selectedReservation.reservation?.id as string
+  )
 
   const onSubmit = (data: any) => {
     mutate(data, {
       onSuccess: (data: any) => {
-        if(!data.error) {
+        if (!data.error) {
           queryClient.invalidateQueries({
             queryKey: ["calendar-car"],
           })
@@ -48,7 +50,6 @@ const RentalCalendarModal = ({
         toast.error(String(data.message))
       },
     })
-    
   }
 
   return (
@@ -84,8 +85,7 @@ const RentalCalendarModal = ({
                 </Typography>
               </div>
             </div>
-            {
-              selectedReservation?.reservation?.name &&
+            {selectedReservation?.reservation?.name && (
               <div className="flex flex-col">
                 <Typography variant="h4" className="font-semibold">
                   Guest
@@ -94,7 +94,7 @@ const RentalCalendarModal = ({
                   {selectedReservation?.reservation?.name}
                 </Typography>
               </div>
-            }
+            )}
             <div className="flex gap-4">
               <div className="flex flex-col w-full">
                 <Typography variant="h4" className="font-semibold">
@@ -179,13 +179,12 @@ const RentalCalendarModal = ({
                 )}
               </div>
             </div>
-            
+
             <div className="flex flex-col">
               <Typography variant="h4" className="font-semibold">
                 Notes
               </Typography>
-              {
-                isEditReservation ?
+              {isEditReservation ? (
                 <div className="flex flex-col w-full">
                   <Textarea
                     id="notes"
@@ -195,12 +194,13 @@ const RentalCalendarModal = ({
                     required={false}
                   />
                 </div>
-                :
+              ) : (
                 <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation?.reservation?.notes ? selectedReservation?.reservation?.notes : "No notes for this reservation"}
+                  {selectedReservation?.reservation?.notes
+                    ? selectedReservation?.reservation?.notes
+                    : "No notes for this reservation"}
                 </Typography>
-              }
-              
+              )}
             </div>
           </div>
           <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">

@@ -101,7 +101,7 @@ export const editRentalReservation = async (req: Request, res: Response) => {
         {
           startDate: { $lt: endDate },
           endDate: { $gt: startDate },
-        }
+        },
       ],
     })
 

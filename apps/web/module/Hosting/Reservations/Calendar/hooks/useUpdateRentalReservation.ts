@@ -8,14 +8,18 @@ type T_RentalReservation = {
   id: string
 }
 
-export async function updateRentalReservation(props: T_RentalReservation, id: string) {
+export async function updateRentalReservation(
+  props: T_RentalReservation,
+  id: string
+) {
   const apiService = new ApiService()
   return await apiService.patch(`${API_URL_RESERVATIONS}/${id}`, props)
 }
 
 function useUpdateRentalReservation(id: string) {
   const query = useMutation({
-    mutationFn: (props: T_RentalReservation) => updateRentalReservation(props, id),
+    mutationFn: (props: T_RentalReservation) =>
+      updateRentalReservation(props, id),
   })
   return query
 }
