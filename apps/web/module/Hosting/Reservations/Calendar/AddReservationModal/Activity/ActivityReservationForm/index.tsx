@@ -39,11 +39,7 @@ function ActivityReservationForm({
             </Select>
           </div>
           <div className="flex flex-col w-full">
-            <Select
-              label="Slot"
-              id="slot"
-              required
-            >
+            <Select label="Slot" id="slot" required>
               <Option value="">Select</Option>
             </Select>
           </div>
