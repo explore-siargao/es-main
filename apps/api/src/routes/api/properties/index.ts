@@ -357,12 +357,7 @@ router.get(
   getPropertyCalendar
 )
 
-router.get(
-  '/units/:unitId',
-  isUserLoggedIn,
-  isOriginValid,
-  getUnitIds
-)
+router.get('/units/:unitId', isUserLoggedIn, isOriginValid, getUnitIds)
 
 export default router
 
