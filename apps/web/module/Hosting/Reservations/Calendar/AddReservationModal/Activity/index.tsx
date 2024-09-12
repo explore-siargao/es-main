@@ -1,15 +1,15 @@
 import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
-import PropertyReservationForm from "./PropertyReservationForm"
-import PropertySelectLegendTypeForm from "./PropertySelectLegendForm"
+import PropertyReservationForm from "./ActivityReservationForm"
+import PropertySelectLegendTypeForm from "./ActivitySelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
   onClose: () => void
 }
 
-const AddPropertyReservationModal = ({
+const AddActivityReservationModal = ({
   isModalOpen,
   onClose,
 }: IReservationCalendarModalProps) => {
@@ -63,4 +63,4 @@ const AddPropertyReservationModal = ({
   )
 }
 
-export default AddPropertyReservationModal
+export default AddActivityReservationModal
