@@ -4,6 +4,8 @@ export interface Reservation {
   startDate: string
   endDate: string
   guestCount: number
+  id: string
+  notes: string | null
 }
 
 export interface Booking {
