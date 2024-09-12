@@ -89,25 +89,24 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
     // Fetch reservations for each category
     const [roomReservations, wholePlaceReservations, bedReservations] =
       await Promise.all([
-        dbReservations
-          .find({
-            unitId: { $in: roomIds },
+        dbReservations.find({
+          unitId: { $in: roomIds.map((room:any) => room?._id) }, // Extracting _id from each object
+          $or: [
+            { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
+          ],
+        })
+          .populate('guest'),
+          dbReservations.find({
+            unitId: { $in: wholePlaceIds.map((wholePlace:any) => wholePlace?._id) }, // Extracting _id from each object
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
           })
           .populate('guest'),
+          
         dbReservations
           .find({
-            unitId: { $in: wholePlaceIds },
-            $or: [
-              { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-            ],
-          })
-          .populate('guest'),
-        dbReservations
-          .find({
-            unitId: { $in: bedIds },
+            unitId: { $in: bedIds.map((bed:any) => bed?._id) },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -122,10 +121,10 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       propertyName: string
     ) =>
       units.map((unit: any) => {
-        const formattedItems = unit.ids.map((id: string, index: number) => {
-          const abbr = `${unit.title} ${index + 1}`
+        const formattedItems = unit.ids.map((idObj:any) => {
           return {
-            abbr,
+            id: idObj._id,
+            abbr:idObj.name,
             status: 'available',
             reservations: [],
           }
