@@ -11,6 +11,10 @@ import useGetRentalNamesByCategory from "../../../hooks/useGetRentalNamesByCateg
 import { useState } from "react"
 import useGetVehiclesByRentalId from "../../../hooks/useGetVehiclesByRentalId"
 import { Textarea } from "@/common/components/ui/Textarea"
+import useGetPropertyByHost from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyByHost"
+import { T_Property } from "@repo/contract"
+import useGetPropertyById from "@/module/Admin/Listings/hooks/useGetPropertyById"
+import useGetUnitById from "../hooks/useGetUnitById"
 
 interface IPropertyReservationFormProps {
   handleRentalCancel: () => void
@@ -19,23 +23,21 @@ interface IPropertyReservationFormProps {
   selectedLegendType: string
 }
 
-const rentalTypes = ["Car", "Motorbike", "Bicycle"]
-
 function PropertyReservationForm({
   handleSave,
   handleRentalCancel,
   setIsLegendTypeSelected,
   selectedLegendType,
 }: IPropertyReservationFormProps) {
-  const [selectedRentalType, setSelectedRentalType] = useState("")
-  const [selectedRentalId, setSelectedRentalId] = useState("")
+  const [selectedUnitId, setSelectedUnitId] = useState("")
+  const [selectedPropertyId, setSelectedPropertyId] = useState("")
   const { register, reset } = useFormContext()
-  const {
-    data: rentalNamesByCategory,
-    isLoading: isRentalNamesByCategoryLoading,
-  } = useGetRentalNamesByCategory(selectedRentalType)
-  const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } =
-    useGetVehiclesByRentalId(selectedRentalId)
+  const { data: properties, isLoading: isPropertiesLoading } =
+    useGetPropertyByHost()
+  const { data: propertyUnits, isLoading: isPropertyUnitsLoading } =
+    useGetPropertyById(selectedPropertyId)
+  const { data: units, isLoading: isUnitsLoading } =
+    useGetUnitById(selectedUnitId)
 
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
@@ -46,38 +48,34 @@ function PropertyReservationForm({
               label="Property"
               id="property"
               required
-              {...register("property", {
-                required: "This field is required",
-              })}
-              onChange={(e) => setSelectedRentalType(e.target.value)}
+              disabled={isPropertiesLoading}
+              onChange={(e) => setSelectedPropertyId(e.target.value)}
             >
               <Option value="">Select</Option>
-              {rentalTypes.map((type: string) => (
-                <Option key={type} value={type}>
-                  {type}
+              {properties?.items?.map((property: any) => (
+                <Option key={property._id} value={property._id}>
+                  {property.title}
                 </Option>
               ))}
             </Select>
           </div>
           <div className="flex flex-col w-full">
             <Select
-              label="Category"
-              id="category"
+              label="Units"
+              id="units"
               required
               disabled={
-                selectedRentalType
-                  ? false
-                  : true ||
-                    isRentalNamesByCategoryLoading ||
-                    rentalNamesByCategory?.items?.length! === 0
+                !selectedPropertyId ||
+                propertyUnits?.item?.bookableUnits.length === 0 ||
+                isPropertyUnitsLoading
               }
-              onChange={(e) => setSelectedRentalId(e.target.value)}
+              onChange={(e) => setSelectedUnitId(e.target.value)}
             >
               <Option value="">Select</Option>
-              {rentalNamesByCategory &&
-                rentalNamesByCategory?.items?.map((vehicle: any) => (
-                  <Option key={vehicle.id} value={vehicle.id}>
-                    {vehicle.name}
+              {propertyUnits &&
+                propertyUnits?.item?.bookableUnits?.map((unit: any) => (
+                  <Option key={unit._id} value={unit._id}>
+                    {unit.title}
                   </Option>
                 ))}
             </Select>
@@ -87,24 +85,20 @@ function PropertyReservationForm({
           <div className="flex flex-col w-full">
             <Select
               label="Available Units"
-              id="unit"
+              id="unitId"
               required
               disabled={
-                selectedRentalId
-                  ? false
-                  : true ||
-                    isVehiclesByRentalIdLoading ||
-                    vehiclesByRentalId?.items?.length! === 0
+                units?.items?.length === 0 || !selectedUnitId || isUnitsLoading
               }
-              {...register("unit", {
+              {...register("unitId", {
                 required: "This field is required",
               })}
             >
               <Option value="">Select</Option>
-              {vehiclesByRentalId &&
-                vehiclesByRentalId?.items?.map((vehicle: any) => (
-                  <Option key={vehicle._id} value={vehicle._id}>
-                    {vehicle.name}
+              {units &&
+                units?.items?.map((unit: any) => (
+                  <Option key={unit._id} value={unit._id}>
+                    {unit.name}
                   </Option>
                 ))}
             </Select>
@@ -142,7 +136,7 @@ function PropertyReservationForm({
               type="date"
               id="startDate"
               label="Start Date"
-              {...register("start_date", {
+              {...register("startDate", {
                 required: "This field is required",
               })}
               required
@@ -153,7 +147,7 @@ function PropertyReservationForm({
               type="date"
               id="endDate"
               label="End Date"
-              {...register("end_date", {
+              {...register("endDate", {
                 required: "This field is required",
               })}
               required
