@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
-import { dbProperties, dbReservations } from '@repo/database'
+import { dbBookableUnitTypes, dbProperties, dbReservations } from '@repo/database'
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 
 const response = new ResponseService()
@@ -220,6 +220,32 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         items,
         allItemCount: items.length,
         message: 'Property calendar fetched successfully.',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const editUnitChildName = async (req: Request, res: Response) => {
+  const { id, name } = req.body
+  try {
+    const updateUnitName = await dbBookableUnitTypes.findOneAndUpdate(
+      { 'ids._id': id },
+      { $set: { 'ids.$.name': name } },
+      { new: true }
+    )
+    if (!updateUnitName) {
+      return res.json(response.error({ message: 'Unit not found' }))
+    }
+    return res.json(
+      response.success({
+        item: updateUnitName,
+        message: 'Successfully changed unit name',
       })
     )
   } catch (err: any) {
