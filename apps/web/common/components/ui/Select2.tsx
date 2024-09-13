@@ -27,15 +27,17 @@ const Select2 = React.forwardRef<HTMLSelectElement, SelectProps>(
   ) => {
     return (
       <div>
-        <label htmlFor={id} className="block text-sm font-medium text-text-900">
-          {label} {props.required && <Asterisk />}
+        <label htmlFor={id} className="block text-text-900">
+          <Typography variant="h4" fontWeight="semibold">
+            {label} {props.required && <Asterisk />}
+          </Typography>
         </label>
         <Typography className="text-xs text-gray-500 italic">
           {description}
         </Typography>
         <div
           className={cn(
-            "rounded-md pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-1",
+            "rounded-xl pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-1",
             className
           )}
         >
