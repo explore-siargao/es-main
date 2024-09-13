@@ -285,7 +285,7 @@ const Room = ({ pageType }: Prop) => {
           </Typography>
         </div>
         <div className="grid grid-cols-2 gap-x-6 pr-12">
-          <Bedroom unitType={unitType} category={category}/>
+          <Bedroom unitType={unitType} category={category} />
         </div>
         <Typography variant="h4" fontWeight="semibold" className="mt-4">
           How big is this unit?
@@ -330,12 +330,12 @@ const Room = ({ pageType }: Prop) => {
               How many of this type you have?
             </Typography>
             <Typography
-                variant="h5"
-                fontWeight="normal"
-                className="text-xs text-gray-500 italic mb-2"
-              >
-                Identical units that will have the same price per night.
-              </Typography>
+              variant="h5"
+              fontWeight="normal"
+              className="text-xs text-gray-500 italic mb-2"
+            >
+              Identical units that will have the same price per night.
+            </Typography>
             <div className="flex">
               <button
                 className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
