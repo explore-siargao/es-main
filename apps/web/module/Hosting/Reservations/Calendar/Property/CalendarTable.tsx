@@ -23,10 +23,13 @@ import {
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 import AddPropertyReservationModal from "../AddReservationModal/Property"
+import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
+import { useQueryClient } from "@tanstack/react-query"
 import { FormProvider, useForm } from "react-hook-form"
 import PropertyCalendarModal from "../PropertyCalendarModal"
 
-const BedCalendarTable = () => {
+const PropertyCalendarTable = () => {
+  const { mutate } = useUpdateCalendarUnitName()
   const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
@@ -35,7 +38,7 @@ const BedCalendarTable = () => {
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
-
+  const queryClient = useQueryClient()
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
     useState<boolean>(false)
@@ -157,11 +160,19 @@ const BedCalendarTable = () => {
     }
 
     const transformUnits = (units: any[]) =>
-      units.map((unit: { abbr: any; status: any; reservations: any[] }) => ({
-        abbr: unit.abbr,
-        status: unit.status,
-        reservations: unit.reservations.filter(isReservationWithinRange),
-      }))
+      units.map(
+        (unit: {
+          id: string
+          abbr: any
+          status: any
+          reservations: any[]
+        }) => ({
+          id: unit.id,
+          abbr: unit.abbr,
+          status: unit.status,
+          reservations: unit.reservations.filter(isReservationWithinRange),
+        })
+      )
 
     const filterItems = (items: any[]) =>
       items
@@ -291,6 +302,7 @@ const BedCalendarTable = () => {
     const category = newFilteredData?.items?.find(
       (category) => category.name === categoryName
     )
+    console.log(newFilteredData)
     if (category) {
       //@ts-ignore
       const bed = category?.beds[bedIndex]
@@ -305,6 +317,26 @@ const BedCalendarTable = () => {
       toast.error("Category not found")
     }
 
+    setEditingRoom(null)
+  }
+
+  const handleSaveUnitName = (id: string, name: string) => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-property"],
+          })
+          toast.success(data.message)
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
   return (
@@ -409,8 +441,8 @@ const BedCalendarTable = () => {
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
-                                    onClick={() =>
-                                      handleSaveRoom(category.name, bedIndex)
+                                    onClick={(e) =>
+                                      handleSaveUnitName(bed.id, tempRoomAbbr)
                                     }
                                   >
                                     <Save className="text-gray-500 w-5" />
@@ -513,4 +545,4 @@ const BedCalendarTable = () => {
   )
 }
 
-export default BedCalendarTable
+export default PropertyCalendarTable
