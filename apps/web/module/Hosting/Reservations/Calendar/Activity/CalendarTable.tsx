@@ -22,6 +22,7 @@ import {
   Booking,
 } from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
+import AddActivityReservationModal from "../AddReservationModal/Activity"
 
 const ActivitiesCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -403,11 +404,9 @@ const ActivitiesCalendarTable = () => {
         setRoomQuantity={setRoomQuantity}
         category={selectedCategory}
       />
-      <AddReservationModal
+      <AddActivityReservationModal
         isModalOpen={isAddReservationModalOpen}
         onClose={closeAddReservationModal}
-        onSave={handleSaveNewReservation}
-        data={filteredData}
       />
     </div>
   )
