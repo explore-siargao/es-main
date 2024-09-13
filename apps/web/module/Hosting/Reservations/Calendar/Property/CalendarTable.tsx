@@ -507,7 +507,6 @@ const BedCalendarTable = () => {
               />
             </form>
           </FormProvider>
-          
         </div>
       )}
     </div>

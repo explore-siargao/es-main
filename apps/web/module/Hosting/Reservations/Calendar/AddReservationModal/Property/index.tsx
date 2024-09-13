@@ -21,10 +21,9 @@ const AddPropertyReservationModal = ({
   setSelectedLegendType,
   selectedLegendType,
   setIsLegendTypeSelected,
-  isLegendTypeSelected
+  isLegendTypeSelected,
 }: IReservationCalendarModalProps) => {
   const queryClient = useQueryClient()
-
 
   const { mutate } = useAddPropertyReservation()
 

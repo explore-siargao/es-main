@@ -21,7 +21,7 @@ const AddRentalReservationModal = ({
   setSelectedLegendType,
   selectedLegendType,
   setIsLegendTypeSelected,
-  isLegendTypeSelected
+  isLegendTypeSelected,
 }: IReservationCalendarModalProps) => {
   const queryClient = useQueryClient()
 
