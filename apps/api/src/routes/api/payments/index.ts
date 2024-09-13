@@ -1,47 +1,35 @@
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn2'
 import express from 'express'
+import { ResponseService } from '@/common/service/response'
 import {
   addPaymentMethod,
-  getPaymentMethods,
   removePaymentMethod,
+  getPaymentMethods,
   updatePaymentMethod,
-} from './service/paymentMethod'
-import { addCoupon, getUsedCoupons, updateCoupon } from './service/coupons'
-import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid2'
+} from './services/paymentMethods'
+
+import { getUsedCoupons, addCoupon, updateCoupon } from './services/coupons'
+import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 
 const router = express.Router()
+
 //payment method
-router.post(
-  '/:userId/payment-method',
-  isCsrfTokenValid,
-  isOriginValid,
-  isUserLoggedIn,
-  addPaymentMethod
-)
-router.get(
-  '/:userId/payment-method',
-  isOriginValid,
-  isUserLoggedIn,
-  getPaymentMethods
-)
+router.post('/:userId/payment-method', addPaymentMethod)
 router.patch(
-  '/:userId/payment-method/:paymentMethodId',
+  '/payment-method/:paymentMethodId',
   isCsrfTokenValid,
   isOriginValid,
   isUserLoggedIn,
   updatePaymentMethod
 )
-router.delete(
-  '/:userId/payment-method/:paymentMethodId',
-  isCsrfTokenValid,
-  isOriginValid,
-  isUserLoggedIn,
-  removePaymentMethod
-)
+router.delete('/:userId/payment-method/:paymentMethodId', removePaymentMethod)
+
+router.get('/payment-method', isOriginValid, isUserLoggedIn, getPaymentMethods)
 
 //coupons
-router.get('/:userId/coupon', isOriginValid, isUserLoggedIn, getUsedCoupons)
+router.get('/coupon', isOriginValid, isUserLoggedIn, getUsedCoupons)
+
 router.post(
   '/:userId/coupon',
   isCsrfTokenValid,
@@ -49,10 +37,11 @@ router.post(
   isUserLoggedIn,
   addCoupon
 )
+
 router.patch(
   '/:userId/coupon',
-  isCsrfTokenValid,
   isOriginValid,
+  isCsrfTokenValid,
   isUserLoggedIn,
   updateCoupon
 )

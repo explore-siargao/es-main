@@ -21,12 +21,13 @@ import {
   paragraph,
   reportLink,
 } from '../styles'
+import { WEB_URL } from '@/routes/../common/constants/ev'
 
 export const BecomeHostEmailConfirmation = () => {
   return (
     <Html>
       <Head />
-      <Preview>Payment Receipt for {APP_NAME}</Preview>
+      <Preview>Start adding your listing {APP_NAME}</Preview>
       <Body style={main}>
         <Container style={container}>
           <Img
@@ -42,7 +43,7 @@ export const BecomeHostEmailConfirmation = () => {
             confidence with us. You can now start adding your listing.
           </Text>
           <Hr style={hr} />
-          <Link href={process.env.WEB_URL} style={reportLink}>
+          <Link href={WEB_URL} style={reportLink}>
             {APP_NAME}
           </Link>
         </Container>

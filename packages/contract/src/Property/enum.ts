@@ -12,3 +12,10 @@ export enum E_Property_Status {
   pending = "Pending",
   live = "Live",
 }
+
+export enum E_WholePlace_Property_Type {
+  Villa = "Villa",
+  House = "House",
+  Bungalow = "Condominium",
+  Cottage = "Cottage",
+}

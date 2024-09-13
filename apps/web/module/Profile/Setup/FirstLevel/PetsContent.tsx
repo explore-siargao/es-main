@@ -3,11 +3,11 @@ import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
 import { Typography } from "@/common/components/ui/Typography"
 import toast from "react-hot-toast"
-import InputMaxLength from "@/common/helpers/InputMaxLength"
+import inputMaxLength from "@/common/helpers/inputMaxLength"
 import useProfileEditStore from "../store/useProfileEditStore"
 
 const PetsContent = ({ setIsOpen }: { setIsOpen: Dispatch<boolean> }) => {
-  const { value: pets, onChange: handleInputChange } = InputMaxLength("", 40)
+  const { value: pets, onChange: handleInputChange } = inputMaxLength("", 40)
   const setPetsStore = useProfileEditStore((state) => state.setPets)
   const save = () => {
     if (pets) {

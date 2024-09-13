@@ -7,7 +7,7 @@ export async function deleteRentalPhoto(
   rentalId: string | undefined,
   props: T_Photo
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.delete(
     `${API_URL_RENTALS}/${rentalId}/photo/${props._id}`,
     {}

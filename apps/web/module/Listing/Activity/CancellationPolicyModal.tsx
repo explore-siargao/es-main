@@ -19,7 +19,7 @@ const CancellationPolicyModal = ({
     <ModalContainer onClose={onClose} isOpen={isOpen} size="sm">
       <div className="pb-0 mb-0 py-4 px-8 flex flex-col divide-text-100 overflow-y-auto h-[600px]">
         <Typography variant="h2" fontWeight="semibold" className="flex mb-5">
-          Cancellation policy
+          Cancellation days
         </Typography>
         <div className="flex flex-col my-4 max-h-full overflow-auto">
           {cancellationPolicy.map((policy) => (

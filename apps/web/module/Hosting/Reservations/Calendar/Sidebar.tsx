@@ -1,8 +1,6 @@
 import { Button } from "@/common/components/ui/Button"
-import { Input } from "@/common/components/ui/Input"
 import {
   Calendar,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   LayoutList,
@@ -10,6 +8,7 @@ import {
   Search,
 } from "lucide-react"
 import { useState } from "react"
+import CalendarTab from "../components/CalendarTab"
 
 type SideBarProps = {
   nextPrevFunction: Function
@@ -43,7 +42,7 @@ const Sidebar = ({
           <Plus className="w-5" />
         </Button>
       </div>
-      <div className="mb-4 flex gap-2">
+      <div className="flex gap-2">
         <Button
           variant={"outline"}
           onClick={() => nextPrevFunction(-1)}
@@ -62,15 +61,9 @@ const Sidebar = ({
           <ChevronRight />
         </Button>
       </div>
-      <div>
-        <Button
-          variant={"link"}
-          onClick={() => setIsShowAllRoomTypes(!isShowAllRoomTypes)}
-          className="px-0"
-        >
-          {isShowAllRoomTypes ? <ChevronRight /> : <ChevronDown />}
-          All Room Types
-        </Button>
+
+      <div className="normal-case">
+        <CalendarTab />
       </div>
     </div>
   )

@@ -22,7 +22,7 @@ import {
   paragraph,
   reportLink,
 } from '../styles'
-
+import { WEB_URL } from '@/routes/../common/constants/ev'
 interface MultiFactorAuthProps {
   validationCode: string
 }
@@ -48,7 +48,7 @@ export const MultiFactorAuth = ({ validationCode }: MultiFactorAuthProps) => (
         </Text>
         <code style={code}>{validationCode}</code>
         <Hr style={hr} />
-        <Link href={process.env.WEB_URL} style={reportLink}>
+        <Link href={WEB_URL} style={reportLink}>
           {APP_NAME}
         </Link>
       </Container>

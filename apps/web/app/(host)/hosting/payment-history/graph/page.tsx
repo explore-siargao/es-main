@@ -1,6 +1,4 @@
-import AuthGuard from "@/common/components/AuthGuard"
 import { PAYMENT_HISTORY } from "@/common/constants"
-import GraphTab from "@/module/Hosting/PaymentHistory/GraphTab"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 
@@ -10,11 +8,7 @@ export const metadata: Metadata = {
 }
 
 const GraphPage = () => {
-  return (
-    <AuthGuard>
-      <GraphTab />
-    </AuthGuard>
-  )
+  return null
 }
 
 export default GraphPage

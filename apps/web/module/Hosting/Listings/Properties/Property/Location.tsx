@@ -1,7 +1,6 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -18,10 +17,17 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { useParams, useRouter } from "next/navigation"
 import useUpdatePropertyLocation from "../hooks/useUpdatePropertyLocation"
 import { useQueryClient } from "@tanstack/react-query"
-import { cn } from "@/common/helpers/cn"
 import useGetPropertyById from "../hooks/useGetPropertyById"
 import { T_Listing_Location } from "@repo/contract"
 import useUpdatePropertyFinishedSection from "../hooks/useUpdatePropertyFinishedSections"
+import { cn } from "@/common/helpers/cn"
+import { ErrorMessage } from "@hookform/error-message"
+import dynamic from "next/dynamic"
+import LocationSetterModal from "../../components/modals/LocationSetterModal"
+
+const DynamicMapWithPin = dynamic(() => import("../../components/MapWithPin"), {
+  ssr: false,
+})
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -39,11 +45,30 @@ const ListingLocation = ({ pageType }: Prop) => {
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
 
-  const { register, handleSubmit, reset, setValue } =
-    useForm<T_Listing_Location>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<T_Listing_Location>({
+    defaultValues: data?.item?.location,
+    criteriaMode: "all",
+  })
 
   const [markerIsSet, setMarkerIsSet] = useState(false)
-  const [handleOverlayClick, setHandleOverlayClick] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [initialCoords, setInitialCoords] = useState<[number, number]>([
+    9.913431, 126.049483,
+  ])
+  const [currentCoords, setCurrentCoords] =
+    useState<[number, number]>(initialCoords)
+
+  const [howToGetThere, setHowToGetThere] = useState<string>("")
+
+  const handleHowToGetThereChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setHowToGetThere(e.target.value)
+  }
 
   useEffect(() => {
     if (data && !isFetching) {
@@ -52,7 +77,14 @@ const ListingLocation = ({ pageType }: Prop) => {
         : { city: "", street: "" }
       reset(location)
       setSelectedMunicipality(location.city)
-      setCoordinates(location.latitude, location.longitude)
+      const coords: [number, number] = [
+        location.latitude || initialCoords[0],
+        location.longitude || initialCoords[1],
+      ]
+      setCoordinates(...coords)
+      setInitialCoords(coords)
+      setCurrentCoords(coords)
+      setHowToGetThere(location.howToGetThere || "")
     }
   }, [data, isFetching, reset, setCoordinates])
 
@@ -61,14 +93,39 @@ const ListingLocation = ({ pageType }: Prop) => {
     setValue("longitude", longitude as number)
   }, [latitude, longitude, setValue])
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setCurrentCoords(initialCoords)
+      setMarkerIsSet(false)
+    }
+  }, [isModalOpen, initialCoords])
+
+  const closeModal = () => {
+    setCoordinates(...initialCoords)
+    setMarkerIsSet(false)
+    setIsModalOpen(false)
+  }
+
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
 
-  const onSubmit: SubmitHandler<T_Listing_Location> = (
-    formData: T_Listing_Location
-  ) => {
+  const onSubmit: SubmitHandler<T_Listing_Location> = (formData) => {
+    const initialLat = 9.913431
+    const initialLng = 126.049483
+
+    const areCoordinatesInitial =
+      currentCoords[0] === initialLat && currentCoords[1] === initialLng
+
+    if (areCoordinatesInitial && !markerIsSet) {
+      toast.error("Please set the marker on the map before saving.")
+      return
+    }
+
+    formData.latitude = currentCoords[0]
+    formData.longitude = currentCoords[1]
+
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -115,31 +172,19 @@ const ListingLocation = ({ pageType }: Prop) => {
 
   const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
     setMarkerIsSet(true)
-    handleSaveLocation()
+    setCoordinates(coords.lat, coords.lng)
+    setCurrentCoords([coords.lat, coords.lng])
+    setValue("latitude", coords.lat)
+    setValue("longitude", coords.lng)
   }
-  const handleSaveLocation = () => {
-    setTimeout(() => {
-      setHandleOverlayClick(false)
-    }, 0)
-  }
-
-  const handleOverlayClickToggle = () => {
-    setHandleOverlayClick(true)
-  }
-
-  const currentCoords = (
-    data?.item?.location?.latitude
-      ? [data?.item?.location.latitude, data?.item?.location.longitude]
-      : [9.913431, 126.049483]
-  ) as [number, number]
 
   return (
     <div className="mt-20 mb-14">
       {isPending || isFetching ? (
         <Spinner size="md">Loading...</Spinner>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="form-container">
+          <div className="pb-2">
             <Typography
               variant="h1"
               fontWeight="semibold"
@@ -148,42 +193,63 @@ const ListingLocation = ({ pageType }: Prop) => {
               Location
             </Typography>
           </div>
-          <div className="flex flex-col justify-center relative">
-            {!handleOverlayClick && (
-              <div
-                className={`absolute top-0 left-0 w-full h-[450px] bg-black bg-opacity-0 rounded-xl z-10 transition-opacity duration-600 hover:bg-opacity-20 ${
-                  handleOverlayClick
-                    ? "opacity-0 pointer-events-none"
-                    : "opacity-100"
-                }`}
-              >
-                <button
-                  onClick={handleOverlayClickToggle}
-                  className="w-full h-full flex justify-center items-center text-white text-2xl font-semibold transition-opacity duration-300"
-                >
-                  <span className="p-4 rounded-lg">
-                    Click to enable map editing
-                  </span>
-                </button>
-              </div>
-            )}
-
-            <SpecificMap
-              center={currentCoords}
-              mapHeight="h-[450px]"
-              mapWidth="w-full"
+          <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+              Click to open map and drop a pin exactly where your listing or
+              meeting point is located. This will help your customers find you.
+            </Typography>
+            <DynamicMapWithPin
+              disablePinMovement={true}
+              center={initialCoords}
               zoom={11}
-              onMarkerSet={handleMarkerSetter}
-              className="relative z-0"
-              scrollWheelZoomEnabled={!handleOverlayClick}
             />
           </div>
-          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
-            You can drag and drop the yellow marker above to set your exact
-            location on the map
-          </Typography>
-          <div className="flex mt-8 gap-12 flex-wrap">
-            <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg mb-24">
+
+          <div className="flex mt-2 gap-12 flex-wrap">
+            <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
+              <div className="flex-wrap mb-4">
+                <Typography variant="h3" fontWeight="semibold">
+                  Open with
+                </Typography>
+                <Typography
+                  variant="h5"
+                  fontWeight="normal"
+                  className="text-gray-500 pt-2 italic"
+                >
+                  Click the icons below to open the location you set above in
+                  your preferred map
+                </Typography>
+                <div className="flex-none flex place-items-start mt-2 gap-4">
+                  <Link
+                    href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={GoogleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="google map icon"
+                      className="object-cover w-16 h-16"
+                    />
+                  </Link>
+                  <Link
+                    href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={AppleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="apple map icon"
+                      className="mx-2 object-cover w-16 h-16"
+                    />
+                  </Link>
+                </div>
+              </div>
               <Typography variant="h3" fontWeight="semibold">
                 Address
               </Typography>
@@ -234,52 +300,53 @@ const ListingLocation = ({ pageType }: Prop) => {
                   </Option>
                 ))}
               </Select>
-
-              <div className="mt-2">
-                <Typography variant="h3" fontWeight="semibold">
-                  How to get there
-                </Typography>
-                <Textarea
-                  className="mt-1"
-                  required
-                  {...register("howToGetThere", { required: true })}
-                />
-                <Typography className="text-xs text-gray-500 italic mt-2">
-                  Accurately explain on how to get in your property address
-                </Typography>
-              </div>
             </div>
-
-            <div className="flex-wrap">
-              <Typography variant="h3" fontWeight="semibold" className="ml-2">
-                Open with
-              </Typography>
-              <div className="flex-none flex place-items-start mt-8 gap-4">
-                <Link
-                  href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={GoogleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="google map icon"
-                    className="object-cover w-16 h-16"
-                  />
-                </Link>
-                <Link
-                  href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={AppleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="apple map icon"
-                    className="mx-2 object-cover w-16 h-16"
-                  />
-                </Link>
-              </div>
+          </div>
+          <div className="mt-6">
+            <Typography variant="h3" fontWeight="semibold">
+              How to get there *
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+              Explain in detail how to get to your location. This will help your
+              customers find you!{" "}
+            </Typography>
+            <div className="flex flex-col w-full xl:w-1/2 gap-2 mb-24">
+              <Textarea
+                className="flex mt-1 p-3 h-96"
+                placeholder="Example: Upon arrival at Siargao Airport, you can take a van for 300 PHP per person directly to Exploresiargao Resort. The journey takes approximately 40 minutes if the van goes straight to our resort. Simply inform the driver of your destination, and they will take you directly to our doorstep. 
+                Alternatively, if you’re coming from General Luna town center, the resort is a quick 10-minute tricycle ride along Tourism Road. Pass by Siargao Bleu Resort, then you will see the Exploresiargao Resort signpost on your left. If you reach Kawayan surf school then you have gone too far."
+                required
+                {...register("howToGetThere", {
+                  required: "This input is required.",
+                  minLength: {
+                    value: 100,
+                    message: "This field has minimum of 100 characters",
+                  },
+                })}
+                value={howToGetThere}
+                onChange={handleHowToGetThereChange}
+              />
+              {/* TODO: ENHANCE THIS ERROR MESSAGE */}
+              <ErrorMessage
+                errors={errors}
+                name="howToGetThere"
+                render={({ messages }) => {
+                  return messages
+                    ? Object.entries(messages).map(([type, message]) =>
+                        typeof message === "string" ? (
+                          <p className="text-red-600 text-xs " key={type}>
+                            {" "}
+                            <i>{message}</i>{" "}
+                          </p>
+                        ) : null
+                      )
+                    : null
+                }}
+              />
             </div>
           </div>
           <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
@@ -296,6 +363,15 @@ const ListingLocation = ({ pageType }: Prop) => {
           </div>
         </form>
       )}
+
+      <LocationSetterModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        currentCoords={currentCoords}
+        handleMarkerSetter={handleMarkerSetter}
+        markerIsSet={markerIsSet}
+        setInitialCoords={setInitialCoords}
+      />
     </div>
   )
 }

@@ -11,7 +11,7 @@ import {
 import { Typography } from "./Typography"
 
 const toastVariants = cva(
-  "pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg",
+  "pointer-events-auto w-full max-w-sm overflow-hidden rounded-xl",
   {
     variants: {
       variant: {

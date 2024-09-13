@@ -1,5 +1,6 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
+import { ExportReportExcel } from "./exportReportExcel"
 
 interface SummaryData {
   labels: string[]
@@ -16,14 +17,16 @@ interface FilterData {
 interface OverAllSummaryProps {
   overAllSummaryData: SummaryData
   filterData?: FilterData
+  excelData?: any
 }
 
 const OverAllSummary: React.FC<OverAllSummaryProps> = ({
   overAllSummaryData,
   filterData,
+  excelData,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 sticky top-36">
+    <div className="bg-white rounded-xl shadow-lg p-8 sticky top-36">
       <Typography variant="h2" fontWeight="semibold" className="mb-2">
         Summary (
         {filterData?.date[1] !== "all" ? `${filterData?.date[1]} ` : null}
@@ -77,6 +80,9 @@ const OverAllSummary: React.FC<OverAllSummaryProps> = ({
         <Typography className="pt-4 text-sm" variant="p" fontWeight="semibold">
           {overAllSummaryData.total}
         </Typography>
+      </div>
+      <div className="justify-center mt-4">
+        <ExportReportExcel reportData={excelData} />
       </div>
     </div>
   )

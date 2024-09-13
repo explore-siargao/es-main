@@ -1,5 +1,5 @@
 import { Typography } from "@/common/components/ui/Typography"
-import { LINK_ACCOUNT_PAYMENT_PAYOUT } from "@/common/constants/links"
+import { LINK_ACCOUNT_PAYMENT_PAYOUT } from "@/common/constants"
 import Link from "next/link"
 import React from "react"
 

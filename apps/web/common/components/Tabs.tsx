@@ -12,9 +12,10 @@ interface Tab {
 interface TabsProps {
   tabs: Tab[]
   includeSearchParams?: boolean
+  hoverColor?: "default" | "dark-gray"
 }
 
-const Tabs = ({ tabs, includeSearchParams }: TabsProps) => {
+const Tabs = ({ tabs, includeSearchParams, hoverColor }: TabsProps) => {
   const currentPath = usePathname()
   const searchParams = useSearchParams()
   const queryString = searchParams.toString()
@@ -47,9 +48,9 @@ const Tabs = ({ tabs, includeSearchParams }: TabsProps) => {
                 <div
                   className={`flex items-center whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium ${
                     tab.isSelected || currentPath === tab.link
-                      ? "border-primary-500 text-primary-600"
-                      : "border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-600"
-                  }`}
+                      ? `${hoverColor === "dark-gray" ? "border-gray-600 text-gray-800" : "border-primary-500 text-primary-600"}`
+                      : "border-transparent text-gray-500"
+                  } ${hoverColor === "dark-gray" ? "hover:border-gray-600 hover:text-gray-800" : "hover:border-primary-500 hover:text-primary-600"}`}
                 >
                   {tab.icon && <span className="mr-1">{tab.icon}</span>}
                   {tab.name}

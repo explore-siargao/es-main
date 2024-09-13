@@ -1,31 +1,13 @@
-import { ResponseService } from '@/common/service/response'
-import { prisma } from '@/common/helpers/prismaClient'
 import { REQUIRED_VALUE_EMPTY, USER_NOT_EXIST } from '@/common/constants'
+import { ResponseService } from '@/common/service/response'
 import { Z_Taxes } from '@repo/contract'
+import { dbTaxes, dbUsers } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 
-export const getVat = async (req: Request, res: Response) => {
-  const userId = Number(req.params.userId)
-  try {
-    const getTaxesByUserId = await prisma.tax.findFirst({
-      where: {
-        userId: userId,
-      },
-    })
-
-    if (getTaxesByUserId) {
-      res.json(response.success({ item: getTaxesByUserId }))
-    } else {
-      res.json(response.error({ message: 'No VAT records found' }))
-    }
-  } catch (err: any) {
-    res.json(response.error({ message: err.message }))
-  }
-}
-
 export const addUpdateVat = async (req: Request, res: Response) => {
+  const userId = res.locals.user?.id
   const {
     countryRegion,
     vatId,
@@ -35,7 +17,6 @@ export const addUpdateVat = async (req: Request, res: Response) => {
     city,
     provinceRegion,
     zipPostalCode,
-    userId,
   } = req.body
   const vat = {
     countryRegion,
@@ -46,39 +27,29 @@ export const addUpdateVat = async (req: Request, res: Response) => {
     city,
     provinceRegion,
     zipPostalCode,
-    userId,
+    user: userId,
   }
   const validateInputs = Z_Taxes.safeParse(vat)
   if (validateInputs.success) {
     try {
-      const getUser = await prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-      })
+      const getUser = await dbUsers.findById(userId)
       if (getUser) {
-        const getVat = await prisma.tax.findUnique({
-          where: {
-            userId: userId,
-          },
-        })
+        const getVat = await dbTaxes.findOne({ user: userId }).populate('user')
         if (!getVat) {
-          const newTaxes = await prisma.tax.create({
-            data: vat,
-          })
+          const newVat = new dbTaxes(vat)
+          await newVat.save()
           res.json(
             response.success({
-              item: newTaxes,
+              item: newVat,
               message: 'VAT successfully created',
             })
           )
         } else {
-          const updateVat = await prisma.tax.update({
-            where: {
-              userId: userId,
-            },
-            data: vat,
-          })
+          const updateVat = await dbTaxes.findOneAndUpdate(
+            { user: userId },
+            { ...vat, updatedAt: new Date() },
+            { new: true }
+          )
           res.json(
             response.success({
               item: updateVat,
@@ -87,10 +58,18 @@ export const addUpdateVat = async (req: Request, res: Response) => {
           )
         }
       } else {
-        res.json(response.error({ message: USER_NOT_EXIST }))
+        res.json(
+          response.error({
+            message: USER_NOT_EXIST,
+          })
+        )
       }
     } catch (err: any) {
-      res.json(response.error({ message: err.message }))
+      res.json(
+        response.error({
+          message: err.message,
+        })
+      )
     }
   } else {
     res.json(
@@ -98,5 +77,22 @@ export const addUpdateVat = async (req: Request, res: Response) => {
         message: REQUIRED_VALUE_EMPTY,
       })
     )
+  }
+}
+
+export const getVat = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  try {
+    const getTaxesByUserId = await dbTaxes.findOne({
+      user: userId,
+    })
+
+    if (getTaxesByUserId) {
+      res.json(response.success({ item: getTaxesByUserId }))
+    } else {
+      res.json(response.error({ message: 'No VAT records found' }))
+    }
+  } catch (err: any) {
+    res.json(response.error({ message: err.message }))
   }
 }

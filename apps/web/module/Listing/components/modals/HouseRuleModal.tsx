@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import React from "react"
-import { TitleSection } from "../../../Accommodation/components/TitleSection"
-import IconDescription from "../../../Accommodation/components/IconDescription"
+import { TitleSection } from "../../../Listing/Property/components/TitleSection"
+import IconDescription from "../../../Listing/Property/components/IconDescription"
 import { Typography } from "@/common/components/ui/Typography"
 
 interface IconDescription {
@@ -39,10 +39,19 @@ const HouseRuleModal = ({
         </div>
 
         {houseRules.map((data) => (
+          //@ts-ignore
           <div className="py-2 pt-5" key={data.id}>
-            <TitleSection title={data.title}>
+            <TitleSection
+              //@ts-ignore
+              title={data.title}
+            >
               {data.rules.map((rule: any) => (
-                <div className="py-4 border-b" key={rule.id}>
+                //@ts-ignore
+                <div
+                  className="py-4 border-b"
+                  //@ts-ignore
+                  key={rule.id}
+                >
                   <IconDescription
                     // @ts-ignore
                     icon={rule.icon}

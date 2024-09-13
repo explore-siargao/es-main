@@ -32,14 +32,19 @@ import { T_Property_Amenity } from "@repo/contract"
 import useUpdateRoomBasicInfo from "../../../hooks/useUpdateRoomBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import useGetUnitById from "../hooks/useGetUnitById"
-import CreatableSelect from "@/common/components/ui/CreatableSelect"
+import Bedroom from "./components/Bedroom"
+import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
+import { IBedroom } from "../types"
+import { useBedroomStore } from "./store/useBedroomStore"
 
 type T_RoomUnit = {
   title: string
+  subtitle: string
   description: string
   size: number
   typeCount: number
   amenities: T_Property_Amenity[]
+  bedRooms: IBedroom[]
 }
 
 type Prop = {
@@ -52,10 +57,12 @@ const Room = ({ pageType }: Prop) => {
   const unitId = String(params.roomId)
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { data, isPending } = useGetUnitById(unitId)
-
+  const { data, isPending, isFetching } = useGetUnitById(unitId)
+  const [isSavings, setIsSavings] = useState(false)
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
+  const [customTitle, setCustomTitle] = useState("")
+  const [customDescription, setCustomDescription] = useState("")
   const { mutateAsync: updateRoomBasicInfo } = useUpdateRoomBasicInfo(listingId)
   const { mutateAsync } = useUpdateUnitPhoto(listingId as string)
   const { mutateAsync: addMutateAsync } = useAddUnitPhoto(
@@ -66,7 +73,8 @@ const Room = ({ pageType }: Prop) => {
   const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
     listingId as string
   )
-
+  const bedRooms = useBedroomStore((state) => state.bedrooms)
+  const [unitType, setUnitType] = useState(data?.item?.subtitle || "")
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setAmenties = useSelectAmenityStore(
@@ -74,7 +82,18 @@ const Room = ({ pageType }: Prop) => {
   )
   const amenities = useSelectAmenityStore((state) => state.amenities)
 
-  const { control, register, handleSubmit, setValue } = useForm<T_RoomUnit>()
+  const { register, handleSubmit, setValue } = useForm<T_RoomUnit>()
+  const [sizeValues, setSizeValues] = useState({
+    sqm: 0,
+    squareFoot: 0,
+  })
+
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
+  useEffect(() => {
+    if (data?.item?.bedRooms || data?.item?.livingRooms) {
+      updateBedrooms(data.item.bedRooms)
+    }
+  }, [data, updateBedrooms])
 
   const updatePhotosInDb = async () => {
     const toAddPhotos =
@@ -124,8 +143,27 @@ const Room = ({ pageType }: Prop) => {
     }
   }
 
+  const handleSqmChange = (value: string) => {
+    const newSquareFoot = (Number(value) * SQM_TO_FT_CONVERSION_FACTOR).toFixed(
+      2
+    )
+
+    setSizeValues({
+      sqm: Number(value),
+      squareFoot: Number(newSquareFoot),
+    })
+  }
+
   const onSubmit = async (formData: T_RoomUnit) => {
     formData.amenities = amenities
+
+    const missingTags = photos.filter(
+      (photo) => !photo.tags || photo.tags.length === 0
+    )
+    const missingDescription = photos.filter(
+      (photo) => !photo.description || photo.description.length === 0
+    )
+
     if (!formData.size) {
       toast.error("Please fill out size field")
       return
@@ -134,14 +172,31 @@ const Room = ({ pageType }: Prop) => {
       toast.error("Please fill out quantity field")
       return
     }
+    if (missingDescription.length > 0) {
+      toast.error("Please add descriptions to all photos")
+      return
+    }
+    if (missingTags.length > 0) {
+      toast.error("Please add tags to all photos")
+      return
+    }
 
     try {
+      if (bedRooms.length > 0) {
+        setIsSavings(true)
+        formData.bedRooms = bedRooms
+      } else {
+        toast.error("Must have at least 1 bed or sleeping space.")
+        return
+      }
       const saveBasicInfo = updateRoomBasicInfo({
         _id: unitId,
         title: formData.title,
+        subtitle: "",
         totalSize: Number(formData.size),
-        description: formData.description,
+        description: "",
         qty: Number(typeCount),
+        bedRooms: bedRooms,
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
       const filterSelectedAmenities = amenities.filter(
@@ -161,38 +216,25 @@ const Room = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (!isPending && data && data.item) {
-      setTypeCount(data?.item.qty)
-      setPhotos(data?.item?.photos)
-      setAmenties(data?.item.amenities)
-      setValue("title", data?.item?.title)
+      setValue("title", data?.item?.title || "")
+      setValue("subtitle", data?.item?.subtitle || "")
       setValue("description", data?.item?.description)
+      setTypeCount(data?.item?.qty)
+      setPhotos(data?.item?.photos)
+      setAmenties(data?.item?.amenities)
       setValue("size", data?.item?.totalSize)
+      handleSqmChange(data.item?.totalSize)
+      if (data?.item?.subtitle?.startsWith("Custom: ", "")) {
+        setCustomTitle(data?.item?.subtitle.replace("Custom: ", ""))
+      }
+      if (data?.item?.description?.startsWith("Custom: ")) {
+        setCustomDescription(data?.item?.description.replace("Custom: ", ""))
+      }
     }
   }, [data, isPending])
 
-  const titleOptions = [
-    { value: "", label: "Select Name" },
-    { value: "Double Room", label: "Double Room" },
-  ]
-
-  const descriptionOptions = [
-    { value: "", label: "Select Bed" },
-    { value: "1 Queen Bed", label: "1 Queen Bed" },
-  ]
-
-  const [nameOptions, setNameOptions] = useState(titleOptions)
-  const [bedOptions, setBedOptions] = useState(descriptionOptions)
-
-  const handleCreateOption = (
-    newOption: { value: string; label: string },
-    setOptions: React.Dispatch<
-      React.SetStateAction<{ value: string; label: string }[]>
-    >,
-    fieldOnChange: (value: string) => void
-  ) => {
-    setOptions((prev) => [...prev, newOption])
-    fieldOnChange(newOption.value)
-  }
+  const category = data?.item?.category
+  console.log("unitType:", category)
 
   return (
     <div className="mt-20 mb-28">
@@ -207,80 +249,81 @@ const Room = ({ pageType }: Prop) => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h4" fontWeight="semibold" className="mb-2">
+          What is the name you want to display for your unit? (Optional)
+        </Typography>
+        <div className="grid grid-cols-4 gap-x-6 mb-5">
+          <Input
+            label="Title"
+            id="title"
+            type="text"
+            minLength={5}
+            maxLength={30}
+            disabled={isPending}
+            {...register("title")}
+          />
+        </div>
+        <div className="flex flex-col">
+          <Typography variant="h4" fontWeight="semibold" className="mt-4">
+            Where can guests sleep?
+          </Typography>
+          <Typography
+            variant="h5"
+            fontWeight="normal"
+            className="mb-2 text-gray-400"
+          >
+            How many comfortable living spaces does this unit have? Click to add
+            bed type.
+          </Typography>
+          <div className="grid grid-cols-2">
+            <Bedroom unitType={unitType} category={category} />
+          </div>
+        </div>
+        <Typography variant="h4" fontWeight="semibold" className="mt-4">
+          How big is this unit?
+        </Typography>
+        <Typography
+          variant="h5"
+          fontWeight="normal"
+          className="mb-2 text-gray-400"
+        >
+          Enter the unit size in square meters, we will automatically convert to
+          square foot
+        </Typography>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
-            <Controller
-              control={control}
-              name="title"
-              rules={{ required: "This field is required" }}
-              render={({ field }) => (
-                <CreatableSelect
-                  label="Name"
-                  options={nameOptions}
-                  value={
-                    nameOptions.find(
-                      (option) => option.value === field.value
-                    ) || { value: "", label: "Select Name" }
-                  }
-                  onChange={(option) => field.onChange(option?.value || "")}
-                  onCreateOption={(newOption) =>
-                    handleCreateOption(
-                      newOption,
-                      setNameOptions,
-                      field.onChange
-                    )
-                  }
-                  defaultValue={data?.item?.title}
-                  isRequired
-                />
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={control}
-              name="description"
-              rules={{ required: "This field is required" }}
-              render={({ field }) => (
-                <CreatableSelect
-                  label="Bed"
-                  options={bedOptions}
-                  value={
-                    bedOptions.find(
-                      (option) => option.value === field.value
-                    ) || { value: "", label: "Select Bed" }
-                  }
-                  onChange={(option) => field.onChange(option?.value || "")}
-                  onCreateOption={(newOption) =>
-                    handleCreateOption(newOption, setBedOptions, field.onChange)
-                  }
-                  defaultValue={data?.item?.description}
-                  isRequired
-                />
-              )}
+            <Input
+              label="Sqm"
+              id="size"
+              type="number"
+              disabled={isPending || isFetching}
+              {...register("size", {
+                required: "This field is required",
+              })}
+              onChange={(event) => handleSqmChange(event.target.value)}
+              required
             />
           </div>
           <div>
             <Input
-              label="Size (sqm)"
-              id="size"
+              label="Ft"
+              id="squareFoot"
               type="number"
-              aria-disabled={isPending}
-              defaultValue={data?.item?.totalSize}
-              disabled={isPending}
-              {...register("size", { required: "Size is required" })}
+              value={sizeValues.squareFoot}
+              disabled
               required
             />
           </div>
         </div>
+
         <div className="grid grid-cols-4 mt-4">
           <div>
             <Typography variant="h4" fontWeight="semibold" className="mb-2">
               How many of this type you have?
             </Typography>
-            <div className="flex rounded-md">
+            <div className="flex">
               <button
-                className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => {
                   typeCount > 0 && setTypeCount((typeCount) => typeCount - 1)
@@ -302,7 +345,7 @@ const Room = ({ pageType }: Prop) => {
                 required
               />
               <button
-                className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                 type="button"
                 onClick={() => setTypeCount((typeCount) => typeCount + 1)}
               >

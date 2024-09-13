@@ -6,9 +6,10 @@ import { APP_NAME } from "@repo/constants"
 import {
   LINK_ACCOUNT,
   LINK_CREATE_ACCOUNT,
+  LINK_HOME,
   LINK_LOGIN,
   LINK_LOGOUT,
-} from "@/common/constants/links"
+} from "@/common/constants"
 import Link from "next/link"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { cn } from "@/common/helpers/cn"
@@ -82,7 +83,7 @@ function ListingHeader({
       <WidthWrapper width={contentWidth}>
         <nav className="flex items-center py-2 w-full">
           <div className="flex gap-2 items-center">
-            <Link href="/" className="">
+            <Link href={LINK_HOME} className="">
               <Image
                 className="h-10 w-auto"
                 src={Logo}

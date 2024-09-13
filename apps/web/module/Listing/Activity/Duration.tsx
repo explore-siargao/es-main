@@ -1,4 +1,4 @@
-import { TitleSection } from "@/module/Accommodation/components/TitleSection"
+import { TitleSection } from "@/module/Listing/Property/components/TitleSection"
 import { Clock } from "lucide-react"
 
 const Duration = ({

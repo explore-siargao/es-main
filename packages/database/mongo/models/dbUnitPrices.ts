@@ -5,7 +5,7 @@ const unitPrices = new Schema({
   baseRateMaxCapacity: Number,
   maximumCapacity: Number,
   pricePerAdditionalPerson: Number,
-  discountedWeeklyRate: Number,
+  discountedWeekLyRate: Number,
   discountedMonthlyRate: Number,
   createdAt: {
     type: Date,
@@ -15,4 +15,4 @@ const unitPrices = new Schema({
   deletedAt: Date,
 })
 
-export default mongoose.model("UnitPrice", unitPrices)
+export default mongoose.model("UnitPrices", unitPrices)

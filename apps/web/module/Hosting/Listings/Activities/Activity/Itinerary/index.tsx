@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -24,6 +23,16 @@ import ToggleSwitch from "@/common/components/ui/Toggle"
 import { useSegmentsStore } from "./store/useSegmentsStore"
 import useUpdateActivityItinerary from "../../hooks/useUpdateActivityItinerary"
 import useGetActivityById from "../../hooks/useGetActivityById"
+import { ErrorMessage } from "@hookform/error-message"
+import dynamic from "next/dynamic"
+import LocationSetterModal from "../../../components/modals/LocationSetterModal"
+
+const DynamicMapWithPin = dynamic(
+  () => import("../../../components/MapWithPin"),
+  {
+    ssr: false,
+  }
+)
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -42,29 +51,64 @@ const Itinerary = ({ pageType }: Prop) => {
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdateActivityItinerary(listingId)
   const { data, isPending: activityIsLoading } = useGetActivityById(listingId)
-  const { latitude, longitude } = useCoordinatesStore()
+  const { latitude, longitude, setCoordinates } = useCoordinatesStore()
   const initialSegment = useSegmentsStore((state) => state.initialSegments)
   const getSegments = useSegmentsStore((state) => state.segments)
   const updateBarangayOptions = (e: { target: { value: string } }) => {
     const selectedMunicipality = e.target.value
     setSelectedMunicipality(selectedMunicipality)
   }
-  const { register, handleSubmit, watch } = useForm<T_Activity_Itinerary>({
-    values: data?.item?.meetingPoint,
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<T_Activity_Itinerary>({
+    criteriaMode: "all",
   })
 
-  const currentCoords = (
-    data?.item?.meetingPoint?.latitude
-      ? [
-          data?.item?.meetingPoint?.latitude,
-          data?.item?.meetingPoint?.longitude,
-        ]
-      : [9.913431, 126.049483]
-  ) as [number, number]
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentCoords, setCurrentCoords] = useState<[number, number]>([
+    9.913431, 126.049483,
+  ])
+  const [initialCoords, setInitialCoords] = useState<[number, number]>([
+    9.913431, 126.049483,
+  ])
+
+  useEffect(() => {
+    if (!activityIsLoading && data && data.item) {
+      const newCoords: [number, number] = [
+        data.item.meetingPoint.latitude || 9.913431,
+        data.item.meetingPoint.longitude || 126.049483,
+      ]
+      setInitialCoords(newCoords)
+      setCurrentCoords(newCoords)
+      initialSegment(data.item.segments)
+
+      reset({
+        meetingPoint: {
+          ...data.item.meetingPoint,
+        },
+        isSegmentBuilderEnabled: data.item.isSegmentBuilderEnabled,
+        segments: data.item.segments,
+      })
+    }
+  }, [data, activityIsLoading, reset, initialSegment])
 
   const onSubmit: SubmitHandler<T_Activity_Itinerary> = (
     formData: T_Activity_Itinerary
   ) => {
+    const initialLat = 9.913431
+    const initialLng = 126.049483
+
+    const areCoordinatesInitial =
+      currentCoords[0] === initialLat && currentCoords[1] === initialLng
+
+    if (areCoordinatesInitial && !markerIsSet) {
+      toast.error("Please set the marker on the map before saving.")
+      return
+    }
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -91,8 +135,8 @@ const Itinerary = ({ pageType }: Prop) => {
 
     const updatedMeetingPoint: T_Location = {
       ...formData.meetingPoint,
-      latitude: latitude ?? 9.913431,
-      longitude: longitude ?? 126.049483,
+      latitude: initialCoords[0],
+      longitude: initialCoords[1],
     }
 
     mutate(
@@ -106,25 +150,12 @@ const Itinerary = ({ pageType }: Prop) => {
   }
 
   const [markerIsSet, setMarkerIsSet] = useState(false)
-  const [handleOverlayClick, setHandleOverlayClick] = useState(false)
 
-  const street = watch(
-    "meetingPoint.streetAddress",
-    data?.item?.meetingPoint?.streetAddress
-  )
-  const city = watch("meetingPoint.city", data?.item?.meetingPoint?.city)
-  const brgy = watch(
-    "meetingPoint.barangay",
-    data?.item?.meetingPoint?.barangay
-  )
-  const howToGetThere = watch(
-    "meetingPoint.howToGetThere",
-    data?.item?.meetingPoint?.howToGetThere
-  )
-  const toggled = watch(
-    "isSegmentBuilderEnabled",
-    data?.item?.isSegmentBuilderEnabled
-  )
+  const street = watch("meetingPoint.streetAddress")
+  const city = watch("meetingPoint.city")
+  const brgy = watch("meetingPoint.barangay")
+  const howToGetThere = watch("meetingPoint.howToGetThere")
+  const toggled = watch("isSegmentBuilderEnabled")
   const [selectedMunicipality, setSelectedMunicipality] = useState(
     activityIsLoading || !city ? "" : city
   )
@@ -132,19 +163,28 @@ const Itinerary = ({ pageType }: Prop) => {
     activityIsLoading ? false : toggled
   )
 
-  const handleOverlayClickToggle = () => {
-    setHandleOverlayClick(true)
+  const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
+    setCurrentCoords([coords.lat, coords.lng])
+    setMarkerIsSet(true)
   }
 
-  const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
-    setMarkerIsSet(true)
-    handleSaveLocation()
-  }
   const handleSaveLocation = () => {
-    setTimeout(() => {
-      setHandleOverlayClick(false)
-    }, 0)
+    setInitialCoords(currentCoords)
+    setMarkerIsSet(false)
+    setIsModalOpen(false)
   }
+
+  const closeModal = () => {
+    setCoordinates(...initialCoords)
+    setMarkerIsSet(false)
+    setIsModalOpen(false)
+  }
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setCurrentCoords(initialCoords)
+    }
+  }, [isModalOpen, initialCoords])
 
   useEffect(() => {
     if (!activityIsLoading && data && data.item) {
@@ -163,7 +203,7 @@ const Itinerary = ({ pageType }: Prop) => {
         <Spinner size="md">Loading...</Spinner>
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-8">
+          <div className="mb-2">
             <Typography
               variant="h1"
               fontWeight="semibold"
@@ -172,49 +212,63 @@ const Itinerary = ({ pageType }: Prop) => {
               Itinerary
             </Typography>
           </div>
-          <Typography variant="h3" fontWeight="semibold" className="mb-2">
-            Meeting Point
-          </Typography>
-          <div className="flex flex-col justify-center relative">
-            {!handleOverlayClick && (
-              <div
-                className={`absolute top-0 left-0 w-full h-[450px] bg-black bg-opacity-0 rounded-xl z-10 transition-opacity duration-600 hover:bg-opacity-20 ${
-                  handleOverlayClick
-                    ? "opacity-0 pointer-events-none"
-                    : "opacity-100"
-                }`}
-              >
-                <button
-                  onClick={handleOverlayClickToggle}
-                  className="w-full h-full flex justify-center items-center text-white text-2xl font-semibold transition-opacity duration-300"
-                >
-                  <span className="p-4 rounded-lg">
-                    Click to enable map editing
-                  </span>
-                </button>
-              </div>
-            )}
-
-            <SpecificMap
-              center={currentCoords}
-              mapHeight="h-[450px]"
-              mapWidth="w-full"
+          <div className="py-2 w-1/2" onClick={() => setIsModalOpen(true)}>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+              Click to open map and drop a pin exactly where your listing or
+              meeting point is located. This will help your customers find you.
+            </Typography>
+            <DynamicMapWithPin
+              disablePinMovement={true}
+              center={initialCoords}
               zoom={11}
-              onMarkerSet={handleMarkerSetter}
-              className="relative z-0"
-              scrollWheelZoomEnabled={!handleOverlayClick}
             />
           </div>
-          <Typography className="text-xs text-gray-500 italic mt-2">
-            Where will you meet your customers to begin the activity? Our
-            website doesn't support pickup location yet.
-          </Typography>
-          <Typography variant="p" className="italic text-gray-500 text-xs mt-2">
-            You can drag and drop the yellow marker above to set your exact
-            location on the map
-          </Typography>
-          <div className="flex mt-8 gap-12 flex-wrap">
+
+          <div className="flex mt-2 gap-12 flex-wrap">
             <div className="flex flex-col w-full md:w-2/3 gap-2 max-w-lg">
+              <div className="flex-wrap mb-4">
+                <Typography variant="h3" fontWeight="semibold">
+                  Open with
+                </Typography>
+                <Typography
+                  variant="h5"
+                  fontWeight="normal"
+                  className="text-gray-500 pt-2 italic"
+                >
+                  Click the icons below to open the location you set above in
+                  your preferred map
+                </Typography>
+                <div className="flex-none flex place-items-start mt-2 gap-4">
+                  <Link
+                    href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={GoogleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="google map icon"
+                      className="object-cover w-16 h-16"
+                    />
+                  </Link>
+                  <Link
+                    href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
+                    target="_blank"
+                  >
+                    <Image
+                      src={AppleMapIcon}
+                      width={100}
+                      height={100}
+                      alt="apple map icon"
+                      className="mx-2 object-cover w-16 h-16"
+                    />
+                  </Link>
+                </div>
+              </div>
               <Typography variant="h3" fontWeight="semibold">
                 Address
               </Typography>
@@ -267,56 +321,43 @@ const Itinerary = ({ pageType }: Prop) => {
                   </Option>
                 ))}
               </Select>
-              <div className="mt-2">
-                <Typography variant="h3" fontWeight="semibold">
-                  How to get there
-                </Typography>
-                <Textarea
-                  className="mt-1"
-                  required
-                  defaultValue={howToGetThere}
-                  disabled={activityIsLoading}
-                  {...register("meetingPoint.howToGetThere", {
-                    required: true,
-                  })}
-                />
-                <Typography className="text-xs text-gray-500 italic mt-2">
-                  Provide a detailed desription on how to get to the meeting
-                  point.
-                </Typography>
-              </div>
-            </div>
 
-            <div className="flex-wrap">
-              <Typography variant="h3" fontWeight="semibold" className="ml-2">
-                Open with
-              </Typography>
-              <div className="flex-none flex place-items-start mt-8 gap-4">
-                <Link
-                  href={`https://maps.google.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={GoogleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="google map icon"
-                    className="object-cover w-16 h-16"
-                  />
-                </Link>
-                <Link
-                  href={`https://maps.apple.com/?q=${currentCoords[0]},${currentCoords[1]}`}
-                  target="_blank"
-                >
-                  <Image
-                    src={AppleMapIcon}
-                    width={100}
-                    height={100}
-                    alt="apple map icon"
-                    className="mx-2 object-cover w-16 h-16"
-                  />
-                </Link>
-              </div>
+              <ErrorMessage
+                errors={errors}
+                name="meetingPoint.howToGetThere"
+                render={({ message }) => (
+                  <p className="text-red-500 text-xs italic">{message}</p>
+                )}
+              />
+            </div>
+          </div>
+          <div className="mt-2">
+            <Typography variant="h3" fontWeight="semibold">
+              How to get there *
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-gray-500 pt-1 italic"
+            >
+              Explain in detail how to get to your location. This will help your
+              customers find you!{" "}
+            </Typography>
+            <div className="flex flex-col w-full xl:w-1/2 gap-2">
+              <Textarea
+                className="flex mt-1 p-3 h-[550px]"
+                placeholder="Example: Upon arrival at Siargao Airport, you can take a van for 300 PHP per person directly to Exploresiargao Resort. The journey takes approximately 40 minutes if the van goes straight to our resort. Simply inform the driver of your destination, and they will take you directly to our doorstep. 
+                Alternatively, if you’re coming from General Luna town center, the resort is a quick 10-minute tricycle ride along Tourism Road. Pass by Siargao Bleu Resort, then you will see the Exploresiargao Resort signpost on your left. If you reach Kawayan surf school then you have gone too far."
+                required
+                {...register("meetingPoint.howToGetThere", {
+                  required: "This input is required.",
+                  minLength: {
+                    value: 100,
+                    message: "This field has minimum of 100 characters",
+                  },
+                })}
+                value={howToGetThere}
+              />
             </div>
           </div>
           <div className="flex gap-4 mt-8">
@@ -343,6 +384,15 @@ const Itinerary = ({ pageType }: Prop) => {
           </div>
         </form>
       )}
+
+      <LocationSetterModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        currentCoords={currentCoords}
+        handleMarkerSetter={handleMarkerSetter}
+        markerIsSet={markerIsSet}
+        setInitialCoords={setInitialCoords}
+      />
     </div>
   )
 }

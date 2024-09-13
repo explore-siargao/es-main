@@ -38,7 +38,6 @@ const PropertyType = ({ pageType }: Prop) => {
   }, [typeIsPending, data])
 
   const handleSave = () => {
-    console.log(selectedProperty)
     if (selectedProperty) {
       const callBackReq = {
         onSuccess: (data: any) => {
@@ -103,11 +102,11 @@ const PropertyType = ({ pageType }: Prop) => {
       isSelected: data?.item?.type === "Resort",
     },
     {
-      type: "Villa",
+      type: "Whole place",
       description:
         "A standalone, self-contained residence with multiple common areas, bedrooms and bathrooms.",
       icon: <Building2 className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Villa",
+      isSelected: data?.item?.type === "Whole place",
     },
   ]
 
@@ -126,7 +125,7 @@ const PropertyType = ({ pageType }: Prop) => {
         {PROPERTY_TYPES.map((property) => (
           <div
             key={property.description}
-            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-lg p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
+            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
             onClick={() =>
               pageType === "setup" && setSelectedProperty(property.type)
             }

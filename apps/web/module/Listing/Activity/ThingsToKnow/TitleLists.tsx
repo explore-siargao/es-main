@@ -1,23 +1,21 @@
 import { Typography } from "@/common/components/ui/Typography"
-import React from "react"
 
-interface TitleListsProps {
+const TitleLists = ({
+  title,
+  rules,
+}: {
   title: string
-  rules: string[]
-}
+  rules: string | string[]
+}) => {
+  const safeRules = typeof rules === "string" ? [rules] : rules
 
-const TitleLists = ({ title, rules }: TitleListsProps) => {
   return (
     <div>
       <Typography variant="h4" fontWeight="semibold">
         {title}
       </Typography>
       <ul>
-        {rules.slice(0, 2).map((rule: any) => (
-          <li className="mt-2" key={rule}>
-            <Typography>{rule}</Typography>
-          </li>
-        ))}
+        {safeRules?.slice(0, 2).map((rule) => <li key={rule}>{rule}</li>)}
       </ul>
     </div>
   )

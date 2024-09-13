@@ -26,6 +26,8 @@ import {
   reportLink,
 } from '../styles'
 
+import { WEB_URL } from '@/routes/../common/constants/ev'
+
 interface ForgotPasswordEmailProps {
   magicLink: string
 }
@@ -57,7 +59,7 @@ export const ForgotPasswordEmail = ({
           This link will only be valid for the next 30 minutes.
         </Text>
         <Hr style={hr} />
-        <Link href={process.env.WEB_URL} style={reportLink}>
+        <Link href={WEB_URL} style={reportLink}>
           {APP_NAME}
         </Link>
       </Container>

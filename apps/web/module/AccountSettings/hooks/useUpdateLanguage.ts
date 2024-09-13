@@ -10,7 +10,7 @@ export async function updateLanguage(
   personalInfoId: string | null,
   props: ILanguage
 ) {
-  const apiService = new ApiService("v2")
+  const apiService = new ApiService()
   return await apiService.patch(
     `${API_URL_USERS}/personal-info/language/${personalInfoId}`,
     props

@@ -6,9 +6,10 @@ import { APP_NAME } from "@repo/constants"
 import {
   LINK_ACCOUNT,
   LINK_CREATE_ACCOUNT,
+  LINK_HOME,
   LINK_LOGIN,
   LINK_LOGOUT,
-} from "@/common/constants/links"
+} from "@/common/constants"
 import Link from "next/link"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { cn } from "@/common/helpers/cn"
@@ -50,7 +51,7 @@ const items = [
   },
   {
     name: "Guest Account",
-    href: "/",
+    href: LINK_HOME,
     selected: false,
   },
 ]
@@ -114,11 +115,11 @@ function Header({
                   </Popover.Button>
                   {renderTransition(
                     <Popover.Panel className="absolute left-0 top-4 z-10 mt-4 flex w-screen max-w-max">
-                      <div className="max-w-sm bg-white flex flex-col text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-md">
+                      <div className="max-w-sm bg-white flex flex-col text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-xl">
                         {items.map((item) => (
                           <button
                             key={item.name}
-                            className="relative rounded hover:bg-gray-50 px-5 py-2"
+                            className="relative rounded-xl hover:bg-gray-50 px-5 py-2"
                             onClick={() => {
                               if (item.name === current) {
                                 setWorkspace(WorkSpaceEnum.HOST)
@@ -172,12 +173,12 @@ function Header({
                 </Popover.Button>
                 {renderTransition(
                   <Popover.Panel className="absolute right-0 top-5 z-10 mt-5 flex w-screen max-w-max">
-                    <div className="w-screen max-w-[200px] flex-auto bg-white text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-md">
+                    <div className="w-screen max-w-[200px] flex-auto bg-white text-sm leading-6 border border-gray-200 shadow-sm ring-transparent rounded-xl">
                       {[...(session.id ? authMenus : unAuthMenus)].map(
                         (item) => (
                           <div
                             key={item.name}
-                            className="relative rounded hover:bg-gray-50 px-5 py-2"
+                            className="relative rounded-xl hover:bg-gray-50 px-5 py-2"
                           >
                             <Popover.Button as="a" href={item.href}>
                               <div className="font-semibold text-gray-800">

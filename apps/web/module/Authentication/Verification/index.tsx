@@ -8,6 +8,7 @@ import useMultiFactor from "../hooks/useMultiFactor"
 import useVerifyMultiFactor from "../hooks/useVerifyMultiFactor"
 import { useRouter } from "next/navigation"
 import { Typography } from "@/common/components/ui/Typography"
+import { LINK_HOME } from "@/common/constants"
 
 let currentOTPIndex: number = 0
 
@@ -50,7 +51,7 @@ const Verification = () => {
           if (!data.error) {
             if (data.item && !isVerifyMultiFactorPending) {
               toast.success(data.message)
-              router.push("/")
+              router.push(LINK_HOME)
             }
           } else {
             toast.error(String(data.message))
@@ -106,7 +107,7 @@ const Verification = () => {
                   <input
                     ref={num === activeOTPIndex ? inputRef : null}
                     type="number"
-                    className="w-12 h-16 text-xl font-semibold text-center text-text-400 rounded-lg bg-primary-200/40 focus:bg-white border-0 focus:ring-primary-700 disabled:opacity-50"
+                    className="w-12 h-16 text-xl font-semibold text-center text-text-400 rounded-xl bg-primary-200/40 focus:bg-white border-0 focus:ring-primary-700 disabled:opacity-50"
                     onChange={handleOnChange}
                     value={otp[num]}
                     //@ts-ignore

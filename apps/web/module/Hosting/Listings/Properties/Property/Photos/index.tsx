@@ -130,13 +130,24 @@ const ListingPhotos = ({ pageType }: Prop) => {
       })
   }
 
+  const checkDescriptions = () => {
+    for (let photo of photos) {
+      if (!photo.description || photo.tags === null || photo.tags === "") {
+        toast.error("Please put a description and tags to all added photos")
+        return false
+      }
+    }
+    return true
+  }
+
   const handleSave = async () => {
     if (
       photos?.length < 5 ||
       (data?.item?.Photos && data?.item?.Photos.length < 5)
     ) {
       toast.error("Please add at least 5 photos")
-    } else {
+    } else if (!checkDescriptions()) return
+    else {
       updatePhotosInDb()
     }
   }
@@ -204,14 +215,14 @@ const ListingPhotos = ({ pageType }: Prop) => {
         </Typography>
         <div className="grid grid-cols-4 gap-6">
           <>
-            <div className="relative h-52 w-full overflow-hidden bg-primary-100 hover:bg-primary-200 flex justify-center items-center rounded-lg hover:cursor-pointer">
+            <div className="relative h-52 w-full overflow-hidden bg-primary-100 hover:bg-primary-200 flex justify-center items-center rounded-xl hover:cursor-pointer">
               <label
                 {...getRootProps()}
                 htmlFor="dropzone-file"
                 className={cn(
                   isPending && "opacity-50",
                   isFocused && "opacity-80",
-                  "flex flex-col items-center justify-center w-full h-52 border-2 border-primary-300 border-dashed rounded-lg cursor-pointer bg-primary-50 hover:bg-primary-100"
+                  "flex flex-col items-center justify-center w-full h-52 border-2 border-primary-300 border-dashed rounded-xl cursor-pointer bg-primary-50 hover:bg-primary-100"
                 )}
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -253,7 +264,7 @@ const ListingPhotos = ({ pageType }: Prop) => {
                   )}
                   <button
                     className={cn(
-                      `relative h-52 w-full bg-primary-50 rounded-lg`,
+                      `relative h-52 w-full bg-primary-50 rounded-xl`,
                       photo.isMain && "border-2 border-secondary-500"
                     )}
                     type="button"
@@ -268,13 +279,13 @@ const ListingPhotos = ({ pageType }: Prop) => {
                       layout="fill"
                       objectFit="cover"
                       objectPosition="center"
-                      className="rounded-lg"
+                      className="rounded-xl"
                     />
                   </button>
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "No description"}
+                    {photo.description || "Click photo to add description"}
                   </Typography>
                 </div>
               ) : null

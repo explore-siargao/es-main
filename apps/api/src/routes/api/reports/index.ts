@@ -3,20 +3,19 @@ import {
   addReport,
   deleteReport,
   getAllReportListingByReportedBy,
-  getAllReports,
-  getReport,
   getReportsByListing,
   updateReport,
-} from './services/reportListing'
+} from './services/reportListings'
+
+import { getAllReports } from './services/reportListings'
 const router = express.Router()
 
-//reports
-router.get('/listing', getAllReports)
-router.get('/listing/to/:listingId', getReportsByListing)
-router.get('/listing/from/:userId', getAllReportListingByReportedBy)
-router.get('/listing/:id', getReport)
+//reports listings
 router.post('/:userId/listing', addReport)
-router.patch('/:userId/listing/:id', updateReport)
+router.get('/listing/from/:userId', getAllReportListingByReportedBy)
+router.get('/listing/to/:listingId', getReportsByListing)
 router.delete('/:userId/listing/:id', deleteReport)
+router.patch('/:userId/listing/:id', updateReport)
+router.get('/listing', getAllReports)
 
 export default router

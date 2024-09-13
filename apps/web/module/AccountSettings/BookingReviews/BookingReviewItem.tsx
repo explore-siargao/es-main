@@ -86,7 +86,7 @@ const BookingReviewItem = ({
         </button>
       </article>
 
-      <div className="h-72 w-72 2xl:w-full bg-primary-100 rounded-lg relative ">
+      <div className="h-72 w-72 2xl:w-full bg-primary-100 rounded-xl relative ">
         <Image
           src={`/assets/${pic}`}
           width={300}

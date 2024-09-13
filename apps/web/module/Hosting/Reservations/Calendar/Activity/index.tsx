@@ -2,10 +2,10 @@
 import { Typography } from "@/common/components/ui/Typography"
 import ActivitiesCalendarTable from "./CalendarTable"
 import { useRouter } from "next/navigation"
-import Tabs from "@/common/components/Tabs"
-import reservationCalendarTabs from "../../helpers/reservationCalendarTabs"
 import { Button } from "@/common/components/ui/Button"
 import { Table } from "lucide-react"
+import ReservationCalendarTab from "../../components/ReservationTab"
+import CalendarLegend from "../../components/CalendarLegend"
 
 const ActivitiesReservationCalendar = () => {
   const router = useRouter()
@@ -30,11 +30,15 @@ const ActivitiesReservationCalendar = () => {
               Table View
             </Button>
           </div>
-          <Tabs tabs={reservationCalendarTabs} />
+          <ReservationCalendarTab />
         </div>
 
         <div className="flex mt-2">
           <ActivitiesCalendarTable />
+        </div>
+
+        <div className="fixed bottom-4 right-4 z-20">
+          <CalendarLegend />
         </div>
       </div>
     </div>

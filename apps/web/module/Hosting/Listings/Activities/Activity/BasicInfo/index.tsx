@@ -197,13 +197,13 @@ const BasicInfo = ({ pageType }: Prop) => {
                   defaultValue={data?.item?.title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   This is the name that will appear as the title of your listing
                   on our site.
                 </Typography>
               </div>
               <div>
-                <div className="mt-2 relative rounded-md ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
+                <div className="mt-2 relative rounded-xl ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
                   <label
                     htmlFor="descriptionTextarea"
                     className="block text-xs font-medium text-text-900 px-3 pt-2"
@@ -219,7 +219,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                   />
                 </div>
                 <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   Provide a full description about what customers will
                   experience during the activity, in the correct order. Bring
                   the activity to life and write at least 500 characters.
@@ -251,7 +251,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 )}
                 <div className="mt-2">
                   <Input
-                    className="p-2 rounded-md"
+                    className="p-2"
                     value={
                       itemData.length > 0 ? itemData[0]?.itemName || "" : ""
                     }
@@ -280,7 +280,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   Provide 3 to 5 of the most memorable experiences that make
                   your activity special and stand out from the competition.
                   Customers will compare your highlights to other activities.
@@ -297,7 +297,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </Typography>
                     <div className="flex rounded-md">
                       <button
-                        className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() => {
                           durationHour > 0 &&
@@ -319,7 +319,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                         }}
                       />
                       <button
-                        className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() =>
                           setDurationHour((durationHour) => durationHour + 1)
@@ -335,7 +335,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </Typography>
                     <div className="flex rounded-md">
                       <button
-                        className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() => {
                           durationMinute > 0 &&
@@ -358,7 +358,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                         }}
                       />
                       <button
-                        className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                        className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                         type="button"
                         onClick={() =>
                           setDurationMinute(
@@ -371,7 +371,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </div>
                   </div>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2">
+                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                   How long does your activity last from start to finish? Try to
                   be as accurate as possible.
                 </Typography>

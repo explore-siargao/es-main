@@ -1,6 +1,6 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import React from "react"
-import { TitleSection } from "../../../Accommodation/components/TitleSection"
+import { TitleSection } from "../../../Listing/Property/components/TitleSection"
 import { T_OfferModal } from "../../types/PlaceOffer"
 import { Check, Dot, X } from "lucide-react"
 

@@ -1,7 +1,14 @@
 "use client"
-import SpecificMap from "@/common/components/SpecificMap"
 import { Typography } from "@/common/components/ui/Typography"
-import { MapProps } from "@/module/Accommodation/types/Map"
+import { MapProps } from "@/module/Listing/Property/types/Map"
+import dynamic from "next/dynamic"
+
+const DynamicMapWithPin = dynamic(
+  () => import("../../../common/components/Map/MapWithPin"),
+  {
+    ssr: false,
+  }
+)
 
 const MeetingPoint = ({ location, coordinates, desc }: MapProps) => {
   const maxLength = 600
@@ -14,11 +21,10 @@ const MeetingPoint = ({ location, coordinates, desc }: MapProps) => {
         <Typography variant="h2" fontWeight="semibold" className="mb-5">
           Meet-up Point
         </Typography>
-        <div className="w-12/12 h-[450px] bg-primary-200 mb-5">
-          <SpecificMap
+        <div className="mb-5">
+          <DynamicMapWithPin
             center={coordinates as [number, number]}
-            mapHeight="h-[450px]"
-            mapWidth="w-full"
+            disablePinMovement={true}
           />
         </div>
 

@@ -78,7 +78,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                 defaultValue={data?.item?.title}
                 {...register("title", { required: true })}
               />
-              <Typography className="text-xs text-gray-500 italic mt-2">
+              <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
                 This is the name that will appear as the title of your listing
                 on our site.
               </Typography>

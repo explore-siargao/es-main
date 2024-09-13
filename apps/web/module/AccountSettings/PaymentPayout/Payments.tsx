@@ -1,5 +1,5 @@
 import { Button } from "@/common/components/ui/Button"
-import { LINK_ACCOUNT_YOUR_PAYMENT, LINK_GIFT } from "@/common/constants/links"
+import { LINK_ACCOUNT_YOUR_PAYMENT, LINK_GIFT } from "@/common/constants"
 import { useRouter } from "next/navigation"
 import React, { Fragment, useState } from "react"
 import AddCardDetailModal from "../components/modals/AddCardDetailModal"

@@ -1,21 +1,27 @@
 import React from "react"
-import data from "../../data.json"
-import SpecificMap from "@/common/components/SpecificMap"
+import CustomSpecificMap from "@/common/components/CustomSpecificMap"
 
-function Directions() {
+type T_Props = {
+  readonly latitude: number
+  readonly longitude: number
+  readonly locationGuide: string
+}
+
+function Directions({ latitude, longitude, locationGuide }: T_Props) {
   return (
     <div>
-      <div className="grid grid-cols-2 gap-4">
-        {" "}
-        <SpecificMap
-          center={[9.913431, 126.049483]}
-          mapHeight={"h-[300px]"}
+      <div className="grid md:grid-cols-2 gap-4">
+        <CustomSpecificMap
+          center={[latitude, longitude]}
+          mapHeight={"h-80 sm:h-[720px] md:h-[470px] lg:h-[500px]"}
           mapWidth={"w-full"}
           zoom={11}
+          setCoordinates={(lat, long) => {}}
+          isRoundedEdge={true}
         />
         <div>
           <h2 className="text-xl font-bold mb-2">How to get there</h2>
-          <p>{data.howToGetThere.description}</p>
+          <p className="whitespace-pre-wrap">{locationGuide}</p>
         </div>
       </div>
     </div>

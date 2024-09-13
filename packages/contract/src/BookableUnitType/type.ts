@@ -4,6 +4,7 @@ import {
   Z_AddRoomUnit,
   Z_AddWholePlaceUnit,
   Z_BookableUnitTypes,
+  Z_Update_Bed_Basic_Info,
   Z_UpdateBookableUnitTypes,
 } from "./zod"
 
@@ -15,3 +16,4 @@ export type T_AddRoomUnit = z.infer<typeof Z_AddRoomUnit>
 export type T_UpdateBookableUnitTypes = z.infer<
   typeof Z_UpdateBookableUnitTypes
 >
+export type T_Update_Bed_Basic_Info = z.infer<typeof Z_Update_Bed_Basic_Info>

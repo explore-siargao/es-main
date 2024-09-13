@@ -3,23 +3,20 @@ import { WidthWrapper } from "@/common/components/WidthWrapper"
 import HostInformation from "./components/HostInformation"
 import BookingDescription from "./components/BookingDescription"
 import SectionInfo from "./components/SectionInfo"
-import AvatarTitleDescription from "./components/AvatarTitleDescription"
 import RatingSummary from "./components/Reviews/RatingSummary"
 import UserReviews from "./components/Reviews/UserReviews"
 import CheckoutBox from "./components/CheckoutBox"
-import WhereYoullBeDescription from "./components/Map"
+import PickUpLocation from "./components/PickUpLocation"
 import { Button } from "@/common/components/ui/Button"
 import { Flag, Tag } from "lucide-react"
 import { useEffect, useState } from "react"
-import ListingMark from "@/module/Accommodation/Checkout/ListingMark"
+import ListingMark from "@/module/Listing/Property/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
-import { rentalData } from "@/dummy"
 import Requirements from "./components/Requirements"
 import Inclusions from "./components/Inclusions"
 import SimilarRentals from "./components/SimilarRentals"
 import useGetRentalById from "@/module/Admin/Listings/hooks/useGetRentalById"
-import { useParams } from "next/navigation"
-import { Spinner } from "@/common/components/ui/Spinner"
+import { notFound, useParams } from "next/navigation"
 import { T_BookingAboutDescriptionProps } from "./types/BookingAboutDescription"
 
 export const ratingSummary = {
@@ -143,6 +140,10 @@ export const RentalSingleView = () => {
 
   const { data, isPending } = useGetRentalById(rentalId)
 
+  if ((!isPending && !data) || (!isPending && !data.item)) {
+    notFound()
+  }
+
   useEffect(() => {
     if (!isPending && data?.item) {
       setAboutData({
@@ -175,9 +176,9 @@ export const RentalSingleView = () => {
   }, [data, isPending])
 
   return (
-    <WidthWrapper width="small" className="mt-4 lg:mt-8">
+    <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       {isPending ? (
-        <Spinner size="md">Loading...</Spinner>
+        <></>
       ) : (
         <>
           <div>
@@ -239,7 +240,7 @@ export const RentalSingleView = () => {
           </div>
           <div className="divide-y border-t">
             <div className="py-8">
-              <WhereYoullBeDescription mapData={data?.item?.location} />
+              <PickUpLocation mapData={data?.item?.location} />
             </div>
 
             <div className="py-8">

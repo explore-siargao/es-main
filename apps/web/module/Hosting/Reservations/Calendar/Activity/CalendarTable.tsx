@@ -22,6 +22,7 @@ import {
   Booking,
 } from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
+import AddActivityReservationModal from "../AddReservationModal/Activity"
 
 const ActivitiesCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -34,6 +35,7 @@ const ActivitiesCalendarTable = () => {
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
+  //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
@@ -62,18 +64,20 @@ const ActivitiesCalendarTable = () => {
 
   const handleSaveNewReservation = (newReservation: any, reset: Function) => {
     const updatedData = { ...filteredData }
-    const category = updatedData.categories.filter(
+    const category = updatedData?.categories?.filter(
       (category) => category.name === newReservation.category
     )
 
+    //@ts-ignore
     if (category.length > 0) {
+      //@ts-ignore
       const selectedCategory = category[0]
       if (selectedCategory) {
-        const room = selectedCategory.rooms.find(
+        const room = selectedCategory?.rooms?.find(
           (rm) => rm.abbr === newReservation.room
         )
         if (room) {
-          room.bookings.push(newReservation)
+          room?.bookings?.push(newReservation)
           setFilteredData(updatedData)
           toast.success("Reservation added successfully")
           reset()
@@ -104,6 +108,7 @@ const ActivitiesCalendarTable = () => {
           })),
         })),
       }
+      //@ts-ignore
       setFilteredData(newFilteredData)
     }
 
@@ -214,12 +219,13 @@ const ActivitiesCalendarTable = () => {
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
     const newFilteredData = { ...filteredData }
-    const category = newFilteredData.categories.find(
+    const category = newFilteredData?.categories?.find(
       (category) => category.name === categoryName
     )
 
     if (category) {
-      const room = category.rooms[roomIndex]
+      //@ts-ignore
+      const room = category?.rooms[roomIndex]
       if (room) {
         room.abbr = tempRoomAbbr
         setFilteredData(newFilteredData)
@@ -235,14 +241,15 @@ const ActivitiesCalendarTable = () => {
   }
 
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-lg border border-b-0">
+    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       <div className="overflow-auto">
-        <table className="min-w-max w-full rounded-lg">
+        <table className="min-w-max w-full rounded-xl">
           <thead className="">
             <tr className="uppercase text-sm leading-normal">
               <td colSpan={1} rowSpan={2} className="">
                 <Sidebar
                   nextPrevFunction={moveStartDateByOneDay}
+                  //@ts-ignore
                   openAddReservationModal={handleOpenAddReservationModal}
                 />
               </td>
@@ -253,7 +260,7 @@ const ActivitiesCalendarTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.categories.map((category, index) => (
+            {filteredData?.categories?.map((category, index) => (
               <React.Fragment key={category.name}>
                 <tr
                   className="hover:bg-gray-100 cursor-pointer"
@@ -298,7 +305,7 @@ const ActivitiesCalendarTable = () => {
                   })}
                 </tr>
                 {!collapsed[category.name] &&
-                  category.rooms.map((room, roomIndex) => (
+                  category?.rooms?.map((room, roomIndex) => (
                     <tr key={room.abbr} className="hover:bg-gray-100 relative">
                       <td className="border p-4 text-left border-l-0">
                         <div className="flex justify-between items-center">
@@ -339,7 +346,7 @@ const ActivitiesCalendarTable = () => {
                         colSpan={daysPerPage}
                         className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
                       >
-                        {room.bookings.map((booking: Booking) => {
+                        {room?.bookings?.map((booking: Booking) => {
                           const style = getBookingStyle(
                             startDate,
                             daysPerPage,
@@ -363,7 +370,7 @@ const ActivitiesCalendarTable = () => {
                                   booking: booking,
                                 })
                               }}
-                              className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-lg h-[80%] top-[10%] absolute items-center justify-center"
+                              className={`booking-block hover:cursor-pointer flex z-20 ${booking.status === "confirmed" ? "bg-primary-500 hover:bg-primary-700" : booking.status === "out-of-service" ? "bg-red-500 hover:bg-red-600" : booking.status === "checked-in" ? "bg-green-500 hover:bg-green-600" : booking.status === "checked-out" ? "bg-gray-300 hover:bg-gray-400" : booking.status === "blocked-date" ? "bg-gray-500 hover:bg-gray-600" : ""} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                             >
                               <span className="text-white text-sm truncate px-2">
                                 {booking.name}
@@ -397,11 +404,9 @@ const ActivitiesCalendarTable = () => {
         setRoomQuantity={setRoomQuantity}
         category={selectedCategory}
       />
-      <AddReservationModal
+      <AddActivityReservationModal
         isModalOpen={isAddReservationModalOpen}
         onClose={closeAddReservationModal}
-        onSave={handleSaveNewReservation}
-        data={filteredData}
       />
     </div>
   )

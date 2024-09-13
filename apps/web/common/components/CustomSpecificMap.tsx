@@ -1,16 +1,18 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { MapContainer, TileLayer, Marker } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
 import { Icon, LatLngTuple } from "leaflet"
 import { WEB_URL } from "../constants/ev"
+
 interface SpecificMapProps {
   center: [number, number]
   mapHeight: string
   mapWidth: string
   zoom?: number
   setCoordinates: (lat: number, lng: number) => void
+  isRoundedEdge?: boolean
 }
 
 const markerIcon = new Icon({
@@ -26,6 +28,7 @@ const CustomSpecificMap = ({
   mapWidth,
   zoom,
   setCoordinates,
+  isRoundedEdge,
 }: SpecificMapProps) => {
   const [position, setPosition] = useState<[number, number] | null>(null)
 
@@ -33,6 +36,19 @@ const CustomSpecificMap = ({
     const newCoordinates = event.target.getLatLng()
     setPosition([newCoordinates.lat, newCoordinates.lng])
     setCoordinates(newCoordinates.lat, newCoordinates.lng)
+  }
+
+  const handleMapClick = (event: any) => {
+    const newCoordinates = event.latlng
+    setPosition([newCoordinates.lat, newCoordinates.lng])
+    setCoordinates(newCoordinates.lat, newCoordinates.lng)
+  }
+
+  const MapClickHandler = () => {
+    useMapEvents({
+      click: handleMapClick,
+    })
+    return null
   }
 
   const [showMap, setShowMap] = useState(false)
@@ -49,7 +65,9 @@ const CustomSpecificMap = ({
   }, [HandleResize])
 
   return (
-    <div className="flex-1 block bg-primary-200">
+    <div
+      className={`${isRoundedEdge && "rounded-xl"} flex-1 block bg-primary-200`}
+    >
       <div className={`${mapHeight} ${mapWidth} relative`}>
         {showMap ? (
           <MapContainer
@@ -61,7 +79,9 @@ const CustomSpecificMap = ({
               width: "100%",
               zIndex: 30,
             }}
+            className={isRoundedEdge ? "rounded-xl" : ""}
           >
+            <MapClickHandler />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

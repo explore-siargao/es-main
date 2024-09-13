@@ -123,7 +123,7 @@ const RentalSummary = () => {
                 )}
                 <div
                   className={cn(
-                    `relative h-52 w-full bg-primary-50 rounded-lg`,
+                    `relative h-52 w-full bg-primary-50 rounded-xl`,
                     photo.isMain && "border-2 border-secondary-500"
                   )}
                 >
@@ -133,7 +133,7 @@ const RentalSummary = () => {
                     layout="fill"
                     objectFit="cover"
                     objectPosition="center"
-                    className="rounded-lg"
+                    className="rounded-xl"
                   />
                 </div>
                 <Typography
@@ -174,10 +174,12 @@ const RentalSummary = () => {
             <span className="font-semibold">Barangay / District:</span>{" "}
             {rental?.location?.barangay}
           </Typography>
-          <Typography variant="h5" className="mt-2">
-            <span className="font-semibold">How to get there:</span>{" "}
-            {rental?.location?.howToGetThere}
-          </Typography>
+          <div className="w-1/2">
+            <Typography variant="h5" className="mt-2">
+              <span className="font-semibold">How to get there:</span>{" "}
+              {rental?.location?.howToGetThere}
+            </Typography>
+          </div>
         </div>
       </div>
       <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">

@@ -59,7 +59,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
         <textarea
           rows={4}
           id="description"
-          className="block w-72 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+          className="block w-72 rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
           placeholder="Add a photo description that explains your unit, for example: `Front view of the unit.`"
           defaultValue={description}
           onChange={(e) => editDescription(e.currentTarget.value)}
@@ -72,7 +72,7 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
         <textarea
           rows={2}
           id="tags"
-          className="block w-72 rounded-md pl-3 pr-[41px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+          className="block w-72 rounded-xl pl-3 pr-[41px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
           placeholder="Enter tags separated by commas eg:`red,car`"
           defaultValue={tags}
           onChange={(e) => editTags(e.currentTarget.value)}

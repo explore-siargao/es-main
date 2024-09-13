@@ -15,7 +15,7 @@ const Builder = () => {
       <Typography variant="h3" fontWeight="semibold" className="mb-2">
         Itinerary Builder
       </Typography>
-      <Typography className="text-xs text-gray-500 italic mt-2">
+      <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
         Streamline travel planning by centralizing itinerary creation and
         management, particularly focusing on segments like accommodations,
         activities, and transportation transfers
@@ -35,7 +35,7 @@ const Builder = () => {
             <>
               <div className="ml-4 w-[2px] h-12 bg-primary-600 mt-2"></div>
               <div
-                className={`mt-2 shadow-md rounded-lg p-4 border ${segment.transfer ? "border-secondary-200" : "border-primary-500"} `}
+                className={`mt-2 shadow-md rounded-xl p-4 border ${segment.transfer ? "border-secondary-200" : "border-primary-500"} `}
               >
                 <Typography variant="h4">
                   {segment.transfer

@@ -5,28 +5,21 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { LucideBadgeInfo, LucideInfo } from "lucide-react"
 import useGetInsights from "./hooks/useGetInsights"
 import Chart, { ChartType } from "./components/Chart"
+import Tabs from "@/common/components/Tabs"
+import insightsTabs from "./helpers/insightsTabs"
+import GraphTab from "../PaymentHistory/GraphTab"
 
 const Insights = () => {
   const [category, setCategory] = useState("Property")
   const [listing, setListing] = useState("Mountain top house")
   const [year, setYear] = useState("2024")
   const [month, setMonth] = useState("All")
-
   const { data: filteredInsights, isPending: filteredInsightsIsPending } =
     useGetInsights(category, listing, year, month)
-  console.log(filteredInsights)
   return (
     <div className="mt-20">
-      <div className="mb-4">
-        <Typography
-          variant="h1"
-          fontWeight="semibold"
-          className="flex justify-between items-center mb-2"
-        >
-          Insights
-        </Typography>
-      </div>
-      <div className="grid grid-cols-6 gap-4 mb-4 border-b pb-4">
+      <Tabs tabs={insightsTabs} />
+      <div className="grid grid-cols-6 gap-4 mt-4 mb-2">
         <Select
           label="Category"
           required
@@ -65,26 +58,54 @@ const Insights = () => {
           onChange={(e) => setMonth(e.target.value)}
         >
           <Option value={"All"}>All</Option>
+          <Option value={"Jan"}>January</Option>
+          <Option value={"Feb"}>February</Option>
+          <Option value={"Mar"}>March</Option>
+          <Option value={"Apr"}>April</Option>
           <Option value={"May"}>May</Option>
-          <Option value={"April"}>April</Option>
-          <Option value={"March"}>March</Option>
-          <Option value={"February"}>February</Option>
+          <Option value={"Jun"}>June</Option>
+          <Option value={"Jul"}>July</Option>
+          <Option value={"Aug"}>August</Option>
+          <Option value={"Sep"}>September</Option>
+          <Option value={"OCt"}>October</Option>
+          <Option value={"Nov"}>November</Option>
+          <Option value={"Dec"}>December</Option>
         </Select>
       </div>
+      <div className="mt-7">
+        <Typography
+          variant="h1"
+          fontWeight="semibold"
+          className="flex justify-between items-center mb-2"
+        >
+          Insights
+        </Typography>
+        <Typography
+          variant="p"
+          className="flex justify-between items-center text-gray-500 mb-2"
+        >
+          The Insights section offers a clear view of your property's
+          performance, customized by category, listing, and time. Navigate
+          effortlessly with tabs, see real-time updates, and visualize data with
+          interactive charts. Understand views, bookings, and rates to make
+          informed decisions and optimize your property management strategy.
+        </Typography>
+      </div>
+
       <div className="flex gap-4 mb-4">
-        <div className="p-6 border border-primary-500 rounded-lg w-1/6">
+        <div className="p-6 border border-primary-500 rounded-xl w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
             {filteredInsights ? filteredInsights[0]?.views : 0}
           </Typography>
           <Typography className="text-text-500">Views</Typography>
         </div>
-        <div className="p-6 border border-primary-500 rounded-lg w-1/6">
+        <div className="p-6 border border-primary-500 rounded-xl w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
             0
           </Typography>
           <Typography className="text-text-500">New bookings</Typography>
         </div>
-        <div className="p-6 border border-primary-500 rounded-lg w-1/6">
+        <div className="p-6 border border-primary-500 rounded-xl w-1/6">
           <Typography className="font-bold text-4xl text-text-500">
             {filteredInsights ? filteredInsights[0]?.bookingRate : 0}%
           </Typography>
@@ -123,6 +144,12 @@ const Insights = () => {
           </>
         )}
       </div>
+      <GraphTab
+        category={category}
+        listing={listing}
+        year={year}
+        month={month}
+      />
     </div>
   )
 }
