@@ -36,6 +36,7 @@ import Bedroom from "./components/Bedroom"
 import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
 import { IBedroom } from "../types"
 import { useBedroomStore } from "./store/useBedroomStore"
+import { Input2 } from "@/common/components/ui/Input2"
 
 type T_RoomUnit = {
   title: string
@@ -45,6 +46,8 @@ type T_RoomUnit = {
   typeCount: number
   amenities: T_Property_Amenity[]
   bedRooms: IBedroom[]
+  isHaveSharedBathRoom: "Yes" | "No" | null | undefined
+  isHaveSharedAmenities: "Yes" | "No" | null | undefined
 }
 
 type Prop = {
@@ -82,7 +85,7 @@ const Room = ({ pageType }: Prop) => {
   )
   const amenities = useSelectAmenityStore((state) => state.amenities)
 
-  const { register, handleSubmit, setValue } = useForm<T_RoomUnit>()
+  const { register, handleSubmit, setValue, watch } = useForm<T_RoomUnit>()
   const [sizeValues, setSizeValues] = useState({
     sqm: 0,
     squareFoot: 0,
@@ -156,7 +159,7 @@ const Room = ({ pageType }: Prop) => {
 
   const onSubmit = async (formData: T_RoomUnit) => {
     formData.amenities = amenities
-
+    console.log("test: ", formData)
     const missingTags = photos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
     )
@@ -197,6 +200,8 @@ const Room = ({ pageType }: Prop) => {
         description: "",
         qty: Number(typeCount),
         bedRooms: bedRooms,
+        isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
+        isHaveSharedAmenities: formData.isHaveSharedAmenities,
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
       const filterSelectedAmenities = amenities.filter(
@@ -223,6 +228,11 @@ const Room = ({ pageType }: Prop) => {
       setPhotos(data?.item?.photos)
       setAmenties(data?.item?.amenities)
       setValue("size", data?.item?.totalSize)
+      setValue("isHaveSharedBathRoom", data?.item?.isHaveSharedBathRoom || "No")
+      setValue(
+        "isHaveSharedAmenities",
+        data?.item?.isHaveSharedAmenities || "No"
+      )
       handleSqmChange(data.item?.totalSize)
       if (data?.item?.subtitle?.startsWith("Custom: ", "")) {
         setCustomTitle(data?.item?.subtitle.replace("Custom: ", ""))
@@ -234,7 +244,6 @@ const Room = ({ pageType }: Prop) => {
   }, [data, isPending])
 
   const category = data?.item?.category
-  console.log("unitType:", category)
 
   return (
     <div className="mt-20 mb-28">
@@ -249,12 +258,11 @@ const Room = ({ pageType }: Prop) => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h4" fontWeight="semibold" className="mb-2">
-          What is the name you want to display for your unit? (Optional)
-        </Typography>
-        <div className="grid grid-cols-4 gap-x-6 mb-5">
-          <Input
+        <div className="grid grid-cols-4 gap-x-6">
+          <Input2
             label="Title"
+            description=" What is the name you want to display for your unit? (Optional)"
+            placeholder="Example: Queen room with site view"
             id="title"
             type="text"
             minLength={5}
@@ -270,14 +278,14 @@ const Room = ({ pageType }: Prop) => {
           <Typography
             variant="h5"
             fontWeight="normal"
-            className="mb-2 text-gray-400"
+            className="text-xs text-gray-500 italic mb-2"
           >
             How many comfortable living spaces does this unit have? Click to add
-            bed type.
+            bed type
           </Typography>
-          <div className="grid grid-cols-2">
-            <Bedroom unitType={unitType} category={category} />
-          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-x-6 pr-12">
+          <Bedroom unitType={unitType} category={category} />
         </div>
         <Typography variant="h4" fontWeight="semibold" className="mt-4">
           How big is this unit?
@@ -285,7 +293,7 @@ const Room = ({ pageType }: Prop) => {
         <Typography
           variant="h5"
           fontWeight="normal"
-          className="mb-2 text-gray-400"
+          className="text-xs text-gray-500 italic mb-2"
         >
           Enter the unit size in square meters, we will automatically convert to
           square foot
@@ -318,8 +326,15 @@ const Room = ({ pageType }: Prop) => {
 
         <div className="grid grid-cols-4 mt-4">
           <div>
-            <Typography variant="h4" fontWeight="semibold" className="mb-2">
+            <Typography variant="h4" fontWeight="semibold">
               How many of this type you have?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-xs text-gray-500 italic mb-2"
+            >
+              Identical units that will have the same price per night.
             </Typography>
             <div className="flex">
               <button
@@ -352,6 +367,84 @@ const Room = ({ pageType }: Prop) => {
                 <PlusIcon className="h-3 w-3" />
               </button>
             </div>
+          </div>
+        </div>
+        <div className="mb-4 mt-4">
+          <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+            Does this room have a shared bathroom?
+          </Typography>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedBathRoom-no"
+              type="radio"
+              {...register("isHaveSharedBathRoom", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="No"
+              required
+              checked={watch("isHaveSharedBathRoom") === "No"}
+            />
+            <label
+              htmlFor="isHaveSharedBathRoom-no"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              No
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedBathRoom-yes"
+              type="radio"
+              {...register("isHaveSharedBathRoom", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="Yes"
+              required
+              checked={watch("isHaveSharedBathRoom") === "Yes"}
+            />
+            <label
+              htmlFor="isHaveSharedBathRoom-yes"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              Yes
+            </label>
+          </div>
+        </div>
+        <div className="mb-4 mt-4">
+          <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+            Does this room have a shared amenities?
+          </Typography>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedAmenities-no"
+              type="radio"
+              {...register("isHaveSharedAmenities", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="No"
+              required
+              checked={watch("isHaveSharedAmenities") === "No"}
+            />
+            <label
+              htmlFor="isHaveSharedAmenities-no"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              No
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedAmenities-yes"
+              type="radio"
+              {...register("isHaveSharedAmenities", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="Yes"
+              required
+              checked={watch("isHaveSharedAmenities") === "Yes"}
+            />
+            <label
+              htmlFor="isHaveSharedAmenities-yes"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              Yes
+            </label>
           </div>
         </div>
         <hr className="mt-6 mb-4" />

@@ -11,6 +11,8 @@ interface IRoomBasicInfo {
   description?: string | ""
   qty: number
   bedRooms: IBedroom[]
+  isHaveSharedBathRoom: "Yes" | "No" | null | undefined
+  isHaveSharedAmenities: "Yes" | "No" | null | undefined
 }
 
 export async function updateRoomBasicInfo(

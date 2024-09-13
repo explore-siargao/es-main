@@ -430,7 +430,7 @@ const Bed = ({ pageType }: Prop) => {
         <Photos />
         <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
-          Amenities and Facilities (for the bed itself) asd
+          Amenities and Facilities (for the bed itself)
         </Typography>
         <div className="grid grid-cols-2 gap-3 mb-3">
           <AmenitiesCheckboxes

@@ -25,6 +25,10 @@ const bookableUnitTypes = new Schema({
     type: String,
     required: false,
   },
+  isHaveSharedAmenities: {
+    type: String,
+    required: false,
+  },
   isSmokingAllowed: {
     type: String,
     required: false,
