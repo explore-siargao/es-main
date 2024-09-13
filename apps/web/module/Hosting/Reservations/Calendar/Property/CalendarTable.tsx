@@ -29,7 +29,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import PropertyCalendarModal from "../PropertyCalendarModal"
 
 const PropertyCalendarTable = () => {
-  const {mutate} = useUpdateCalendarUnitName()
+  const { mutate } = useUpdateCalendarUnitName()
   const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
@@ -160,12 +160,19 @@ const PropertyCalendarTable = () => {
     }
 
     const transformUnits = (units: any[]) =>
-      units.map((unit: {id:string, abbr: any; status: any; reservations: any[] }) => ({
-        id: unit.id,
-        abbr: unit.abbr,
-        status: unit.status,
-        reservations: unit.reservations.filter(isReservationWithinRange),
-      }))
+      units.map(
+        (unit: {
+          id: string
+          abbr: any
+          status: any
+          reservations: any[]
+        }) => ({
+          id: unit.id,
+          abbr: unit.abbr,
+          status: unit.status,
+          reservations: unit.reservations.filter(isReservationWithinRange),
+        })
+      )
 
     const filterItems = (items: any[]) =>
       items
@@ -329,7 +336,7 @@ const PropertyCalendarTable = () => {
         toast.error(String(err))
       },
     }
-    mutate({id:id, name:name}, callBackReq)
+    mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
   return (
@@ -435,7 +442,7 @@ const PropertyCalendarTable = () => {
                                     size={"icon"}
                                     variant={"link"}
                                     onClick={(e) =>
-                                       handleSaveUnitName(bed.id, tempRoomAbbr)
+                                      handleSaveUnitName(bed.id, tempRoomAbbr)
                                     }
                                   >
                                     <Save className="text-gray-500 w-5" />
