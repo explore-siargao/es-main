@@ -1,7 +1,11 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
-import { dbBookableUnitTypes, dbProperties, dbReservations } from '@repo/database'
+import {
+  dbBookableUnitTypes,
+  dbProperties,
+  dbReservations,
+} from '@repo/database'
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 
 const response = new ResponseService()
@@ -89,24 +93,28 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
     // Fetch reservations for each category
     const [roomReservations, wholePlaceReservations, bedReservations] =
       await Promise.all([
-        dbReservations.find({
-          unitId: { $in: roomIds.map((room:any) => room?._id) }, // Extracting _id from each object
-          $or: [
-            { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-          ],
-        })
-          .populate('guest'),
-          dbReservations.find({
-            unitId: { $in: wholePlaceIds.map((wholePlace:any) => wholePlace?._id) }, // Extracting _id from each object
+        dbReservations
+          .find({
+            unitId: { $in: roomIds.map((room: any) => room?._id) }, // Extracting _id from each object
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
           })
           .populate('guest'),
-          
         dbReservations
           .find({
-            unitId: { $in: bedIds.map((bed:any) => bed?._id) },
+            unitId: {
+              $in: wholePlaceIds.map((wholePlace: any) => wholePlace?._id),
+            }, // Extracting _id from each object
+            $or: [
+              { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
+            ],
+          })
+          .populate('guest'),
+
+        dbReservations
+          .find({
+            unitId: { $in: bedIds.map((bed: any) => bed?._id) },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -121,10 +129,10 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       propertyName: string
     ) =>
       units.map((unit: any) => {
-        const formattedItems = unit.ids.map((idObj:any) => {
+        const formattedItems = unit.ids.map((idObj: any) => {
           return {
             id: idObj._id,
-            abbr:idObj.name,
+            abbr: idObj.name,
             status: 'available',
             reservations: [],
           }
