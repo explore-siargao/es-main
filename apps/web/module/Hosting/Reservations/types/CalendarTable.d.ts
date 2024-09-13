@@ -28,6 +28,7 @@ export interface SelectedReservation {
 }
 
 export interface Room {
+  id:string
   abbr: string
   status: string
   reservations: Reservation[]
@@ -35,6 +36,7 @@ export interface Room {
 }
 
 export interface WholePlace {
+  id:string
   abbr: string
   status: string
   reservations: Reservation[]
@@ -42,6 +44,7 @@ export interface WholePlace {
 }
 
 export interface Bed {
+  id:string
   abbr: string
   status: string
   reservations: Reservation[]
