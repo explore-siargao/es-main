@@ -32,10 +32,13 @@ function PropertyReservationForm({
   const [selectedUnitId, setSelectedUnitId] = useState("")
   const [selectedPropertyId, setSelectedPropertyId] = useState("")
   const { register, reset } = useFormContext()
-  const { data: properties, isLoading: isPropertiesLoading } = useGetPropertyByHost()
-  const { data: propertyUnits, isLoading: isPropertyUnitsLoading } = useGetPropertyById(selectedPropertyId)
-  const { data: units, isLoading: isUnitsLoading } = useGetUnitById(selectedUnitId)
-  
+  const { data: properties, isLoading: isPropertiesLoading } =
+    useGetPropertyByHost()
+  const { data: propertyUnits, isLoading: isPropertyUnitsLoading } =
+    useGetPropertyById(selectedPropertyId)
+  const { data: units, isLoading: isUnitsLoading } =
+    useGetUnitById(selectedUnitId)
+
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -84,7 +87,9 @@ function PropertyReservationForm({
               label="Available Units"
               id="unitId"
               required
-              disabled={units?.items?.length === 0 || !selectedUnitId || isUnitsLoading}
+              disabled={
+                units?.items?.length === 0 || !selectedUnitId || isUnitsLoading
+              }
               {...register("unitId", {
                 required: "This field is required",
               })}
