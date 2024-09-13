@@ -46,8 +46,8 @@ type T_RoomUnit = {
   typeCount: number
   amenities: T_Property_Amenity[]
   bedRooms: IBedroom[]
-  isHaveSharedBathRoom?: "Yes" | "No" | null | undefined
-  isHaveSharedAmenities?: "Yes" | "No" | null | undefined
+  isHaveSharedBathRoom: "Yes" | "No" | null | undefined
+  isHaveSharedAmenities: "Yes" | "No" | null | undefined
 }
 
 type Prop = {
