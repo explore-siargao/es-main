@@ -29,12 +29,12 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
     <div>
       <div>
         <div className="flex items-center "></div>
-        <div className="grid grid-cols-2 gap-x-7 gap-y-2">
+        <div className="grid grid-cols-2 gap-y-2">
           {displayBedrooms.map((bedroomArray, index) => {
             return (
               <React.Fragment key={bedroomArray.roomName}>
-                <div className="mt-2 rounded-xl px-3 py-2 border w-full border-text-200">
-                  <Typography variant="h4">
+                <div className=" rounded-xl px-3 py-2 border w-full border-text-200">
+                  <Typography variant="h4" fontWeight="semibold">
                     {category === "Room" && unitType !== "Studio"
                       ? `Bed ${index + 1}`
                       : unitType === "Studio"
@@ -52,7 +52,7 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
                     ))}
                 </div>
                 {unitType !== "Studio" && (
-                  <div className="flex items-center">
+                  <div className="flex items-center ml-6">
                     <Button
                       type="button"
                       variant={"ghost"}
