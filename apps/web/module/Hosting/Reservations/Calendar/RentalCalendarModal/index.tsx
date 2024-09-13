@@ -84,7 +84,8 @@ const RentalCalendarModal = ({
                 </Typography>
               </div>
             </div>
-            {selectedReservation?.reservation?.status!=="Out-of-Service-Dates" && (
+            {selectedReservation?.reservation?.status !==
+              "Out-of-Service-Dates" && (
               <div className="flex flex-col">
                 <Typography variant="h4" className="font-semibold">
                   Guest
