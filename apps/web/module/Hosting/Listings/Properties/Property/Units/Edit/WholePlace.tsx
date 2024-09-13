@@ -35,11 +35,13 @@ import Bedroom from "./components/Bedroom"
 import { useBedroomStore, useBedroomStudioStore } from "./store/useBedroomStore"
 import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
 import { IBedroom } from "../types"
-import { Option, Select } from "@/common/components/ui/Select"
+import { Option } from "@/common/components/ui/Select"
 import { RadioInput } from "@/module/Hosting/Listings/Activities/Activity/Inclusions"
 import Livingroom from "./components/Livingroom"
 import { useLivingroomStore } from "./store/useLivingroomStore"
 import useUnitTypeStore from "./store/useUnitTypeStore"
+import { Select2 } from "@/common/components/ui/Select2"
+import { Input2 } from "@/common/components/ui/Input2"
 
 type T_WholePlaceUnit = {
   title: string
@@ -388,8 +390,9 @@ const WholePlace = ({ pageType }: Prop) => {
     switch (propertyType) {
       case "Hotel":
         return (
-          <Select
+          <Select2
             label="Unit Type"
+            description="Which unit type best represents your space?"
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
@@ -400,12 +403,13 @@ const WholePlace = ({ pageType }: Prop) => {
             <Option value="Apartment">Apartment</Option>
             <Option value="Studio">Studio apartment</Option>
             <Option value="Condominium">Bungalow</Option>
-          </Select>
+          </Select2>
         )
       case "Resort":
         return (
-          <Select
+          <Select2
             label="Unit Type"
+            description="Which unit type best represents your space?"
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
@@ -417,12 +421,13 @@ const WholePlace = ({ pageType }: Prop) => {
             <Option value="Studio">Studio Apartment</Option>
             <Option value="House">House</Option>
             <Option value="Condominium">Bungalow</Option>
-          </Select>
+          </Select2>
         )
       case "Whole place":
         return pageType === "setup" ? (
-          <Select
+          <Select2
             label="Unit Type"
+            description="Which unit type best represents your space?"
             disabled={true}
             value={selectedUnitType}
             {...register("subtitle", {})}
@@ -432,10 +437,11 @@ const WholePlace = ({ pageType }: Prop) => {
             <Option value="House">House</Option>
             <Option value="Condominium">Bungalow</Option>
             <Option value="Cottage">Cottage</Option>
-          </Select>
+          </Select2>
         ) : (
-          <Select
+          <Select2
             label="Unit Type"
+            description="Which unit type best represents your space?"
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
@@ -446,13 +452,14 @@ const WholePlace = ({ pageType }: Prop) => {
             <Option value="House">House</Option>
             <Option value="Condominium">Bungalow</Option>
             <Option value="Cottage">Cottage</Option>
-          </Select>
+          </Select2>
         )
 
       case "Apartment":
         return (
-          <Select
+          <Select2
             label="Unit Type"
+            description="Which unit type best represents your space?"
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
@@ -461,12 +468,13 @@ const WholePlace = ({ pageType }: Prop) => {
           >
             <Option value="Apartment">Apartment</Option>
             <Option value="Studio">Studio Apartment</Option>
-          </Select>
+          </Select2>
         )
       default:
         return (
-          <Select
+          <Select2
             label="Unit Type"
+            description="Which unit type best represents your space?"
             disabled={isPending || isFetching}
             {...register("subtitle", {
               required: "This field is required",
@@ -478,7 +486,7 @@ const WholePlace = ({ pageType }: Prop) => {
             <Option value="Studio">Studio apartment</Option>
             <Option value="House">House</Option>
             <Option value="Condominium">Condominium</Option>
-          </Select>
+          </Select2>
         )
     }
   }
@@ -500,23 +508,10 @@ const WholePlace = ({ pageType }: Prop) => {
             </Typography>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Typography variant="h4" fontWeight="semibold" className="mb-2">
-              What is the name you want to display for your unit? (Optional)
-            </Typography>
-            <div className="grid grid-cols-4 gap-x-6 mb-5">
-              <Input
-                label="Title"
-                id="title"
-                type="text"
-                minLength={5}
-                maxLength={30}
-                disabled={isPending || isFetching}
-                {...register("title")}
-              />
-            </div>
-            <div className="grid grid-cols-4 gap-x-6">
+            <div className="grid grid-cols-4 gap-y-2 py-2">
               {renderUnitTypeSelect()}
             </div>
+
             <div>
               {unitType !== "Studio" && (
                 <>
@@ -530,7 +525,7 @@ const WholePlace = ({ pageType }: Prop) => {
                   <Typography
                     variant="h5"
                     fontWeight="normal"
-                    className="mb-2 text-gray-400"
+                    className="mb-2 text-xs text-gray-500 italic"
                   >
                     {unitType !== "Studio"
                       ? "How many comfortable living spaces does this unit have? Click to add bed type."
@@ -538,8 +533,10 @@ const WholePlace = ({ pageType }: Prop) => {
                   </Typography>
                   <div className="grid grid-cols-2">
                     {unitType === "Studio" ? (
-                      <div className="flex items-center space-x-6">
-                        <Select
+                      <div className="flex items-center space-x-7">
+                        <Select2
+                          label="Unit Type"
+                          description="Which unit type best represents your space?"
                           onChange={(e) =>
                             setSingleRoomBed(e.currentTarget.value)
                           }
@@ -554,7 +551,7 @@ const WholePlace = ({ pageType }: Prop) => {
                           <Option value="Sofa Bed">Sofa Bed</Option>
                           <Option value="Bunk Bed">Bunk Bed</Option>
                           <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
-                        </Select>
+                        </Select2>
                         <div className="flex rounded-md">
                           <button
                             disabled={isPending || isFetching}
@@ -603,6 +600,19 @@ const WholePlace = ({ pageType }: Prop) => {
                   </div>
                 </>
               )}
+
+              <div className="grid grid-cols-4 mt-3 mb-5">
+                <Input2
+                  label="Title"
+                  description="What is the name you want to display for your unit? (Optional)"
+                  id="title"
+                  type="text"
+                  minLength={5}
+                  maxLength={30}
+                  disabled={isPending || isFetching}
+                  {...register("title")}
+                />
+              </div>
 
               {unitType != "" && (
                 <div className="mt-4">
@@ -684,6 +694,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 </div>
               )}
             </div>
+
             <div className="grid grid-cols-4 mt-4 gap-x-6">
               <div>
                 <Typography variant="h4" fontWeight="semibold" className="mb-2">
@@ -737,7 +748,7 @@ const WholePlace = ({ pageType }: Prop) => {
             <Typography
               variant="h5"
               fontWeight="normal"
-              className="mb-2 text-gray-400"
+              className="text-xs text-gray-500 italic mb-3"
             >
               Enter the unit size in square meters, we will automatically
               convert to square foot
@@ -774,7 +785,7 @@ const WholePlace = ({ pageType }: Prop) => {
               <Typography
                 variant="h5"
                 fontWeight="normal"
-                className="mb-2 text-gray-400"
+                className="text-xs text-gray-500 italic mb-2"
               >
                 Identical amenities, bedrooms, bathrooms, etc.
               </Typography>

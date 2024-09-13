@@ -31,6 +31,10 @@ import { FormProvider, useForm } from "react-hook-form"
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
   const form = useForm()
+
+  const [selectedLegendType, setSelectedLegendType] = useState<string>("")
+  const [isLegendTypeSelected, setIsLegendTypeSelected] =
+    useState<boolean>(false)
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
@@ -66,11 +70,22 @@ const CarCalendarTable = () => {
   const daysPerPage = 13
 
   const closeReservationModal = () => {
-    setIsReservationModalOpen(false)
-    setIsEditReservation(false)
-    form.reset()
+    setSelectedLegendType("")
+    setTimeout(() => {
+      setIsReservationModalOpen(false)
+      setIsEditReservation(false)
+      form.reset()
+    }, 200)
   }
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
+  const closeAddReservationModal = () => {
+    setIsAddReservationModalOpen(false)
+    setTimeout(() => {
+      form.setValue("status", "")
+      setSelectedLegendType("")
+      setIsLegendTypeSelected(false)
+      form.reset()
+    }, 200)
+  }
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
@@ -440,10 +455,18 @@ const CarCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddRentalReservationModal
-            isModalOpen={isAddReservationModalOpen}
-            onClose={closeAddReservationModal}
-          />
+          <FormProvider {...form}>
+            <form>
+              <AddRentalReservationModal
+                isModalOpen={isAddReservationModalOpen}
+                onClose={closeAddReservationModal}
+                selectedLegendType={selectedLegendType}
+                setSelectedLegendType={setSelectedLegendType}
+                setIsLegendTypeSelected={setIsLegendTypeSelected}
+                isLegendTypeSelected={isLegendTypeSelected}
+              />
+            </form>
+          </FormProvider>
         </div>
       )}
     </div>

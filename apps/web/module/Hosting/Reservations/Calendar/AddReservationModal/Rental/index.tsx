@@ -1,6 +1,5 @@
-import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
-import { FormProvider, useForm } from "react-hook-form"
+import { FormProvider, useFormContext } from "react-hook-form"
 import RentalReservationForm from "./RentalReservationForm"
 import useAddRentalReservation from "../../hooks/useAddRentalReservation"
 import toast from "react-hot-toast"
@@ -10,28 +9,23 @@ import SelectLegendTypeForm from "../SelectLegendForm"
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
   onClose: () => void
+  setSelectedLegendType: (legend: string) => void
+  selectedLegendType: string
+  setIsLegendTypeSelected: (data: boolean) => void
+  isLegendTypeSelected: boolean
 }
 
 const AddRentalReservationModal = ({
   isModalOpen,
   onClose,
+  setSelectedLegendType,
+  selectedLegendType,
+  setIsLegendTypeSelected,
+  isLegendTypeSelected,
 }: IReservationCalendarModalProps) => {
   const queryClient = useQueryClient()
-  const [selectedLegendType, setSelectedLegendType] = useState<string>("")
-  const [isLegendTypeSelected, setIsLegendTypeSelected] =
-    useState<boolean>(false)
 
   const { mutate } = useAddRentalReservation()
-
-  const handleRentalCancel = () => {
-    onClose()
-
-    setTimeout(() => {
-      form.setValue("status", "")
-      setSelectedLegendType("")
-      setIsLegendTypeSelected(false)
-    }, 200)
-  }
 
   const handleSave = (data: any) => {
     mutate(data, {
@@ -41,8 +35,7 @@ const AddRentalReservationModal = ({
             queryKey: ["calendar-car"],
           })
           toast.success(data.message as string)
-          handleRentalCancel()
-          form.reset()
+          onClose()
         } else {
           toast.error(data.message as string)
         }
@@ -50,7 +43,7 @@ const AddRentalReservationModal = ({
     })
   }
 
-  const form = useForm()
+  const form = useFormContext()
 
   return (
     <ModalContainer
@@ -64,7 +57,7 @@ const AddRentalReservationModal = ({
           {isLegendTypeSelected ? (
             <RentalReservationForm
               handleSave={handleSave}
-              handleRentalCancel={handleRentalCancel}
+              handleRentalCancel={onClose}
               setIsLegendTypeSelected={setIsLegendTypeSelected}
               selectedLegendType={selectedLegendType}
             />
@@ -73,7 +66,7 @@ const AddRentalReservationModal = ({
               selectedLegendType={selectedLegendType}
               setSelectedLegendType={setSelectedLegendType}
               setIsLegendTypeSelected={setIsLegendTypeSelected}
-              handleRentalCancel={handleRentalCancel}
+              handleRentalCancel={onClose}
             />
           )}
         </FormProvider>

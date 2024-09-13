@@ -37,7 +37,7 @@ const Input2 = React.forwardRef<HTMLInputElement, InputProps>(
         </Typography>
         <div
           className={cn(
-            "relative  rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-1",
+            "relative  rounded-xl px-3 py-3 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-2",
             className
           )}
         >
@@ -46,7 +46,7 @@ const Input2 = React.forwardRef<HTMLInputElement, InputProps>(
             <input
               type={type}
               id={id}
-              className="block w-full border-0 p-0 mb-2 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50"
+              className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50"
               ref={ref}
               {...props}
             />
