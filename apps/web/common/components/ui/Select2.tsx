@@ -37,13 +37,13 @@ const Select2 = React.forwardRef<HTMLSelectElement, SelectProps>(
         </Typography>
         <div
           className={cn(
-            "rounded-xl pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-1",
+            "rounded-xl py-3 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-2",
             className
           )}
         >
           <select
             ref={ref}
-            className="block w-full px-3 border-0 py-0 pl-3 mb-2 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50"
+            className="block w-full px-3 border-0 py-0 pl-3 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50"
             {...props}
           >
             {children}
