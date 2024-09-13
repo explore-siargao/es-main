@@ -67,7 +67,7 @@ const PropertyCalendarModal = ({
                   Property Category
                 </Typography>
                 <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation.beds && "Beds"}
+                  {selectedReservation && "Beds"}
                 </Typography>
               </div>
               <div className="flex flex-col w-full">
@@ -79,7 +79,8 @@ const PropertyCalendarModal = ({
                 </Typography>
               </div>
             </div>
-            {selectedReservation?.reservation?.name && (
+            {selectedReservation?.reservation?.status !==
+              "Out-of-Service-Dates" && (
               <div className="flex flex-col">
                 <Typography variant="h4" className="font-semibold">
                   Guest

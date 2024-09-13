@@ -27,6 +27,7 @@ import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
 import { useQueryClient } from "@tanstack/react-query"
 import { FormProvider, useForm } from "react-hook-form"
 import PropertyCalendarModal from "../PropertyCalendarModal"
+import { getColorClasses } from "../../helpers/legends"
 
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
@@ -471,10 +472,12 @@ const PropertyCalendarTable = () => {
                                 if (!style) return null
 
                                 const { startCol, colSpan } = style
+                                const { colorClass, hoverColorClass } =
+                                  getColorClasses(booking.status)
 
                                 return (
                                   <div
-                                    key={booking.name}
+                                    key={booking.id}
                                     style={{
                                       left: `${(startCol * 100) / daysPerPage + 4}%`,
                                       width: `${(colSpan * 100) / daysPerPage - 8}%`,
@@ -486,10 +489,12 @@ const PropertyCalendarTable = () => {
                                         reservation: booking,
                                       })
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
-                                      {booking.name}
+                                      {booking.status === "Out-of-Service-Dates"
+                                        ? "Out of service"
+                                        : booking.name}
                                     </span>
                                   </div>
                                 )

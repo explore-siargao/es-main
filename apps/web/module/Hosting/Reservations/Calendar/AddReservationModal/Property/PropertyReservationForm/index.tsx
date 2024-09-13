@@ -75,7 +75,7 @@ function PropertyReservationForm({
               {propertyUnits &&
                 propertyUnits?.item?.bookableUnits?.map((unit: any) => (
                   <Option key={unit._id} value={unit._id}>
-                    {unit.title}
+                    {unit.title || unit.subtitle}
                   </Option>
                 ))}
             </Select>
