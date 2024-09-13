@@ -24,6 +24,7 @@ type Reservation = {
   endDate: Date
   guestCount: number
   notes?: String
+  status:String
 }
 
 type Room = {
@@ -152,6 +153,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
               endDate: reservation.endDate ?? new Date(),
               guestCount: reservation.guestCount ?? 0,
               notes: reservation.notes ?? '',
+              status:reservation.status
             }
 
             for (let i = 0; i < formattedItems.length; i++) {
