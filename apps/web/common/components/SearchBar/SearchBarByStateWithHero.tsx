@@ -3,14 +3,11 @@ import React, { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { WidthWrapper } from "@/common/components/WidthWrapper"
 import ApplyToHostModal from "../../../module/LandingPage/components/ApplyToHostModal"
-import { FormProvider, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useSearchStore } from "../../store/useSearchStore"
-import PropertySearchBar from "./PropertySearchBar"
-import ActivitiesSearchBar from "./ActivitiesSearchBar"
-import RentalsSearchBar from "./RentalsSearchBar"
 import { Typography } from "../ui/Typography"
 import { E_Listing_Category } from "@repo/contract"
-import CategoryButtonsByState from "./CategoryButtonsByState"
+import SearchBarByState from "./SearchBarByState"
 
 type T_Search_Form = {
   search: string
@@ -78,28 +75,8 @@ function SearchBarByStateWithHero() {
           Find your island vibe
         </Typography>
       </WidthWrapper>
-      <WidthWrapper width="small">
-        <nav
-          className="flex items-center justify-center py-2 my-2 w-full"
-          aria-label="Global"
-        >
-          <div className="flex flex-col w-full gap-3">
-            <div className="flex gap-8 rounded-full">
-              <CategoryButtonsByState
-                category={category}
-                setCategory={setCategory}
-                light={true}
-              />
-            </div>
-            <FormProvider {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                {category === propertyEnum && <PropertySearchBar />}
-                {category === activityEnum && <ActivitiesSearchBar />}
-                {category === rentalEnum && <RentalsSearchBar />}
-              </form>
-            </FormProvider>
-          </div>
-        </nav>
+      <WidthWrapper width="small" className="mt-6">
+        <SearchBarByState isDark />
       </WidthWrapper>
       <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
     </div>

@@ -9,7 +9,7 @@ import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
 import Footer from "@/common/components/Footer"
-import GuideHeader from "@/common/components/Header/v2"
+import GuideHeader from "@/common/components/Header/WithSearch"
 import YMarginWrapper from "@/common/components/YMarginWrapper"
 
 export const metadata: Metadata = {
