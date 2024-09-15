@@ -25,7 +25,13 @@ const propertyEnum = E_Listing_Category.Property
 const activityEnum = E_Listing_Category.Activity
 const rentalEnum = E_Listing_Category.Rental
 
-const SearchBarByState = ({ isNavCenter = false, isDark = false, }: { isNavCenter?: boolean, isDark?: boolean }) => {
+const SearchBarByState = ({
+  isNavCenter = false,
+  isDark = false,
+}: {
+  isNavCenter?: boolean
+  isDark?: boolean
+}) => {
   const router = useRouter()
   const path = usePathname()
   const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
@@ -46,19 +52,49 @@ const SearchBarByState = ({ isNavCenter = false, isDark = false, }: { isNavCente
       data.date,
       Number(data.numberOfGuest)
     )
-    if(category === E_Listing_Category.Property && data.location && data.checkIn && data.checkOut && data.numberOfGuest) {
-      router.push(`/search?category=${category}&location=${data.location}&checkIn=${data.checkIn}&checkOut=${data.checkOut}&numberOfGuest=${Number(data.numberOfGuest)}`)
-    } else if(category === E_Listing_Category.Activity && data.date && data.numberOfGuest) {
-      router.push(`/search?category=${category}&date=${data.date}&numberOfGuest=${Number(data.numberOfGuest)}`)
-    } else if(category === E_Listing_Category.Rental && data.rentalCategory && data.pickUpDate && data.dropOffDate) {
-      router.push(`/search?category=${category}&rentalCategory=${data.rentalCategory}&pickUpDate=${data.pickUpDate}&dropOffDate=${data.dropOffDate}`)
+    if (
+      category === E_Listing_Category.Property &&
+      data.location &&
+      data.checkIn &&
+      data.checkOut &&
+      data.numberOfGuest
+    ) {
+      router.push(
+        `/search?category=${category}&location=${data.location}&checkIn=${data.checkIn}&checkOut=${data.checkOut}&numberOfGuest=${Number(data.numberOfGuest)}`
+      )
+    } else if (
+      category === E_Listing_Category.Activity &&
+      data.date &&
+      data.numberOfGuest
+    ) {
+      router.push(
+        `/search?category=${category}&date=${data.date}&numberOfGuest=${Number(data.numberOfGuest)}`
+      )
+    } else if (
+      category === E_Listing_Category.Rental &&
+      data.rentalCategory &&
+      data.pickUpDate &&
+      data.dropOffDate
+    ) {
+      router.push(
+        `/search?category=${category}&rentalCategory=${data.rentalCategory}&pickUpDate=${data.pickUpDate}&dropOffDate=${data.dropOffDate}`
+      )
     }
   }
 
   return (
     <div>
-      <div className={cn(`space-x-8 flex mb-3`, isNavCenter ? "justify-center" : "ml-2")}>
-        <NavigationByState category={category} setCategory={setCategory} isDark={isDark} />
+      <div
+        className={cn(
+          `space-x-8 flex mb-3`,
+          isNavCenter ? "justify-center" : "ml-2"
+        )}
+      >
+        <NavigationByState
+          category={category}
+          setCategory={setCategory}
+          isDark={isDark}
+        />
       </div>
       <div className="drop-shadow-lg w-[65rem]">
         <FormProvider {...form}>
