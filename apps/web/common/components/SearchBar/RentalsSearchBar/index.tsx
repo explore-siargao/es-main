@@ -5,16 +5,23 @@ import { Separator } from "../../ui/Separator"
 import { Input } from "../../ui/Input"
 import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
+import { format } from "date-fns"
+import { E_Rental_Category } from "@repo/contract"
 
 function RentalsSearchBar() {
-  const { register } = useFormContext()
-  const categories = ["Car", "Motorbike", "Bicycle"]
+  const { register, watch } = useFormContext()
+  const categories = [
+    E_Rental_Category.Car,
+    E_Rental_Category.Bicycle,
+    E_Rental_Category.Motorbike,
+  ]
+  const dateToday = format(new Date(), "yyyy-MM-dd")
   return (
-    <div className="flex gap-2 w-full justify-between rounded-full items-center py-1 pl-4 pr-3 border bg-white border-gray-300 mb-4">
+    <div className="flex gap-2 w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
       <Select
-        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
+        className="w-96 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Category"}
-        {...register("search")}
+        {...register("rentalCategory")}
       >
         <Option value="">Select Category</Option>
         {categories.map((category) => (
@@ -26,22 +33,21 @@ function RentalsSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
-        label={"Pickup Date"}
-        {...register("date")}
-      />
-
-      <Input
-        type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200"
-        label={"Pickup Drop Date"}
-        {...register("date")}
+        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        label={"Pick-up Date"}
+        {...register("pickUpDate")}
+        min={dateToday}
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
-
-      {/* <div className="h-full p-4 bg-primary-500 justify-center items-center rounded-full">
-        <Search className="text-white" />
-      </div> */}
+      <Input
+        type="date"
+        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        label={"Drop-off Date"}
+        {...register("dropOffDate")}
+        disabled={!watch("pickUpDate")}
+        min={watch("pickUpDate")}
+      />
+      <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Button
         variant={"primary"}
         className="h-full px-4 py-3 justify-center items-center rounded-full gap-x-2"

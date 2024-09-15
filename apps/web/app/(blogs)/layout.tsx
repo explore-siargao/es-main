@@ -8,7 +8,7 @@ import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import AuthStateProvider from "@/common/components/AuthStateProvider"
-import BlogHeader from "@/common/components/Header/v2"
+import BlogHeader from "@/common/components/Header/WithSearch"
 import Footer from "@/common/components/Footer"
 import YMarginWrapper from "@/common/components/YMarginWrapper"
 
