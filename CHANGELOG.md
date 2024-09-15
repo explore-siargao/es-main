@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.20.0](https://github.com/explore-siargao/es-main/compare/v0.19.0...v0.20.0) (2024-09-15)
+
+
+### Features
+
+* **api:** Added endpoint for editing unit child name in calendar ([a4a2ef1](https://github.com/explore-siargao/es-main/commit/a4a2ef16e44fb26791e0d21fa0b895f45123c7ab))
+* **api:** Added get unit ids endpoint and modified get units calendar reservations ([ec1a5cd](https://github.com/explore-siargao/es-main/commit/ec1a5cd2cb2019e4ca06142b512e70712462ab6d))
+* Changed the room name inputs same on whole place when adding beds and bathroom and amenities ([281ebc6](https://github.com/explore-siargao/es-main/commit/281ebc60b3a2e94c554f462cd46b23fba98e1202))
+* Changed the room name inputs same on whole place when adding beds and bathroom and amenities ([dde1a3e](https://github.com/explore-siargao/es-main/commit/dde1a3ecd90fa09911c2cdfd511615b265b977be))
+* Changed the room name inputs same on whole place when adding beds and bathroom and amenities ([138059f](https://github.com/explore-siargao/es-main/commit/138059f5d40d84610801de282bd672b77745dadb))
+* Connect Add property reservation modal to backend ([0a6a844](https://github.com/explore-siargao/es-main/commit/0a6a8445cd6f726d105a514609896683f12bf1db))
+* Create Add Activity reservation modal ([5890efd](https://github.com/explore-siargao/es-main/commit/5890efd59af20fd9d2465317e0dc167f56fd8efb))
+* Create Add Activity reservation modal ([79773a6](https://github.com/explore-siargao/es-main/commit/79773a68ba746393d9dade87df75ddfebc580f97))
+* Modified inputs of room units ([bd7fe40](https://github.com/explore-siargao/es-main/commit/bd7fe405b0b110e74fa9b1bebd88ea1c073e1f0e))
+* Show all data of property reservation on modal ([8970268](https://github.com/explore-siargao/es-main/commit/8970268b9f7c2266dc7a3a9b24dcb97f2ac96b03))
+* **web:** Added functions for editing unit name in calendar property reservations ([7eeb279](https://github.com/explore-siargao/es-main/commit/7eeb2797312c74c33e87cd83157ebf9bb0b05aab))
+* **web:** Changed the position of the title field in whole place setup ([09d1a1d](https://github.com/explore-siargao/es-main/commit/09d1a1dd22baa4f30cdbc128f7302c712f312423))
+* **web:** Changed the position of title field in whole place unit ([cb9f535](https://github.com/explore-siargao/es-main/commit/cb9f535a00a15fbafbb353d435c47bf88599c6e9))
+* **web:** Make the color of bars is correct by status on property calendar ([3e1c3ed](https://github.com/explore-siargao/es-main/commit/3e1c3ed1ba71c125e3f770ec212be3ccbfef6666))
+* **web:** Modified label and design for inputs version 2 ([c8f2687](https://github.com/explore-siargao/es-main/commit/c8f2687dec52d6add307b920049fa9abd1ee9490))
+
 ## [0.19.0](https://github.com/explore-siargao/es-main/compare/v0.18.0...v0.19.0) (2024-09-12)
 
 ### Features
