@@ -29,7 +29,9 @@ const NavigationByState = ({
           variant="link"
           size="sm"
           onClick={() => setCategory(category)}
-          className={cn(`${currCategory === category ? "font-bold underline underline-offset-4" : ""} ${isDark ? "text-white" : "text-text-950"} hover:text-secondary-500 transition px-0 text-md`)}
+          className={cn(
+            `${currCategory === category ? "font-bold underline underline-offset-4" : ""} ${isDark ? "text-white" : "text-text-950"} hover:text-secondary-500 transition px-0 text-md`
+          )}
         >
           {name}
         </Button>

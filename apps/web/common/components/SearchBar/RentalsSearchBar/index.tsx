@@ -10,7 +10,11 @@ import { E_Rental_Category } from "@repo/contract"
 
 function RentalsSearchBar() {
   const { register, watch } = useFormContext()
-  const categories = [E_Rental_Category.Car, E_Rental_Category.Bicycle, E_Rental_Category.Motorbike]
+  const categories = [
+    E_Rental_Category.Car,
+    E_Rental_Category.Bicycle,
+    E_Rental_Category.Motorbike,
+  ]
   const dateToday = format(new Date(), "yyyy-MM-dd")
   return (
     <div className="flex gap-2 w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">

@@ -24,7 +24,7 @@ function PropertySearchBar() {
 
   useEffect(() => {
     setValue("checkOut", "")
-  }, [watch("checkIn")]); 
+  }, [watch("checkIn")])
 
   return (
     <div className="flex w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
