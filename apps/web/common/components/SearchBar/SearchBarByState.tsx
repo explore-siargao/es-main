@@ -1,21 +1,24 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
 import { useSearchStore } from "../../store/useSearchStore"
 import PropertySearchBar from "./PropertySearchBar"
 import ActivitiesSearchBar from "./ActivitiesSearchBar"
 import RentalsSearchBar from "./RentalsSearchBar"
-import { E_Listing_Category } from "@repo/contract"
+import { E_Listing_Category, E_Rental_Category } from "@repo/contract"
 import NavigationByState from "./NavigationByState"
 import { cn } from "@/common/helpers/cn"
 
 type T_Search_Form = {
-  search: string
+  location: string
   checkIn: string
   checkOut: string
   date: string
   numberOfGuest: number
+  rentalCategory: E_Rental_Category
+  pickUpDate: string
+  dropOffDate: string
 }
 
 const propertyEnum = E_Listing_Category.Property
@@ -23,6 +26,7 @@ const activityEnum = E_Listing_Category.Activity
 const rentalEnum = E_Listing_Category.Rental
 
 const SearchBarByState = ({ isNavCenter = false, isDark = false, }: { isNavCenter?: boolean, isDark?: boolean }) => {
+  const router = useRouter()
   const path = usePathname()
   const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
 
@@ -36,12 +40,19 @@ const SearchBarByState = ({ isNavCenter = false, isDark = false, }: { isNavCente
 
   const onSubmit = (data: T_Search_Form) => {
     setSearchValues(
-      data.search,
+      data.location,
       data.checkIn,
       data.checkOut,
       data.date,
       Number(data.numberOfGuest)
     )
+    if(category === E_Listing_Category.Property && data.location && data.checkIn && data.checkOut && data.numberOfGuest) {
+      router.push(`/search?category=${category}&location=${data.location}&checkIn=${data.checkIn}&checkOut=${data.checkOut}&numberOfGuest=${Number(data.numberOfGuest)}`)
+    } else if(category === E_Listing_Category.Activity && data.date && data.numberOfGuest) {
+      router.push(`/search?category=${category}&date=${data.date}&numberOfGuest=${Number(data.numberOfGuest)}`)
+    } else if(category === E_Listing_Category.Rental && data.rentalCategory && data.pickUpDate && data.dropOffDate) {
+      router.push(`/search?category=${category}&rentalCategory=${data.rentalCategory}&pickUpDate=${data.pickUpDate}&dropOffDate=${data.dropOffDate}`)
+    }
   }
 
   return (
