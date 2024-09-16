@@ -7,15 +7,15 @@ const GuidesMenu = () => {
   const authMenus = [
     {
       name: `Surfing`,
-      href: `/guides/surfing`,
+      href: `/siargao/surfing/guides`,
     },
     {
       name: "Restaurants",
-      href: "/guides/restaurants",
+      href: "/siargao/restaurants/guides",
     },
     {
       name: "Getting to know the Island",
-      href: "/guides/islands",
+      href: "/siargao/islands/guides",
     },
   ]
   return (
