@@ -2,13 +2,10 @@
 import { Typography } from "@/common/components/ui/Typography"
 import ActivitiesCalendarTable from "./CalendarTable"
 import { useRouter } from "next/navigation"
-import { Button } from "@/common/components/ui/Button"
-import { Table } from "lucide-react"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
 
 const ActivitiesReservationCalendar = () => {
-  const router = useRouter()
   return (
     <div className="mt-20">
       <div className="mb-4">

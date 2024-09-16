@@ -1,14 +1,11 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import CalendarTable from "./CalendarTable"
-import { Table } from "lucide-react"
-import { Button } from "@/common/components/ui/Button"
 import { useRouter } from "next/navigation"
 import ReservationTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
 
 const ReservationCalendar = () => {
-  const router = useRouter()
   return (
     <div className="mt-20">
       <div className="mb-4">
