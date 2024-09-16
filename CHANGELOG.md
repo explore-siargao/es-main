@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.20.1](https://github.com/explore-siargao/es-main/compare/v0.20.0...v0.20.1) (2024-09-16)
+
+
+### 🛠 Bug Fixes
+
+* guides menu links to include "siargao" in the URL paths ([46b0df7](https://github.com/explore-siargao/es-main/commit/46b0df7a9b5f543079794b490a6099cf906c8756))
+
+
+### 🧰 Maintenance
+
+* update release-please.yml with changelog types ([264fbfd](https://github.com/explore-siargao/es-main/commit/264fbfd7ad900a1393ca62845f42af382a7a4d35))
+* Update release-please.yml with changelog types ([eaebb65](https://github.com/explore-siargao/es-main/commit/eaebb65f80dd8753af65345209897119c1f9341d))
+
 ## [0.20.0](https://github.com/explore-siargao/es-main/compare/v0.19.0...v0.20.0) (2024-09-15)
 
 ### Features
