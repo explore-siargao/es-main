@@ -21,14 +21,14 @@ const BikeReservationCalendar = () => {
             >
               Reservations
             </Typography>
-            <Button
+            {/* <Button
               onClick={() => router.push("/hosting/reservations/upcoming")}
               variant={"primary"}
               className="flex gap-2"
             >
               <Table />
               Table View
-            </Button>
+            </Button> */}
           </div>
           <ReservationTab />
         </div>
