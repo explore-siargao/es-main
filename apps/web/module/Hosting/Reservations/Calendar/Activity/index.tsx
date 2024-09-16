@@ -1,7 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import ActivitiesCalendarTable from "./CalendarTable"
-import { useRouter } from "next/navigation"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
 

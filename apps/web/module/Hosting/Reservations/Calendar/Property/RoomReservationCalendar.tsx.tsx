@@ -1,7 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import CalendarTable from "./RoomCalendarTable"
-import { useRouter } from "next/navigation"
 import ReservationTab from "../../components/ReservationTab"
 
 const ReservationCalendar = () => {
