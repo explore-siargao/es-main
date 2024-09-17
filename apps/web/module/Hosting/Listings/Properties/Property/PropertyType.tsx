@@ -68,7 +68,7 @@ const PropertyType = ({ pageType }: Prop) => {
   const PROPERTY_TYPES = [
     {
       type: "Hostel",
-      value:"HOSTEL",
+      value: "HOSTEL",
       description:
         "A high-density property accommodating people in shared dorms and common areas.",
       icon: <BrickWall className="h-4 w-4" strokeWidth={1.3} />,
@@ -76,7 +76,7 @@ const PropertyType = ({ pageType }: Prop) => {
     },
     {
       type: "Apartment",
-      value:"APARTMENT",
+      value: "APARTMENT",
       description:
         "A self-contained residence with private entrance, suitable for longer stays often, in a complex with other apartments.",
       icon: <Building className="h-4 w-4" strokeWidth={1.7} />,
@@ -84,7 +84,7 @@ const PropertyType = ({ pageType }: Prop) => {
     },
     {
       type: "Homestay",
-      value:"HOMESTAY",
+      value: "HOMESTAY",
       description:
         "A communal living environment in which guests have private rooms but share bathrooms and kitchen facilities.",
       icon: <Home className="h-4 w-4" strokeWidth={1.7} />,
@@ -92,7 +92,7 @@ const PropertyType = ({ pageType }: Prop) => {
     },
     {
       type: "Hotel",
-      value:"HOTEL",
+      value: "HOTEL",
       description:
         "A commercial establishment offering short-term lodging and variety of services and amenities.",
       icon: <Hotel className="h-4 w-4" strokeWidth={1.7} />,
@@ -100,7 +100,7 @@ const PropertyType = ({ pageType }: Prop) => {
     },
     {
       type: "Resort",
-      value:"RESORT",
+      value: "RESORT",
       description:
         "A place designed to provide recreation, entertainment, and accommodation especially to vacationers.",
       icon: <Waves className="h-4 w-4" strokeWidth={1.7} />,
@@ -108,7 +108,7 @@ const PropertyType = ({ pageType }: Prop) => {
     },
     {
       type: "Whole place",
-      value:"WHOLE_PLACE",
+      value: "WHOLE_PLACE",
       description:
         "A standalone, self-contained residence with multiple common areas, bedrooms and bathrooms.",
       icon: <Building2 className="h-4 w-4" strokeWidth={1.7} />,

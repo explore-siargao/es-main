@@ -198,9 +198,8 @@ export const updatePropertyType = async (req: Request, res: Response) => {
             type: type,
             finishedSections: ['type'],
           },
-
         },
-        { new: true, runValidators:true, fields: { type: 1 } },
+        { new: true, runValidators: true, fields: { type: 1 } }
       )
       .exec()
 
@@ -239,9 +238,8 @@ export const updateWholePlaceType = async (req: Request, res: Response) => {
           $set: {
             wholeplaceType: type,
           },
-
         },
-        { new: true, runValidators:true, fields: { wholeplaceType: 1 } },
+        { new: true, runValidators: true, fields: { wholeplaceType: 1 } }
       )
       .exec()
 
