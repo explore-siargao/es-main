@@ -6,7 +6,7 @@ import {
   addRentalReservation,
   editRentalReservation,
 } from './services/rentalReservation'
-import { addUnitReservation } from './services/unitsReservation'
+import { addUnitReservation, editUnitReservation } from './services/unitsReservation'
 
 const router = express.Router()
 
@@ -29,11 +29,19 @@ router.post(
 
 //edit reservations
 router.patch(
-  '/:reservationId',
+  '/:reservationId/rental',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
   editRentalReservation
+)
+
+router.patch(
+  '/:reservationId/unit',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editUnitReservation
 )
 
 export default router

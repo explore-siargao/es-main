@@ -13,7 +13,7 @@ export async function updateRentalReservation(
   id: string
 ) {
   const apiService = new ApiService()
-  return await apiService.patch(`${API_URL_RESERVATIONS}/${id}`, props)
+  return await apiService.patch(`${API_URL_RESERVATIONS}/${id}/rental`, props)
 }
 
 function useUpdateRentalReservation(id: string) {
