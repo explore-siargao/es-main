@@ -198,8 +198,9 @@ export const updatePropertyType = async (req: Request, res: Response) => {
             type: type,
             finishedSections: ['type'],
           },
+
         },
-        { new: true, fields: { type: 1 } }
+        { new: true, runValidators:true, fields: { type: 1 } },
       )
       .exec()
 
@@ -214,6 +215,47 @@ export const updatePropertyType = async (req: Request, res: Response) => {
       response.success({
         item: { type: updatePropertyType.type },
         message: 'Property type updated successfully',
+      })
+    )
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const updateWholePlaceType = async (req: Request, res: Response) => {
+  const hostId = res.locals.user?.id
+  const propertyId = req.params.propertyId
+  const { type } = req.body
+
+  try {
+    const updateWholePlaceType = await dbProperties
+      .findOneAndUpdate(
+        { _id: propertyId, offerBy: hostId },
+        {
+          $set: {
+            wholeplaceType: type,
+          },
+
+        },
+        { new: true, runValidators:true, fields: { wholeplaceType: 1 } },
+      )
+      .exec()
+
+    if (!updateWholePlaceType) {
+      return res.json(
+        response.error({
+          message: 'Property not found for the given host id and property id',
+        })
+      )
+    }
+    return res.json(
+      response.success({
+        item: { updateWholePlaceType },
+        message: 'Whole place type updated successfully',
       })
     )
   } catch (err: any) {

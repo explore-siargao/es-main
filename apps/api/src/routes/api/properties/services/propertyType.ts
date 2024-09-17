@@ -11,7 +11,7 @@ enum PropertyType {
   HOMESTAY = 'HOMESTAY',
   HOTEL = 'HOTEL',
   RESORT = 'RESORT',
-  VILLA = 'VILLA',
+  VILLA = 'WHOLE_PLACE',
 }
 
 export const addPropertyType = async (req: Request, res: Response) => {

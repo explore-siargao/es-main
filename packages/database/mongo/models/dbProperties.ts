@@ -6,7 +6,14 @@ const propertyTypeEnum = [
   "HOTEL",
   "APARTMENT",
   "RESORT",
+  "WHOLE_PLACE",
+]
+
+const wholePlaceType = [
   "VILLA",
+  "HOUSE",
+  "BUNGALOW",
+  "COTTAGE",
 ]
 
 const properties = new Schema({
@@ -56,6 +63,13 @@ const properties = new Schema({
   type: {
     type: String,
     enum: propertyTypeEnum,
+    required:true,
+    default:null
+  },
+  wholeplaceType:{
+    type: String,
+    enum: wholePlaceType,
+    default:null,
   },
   facilities: [
     {
