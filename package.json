@@ -11,7 +11,7 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "dr:redis": "sudo docker container stop redis ; sudo docker container stop redis_insight ; sudo docker container rm redis ; sudo docker container rm redis_insight ; sudo docker compose -f ./docker/redis/compose.yml up -d && sudo docker ps",
-    "dc:es-sit": "docker stop es-web-sit ; docker stop es-api-sit ; docker stop es-cms-sit ; docker rm es-web-sit ; docker rm es-api-sit ; docker rm es-cms-sit ; docker image rm es-sit-es-web:latest ; docker image rm es-sit-es-api:latest ; docker image rm es-sit-es-cms:latest ; docker compose -p es-sit -f ./docker/compose-sit.yml up -d && docker ps && docker system prune -f"
+    "dc:es-sit": "docker compose -p es-sit -f ./docker/compose-sit.yml up -d && docker ps && docker system prune -f"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
