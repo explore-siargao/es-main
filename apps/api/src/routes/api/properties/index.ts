@@ -23,6 +23,7 @@ import {
   getPropertyLocation,
   updatePropertyLocation,
   updatePropertyBasicInfo,
+  updateWholePlaceType,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import {
@@ -115,6 +116,15 @@ router.patch(
   isUserLoggedIn,
   isHostPropertyOwner,
   updatePropertyType
+)
+
+router.patch(
+  '/:propertyId/whole-place-type',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updateWholePlaceType
 )
 
 //basic info

@@ -68,45 +68,51 @@ const PropertyType = ({ pageType }: Prop) => {
   const PROPERTY_TYPES = [
     {
       type: "Hostel",
+      value: "HOSTEL",
       description:
         "A high-density property accommodating people in shared dorms and common areas.",
       icon: <BrickWall className="h-4 w-4" strokeWidth={1.3} />,
-      isSelected: data?.item?.type === "Hostel",
+      isSelected: data?.item?.type === "HOSTEL",
     },
     {
       type: "Apartment",
+      value: "APARTMENT",
       description:
         "A self-contained residence with private entrance, suitable for longer stays often, in a complex with other apartments.",
       icon: <Building className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Apartment",
+      isSelected: data?.item?.type === "APARTMENT",
     },
     {
       type: "Homestay",
+      value: "HOMESTAY",
       description:
         "A communal living environment in which guests have private rooms but share bathrooms and kitchen facilities.",
       icon: <Home className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Homestay",
+      isSelected: data?.item?.type === "HOMESTAY",
     },
     {
       type: "Hotel",
+      value: "HOTEL",
       description:
         "A commercial establishment offering short-term lodging and variety of services and amenities.",
       icon: <Hotel className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Hotel",
+      isSelected: data?.item?.type === "HOTEL",
     },
     {
       type: "Resort",
+      value: "RESORT",
       description:
         "A place designed to provide recreation, entertainment, and accommodation especially to vacationers.",
       icon: <Waves className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Resort",
+      isSelected: data?.item?.type === "RESORT",
     },
     {
       type: "Whole place",
+      value: "WHOLE_PLACE",
       description:
         "A standalone, self-contained residence with multiple common areas, bedrooms and bathrooms.",
       icon: <Building2 className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "Whole place",
+      isSelected: data?.item?.type === "WHOLE_PLACE",
     },
   ]
 
@@ -125,13 +131,13 @@ const PropertyType = ({ pageType }: Prop) => {
         {PROPERTY_TYPES.map((property) => (
           <div
             key={property.description}
-            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.type ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
+            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.value ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
             onClick={() =>
-              pageType === "setup" && setSelectedProperty(property.type)
+              pageType === "setup" && setSelectedProperty(property.value)
             }
           >
             {(property.isSelected && selectedProperty === "") ||
-            selectedProperty === property.type ? (
+            selectedProperty === property.value ? (
               <div className="flex justify-center">
                 <span className="absolute mt-[-32px] rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
                   Selected
