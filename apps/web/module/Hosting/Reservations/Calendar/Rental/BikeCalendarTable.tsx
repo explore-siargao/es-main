@@ -13,22 +13,26 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import ReservationCalendarModal from "../ReservationCalendarModal"
 import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
   Reservation,
-  Rental,
 } from "../../types/CalendarTable"
-import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarBike from "../hooks/useGetCalendarBike"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import { getColorClasses } from "../../helpers/legends"
 import { useQueryClient } from "@tanstack/react-query"
+import { FormProvider, useForm } from "react-hook-form"
+import AddRentalReservationModal from "../AddReservationModal/Rental"
+import RentalCalendarModal from "../RentalCalendarModal"
 
 const BikeCalendarTable = () => {
+  const form = useForm()
+  const [selectedLegendType, setSelectedLegendType] = useState<string>("")
+  const [isLegendTypeSelected, setIsLegendTypeSelected] =
+    useState<boolean>(false)
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
@@ -37,7 +41,6 @@ const BikeCalendarTable = () => {
     endDate.toLocaleDateString()
   )
   const { mutate } = useUpdateVehicleName()
-
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -60,10 +63,11 @@ const BikeCalendarTable = () => {
       },
     ],
   })
+
+  const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
   const daysPerPage = 13
   const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
@@ -73,31 +77,14 @@ const BikeCalendarTable = () => {
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
-
-  const handleSaveNewReservation = (newReservation: any, reset: Function) => {
-    const updatedData = { ...filteredData }
-    const category = updatedData?.items?.filter(
-      (category) => category.name === newReservation.category
-    )
-    //@ts-ignore
-    if (category?.length > 0) {
-      //@ts-ignore
-      const selectedCategory = category[0]
-      if (selectedCategory) {
-        const bicycle = selectedCategory?.bicycles?.find(
-          (rm) => rm.abbr === newReservation.bicycle
-        )
-        if (bicycle) {
-          bicycle.reservations.push(newReservation)
-          setFilteredData(updatedData)
-          toast.success("Reservation added successfully")
-          reset()
-        } else {
-          toast.error("Room not found")
-        }
-      }
-    }
-    closeAddReservationModal()
+  const closeAddReservationModal = () => {
+    setIsAddReservationModalOpen(false)
+    setTimeout(() => {
+      form.setValue("status", "")
+      setSelectedLegendType("")
+      setIsLegendTypeSelected(false)
+      form.reset()
+    }, 200)
   }
 
   useEffect(() => {
@@ -467,13 +454,19 @@ const BikeCalendarTable = () => {
               </tbody>
             </table>
           </div>
-          {selectedReservation && (
-            <ReservationCalendarModal
-              isModalOpen={isReservationModalOpen}
-              onClose={closeReservationModal}
-              selectedReservation={selectedReservation}
-            />
-          )}
+          <FormProvider {...form}>
+            <form>
+              {selectedReservation && (
+                <RentalCalendarModal
+                  isModalOpen={isReservationModalOpen}
+                  onClose={closeReservationModal}
+                  selectedReservation={selectedReservation}
+                  isEditReservation={isEditReservation}
+                  setIsEditReservation={setIsEditReservation}
+                />
+              )}
+            </form>
+          </FormProvider>
           <RoomQuantityEdit
             isModalOpen={isRoomQuantityEditOpen}
             onClose={closeRoomQuantityEditModal}
@@ -482,12 +475,18 @@ const BikeCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddReservationModal
-            isModalOpen={isAddReservationModalOpen}
-            onClose={closeAddReservationModal}
-            onSave={handleSaveNewReservation}
-            data={filteredData}
-          />
+          <FormProvider {...form}>
+            <form>
+              <AddRentalReservationModal
+                isModalOpen={isAddReservationModalOpen}
+                onClose={closeAddReservationModal}
+                selectedLegendType={selectedLegendType}
+                setSelectedLegendType={setSelectedLegendType}
+                setIsLegendTypeSelected={setIsLegendTypeSelected}
+                isLegendTypeSelected={isLegendTypeSelected}
+              />
+            </form>
+          </FormProvider>
         </div>
       )}
     </div>
