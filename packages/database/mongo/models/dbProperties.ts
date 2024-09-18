@@ -58,7 +58,7 @@ const properties = new Schema({
   type: {
     type: String,
     enum: propertyTypeEnum,
-    required: true,
+    required: false,
     default: null,
   },
   wholeplaceType: {
