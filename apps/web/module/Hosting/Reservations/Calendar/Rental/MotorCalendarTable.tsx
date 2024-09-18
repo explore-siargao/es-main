@@ -36,7 +36,7 @@ const MotorCalendarTable = () => {
   const form = useForm()
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
-  useState<boolean>(false)
+    useState<boolean>(false)
   endDate.setDate(startDate.getDate() + 13)
   const { data: sampleData, isPending } = useGetCalendarMotor(
     startDate.toLocaleDateString(),
@@ -442,7 +442,7 @@ const MotorCalendarTable = () => {
               )}
             </form>
           </FormProvider>
-  
+
           <RoomQuantityEdit
             isModalOpen={isRoomQuantityEditOpen}
             onClose={closeRoomQuantityEditModal}
@@ -451,7 +451,7 @@ const MotorCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-         <FormProvider {...form}>
+          <FormProvider {...form}>
             <form>
               <AddRentalReservationModal
                 isModalOpen={isAddReservationModalOpen}
