@@ -1,8 +1,8 @@
 import React from "react"
-import { Textarea } from "@/common/components/ui/Textarea"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideScale } from "lucide-react"
 import useSelectPoliciesStore from "./hooks/useSelectPoliciesStore"
+import { Textarea2 } from "@/common/components/ui/Textarea2"
 
 const AdditionalRules = () => {
   const title = "Additional Rules"
@@ -19,8 +19,11 @@ const AdditionalRules = () => {
           {title}
         </Typography>
       </div>
-      <div className="pt-4">
-        <Textarea
+      <div>
+        <Textarea2
+          label=""
+          description="You can add detailed rules here if they aren't covered by the checkboxes above."
+          placeholder="Example: Please note that parties are not allowed, and smoking is restricted to designated outdoor areas. Pets are welcome with prior approval. Ensure to respect quiet hours from 10 PM to 7 AM."
           className="h-[160px] w-full"
           value={policy?.policy}
           // @ts-expect-error

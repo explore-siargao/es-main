@@ -605,6 +605,7 @@ const WholePlace = ({ pageType }: Prop) => {
                 <Input2
                   label="Title"
                   description="What is the name you want to display for your unit? (Optional)"
+                  placeholder="Example: Cozy River View Place"
                   id="title"
                   type="text"
                   minLength={5}

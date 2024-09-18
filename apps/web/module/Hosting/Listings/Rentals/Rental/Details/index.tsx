@@ -1,8 +1,7 @@
 "use client"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { Option, Select } from "@/common/components/ui/Select"
-import { Input } from "@/common/components/ui/Input"
+import { Option } from "@/common/components/ui/Select"
 import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useQueryClient } from "@tanstack/react-query"
@@ -16,6 +15,8 @@ import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import { APP_NAME } from "@repo/constants"
 import useUpdateRentalDetails from "../hooks/useUpdateRentalDetails"
+import { Input2 } from "@/common/components/ui/Input2"
+import { Select2 } from "@/common/components/ui/Select2"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -105,12 +106,14 @@ const Details = ({ pageType }: Prop) => {
       <form className="grid grid-cols-3 mt-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2">
           {data?.item?.category === E_Rental_Category.Car && (
-            <Input
+            <Input2
               type="text"
               id="engineCapacity"
               defaultValue={data.item?.details?.engineCapacityLiter}
               step=".01"
               label="Engine Capacity (L)"
+              description="This refers to the total volume of all the engine's cylinders combined, measured in liters (L)"
+              placeholder="Example: 2.0"
               disabled={isPending || isLoading}
               {...register("engineCapacityLiter", {
                 valueAsNumber: true,
@@ -118,8 +121,10 @@ const Details = ({ pageType }: Prop) => {
             />
           )}
           {data?.item?.category === E_Rental_Category.Motorbike && (
-            <Input
-              type="text"
+            <Input2
+              type="number"
+              description="This is the motorbike's engine displacement or the total volume of all the cylinders in the engine"
+              placeholder="Example: 500"
               id="engineCapacity"
               defaultValue={data.item?.details?.engineCapacityCc}
               step=".01"
@@ -130,8 +135,9 @@ const Details = ({ pageType }: Prop) => {
               })}
             />
           )}
-          <Select
+          <Select2
             label="Condition"
+            description="This is your vehicle's current condition"
             id="condition"
             required
             disabled={isPending || isLoading}
@@ -145,9 +151,11 @@ const Details = ({ pageType }: Prop) => {
                 </Option>
               )
             })}
-          </Select>
-          <Input
+          </Select2>
+          <Input2
             type="text"
+            description="This refers to the color of the vehicle's outer surface"
+            placeholder="Example: Black"
             id="exteriorColor"
             label="Exterior Color"
             disabled={isPending || isLoading}
@@ -155,8 +163,10 @@ const Details = ({ pageType }: Prop) => {
             {...register("exteriorColor")}
           />
           {data?.item?.category === E_Rental_Category.Car && (
-            <Input
+            <Input2
               type="text"
+              description="This refers to the color of the vehicle's interior color"
+              placeholder="Example: White"
               id="interiorColor"
               label="Interior Color"
               disabled={isPending || isLoading}
@@ -165,10 +175,12 @@ const Details = ({ pageType }: Prop) => {
             />
           )}
           {data?.item?.category !== E_Rental_Category.Bicycle && (
-            <Input
+            <Input2
               type="number"
               id="seatingCapacity"
               label="Seating Capacity"
+              description="This is the maximum count of passengers that the vehicle can accomodate."
+              placeholder="Example: 2"
               required={data?.item?.category === E_Rental_Category.Car}
               disabled={isPending || isLoading}
               defaultValue={data?.item?.details?.seatingCapacity}
@@ -178,10 +190,12 @@ const Details = ({ pageType }: Prop) => {
               })}
             />
           )}
-          <Input
+          <Input2
             type="number"
             id="weightCapacity"
             label="Weight Capacity (kg)"
+            description="This is the total of maximum weight that the vehicle can carry."
+            placeholder="Example: 120"
             step=".01"
             disabled={isPending || isLoading}
             defaultValue={data?.item?.details?.weightCapacityKg}

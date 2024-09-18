@@ -4,6 +4,8 @@ import { T_Photo } from "@repo/contract"
 type T_PhotoStoreState = {
   photos: T_Photo[]
   toEditPhotoIndex: number | null
+  category: string
+  setCategory: (value: string) => void
   setPhotos: (photos: T_Photo[]) => void
   setToEditPhotoIndex: (value: number) => void
   setDescription: (value: string) => void
@@ -15,6 +17,8 @@ type T_PhotoStoreState = {
 const usePhotoStore = create<T_PhotoStoreState>((set) => ({
   photos: [],
   toEditPhotoIndex: null,
+  category: "",
+  setCategory: (value) => set(() => ({ category: value })),
   setPhotos: (photos) => set({ photos }),
   setToEditPhotoIndex: (value) => set(() => ({ toEditPhotoIndex: value })),
   setDescription: (value) =>

@@ -1,12 +1,11 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
-import { Typography } from "@/common/components/ui/Typography"
 import Image from "next/image"
 import usePhotoStore from "../../store/usePhotoStore"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
-import Asterisk from "@/common/components/ui/Asterisk"
+import { Textarea2 } from "@/common/components/ui/Textarea2"
 
 type Props = {
   isOpen: boolean
@@ -28,12 +27,21 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
   const [description, editDescription] = useState(currentPhoto?.description)
   const [tags, editTags] = useState(currentPhoto?.tags)
   const [isMain, setIsMain] = useState(currentPhoto?.isMain || false)
+  const category = usePhotoStore((state) => state.category)
+  const setCategory = usePhotoStore((state) => state.setCategory)
 
   useEffect(() => {
     editDescription(currentPhoto?.description)
     editTags(currentPhoto?.tags)
     setIsMain(currentPhoto?.isMain || false)
   }, [isOpen])
+
+  useEffect(() => {
+    if (category) {
+      setCategory(category)
+      console.log("test store: ", category)
+    }
+  }, [category, setCategory])
 
   return (
     <ModalContainer
@@ -52,32 +60,36 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
             alt="image-preview"
           />
         </div>
-        <Typography variant="h4" fontWeight="semibold" className="mt-4 mb-2">
-          Description
-          <Asterisk />
-        </Typography>
-        <textarea
-          rows={4}
-          id="description"
-          className="block w-72 rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-          placeholder="Add a photo description that explains your unit, for example: `Front view of the unit.`"
-          defaultValue={description}
-          onChange={(e) => editDescription(e.currentTarget.value)}
-          required
-          tabIndex={-1}
-        />
-        <Typography variant="h4" fontWeight="semibold" className="mt-6 mb-2">
-          Tags*
-        </Typography>
-        <textarea
-          rows={2}
-          id="tags"
-          className="block w-72 rounded-xl pl-3 pr-[41px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-          placeholder="Enter tags separated by commas eg:`red,car`"
-          defaultValue={tags}
-          onChange={(e) => editTags(e.currentTarget.value)}
-          tabIndex={-1}
-        />
+        <div className="w-72 mt-4">
+          <Textarea2
+            label=" Description"
+            rows={4}
+            id="description"
+            className="block  rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+            // description={getDescription()}
+            placeholder="Example: Front view of the unit."
+            defaultValue={description}
+            onChange={(e) => editDescription(e.currentTarget.value)}
+            required
+            tabIndex={-1}
+          />
+        </div>
+
+        <div className="mt-6 mb-2  w-72 ">
+          <Textarea2
+            label="Tags"
+            rows={2}
+            id="tags"
+            className="blockrounded-xl pl-3 pr-[41px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+            description="Enter tags separated by commas"
+            placeholder="Example: red,car"
+            defaultValue={tags}
+            onChange={(e) => editTags(e.currentTarget.value)}
+            tabIndex={-1}
+            required
+          />
+        </div>
+
         <div className="flex mt-6 items-center">
           <input
             id="main"
