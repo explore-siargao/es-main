@@ -39,6 +39,9 @@ const RentalCalendarModal = ({
           queryClient.invalidateQueries({
             queryKey: ["calendar-car"],
           })
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-motor"],
+          })
           toast.success(data.message)
           onClose()
         } else {
