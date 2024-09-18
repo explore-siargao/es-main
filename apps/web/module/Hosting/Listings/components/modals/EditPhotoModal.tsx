@@ -10,7 +10,6 @@ import { Textarea2 } from "@/common/components/ui/Textarea2"
 type Props = {
   isOpen: boolean
   onClose: () => void
-  category?: string
 }
 
 const EditPhotoModal = ({ isOpen, onClose }: Props) => {

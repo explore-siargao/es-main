@@ -488,7 +488,6 @@ const Room = ({ pageType }: Prop) => {
       <EditPhotoModal
         isOpen={editPhotoModal}
         onClose={() => setEditPhotoModal(false)}
-        category="Room"
       />
     </div>
   )
