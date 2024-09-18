@@ -1,10 +1,10 @@
 export enum E_Property_Type {
-  Hostel = "Hostel",
-  Homestay = "Homestay",
-  Hotel = "Hotel",
-  Apartment = "Apartment",
-  Resort = "Resort",
-  Villa = "Villa",
+  Hostel = "HOSTEL",
+  Homestay = "HOMESTAY",
+  Hotel = "HOTEL",
+  Apartment = "APARTMENT",
+  Resort = "RESORT",
+  Villa = "WHOLE_PLACE",
 }
 
 export enum E_Property_Status {

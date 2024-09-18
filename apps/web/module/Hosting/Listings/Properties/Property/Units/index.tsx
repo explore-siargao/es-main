@@ -105,7 +105,7 @@ const Units = ({ pageType }: Prop) => {
   const bookableUnitsLength = data?.item?.bookableUnits?.length ?? 0
 
   const handleAddNewClick = () => {
-    if (data?.item?.type === "Whole place") {
+    if (data?.item?.type === "WHOLE_PLACE") {
       if (bookableUnitsLength === 0) {
         setIsSelectUnitTypeWholePlaceModalOpen(true)
       } else {

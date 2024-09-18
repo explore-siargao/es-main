@@ -268,6 +268,9 @@ const PropertyCalendarTable = () => {
 
   const moveStartDateByOneDay = (direction: number) => {
     setStartDate(addDays(startDate, direction))
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-property"],
+    })
   }
 
   const getBookingStyle = (
