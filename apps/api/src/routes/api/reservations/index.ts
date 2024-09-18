@@ -6,7 +6,10 @@ import {
   addRentalReservation,
   editRentalReservation,
 } from './services/rentalReservation'
-import { addUnitReservation, editUnitReservation } from './services/unitsReservation'
+import {
+  addUnitReservation,
+  editUnitReservation,
+} from './services/unitsReservation'
 
 const router = express.Router()
 

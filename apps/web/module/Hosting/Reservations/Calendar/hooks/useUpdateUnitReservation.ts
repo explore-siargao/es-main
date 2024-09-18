@@ -18,8 +18,7 @@ export async function updateUnitReservation(
 
 function useUpdateUnitReservation(id: string) {
   const query = useMutation({
-    mutationFn: (props: T_UnitReservation) =>
-      updateUnitReservation(props, id),
+    mutationFn: (props: T_UnitReservation) => updateUnitReservation(props, id),
   })
   return query
 }
