@@ -42,6 +42,7 @@ import { useLivingroomStore } from "./store/useLivingroomStore"
 import useUnitTypeStore from "./store/useUnitTypeStore"
 import { Select2 } from "@/common/components/ui/Select2"
 import { Input2 } from "@/common/components/ui/Input2"
+import EditPhotoModal from "@/module/Hosting/Listings/components/modals/EditPhotoModal"
 
 type T_WholePlaceUnit = {
   title: string
@@ -86,6 +87,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
+  const [editPhotoModal, setEditPhotoModal] = useState(false)
 
   const [bathroomCount, setBathroomCount] = useState<number>(
     Number(data?.item?.numBathRooms) || 0
@@ -491,6 +493,8 @@ const WholePlace = ({ pageType }: Prop) => {
     }
   }
 
+  const category = data?.item?.category
+  console.log("test: ", category)
   return (
     <>
       {isPending || isFetching ? (
@@ -873,6 +877,11 @@ const WholePlace = ({ pageType }: Prop) => {
               </Button>
             </div>
           </form>
+          <EditPhotoModal
+            isOpen={editPhotoModal}
+            onClose={() => setEditPhotoModal(false)}
+            passedCategory={category}
+          />
         </div>
       )}
     </>

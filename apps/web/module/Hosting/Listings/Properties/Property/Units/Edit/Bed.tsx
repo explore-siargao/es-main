@@ -207,6 +207,8 @@ const Bed = ({ pageType }: Prop) => {
     "Bed in 20 person dorm",
   ]
 
+  const category = data?.item?.category
+
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
@@ -467,6 +469,7 @@ const Bed = ({ pageType }: Prop) => {
       <EditPhotoModal
         isOpen={editPhotoModal}
         onClose={() => setEditPhotoModal(false)}
+        passedCategory={category}
       />
     </div>
   )
