@@ -43,18 +43,6 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
       console.log("test store: ", category)
     }
   }, [category, setCategory])
-  // const getDescription = () => {
-  //   switch (category) {
-  //     case "Room":
-  //       return "Add a photo description that explains your unit."
-  //     case "test":
-  //       return "Specify the model or version of the bicycle."
-  //     case "test2":
-  //       return "This refers to the brand or manufacturer of the car."
-  //     default:
-  //       return "Specify the model or version of the vehicle."
-  //   }
-  // }
 
   return (
     <ModalContainer

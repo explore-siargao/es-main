@@ -2,12 +2,11 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import { Dispatch, useState } from "react"
 import { MinusIcon, PlusIcon } from "lucide-react"
-import { Option, Select } from "@/common/components/ui/Select"
+import { Option } from "@/common/components/ui/Select"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
 import { TRANSFERS } from "../constants"
 import toast from "react-hot-toast"
 import { useSegmentsStore } from "../store/useSegmentsStore"
-import { Input } from "@/common/components/ui/Input"
 import { Select2 } from "@/common/components/ui/Select2"
 
 interface ISetUpProfileAboutYouModalProps {

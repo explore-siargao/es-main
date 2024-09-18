@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { Textarea } from "@/common/components/ui/Textarea"
 import useSelectPoliciesStore from "./hooks/useSelectPoliciesStore"
 import { Textarea2 } from "@/common/components/ui/Textarea2"
 

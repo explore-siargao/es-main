@@ -12,7 +12,6 @@ import { Input } from "@/common/components/ui/Input"
 import { LucidePlus, LucideX } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import useGetActivityById from "../../hooks/useGetActivityById"
-import { Input2 } from "@/common/components/ui/Input2"
 
 const radioItems = [
   { id: "1", value: 5, label: "5 days" },
