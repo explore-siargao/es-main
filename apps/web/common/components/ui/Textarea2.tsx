@@ -28,7 +28,7 @@ const Textarea2 = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         </Typography>
         <div
           className={cn(
-            "relative rounded-xl ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-1"
+            "relative rounded-xl ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-2"
           )}
         >
           <div className="flex gap-1 items-center">

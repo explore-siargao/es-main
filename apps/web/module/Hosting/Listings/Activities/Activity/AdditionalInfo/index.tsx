@@ -12,6 +12,7 @@ import { Input } from "@/common/components/ui/Input"
 import { LucidePlus, LucideX } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import useGetActivityById from "../../hooks/useGetActivityById"
+import { Input2 } from "@/common/components/ui/Input2"
 
 const radioItems = [
   { id: "1", value: 5, label: "5 days" },
@@ -145,8 +146,12 @@ const AdditionalInfo = ({ pageType }: Prop) => {
               </Typography>
 
               <div className="mt-4">
-                <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                <Typography variant="h4" fontWeight="semibold">
                   What are the things that guest/s need to bring?
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic">
+                  Such as a swimmers or a towel for water activities, or
+                  comfortable shoes for a hike. Add a new item for each one.
                 </Typography>
                 {whatToBring.length > 0 && (
                   <ul>
@@ -172,6 +177,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                     className="p-2"
                     type="text"
                     label="Bring"
+                    placeholder="Example: Camping tools"
                     value={whatToBringName}
                     onChange={(event) => {
                       const inputValue = event.target.value
@@ -198,16 +204,18 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       <Typography className="text-sm"> Add item</Typography>
                     </button>
                   </div>
-                  <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                    Such as a swimmers or a towel for water activities, or
-                    comfortable shoes for a hike. Add a new item for each one.
-                  </Typography>
                 </div>
               </div>
 
               <div className="mt-4">
-                <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                <Typography variant="h4" fontWeight="semibold">
                   What are the things or actions that are not allowed?
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic">
+                  List any object, clothing, or action that's not allowed on
+                  your activity. You should include types of travelers who
+                  should not join this activity, like under 18s or pregnant
+                  women. Add a new item for each one.
                 </Typography>
                 {notAllowed.length > 0 && (
                   <ul>
@@ -233,6 +241,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                     className="p-2"
                     type="text"
                     label="Allow"
+                    placeholder="Example: Person who's not physically fit"
                     value={notAllowedName}
                     onChange={(event) => {
                       const inputValue = event.target.value
@@ -259,18 +268,17 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       <Typography className="text-sm"> Add item</Typography>
                     </button>
                   </div>
-                  <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                    List any object, clothing, or action that's not allowed on
-                    your activity. You should include types of travelers who
-                    should not join this activity, like under 18s or pregnant
-                    women. Add a new item for each one.
-                  </Typography>
                 </div>
               </div>
 
               <div className="mt-4">
-                <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                <Typography variant="h4" fontWeight="semibold">
                   What are the policies for this activity?
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic">
+                  List any activity policies, such as prerequisites, valid ID
+                  required, weather retalated cancellation policy. Add a new
+                  policy for each one.
                 </Typography>
                 {policies.length > 0 && (
                   <ul>
@@ -296,6 +304,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                     className="p-2"
                     type="text"
                     label="Policy"
+                    placeholder="Example: Participants must sign a waiver before joining this activity"
                     value={policyName}
                     onChange={(event) => {
                       const inputValue = event.target.value
@@ -322,11 +331,6 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       <Typography className="text-sm"> Add item</Typography>
                     </button>
                   </div>
-                  <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                    List any activity policies, such as prerequisites, valid ID
-                    required, weather retalated cancellation policy. Add a new
-                    policy for each one.
-                  </Typography>
                 </div>
               </div>
 

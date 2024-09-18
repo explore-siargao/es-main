@@ -381,8 +381,13 @@ const Inclusions = ({ pageType }: Prop) => {
             </div>
 
             <div className="mt-4">
-              <Typography variant="h4" fontWeight="semibold" className="mb-4">
+              <Typography variant="h4" fontWeight="semibold">
                 What else is included in your activity?
+              </Typography>
+              <Typography className="text-xs text-gray-500 italic">
+                List everything that is included in the price so customers
+                understand the value for money of your activity. Add a new
+                inclusion for each one.
               </Typography>
               {inclusions.length > 0 && (
                 <ul>
@@ -410,6 +415,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   className="p-2"
                   type="text"
                   label="Included"
+                  placeholder="Example: Island hopping"
                   value={inclusionName}
                   onChange={(event) => {
                     const inputValue = event.target.value
@@ -434,17 +440,18 @@ const Inclusions = ({ pageType }: Prop) => {
                     <Typography className="text-sm"> Add inclusion</Typography>
                   </button>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                  List everything that is included in the price so customers
-                  understand the value for money of your activity. Add a new
-                  inclusion for each one.
-                </Typography>
               </div>
             </div>
 
             <div className="mt-4">
-              <Typography variant="h4" fontWeight="semibold" className="mb-4">
+              <Typography variant="h4" fontWeight="semibold">
                 What else is not included?
+              </Typography>
+              <Typography className="text-xs text-gray-500 italic">
+                List everything that customers need to pay extra for (i.e
+                environmental fees, alcohol, etc that isn't included in the
+                price). This allows customers to appropriately set their
+                expectations. Add a new exclusion for each one.
               </Typography>
               {exclusions.length > 0 && (
                 <ul>
@@ -472,6 +479,7 @@ const Inclusions = ({ pageType }: Prop) => {
                   className="p-2"
                   type="text"
                   label="Excluded"
+                  placeholder="Example: Transportation"
                   value={exclusionName}
                   onChange={handleInputChange}
                 />
@@ -492,12 +500,6 @@ const Inclusions = ({ pageType }: Prop) => {
                     <Typography className="text-sm"> Add exclusion</Typography>
                   </button>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2">
-                  List everything that customers need to pay extra for (i.e
-                  environmental fees, alcohol, etc that isn't included in the
-                  price). This allows customers to appropriately set their
-                  expectations. Add a new exclusion for each one.
-                </Typography>
               </div>
             </div>
 

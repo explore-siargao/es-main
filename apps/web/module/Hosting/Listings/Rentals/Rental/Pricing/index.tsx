@@ -11,6 +11,7 @@ import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import useUpdateRentalPricing from "../hooks/useUpdateRentalPricing"
 import useGetRentalPricing from "../hooks/useGetRentalPricing"
+import { Input2 } from "@/common/components/ui/Input2"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -57,22 +58,28 @@ const Pricing = ({ pageType }: Prop) => {
       <Typography variant="h1" fontWeight="semibold">
         Pricing
       </Typography>
-      <form className="grid grid-cols-3 mt-6" onSubmit={handleSubmit(onSubmit)}>
+      <Typography className="text-xs text-gray-500 italic">
+        The amount of this page use{" "}
+        <span className="font-semibold">Philippine Peso (₱)</span> as currency.
+      </Typography>
+      <form className="grid grid-cols-3 mt-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2">
-          <Input
+          <Input2
             type="number"
             id="dayRate"
             label="Day Rate (24-hour)"
+            description="This rental price for a full 24-hour period, starting from the time of pick-up."
             step=".01"
             required
             defaultValue={data?.item?.dayRate}
             {...register("dayRate", { required: true, valueAsNumber: true })}
             leftIcon={<span className="text-text-300">₱</span>}
           />
-          <Input
+          <Input2
             type="number"
             id="requiredDeposit"
             label="Required Deposit"
+            description="This upfront payment needed to secure the rental."
             step=".01"
             required
             {...register("requiredDeposit", {
@@ -82,11 +89,6 @@ const Pricing = ({ pageType }: Prop) => {
             defaultValue={data?.item?.requiredDeposit}
             leftIcon={<span className="text-text-300">₱</span>}
           />
-          <Typography className="text-sm text-text-500">
-            The amount of this page use{" "}
-            <span className="font-semibold">Philippine Peso (₱)</span> as
-            currency.
-          </Typography>
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button

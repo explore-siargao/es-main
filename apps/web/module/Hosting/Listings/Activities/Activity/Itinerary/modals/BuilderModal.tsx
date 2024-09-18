@@ -11,6 +11,8 @@ import { useSegmentsStore } from "../store/useSegmentsStore"
 import { useParams } from "next/navigation"
 import CustomSpecificMap from "@/common/components/CustomSpecificMap"
 import useGetActivityById from "../../../hooks/useGetActivityById"
+import { Input2 } from "@/common/components/ui/Input2"
+import { Select2 } from "@/common/components/ui/Select2"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -98,8 +100,9 @@ const BuilderModal = ({
             What happens during this segment?
           </Typography>
           <div className="w-full">
-            <Select
+            <Select2
               label="Activity"
+              description="You can select up to 3 activity"
               required
               className="col-span-1"
               disabled={activities.length > 2}
@@ -111,10 +114,7 @@ const BuilderModal = ({
                   {activity}
                 </Option>
               ))}
-            </Select>
-            <Typography className="text-xs text-text-300 italic mt-1">
-              You can select up to 3 activity
-            </Typography>
+            </Select2>
             {activities.length > 0 && (
               <div className="flex gap-4 pt-4">
                 {activities.map((activity) => (
@@ -133,13 +133,12 @@ const BuilderModal = ({
           </div>
         </div>
         <div className="mt-6">
-          <Typography variant="h4" fontWeight="semibold" className="mb-4">
-            Where does this segment take place?
-          </Typography>
           <div className="w-full">
-            <Input
+            <Input2
               id="location"
               label="Location"
+              description=" Where does this segment take place?"
+              placeholder="Example: General Luna, Cloud 9, Siargao Island"
               onChange={(e) => setLocation(e.target.value)}
               required
             />

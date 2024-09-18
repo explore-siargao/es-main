@@ -12,6 +12,8 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import { useParams, useRouter } from "next/navigation"
 import { cn } from "@/common/helpers/cn"
 import useGetActivityById from "../../hooks/useGetActivityById"
+import { Input2 } from "@/common/components/ui/Input2"
+import { Textarea2 } from "@/common/components/ui/Textarea2"
 
 interface Item {
   id: number
@@ -110,6 +112,10 @@ const BasicInfo = ({ pageType }: Prop) => {
     if (title && description) {
       const parsedDurationHour = parseInt(durationHour.toString(), 10)
 
+      if (description.length < 500) {
+        return toast.error("Minumum length of description is 500")
+      }
+
       if (!isNaN(parsedDurationHour)) {
         const numberOfHighlights = itemList.length
 
@@ -191,51 +197,48 @@ const BasicInfo = ({ pageType }: Prop) => {
           <form className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-6">
             <div className="col-span-1">
               <div>
-                <Input
+                <Input2
                   type="text"
                   label="Title"
+                  description="This is the name that will appear as the title of your listing on our site."
+                  placeholder="Example: Surfing Adventures at Cloud 9"
                   defaultValue={data?.item?.title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
-                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                  This is the name that will appear as the title of your listing
-                  on our site.
-                </Typography>
               </div>
               <div>
-                <div className="mt-2 relative rounded-xl ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600">
-                  <label
-                    htmlFor="descriptionTextarea"
-                    className="block text-xs font-medium text-text-900 px-3 pt-2"
-                  >
-                    Description
-                  </label>
-                  <textarea
+                <div className="mt-2">
+                  <Textarea2
+                    label="Description"
+                    description="Provide a full description about what customers will
+                  experience during the activity, in the correct order. Bring
+                  the activity to life and write at least 500 characters."
+                    placeholder="Example: Discover the thrill of surfing at Siargao's world-famous Cloud 9, known for its powerful and consistent waves that attract surfers from around the globe. Whether you're a seasoned surfer or a beginner looking to catch your first wave, Cloud 9 offers an unforgettable experience. The area features crystal-clear waters, a scenic boardwalk, and local surf schools ready to guide you through the basics or help refine your skills. After an exhilarating day on the water, unwind at nearby beachfront cafes and enjoy the stunning Siargao sunset."
                     id="descriptionTextarea"
-                    className="flex min-h-[80px] w-full px-3 pt-1 text-sm border-0 focus:ring-0 bg-transparent disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-h-[80px] h-96 w-full px-3 p-2 text-sm border-0 focus:ring-0 bg-transparent disabled:cursor-not-allowed disabled:opacity-50"
                     defaultValue={data?.item?.description}
                     onChange={(e) => setDescription(e.target.value)}
                     maxLength={3000}
                   />
                 </div>
                 <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
-                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                  Provide a full description about what customers will
-                  experience during the activity, in the correct order. Bring
-                  the activity to life and write at least 500 characters.
-                </Typography>
               </div>
 
               <div className="mt-4">
-                <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                <Typography variant="h4" fontWeight="semibold">
                   Highlights
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic">
+                  Provide 3 to 5 of the most memorable experiences that make
+                  your activity special and stand out from the competition.
+                  Customers will compare your highlights to other activities.
                 </Typography>
                 {itemList.length > 0 && (
                   <ul>
                     {itemList.map((item) => (
                       <li
                         key={item.id}
-                        className="mt-2 p-2 border border-gray-100 rounded-md flex justify-between items-center"
+                        className="mt-4 p-2 border border-gray-100 rounded-md flex justify-between items-center"
                       >
                         <p className="text-sm">{item.itemName}</p>
                         <button
@@ -257,6 +260,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     }
                     type="text"
                     label="Highlight"
+                    placeholder="Example: The island hopping is amazing"
                     onChange={(event) =>
                       setItemData([
                         { id: lastId + 1, itemName: event.target.value },
@@ -280,11 +284,6 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </button>
                   </div>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                  Provide 3 to 5 of the most memorable experiences that make
-                  your activity special and stand out from the competition.
-                  Customers will compare your highlights to other activities.
-                </Typography>
               </div>
               <div className="mt-4">
                 <Typography variant="h4" fontWeight="semibold" className="mb-4">

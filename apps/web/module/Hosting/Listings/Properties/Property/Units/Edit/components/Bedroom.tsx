@@ -76,8 +76,8 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
           {unitType === "Studio"
             ? isSingleBedroom
               ? "Edit Living Room"
-              : "Add beds in living room"
-            : "Add Beds"}
+              : "Add beds"
+            : "Add beds in living room"}
         </button>
       </div>
       <AddBedroomModal

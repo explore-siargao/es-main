@@ -188,8 +188,12 @@ const AddOns = ({ pageType }: Prop) => {
             </>
           )}
           <div className="mt-4">
-            <Typography variant="h4" fontWeight="semibold" className="mb-4">
+            <Typography variant="h4" fontWeight="semibold">
               Additional Add-Ons
+            </Typography>
+            <Typography className="text-xs text-gray-500 italic">
+              You can include other add ons that is not specified from the
+              checkboxes above
             </Typography>
             {otherAddOns.length > 0 && (
               <ul>
@@ -216,6 +220,7 @@ const AddOns = ({ pageType }: Prop) => {
                 className="p-2"
                 type="text"
                 label="Add-On"
+                placeholder="Example: Top box for motorbikes"
                 value={newAddOn}
                 onChange={(e) => setNewAddOn(e.target.value)}
               />
