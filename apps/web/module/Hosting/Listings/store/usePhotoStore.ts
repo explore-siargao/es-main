@@ -18,7 +18,7 @@ const usePhotoStore = create<T_PhotoStoreState>((set) => ({
   photos: [],
   toEditPhotoIndex: null,
   category: "",
-  setCategory:(value) => set (() => ({category: value})),
+  setCategory: (value) => set(() => ({ category: value })),
   setPhotos: (photos) => set({ photos }),
   setToEditPhotoIndex: (value) => set(() => ({ toEditPhotoIndex: value })),
   setDescription: (value) =>

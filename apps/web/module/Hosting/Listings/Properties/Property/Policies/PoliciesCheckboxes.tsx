@@ -45,26 +45,25 @@ const PoliciesCheckboxes = ({ title, icon, showReason = false }: Props) => {
               <label className="text-sm text-gray-400 pt-2">
                 Reason (optional)
               </label>
-            {title === "Safety Considerations" ? (
-              <Textarea2
-                label=""
-                placeholder="Example: Ensure all safety guidelines are followed, including appropriate emergency procedures, and avoid actions that could cause harm or damage."
-                defaultValue={policy.reason || ""}
-                onChange={(e) =>
-                  updatePolicy({ ...policy, reason: e.target.value })
-                }
-              />
-            ) : (
-              <Textarea2
-              label=""
-              placeholder="Example: Ensure compliance with all safety guidelines, including emergency procedures, proper use of property amenities, and general precautions to prevent accidents or damage."
-              defaultValue={policy.reason || ""}
-              onChange={(e) =>
-                updatePolicy({ ...policy, reason: e.target.value })
-              }
-            />
-            )}
-              
+              {title === "Safety Considerations" ? (
+                <Textarea2
+                  label=""
+                  placeholder="Example: Ensure all safety guidelines are followed, including appropriate emergency procedures, and avoid actions that could cause harm or damage."
+                  defaultValue={policy.reason || ""}
+                  onChange={(e) =>
+                    updatePolicy({ ...policy, reason: e.target.value })
+                  }
+                />
+              ) : (
+                <Textarea2
+                  label=""
+                  placeholder="Example: Ensure compliance with all safety guidelines, including emergency procedures, proper use of property amenities, and general precautions to prevent accidents or damage."
+                  defaultValue={policy.reason || ""}
+                  onChange={(e) =>
+                    updatePolicy({ ...policy, reason: e.target.value })
+                  }
+                />
+              )}
             </div>
           ) : null}
         </div>
