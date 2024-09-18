@@ -95,16 +95,16 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       const guest = reservation.guest
       let reservationStatus = reservation.status
       if (
-        (reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates') &&
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates') &&
         currentDate >= reservation.startDate &&
         currentDate <= reservation.endDate
       ) {
         reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      }
-      else if (
-        (reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates'
-          || reservationStatus === 'Checked-In'
-        ) &&
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
         currentDate > reservation.endDate
       ) {
         reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
@@ -202,18 +202,18 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       const guest = reservation.guest
       let reservationStatus = reservation.status
       if (
-        (reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates'
-          || reservationStatus === 'Checked-In'
-        ) &&
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
         currentDate >= reservation.startDate &&
         currentDate <= reservation.endDate
       ) {
         reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      }
-      else if (
-        (reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates'
-          || reservationStatus === 'Checked-In' || reservationStatus === 'Checked-Out'
-        ) &&
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In' ||
+          reservationStatus === 'Checked-Out') &&
         currentDate > reservation.endDate
       ) {
         reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
@@ -311,18 +311,18 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       const guest = reservation.guest
       let reservationStatus = reservation.status
       if (
-        (reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates'
-          || reservationStatus === 'Checked-In'
-        ) &&
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
         currentDate >= reservation.startDate &&
         currentDate <= reservation.endDate
       ) {
         reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      }
-      else if (
-        (reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates'
-          || reservationStatus === 'Checked-In' || reservationStatus === 'Checked-Out'
-        ) &&
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In' ||
+          reservationStatus === 'Checked-Out') &&
         currentDate > reservation.endDate
       ) {
         reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
