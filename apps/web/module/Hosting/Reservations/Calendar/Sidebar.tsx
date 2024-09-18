@@ -6,20 +6,26 @@ import {
   LayoutList,
   Plus,
   Search,
+  X,
 } from "lucide-react"
 import { useState } from "react"
 import CalendarTab from "../components/CalendarTab"
+import MonthYearSelectorModal from "./SidebarActionModals/MonthYearSelectorModal"
 
 type SideBarProps = {
   nextPrevFunction: Function
   openAddReservationModal: Function
+  filterMonthYear?: string
+  setFilterMonthYear?: (filter: string) => void
 }
 
 const Sidebar = ({
   nextPrevFunction,
   openAddReservationModal,
+  filterMonthYear,
+  setFilterMonthYear
 }: SideBarProps) => {
-  const [isShowAllRoomTypes, setIsShowAllRoomTypes] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <div className="p-4 flex flex-col gap-4">
@@ -27,7 +33,16 @@ const Sidebar = ({
         <Button size={"sm"} variant={"default"} className="rounded-full w-full">
           <LayoutList className="w-5" />
         </Button>
-        <Button size={"sm"} variant={"default"} className="rounded-full w-full">
+       {/* {
+        !filterMonthYear ?
+          <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
+            <Calendar className="w-5" />
+          </Button> :
+          <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setFilterMonthYear && setFilterMonthYear("")}>
+            <X className="w-5" />
+          </Button>
+       }  */}
+        <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
           <Calendar className="w-5" />
         </Button>
         <Button size={"sm"} variant={"default"} className="rounded-full w-full">
@@ -65,6 +80,12 @@ const Sidebar = ({
       <div className="normal-case">
         <CalendarTab />
       </div>
+      <MonthYearSelectorModal 
+        isModalOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)}
+        filterMonthYear={filterMonthYear}
+        setFilterMonthYear={setFilterMonthYear}
+      />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -33,6 +34,7 @@ const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
   const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const [filterMonthYear, setFilterMonthYear] = useState("")
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
   const { data: sampleData, isPending } = useGetCalendarProperty(
@@ -123,6 +125,18 @@ const PropertyCalendarTable = () => {
     }
     closeAddReservationModal()
   }
+
+  useEffect(() => {
+    if (filterMonthYear !== "") {
+      const parsedDate = parse(filterMonthYear, 'yyyy-MM', new Date());
+      const firstDayOfMonth = startOfMonth(parsedDate);
+      setStartDate(firstDayOfMonth);
+    } else {
+      // If filterMonthYear is empty, set the startDate to the current month
+      const currentMonthStart = startOfMonth(new Date());
+      setStartDate(currentMonthStart);
+    }
+  }, [filterMonthYear]);
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -267,10 +281,10 @@ const PropertyCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate(addDays(startDate, direction))
+    setStartDate((prevDate) => addDays(prevDate, direction));
     queryClient.invalidateQueries({
       queryKey: ["calendar-property"],
-    })
+    });
   }
 
   const getBookingStyle = (
@@ -343,6 +357,7 @@ const PropertyCalendarTable = () => {
     mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
+  
   return (
     <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (
@@ -358,6 +373,8 @@ const PropertyCalendarTable = () => {
                       nextPrevFunction={moveStartDateByOneDay}
                       //@ts-ignore
                       openAddReservationModal={handleOpenAddReservationModal}
+                      filterMonthYear={filterMonthYear}
+                      setFilterMonthYear={setFilterMonthYear}
                     />
                   </td>
                   {generateMonthHeader()}
