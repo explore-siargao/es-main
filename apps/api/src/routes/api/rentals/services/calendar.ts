@@ -63,7 +63,8 @@ const hasDateConflict = (
 export const getCarCalendar = async (req: Request, res: Response) => {
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
-
+  const currentDate = new Date()
+  currentDate.setUTCHours(0, 0, 0, 0)
   try {
     const carRentals = await dbRentals
       .find({ category: 'Car', host: res.locals.user.id })
@@ -92,6 +93,22 @@ export const getCarCalendar = async (req: Request, res: Response) => {
     const reservationMap: Record<string, Reservation[]> = {}
     reservations.forEach((reservation: any) => {
       const guest = reservation.guest
+      let reservationStatus = reservation.status
+      if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates') &&
+        currentDate >= reservation.startDate &&
+        currentDate <= reservation.endDate
+      ) {
+        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
+        currentDate > reservation.endDate
+      ) {
+        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+      }
       const reservationItem: Reservation = {
         id: reservation._id,
         name: STATUS_DISPLAY.includes(reservation.status)
@@ -102,7 +119,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         startDate: reservation.startDate ?? new Date(),
         endDate: reservation.endDate ?? new Date(),
         guestCount: reservation.guestCount ?? 0,
-        status: reservation.status,
+        status: reservationStatus,
         notes: reservation.notes,
       }
 
@@ -153,7 +170,8 @@ export const getCarCalendar = async (req: Request, res: Response) => {
 export const getBikeCalendar = async (req: Request, res: Response) => {
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
-
+  const currentDate = new Date()
+  currentDate.setUTCHours(0, 0, 0, 0)
   try {
     const bicycleRentals = await dbRentals
       .find({ category: 'Bicycle', host: res.locals.user.id })
@@ -182,6 +200,24 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     const reservationMap: Record<string, Reservation[]> = {}
     reservations.forEach((reservation: any) => {
       const guest = reservation.guest
+      let reservationStatus = reservation.status
+      if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
+        currentDate >= reservation.startDate &&
+        currentDate <= reservation.endDate
+      ) {
+        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In' ||
+          reservationStatus === 'Checked-Out') &&
+        currentDate > reservation.endDate
+      ) {
+        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+      }
       const reservationItem: Reservation = {
         id: reservation._id,
         name: STATUS_DISPLAY.includes(reservation.status)
@@ -192,7 +228,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
         startDate: reservation.startDate ?? new Date(),
         endDate: reservation.endDate ?? new Date(),
         guestCount: reservation.guestCount ?? 0,
-        status: reservation.status,
+        status: reservationStatus,
         notes: reservation.note,
       }
 
@@ -243,7 +279,8 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
 export const getMotorcycleCalendar = async (req: Request, res: Response) => {
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
-
+  const currentDate = new Date()
+  currentDate.setUTCHours(0, 0, 0, 0)
   try {
     const motorcycleRentals = await dbRentals
       .find({ category: 'Motorbike', host: res.locals.user.id })
@@ -272,6 +309,24 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     const reservationMap: Record<string, Reservation[]> = {}
     reservations.forEach((reservation: any) => {
       const guest = reservation.guest
+      let reservationStatus = reservation.status
+      if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
+        currentDate >= reservation.startDate &&
+        currentDate <= reservation.endDate
+      ) {
+        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In' ||
+          reservationStatus === 'Checked-Out') &&
+        currentDate > reservation.endDate
+      ) {
+        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+      }
       const reservationItem: Reservation = {
         id: reservation._id,
         name: STATUS_DISPLAY.includes(reservation.status)
@@ -282,7 +337,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
         startDate: reservation.startDate ?? new Date(),
         endDate: reservation.endDate ?? new Date(),
         guestCount: reservation.guestCount ?? 0,
-        status: reservation.status,
+        status: reservationStatus,
         notes: reservation.notes,
       }
 
