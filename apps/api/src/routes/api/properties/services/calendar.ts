@@ -144,23 +144,23 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           if (reservation.status !== 'Cancelled') {
             const guest = reservation.guest
             let reservationStatus = reservation.status
-      if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In') &&
-        currentDate >= reservation.startDate &&
-        currentDate <= reservation.endDate
-      ) {
-        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      } else if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In' ||
-          reservationStatus === 'Checked-Out') &&
-        currentDate > reservation.endDate
-      ) {
-        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
-      }
+            if (
+              (reservationStatus === 'Confirmed' ||
+                reservationStatus === 'Blocked-Dates' ||
+                reservationStatus === 'Checked-In') &&
+              currentDate >= reservation.startDate &&
+              currentDate <= reservation.endDate
+            ) {
+              reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+            } else if (
+              (reservationStatus === 'Confirmed' ||
+                reservationStatus === 'Blocked-Dates' ||
+                reservationStatus === 'Checked-In' ||
+                reservationStatus === 'Checked-Out') &&
+              currentDate > reservation.endDate
+            ) {
+              reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+            }
             const reservationItem: Reservation = {
               id: reservation._id,
               name: STATUS_DISPLAY.includes(reservation.status)
