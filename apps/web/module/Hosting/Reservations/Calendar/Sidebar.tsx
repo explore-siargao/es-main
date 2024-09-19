@@ -30,9 +30,6 @@ const Sidebar = ({
   return (
     <div className="p-4 flex flex-col gap-4">
       <div className="flex gap-2 items-center w-full">
-        <Button size={"sm"} variant={"default"} className="rounded-full w-full">
-          <LayoutList className="w-5" />
-        </Button>
         {!filterCalendarDate ? (
           <Button
             size={"sm"}
