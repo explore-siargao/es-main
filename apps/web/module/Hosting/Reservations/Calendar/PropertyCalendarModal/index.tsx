@@ -67,7 +67,8 @@ const PropertyCalendarModal = ({
                   Property Category
                 </Typography>
                 <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation?.reservation?.category && selectedReservation?.reservation?.category}
+                  {selectedReservation?.reservation?.category &&
+                    selectedReservation?.reservation?.category}
                 </Typography>
               </div>
               <div className="flex flex-col w-full">
@@ -82,22 +83,22 @@ const PropertyCalendarModal = ({
             {selectedReservation?.reservation?.status !==
               "Out-of-Service-Dates" && (
               <div className="flex gap-4">
-              <div className="flex flex-col w-full">
-                <Typography variant="h4" className="font-semibold">
-                  Guest
-                </Typography>
-                <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation?.reservation?.name}
-                </Typography>
-              </div>
-              <div className="flex flex-col w-full">
-                <Typography variant="h4" className="font-semibold">
-                  Guest counts
-                </Typography>
-                <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation?.reservation?.guestCount}
-                </Typography>
-              </div>
+                <div className="flex flex-col w-full">
+                  <Typography variant="h4" className="font-semibold">
+                    Guest
+                  </Typography>
+                  <Typography variant="h3" className="text-gray-500">
+                    {selectedReservation?.reservation?.name}
+                  </Typography>
+                </div>
+                <div className="flex flex-col w-full">
+                  <Typography variant="h4" className="font-semibold">
+                    Guest counts
+                  </Typography>
+                  <Typography variant="h3" className="text-gray-500">
+                    {selectedReservation?.reservation?.guestCount}
+                  </Typography>
+                </div>
               </div>
             )}
             <div className="flex gap-4">

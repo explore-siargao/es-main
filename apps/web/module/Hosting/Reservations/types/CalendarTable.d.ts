@@ -1,5 +1,5 @@
 export interface Reservation {
-  category?:string
+  category?: string
   name: string
   status: string
   startDate: string
@@ -18,7 +18,7 @@ export interface Booking {
 }
 
 export interface SelectedReservation {
-  unit?:string
+  unit?: string
   room?: string
   rooms?: string
   beds?: string

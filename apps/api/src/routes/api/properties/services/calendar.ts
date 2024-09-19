@@ -19,8 +19,8 @@ type Guest = {
 
 type Reservation = {
   id: String
-  category?:string
-  unit?:string
+  category?: string
+  unit?: string
   name: string // Ensure this is typed as Guest
   startDate: Date
   endDate: Date
@@ -165,7 +165,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
             }
             const reservationItem: Reservation = {
               id: reservation._id,
-              category:unit.category,
+              category: unit.category,
               name: STATUS_DISPLAY.includes(reservation.status)
                 ? reservation.status
                 : guest
