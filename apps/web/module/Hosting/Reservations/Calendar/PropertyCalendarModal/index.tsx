@@ -188,16 +188,19 @@ const PropertyCalendarModal = ({
 
             <div className="flex flex-col">
               <Typography variant="h4" className="font-semibold">
-                Notes
+                Notes(Optional)
               </Typography>
               {isEditReservation ? (
                 <div className="flex flex-col w-full">
                   <Textarea
                     id="notes"
-                    label="Notes"
+                    className="p-3 h-28"
+                    label=""
                     defaultValue={String(
-                      selectedReservation?.reservation?.notes
+                      selectedReservation?.reservation?.notes?
+                      selectedReservation?.reservation?.notes : ""
                     )}
+
                     {...register("notes")}
                     required={false}
                   />
