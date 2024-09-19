@@ -36,7 +36,7 @@ const BikeCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  const { data: sampleData, isPending } = useGetCalendarBike(
+  const { data: sampleData, isLoading } = useGetCalendarBike(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -281,11 +281,14 @@ const BikeCalendarTable = () => {
     setEditingRoom(null)
   }
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
-      {isPending ? (
-        <Spinner size="md">Loading...</Spinner>
+    <>
+      {isLoading ? (
+        <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
+          <Spinner variant={"primary"} />
+        </div>
       ) : (
-        <div>
+        <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
+      <div>
           <div className="overflow-auto">
             <table className="min-w-max w-full rounded-xl">
               <thead className="">
@@ -314,7 +317,7 @@ const BikeCalendarTable = () => {
                         className={`border p-4 text-left font-bold border-l-0`}
                       >
                         <span className="flex gap-2 items-center">
-                          {!collapsed[category.name] ? (
+                          {collapsed[category.name] ? (
                             <ChevronRight />
                           ) : (
                             <ChevronDown />
@@ -361,7 +364,7 @@ const BikeCalendarTable = () => {
                           key={bicycle.abbr}
                           className="hover:bg-gray-100 relative"
                         >
-                          <td className="border p-4 text-left border-l-0">
+                          <td className="border py-4 pr-4 pl-12 text-left border-l-0">
                             <div className="flex justify-between items-center">
                               {editingRoom === bicycle.abbr ? (
                                 <Input
@@ -488,8 +491,10 @@ const BikeCalendarTable = () => {
             </form>
           </FormProvider>
         </div>
-      )}
     </div>
+      )}
+    </>
+    
   )
 }
 
