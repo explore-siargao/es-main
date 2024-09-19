@@ -1,13 +1,9 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import CalendarTable from "./RoomCalendarTable"
-import { Table } from "lucide-react"
-import { Button } from "@/common/components/ui/Button"
-import { useRouter } from "next/navigation"
 import ReservationTab from "../../components/ReservationTab"
 
 const ReservationCalendar = () => {
-  const router = useRouter()
   return (
     <div className="mt-20">
       <div className="mb-4">
@@ -20,14 +16,14 @@ const ReservationCalendar = () => {
             >
               Reservations
             </Typography>
-            <Button
+            {/* <Button
               onClick={() => router.push("/hosting/reservations/upcoming")}
               variant={"primary"}
               className="flex gap-2"
             >
               <Table />
               Table View
-            </Button>
+            </Button> */}
           </div>
           <ReservationTab />
         </div>

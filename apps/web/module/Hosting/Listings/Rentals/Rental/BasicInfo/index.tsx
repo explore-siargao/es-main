@@ -1,8 +1,7 @@
 "use client"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { Option, Select } from "@/common/components/ui/Select"
-import { Input } from "@/common/components/ui/Input"
+import { Option } from "@/common/components/ui/Select"
 import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useQueryClient } from "@tanstack/react-query"
@@ -16,6 +15,8 @@ import {
 } from "@repo/contract"
 import useUpdateRentalBasicInfo from "../../../hooks/useUpdateRentalBasicInfo"
 import { cn } from "@/common/helpers/cn"
+import { Input2 } from "@/common/components/ui/Input2"
+import { Select2 } from "@/common/components/ui/Select2"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -57,15 +58,68 @@ const BasicInfo = ({ pageType }: Prop) => {
     mutate(formData, callBackReq)
   }
 
+  const category = watch("category") as E_Rental_Category
+
+  const getDescription = (category: E_Rental_Category) => {
+    switch (category) {
+      case E_Rental_Category.Motorbike:
+        return "This refers to the brand or manufacturer of the motobike."
+      case E_Rental_Category.Bicycle:
+        return "Specify the model or version of the bicycle."
+      case E_Rental_Category.Car:
+        return "This refers to the brand or manufacturer of the car."
+      default:
+        return "Specify the model or version of the vehicle."
+    }
+  }
+  const getModelDescription = (category: E_Rental_Category) => {
+    switch (category) {
+      case E_Rental_Category.Motorbike:
+        return "This refers to the specific version or type of the motorbike produced by a manufacturer."
+      case E_Rental_Category.Bicycle:
+        return "Specify the model or version of the bicycle."
+      case E_Rental_Category.Car:
+        return "This refers to the specific version or type of the car produced by a manufacturer."
+      default:
+        return "Specify the model or version of the vehicle."
+    }
+  }
+
+  const getPlaceholder = (category: E_Rental_Category) => {
+    switch (category) {
+      case E_Rental_Category.Motorbike:
+        return "Example: Yamaha MT-07"
+      case E_Rental_Category.Bicycle:
+        return "Example: Mountain Bike Pro"
+      case E_Rental_Category.Car:
+        return "Example: Honda Civic"
+      default:
+        return "Example: Vehicle Model"
+    }
+  }
+  const getMakePlaceholder = (category: E_Rental_Category) => {
+    switch (category) {
+      case E_Rental_Category.Motorbike:
+        return "Example: Yamaha"
+      case E_Rental_Category.Bicycle:
+        return "Example: Giant"
+      case E_Rental_Category.Car:
+        return "Example: Honda"
+      default:
+        return "Example: Manufacturer"
+    }
+  }
+
   return (
-    <div className="mt-20">
+    <div className="mt-20 mb-32">
       <Typography variant="h1" fontWeight="semibold">
         Basic Information
       </Typography>
       <form className="grid grid-cols-3 mt-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2">
-          <Select
+          <Select2
             label="Category"
+            description="Select category for your rental vehicle"
             id="rental-category"
             required
             disabled={isPending || isLoading || pageType === "edit"}
@@ -75,9 +129,23 @@ const BasicInfo = ({ pageType }: Prop) => {
             {Object.keys(E_Rental_Category).map((key) => {
               return <Option>{key}</Option>
             })}
-          </Select>
-          {watch("category") ? (
-            <Input
+          </Select2>
+
+          {category && category !== E_Rental_Category.Bicycle ? (
+            <Input2
+              type="text"
+              id="make"
+              label="Make"
+              description={getDescription(category)}
+              placeholder={getMakePlaceholder(category)}
+              required
+              disabled={isPending || isLoading}
+              {...register("make", { required: true })}
+            />
+          ) : (
+            <Input2
+              description="This refers to the brand or manufacturer of the bicycle"
+              placeholder="Example: Mountain Bike Pro"
               type="text"
               id="make"
               label="Make"
@@ -85,14 +153,15 @@ const BasicInfo = ({ pageType }: Prop) => {
               disabled={isPending || isLoading}
               {...register("make", { required: true })}
             />
-          ) : null}
+          )}
 
-          {watch("category") &&
-          watch("category") !== E_Rental_Category.Bicycle ? (
-            <Input
+          {category && category !== E_Rental_Category.Bicycle ? (
+            <Input2
               type="text"
               id="model"
               label="Model / Badge"
+              description={getModelDescription(category)}
+              placeholder={getPlaceholder(category)}
               required
               disabled={isPending || isLoading}
               {...register("modelBadge", { required: true })}
@@ -100,8 +169,9 @@ const BasicInfo = ({ pageType }: Prop) => {
           ) : null}
 
           {watch("category") === E_Rental_Category.Car ? (
-            <Select
+            <Select2
               label="Body"
+              description="Select the vehicle's body type from the available options."
               id="body"
               required
               disabled={isPending || isLoading}
@@ -111,14 +181,15 @@ const BasicInfo = ({ pageType }: Prop) => {
               {Object.keys(E_Rental_Car_Body).map((key) => {
                 return <Option>{key}</Option>
               })}
-            </Select>
+            </Select2>
           ) : null}
 
           {watch("category") &&
           watch("category") !== E_Rental_Category.Bicycle ? (
             <>
-              <Select
+              <Select2
                 label="Fuel Type"
+                description="This is the type of fuel used by your vehicle"
                 id="fuel"
                 required
                 disabled={isPending || isLoading}
@@ -128,9 +199,10 @@ const BasicInfo = ({ pageType }: Prop) => {
                 {Object.keys(E_Rental_Vehicle_Fuel).map((key) => {
                   return <Option>{key}</Option>
                 })}
-              </Select>
-              <Select
+              </Select2>
+              <Select2
                 label="Transmission"
+                description="This is the transmission type of your vehicle"
                 id="transmission"
                 required
                 disabled={isPending || isLoading}
@@ -140,9 +212,10 @@ const BasicInfo = ({ pageType }: Prop) => {
                 {Object.keys(E_Rental_Vehicle_Transmission).map((key) => {
                   return <Option>{key}</Option>
                 })}
-              </Select>
-              <Select
+              </Select2>
+              <Select2
                 label="Year"
+                description="Select your vehicle's manufacturing year from the dropdown."
                 id="year"
                 required
                 disabled={isPending || isLoading}
@@ -156,14 +229,16 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </Option>
                   )
                 })}
-              </Select>
+              </Select2>
             </>
           ) : null}
 
-          <Input
+          <Input2
             type="number"
             id="qty"
             label="Quantity"
+            description="How many of this do you have?"
+            placeholder="Example: 2"
             required
             disabled={isPending || isLoading}
             {...register("qty", { required: true, valueAsNumber: true })}

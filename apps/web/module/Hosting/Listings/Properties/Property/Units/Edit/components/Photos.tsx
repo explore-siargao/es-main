@@ -167,7 +167,7 @@ const Photos = () => {
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "No description"}
+                    {photo.description || "Please add description"}
                   </Typography>
                 </div>
               ) : null

@@ -1,9 +1,12 @@
 export interface Reservation {
+  category?: string
   name: string
   status: string
   startDate: string
   endDate: string
   guestCount: number
+  id: string
+  notes: string | null
 }
 
 export interface Booking {
@@ -15,17 +18,20 @@ export interface Booking {
 }
 
 export interface SelectedReservation {
+  unit?: string
   room?: string
   rooms?: string
   beds?: string
   motorcycles?: string
   bicyles?: string
   cars?: string
+  wholePlace?: string
   reservation?: Reservation
   booking?: Booking
 }
 
 export interface Room {
+  id: string
   abbr: string
   status: string
   reservations: Reservation[]
@@ -33,6 +39,7 @@ export interface Room {
 }
 
 export interface WholePlace {
+  id: string
   abbr: string
   status: string
   reservations: Reservation[]
@@ -40,6 +47,7 @@ export interface WholePlace {
 }
 
 export interface Bed {
+  id: string
   abbr: string
   status: string
   reservations: Reservation[]

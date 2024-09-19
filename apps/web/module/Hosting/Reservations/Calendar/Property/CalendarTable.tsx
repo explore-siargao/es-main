@@ -7,35 +7,44 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import ReservationCalendarModal from "../ReservationCalendarModal"
 import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
   Reservation,
   Room,
-  Bed,
-  WholePlace,
 } from "../../types/CalendarTable"
-import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
+import AddPropertyReservationModal from "../AddReservationModal/Property"
+import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
+import { useQueryClient } from "@tanstack/react-query"
+import { FormProvider, useForm } from "react-hook-form"
+import PropertyCalendarModal from "../PropertyCalendarModal"
+import { getColorClasses } from "../../helpers/legends"
 
-const BedCalendarTable = () => {
+const PropertyCalendarTable = () => {
+  const { mutate } = useUpdateCalendarUnitName()
+  const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
   const { data: sampleData, isPending } = useGetCalendarProperty(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
-
+  const queryClient = useQueryClient()
+  const [selectedLegendType, setSelectedLegendType] = useState<string>("")
+  const [isLegendTypeSelected, setIsLegendTypeSelected] =
+    useState<boolean>(false)
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -59,10 +68,28 @@ const BedCalendarTable = () => {
       },
     ],
   })
+
+  const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+
   const daysPerPage = 13
 
-  const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
+  const closeReservationModal = () => {
+    setSelectedLegendType("")
+    setTimeout(() => {
+      setIsReservationModalOpen(false)
+      setIsEditReservation(false)
+      form.reset()
+    }, 200)
+  }
+  const closeAddReservationModal = () => {
+    setIsAddReservationModalOpen(false)
+    setTimeout(() => {
+      form.setValue("status", "")
+      setSelectedLegendType("")
+      setIsLegendTypeSelected(false)
+      form.reset()
+    }, 200)
+  }
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
@@ -98,6 +125,15 @@ const BedCalendarTable = () => {
     }
     closeAddReservationModal()
   }
+
+  useEffect(() => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }, [filterCalendarDate])
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -136,11 +172,19 @@ const BedCalendarTable = () => {
     }
 
     const transformUnits = (units: any[]) =>
-      units.map((unit: { abbr: any; status: any; reservations: any[] }) => ({
-        abbr: unit.abbr,
-        status: unit.status,
-        reservations: unit.reservations.filter(isReservationWithinRange),
-      }))
+      units.map(
+        (unit: {
+          id: string
+          abbr: any
+          status: any
+          reservations: any[]
+        }) => ({
+          id: unit.id,
+          abbr: unit.abbr,
+          status: unit.status,
+          reservations: unit.reservations.filter(isReservationWithinRange),
+        })
+      )
 
     const filterItems = (items: any[]) =>
       items
@@ -166,7 +210,7 @@ const BedCalendarTable = () => {
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-  console.log(unitData)
+  // console.log(unitData)
   const generateCalendarHeader = () => {
     const headers = []
     for (let i = 0; i < daysPerPage; i++) {
@@ -234,7 +278,10 @@ const BedCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate(addDays(startDate, direction))
+    setStartDate((prevDate) => addDays(prevDate, direction))
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-property"],
+    })
   }
 
   const getBookingStyle = (
@@ -270,6 +317,7 @@ const BedCalendarTable = () => {
     const category = newFilteredData?.items?.find(
       (category) => category.name === categoryName
     )
+    console.log(newFilteredData)
     if (category) {
       //@ts-ignore
       const bed = category?.beds[bedIndex]
@@ -286,6 +334,27 @@ const BedCalendarTable = () => {
 
     setEditingRoom(null)
   }
+
+  const handleSaveUnitName = (id: string, name: string) => {
+    const callBackReq = {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-property"],
+          })
+          toast.success(data.message)
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    }
+    mutate({ id: id, name: name }, callBackReq)
+    setEditingRoom(null)
+  }
+
   return (
     <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (
@@ -301,6 +370,8 @@ const BedCalendarTable = () => {
                       nextPrevFunction={moveStartDateByOneDay}
                       //@ts-ignore
                       openAddReservationModal={handleOpenAddReservationModal}
+                      filterCalendarDate={filterCalendarDate}
+                      setFilterCalendarDate={setFilterCalendarDate}
                     />
                   </td>
                   {generateMonthHeader()}
@@ -388,8 +459,8 @@ const BedCalendarTable = () => {
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
-                                    onClick={() =>
-                                      handleSaveRoom(category.name, bedIndex)
+                                    onClick={(e) =>
+                                      handleSaveUnitName(bed.id, tempRoomAbbr)
                                     }
                                   >
                                     <Save className="text-gray-500 w-5" />
@@ -418,10 +489,12 @@ const BedCalendarTable = () => {
                                 if (!style) return null
 
                                 const { startCol, colSpan } = style
+                                const { colorClass, hoverColorClass } =
+                                  getColorClasses(booking.status)
 
                                 return (
                                   <div
-                                    key={booking.name}
+                                    key={booking.id}
                                     style={{
                                       left: `${(startCol * 100) / daysPerPage + 4}%`,
                                       width: `${(colSpan * 100) / daysPerPage - 8}%`,
@@ -429,14 +502,17 @@ const BedCalendarTable = () => {
                                     onClick={() => {
                                       setIsReservationModalOpen(true)
                                       setSelectedReservation({
-                                        beds: bed.abbr,
+                                        unit: bed.abbr,
                                         reservation: booking,
                                       })
+                                      console.log(selectedReservation)
                                     }}
-                                    className="booking-block hover:cursor-pointer flex z-20 bg-primary-500 hover:bg-primary-700 rounded-xl h-[80%] top-[10%] absolute items-center justify-center"
+                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
                                     <span className="text-white text-sm truncate px-2">
-                                      {booking.name}
+                                      {booking.status === "Out-of-Service-Dates"
+                                        ? "Out of service"
+                                        : booking.name}
                                     </span>
                                   </div>
                                 )
@@ -453,13 +529,19 @@ const BedCalendarTable = () => {
               </tbody>
             </table>
           </div>
-          {selectedReservation && (
-            <ReservationCalendarModal
-              isModalOpen={isReservationModalOpen}
-              onClose={closeReservationModal}
-              selectedReservation={selectedReservation}
-            />
-          )}
+          <FormProvider {...form}>
+            <form>
+              {selectedReservation && (
+                <PropertyCalendarModal
+                  isModalOpen={isReservationModalOpen}
+                  onClose={closeReservationModal}
+                  selectedReservation={selectedReservation}
+                  isEditReservation={isEditReservation}
+                  setIsEditReservation={setIsEditReservation}
+                />
+              )}
+            </form>
+          </FormProvider>
           <RoomQuantityEdit
             isModalOpen={isRoomQuantityEditOpen}
             onClose={closeRoomQuantityEditModal}
@@ -468,16 +550,22 @@ const BedCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddReservationModal
-            isModalOpen={isAddReservationModalOpen}
-            onClose={closeAddReservationModal}
-            onSave={handleSaveNewReservation}
-            data={filteredData}
-          />
+          <FormProvider {...form}>
+            <form>
+              <AddPropertyReservationModal
+                isModalOpen={isAddReservationModalOpen}
+                onClose={closeAddReservationModal}
+                selectedLegendType={selectedLegendType}
+                setSelectedLegendType={setSelectedLegendType}
+                setIsLegendTypeSelected={setIsLegendTypeSelected}
+                isLegendTypeSelected={isLegendTypeSelected}
+              />
+            </form>
+          </FormProvider>
         </div>
       )}
     </div>
   )
 }
 
-export default BedCalendarTable
+export default PropertyCalendarTable

@@ -1,7 +1,11 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
-import { dbProperties, dbReservations } from '@repo/database'
+import {
+  dbBookableUnitTypes,
+  dbProperties,
+  dbReservations,
+} from '@repo/database'
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 
 const response = new ResponseService()
@@ -14,10 +18,15 @@ type Guest = {
 }
 
 type Reservation = {
+  id: String
+  category?: string
+  unit?: string
   name: string // Ensure this is typed as Guest
   startDate: Date
   endDate: Date
   guestCount: number
+  notes?: String
+  status: String
 }
 
 type Room = {
@@ -37,6 +46,8 @@ type Item = {
   price: string
   rooms: Room[]
 }
+
+const STATUS_DISPLAY = ['Out of service', 'Blocked dates']
 
 // Function to check for date overlap
 const hasDateConflict = (
@@ -58,7 +69,8 @@ const hasDateConflict = (
 export const getPropertyCalendar = async (req: Request, res: Response) => {
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
-
+  const currentDate = new Date()
+  currentDate.setUTCHours(0, 0, 0, 0)
   try {
     const bedProperties = await dbProperties
       .find({
@@ -87,7 +99,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       await Promise.all([
         dbReservations
           .find({
-            unitId: { $in: roomIds },
+            unitId: { $in: roomIds.map((room: any) => room?._id) }, // Extracting _id from each object
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -95,15 +107,18 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           .populate('guest'),
         dbReservations
           .find({
-            unitId: { $in: wholePlaceIds },
+            unitId: {
+              $in: wholePlaceIds.map((wholePlace: any) => wholePlace?._id),
+            }, // Extracting _id from each object
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
           })
           .populate('guest'),
+
         dbReservations
           .find({
-            unitId: { $in: bedIds },
+            unitId: { $in: bedIds.map((bed: any) => bed?._id) },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -118,25 +133,49 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       propertyName: string
     ) =>
       units.map((unit: any) => {
-        const formattedItems = unit.ids.map((id: string, index: number) => {
-          const abbr = `${unit.title} ${index + 1}`
+        const formattedItems = unit.ids.map((idObj: any) => {
           return {
-            abbr,
+            id: idObj._id,
+            abbr: idObj.name,
             status: 'available',
             reservations: [],
           }
         })
 
         reservations.forEach((reservation: any) => {
-          if (reservation.guest) {
+          if (reservation.status !== 'Cancelled') {
+            const guest = reservation.guest
+            let reservationStatus = reservation.status
+            if (
+              (reservationStatus === 'Confirmed' ||
+                reservationStatus === 'Blocked-Dates' ||
+                reservationStatus === 'Checked-In') &&
+              currentDate >= reservation.startDate &&
+              currentDate <= reservation.endDate
+            ) {
+              reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+            } else if (
+              (reservationStatus === 'Confirmed' ||
+                reservationStatus === 'Blocked-Dates' ||
+                reservationStatus === 'Checked-In' ||
+                reservationStatus === 'Checked-Out') &&
+              currentDate > reservation.endDate
+            ) {
+              reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+            }
             const reservationItem: Reservation = {
-              name:
-                reservation?.guest.firstName +
-                ' ' +
-                reservation?.guest.lastName,
+              id: reservation._id,
+              category: unit.category,
+              name: STATUS_DISPLAY.includes(reservation.status)
+                ? reservation.status
+                : guest
+                  ? `${guest.firstName} ${guest.lastName}`
+                  : reservation.guestName || 'Unknown',
               startDate: reservation.startDate ?? new Date(),
               endDate: reservation.endDate ?? new Date(),
               guestCount: reservation.guestCount ?? 0,
+              notes: reservation.notes ?? '',
+              status: reservationStatus,
             }
 
             for (let i = 0; i < formattedItems.length; i++) {
@@ -213,6 +252,32 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         items,
         allItemCount: items.length,
         message: 'Property calendar fetched successfully.',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const editUnitChildName = async (req: Request, res: Response) => {
+  const { id, name } = req.body
+  try {
+    const updateUnitName = await dbBookableUnitTypes.findOneAndUpdate(
+      { 'ids._id': id },
+      { $set: { 'ids.$.name': name } },
+      { new: true }
+    )
+    if (!updateUnitName) {
+      return res.json(response.error({ message: 'Unit not found' }))
+    }
+    return res.json(
+      response.success({
+        item: updateUnitName,
+        message: 'Successfully changed unit name',
       })
     )
   } catch (err: any) {

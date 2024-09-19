@@ -207,6 +207,8 @@ const Bed = ({ pageType }: Prop) => {
     "Bed in 20 person dorm",
   ]
 
+  const category = data?.item?.category
+
   return (
     <div className="mt-20 mb-28">
       <div className="mb-8">
@@ -430,7 +432,7 @@ const Bed = ({ pageType }: Prop) => {
         <Photos />
         <hr className="mt-6 mb-4" />
         <Typography variant="h4" fontWeight="semibold" className="mb-3">
-          Amenities and Facilities (for the bed itself) asd
+          Amenities and Facilities (for the bed itself)
         </Typography>
         <div className="grid grid-cols-2 gap-3 mb-3">
           <AmenitiesCheckboxes
@@ -467,6 +469,7 @@ const Bed = ({ pageType }: Prop) => {
       <EditPhotoModal
         isOpen={editPhotoModal}
         onClose={() => setEditPhotoModal(false)}
+        passedCategory={category}
       />
     </div>
   )

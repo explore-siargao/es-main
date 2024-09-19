@@ -9,7 +9,7 @@ interface IRentalReservationFormProps {
   handleRentalCancel: () => void
 }
 
-function RentalSelectLegendTypeForm({
+function SelectLegendTypeForm({
   selectedLegendType,
   setSelectedLegendType,
   setIsLegendTypeSelected,
@@ -87,4 +87,4 @@ function RentalSelectLegendTypeForm({
   )
 }
 
-export default RentalSelectLegendTypeForm
+export default SelectLegendTypeForm

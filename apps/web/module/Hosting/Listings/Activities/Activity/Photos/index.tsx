@@ -284,7 +284,7 @@ const ActivityPhotos = ({ pageType }: Prop) => {
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "Click photo to add description"}
+                    {photo.description || "Please add description"}
                   </Typography>
                 </div>
               ) : null

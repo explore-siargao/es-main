@@ -36,7 +36,7 @@ function RentalReservationForm({
   } = useGetRentalNamesByCategory(selectedRentalType)
   const { data: vehiclesByRentalId, isLoading: isVehiclesByRentalIdLoading } =
     useGetVehiclesByRentalId(selectedRentalId)
-  console.log(selectedLegendType)
+
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -154,7 +154,7 @@ function RentalReservationForm({
           <div className="flex flex-col w-full">
             <Textarea
               id="notes"
-              label="Notes"
+              label="Notes(Optional)"
               {...register("notes")}
               required={false}
             />

@@ -32,6 +32,11 @@ import { T_Property_Amenity } from "@repo/contract"
 import useUpdateRoomBasicInfo from "../../../hooks/useUpdateRoomBasicInfo"
 import useUpdateAmenities from "../../../hooks/useUpdateAmenities"
 import useGetUnitById from "../hooks/useGetUnitById"
+import Bedroom from "./components/Bedroom"
+import { SQM_TO_FT_CONVERSION_FACTOR } from "../constants"
+import { IBedroom } from "../types"
+import { useBedroomStore } from "./store/useBedroomStore"
+import { Input2 } from "@/common/components/ui/Input2"
 
 type T_RoomUnit = {
   title: string
@@ -40,6 +45,9 @@ type T_RoomUnit = {
   size: number
   typeCount: number
   amenities: T_Property_Amenity[]
+  bedRooms: IBedroom[]
+  isHaveSharedBathRoom: "Yes" | "No" | null | undefined
+  isHaveSharedAmenities: "Yes" | "No" | null | undefined
 }
 
 type Prop = {
@@ -52,8 +60,8 @@ const Room = ({ pageType }: Prop) => {
   const unitId = String(params.roomId)
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { data, isPending } = useGetUnitById(unitId)
-
+  const { data, isPending, isFetching } = useGetUnitById(unitId)
+  const [isSavings, setIsSavings] = useState(false)
   const [typeCount, setTypeCount] = useState((data?.item?.qty || 0) as number)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
   const [customTitle, setCustomTitle] = useState("")
@@ -68,7 +76,8 @@ const Room = ({ pageType }: Prop) => {
   const { mutateAsync: deleteMutateAsync } = useDeleteUnitPhoto(
     listingId as string
   )
-
+  const bedRooms = useBedroomStore((state) => state.bedrooms)
+  const [unitType, setUnitType] = useState(data?.item?.subtitle || "")
   const photos = usePhotoStore((state) => state.photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setAmenties = useSelectAmenityStore(
@@ -76,7 +85,18 @@ const Room = ({ pageType }: Prop) => {
   )
   const amenities = useSelectAmenityStore((state) => state.amenities)
 
-  const { control, register, handleSubmit, setValue } = useForm<T_RoomUnit>()
+  const { register, handleSubmit, setValue, watch } = useForm<T_RoomUnit>()
+  const [sizeValues, setSizeValues] = useState({
+    sqm: 0,
+    squareFoot: 0,
+  })
+
+  const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
+  useEffect(() => {
+    if (data?.item?.bedRooms || data?.item?.livingRooms) {
+      updateBedrooms(data.item.bedRooms)
+    }
+  }, [data, updateBedrooms])
 
   const updatePhotosInDb = async () => {
     const toAddPhotos =
@@ -126,9 +146,20 @@ const Room = ({ pageType }: Prop) => {
     }
   }
 
+  const handleSqmChange = (value: string) => {
+    const newSquareFoot = (Number(value) * SQM_TO_FT_CONVERSION_FACTOR).toFixed(
+      2
+    )
+
+    setSizeValues({
+      sqm: Number(value),
+      squareFoot: Number(newSquareFoot),
+    })
+  }
+
   const onSubmit = async (formData: T_RoomUnit) => {
     formData.amenities = amenities
-
+    console.log("test: ", formData)
     const missingTags = photos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
     )
@@ -154,13 +185,23 @@ const Room = ({ pageType }: Prop) => {
     }
 
     try {
+      if (bedRooms.length > 0) {
+        setIsSavings(true)
+        formData.bedRooms = bedRooms
+      } else {
+        toast.error("Must have at least 1 bed or sleeping space.")
+        return
+      }
       const saveBasicInfo = updateRoomBasicInfo({
         _id: unitId,
         title: formData.title,
-        subtitle: formData.subtitle,
+        subtitle: "",
         totalSize: Number(formData.size),
-        description: formData.description,
+        description: "",
         qty: Number(typeCount),
+        bedRooms: bedRooms,
+        isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
+        isHaveSharedAmenities: formData.isHaveSharedAmenities,
       })
       const saveAmenities = updateAmenties({ amenities: formData?.amenities })
       const filterSelectedAmenities = amenities.filter(
@@ -187,6 +228,12 @@ const Room = ({ pageType }: Prop) => {
       setPhotos(data?.item?.photos)
       setAmenties(data?.item?.amenities)
       setValue("size", data?.item?.totalSize)
+      setValue("isHaveSharedBathRoom", data?.item?.isHaveSharedBathRoom || "No")
+      setValue(
+        "isHaveSharedAmenities",
+        data?.item?.isHaveSharedAmenities || "No"
+      )
+      handleSqmChange(data.item?.totalSize)
       if (data?.item?.subtitle?.startsWith("Custom: ", "")) {
         setCustomTitle(data?.item?.subtitle.replace("Custom: ", ""))
       }
@@ -195,6 +242,8 @@ const Room = ({ pageType }: Prop) => {
       }
     }
   }, [data, isPending])
+
+  const category = data?.item?.category
 
   return (
     <div className="mt-20 mb-28">
@@ -209,12 +258,11 @@ const Room = ({ pageType }: Prop) => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h4" fontWeight="semibold" className="mb-2">
-          What is the name you want to display for your unit? (Optional)
-        </Typography>
-        <div className="grid grid-cols-4 gap-x-6 mb-5">
-          <Input
+        <div className="grid grid-cols-4 gap-x-6">
+          <Input2
             label="Title"
+            description=" What is the name you want to display for your unit? (Optional)"
+            placeholder="Example: Queen room with site view"
             id="title"
             type="text"
             minLength={5}
@@ -223,120 +271,70 @@ const Room = ({ pageType }: Prop) => {
             {...register("title")}
           />
         </div>
+        <div className="flex flex-col">
+          <Typography variant="h4" fontWeight="semibold" className="mt-4">
+            Where can guests sleep?
+          </Typography>
+          <Typography
+            variant="h5"
+            fontWeight="normal"
+            className="text-xs text-gray-500 italic mb-2"
+          >
+            How many comfortable living spaces does this unit have? Click to add
+            bed type
+          </Typography>
+        </div>
+        <div className="grid grid-cols-2 gap-x-6 pr-12">
+          <Bedroom unitType={unitType} category={category} />
+        </div>
+        <Typography variant="h4" fontWeight="semibold" className="mt-4">
+          How big is this unit?
+        </Typography>
+        <Typography
+          variant="h5"
+          fontWeight="normal"
+          className="text-xs text-gray-500 italic mb-2"
+        >
+          Enter the unit size in square meters, we will automatically convert to
+          square foot
+        </Typography>
         <div className="grid grid-cols-4 gap-x-6">
           <div>
-            <Controller
-              control={control}
-              name="subtitle"
-              defaultValue={data?.item?.subtitle || ""}
-              rules={{ required: "This field is required" }}
-              render={({ field }) => (
-                <>
-                  <Select
-                    {...field}
-                    label="Name"
-                    value={
-                      field.value.startsWith("Custom:") ? "Custom" : field.value
-                    }
-                    onChange={(e) => {
-                      const value = e.target.value
-                      if (value === "Custom") {
-                        setCustomTitle("")
-                        field.onChange("Custom: ")
-                      } else {
-                        setCustomTitle("")
-                        field.onChange(value)
-                      }
-                    }}
-                    required
-                  >
-                    <Option value={""}>Select Name</Option>
-                    <Option value="Double Room">Double Room</Option>
-                    <Option value="Custom">Custom</Option>
-                  </Select>
-                  {field.value.startsWith("Custom:") && (
-                    <Input
-                      label="Custom"
-                      type="text"
-                      value={customTitle}
-                      onChange={(e) => {
-                        setCustomTitle(e.target.value)
-                        field.onChange(`Custom: ${e.target.value}`)
-                      }}
-                      placeholder="Enter custom name"
-                      className="mt-2 block w-full border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      required
-                    />
-                  )}
-                </>
-              )}
-            />
-          </div>
-          <div>
-            <Controller
-              control={control}
-              name="description"
-              defaultValue={data?.item?.description || ""}
-              rules={{ required: "This field is required" }}
-              render={({ field }) => (
-                <>
-                  <Select
-                    {...field}
-                    label="Bed"
-                    value={
-                      field.value.startsWith("Custom:") ? "Custom" : field.value
-                    }
-                    onChange={(e) => {
-                      const value = e.target.value
-                      if (value === "Custom") {
-                        setCustomDescription("")
-                        field.onChange("Custom: ")
-                      } else {
-                        setCustomDescription("")
-                        field.onChange(value)
-                      }
-                    }}
-                    required
-                  >
-                    <Option value={""}>Select Bed</Option>
-                    <Option value="1 Queen Bed">1 Queen Bed</Option>
-                    <Option value="Custom">Custom</Option>
-                  </Select>
-                  {field.value.startsWith("Custom:") && (
-                    <Input
-                      label="Custom"
-                      type="text"
-                      value={customDescription}
-                      onChange={(e) => {
-                        setCustomDescription(e.target.value)
-                        field.onChange(`Custom: ${e.target.value}`)
-                      }}
-                      placeholder="Enter custom bed"
-                      className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                      required
-                    />
-                  )}
-                </>
-              )}
+            <Input
+              label="Sqm"
+              id="size"
+              type="number"
+              disabled={isPending || isFetching}
+              {...register("size", {
+                required: "This field is required",
+              })}
+              onChange={(event) => handleSqmChange(event.target.value)}
+              required
             />
           </div>
           <div>
             <Input
-              label="Size (sqm)"
-              id="size"
+              label="Ft"
+              id="squareFoot"
               type="number"
-              aria-disabled={isPending}
-              defaultValue={data?.item?.totalSize}
-              disabled={isPending}
-              {...register("size", { required: "Size is required" })}
+              value={sizeValues.squareFoot}
+              disabled
               required
             />
           </div>
         </div>
+
         <div className="grid grid-cols-4 mt-4">
           <div>
-            <Typography variant="h4" fontWeight="semibold" className="mb-2">
+            <Typography variant="h4" fontWeight="semibold">
               How many of this type you have?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-xs text-gray-500 italic mb-2"
+            >
+              Identical units that will have the same price per night.
             </Typography>
             <div className="flex">
               <button
@@ -369,6 +367,84 @@ const Room = ({ pageType }: Prop) => {
                 <PlusIcon className="h-3 w-3" />
               </button>
             </div>
+          </div>
+        </div>
+        <div className="mb-4 mt-4">
+          <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+            Does this room have a shared bathroom?
+          </Typography>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedBathRoom-no"
+              type="radio"
+              {...register("isHaveSharedBathRoom", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="No"
+              required
+              checked={watch("isHaveSharedBathRoom") === "No"}
+            />
+            <label
+              htmlFor="isHaveSharedBathRoom-no"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              No
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedBathRoom-yes"
+              type="radio"
+              {...register("isHaveSharedBathRoom", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="Yes"
+              required
+              checked={watch("isHaveSharedBathRoom") === "Yes"}
+            />
+            <label
+              htmlFor="isHaveSharedBathRoom-yes"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              Yes
+            </label>
+          </div>
+        </div>
+        <div className="mb-4 mt-4">
+          <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+            Does this room have a shared amenities?
+          </Typography>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedAmenities-no"
+              type="radio"
+              {...register("isHaveSharedAmenities", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="No"
+              required
+              checked={watch("isHaveSharedAmenities") === "No"}
+            />
+            <label
+              htmlFor="isHaveSharedAmenities-no"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              No
+            </label>
+          </div>
+          <div className="flex items-center">
+            <input
+              id="isHaveSharedAmenities-yes"
+              type="radio"
+              {...register("isHaveSharedAmenities", { required: true })}
+              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+              value="Yes"
+              required
+              checked={watch("isHaveSharedAmenities") === "Yes"}
+            />
+            <label
+              htmlFor="isHaveSharedAmenities-yes"
+              className="ml-2 block text-sm font-medium leading-6 text-gray-900"
+            >
+              Yes
+            </label>
           </div>
         </div>
         <hr className="mt-6 mb-4" />
@@ -412,6 +488,7 @@ const Room = ({ pageType }: Prop) => {
       <EditPhotoModal
         isOpen={editPhotoModal}
         onClose={() => setEditPhotoModal(false)}
+        passedCategory={category}
       />
     </div>
   )

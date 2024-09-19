@@ -2,12 +2,12 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import { Dispatch, useState } from "react"
 import { MinusIcon, PlusIcon } from "lucide-react"
-import { Option, Select } from "@/common/components/ui/Select"
+import { Option } from "@/common/components/ui/Select"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
 import { TRANSFERS } from "../constants"
 import toast from "react-hot-toast"
 import { useSegmentsStore } from "../store/useSegmentsStore"
-import { Input } from "@/common/components/ui/Input"
+import { Select2 } from "@/common/components/ui/Select2"
 
 interface ISetUpProfileAboutYouModalProps {
   isModalOpen: boolean
@@ -57,8 +57,9 @@ const TransferModal = ({
             What type of vehicle use for this transfer?
           </Typography>
           <div className="w-full">
-            <Select
+            <Select2
               label="Transfer"
+              description="Select the vehicle used in transfer"
               required
               className="col-span-1"
               onChange={(e) => setTransfer(e.target.value)}
@@ -69,7 +70,7 @@ const TransferModal = ({
                   {transfer}
                 </Option>
               ))}
-            </Select>
+            </Select2>
           </div>
         </div>
         <div className="mt-6">

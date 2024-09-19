@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import Logo from "@/common/assets/logo.png"
 import { Button } from "@/common/components/ui/Button"
@@ -12,29 +12,12 @@ import { WidthWrapper } from "@/common/components/WidthWrapper"
 import { Typography } from "@/common/components/ui/Typography"
 import { cn } from "@/common/helpers/cn"
 import useSessionStore from "@/common/store/useSessionStore"
-import { E_Listing_Category, E_UserRole } from "@repo/contract"
+import { E_UserRole } from "@repo/contract"
 import GuidesMenu from "./GuidesMenu"
 import ApplyToHostModal from "@/module/LandingPage/components/ApplyToHostModal"
-import NavigationByState from "../SearchBar/NavigationByState"
-import PropertySearchBar from "../SearchBar/PropertySearchBar"
-import { FormProvider, useForm } from "react-hook-form"
-import ActivitiesSearchBar from "../SearchBar/ActivitiesSearchBar"
-import RentalsSearchBar from "../SearchBar/RentalsSearchBar"
-import { useSearchStore } from "@/common/store/useSearchStore"
+import SearchBarByState from "../SearchBar/SearchBarByState"
 
-type T_Search_Form = {
-  search: string
-  checkIn: string
-  checkOut: string
-  date: string
-  numberOfGuest: number
-}
-
-const propertyEnum = E_Listing_Category.Property
-const activityEnum = E_Listing_Category.Activity
-const rentalEnum = E_Listing_Category.Rental
-
-function Header({
+function WithSearch({
   contentWidth = "medium",
   isFixed = true,
 }: {
@@ -55,26 +38,6 @@ function Header({
     }
   }
 
-  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
-
-  const form = useForm<T_Search_Form>()
-  const { setSearchValues, clearSearchValues } = useSearchStore()
-
-  useEffect(() => {
-    form.reset()
-    clearSearchValues()
-  }, [category])
-
-  const onSubmit = (data: T_Search_Form) => {
-    setSearchValues(
-      data.search,
-      data.checkIn,
-      data.checkOut,
-      data.date,
-      Number(data.numberOfGuest)
-    )
-  }
-
   return (
     <header
       className={cn(
@@ -89,7 +52,7 @@ function Header({
       </div>
       <WidthWrapper width={contentWidth}>
         <nav
-          className="flex items-center justify-between py-2 my-2 w-full"
+          className="flex items-start justify-between py-2 my-2 w-full"
           aria-label="Global"
         >
           <Link
@@ -104,9 +67,7 @@ function Header({
               alt={APP_NAME}
             />
           </Link>
-          <div className="space-x-8">
-            <NavigationByState category={category} setCategory={setCategory} />
-          </div>
+          <SearchBarByState isNavCenter={true} />
           <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 items-center relative">
             <div className="flex gap-2 rounded-full items-center px-2 py-1">
               <GuidesMenu />
@@ -136,19 +97,8 @@ function Header({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
-      <div className="drop-shadow-lg mb-2 min-w-[912px]">
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            {category !== activityEnum && category !== rentalEnum ? (
-              <PropertySearchBar />
-            ) : null}
-            {category === activityEnum && <ActivitiesSearchBar />}
-            {category === rentalEnum && <RentalsSearchBar />}
-          </form>
-        </FormProvider>
-      </div>
     </header>
   )
 }
 
-export default Header
+export default WithSearch

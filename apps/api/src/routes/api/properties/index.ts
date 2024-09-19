@@ -23,6 +23,7 @@ import {
   getPropertyLocation,
   updatePropertyLocation,
   updatePropertyBasicInfo,
+  updateWholePlaceType,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import {
@@ -40,6 +41,7 @@ import {
   addWholePlaceUnit,
   getPropertiesBookableUnits,
   getUnitById,
+  getUnitIds,
   updateBedUnitBasicInfo,
   updateRoomUnitBasicInfo,
   updateWholePlaceUnitBasicInfo,
@@ -53,7 +55,7 @@ import {
   updateBookableUnitTypeAmenities,
 } from './services/amenities'
 import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
-import { getPropertyCalendar } from './services/calendar'
+import { editUnitChildName, getPropertyCalendar } from './services/calendar'
 
 const router = express.Router()
 
@@ -114,6 +116,15 @@ router.patch(
   isUserLoggedIn,
   isHostPropertyOwner,
   updatePropertyType
+)
+
+router.patch(
+  '/:propertyId/whole-place-type',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  isHostPropertyOwner,
+  updateWholePlaceType
 )
 
 //basic info
@@ -354,6 +365,16 @@ router.get(
   isUserLoggedIn,
   isCsrfTokenValid,
   getPropertyCalendar
+)
+
+router.get('/units/:unitId', isUserLoggedIn, isOriginValid, getUnitIds)
+
+router.patch(
+  '/update-units',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editUnitChildName
 )
 
 export default router

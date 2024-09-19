@@ -16,6 +16,7 @@ import { E_Rental_Category } from "@repo/contract"
 import useAddRentalPhoto from "../hooks/useAddRentalPhoto"
 import useDeleteRentalPhoto from "../hooks/useDeleteRentalPhoto"
 import useUpdateRentalFinishedSections from "../hooks/useUpdateRentalFinishedSections"
+import Category from "@/module/Listing/Property/components/Reviews/Category"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -176,6 +177,8 @@ const RentalPhotos = ({ pageType }: Prop) => {
     }
   }, [data, isPending])
 
+  const category = data?.item?.category
+
   return (
     <div className={cn("mt-20 mb-14", isPending && "opacity-70")}>
       <div className="mb-3">
@@ -304,7 +307,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
                   <Typography
                     className={`${photo.description ? "text-gray-900" : "text-gray-500"} text-sm mt-3 truncate`}
                   >
-                    {photo.description || "Click photo to add description"}
+                    {photo.description || "Please add description"}
                   </Typography>
                 </div>
               ) : null
@@ -327,6 +330,7 @@ const RentalPhotos = ({ pageType }: Prop) => {
         <EditPhotoModal
           isOpen={editPhotoModal}
           onClose={() => setEditPhotoModal(false)}
+          passedCategory={category}
         />
       </>
     </div>

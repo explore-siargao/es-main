@@ -25,6 +25,10 @@ const bookableUnitTypes = new Schema({
     type: String,
     required: false,
   },
+  isHaveSharedAmenities: {
+    type: String,
+    required: false,
+  },
   isSmokingAllowed: {
     type: String,
     required: false,
@@ -91,7 +95,18 @@ const bookableUnitTypes = new Schema({
   ],
   qty: Number,
   ids: {
-    type: [mongoose.Schema.ObjectId],
+    type: [
+      {
+        _id: {
+          type: mongoose.Schema.ObjectId,
+          default: () => new mongoose.Types.ObjectId(),
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     default: [],
   },
   createdAt: {

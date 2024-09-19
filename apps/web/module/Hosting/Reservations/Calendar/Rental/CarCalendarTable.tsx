@@ -13,7 +13,6 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import ReservationCalendarModal from "../ReservationCalendarModal"
 import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
@@ -26,9 +25,16 @@ import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
 import { getColorClasses } from "../../helpers/legends"
 import { useQueryClient } from "@tanstack/react-query"
+import RentalCalendarModal from "../RentalCalendarModal"
+import { FormProvider, useForm } from "react-hook-form"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
+  const form = useForm()
+
+  const [selectedLegendType, setSelectedLegendType] = useState<string>("")
+  const [isLegendTypeSelected, setIsLegendTypeSelected] =
+    useState<boolean>(false)
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
@@ -59,10 +65,27 @@ const CarCalendarTable = () => {
       },
     ],
   })
+  const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+
   const daysPerPage = 13
 
-  const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
+  const closeReservationModal = () => {
+    setSelectedLegendType("")
+    setTimeout(() => {
+      setIsReservationModalOpen(false)
+      setIsEditReservation(false)
+      form.reset()
+    }, 200)
+  }
+  const closeAddReservationModal = () => {
+    setIsAddReservationModalOpen(false)
+    setTimeout(() => {
+      form.setValue("status", "")
+      setSelectedLegendType("")
+      setIsLegendTypeSelected(false)
+      form.reset()
+    }, 200)
+  }
   const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
   const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
@@ -377,7 +400,7 @@ const CarCalendarTable = () => {
 
                               return (
                                 <div
-                                  key={booking.name}
+                                  key={booking.id}
                                   style={{
                                     left: `${(startCol * 100) / daysPerPage + 4}%`,
                                     width: `${(colSpan * 100) / daysPerPage - 8}%`,
@@ -410,13 +433,20 @@ const CarCalendarTable = () => {
               </tbody>
             </table>
           </div>
-          {selectedReservation && (
-            <ReservationCalendarModal
-              isModalOpen={isReservationModalOpen}
-              onClose={closeReservationModal}
-              selectedReservation={selectedReservation}
-            />
-          )}
+          <FormProvider {...form}>
+            <form>
+              {selectedReservation && (
+                <RentalCalendarModal
+                  isModalOpen={isReservationModalOpen}
+                  onClose={closeReservationModal}
+                  selectedReservation={selectedReservation}
+                  isEditReservation={isEditReservation}
+                  setIsEditReservation={setIsEditReservation}
+                />
+              )}
+            </form>
+          </FormProvider>
+
           <RoomQuantityEdit
             isModalOpen={isRoomQuantityEditOpen}
             onClose={closeRoomQuantityEditModal}
@@ -425,10 +455,18 @@ const CarCalendarTable = () => {
             setRoomQuantity={setRoomQuantity}
             category={selectedCategory}
           />
-          <AddRentalReservationModal
-            isModalOpen={isAddReservationModalOpen}
-            onClose={closeAddReservationModal}
-          />
+          <FormProvider {...form}>
+            <form>
+              <AddRentalReservationModal
+                isModalOpen={isAddReservationModalOpen}
+                onClose={closeAddReservationModal}
+                selectedLegendType={selectedLegendType}
+                setSelectedLegendType={setSelectedLegendType}
+                setIsLegendTypeSelected={setIsLegendTypeSelected}
+                isLegendTypeSelected={isLegendTypeSelected}
+              />
+            </form>
+          </FormProvider>
         </div>
       )}
     </div>

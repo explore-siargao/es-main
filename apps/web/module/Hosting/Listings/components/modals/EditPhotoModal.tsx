@@ -1,19 +1,19 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
-import { Typography } from "@/common/components/ui/Typography"
 import Image from "next/image"
 import usePhotoStore from "../../store/usePhotoStore"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
-import Asterisk from "@/common/components/ui/Asterisk"
+import { Textarea2 } from "@/common/components/ui/Textarea2"
 
 type Props = {
   isOpen: boolean
   onClose: () => void
+  passedCategory?: string
 }
 
-const EditPhotoModal = ({ isOpen, onClose }: Props) => {
+const EditPhotoModal = ({ isOpen, onClose, passedCategory }: Props) => {
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const photos = usePhotoStore((state) => state.photos)
   const toEditPhotoIndex = usePhotoStore((state) => state.toEditPhotoIndex)
@@ -28,6 +28,8 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
   const [description, editDescription] = useState(currentPhoto?.description)
   const [tags, editTags] = useState(currentPhoto?.tags)
   const [isMain, setIsMain] = useState(currentPhoto?.isMain || false)
+  const category = usePhotoStore((state) => state.category)
+  const setCategory = usePhotoStore((state) => state.setCategory)
 
   useEffect(() => {
     editDescription(currentPhoto?.description)
@@ -35,6 +37,72 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
     setIsMain(currentPhoto?.isMain || false)
   }, [isOpen])
 
+  useEffect(() => {
+    if (passedCategory) {
+      setCategory(passedCategory)
+    }
+  }, [passedCategory, setCategory])
+
+  const getDescription = () => {
+    switch (category) {
+      case "Room":
+        return "Add description for your room photos"
+      case "Bed":
+        return "Add description for your bed photos"
+      case "Whole-Place":
+        return "Add description for your livingroom photos"
+      case "Motorbike":
+        return "Add description for your motorbike photos"
+      case "Car":
+        return "Add description for your car photos"
+      case "Bicycle":
+        return "Add description for your bicycle photos"
+      case "Property":
+        return "Add description for your property photos"
+      default:
+        return "Add description for your activity photos"
+    }
+  }
+  const getPlaceholder = () => {
+    switch (category) {
+      case "Room":
+        return "Example: Front view of room unit."
+      case "Bed":
+        return "Example: Front view of bed unit."
+      case "Whole-Place":
+        return "Example: Front view of livingroom unit."
+      case "Motorbike":
+        return "Example: Front view of motorbike unit."
+      case "Car":
+        return "Example: Front view of car unit."
+      case "Bicycle":
+        return "Example: Front view of bicycle unit."
+      case "Property":
+        return "Example: Front view of property unit."
+      default:
+        return "Example: This is one of our popular activity"
+    }
+  }
+  const getTags = () => {
+    switch (category) {
+      case "Room":
+        return "Example: Simple, minimalist"
+      case "Bed":
+        return "Example: Window view, morning breeze"
+      case "Whole-Place":
+        return "Example: Aesthetic interior, river view"
+      case "Motorbike":
+        return "Example: Sporty, fast"
+      case "Car":
+        return "Example: Relaxing, convinient, spacious"
+      case "Bicycle":
+        return "Example: Lightweight, chill"
+      case "Property":
+        return "Example: Amazing view, clean and simple"
+      default:
+        return "Example: Most popular, safety, tour"
+    }
+  }
   return (
     <ModalContainer
       size="md"
@@ -52,32 +120,36 @@ const EditPhotoModal = ({ isOpen, onClose }: Props) => {
             alt="image-preview"
           />
         </div>
-        <Typography variant="h4" fontWeight="semibold" className="mt-4 mb-2">
-          Description
-          <Asterisk />
-        </Typography>
-        <textarea
-          rows={4}
-          id="description"
-          className="block w-72 rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-          placeholder="Add a photo description that explains your unit, for example: `Front view of the unit.`"
-          defaultValue={description}
-          onChange={(e) => editDescription(e.currentTarget.value)}
-          required
-          tabIndex={-1}
-        />
-        <Typography variant="h4" fontWeight="semibold" className="mt-6 mb-2">
-          Tags*
-        </Typography>
-        <textarea
-          rows={2}
-          id="tags"
-          className="block w-72 rounded-xl pl-3 pr-[41px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-          placeholder="Enter tags separated by commas eg:`red,car`"
-          defaultValue={tags}
-          onChange={(e) => editTags(e.currentTarget.value)}
-          tabIndex={-1}
-        />
+        <div className="w-72 mt-4">
+          <Textarea2
+            label=" Description"
+            rows={4}
+            id="description"
+            className="block  rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+            description={getDescription()}
+            placeholder={getPlaceholder()}
+            defaultValue={description}
+            onChange={(e) => editDescription(e.currentTarget.value)}
+            required
+            tabIndex={-1}
+          />
+        </div>
+
+        <div className="mt-6 mb-2  w-72 ">
+          <Textarea2
+            label="Tags"
+            rows={2}
+            id="tags"
+            className="blockrounded-xl pl-3 pr-[41px] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+            description="Enter tags separated by commas"
+            placeholder={getTags()}
+            defaultValue={tags}
+            onChange={(e) => editTags(e.currentTarget.value)}
+            tabIndex={-1}
+            required
+          />
+        </div>
+
         <div className="flex mt-6 items-center">
           <input
             id="main"

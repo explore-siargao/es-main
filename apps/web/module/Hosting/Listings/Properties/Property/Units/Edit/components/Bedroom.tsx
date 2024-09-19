@@ -10,9 +10,10 @@ import { Button } from "@/common/components/ui/Button"
 
 type T_Prop = {
   unitType: string
+  category?: string
 }
 
-const Bedroom = ({ unitType }: T_Prop) => {
+const Bedroom = ({ unitType, category }: T_Prop) => {
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const deleteBedroom = useBedroomStore((state) => state.deleteBedroom)
   const [isAddBedroomModalOpen, setIsAddBedroomModalOpen] = useState(false)
@@ -28,16 +29,19 @@ const Bedroom = ({ unitType }: T_Prop) => {
     <div>
       <div>
         <div className="flex items-center "></div>
-        <div className="grid grid-cols-2 gap-x-7 gap-y-2">
+        <div className="grid grid-cols-2 gap-y-2">
           {displayBedrooms.map((bedroomArray, index) => {
             return (
               <React.Fragment key={bedroomArray.roomName}>
-                <div className="mt-2 rounded-xl px-3 py-2 border w-full border-text-200">
-                  <Typography variant="h4">
-                    {unitType === "Studio"
-                      ? "Living Room"
-                      : `Bedroom ${index + 1}`}{" "}
+                <div className=" rounded-xl px-3 py-2 border w-full border-text-200">
+                  <Typography variant="h4" fontWeight="semibold">
+                    {category === "Room" && unitType !== "Studio"
+                      ? `Bed ${index + 1}`
+                      : unitType === "Studio"
+                        ? "Living Room"
+                        : `Bedroom ${index + 1}`}{" "}
                   </Typography>
+
                   {bedroomArray.beds
                     .filter((bed) => bed.qty > 0)
                     .map((bed, bedIndex, filteredBeds) => (
@@ -48,7 +52,7 @@ const Bedroom = ({ unitType }: T_Prop) => {
                     ))}
                 </div>
                 {unitType !== "Studio" && (
-                  <div className="flex items-center">
+                  <div className="flex items-center ml-6">
                     <Button
                       type="button"
                       variant={"ghost"}
@@ -72,8 +76,8 @@ const Bedroom = ({ unitType }: T_Prop) => {
           {unitType === "Studio"
             ? isSingleBedroom
               ? "Edit Living Room"
-              : "Add Living Room"
-            : "Add Bedroom"}
+              : "Add beds"
+            : "Add beds in living room"}
         </button>
       </div>
       <AddBedroomModal
@@ -82,6 +86,7 @@ const Bedroom = ({ unitType }: T_Prop) => {
         mode={unitType === "Studio" && isSingleBedroom ? "edit" : "add"}
         selectedIndex={0}
         unitType={unitType}
+        category={category}
       />
     </div>
   )
