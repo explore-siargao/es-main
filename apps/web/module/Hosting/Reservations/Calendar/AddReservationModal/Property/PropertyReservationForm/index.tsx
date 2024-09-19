@@ -159,7 +159,7 @@ function PropertyReservationForm({
           <div className="flex flex-col w-full">
             <Textarea
               id="notes"
-              label="Notes"
+              label="Notes(Optional)"
               {...register("notes")}
               required={false}
             />
