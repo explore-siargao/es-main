@@ -330,37 +330,55 @@ const CarCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
-  const date = format(addDays(startDate, i), "yyyy-MM-dd");
-  const noReservationCount = category?.cars?.reduce((count, car) => {
-    const hasReservation = car.reservations.some(reservation => {
-      const reservationStart = format(new Date(reservation.startDate), "yyyy-MM-dd");
-      const reservationEnd = format(new Date(reservation.endDate), "yyyy-MM-dd");
-      return date >= reservationStart && date <= reservationEnd;
-    });
-    return count + (hasReservation ? 0 : 1);
-  }, 0);
-        return (
-          <td
-            key={i}
-            className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
-          >
-            <div
-              onClick={(e) => {
-                handleOpenRoomQuantityEditModal(date, category.name);
-                e.stopPropagation();
-              }}
-              className="flex flex-col"
-            >
-              <div>
-                {noReservationCount} 
-              </div>
-              <div>
-                ${parseFloat(category.price).toFixed(2)}
-              </div>
-            </div>
-          </td>
-        );
-      })}
+                          const date = format(
+                            addDays(startDate, i),
+                            "yyyy-MM-dd"
+                          )
+                          const noReservationCount = category?.cars?.reduce(
+                            (count, car) => {
+                              const hasReservation = car.reservations.some(
+                                (reservation) => {
+                                  const reservationStart = format(
+                                    new Date(reservation.startDate),
+                                    "yyyy-MM-dd"
+                                  )
+                                  const reservationEnd = format(
+                                    new Date(reservation.endDate),
+                                    "yyyy-MM-dd"
+                                  )
+                                  return (
+                                    date >= reservationStart &&
+                                    date <= reservationEnd
+                                  )
+                                }
+                              )
+                              return count + (hasReservation ? 0 : 1)
+                            },
+                            0
+                          )
+                          return (
+                            <td
+                              key={i}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                            >
+                              <div
+                                onClick={(e) => {
+                                  handleOpenRoomQuantityEditModal(
+                                    date,
+                                    category.name
+                                  )
+                                  e.stopPropagation()
+                                }}
+                                className="flex flex-col"
+                              >
+                                <div>{noReservationCount}</div>
+                                <div>
+                                  ${parseFloat(category.price).toFixed(2)}
+                                </div>
+                              </div>
+                            </td>
+                          )
+                        })}
                       </tr>
                       {!collapsed[category.name] &&
                         category?.cars?.map((car, carIndex) => (
