@@ -378,6 +378,7 @@ const PropertyCalendarTable = () => {
                       openAddReservationModal={handleOpenAddReservationModal}
                       filterCalendarDate={filterCalendarDate}
                       setFilterCalendarDate={setFilterCalendarDate}
+                      setStartDate={setStartDate}
                     />
                   </td>
                   {generateMonthHeader()}

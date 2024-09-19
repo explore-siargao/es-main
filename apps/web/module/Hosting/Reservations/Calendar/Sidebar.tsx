@@ -11,12 +11,17 @@ import {
 import { useState } from "react"
 import CalendarTab from "../components/CalendarTab"
 import MonthYearSelectorModal from "./SidebarActionModals/MonthYearSelectorModal"
+import {
+  addDays,
+  format,
+} from "date-fns"
 
 type SideBarProps = {
   nextPrevFunction: Function
   openAddReservationModal: Function
   filterCalendarDate?: string
   setFilterCalendarDate?: (filter: string) => void
+  setStartDate?: (date: Date) => void
 }
 
 const Sidebar = ({
@@ -24,9 +29,10 @@ const Sidebar = ({
   openAddReservationModal,
   filterCalendarDate,
   setFilterCalendarDate,
+  setStartDate
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
+  console.log(new Date().toLocaleDateString())
   return (
     <div className="p-4 flex flex-col gap-4">
       <div className="flex gap-2 items-center w-full">
@@ -75,7 +81,7 @@ const Sidebar = ({
         >
           <ChevronLeft />
         </Button>
-        <Button variant={"outline"} className="py-2 px-4 rounded-none w-full">
+        <Button variant={"outline"} className="py-2 px-4 rounded-none w-full" onClick={() => setStartDate && setStartDate(addDays(new Date(), -4))}>
           TODAY
         </Button>
         <Button
