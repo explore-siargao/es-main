@@ -1,30 +1,30 @@
-import { Button } from "@/common/components/ui/Button";
-import Image from "next/image";
-import { Grip } from "lucide-react";
-import { T_ImagesProps } from "../types/SectionInfo";
-import { Dialog } from "@headlessui/react";
-import { useState } from "react";
-import SliderImages from "@/common/components/SliderImages";
+import { Button } from "@/common/components/ui/Button"
+import Image from "next/image"
+import { Grip } from "lucide-react"
+import { T_ImagesProps } from "../types/SectionInfo"
+import { Dialog } from "@headlessui/react"
+import { useState } from "react"
+import SliderImages from "@/common/components/SliderImages"
 
 type ImageGalleryProps = T_ImagesProps & {
-  galleryHeight?: string; 
-};
+  galleryHeight?: string
+}
 
 const ImageGallery = ({
   images,
   isViewModal,
   showThreeOnly,
   isRoundedEdge,
-  galleryHeight = "500px", 
+  galleryHeight = "500px",
 }: ImageGalleryProps) => {
   const getImgSrc = (index: number) => {
-    const image = images[index];
-    const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`;
-    const imgAlt = image?.description || image?.image?.alt || "";
-    return { src: imgSrc, alt: imgAlt };
-  };
+    const image = images[index]
+    const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`
+    const imgAlt = image?.description || image?.image?.alt || ""
+    return { src: imgSrc, alt: imgAlt }
+  }
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative ${additionalClasses} w-full h-full`}>
@@ -38,14 +38,14 @@ const ImageGallery = ({
           isRoundedEdge && index === 0
             ? "rounded-l-xl"
             : isRoundedEdge && index === 2
-            ? "rounded-tr-xl"
-            : isRoundedEdge && index === 4
-            ? "rounded-br-xl"
-            : ""
+              ? "rounded-tr-xl"
+              : isRoundedEdge && index === 4
+                ? "rounded-br-xl"
+                : ""
         } cursor-pointer`}
       />
     </div>
-  );
+  )
 
   const renderButton = () => (
     <Button
@@ -56,7 +56,7 @@ const ImageGallery = ({
       <Grip className="h-2 w-2 mr-1 mb-0.5" />
       Show all photos
     </Button>
-  );
+  )
 
   if (showThreeOnly) {
     return (
@@ -76,7 +76,6 @@ const ImageGallery = ({
     )
   }
 
-
   return (
     <div className="relative" style={{ height: galleryHeight }}>
       <div
@@ -90,7 +89,10 @@ const ImageGallery = ({
           className={`grid ${!isViewModal ? "grid-cols-1" : "grid-cols-2"} gap-2`}
         >
           {isViewModal && renderImage(1, "")}
-          {renderImage(2, "lg-rounded-tr-xl md:rounded-tr-xl md:rounded-bl-none")}
+          {renderImage(
+            2,
+            "lg-rounded-tr-xl md:rounded-tr-xl md:rounded-bl-none"
+          )}
           {isViewModal && renderImage(3, "sm:rounded-bl-xl rounded-bl-xl")}
           {renderImage(4, "2xl:rounded-br-xl lg:rounded-br-xl rounded-br-xl")}
         </div>
@@ -137,7 +139,7 @@ const ImageGallery = ({
         </div>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default ImageGallery;
+export default ImageGallery
