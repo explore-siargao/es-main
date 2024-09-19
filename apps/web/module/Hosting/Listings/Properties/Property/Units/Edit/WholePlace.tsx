@@ -184,7 +184,6 @@ const WholePlace = ({ pageType }: Prop) => {
       })
   }
 
-
   const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
     const activePhotos = photos.filter((photo) => !photo.isDeleted)
@@ -192,11 +191,11 @@ const WholePlace = ({ pageType }: Prop) => {
     const missingTags = activePhotos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
     )
- 
+
     const missingDescription = activePhotos.filter(
       (photo) => !photo.description || photo.description.length === 0
     )
-    
+
     const filterSelectedAmenities = amenities.filter(
       (amenity) => amenity.isSelected
     )
@@ -218,8 +217,8 @@ const WholePlace = ({ pageType }: Prop) => {
     if (activePhotos.length < 3) {
       toast.error("Please add at least 3 photos")
       return
-    } 
- 
+    }
+
     if (missingDescription.length > 0) {
       toast.error("Please add descriptions to all photos")
       return
@@ -233,8 +232,7 @@ const WholePlace = ({ pageType }: Prop) => {
     if (filterSelectedAmenities.length <= 0) {
       toast.error("Please select at least one amenity")
       return
-    } 
-    
+    }
 
     try {
       if (bedrooms.length > 0) {
