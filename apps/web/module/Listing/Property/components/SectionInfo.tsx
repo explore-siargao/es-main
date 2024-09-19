@@ -12,9 +12,9 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
     setGalleryModalOpen(true)
   }
   return (
-    <>
+    <div>
       <div className="justify-between md:flex text-start items-center">
-        <div>
+      <div>
           <Typography variant="h1" fontWeight="semibold">
             {title}
           </Typography>
@@ -34,7 +34,7 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
         isOpen={galleryModalOpen}
         onClose={() => setGalleryModalOpen(false)}
       />
-    </>
+    </div>
   )
 }
 
