@@ -7,6 +7,7 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -33,6 +34,7 @@ const CarCalendarTable = () => {
   const form = useForm()
 
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
     useState<boolean>(false)
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -135,6 +137,21 @@ const CarCalendarTable = () => {
     //@ts-ignore
     setFilteredData(newFilteredData)
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
+
+  useEffect(() => {
+    if (filterCalendarDate !== "") {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-car"],
+      })
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-car"],
+      })
+      setStartDate(addDays(new Date(), -4))
+    }
+  }, [filterCalendarDate])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -279,6 +296,8 @@ const CarCalendarTable = () => {
                       nextPrevFunction={moveStartDateByOneDay}
                       //@ts-ignore
                       openAddReservationModal={handleOpenAddReservationModal}
+                      filterCalendarDate={filterCalendarDate}
+                      setFilterCalendarDate={setFilterCalendarDate}
                     />
                   </td>
                   {generateMonthHeader()}

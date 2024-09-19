@@ -130,8 +130,14 @@ const PropertyCalendarTable = () => {
     if (filterCalendarDate !== "") {
       const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
       setStartDate(addDays(parsedDate, -4))
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
     } else {
       setStartDate(addDays(new Date(), -4))
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
     }
   }, [filterCalendarDate])
 
