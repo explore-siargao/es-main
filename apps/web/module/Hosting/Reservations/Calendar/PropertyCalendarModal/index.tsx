@@ -197,10 +197,10 @@ const PropertyCalendarModal = ({
                     className="p-3 h-28"
                     label=""
                     defaultValue={String(
-                      selectedReservation?.reservation?.notes?
-                      selectedReservation?.reservation?.notes : ""
+                      selectedReservation?.reservation?.notes
+                        ? selectedReservation?.reservation?.notes
+                        : ""
                     )}
-
                     {...register("notes")}
                     required={false}
                   />

@@ -196,8 +196,9 @@ const RentalCalendarModal = ({
                     id="notes"
                     label=""
                     defaultValue={String(
-                      selectedReservation?.reservation?.notes?
-                      selectedReservation?.reservation?.notes : ""
+                      selectedReservation?.reservation?.notes
+                        ? selectedReservation?.reservation?.notes
+                        : ""
                     )}
                     {...register("notes")}
                     required={false}
