@@ -131,7 +131,7 @@ const PropertyCalendarTable = () => {
       const parsedDate = parse(filterCalendarDate, 'yyyy-MM-dd', new Date());
       setStartDate(addDays(parsedDate, -4));  
     } else {
-      setStartDate(new Date());
+      setStartDate(addDays(new Date(), -4));
     }
   }, [filterCalendarDate]);
   
