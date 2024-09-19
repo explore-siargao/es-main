@@ -36,7 +36,7 @@ const BikeCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  const { data: sampleData, isPending } = useGetCalendarBike(
+  const { data: sampleData, isLoading } = useGetCalendarBike(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -281,215 +281,223 @@ const BikeCalendarTable = () => {
     setEditingRoom(null)
   }
   return (
-    <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
-      {isPending ? (
-        <Spinner size="md">Loading...</Spinner>
+    <>
+      {isLoading ? (
+        <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
+          <Spinner variant={"primary"} />
+        </div>
       ) : (
-        <div>
-          <div className="overflow-auto">
-            <table className="min-w-max w-full rounded-xl">
-              <thead className="">
-                <tr className="uppercase text-sm leading-normal">
-                  <td colSpan={1} rowSpan={2} className="">
-                    <Sidebar
-                      nextPrevFunction={moveStartDateByOneDay}
-                      //@ts-ignore
-                      openAddReservationModal={handleOpenAddReservationModal}
-                    />
-                  </td>
-                  {generateMonthHeader()}
-                </tr>
-                <tr className="uppercase text-sm leading-normal">
-                  {generateCalendarHeader()}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData?.items?.map((category, index) => (
-                  <React.Fragment key={category.name}>
-                    <tr
-                      className="hover:bg-gray-100 cursor-pointer"
-                      onClick={() => toggleCollapse(category.name)}
-                    >
-                      <td
-                        className={`border p-4 text-left font-bold border-l-0`}
+        <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
+          <div>
+            <div className="overflow-auto">
+              <table className="min-w-max w-full rounded-xl">
+                <thead className="">
+                  <tr className="uppercase text-sm leading-normal">
+                    <td colSpan={1} rowSpan={2} className="">
+                      <Sidebar
+                        nextPrevFunction={moveStartDateByOneDay}
+                        //@ts-ignore
+                        openAddReservationModal={handleOpenAddReservationModal}
+                      />
+                    </td>
+                    {generateMonthHeader()}
+                  </tr>
+                  <tr className="uppercase text-sm leading-normal">
+                    {generateCalendarHeader()}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData?.items?.map((category, index) => (
+                    <React.Fragment key={category.name}>
+                      <tr
+                        className="hover:bg-gray-100 cursor-pointer"
+                        onClick={() => toggleCollapse(category.name)}
                       >
-                        <span className="flex gap-2 items-center">
-                          {!collapsed[category.name] ? (
-                            <ChevronRight />
-                          ) : (
-                            <ChevronDown />
-                          )}
-                          {category.name}
-                        </span>
-                      </td>
-                      {[...Array(daysPerPage)].map((_, i) => {
-                        const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                        const customQuantity = roomQuantity.customQuantity.find(
-                          (item) => item.date === date
-                        )
-                        return (
-                          <td
-                            key={i}
-                            className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
-                          >
-                            <div
-                              onClick={(e) => {
-                                handleOpenRoomQuantityEditModal(
-                                  date,
-                                  category.name
-                                )
-                                e.stopPropagation()
-                              }}
-                              className="flex flex-col"
-                            >
-                              <div>
-                                {customQuantity
-                                  ? customQuantity.quantity
-                                  : roomQuantity.defaultQuantity}
-                              </div>
-                              <div>
-                                ${parseFloat(category.price).toFixed(2)}
-                              </div>
-                            </div>
-                          </td>
-                        )
-                      })}
-                    </tr>
-                    {!collapsed[category.name] &&
-                      category?.bicycles?.map((bicycle, bikeIndex) => (
-                        <tr
-                          key={bicycle.abbr}
-                          className="hover:bg-gray-100 relative"
+                        <td
+                          className={`border p-4 text-left font-bold border-l-0`}
                         >
-                          <td className="border p-4 text-left border-l-0">
-                            <div className="flex justify-between items-center">
-                              {editingRoom === bicycle.abbr ? (
-                                <Input
-                                  type="text"
-                                  value={tempBikeAbbr}
-                                  onChange={(e) =>
-                                    setTempBikeAbbr(e.target.value)
-                                  }
-                                  autoFocus
-                                  className="mr-2"
-                                  label={""}
-                                />
-                              ) : (
-                                <span>{bicycle.abbr}</span>
-                              )}
-                              {editingRoom === bicycle.abbr ? (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() =>
-                                    //@ts-ignore
-                                    handleSaveVehicle(
-                                      category.name,
-                                      bikeIndex,
-                                      // @ts-ignore
-                                      category?.bicycles[bikeIndex]?.id
-                                    )
-                                  }
-                                >
-                                  <Save className="text-gray-500 w-5" />
-                                </Button>
-                              ) : (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() => handleEditRoom(bicycle.abbr)}
-                                >
-                                  <Edit3 className="text-gray-500 w-5" />
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                          <td
-                            colSpan={daysPerPage}
-                            className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
-                          >
-                            {bicycle.reservations.map(
-                              (booking: Reservation) => {
-                                const style = getBookingStyle(
-                                  startDate,
-                                  daysPerPage,
-                                  booking
-                                )
-                                if (!style) return null
-
-                                const { startCol, colSpan } = style
-                                const { colorClass, hoverColorClass } =
-                                  getColorClasses(booking.status)
-                                return (
-                                  <div
-                                    key={booking.name}
-                                    style={{
-                                      left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                      width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                                    }}
-                                    onClick={() => {
-                                      setIsReservationModalOpen(true)
-                                      setSelectedReservation({
-                                        bicyles: bicycle.abbr,
-                                        reservation: booking,
-                                      })
-                                    }}
-                                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                                  >
-                                    <span className="text-white text-sm truncate px-2">
-                                      {booking.name}
-                                    </span>
-                                  </div>
-                                )
-                              }
+                          <span className="flex gap-2 items-center">
+                            {collapsed[category.name] ? (
+                              <ChevronRight />
+                            ) : (
+                              <ChevronDown />
                             )}
-                            <div className="absolute inset-0 z-10 flex h-full">
-                              {generateCalendarRowBorder()}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <FormProvider {...form}>
-            <form>
-              {selectedReservation && (
-                <RentalCalendarModal
-                  isModalOpen={isReservationModalOpen}
-                  onClose={closeReservationModal}
-                  selectedReservation={selectedReservation}
-                  isEditReservation={isEditReservation}
-                  setIsEditReservation={setIsEditReservation}
+                            {category.name}
+                          </span>
+                        </td>
+                        {[...Array(daysPerPage)].map((_, i) => {
+                          const date = format(
+                            addDays(startDate, i),
+                            "yyyy-MM-dd"
+                          )
+                          const customQuantity =
+                            roomQuantity.customQuantity.find(
+                              (item) => item.date === date
+                            )
+                          return (
+                            <td
+                              key={i}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                            >
+                              <div
+                                onClick={(e) => {
+                                  handleOpenRoomQuantityEditModal(
+                                    date,
+                                    category.name
+                                  )
+                                  e.stopPropagation()
+                                }}
+                                className="flex flex-col"
+                              >
+                                <div>
+                                  {customQuantity
+                                    ? customQuantity.quantity
+                                    : roomQuantity.defaultQuantity}
+                                </div>
+                                <div>
+                                  ${parseFloat(category.price).toFixed(2)}
+                                </div>
+                              </div>
+                            </td>
+                          )
+                        })}
+                      </tr>
+                      {!collapsed[category.name] &&
+                        category?.bicycles?.map((bicycle, bikeIndex) => (
+                          <tr
+                            key={bicycle.abbr}
+                            className="hover:bg-gray-100 relative"
+                          >
+                            <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+                              <div className="flex justify-between items-center">
+                                {editingRoom === bicycle.abbr ? (
+                                  <Input
+                                    type="text"
+                                    value={tempBikeAbbr}
+                                    onChange={(e) =>
+                                      setTempBikeAbbr(e.target.value)
+                                    }
+                                    autoFocus
+                                    className="mr-2"
+                                    label={""}
+                                  />
+                                ) : (
+                                  <span>{bicycle.abbr}</span>
+                                )}
+                                {editingRoom === bicycle.abbr ? (
+                                  <Button
+                                    size={"icon"}
+                                    variant={"link"}
+                                    onClick={() =>
+                                      //@ts-ignore
+                                      handleSaveVehicle(
+                                        category.name,
+                                        bikeIndex,
+                                        // @ts-ignore
+                                        category?.bicycles[bikeIndex]?.id
+                                      )
+                                    }
+                                  >
+                                    <Save className="text-gray-500 w-5" />
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size={"icon"}
+                                    variant={"link"}
+                                    onClick={() => handleEditRoom(bicycle.abbr)}
+                                  >
+                                    <Edit3 className="text-gray-500 w-5" />
+                                  </Button>
+                                )}
+                              </div>
+                            </td>
+                            <td
+                              colSpan={daysPerPage}
+                              className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                            >
+                              {bicycle.reservations.map(
+                                (booking: Reservation) => {
+                                  const style = getBookingStyle(
+                                    startDate,
+                                    daysPerPage,
+                                    booking
+                                  )
+                                  if (!style) return null
+
+                                  const { startCol, colSpan } = style
+                                  const { colorClass, hoverColorClass } =
+                                    getColorClasses(booking.status)
+                                  return (
+                                    <div
+                                      key={booking.name}
+                                      style={{
+                                        left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                        width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                      }}
+                                      onClick={() => {
+                                        setIsReservationModalOpen(true)
+                                        setSelectedReservation({
+                                          bicyles: bicycle.abbr,
+                                          reservation: booking,
+                                        })
+                                      }}
+                                      className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                    >
+                                      <span className="text-white text-sm truncate px-2">
+                                        {booking.name}
+                                      </span>
+                                    </div>
+                                  )
+                                }
+                              )}
+                              <div className="absolute inset-0 z-10 flex h-full">
+                                {generateCalendarRowBorder()}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <FormProvider {...form}>
+              <form>
+                {selectedReservation && (
+                  <RentalCalendarModal
+                    isModalOpen={isReservationModalOpen}
+                    onClose={closeReservationModal}
+                    selectedReservation={selectedReservation}
+                    isEditReservation={isEditReservation}
+                    setIsEditReservation={setIsEditReservation}
+                  />
+                )}
+              </form>
+            </FormProvider>
+            <RoomQuantityEdit
+              isModalOpen={isRoomQuantityEditOpen}
+              onClose={closeRoomQuantityEditModal}
+              selectedDate={selectedDate}
+              roomQuantity={roomQuantity}
+              setRoomQuantity={setRoomQuantity}
+              category={selectedCategory}
+            />
+            <FormProvider {...form}>
+              <form>
+                <AddRentalReservationModal
+                  isModalOpen={isAddReservationModalOpen}
+                  onClose={closeAddReservationModal}
+                  selectedLegendType={selectedLegendType}
+                  setSelectedLegendType={setSelectedLegendType}
+                  setIsLegendTypeSelected={setIsLegendTypeSelected}
+                  isLegendTypeSelected={isLegendTypeSelected}
                 />
-              )}
-            </form>
-          </FormProvider>
-          <RoomQuantityEdit
-            isModalOpen={isRoomQuantityEditOpen}
-            onClose={closeRoomQuantityEditModal}
-            selectedDate={selectedDate}
-            roomQuantity={roomQuantity}
-            setRoomQuantity={setRoomQuantity}
-            category={selectedCategory}
-          />
-          <FormProvider {...form}>
-            <form>
-              <AddRentalReservationModal
-                isModalOpen={isAddReservationModalOpen}
-                onClose={closeAddReservationModal}
-                selectedLegendType={selectedLegendType}
-                setSelectedLegendType={setSelectedLegendType}
-                setIsLegendTypeSelected={setIsLegendTypeSelected}
-                isLegendTypeSelected={isLegendTypeSelected}
-              />
-            </form>
-          </FormProvider>
+              </form>
+            </FormProvider>
+          </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
 
