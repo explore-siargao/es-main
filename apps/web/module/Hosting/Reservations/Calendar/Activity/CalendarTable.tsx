@@ -7,6 +7,7 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import sampleData from "./SampleData.json"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
@@ -23,9 +24,12 @@ import {
 } from "../../types/CalendarTable"
 import AddReservationModal from "../AddReservationModal"
 import AddActivityReservationModal from "../AddReservationModal/Activity"
+import { useQueryClient } from "@tanstack/react-query"
 
 const ActivitiesCalendarTable = () => {
+  const queryClient = useQueryClient()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
@@ -135,6 +139,21 @@ const ActivitiesCalendarTable = () => {
     return headers
   }
 
+  useEffect(() => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
+    } else {
+      setStartDate(addDays(new Date(), -4))
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
+    }
+  }, [filterCalendarDate])
+
   const generateCalendarRowBorder = () => {
     const headers = []
     for (let i = 0; i < daysPerPage; i++) {
@@ -186,7 +205,10 @@ const ActivitiesCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate(addDays(startDate, direction))
+    setStartDate((prevDate) => addDays(prevDate, direction))
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-property"],
+    })
   }
 
   const getBookingStyle = (
@@ -251,6 +273,8 @@ const ActivitiesCalendarTable = () => {
                   nextPrevFunction={moveStartDateByOneDay}
                   //@ts-ignore
                   openAddReservationModal={handleOpenAddReservationModal}
+                  filterCalendarDate={filterCalendarDate}
+                  setFilterCalendarDate={setFilterCalendarDate}
                 />
               </td>
               {generateMonthHeader()}
