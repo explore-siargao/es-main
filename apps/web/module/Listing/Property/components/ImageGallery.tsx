@@ -10,7 +10,6 @@ type ImageGalleryProps = T_ImagesProps & {
   galleryHeight?: string
 }
 
-
 const ImageGallery = ({
   images,
   isViewModal,
@@ -27,20 +26,23 @@ const ImageGallery = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const getRoundedEdgeClass = (index: number, isRoundedEdge: boolean = false) => {
-    if (!isRoundedEdge) return "";
-  
+  const getRoundedEdgeClass = (
+    index: number,
+    isRoundedEdge: boolean = false
+  ) => {
+    if (!isRoundedEdge) return ""
+
     switch (index) {
       case 0:
-        return "rounded-l-xl";
+        return "rounded-l-xl"
       case 2:
-        return "rounded-tr-xl";
+        return "rounded-tr-xl"
       case 4:
-        return "rounded-br-xl";
+        return "rounded-br-xl"
       default:
-        return "";
+        return ""
     }
-  };
+  }
 
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative ${additionalClasses} w-full h-full`}>
