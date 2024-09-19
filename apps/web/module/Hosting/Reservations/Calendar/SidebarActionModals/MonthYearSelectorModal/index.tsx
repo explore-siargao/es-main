@@ -14,7 +14,7 @@ const MonthYearSelectorModal = ({
   isModalOpen,
   onClose,
   filterCalendarDate,
-  setFilterCalendarDate
+  setFilterCalendarDate,
 }: IMonthYearSelectorModalProps) => {
   const [selectedDate, setSelectedDate] = useState("")
 
@@ -51,7 +51,11 @@ const MonthYearSelectorModal = ({
             <Button type="button" variant="danger" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="button" variant="default" onClick={() => setSelectedDate("")}>
+            <Button
+              type="button"
+              variant="default"
+              onClick={() => setSelectedDate("")}
+            >
               Clear
             </Button>
             <Button type="button" variant="primary" onClick={handleConfirm}>

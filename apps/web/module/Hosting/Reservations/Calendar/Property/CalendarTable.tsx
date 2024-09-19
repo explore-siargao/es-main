@@ -128,13 +128,12 @@ const PropertyCalendarTable = () => {
 
   useEffect(() => {
     if (filterCalendarDate !== "") {
-      const parsedDate = parse(filterCalendarDate, 'yyyy-MM-dd', new Date());
-      setStartDate(addDays(parsedDate, -4));  
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
     } else {
-      setStartDate(addDays(new Date(), -4));
+      setStartDate(addDays(new Date(), -4))
     }
-  }, [filterCalendarDate]);
-  
+  }, [filterCalendarDate])
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -279,10 +278,10 @@ const PropertyCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate((prevDate) => addDays(prevDate, direction));
+    setStartDate((prevDate) => addDays(prevDate, direction))
     queryClient.invalidateQueries({
       queryKey: ["calendar-property"],
-    });
+    })
   }
 
   const getBookingStyle = (
@@ -355,7 +354,7 @@ const PropertyCalendarTable = () => {
     mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
-  
+
   return (
     <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (

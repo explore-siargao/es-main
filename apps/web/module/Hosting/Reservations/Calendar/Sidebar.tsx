@@ -23,7 +23,7 @@ const Sidebar = ({
   nextPrevFunction,
   openAddReservationModal,
   filterCalendarDate,
-  setFilterCalendarDate
+  setFilterCalendarDate,
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -33,15 +33,25 @@ const Sidebar = ({
         <Button size={"sm"} variant={"default"} className="rounded-full w-full">
           <LayoutList className="w-5" />
         </Button>
-       {
-        !filterCalendarDate ?
-          <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
+        {!filterCalendarDate ? (
+          <Button
+            size={"sm"}
+            variant={"default"}
+            className="rounded-full w-full"
+            onClick={() => setIsModalOpen(true)}
+          >
             <Calendar className="w-5" />
-          </Button> :
-          <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setFilterCalendarDate && setFilterCalendarDate("")}>
+          </Button>
+        ) : (
+          <Button
+            size={"sm"}
+            variant={"default"}
+            className="rounded-full w-full"
+            onClick={() => setFilterCalendarDate && setFilterCalendarDate("")}
+          >
             <X className="w-5" />
           </Button>
-       } 
+        )}
         {/* <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
           <Calendar className="w-5" />
         </Button> */}
@@ -80,8 +90,8 @@ const Sidebar = ({
       <div className="normal-case">
         <CalendarTab />
       </div>
-      <MonthYearSelectorModal 
-        isModalOpen={isModalOpen} 
+      <MonthYearSelectorModal
+        isModalOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         filterCalendarDate={filterCalendarDate}
         setFilterCalendarDate={setFilterCalendarDate}
