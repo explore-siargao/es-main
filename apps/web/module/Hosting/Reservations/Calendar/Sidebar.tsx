@@ -3,7 +3,6 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  LayoutList,
   Plus,
   Search,
   X,
