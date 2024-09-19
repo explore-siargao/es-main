@@ -15,15 +15,15 @@ import MonthYearSelectorModal from "./SidebarActionModals/MonthYearSelectorModal
 type SideBarProps = {
   nextPrevFunction: Function
   openAddReservationModal: Function
-  filterMonthYear?: string
-  setFilterMonthYear?: (filter: string) => void
+  filterCalendarDate?: string
+  setFilterCalendarDate?: (filter: string) => void
 }
 
 const Sidebar = ({
   nextPrevFunction,
   openAddReservationModal,
-  filterMonthYear,
-  setFilterMonthYear
+  filterCalendarDate,
+  setFilterCalendarDate
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -33,18 +33,18 @@ const Sidebar = ({
         <Button size={"sm"} variant={"default"} className="rounded-full w-full">
           <LayoutList className="w-5" />
         </Button>
-       {/* {
-        !filterMonthYear ?
+       {
+        !filterCalendarDate ?
           <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
             <Calendar className="w-5" />
           </Button> :
-          <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setFilterMonthYear && setFilterMonthYear("")}>
+          <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setFilterCalendarDate && setFilterCalendarDate("")}>
             <X className="w-5" />
           </Button>
-       }  */}
-        <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
+       } 
+        {/* <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
           <Calendar className="w-5" />
-        </Button>
+        </Button> */}
         <Button size={"sm"} variant={"default"} className="rounded-full w-full">
           <Search className="w-5" />
         </Button>
@@ -83,8 +83,8 @@ const Sidebar = ({
       <MonthYearSelectorModal 
         isModalOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
-        filterMonthYear={filterMonthYear}
-        setFilterMonthYear={setFilterMonthYear}
+        filterCalendarDate={filterCalendarDate}
+        setFilterCalendarDate={setFilterCalendarDate}
       />
     </div>
   )

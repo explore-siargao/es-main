@@ -34,7 +34,7 @@ const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
   const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
-  const [filterMonthYear, setFilterMonthYear] = useState("")
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
   const { data: sampleData, isPending } = useGetCalendarProperty(
@@ -127,16 +127,14 @@ const PropertyCalendarTable = () => {
   }
 
   useEffect(() => {
-    if (filterMonthYear !== "") {
-      const parsedDate = parse(filterMonthYear, 'yyyy-MM', new Date());
-      const firstDayOfMonth = startOfMonth(parsedDate);
-      setStartDate(firstDayOfMonth);
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, 'yyyy-MM-dd', new Date());
+      setStartDate(addDays(parsedDate, -4));  
     } else {
-      // If filterMonthYear is empty, set the startDate to the current month
-      const currentMonthStart = startOfMonth(new Date());
-      setStartDate(currentMonthStart);
+      setStartDate(new Date());
     }
-  }, [filterMonthYear]);
+  }, [filterCalendarDate]);
+  
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -373,8 +371,8 @@ const PropertyCalendarTable = () => {
                       nextPrevFunction={moveStartDateByOneDay}
                       //@ts-ignore
                       openAddReservationModal={handleOpenAddReservationModal}
-                      filterMonthYear={filterMonthYear}
-                      setFilterMonthYear={setFilterMonthYear}
+                      filterCalendarDate={filterCalendarDate}
+                      setFilterCalendarDate={setFilterCalendarDate}
                     />
                   </td>
                   {generateMonthHeader()}

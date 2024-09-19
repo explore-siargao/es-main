@@ -6,21 +6,24 @@ import { Input } from "@/common/components/ui/Input"
 interface IMonthYearSelectorModalProps {
   isModalOpen: boolean
   onClose: () => void
-  filterMonthYear?: string
-  setFilterMonthYear?: (filter: string) => void
+  filterCalendarDate?: string
+  setFilterCalendarDate?: (filter: string) => void
 }
 
 const MonthYearSelectorModal = ({
   isModalOpen,
   onClose,
-  filterMonthYear,
-  setFilterMonthYear
+  filterCalendarDate,
+  setFilterCalendarDate
 }: IMonthYearSelectorModalProps) => {
-  const [selectedMonthYear, setSelectedMonthYear] = useState("")
+  const [selectedDate, setSelectedDate] = useState("")
 
   const handleConfirm = () => {
-    setFilterMonthYear && setFilterMonthYear(selectedMonthYear)
+    setFilterCalendarDate && setFilterCalendarDate(selectedDate)
     onClose()
+    setTimeout(() => {
+      setSelectedDate("")
+    }, 300)
   }
 
   return (
@@ -35,10 +38,10 @@ const MonthYearSelectorModal = ({
           <div className="flex gap-4">
             <div className="flex flex-col w-full">
               <Input
-                type="month"
-                value={selectedMonthYear}
-                onChange={(e) => setSelectedMonthYear(e.target.value)} // Handle selected month/year
-                label={"Select month and year"}
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)} // Handle selected month/year
+                label={"Select date"}
               />
             </div>
           </div>
@@ -48,7 +51,7 @@ const MonthYearSelectorModal = ({
             <Button type="button" variant="danger" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="button" variant="default" onClick={() => setSelectedMonthYear("")}>
+            <Button type="button" variant="default" onClick={() => setSelectedDate("")}>
               Clear
             </Button>
             <Button type="button" variant="primary" onClick={handleConfirm}>
