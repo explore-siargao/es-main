@@ -47,35 +47,38 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     name: "unitPrice",
     keyName: "key",
   })
- 
-  const onSubmit = async (data: any) => {
-    const unitPriceDataList = data.unitPrice;
 
-    let errorMessages: string[] = [];
+  const onSubmit = async (data: any) => {
+    const unitPriceDataList = data.unitPrice
+
+    let errorMessages: string[] = []
     unitPriceDataList.forEach((unitPriceData: any) => {
-      const { unitName, unitPrice } = unitPriceData;
-    
-      const baseRateInvalid = unitPrice.baseRate === undefined || 
-                              unitPrice.baseRate === null || 
-                              Number.isNaN(unitPrice.baseRate) || 
-                              unitPrice.baseRate === 0;
-    
-      const pricePerAdditionalPersonInvalid = unitPrice.pricePerAdditionalPerson === undefined || 
-                                               unitPrice.pricePerAdditionalPerson === null || 
-                                               Number.isNaN(unitPrice.pricePerAdditionalPerson) || 
-                                               unitPrice.pricePerAdditionalPerson === 0;
-    
+      const { unitName, unitPrice } = unitPriceData
+
+      const baseRateInvalid =
+        unitPrice.baseRate === undefined ||
+        unitPrice.baseRate === null ||
+        Number.isNaN(unitPrice.baseRate) ||
+        unitPrice.baseRate === 0
+
+      const pricePerAdditionalPersonInvalid =
+        unitPrice.pricePerAdditionalPerson === undefined ||
+        unitPrice.pricePerAdditionalPerson === null ||
+        Number.isNaN(unitPrice.pricePerAdditionalPerson) ||
+        unitPrice.pricePerAdditionalPerson === 0
+
       if (baseRateInvalid || pricePerAdditionalPersonInvalid) {
-        errorMessages.push(unitName);
+        errorMessages.push(unitName)
       }
-    });
-    
+    })
+
     if (errorMessages.length > 0) {
-      const uniqueNames = Array.from(new Set(errorMessages));
-      toast.error(`Please fill up required value for unit ${uniqueNames.join(", ")}`);
-      return;
+      const uniqueNames = Array.from(new Set(errorMessages))
+      toast.error(
+        `Please fill up required value for unit ${uniqueNames.join(", ")}`
+      )
+      return
     }
-    
 
     const payloads = unitPriceDataList.map((unitPriceData: any) => ({
       ...unitPriceData,
