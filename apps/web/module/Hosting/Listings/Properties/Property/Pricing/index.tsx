@@ -50,6 +50,36 @@ const Pricing = ({ pageType }: PricingContentProps) => {
 
   const onSubmit = async (data: any) => {
     const unitPriceDataList = data.unitPrice
+
+    let errorMessages: string[] = []
+    unitPriceDataList.forEach((unitPriceData: any) => {
+      const { unitName, unitPrice } = unitPriceData
+
+      const baseRateInvalid =
+        unitPrice.baseRate === undefined ||
+        unitPrice.baseRate === null ||
+        Number.isNaN(unitPrice.baseRate) ||
+        unitPrice.baseRate === 0
+
+      const pricePerAdditionalPersonInvalid =
+        unitPrice.pricePerAdditionalPerson === undefined ||
+        unitPrice.pricePerAdditionalPerson === null ||
+        Number.isNaN(unitPrice.pricePerAdditionalPerson) ||
+        unitPrice.pricePerAdditionalPerson === 0
+
+      if (baseRateInvalid || pricePerAdditionalPersonInvalid) {
+        errorMessages.push(unitName)
+      }
+    })
+
+    if (errorMessages.length > 0) {
+      const uniqueNames = Array.from(new Set(errorMessages))
+      toast.error(
+        `Please fill up required value for unit ${uniqueNames.join(", ")}`
+      )
+      return
+    }
+
     const payloads = unitPriceDataList.map((unitPriceData: any) => ({
       ...unitPriceData,
       bookableUnitId: data._id,
