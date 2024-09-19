@@ -32,7 +32,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
   const form = useForm()
-  const [startDate, setStartDate] = useState<Date>(addDays(new Date(), - 4))
+  const [startDate, setStartDate] = useState<Date>(addDays(new Date(), -4))
   const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -129,12 +129,12 @@ const PropertyCalendarTable = () => {
     if (filterCalendarDate !== "") {
       const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
       console.log(parsedDate)
-      setStartDate(addDays(parsedDate, - 4))
+      setStartDate(addDays(parsedDate, -4))
       queryClient.invalidateQueries({
         queryKey: ["calendar-property"],
       })
     } else {
-      setStartDate(addDays(new Date(), - 4))
+      setStartDate(addDays(new Date(), -4))
       queryClient.invalidateQueries({
         queryKey: ["calendar-property"],
       })
@@ -298,7 +298,7 @@ const PropertyCalendarTable = () => {
     const bookingStart = new Date(booking.startDate)
     const bookingEnd = new Date(booking.endDate)
     const calendarEnd = addDays(startDate, daysPerPage - 1)
-    
+
     if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
       return null
     }
@@ -362,7 +362,7 @@ const PropertyCalendarTable = () => {
 
   return (
     <>
-    {isLoading ? (
+      {isLoading ? (
         <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
           <Spinner variant={"primary"} />
         </div>
@@ -408,10 +408,14 @@ const PropertyCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
-                          const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                          const customQuantity = roomQuantity.customQuantity.find(
-                            (item) => item.date === date
+                          const date = format(
+                            addDays(startDate, i),
+                            "yyyy-MM-dd"
                           )
+                          const customQuantity =
+                            roomQuantity.customQuantity.find(
+                              (item) => item.date === date
+                            )
                           return (
                             <td
                               key={i}
@@ -488,43 +492,46 @@ const PropertyCalendarTable = () => {
                                 colSpan={daysPerPage}
                                 className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
                               >
-                                {bed.reservations.map((booking: Reservation) => {
-                                  const style = getBookingStyle(
-                                    startDate,
-                                    daysPerPage,
-                                    booking
-                                  )
-                                  if (!style) return null
+                                {bed.reservations.map(
+                                  (booking: Reservation) => {
+                                    const style = getBookingStyle(
+                                      startDate,
+                                      daysPerPage,
+                                      booking
+                                    )
+                                    if (!style) return null
 
-                                  const { startCol, colSpan } = style
-                                  const { colorClass, hoverColorClass } =
-                                    getColorClasses(booking.status)
+                                    const { startCol, colSpan } = style
+                                    const { colorClass, hoverColorClass } =
+                                      getColorClasses(booking.status)
 
-                                  return (
-                                    <div
-                                      key={booking.id}
-                                      style={{
-                                        left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                        width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                                      }}
-                                      onClick={() => {
-                                        setIsReservationModalOpen(true)
-                                        setSelectedReservation({
-                                          unit: bed.abbr,
-                                          reservation: booking,
-                                        })
-                                        console.log(selectedReservation)
-                                      }}
-                                      className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                                    >
-                                      <span className="text-white text-sm truncate px-2">
-                                        {booking.status === "Out-of-Service-Dates"
-                                          ? "Out of service"
-                                          : booking.name}
-                                      </span>
-                                    </div>
-                                  )
-                                })}
+                                    return (
+                                      <div
+                                        key={booking.id}
+                                        style={{
+                                          left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                          width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                        }}
+                                        onClick={() => {
+                                          setIsReservationModalOpen(true)
+                                          setSelectedReservation({
+                                            unit: bed.abbr,
+                                            reservation: booking,
+                                          })
+                                          console.log(selectedReservation)
+                                        }}
+                                        className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                      >
+                                        <span className="text-white text-sm truncate px-2">
+                                          {booking.status ===
+                                          "Out-of-Service-Dates"
+                                            ? "Out of service"
+                                            : booking.name}
+                                        </span>
+                                      </div>
+                                    )
+                                  }
+                                )}
                                 <div className="absolute inset-0 z-10 flex h-full">
                                   {generateCalendarRowBorder()}
                                 </div>
@@ -574,7 +581,6 @@ const PropertyCalendarTable = () => {
         </div>
       )}
     </>
-    
   )
 }
 

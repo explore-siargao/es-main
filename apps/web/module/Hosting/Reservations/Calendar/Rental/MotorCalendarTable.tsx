@@ -17,7 +17,7 @@ import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
-  Reservation
+  Reservation,
 } from "../../types/CalendarTable"
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
@@ -305,10 +305,14 @@ const MotorCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
-                          const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                          const customQuantity = roomQuantity.customQuantity.find(
-                            (item) => item.date === date
+                          const date = format(
+                            addDays(startDate, i),
+                            "yyyy-MM-dd"
                           )
+                          const customQuantity =
+                            roomQuantity.customQuantity.find(
+                              (item) => item.date === date
+                            )
                           return (
                             <td
                               key={i}
@@ -349,7 +353,9 @@ const MotorCalendarTable = () => {
                                   <Input
                                     type="text"
                                     value={tempMotorAbbr}
-                                    onChange={(e) => setMotorAbbr(e.target.value)}
+                                    onChange={(e) =>
+                                      setMotorAbbr(e.target.value)
+                                    }
                                     autoFocus
                                     className="mr-2"
                                     label={""}
@@ -469,7 +475,6 @@ const MotorCalendarTable = () => {
         </div>
       )}
     </>
-
   )
 }
 

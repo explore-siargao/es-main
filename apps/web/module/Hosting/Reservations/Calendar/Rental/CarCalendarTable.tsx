@@ -329,10 +329,14 @@ const CarCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
-                          const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                          const customQuantity = roomQuantity.customQuantity.find(
-                            (item) => item.date === date
+                          const date = format(
+                            addDays(startDate, i),
+                            "yyyy-MM-dd"
                           )
+                          const customQuantity =
+                            roomQuantity.customQuantity.find(
+                              (item) => item.date === date
+                            )
                           return (
                             <td
                               key={i}
@@ -493,7 +497,6 @@ const CarCalendarTable = () => {
         </div>
       )}
     </>
-
   )
 }
 
