@@ -7,6 +7,7 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -33,6 +34,7 @@ const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
   const form = useForm()
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
   const { data: sampleData, isPending } = useGetCalendarProperty(
@@ -123,6 +125,15 @@ const PropertyCalendarTable = () => {
     }
     closeAddReservationModal()
   }
+
+  useEffect(() => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }, [filterCalendarDate])
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -267,7 +278,7 @@ const PropertyCalendarTable = () => {
   }
 
   const moveStartDateByOneDay = (direction: number) => {
-    setStartDate(addDays(startDate, direction))
+    setStartDate((prevDate) => addDays(prevDate, direction))
     queryClient.invalidateQueries({
       queryKey: ["calendar-property"],
     })
@@ -343,6 +354,7 @@ const PropertyCalendarTable = () => {
     mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
+
   return (
     <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
       {isPending ? (
@@ -358,6 +370,8 @@ const PropertyCalendarTable = () => {
                       nextPrevFunction={moveStartDateByOneDay}
                       //@ts-ignore
                       openAddReservationModal={handleOpenAddReservationModal}
+                      filterCalendarDate={filterCalendarDate}
+                      setFilterCalendarDate={setFilterCalendarDate}
                     />
                   </td>
                   {generateMonthHeader()}
