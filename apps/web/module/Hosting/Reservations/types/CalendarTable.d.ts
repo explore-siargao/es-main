@@ -1,4 +1,5 @@
 export interface Reservation {
+  category?:string
   name: string
   status: string
   startDate: string
@@ -17,12 +18,14 @@ export interface Booking {
 }
 
 export interface SelectedReservation {
+  unit?:string
   room?: string
   rooms?: string
   beds?: string
   motorcycles?: string
   bicyles?: string
   cars?: string
+  wholePlace?: string
   reservation?: Reservation
   booking?: Booking
 }

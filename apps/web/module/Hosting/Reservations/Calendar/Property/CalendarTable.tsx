@@ -488,9 +488,10 @@ const PropertyCalendarTable = () => {
                                     onClick={() => {
                                       setIsReservationModalOpen(true)
                                       setSelectedReservation({
-                                        beds: bed.abbr,
+                                        unit: bed.abbr,
                                         reservation: booking,
                                       })
+                                      console.log(selectedReservation)
                                     }}
                                     className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                                   >
