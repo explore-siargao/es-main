@@ -94,7 +94,7 @@ const WholePlace = ({ pageType }: Prop) => {
   )
 
   const [exactUnitCount, setExactUnitCount] = useState<number>(
-    Number(data?.item?.numExactUnit) || 0
+    Number(data?.item?.numExactUnit) || 1
   )
 
   const { mutateAsync: updateWholePlaceBasicInfo } =
@@ -112,6 +112,7 @@ const WholePlace = ({ pageType }: Prop) => {
     listingId as string
   )
   const photos = usePhotoStore((state) => state.photos)
+  console.log(photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
@@ -146,7 +147,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
-        .filter((photo) => !photo._id)
+        .filter((photo) => !photo._id && !photo.isDeleted)
         .map(async (photo) => {
           return await addMutateAsync(photo)
         }) || []
@@ -183,25 +184,21 @@ const WholePlace = ({ pageType }: Prop) => {
       })
   }
 
-  const handleSavePhotos = async () => {
-    const activePhotos = photos.filter((photo) => !photo.isDeleted)
-
-    if (activePhotos.length >= 3) {
-      await updatePhotosInDb()
-      setIsSavings(false)
-    } else {
-      toast.error("Please add at least 3 photos")
-    }
-  }
 
   const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
+    const activePhotos = photos.filter((photo) => !photo.isDeleted)
 
-    const missingTags = photos.filter(
+    const missingTags = activePhotos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
     )
-    const missingDescription = photos.filter(
+ 
+    const missingDescription = activePhotos.filter(
       (photo) => !photo.description || photo.description.length === 0
+    )
+    
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
     )
 
     if (formData.size <= 0) {
@@ -218,14 +215,26 @@ const WholePlace = ({ pageType }: Prop) => {
       toast.error("Please fill out bathroom count field")
       return
     }
+    if (activePhotos.length < 3) {
+      toast.error("Please add at least 3 photos")
+      return
+    } 
+ 
     if (missingDescription.length > 0) {
       toast.error("Please add descriptions to all photos")
       return
     }
+
     if (missingTags.length > 0) {
       toast.error("Please add tags to all photos")
       return
     }
+
+    if (filterSelectedAmenities.length <= 0) {
+      toast.error("Please select at least one amenity")
+      return
+    } 
+    
 
     try {
       if (bedrooms.length > 0) {
@@ -296,9 +305,7 @@ const WholePlace = ({ pageType }: Prop) => {
       if (filterSelectedAmenities.length > 0) {
         await updatePhotosInDb()
         setIsSavings(false)
-        await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-          handleSavePhotos()
-        })
+        await Promise.all([saveBasicInfo, saveAmenities])
       } else {
         toast.error("Please select at least one amenity")
       }
@@ -800,7 +807,7 @@ const WholePlace = ({ pageType }: Prop) => {
                   className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
-                    exactUnitCount > 0 &&
+                    exactUnitCount > 1 &&
                       setExactUnitCount(
                         (exactUnitCount: any) => exactUnitCount - 1
                       )
@@ -809,12 +816,12 @@ const WholePlace = ({ pageType }: Prop) => {
                   <MinusIcon className="h-3 w-3" />
                 </button>
                 <input
-                  disabled={isPending || isFetching}
+                  disabled
                   type="number"
                   id="exactUnit"
                   className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                   value={exactUnitCount}
-                  min={0}
+                  min={1}
                   onChange={(e) => {
                     const val = Number(e.target.value)
                     setExactUnitCount(val)

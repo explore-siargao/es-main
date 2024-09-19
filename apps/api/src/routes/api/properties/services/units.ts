@@ -36,7 +36,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     childrenIncluded: 0,
     isMultiRoomUnit: false,
     unitPrice: null,
-    qty: 0,
+    qty: 1,
   })
   await newBookableUnitType.save()
 
