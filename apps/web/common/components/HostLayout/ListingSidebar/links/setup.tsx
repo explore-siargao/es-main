@@ -14,78 +14,93 @@ import {
   LucideNotepadText,
   LucideBlocks,
   LucideScrollText,
+  Hotel,
 } from "lucide-react"
 
 const PROPERTY_SETUP_BASE_PATH = `${LINK_HOSTING_LISTINGS}/properties/setup`
 const ACTIVITY_SETUP_BASE_PATH = `${LINK_HOSTING_LISTINGS}/activities/setup`
 const RENTAL_SETUP_BASE_PATH = `${LINK_HOSTING_LISTINGS}/rentals/setup`
 
-export const getPropertyLinks = (listingId: string) => [
-  {
-    id: "type",
-    title: "Property Type",
-    icon: <LandPlot className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/property-type`,
-    basePath: "/property-type",
-  },
-  {
-    id: "basicInfo",
-    title: "Basic Info",
-    icon: <LucideInfo className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/basic-info`,
-    basePath: "/basic-info",
-  },
-  {
-    id: "location",
-    title: "Location",
-    icon: <LucideMapPin className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/location`,
-    basePath: "/location",
-  },
-  {
-    id: "facilities",
-    title: "Property Facilities",
-    icon: <LucideTv2 className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/facilities`,
-    basePath: "/facilities",
-  },
-  {
-    id: "units",
-    title: "Units",
-    icon: <LucideSchool className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/units`,
-    basePath: "/units",
-  },
-  {
-    id: "pricing",
-    title: "Pricing",
-    icon: <LucideCoins className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/pricing`,
-    basePath: "/pricing",
-  },
-  {
-    id: "photos",
-    title: "Photos",
-    icon: <LucideImage className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/photos`,
-    basePath: "/photos",
-  },
+export const getPropertyLinks = (listingId: string, propertyType: string) => {
+  const links = [
+    {
+      id: "type",
+      title: "Property Type",
+      icon: <LandPlot className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/property-type`,
+      basePath: "/property-type",
+    },
+    {
+      id: "basicInfo",
+      title: "Basic Info",
+      icon: <LucideInfo className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/basic-info`,
+      basePath: "/basic-info",
+    },
+    {
+      id: "location",
+      title: "Location",
+      icon: <LucideMapPin className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/location`,
+      basePath: "/location",
+    },
+    {
+      id: "facilities",
+      title: "Property Facilities",
+      icon: <LucideTv2 className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/facilities`,
+      basePath: "/facilities",
+    },
+    {
+      id: "units",
+      title: "Units",
+      icon: <LucideSchool className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/units`,
+      basePath: "/units",
+    },
+    {
+      id: "pricing",
+      title: "Pricing",
+      icon: <LucideCoins className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/pricing`,
+      basePath: "/pricing",
+    },
+    {
+      id: "photos",
+      title: "Photos",
+      icon: <LucideImage className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/photos`,
+      basePath: "/photos",
+    },
+    {
+      id: "policies",
+      title: "Policies",
+      icon: <LucideGavel className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/policies`,
+      basePath: "/policies",
+    },
+    {
+      id: "summary",
+      title: "Summary",
+      icon: <LucideScrollText className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/summary`,
+      basePath: "/summary",
+    },
+  ];
 
-  {
-    id: "policies",
-    title: "Policies",
-    icon: <LucideGavel className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/policies`,
-    basePath: "/policies",
-  },
-  {
-    id: "summary",
-    title: "Summary",
-    icon: <LucideScrollText className="h-5 w-5" />,
-    link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/summary`,
-    basePath: "/summary",
-  },
-]
+  if (propertyType === "WHOLE_PLACE") {
+    links.splice(1, 0, {
+      id: "wholePlaceType",
+      title: "Whole Place Type",
+      icon: <Hotel className="h-5 w-5" />,
+      link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/whole-place-type`,
+      basePath: "/whole-place-type",
+    });
+  }
+
+  return links;
+};
+
 
 export const getActivityLinks = (listingId: string) => [
   {

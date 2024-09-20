@@ -81,7 +81,26 @@ const Summary = () => {
                 </Typography>
               )}
             </div>
-
+            {data?.item?.type === "WHOLE_PLACE" ?
+            <div className="pt-3 border-b border-gray-200 pb-3">
+            <Typography
+              variant="h4"
+              fontWeight="semibold"
+              className="leading-6"
+            >
+              Whole Place Type
+            </Typography>
+            {data?.item ? (
+              <Typography variant="h5" className="mt-2">
+                {data?.item?.wholeplaceType}
+              </Typography>
+            ) : (
+              <Typography variant="h5" className="mt-2">
+                No data available.
+              </Typography>
+            )}
+          </div> : null}
+            
             <div className="mt-3 border-b border-gray-200 pb-3">
               <Typography
                 variant="h4"

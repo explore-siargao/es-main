@@ -14,13 +14,15 @@ import {
   LucideTableProperties,
   LucideNotepadText,
   LucideBlocks,
+  Hotel,
 } from "lucide-react"
 
 const PROPERTY_EDIT_BASE_PATH = `${LINK_HOSTING_LISTINGS}/properties`
 const ACTIVITY_EDIT_BASE_PATH = `${LINK_HOSTING_LISTINGS}/activities`
 const RENTAL_EDIT_BASE_PATH = `${LINK_HOSTING_LISTINGS}/rentals`
 
-export const getPropertyLinks = (listingId: string) => [
+export const getPropertyLinks = (listingId: string, propertyType: string) => {
+  const links = [
   {
     title: "Property Type",
     icon: <LandPlot className="h-5 w-5" />,
@@ -77,6 +79,19 @@ export const getPropertyLinks = (listingId: string) => [
     basePath: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/reviews`,
   },
 ]
+
+if (propertyType === "WHOLE_PLACE") {
+  links.splice(1, 0, {
+    title: "Whole Place Type",
+    icon: <Hotel className="h-5 w-5" />,
+    link: `${PROPERTY_EDIT_BASE_PATH}/${listingId}/whole-place-type`,
+    basePath: "/whole-place-type",
+  });
+}
+
+return links;
+
+}
 
 export const getActivityLinks = (listingId: string) => [
   {

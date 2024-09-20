@@ -8,6 +8,7 @@ import {
   getRentalLinks,
 } from "./links/edit"
 import { E_Listing_Category } from "@repo/contract"
+import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
 
 const EditSidebar = ({
   category,
@@ -16,8 +17,9 @@ const EditSidebar = ({
   category: E_Listing_Category
   listingId: string
 }) => {
+  const { data: propertyData } = useGetPropertyById(listingId)
   const links = {
-    [E_Listing_Category.Property]: getPropertyLinks(listingId),
+    [E_Listing_Category.Property]: getPropertyLinks(listingId, propertyData?.item?.type),
     [E_Listing_Category.Activity]: getActivityLinks(listingId),
     [E_Listing_Category.Rental]: getRentalLinks(listingId),
   }

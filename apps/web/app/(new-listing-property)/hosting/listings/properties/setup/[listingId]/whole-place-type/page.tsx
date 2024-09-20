@@ -2,7 +2,7 @@ import { HOST } from "@/common/constants"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import AuthGuard from "@/common/components/AuthGuard"
-import PropertyType from "@/module/Admin/Listings/ForReview/Property/PropertyType"
+import WholePlaceType from "@/module/Hosting/Listings/Properties/Property/WholePlaceType"
 
 export const metadata: Metadata = {
   title: `${HOST} - ${APP_NAME}`,
@@ -12,8 +12,7 @@ export const metadata: Metadata = {
 const PropertyTypePage = () => {
   return (
     <AuthGuard>
-      
-      <PropertyType pageType="edit" />
+         <WholePlaceType pageType="setup" />
     </AuthGuard>
   )
 }
