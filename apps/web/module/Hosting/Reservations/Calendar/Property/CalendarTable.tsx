@@ -219,20 +219,26 @@ const PropertyCalendarTable = () => {
   }
   // console.log(unitData)
   const generateCalendarHeader = () => {
-    const headers = []
+    const headers = [];
+    const today = new Date();
+  
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i)
+      const date = addDays(startDate, i);
+      const isToday = isSameDay(date, today); // Check if the current date matches
+  
       headers.push(
         <th
           key={i}
-          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+          className={`border p-2 w-24 ${isToday ? 'bg-secondary-100' : ''} ${
+            i + 1 === daysPerPage && "border-r-0"
+          }`}
         >
           {format(date, "EEE dd")}
         </th>
-      )
+      );
     }
-    return headers
-  }
+    return headers;
+  };
 
   const generateCalendarRowBorder = () => {
     const headers = []
@@ -408,36 +414,33 @@ const PropertyCalendarTable = () => {
                         </span>
                       </td>
                       {[...Array(daysPerPage)].map((_, i) => {
-                        const date = format(addDays(startDate, i), "yyyy-MM-dd")
+                        const date = addDays(startDate, i);
+                        const isToday = isSameDay(date, new Date()); // Check if it's today's date
                         const customQuantity = roomQuantity.customQuantity.find(
-                          (item) => item.date === date
-                        )
+                          (item) => item.date === format(date, "yyyy-MM-dd")
+                        );
+
                         return (
                           <td
                             key={i}
-                            className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                            className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${
+                              isToday ? 'bg-secondary-100' : ''
+                            } ${i + 1 === daysPerPage && "border-r-0"}`}
                           >
                             <div
                               onClick={(e) => {
-                                handleOpenRoomQuantityEditModal(
-                                  date,
-                                  category.name
-                                )
-                                e.stopPropagation()
+                                handleOpenRoomQuantityEditModal(format(date, "yyyy-MM-dd"), category.name);
+                                e.stopPropagation();
                               }}
                               className="flex flex-col"
                             >
                               <div>
-                                {customQuantity
-                                  ? customQuantity.quantity
-                                  : roomQuantity.defaultQuantity}
+                                {customQuantity ? customQuantity.quantity : roomQuantity.defaultQuantity}
                               </div>
-                              <div>
-                                ${parseFloat(category.price).toFixed(2)}
-                              </div>
+                              <div>${parseFloat(category.price).toFixed(2)}</div>
                             </div>
                           </td>
-                        )
+                        );
                       })}
                     </tr>
                     {!collapsed[category.name] &&
