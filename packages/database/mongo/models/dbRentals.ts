@@ -6,6 +6,15 @@ const fuelEnum = ["Petrol", "Diesel", "Electric", null]
 const transmissionEnum = ["Automatic", "Semi-Automatic", "Manual", null]
 const statusEnum = ["Pending", "Incomplete", "Live"]
 
+const pricePerDates = new Schema({
+  fromDate: Date,
+  toDate: Date,
+  price: {
+    type: mongoose.Schema.ObjectId,
+    ref: "RentalRates",
+  },
+})
+
 const rentals = new Schema({
   details: {
     type: mongoose.Schema.ObjectId,
@@ -90,6 +99,10 @@ const rentals = new Schema({
       },
     },
   ],
+  pricePerDates: {
+    type: [pricePerDates],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
