@@ -3,6 +3,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import ActivitiesCalendarTable from "./CalendarTable"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
+import ActivityCalendarLegend from "../../components/ActivityCalendarLegend"
 
 const ActivitiesReservationCalendar = () => {
   return (
@@ -34,7 +35,7 @@ const ActivitiesReservationCalendar = () => {
         </div>
 
         <div className="fixed bottom-4 right-4 z-20">
-          <CalendarLegend />
+          <ActivityCalendarLegend />
         </div>
       </div>
     </div>
