@@ -16,12 +16,12 @@ const livingRooms = new Schema({
 })
 
 const pricePerDates = new Schema({
-  fromDate:Date,
-  toDate:Date,
-  price:{
+  fromDate: Date,
+  toDate: Date,
+  price: {
     type: mongoose.Schema.ObjectId,
     ref: "UnitPrices",
-  }
+  },
 })
 
 const bookableUnitTypes = new Schema({
@@ -47,9 +47,9 @@ const bookableUnitTypes = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "UnitPrices",
   },
-  pricePerDates:{
-    type:[pricePerDates],
-    default:[]
+  pricePerDates: {
+    type: [pricePerDates],
+    default: [],
   },
   amenities: {
     type: [mongoose.Schema.ObjectId],

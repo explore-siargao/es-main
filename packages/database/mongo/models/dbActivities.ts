@@ -40,9 +40,9 @@ const slots = new Schema({
 })
 
 const pricePerDates = new Schema({
-  fromDate:Date,
-  toDate:Date,
-  price:price
+  fromDate: Date,
+  toDate: Date,
+  price: price,
 })
 
 const activities = new Schema({
@@ -128,9 +128,9 @@ const activities = new Schema({
   price: {
     type: price,
   },
-  pricePerDates:{
-    type:[pricePerDates],
-    default:[]
+  pricePerDates: {
+    type: [pricePerDates],
+    default: [],
   },
   slots: {
     type: [slots],
