@@ -39,6 +39,12 @@ const slots = new Schema({
   minimumGuestCount: Number,
 })
 
+const pricePerDates = new Schema({
+  fromDate:Date,
+  toDate:Date,
+  price:price
+})
+
 const activities = new Schema({
   host: {
     type: mongoose.Schema.ObjectId,
@@ -121,6 +127,10 @@ const activities = new Schema({
   },
   price: {
     type: price,
+  },
+  pricePerDates:{
+    type:[pricePerDates],
+    default:[]
   },
   slots: {
     type: [slots],
