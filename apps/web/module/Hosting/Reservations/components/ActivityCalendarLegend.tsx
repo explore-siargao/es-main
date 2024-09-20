@@ -21,6 +21,7 @@ const ActivityCalendarLegend = () => {
         Expand Legends
       </Button>
       <div
+        role="button"
         className="flex items-center justify-end space-x-4 cursor-pointer"
         onClick={() => setLegendModalOpen(true)}
       >
