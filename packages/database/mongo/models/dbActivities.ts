@@ -45,6 +45,11 @@ const activities = new Schema({
     ref: "Users",
   },
   title: String,
+  activityType: {
+    type: String,
+    enum: ["private", "joiner", ""],
+    default: "",
+  },
   description: String,
   highLights: {
     type: [String],
