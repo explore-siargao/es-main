@@ -41,7 +41,11 @@ const CarCalendarTable = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
 
-  const { data: sampleData, isLoading, refetch } = useGetCalendarCar(
+  const {
+    data: sampleData,
+    isLoading,
+    refetch,
+  } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -100,7 +104,7 @@ const CarCalendarTable = () => {
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
-  
+
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
@@ -159,7 +163,7 @@ const CarCalendarTable = () => {
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-  
+
   const generateCalendarHeader = () => {
     const headers = []
     for (let i = 0; i < daysPerPage; i++) {
@@ -245,10 +249,10 @@ const CarCalendarTable = () => {
     if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
       return null
     }
-    
+
     const startOffset = differenceInDays(bookingStart, startDate)
     const endOffset = differenceInDays(bookingEnd, startDate)
-    
+
     const startCol = Math.max(startOffset, 0)
     const endCol = Math.min(endOffset, daysPerPage - 1)
 
