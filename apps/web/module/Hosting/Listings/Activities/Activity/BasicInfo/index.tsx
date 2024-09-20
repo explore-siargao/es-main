@@ -14,6 +14,7 @@ import { cn } from "@/common/helpers/cn"
 import useGetActivityById from "../../hooks/useGetActivityById"
 import { Input2 } from "@/common/components/ui/Input2"
 import { Textarea2 } from "@/common/components/ui/Textarea2"
+import { Option, Select } from "@/common/components/ui/Select"
 
 interface Item {
   id: number
@@ -40,11 +41,12 @@ const BasicInfo = ({ pageType }: Prop) => {
   const [durationHour, setDurationHour] = useState(0)
   const [durationMinute, setDurationMinute] = useState(0)
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
+  const [activityType, setActivityType] = useState<string>("")
   const lastId = itemList.reduce(
     (max, item) => (Number(item.id) > max ? Number(item.id) : max),
     0
   )
-
+  console.log(description)
   const addButton = () => {
     if (itemData.length === 0) {
       toast.error("Please add phrase in the Highlight input")
@@ -81,6 +83,7 @@ const BasicInfo = ({ pageType }: Prop) => {
     if (data) {
       setDurationHour(data?.item?.durationHour || 0)
       setDurationMinute(data?.item?.durationMinute || 0)
+      setActivityType(data?.item?.activityType)
       setItemList(
         data?.item?.highLights?.map((itemName: string, index: number) => ({
           id: index + 1,
@@ -122,7 +125,7 @@ const BasicInfo = ({ pageType }: Prop) => {
         if (numberOfHighlights >= 3 && numberOfHighlights <= 5) {
           const updatedFormData = {
             title: title,
-            activityType: "",
+            activityType: activityType,
             description: description,
             languages: selectedLanguages,
             durationHour: durationHour,
@@ -179,7 +182,7 @@ const BasicInfo = ({ pageType }: Prop) => {
       }
     }
   }
-
+  
   return (
     <>
       {isPending ? (
@@ -206,6 +209,19 @@ const BasicInfo = ({ pageType }: Prop) => {
                   defaultValue={data?.item?.title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
+              </div>
+              <div className="mt-2">
+                <Select
+                  label="Activity Type"
+                  id="activityType"
+                  required
+                  value={activityType}
+                  onChange={(e) => setActivityType(e.target.value)}
+                >
+                  <Option value={""}>Select Type</Option>
+                  <Option value={"private"}>Private</Option>
+                  <Option value={"joiner"}>Joiner</Option>
+                </Select>
               </div>
               <div>
                 <div className="mt-2">
