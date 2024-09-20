@@ -32,7 +32,8 @@ const WholePlaceType = ({ pageType }: Prop) => {
   const { mutate, isPending } = useUpdateWholePlaceType(listingId)
   const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
   const [selectedWholePlace, setSelectedWholePlace] = useState("")
-  const { selectedWholePlaceType, setSelectedWholePlaceType } = useWholePlaceTypeSelectedStore()
+  const { selectedWholePlaceType, setSelectedWholePlaceType } =
+    useWholePlaceTypeSelectedStore()
   useEffect(() => {
     if (!typeIsPending && data?.item?.wholeplaceType) {
       setSelectedWholePlace(data.item.wholeplaceType)

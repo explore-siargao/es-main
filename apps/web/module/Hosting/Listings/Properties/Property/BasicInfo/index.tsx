@@ -63,7 +63,7 @@ const BasicInfo = ({ pageType }: Prop) => {
       setDescription(data.item.description)
     }
   }, [data])
-  
+
   return (
     <div className="mt-20 mb-14">
       <div className="mb-8">

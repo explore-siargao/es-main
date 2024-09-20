@@ -95,23 +95,21 @@ const HostListing = () => {
     columnHelper.accessor("type", {
       header: "Type",
       cell: (context) => {
-        const type = context.getValue();
-        const displayType = type === "WHOLE_PLACE" ? "WHOLE PLACE" : type;
-        
+        const type = context.getValue()
+        const displayType = type === "WHOLE_PLACE" ? "WHOLE PLACE" : type
+
         return (
           <Link
             href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
             className="flex items-center gap-4"
             onClick={() => {
-              setPropertyType(type);
-              console.log("Selected propertyType:", type);
+              setPropertyType(type)
+              console.log("Selected propertyType:", type)
             }}
           >
-            <Typography variant="p">
-              {displayType || ""}
-            </Typography>
+            <Typography variant="p">{displayType || ""}</Typography>
           </Link>
-        );
+        )
       },
     }),
     columnHelper.accessor("status", {
