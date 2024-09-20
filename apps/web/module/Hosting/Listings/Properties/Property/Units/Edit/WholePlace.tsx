@@ -351,8 +351,6 @@ const WholePlace = ({ pageType }: Prop) => {
   const [singleRoomBedCount, setSingleRoomBedCount] = useState(0)
   const [hasSleepingSpaces, setHasSleepingSpaces] = useState("")
   const [propertyType, setPropertyType] = useState<string | null>(null)
-  const { selectedWholePlaceType, setSelectedWholePlaceType } =
-    useWholePlaceStore()
 
   const isLivingRoomVisible =
     unitType === "Studio" || hasSleepingSpaces === "yes"
