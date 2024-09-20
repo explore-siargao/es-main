@@ -94,21 +94,25 @@ const HostListing = () => {
     }),
     columnHelper.accessor("type", {
       header: "Type",
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
-          className="flex items-center gap-4"
-          onClick={() => {
-            const type = context.row.original.type
-            setPropertyType(type)
-            console.log("Selected propertyType:", type)
-          }}
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
+      cell: (context) => {
+        const type = context.getValue();
+        const displayType = type === "WHOLE_PLACE" ? "WHOLE PLACE" : type;
+        
+        return (
+          <Link
+            href={`/hosting/listings/properties${context.row.original.status === "Incomplete" ? "/setup" : ""}/${context.row.original._id}/property-type`}
+            className="flex items-center gap-4"
+            onClick={() => {
+              setPropertyType(type);
+              console.log("Selected propertyType:", type);
+            }}
+          >
+            <Typography variant="p">
+              {displayType || ""}
+            </Typography>
+          </Link>
+        );
+      },
     }),
     columnHelper.accessor("status", {
       header: "Status",

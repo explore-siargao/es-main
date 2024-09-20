@@ -12,7 +12,7 @@ import useUpdatePropertyBasicInfo from "../../hooks/useUpdatePropertyBasicInfo"
 import useGetPropertyById from "../../../hooks/useGetPropertyById"
 import { Input2 } from "@/common/components/ui/Input2"
 import { Textarea2 } from "@/common/components/ui/Textarea2"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -58,6 +58,12 @@ const BasicInfo = ({ pageType }: Prop) => {
     mutate(formData, callBackReq)
   }
 
+  useEffect(() => {
+    if (data?.item?.description) {
+      setDescription(data.item.description)
+    }
+  }, [data])
+  
   return (
     <div className="mt-20 mb-14">
       <div className="mb-8">
