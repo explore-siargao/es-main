@@ -326,7 +326,7 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
           $set: {
             title,
             description,
-            finishedSections: ['type',  'wholePlaceType', 'basicInfo'],
+            finishedSections: ['type', 'wholePlaceType', 'basicInfo'],
             updatedAt: Date.now(),
           },
         },
@@ -407,7 +407,12 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
         {
           $set: {
             location: newLocation._id,
-            finishedSections: ['type', 'wholePlaceType', 'basicInfo', 'location'],
+            finishedSections: [
+              'type',
+              'wholePlaceType',
+              'basicInfo',
+              'location',
+            ],
           },
         },
         { new: true }

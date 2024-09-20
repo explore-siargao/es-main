@@ -97,7 +97,13 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
     propertyId,
     {
       $set: {
-        finishedSections: ['type', 'wholePlaceType', 'basicInfo', 'location', 'facilities'],
+        finishedSections: [
+          'type',
+          'wholePlaceType',
+          'basicInfo',
+          'location',
+          'facilities',
+        ],
         updatedAt: Date.now(),
       },
     },

@@ -19,7 +19,10 @@ const EditSidebar = ({
 }) => {
   const { data: propertyData } = useGetPropertyById(listingId)
   const links = {
-    [E_Listing_Category.Property]: getPropertyLinks(listingId, propertyData?.item?.type),
+    [E_Listing_Category.Property]: getPropertyLinks(
+      listingId,
+      propertyData?.item?.type
+    ),
     [E_Listing_Category.Activity]: getActivityLinks(listingId),
     [E_Listing_Category.Rental]: getRentalLinks(listingId),
   }

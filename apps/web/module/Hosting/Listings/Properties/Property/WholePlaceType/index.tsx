@@ -97,7 +97,7 @@ const WholePlaceType = ({ pageType }: Prop) => {
         "A quaint getaway that combines comfort and convenience for short-term visitors.",
       icon: <Store className="h-4 w-4" strokeWidth={1.7} />,
       isSelected: data?.item?.type === WholePlaceTypes.Cottage,
-    }
+    },
   ]
 
   return (

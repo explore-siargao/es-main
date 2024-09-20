@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 const PropertyTypePage = () => {
   return (
     <AuthGuard>
-      
       <PropertyType pageType="edit" />
     </AuthGuard>
   )

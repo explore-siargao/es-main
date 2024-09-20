@@ -86,7 +86,7 @@ export const getPropertyLinks = (listingId: string, propertyType: string) => {
       link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/summary`,
       basePath: "/summary",
     },
-  ];
+  ]
 
   if (propertyType === "WHOLE_PLACE") {
     links.splice(1, 0, {
@@ -95,12 +95,11 @@ export const getPropertyLinks = (listingId: string, propertyType: string) => {
       icon: <Hotel className="h-5 w-5" />,
       link: `${PROPERTY_SETUP_BASE_PATH}/${listingId}/whole-place-type`,
       basePath: "/whole-place-type",
-    });
+    })
   }
 
-  return links;
-};
-
+  return links
+}
 
 export const getActivityLinks = (listingId: string) => [
   {

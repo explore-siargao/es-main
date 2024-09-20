@@ -23,7 +23,10 @@ const SetupSidebar = ({
   const { data: propertyData } = useGetPropertyById(listingId)
   const finishedSections = data?.item?.finishedSections || []
   const links = {
-    [E_Listing_Category.Property]: getPropertyLinks(listingId, propertyData?.item?.type),
+    [E_Listing_Category.Property]: getPropertyLinks(
+      listingId,
+      propertyData?.item?.type
+    ),
     [E_Listing_Category.Activity]: getActivityLinks(listingId),
     [E_Listing_Category.Rental]: getRentalLinks(listingId),
   }
