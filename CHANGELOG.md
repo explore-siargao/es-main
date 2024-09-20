@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.22.0](https://github.com/explore-siargao/es-main/compare/v0.21.0...v0.22.0) (2024-09-20)
+
+
+### 🚀 Features
+
+* Add Activity Type input in activity basic info setup ([0478cd7](https://github.com/explore-siargao/es-main/commit/0478cd7571c66f31c19275dca5db06c9e8a68050))
+* **api:** Added activityType field on actvitiy model ([1466bb8](https://github.com/explore-siargao/es-main/commit/1466bb8d6cceac943b8e5bca1f6ddc7e8f796dde))
+* **api:** Modified activities bookable units and rental models added pricePerDates ([8c8538a](https://github.com/explore-siargao/es-main/commit/8c8538a4a31a6dc32ba4dfc47ff0bf8cf4abcfe0))
+* Calendar UI correction ([b210e0a](https://github.com/explore-siargao/es-main/commit/b210e0aad76d67222e407928d80d06b4bd312d72))
+* Modify the process of setup for property whole place ([40073f0](https://github.com/explore-siargao/es-main/commit/40073f0925dedbaf49ef15ac5eead693ef2b7fa1))
+* **web:** Applied calendar current day and search date function to motor and bike ([53fb6c6](https://github.com/explore-siargao/es-main/commit/53fb6c638e5fcd9c38c8d02e4206f22271c54eed))
+* **web:** calendar counts available units automatic change depends on available units ([cf0345f](https://github.com/explore-siargao/es-main/commit/cf0345f30e44ce67af340acb8ccbe4ca1de9525c))
+* **web:** Calendar counts available units automatic change depends on available units ([604a641](https://github.com/explore-siargao/es-main/commit/604a641c17697a1cb173c2a365c292628f29de86))
+* **web:** Modified calendar legends ([f08b497](https://github.com/explore-siargao/es-main/commit/f08b497385453da04c27abb9a8a138cbea37cf21))
+* **web:** Modified calendar legends ([7c49837](https://github.com/explore-siargao/es-main/commit/7c49837ed5359c08f1f819ad0adb7dde364698a1))
+* **web:** Modified calendar legends ([3b1fedf](https://github.com/explore-siargao/es-main/commit/3b1fedf5cc45232678f17a11f243d53a47a059dd))
+* **web:** Modified calendar legends ([f4cab98](https://github.com/explore-siargao/es-main/commit/f4cab985108d23e464db43934102754dcfd646eb))
+
 ## [0.21.0](https://github.com/explore-siargao/es-main/compare/v0.20.1...v0.21.0) (2024-09-19)
 
 ### 🚀 Features
