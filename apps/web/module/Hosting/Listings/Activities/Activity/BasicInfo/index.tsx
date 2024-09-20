@@ -122,7 +122,7 @@ const BasicInfo = ({ pageType }: Prop) => {
         if (numberOfHighlights >= 3 && numberOfHighlights <= 5) {
           const updatedFormData = {
             title: title,
-            activityType:"",
+            activityType: "",
             description: description,
             languages: selectedLanguages,
             durationHour: durationHour,

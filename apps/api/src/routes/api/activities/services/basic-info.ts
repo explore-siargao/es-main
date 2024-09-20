@@ -1,4 +1,8 @@
-import { REQUIRED_VALUE_EMPTY, UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+  USER_NOT_AUTHORIZED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import {
   T_Update_Activity_Basic_Info,
@@ -39,7 +43,7 @@ export const updateActivities = async (req: Request, res: Response) => {
         {
           $set: {
             title: title,
-            activityType:activityType,
+            activityType: activityType,
             description: description,
             highLights: highLights,
             durationHour: durationHour,
@@ -49,7 +53,7 @@ export const updateActivities = async (req: Request, res: Response) => {
             updatedAt: Date.now(),
           },
         },
-        { new: true, runValidators:true }
+        { new: true, runValidators: true }
       )
       res.json(
         response.success({
@@ -65,9 +69,7 @@ export const updateActivities = async (req: Request, res: Response) => {
       )
     }
   } else {
-    return res.json(
-      response.error({ message: REQUIRED_VALUE_EMPTY })
-    )
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
 
