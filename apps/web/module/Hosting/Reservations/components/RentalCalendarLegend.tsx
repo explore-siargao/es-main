@@ -18,7 +18,7 @@ const RentalCalendarLegend = () => {
       >
         Expand Legends
       </Button>
-      <div
+      <button
         role="button"
         className="flex items-center justify-end space-x-4 cursor-pointer"
         onClick={() => setLegendModalOpen(true)}
@@ -29,7 +29,7 @@ const RentalCalendarLegend = () => {
             <Typography>{item.legend}</Typography>
           </div>
         ))}
-      </div>
+      </button>
       <RentalLegendModal
         isOpen={legendModalOpen}
         onClose={() => setLegendModalOpen(false)}

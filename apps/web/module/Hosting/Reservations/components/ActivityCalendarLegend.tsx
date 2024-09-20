@@ -1,6 +1,4 @@
 import { Typography } from "@/common/components/ui/Typography"
-import LegendModal from "./LegendModal"
-import { legends } from "../helpers/legends"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
 import ActivityLegendModal from "./ActivityLegendModal"
@@ -20,18 +18,19 @@ const ActivityCalendarLegend = () => {
       >
         Expand Legends
       </Button>
-      <div
+      <button
         role="button"
         className="flex items-center justify-end space-x-4 cursor-pointer"
         onClick={() => setLegendModalOpen(true)}
       >
+        
         {activitylegends.map((item) => (
           <div className="flex items-center space-x-1.5" key={item.legend}>
             <div className={`${item.color} h-4 w-4`} />
             <Typography>{item.legend}</Typography>
           </div>
         ))}
-      </div>
+      </button>
       <ActivityLegendModal
         isOpen={legendModalOpen}
         onClose={() => setLegendModalOpen(false)}

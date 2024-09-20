@@ -1,7 +1,6 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
-import { legends } from "../helpers/legends"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import { activitylegends } from "../helpers/activitylegends"
 

@@ -2,7 +2,6 @@
 import { Typography } from "@/common/components/ui/Typography"
 import ActivitiesCalendarTable from "./CalendarTable"
 import ReservationCalendarTab from "../../components/ReservationTab"
-import CalendarLegend from "../../components/CalendarLegend"
 import ActivityCalendarLegend from "../../components/ActivityCalendarLegend"
 
 const ActivitiesReservationCalendar = () => {
