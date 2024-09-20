@@ -23,7 +23,6 @@ const ActivityCalendarLegend = () => {
         className="flex items-center justify-end space-x-4 cursor-pointer"
         onClick={() => setLegendModalOpen(true)}
       >
-        
         {activitylegends.map((item) => (
           <div className="flex items-center space-x-1.5" key={item.legend}>
             <div className={`${item.color} h-4 w-4`} />
