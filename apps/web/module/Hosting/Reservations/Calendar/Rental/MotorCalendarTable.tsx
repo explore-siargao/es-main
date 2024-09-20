@@ -7,6 +7,7 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -87,6 +88,7 @@ const MotorCalendarTable = () => {
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -258,6 +260,22 @@ const MotorCalendarTable = () => {
 
     setEditingRoom(null)
   }
+
+  useEffect(() => {
+    if (filterCalendarDate !== "") {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-motor"],
+      })
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-motor"],
+      })
+      setStartDate(addDays(new Date(), -4))
+    }
+  }, [filterCalendarDate])
+  
   return (
     <>
       {isLoading ? (
@@ -276,6 +294,8 @@ const MotorCalendarTable = () => {
                         nextPrevFunction={moveStartDateByOneDay}
                         //@ts-ignore
                         openAddReservationModal={handleOpenAddReservationModal}
+                        filterCalendarDate={filterCalendarDate}
+                        setFilterCalendarDate={setFilterCalendarDate}
                       />
                     </td>
                     {generateMonthHeader()}

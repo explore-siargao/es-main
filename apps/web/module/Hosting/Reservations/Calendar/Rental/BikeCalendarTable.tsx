@@ -7,6 +7,7 @@ import {
   differenceInDays,
   isAfter,
   isBefore,
+  parse,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -86,6 +87,7 @@ const BikeCalendarTable = () => {
       form.reset()
     }, 200)
   }
+  const [filterCalendarDate, setFilterCalendarDate] = useState("")
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -280,6 +282,21 @@ const BikeCalendarTable = () => {
 
     setEditingRoom(null)
   }
+  useEffect(() => {
+    if (filterCalendarDate !== "") {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-bike"],
+      })
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-bike"],
+      })
+      setStartDate(addDays(new Date(), -4))
+    }
+  }, [filterCalendarDate])
+
   return (
     <>
       {isLoading ? (
@@ -298,6 +315,8 @@ const BikeCalendarTable = () => {
                         nextPrevFunction={moveStartDateByOneDay}
                         //@ts-ignore
                         openAddReservationModal={handleOpenAddReservationModal}
+                        filterCalendarDate={filterCalendarDate}
+                        setFilterCalendarDate={setFilterCalendarDate}
                       />
                     </td>
                     {generateMonthHeader()}
