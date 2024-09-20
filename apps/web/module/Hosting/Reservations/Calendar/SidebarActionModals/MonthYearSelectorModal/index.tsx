@@ -40,7 +40,7 @@ const MonthYearSelectorModal = ({
               <Input
                 type="date"
                 value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)} // Handle selected month/year
+                onChange={(e) => setSelectedDate(e.target.value)}
                 label={"Select date"}
               />
             </div>

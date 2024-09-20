@@ -48,9 +48,6 @@ const Sidebar = ({
             <X className="w-5" />
           </Button>
         )}
-        {/* <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
-          <Calendar className="w-5" />
-        </Button> */}
         <Button size={"sm"} variant={"default"} className="rounded-full w-full">
           <Search className="w-5" />
         </Button>
