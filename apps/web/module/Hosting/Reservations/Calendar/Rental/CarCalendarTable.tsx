@@ -37,13 +37,19 @@ const CarCalendarTable = () => {
   const [filterCalendarDate, setFilterCalendarDate] = useState("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
     useState<boolean>(false)
-  const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
+  const [startDate, setStartDate] = useState<Date>(addDays(new Date(), -4))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  const { data: sampleData, isLoading } = useGetCalendarCar(
+
+  const {
+    data: sampleData,
+    isLoading,
+    refetch,
+  } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
+
   const queryClient = useQueryClient()
   const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({})
   const [selectedReservation, setSelectedReservation] =
@@ -141,16 +147,16 @@ const CarCalendarTable = () => {
 
   useEffect(() => {
     if (filterCalendarDate !== "") {
-      queryClient.invalidateQueries({
-        queryKey: ["calendar-car"],
-      })
       const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
-      setStartDate(addDays(parsedDate, -4))
+      moveStartDateByOneDay(differenceInDays(parsedDate, startDate) - 4)
+      setTimeout(() => {
+        moveStartDateByOneDay(differenceInDays(parsedDate, startDate) - 4)
+      }, 100)
     } else {
-      queryClient.invalidateQueries({
-        queryKey: ["calendar-car"],
-      })
-      setStartDate(addDays(new Date(), -4))
+      moveStartDateByOneDay(differenceInDays(new Date(), startDate) - 4)
+      setTimeout(() => {
+        moveStartDateByOneDay(differenceInDays(new Date(), startDate) - 4)
+      }, 100)
     }
   }, [filterCalendarDate])
 
