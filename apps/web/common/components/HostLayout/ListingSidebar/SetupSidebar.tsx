@@ -10,6 +10,7 @@ import {
 import { E_Listing_Category } from "@repo/contract"
 import useGetFinishedSections from "@/module/Hosting/Listings/hooks/useGetFinishedSections"
 import NewListingEditIndicator from "./NewListingEditIndicator"
+import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
 
 const SetupSidebar = ({
   category,
@@ -19,13 +20,18 @@ const SetupSidebar = ({
   listingId: string
 }) => {
   const { data } = useGetFinishedSections({ listingId, category })
+  const { data: propertyData } = useGetPropertyById(listingId)
   const finishedSections = data?.item?.finishedSections || []
   const links = {
-    [E_Listing_Category.Property]: getPropertyLinks(listingId),
+    [E_Listing_Category.Property]: getPropertyLinks(
+      listingId,
+      propertyData?.item?.type
+    ),
     [E_Listing_Category.Activity]: getActivityLinks(listingId),
     [E_Listing_Category.Rental]: getRentalLinks(listingId),
   }
   const SECTION_LINKS = links[category]
+
   return (
     <>
       {SECTION_LINKS.map((item, index) => {

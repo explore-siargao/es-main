@@ -237,6 +237,7 @@ export const updateWholePlaceType = async (req: Request, res: Response) => {
         {
           $set: {
             wholeplaceType: type,
+            finishedSections: ['type', 'wholePlaceType'],
           },
         },
         { new: true, runValidators: true, fields: { wholeplaceType: 1 } }
@@ -325,7 +326,7 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
           $set: {
             title,
             description,
-            finishedSections: ['type', 'basicInfo'],
+            finishedSections: ['type', 'wholePlaceType', 'basicInfo'],
             updatedAt: Date.now(),
           },
         },
@@ -406,7 +407,12 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
         {
           $set: {
             location: newLocation._id,
-            finishedSections: ['type', 'basicInfo', 'location'],
+            finishedSections: [
+              'type',
+              'wholePlaceType',
+              'basicInfo',
+              'location',
+            ],
           },
         },
         { new: true }
