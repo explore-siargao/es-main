@@ -182,7 +182,7 @@ const BasicInfo = ({ pageType }: Prop) => {
       }
     }
   }
-  
+
   return (
     <>
       {isPending ? (
