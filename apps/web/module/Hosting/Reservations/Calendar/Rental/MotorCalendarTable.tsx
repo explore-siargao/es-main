@@ -275,7 +275,7 @@ const MotorCalendarTable = () => {
       setStartDate(addDays(new Date(), -4))
     }
   }, [filterCalendarDate])
-  
+
   return (
     <>
       {isLoading ? (
