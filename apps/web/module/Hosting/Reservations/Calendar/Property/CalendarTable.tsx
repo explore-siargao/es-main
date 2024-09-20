@@ -412,9 +412,32 @@ const PropertyCalendarTable = () => {
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
-                          const customQuantity =
-                            roomQuantity.customQuantity.find(
-                              (item) => item.date === date
+                          const noReservationCount =
+                            category?.bookableUnitTypes?.reduce(
+                              (
+                                count: number,
+                                bookableUnitType: { reservations: any[] }
+                              ) => {
+                                const hasReservation =
+                                  bookableUnitType.reservations.some(
+                                    (reservation) => {
+                                      const reservationStart = format(
+                                        new Date(reservation.startDate),
+                                        "yyyy-MM-dd"
+                                      )
+                                      const reservationEnd = format(
+                                        new Date(reservation.endDate),
+                                        "yyyy-MM-dd"
+                                      )
+                                      return (
+                                        date >= reservationStart &&
+                                        date <= reservationEnd
+                                      )
+                                    }
+                                  )
+                                return count + (hasReservation ? 0 : 1)
+                              },
+                              0
                             )
                           return (
                             <td
@@ -431,11 +454,7 @@ const PropertyCalendarTable = () => {
                                 }}
                                 className="flex flex-col"
                               >
-                                <div>
-                                  {customQuantity
-                                    ? customQuantity.quantity
-                                    : roomQuantity.defaultQuantity}
-                                </div>
+                                <div>{noReservationCount}</div>
                                 <div>
                                   ${parseFloat(category.price).toFixed(2)}
                                 </div>

@@ -330,10 +330,28 @@ const BikeCalendarTable = () => {
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
-                          const customQuantity =
-                            roomQuantity.customQuantity.find(
-                              (item) => item.date === date
-                            )
+                          const noReservationCount = category?.bicycles?.reduce(
+                            (count, bicycle) => {
+                              const hasReservation = bicycle.reservations.some(
+                                (reservation) => {
+                                  const reservationStart = format(
+                                    new Date(reservation.startDate),
+                                    "yyyy-MM-dd"
+                                  )
+                                  const reservationEnd = format(
+                                    new Date(reservation.endDate),
+                                    "yyyy-MM-dd"
+                                  )
+                                  return (
+                                    date >= reservationStart &&
+                                    date <= reservationEnd
+                                  )
+                                }
+                              )
+                              return count + (hasReservation ? 0 : 1)
+                            },
+                            0
+                          )
                           return (
                             <td
                               key={i}
@@ -349,11 +367,7 @@ const BikeCalendarTable = () => {
                                 }}
                                 className="flex flex-col"
                               >
-                                <div>
-                                  {customQuantity
-                                    ? customQuantity.quantity
-                                    : roomQuantity.defaultQuantity}
-                                </div>
+                                <div>{noReservationCount}</div>
                                 <div>
                                   ${parseFloat(category.price).toFixed(2)}
                                 </div>

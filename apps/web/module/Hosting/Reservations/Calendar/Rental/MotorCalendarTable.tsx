@@ -63,7 +63,6 @@ const MotorCalendarTable = () => {
       },
     ],
   })
-
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
   const daysPerPage = 13
 
@@ -309,9 +308,29 @@ const MotorCalendarTable = () => {
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
-                          const customQuantity =
-                            roomQuantity.customQuantity.find(
-                              (item) => item.date === date
+                          const noReservationCount =
+                            category?.motorcycles?.reduce(
+                              (count, motorcycle) => {
+                                const hasReservation =
+                                  motorcycle.reservations.some(
+                                    (reservation) => {
+                                      const reservationStart = format(
+                                        new Date(reservation.startDate),
+                                        "yyyy-MM-dd"
+                                      )
+                                      const reservationEnd = format(
+                                        new Date(reservation.endDate),
+                                        "yyyy-MM-dd"
+                                      )
+                                      return (
+                                        date >= reservationStart &&
+                                        date <= reservationEnd
+                                      )
+                                    }
+                                  )
+                                return count + (hasReservation ? 0 : 1)
+                              },
+                              0
                             )
                           return (
                             <td
@@ -328,11 +347,7 @@ const MotorCalendarTable = () => {
                                 }}
                                 className="flex flex-col"
                               >
-                                <div>
-                                  {customQuantity
-                                    ? customQuantity.quantity
-                                    : roomQuantity.defaultQuantity}
-                                </div>
+                                <div>{noReservationCount}</div>
                                 <div>
                                   ${parseFloat(category.price).toFixed(2)}
                                 </div>
