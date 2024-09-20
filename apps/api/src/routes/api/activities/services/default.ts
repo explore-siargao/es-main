@@ -21,6 +21,7 @@ export const addActivity = async (req: Request, res: Response) => {
     const value = {
       host: userId,
       title: '',
+      activityType:"",
       description: '',
       highLights: [],
       durationHour: null,

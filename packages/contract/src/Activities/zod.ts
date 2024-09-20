@@ -32,6 +32,7 @@ export const Z_Activity = z.object({
   host: Z_User.optional(),
   finishedSections: z.array(z.string()).optional(),
   title: z.string().optional(),
+  activityType:z.enum(["private","joiner",""]),
   description: z.string().optional(),
   highLights: z.string().optional(),
   durationHour: z.number().optional(),
@@ -77,6 +78,7 @@ export const Z_Update_Activity_Inclusions = z.object({
 
 export const Z_Update_Activity_Basic_Info = z.object({
   title: z.string().optional(),
+  activityType:z.string(z.enum(["private","joiner",""])),
   description: z.string().optional(),
   highLights: z.array(z.string()).optional(),
   durationHour: z.number().optional(),
