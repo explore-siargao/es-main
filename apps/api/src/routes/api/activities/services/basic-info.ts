@@ -45,7 +45,7 @@ export const updateActivities = async (req: Request, res: Response) => {
           $set: {
             title: title,
             activityType: activityType,
-            experienceType :experienceType,
+            experienceType: experienceType,
             description: description,
             highLights: highLights,
             durationHour: durationHour,
@@ -96,7 +96,7 @@ export const getActivities = async (req: Request, res: Response) => {
       id: activitiesData._id,
       title: activitiesData.title,
       activityType: activitiesData.activityType,
-      experienceType : activitiesData.experienceType,
+      experienceType: activitiesData.experienceType,
       description: activitiesData.description,
       highLights: activitiesData.highLights,
       durationHour: activitiesData.durationHour,
