@@ -29,6 +29,7 @@ import { getRentalLocation, updateRentalLocation } from './services/locations'
 import { updateStatus } from './services/status'
 import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwner2'
 import {
+  addRentalPricePerDates,
   editChildName,
   getBikeCalendar,
   getCarCalendar,
@@ -248,6 +249,15 @@ router.get(
   isUserLoggedIn,
   isCsrfTokenValid,
   getCarCalendar
+)
+
+router.patch(
+  '/:rentalId/price-per-dates',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostRentalOwner,
+  addRentalPricePerDates
 )
 
 //rental counts
