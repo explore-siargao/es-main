@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
 import {
-  dbProperties,
   dbRentalRates,
   dbRentals,
   dbReservations,
