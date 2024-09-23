@@ -1,11 +1,7 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
-import {
-  dbRentalRates,
-  dbRentals,
-  dbReservations,
-} from '@repo/database'
+import { dbRentalRates, dbRentals, dbReservations } from '@repo/database'
 import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
