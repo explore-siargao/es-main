@@ -18,6 +18,7 @@ import { cn } from "@/common/helpers/cn"
 import useGetPropertyById from "../../hooks/useGetPropertyById"
 import useUpdateWholePlaceType from "../../hooks/useUpdateWholePlaceType"
 import { WholePlaceTypes } from "./constants"
+import useWholePlaceTypeSelectedStore from "./store/useWholePlaceTypeSelectedStore"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -31,6 +32,8 @@ const WholePlaceType = ({ pageType }: Prop) => {
   const { mutate, isPending } = useUpdateWholePlaceType(listingId)
   const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
   const [selectedWholePlace, setSelectedWholePlace] = useState("")
+  const { selectedWholePlaceType, setSelectedWholePlaceType } =
+    useWholePlaceTypeSelectedStore()
   useEffect(() => {
     if (!typeIsPending && data?.item?.wholeplaceType) {
       setSelectedWholePlace(data.item.wholeplaceType)
@@ -100,6 +103,7 @@ const WholePlaceType = ({ pageType }: Prop) => {
     },
   ]
 
+  console.log("this is my store: ", selectedWholePlaceType)
   return (
     <div className="mt-20 mb-14">
       <div className="mb-8">
@@ -115,13 +119,13 @@ const WholePlaceType = ({ pageType }: Prop) => {
         {WHOLE_PLACE_TYPES.map((property) => (
           <div
             key={property.description}
-            className={`${(property.isSelected && selectedWholePlace === "") || selectedWholePlace === property.value ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
+            className={`${(property.isSelected && selectedWholePlaceType === "") || selectedWholePlaceType === property.value ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
             onClick={() =>
-              pageType === "setup" && setSelectedWholePlace(property.value)
+              pageType === "setup" && setSelectedWholePlaceType(property.value)
             }
           >
-            {(property.isSelected && selectedWholePlace === "") ||
-            selectedWholePlace === property.value ? (
+            {(property.isSelected && selectedWholePlaceType === "") ||
+            selectedWholePlaceType === property.value ? (
               <div className="flex justify-center">
                 <span className="absolute mt-[-32px] rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
                   Selected

@@ -39,10 +39,10 @@ import { Option } from "@/common/components/ui/Select"
 import { RadioInput } from "@/module/Hosting/Listings/Activities/Activity/Inclusions"
 import Livingroom from "./components/Livingroom"
 import { useLivingroomStore } from "./store/useLivingroomStore"
-import useUnitTypeStore from "./store/useUnitTypeStore"
 import { Select2 } from "@/common/components/ui/Select2"
 import { Input2 } from "@/common/components/ui/Input2"
 import EditPhotoModal from "@/module/Hosting/Listings/components/modals/EditPhotoModal"
+import useWholePlaceStore from "../../WholePlaceType/store/useWholePlaceTypeSelectedStore"
 
 type T_WholePlaceUnit = {
   title: string
@@ -118,7 +118,7 @@ const WholePlace = ({ pageType }: Prop) => {
     (state) => state.setDefaultAmenities
   )
   const selectedUnitType: string | undefined = String(
-    useUnitTypeStore((state) => state.selectedUnitType) ?? ""
+    useWholePlaceStore((state) => state.selectedWholePlaceType) ?? ""
   )
 
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
@@ -354,7 +354,6 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const isLivingRoomVisible =
     unitType === "Studio" || hasSleepingSpaces === "yes"
-
   useEffect(() => {
     if (data) {
       setUnitType(data?.item?.subtitle || "villa")
@@ -395,7 +394,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const renderUnitTypeSelect = () => {
     switch (propertyType) {
-      case "Hotel":
+      case "HOTEL":
         return (
           <Select2
             label="Unit Type"
@@ -406,13 +405,13 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio apartment</Option>
-            <Option value="Condominium">Bungalow</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio apartment</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
           </Select2>
         )
-      case "Resort":
+      case "RESORT":
         return (
           <Select2
             label="Unit Type"
@@ -423,14 +422,14 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio Apartment</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio Apartment</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
           </Select2>
         )
-      case "Whole place":
+      case "WHOLE_PLACE":
         return pageType === "setup" ? (
           <Select2
             label="Unit Type"
@@ -440,10 +439,10 @@ const WholePlace = ({ pageType }: Prop) => {
             {...register("subtitle", {})}
             className="bg-gray-100 cursor-not-allowed"
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
-            <Option value="Cottage">Cottage</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
+            <Option value="COTTAGE">Cottage</Option>
           </Select2>
         ) : (
           <Select2
@@ -455,14 +454,14 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             className="bg-gray-100 cursor-not-allowed"
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
-            <Option value="Cottage">Cottage</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
+            <Option value="COTTAGE">Cottage</Option>
           </Select2>
         )
 
-      case "Apartment":
+      case "APARTMENT":
         return (
           <Select2
             label="Unit Type"
@@ -473,8 +472,8 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio Apartment</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio Apartment</Option>
           </Select2>
         )
       default:
@@ -488,11 +487,11 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio apartment</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Condominium</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio apartment</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="CONDOMINIUM">Condominium</Option>
           </Select2>
         )
     }
@@ -500,6 +499,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const category = data?.item?.category
   console.log("test: ", category)
+
   return (
     <>
       {isPending || isFetching ? (
