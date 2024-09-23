@@ -10,6 +10,7 @@ import {
 import { useState } from "react"
 import CalendarTab from "../components/CalendarTab"
 import MonthYearSelectorModal from "./SidebarActionModals/MonthYearSelectorModal"
+import PropertySearchCalendarModal from "./SidebarActionModals/SideBarSearchModals/PropertySearchCalendar"
 
 type SideBarProps = {
   nextPrevFunction: Function
@@ -25,6 +26,7 @@ const Sidebar = ({
   setFilterCalendarDate,
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
 
   return (
     <div className="p-4 flex flex-col gap-4">
@@ -48,7 +50,12 @@ const Sidebar = ({
             <X className="w-5" />
           </Button>
         )}
-        <Button size={"sm"} variant={"default"} className="rounded-full w-full">
+        <Button
+          size={"sm"}
+          variant={"default"}
+          className="rounded-full w-full"
+          onClick={() => setIsSearchModalOpen(true)}
+        >
           <Search className="w-5" />
         </Button>
         <Button
@@ -88,6 +95,10 @@ const Sidebar = ({
         onClose={() => setIsModalOpen(false)}
         filterCalendarDate={filterCalendarDate}
         setFilterCalendarDate={setFilterCalendarDate}
+      />
+      <PropertySearchCalendarModal
+        isModalOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
       />
     </div>
   )
