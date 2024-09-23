@@ -53,8 +53,13 @@ const activities = new Schema({
   title: String,
   activityType: {
     type: String,
-    enum: ["private", "joiner", ""],
+    enum: ["Island hopping tour", "Land tour", "Surfboarding", ""],
     default: "",
+  },
+  experienceType: {
+    type: String,
+    enum: ["private", "shared"],
+    default: "private",
   },
   description: String,
   highLights: {
