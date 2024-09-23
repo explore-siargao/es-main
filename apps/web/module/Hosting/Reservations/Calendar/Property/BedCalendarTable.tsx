@@ -14,7 +14,6 @@ import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
 import ReservationCalendarModal from "../ReservationCalendarModal"
-import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
@@ -25,6 +24,7 @@ import {
 import AddReservationModal from "../AddReservationModal"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarBed from "../hooks/useGetCalendarBed"
+import PropertyEditPricePerDatesModal from "./PropertyEditPricePerDatesModal"
 
 const BedCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
@@ -38,7 +38,6 @@ const BedCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
@@ -60,10 +59,11 @@ const BedCalendarTable = () => {
 
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
+  const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
+    useState(false)
 
-  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
+  const handleOpeneditPricePerDatesModal = (date: string, category: string) => {
+    setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
     setSelectedCategory(category)
   }
@@ -299,7 +299,7 @@ const BedCalendarTable = () => {
                           >
                             <div
                               onClick={(e) => {
-                                handleOpenRoomQuantityEditModal(
+                                handleOpeneditPricePerDatesModal(
                                   date,
                                   category.name
                                 )
@@ -417,13 +417,10 @@ const BedCalendarTable = () => {
               selectedReservation={selectedReservation}
             />
           )}
-          <RoomQuantityEdit
-            isModalOpen={isRoomQuantityEditOpen}
-            onClose={closeRoomQuantityEditModal}
+          <PropertyEditPricePerDatesModal
+            isModalOpen={isEditPricePerDatesModalOpen}
+            onClose={() => setIsEditPricePerDatesModalOpen(false)}
             selectedDate={selectedDate}
-            roomQuantity={roomQuantity}
-            setRoomQuantity={setRoomQuantity}
-            category={selectedCategory}
           />
           <AddReservationModal
             isModalOpen={isAddReservationModalOpen}

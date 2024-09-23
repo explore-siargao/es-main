@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import {
   format,
   addDays,
-  startOfMonth,
   getMonth,
   differenceInDays,
   isAfter,
@@ -14,7 +13,6 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
@@ -28,6 +26,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
 import { Spinner } from "@/common/components/ui/Spinner"
+import PropertyEditPricePerDatesModal from "../Property/PropertyEditPricePerDatesModal"
+import RentalsEditPricePerDatesModal from "./RentalsEditPricePerDatesModal"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -75,6 +75,8 @@ const CarCalendarTable = () => {
   })
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+  const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
+    useState(false)
 
   const daysPerPage = 13
 
@@ -95,10 +97,12 @@ const CarCalendarTable = () => {
       form.reset()
     }, 200)
   }
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
-  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
+  const handleOpenRentalsEditPricePerDatesModal = (
+    date: string,
+    category: string
+  ) => {
+    setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
     setSelectedCategory(category)
   }
@@ -369,7 +373,7 @@ const CarCalendarTable = () => {
                             >
                               <div
                                 onClick={(e) => {
-                                  handleOpenRoomQuantityEditModal(
+                                  handleOpenRentalsEditPricePerDatesModal(
                                     date,
                                     category.name
                                   )
@@ -494,13 +498,10 @@ const CarCalendarTable = () => {
               </form>
             </FormProvider>
 
-            <RoomQuantityEdit
-              isModalOpen={isRoomQuantityEditOpen}
-              onClose={closeRoomQuantityEditModal}
+            <RentalsEditPricePerDatesModal
+              isModalOpen={isEditPricePerDatesModalOpen}
+              onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
-              roomQuantity={roomQuantity}
-              setRoomQuantity={setRoomQuantity}
-              category={selectedCategory}
             />
             <FormProvider {...form}>
               <form>

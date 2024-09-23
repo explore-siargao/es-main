@@ -14,7 +14,7 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import RoomQuantityEdit from "../RoomQuantityEdit"
+import RoomQuantityEdit from "../EditPricePerDatesModal"
 import {
   SelectedReservation,
   SampleData,
@@ -28,6 +28,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { FormProvider, useForm } from "react-hook-form"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
 import RentalCalendarModal from "../RentalCalendarModal"
+import PropertyEditPricePerDatesModal from "../Property/PropertyEditPricePerDatesModal"
 
 const BikeCalendarTable = () => {
   const form = useForm()
@@ -46,7 +47,6 @@ const BikeCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
@@ -69,10 +69,11 @@ const BikeCalendarTable = () => {
   const daysPerPage = 13
   const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
+  const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
+    useState(false)
 
-  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
+  const handleOpenRentalsEditPricePerDatesModal = (date: string, category: string) => {
+    setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
     setSelectedCategory(category)
   }
@@ -378,7 +379,7 @@ const BikeCalendarTable = () => {
                             >
                               <div
                                 onClick={(e) => {
-                                  handleOpenRoomQuantityEditModal(
+                                  handleOpenRentalsEditPricePerDatesModal(
                                     date,
                                     category.name
                                   )
@@ -507,13 +508,10 @@ const BikeCalendarTable = () => {
                 )}
               </form>
             </FormProvider>
-            <RoomQuantityEdit
-              isModalOpen={isRoomQuantityEditOpen}
-              onClose={closeRoomQuantityEditModal}
+            <PropertyEditPricePerDatesModal
+              isModalOpen={isEditPricePerDatesModalOpen}
+              onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
-              roomQuantity={roomQuantity}
-              setRoomQuantity={setRoomQuantity}
-              category={selectedCategory}
             />
             <FormProvider {...form}>
               <form>

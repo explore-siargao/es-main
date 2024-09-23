@@ -16,15 +16,14 @@ import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
 import ReservationCalendarModal from "../ReservationCalendarModal"
-import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
   Booking,
 } from "../../types/CalendarTable"
-import AddReservationModal from "../AddReservationModal"
 import AddActivityReservationModal from "../AddReservationModal/Activity"
 import { useQueryClient } from "@tanstack/react-query"
+import ActivityEditPricePerDatesModal from "./ActivityEditPricePerDatesModal"
 
 const ActivitiesCalendarTable = () => {
   const queryClient = useQueryClient()
@@ -34,7 +33,6 @@ const ActivitiesCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
@@ -56,11 +54,12 @@ const ActivitiesCalendarTable = () => {
 
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
+  const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
+    useState(false)
 
-  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
-    setSelectedDate(date)
+  const handleOpenActivityEditPricePerDatesModal = (date: string, category: string) => {
+    setIsEditPricePerDatesModalOpen(true)
+    setSelectedDate(date);
     setSelectedCategory(category)
   }
 
@@ -312,7 +311,7 @@ const ActivitiesCalendarTable = () => {
                       >
                         <div
                           onClick={(e) => {
-                            handleOpenRoomQuantityEditModal(date, category.name)
+                            handleOpenActivityEditPricePerDatesModal(date, category.name)
                             e.stopPropagation()
                           }}
                           className="flex flex-col"
@@ -420,13 +419,11 @@ const ActivitiesCalendarTable = () => {
           selectedReservation={selectedReservation}
         />
       )}
-      <RoomQuantityEdit
-        isModalOpen={isRoomQuantityEditOpen}
-        onClose={closeRoomQuantityEditModal}
+      <ActivityEditPricePerDatesModal
+        isModalOpen={isEditPricePerDatesModalOpen}
+        onClose={() => setIsEditPricePerDatesModalOpen(false)}
         selectedDate={selectedDate}
-        roomQuantity={roomQuantity}
-        setRoomQuantity={setRoomQuantity}
-        category={selectedCategory}
+        activityId={"666baa94934b8c2077902404"}
       />
       <AddActivityReservationModal
         isModalOpen={isAddReservationModalOpen}

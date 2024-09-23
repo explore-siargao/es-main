@@ -13,7 +13,7 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import RoomQuantityEdit from "../RoomQuantityEdit"
+import RoomQuantityEdit from "../EditPricePerDatesModal"
 import {
   SelectedReservation,
   SampleData,
@@ -28,6 +28,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import PropertyCalendarModal from "../PropertyCalendarModal"
 import { getColorClasses } from "../../helpers/legends"
 import { Spinner } from "@/common/components/ui/Spinner"
+import PropertyEditPricePerDatesModal from "./PropertyEditPricePerDatesModal"
 
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
@@ -48,7 +49,6 @@ const PropertyCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
@@ -58,15 +58,6 @@ const PropertyCalendarTable = () => {
   const [unitData, setUnitData] = useState<any>()
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
-  const [roomQuantity, setRoomQuantity] = useState({
-    defaultQuantity: 5,
-    customQuantity: [
-      {
-        date: "2024-06-03",
-        quantity: 4,
-      },
-    ],
-  })
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
 
@@ -89,10 +80,11 @@ const PropertyCalendarTable = () => {
       form.reset()
     }, 200)
   }
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
+  const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
+    useState(false)
 
-  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
+  const handleOpeneditPricePerDatesModal = (date: string, category: string) => {
+    setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
     setSelectedCategory(category)
   }
@@ -446,7 +438,7 @@ const PropertyCalendarTable = () => {
                             >
                               <div
                                 onClick={(e) => {
-                                  handleOpenRoomQuantityEditModal(
+                                  handleOpeneditPricePerDatesModal(
                                     date,
                                     category.name
                                   )
@@ -576,13 +568,10 @@ const PropertyCalendarTable = () => {
                 )}
               </form>
             </FormProvider>
-            <RoomQuantityEdit
-              isModalOpen={isRoomQuantityEditOpen}
-              onClose={closeRoomQuantityEditModal}
+            <PropertyEditPricePerDatesModal
+              isModalOpen={isEditPricePerDatesModalOpen}
+              onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
-              roomQuantity={roomQuantity}
-              setRoomQuantity={setRoomQuantity}
-              category={selectedCategory}
             />
             <FormProvider {...form}>
               <form>
