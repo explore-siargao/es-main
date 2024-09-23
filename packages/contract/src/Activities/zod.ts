@@ -78,7 +78,10 @@ export const Z_Update_Activity_Inclusions = z.object({
 
 export const Z_Update_Activity_Basic_Info = z.object({
   title: z.string().optional(),
-  activityType: z.string(z.enum(["private", "joiner", ""])),
+  experienceType: z.string(z.enum(["private", "joiner", ""])).optional(),
+  activityType: z.string(
+    z.enum(["Island hopping tour", "Land tour", "Surfboarding", ""])
+  ),
   description: z.string().optional(),
   highLights: z.array(z.string()).optional(),
   durationHour: z.number().optional(),
