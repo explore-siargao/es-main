@@ -100,10 +100,10 @@ const MotorCalendarTable = () => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, (addDays(startDate, - 1)))
       )
     }
-
+   
     const filterReservations = (reservations: any[]) =>
       reservations.filter(isReservationWithinRange)
 
@@ -127,6 +127,7 @@ const MotorCalendarTable = () => {
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
     }
+    console.log(newFilteredData)
     //@ts-ignore
     setFilteredData(newFilteredData)
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
@@ -240,17 +241,17 @@ const MotorCalendarTable = () => {
     const bookingStart = new Date(booking.startDate)
     const bookingEnd = new Date(booking.endDate)
     const calendarEnd = addDays(startDate, daysPerPage - 1)
-
-    if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
+    
+    if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd,  (addDays(startDate, - 1)))) {
       return null
     }
+   
 
-    const startOffset = differenceInDays(bookingStart, startDate)
-    const endOffset = differenceInDays(bookingEnd, startDate)
+  const startOffset = differenceInDays(bookingStart, (addDays(startDate, - 1)));
+  const endOffset = differenceInDays(bookingEnd, (addDays(startDate, - 1)))
 
     const startCol = Math.max(startOffset, 0)
     const endCol = Math.min(endOffset, daysPerPage - 1)
-
     const colSpan = endCol - startCol + 1
     return { startCol, colSpan }
   }
@@ -295,7 +296,7 @@ const MotorCalendarTable = () => {
       queryClient.invalidateQueries({
         queryKey: ["calendar-motor"],
       })
-      setStartDate(addDays(new Date(), -4))
+     setStartDate(addDays(new Date(), -4))
     }
   }, [filterCalendarDate])
 
