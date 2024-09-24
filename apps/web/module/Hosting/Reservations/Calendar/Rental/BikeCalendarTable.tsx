@@ -61,7 +61,10 @@ const BikeCalendarTable = () => {
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
 
-  const handleOpenRentalsEditPricePerDatesModal = (date: string, category: string) => {
+  const handleOpenRentalsEditPricePerDatesModal = (
+    date: string,
+    category: string
+  ) => {
     setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
     setSelectedRentalId(category)

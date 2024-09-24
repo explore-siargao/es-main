@@ -16,7 +16,7 @@ const ActivityEditPricePerDatesModal = ({
   isModalOpen,
   onClose,
   selectedDate,
-  activityId
+  activityId,
 }: IEditPricePerDateProps) => {
   const [toDate, setToDate] = useState("")
   const [basePrice, setBasePrice] = useState("")

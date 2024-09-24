@@ -57,9 +57,12 @@ const ActivitiesCalendarTable = () => {
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
 
-  const handleOpenActivityEditPricePerDatesModal = (date: string, category: string) => {
+  const handleOpenActivityEditPricePerDatesModal = (
+    date: string,
+    category: string
+  ) => {
     setIsEditPricePerDatesModalOpen(true)
-    setSelectedDate(date);
+    setSelectedDate(date)
     setSelectedCategory(category)
   }
 
@@ -338,7 +341,10 @@ const ActivitiesCalendarTable = () => {
                       >
                         <div
                           onClick={(e) => {
-                            handleOpenActivityEditPricePerDatesModal(date, category.name)
+                            handleOpenActivityEditPricePerDatesModal(
+                              date,
+                              category.name
+                            )
                             e.stopPropagation()
                           }}
                           className="flex flex-col"
