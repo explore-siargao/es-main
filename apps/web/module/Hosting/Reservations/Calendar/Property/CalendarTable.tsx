@@ -7,7 +7,7 @@ import {
   isAfter,
   isBefore,
   parse,
-  isSameDay
+  isSameDay,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -219,37 +219,37 @@ const PropertyCalendarTable = () => {
   }
   // console.log(unitData)
   const generateCalendarHeader = () => {
-    const headers = [];
-    const today = new Date();
-  
+    const headers = []
+    const today = new Date()
+
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i);
-      const isToday = isSameDay(date, today); // Check if the current date matches
-  
+      const date = addDays(startDate, i)
+      const isToday = isSameDay(date, today) // Check if the current date matches
+
       headers.push(
         <th
           key={i}
-          className={`border p-2 w-24 ${isToday && 'bg-primary-100'} ${
+          className={`border p-2 w-24 ${isToday && "bg-primary-100"} ${
             i + 1 === daysPerPage && "border-r-0"
           }`}
         >
           {format(date, "EEE dd")}
         </th>
-      );
+      )
     }
-    return headers;
-  };
+    return headers
+  }
 
   const generateCalendarRowBorder = () => {
     const headers = []
     const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
-      const date = addDays(startDate, i);
-      const isToday = isSameDay(date, today);
+      const date = addDays(startDate, i)
+      const isToday = isSameDay(date, today)
       headers.push(
         <th
           key={i}
-          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday && 'bg-primary-100'}`}
+          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday && "bg-primary-100"}`}
         ></th>
       )
     }
@@ -442,7 +442,7 @@ const PropertyCalendarTable = () => {
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
-                          const isToday = isSameDay(date, today);
+                          const isToday = isSameDay(date, today)
 
                           const noReservationCount =
                             category?.bookableUnitTypes?.reduce(
@@ -474,7 +474,7 @@ const PropertyCalendarTable = () => {
                           return (
                             <td
                               key={i}
-                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && 'bg-primary-100'}`}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
                             >
                               <div
                                 onClick={(e) => {
