@@ -138,12 +138,14 @@ const MotorCalendarTable = () => {
 
   const generateCalendarHeader = () => {
     const headers = []
+    const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
       const date = addDays(startDate, i)
+      const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
       headers.push(
         <th
           key={i}
-          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
         >
           {format(date, "EEE dd")}
         </th>
@@ -154,11 +156,14 @@ const MotorCalendarTable = () => {
 
   const generateCalendarRowBorder = () => {
     const headers = []
+    const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
+      const date = addDays(startDate, i)
+      const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
       headers.push(
         <th
           key={i}
-          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24`}
+          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday && "bg-primary-100"}`}
         ></th>
       )
     }
@@ -201,6 +206,24 @@ const MotorCalendarTable = () => {
 
     return headers
   }
+
+  const resetToToday = () => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }
+
+  // Use useEffect to trigger refetch after startDate changes
+  useEffect(() => {
+    if (startDate) {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-motor"],
+      })
+    }
+  }, [startDate])
 
   const moveStartDateByOneDay = (direction: number) => {
     queryClient.invalidateQueries({
@@ -296,6 +319,7 @@ const MotorCalendarTable = () => {
                         openAddReservationModal={handleOpenAddReservationModal}
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
+                        resetToToday={resetToToday}
                       />
                     </td>
                     {generateMonthHeader()}
@@ -324,10 +348,14 @@ const MotorCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
+                          const today = new Date()
                           const date = format(
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
+                          const isToday =
+                            format(date, "yyyy-MM-dd") ===
+                            format(today, "yyyy-MM-dd")
                           const noReservationCount =
                             category?.motorcycles?.reduce(
                               (count, motorcycle) => {
@@ -355,7 +383,7 @@ const MotorCalendarTable = () => {
                           return (
                             <td
                               key={i}
-                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
                             >
                               <div
                                 onClick={(e) => {
