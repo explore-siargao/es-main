@@ -9,12 +9,14 @@ interface IEditPricePerDateProps {
   isModalOpen: boolean
   onClose: () => void
   selectedDate: string
+  id?: string
 }
 
 const RentalsEditPricePerDatesModal = ({
   isModalOpen,
   onClose,
   selectedDate,
+  id
 }: IEditPricePerDateProps) => {
   const [toDate, setToDate] = useState("")
   const [dayRate, setDayRate] = useState("")
@@ -52,6 +54,7 @@ const RentalsEditPricePerDatesModal = ({
     setDateFrom(selectedDate)
   }, [selectedDate])
 
+  console.log(id)
   return (
     <ModalContainer
       onClose={handleClose}

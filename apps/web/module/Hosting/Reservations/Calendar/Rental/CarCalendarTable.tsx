@@ -26,7 +26,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
 import { Spinner } from "@/common/components/ui/Spinner"
-import PropertyEditPricePerDatesModal from "../Property/PropertyEditPricePerDatesModal"
 import RentalsEditPricePerDatesModal from "./RentalsEditPricePerDatesModal"
 
 const CarCalendarTable = () => {
@@ -41,11 +40,7 @@ const CarCalendarTable = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
 
-  const {
-    data: sampleData,
-    isLoading,
-    refetch,
-  } = useGetCalendarCar(
+  const { data: sampleData, isLoading } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -55,24 +50,14 @@ const CarCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [selectedId, setId] = useState<string>()
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempCarAbbr, setTempCarAbbr] = useState<string>("")
-  const [roomQuantity, setRoomQuantity] = useState({
-    defaultQuantity: 5,
-    customQuantity: [
-      {
-        date: "2024-06-03",
-        quantity: 4,
-      },
-    ],
-  })
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
@@ -104,7 +89,7 @@ const CarCalendarTable = () => {
   ) => {
     setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
-    setSelectedCategory(category)
+    setId(category)
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
@@ -375,7 +360,7 @@ const CarCalendarTable = () => {
                                 onClick={(e) => {
                                   handleOpenRentalsEditPricePerDatesModal(
                                     date,
-                                    category.name
+                                    category.id
                                   )
                                   e.stopPropagation()
                                 }}
@@ -502,6 +487,7 @@ const CarCalendarTable = () => {
               isModalOpen={isEditPricePerDatesModalOpen}
               onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
+              id={selectedId}
             />
             <FormProvider {...form}>
               <form>

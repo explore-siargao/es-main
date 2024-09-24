@@ -95,7 +95,7 @@ const PropertyEditPricePerDatesModal = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 pb-2 mt-2">
+          <div className="flex flex-col gap-4 pb-2 mt-4">
             <div className="flex flex-col w-full">
               <Input2
                 type="number"
