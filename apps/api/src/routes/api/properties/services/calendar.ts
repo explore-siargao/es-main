@@ -5,8 +5,12 @@ import {
   dbBookableUnitTypes,
   dbProperties,
   dbReservations,
+  dbUnitPrices,
 } from '@repo/database'
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 
 const response = new ResponseService()
 
@@ -195,8 +199,10 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         })
 
         return {
+          id: unit._id,
           name: unit.title || 'Unknown',
           price: unit.pricing?.dayRate ?? 0,
+          pricePerDates: unit.pricePerDates,
           [propertyName]: formattedItems,
         }
       })
@@ -278,6 +284,94 @@ export const editUnitChildName = async (req: Request, res: Response) => {
       response.success({
         item: updateUnitName,
         message: 'Successfully changed unit name',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const addUnitPricePerDates = async (req: Request, res: Response) => {
+  const unitId = req.params.unitId
+  const {
+    fromDate,
+    toDate,
+    baseRate,
+    baseRateMaxCapacity,
+    maximumCapacity,
+    pricePerAdditionalPerson,
+  } = req.body
+
+  try {
+    const getUnit = await dbBookableUnitTypes.findOne({
+      _id: unitId,
+      deletedAt: null,
+    })
+
+    if (!getUnit) {
+      return res.json(
+        response.error({ message: 'Bookable unit not exist on our system' })
+      )
+    }
+
+    if (
+      !fromDate ||
+      !toDate ||
+      !baseRate ||
+      !maximumCapacity ||
+      !baseRateMaxCapacity ||
+      !pricePerAdditionalPerson
+    ) {
+      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    }
+
+    const newFromDate = new Date(fromDate)
+    const newToDate = new Date(toDate)
+
+    const isConflict = getUnit.pricePerDates.some((dateRange: any) => {
+      const existingFromDate = new Date(dateRange.fromDate)
+      const existingToDate = new Date(dateRange.toDate)
+      return newFromDate <= existingToDate && newToDate >= existingFromDate
+    })
+
+    if (isConflict) {
+      return res.json(
+        response.error({
+          message: 'The date range conflicts with existing price periods.',
+        })
+      )
+    }
+
+    const newUnitPrice = new dbUnitPrices({
+      baseRate: baseRate,
+      baseRateMaxCapacity: baseRateMaxCapacity,
+      maximumCapacity: maximumCapacity,
+      pricePerAdditionalPerson: pricePerAdditionalPerson,
+    })
+
+    await newUnitPrice.save()
+    const pricePerDates = {
+      fromDate: fromDate,
+      toDate: toDate,
+      price: newUnitPrice._id,
+    }
+    await dbBookableUnitTypes.findByIdAndUpdate(
+      unitId,
+      {
+        $push: {
+          pricePerDates: pricePerDates,
+        },
+      },
+      { new: true }
+    )
+    return res.json(
+      response.success({
+        item: pricePerDates,
+        message: 'Price for specific dates successfully setted',
       })
     )
   } catch (err: any) {
