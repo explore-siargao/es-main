@@ -18,6 +18,7 @@ type SideBarProps = {
   resetToToday?: Function
   filterCalendarDate?: string
   setFilterCalendarDate?: (filter: string) => void
+  setStartDate?: (date: Date) => void
 }
 
 const Sidebar = ({
