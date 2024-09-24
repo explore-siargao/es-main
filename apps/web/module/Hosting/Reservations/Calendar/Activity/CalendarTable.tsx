@@ -36,20 +36,10 @@ const ActivitiesCalendarTable = () => {
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
-  const [roomQuantity, setRoomQuantity] = useState({
-    defaultQuantity: 5,
-    customQuantity: [
-      {
-        date: "2024-06-03",
-        quantity: 4,
-      },
-    ],
-  })
   const daysPerPage = 13
 
   const closeReservationModal = () => setIsReservationModalOpen(false)
@@ -63,7 +53,6 @@ const ActivitiesCalendarTable = () => {
   ) => {
     setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
-    setSelectedCategory(category)
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
@@ -329,9 +318,7 @@ const ActivitiesCalendarTable = () => {
                   {[...Array(daysPerPage)].map((_, i) => {
                     const today = new Date()
                     const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                    const customQuantity = roomQuantity.customQuantity.find(
-                      (item) => item.date === date
-                    )
+                   
                     const isToday =
                       format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
                     return (
@@ -349,11 +336,7 @@ const ActivitiesCalendarTable = () => {
                           }}
                           className="flex flex-col"
                         >
-                          <div>
-                            {customQuantity
-                              ? customQuantity.quantity
-                              : roomQuantity.defaultQuantity}
-                          </div>
+                          
                           <div>${parseFloat(category.price).toFixed(2)}</div>
                         </div>
                       </td>

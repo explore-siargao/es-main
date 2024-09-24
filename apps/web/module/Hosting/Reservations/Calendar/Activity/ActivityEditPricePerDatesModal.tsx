@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
-import { Form, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { T_Activity } from "@repo/contract"
 
 interface IEditPricePerDateProps {

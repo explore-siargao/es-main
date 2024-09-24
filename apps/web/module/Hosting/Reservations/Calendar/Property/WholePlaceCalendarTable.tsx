@@ -47,15 +47,6 @@ const RoomCalendarTable = () => {
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
-  const [roomQuantity, setRoomQuantity] = useState({
-    defaultQuantity: 5,
-    customQuantity: [
-      {
-        date: "2024-06-03",
-        quantity: 4,
-      },
-    ],
-  })
   const daysPerPage = 13
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
@@ -290,16 +281,13 @@ const RoomCalendarTable = () => {
                       </td>
                       {[...Array(daysPerPage)].map((_, i) => {
                         const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                        const customQuantity = roomQuantity.customQuantity.find(
-                          (item) => item.date === date
-                        )
                         return (
                           <td
                             key={i}
                             className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
                           >
                             {category.bookableUnitTypes.map((unit) => (
-                              <div
+                              <button
                                 onClick={(e) => {
                                   handleOpeneditPricePerDatesModal(
                                     date,
@@ -309,15 +297,11 @@ const RoomCalendarTable = () => {
                                 }}
                                 className="flex flex-col"
                               >
-                                <div>
-                                  {customQuantity
-                                    ? customQuantity.quantity
-                                    : roomQuantity.defaultQuantity}
-                                </div>
+                                
                                 <div>
                                   ${parseFloat(category.price).toFixed(2)}
                                 </div>
-                              </div>
+                              </button>
                             ))}
                           </td>
                         )

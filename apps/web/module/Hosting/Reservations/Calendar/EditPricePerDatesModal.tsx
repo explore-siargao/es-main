@@ -14,13 +14,11 @@ const EditPricePerDatesModal = ({
 }: IEditPricePerDateProps) => {
   const [fromDate, setFromDate] = useState("")
   const [toDate, setToDate] = useState("")
-  const [searchItem, setSearchItem] = useState("")
   const [price, setPrice] = useState("")
 
   const handleSave = () => {
     onClose()
     setTimeout(() => {
-      setSearchItem("")
     }, 300)
   }
   const handleCancel = () => {
