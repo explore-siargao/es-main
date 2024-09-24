@@ -6,23 +6,23 @@ export const rentallegends = [
   },
   {
     legend: "Picked-up",
-    color: "bg-green-500",
-    hoverColor: "hover:bg-green-700",
+    color: "bg-secondary-500",
+    hoverColor: "hover:bg-secondary-700",
   },
   {
     legend: "Drop off",
-    color: "bg-gray-300",
-    hoverColor: "hover:bg-gray-500",
+    color: "bg-secondary-200",
+    hoverColor: "hover:bg-secondary-300",
   },
   {
     legend: "Out-of-Service-Dates",
-    color: "bg-red-500",
-    hoverColor: "hover:bg-red-700",
+    color: "bg-error-500",
+    hoverColor: "hover:bg-error-700",
   },
   {
     legend: "Blocked-Dates",
-    color: "bg-stone-500",
-    hoverColor: "hover:bg-stone-700",
+    color: "bg-text-500",
+    hoverColor: "hover:bg-text-700",
   },
 ]
 
