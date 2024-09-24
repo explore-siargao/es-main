@@ -40,7 +40,7 @@ const CarCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(addDays(new Date(), -4))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-console.log(startDate)
+  console.log(startDate)
   const {
     data: sampleData,
     isLoading,
@@ -166,21 +166,21 @@ console.log(startDate)
 
   const resetToToday = () => {
     if (filterCalendarDate !== "") {
-      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date());
-      setStartDate(addDays(parsedDate, -4));
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
     } else {
-      setStartDate(addDays(new Date(), -4));
+      setStartDate(addDays(new Date(), -4))
     }
-  };
-  
+  }
+
   // Use useEffect to trigger refetch after startDate changes
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
         queryKey: ["calendar-car"],
-      });
+      })
     }
-  }, [startDate]);
+  }, [startDate])
 
   const generateCalendarHeader = () => {
     const headers = []
@@ -365,7 +365,9 @@ console.log(startDate)
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
-                        const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
+                          const isToday =
+                            format(date, "yyyy-MM-dd") ===
+                            format(today, "yyyy-MM-dd")
                           const noReservationCount = category?.cars?.reduce(
                             (count, car) => {
                               const hasReservation = car.reservations.some(
