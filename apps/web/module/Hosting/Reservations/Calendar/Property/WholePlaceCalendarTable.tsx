@@ -288,6 +288,7 @@ const RoomCalendarTable = () => {
                           >
                             {category.bookableUnitTypes.map((unit) => (
                               <button
+                              key={unit.id}
                                 onClick={(e) => {
                                   handleOpeneditPricePerDatesModal(
                                     date,
