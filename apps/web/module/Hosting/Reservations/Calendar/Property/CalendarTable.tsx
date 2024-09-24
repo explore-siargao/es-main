@@ -13,7 +13,6 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import RoomQuantityEdit from "../EditPricePerDatesModal"
 import {
   SelectedReservation,
   SampleData,
@@ -52,7 +51,7 @@ const PropertyCalendarTable = () => {
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [selectedUnitId, setSelectedUnitId] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [unitData, setUnitData] = useState<any>()
@@ -86,7 +85,7 @@ const PropertyCalendarTable = () => {
   const handleOpeneditPricePerDatesModal = (date: string, category: string) => {
     setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
-    setSelectedCategory(category)
+    setSelectedUnitId(category)
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
@@ -440,7 +439,7 @@ const PropertyCalendarTable = () => {
                                 onClick={(e) => {
                                   handleOpeneditPricePerDatesModal(
                                     date,
-                                    category.name
+                                    category.bookableUnitTypes.id
                                   )
                                   e.stopPropagation()
                                 }}
@@ -572,6 +571,7 @@ const PropertyCalendarTable = () => {
               isModalOpen={isEditPricePerDatesModalOpen}
               onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
+              unitId={selectedUnitId}
             />
             <FormProvider {...form}>
               <form>

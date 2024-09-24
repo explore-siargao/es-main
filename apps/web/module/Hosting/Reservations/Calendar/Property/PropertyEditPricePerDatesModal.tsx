@@ -60,6 +60,7 @@ const PropertyEditPricePerDatesModal = ({
     setDateFrom(selectedDate)
   }, [selectedDate])
 
+  console.log("unitId: ", unitId)
   return (
     <ModalContainer
       onClose={handleClose}

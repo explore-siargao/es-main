@@ -14,7 +14,6 @@ import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
 import ReservationCalendarModal from "../ReservationCalendarModal"
-import RoomQuantityEdit from "../EditPricePerDatesModal"
 import {
   SelectedReservation,
   SampleData,

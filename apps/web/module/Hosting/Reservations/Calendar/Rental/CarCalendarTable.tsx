@@ -39,8 +39,12 @@ const CarCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(addDays(new Date(), -4))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  console.log(startDate)
-  const { data: sampleData, isLoading } = useGetCalendarCar(
+
+  const {
+    data: sampleData,
+    isLoading,
+    refetch,
+  } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
