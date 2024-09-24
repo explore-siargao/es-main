@@ -21,8 +21,8 @@ export const activitylegends = [
   },
   {
     legend: "Blocked-Dates",
-    color: "bg-gray-500",
-    hoverColor: "hover:bg-gray-700",
+    color: "bg-stone-500",
+    hoverColor: "hover:bg-stone-700",
   },
 ]
 

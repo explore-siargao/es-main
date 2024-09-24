@@ -39,7 +39,7 @@ const CarCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(addDays(new Date(), -4))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-
+  console.log(startDate)
   const { data: sampleData, isLoading } = useGetCalendarCar(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
@@ -153,14 +153,34 @@ const CarCalendarTable = () => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
 
+  const resetToToday = () => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }
+
+  // Use useEffect to trigger refetch after startDate changes
+  useEffect(() => {
+    if (startDate) {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-car"],
+      })
+    }
+  }, [startDate])
+
   const generateCalendarHeader = () => {
     const headers = []
+    const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
       const date = addDays(startDate, i)
+      const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
       headers.push(
         <th
           key={i}
-          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
         >
           {format(date, "EEE dd")}
         </th>
@@ -171,11 +191,14 @@ const CarCalendarTable = () => {
 
   const generateCalendarRowBorder = () => {
     const headers = []
+    const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
+      const date = addDays(startDate, i)
+      const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
       headers.push(
         <th
           key={i}
-          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24`}
+          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday && "bg-primary-100"}`}
         ></th>
       )
     }
@@ -297,6 +320,7 @@ const CarCalendarTable = () => {
                         openAddReservationModal={handleOpenAddReservationModal}
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
+                        resetToToday={resetToToday}
                       />
                     </td>
                     {generateMonthHeader()}
@@ -325,10 +349,14 @@ const CarCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
+                          const today = new Date()
                           const date = format(
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
+                          const isToday =
+                            format(date, "yyyy-MM-dd") ===
+                            format(today, "yyyy-MM-dd")
                           const noReservationCount = category?.cars?.reduce(
                             (count, car) => {
                               const hasReservation = car.reservations.some(
@@ -354,7 +382,7 @@ const CarCalendarTable = () => {
                           return (
                             <td
                               key={i}
-                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
                             >
                               <div
                                 onClick={(e) => {
