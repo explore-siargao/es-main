@@ -71,6 +71,7 @@ export interface Category {
   motorcycles?: Rental[]
   bicycles?: Rental[]
   cars?: Rental[]
+  bookableUnitTypes: BookableUnitType[];
 }
 
 export interface SampleData {

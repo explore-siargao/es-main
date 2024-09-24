@@ -9,12 +9,14 @@ interface IEditPricePerDateProps {
   isModalOpen: boolean
   onClose: () => void
   selectedDate: string
+  unitId?: string
 }
 
 const PropertyEditPricePerDatesModal = ({
   isModalOpen,
   onClose,
   selectedDate,
+  unitId,
 }: IEditPricePerDateProps) => {
   const [toDate, setToDate] = useState("")
   const [baseRate, setBaseRate] = useState("")
@@ -44,7 +46,7 @@ const PropertyEditPricePerDatesModal = ({
       baseRate: Number(baseRate),
       baseRateMaxCapacity: Number(baseRateMaxCapacity),
       maxCapacity: Number(maxCapacity),
-      pricePerAdditionalPerson: Number(pricePerAdditionalPerson)
+      pricePerAdditionalPerson: Number(pricePerAdditionalPerson),
     }
     console.log(payload)
     clearInputs()

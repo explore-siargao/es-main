@@ -53,7 +53,7 @@ const CarCalendarTable = () => {
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedId, setId] = useState<string>()
+  const [selectedRentalId, setSelectedRentalId] = useState<string>()
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
@@ -89,7 +89,7 @@ const CarCalendarTable = () => {
   ) => {
     setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
-    setId(category)
+    setSelectedRentalId(category)
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
@@ -487,7 +487,7 @@ const CarCalendarTable = () => {
               isModalOpen={isEditPricePerDatesModalOpen}
               onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
-              id={selectedId}
+              rentalId={selectedRentalId}
             />
             <FormProvider {...form}>
               <form>

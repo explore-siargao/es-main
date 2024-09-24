@@ -43,7 +43,7 @@ const RoomCalendarTable = () => {
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [selectedUnitId, setSelectedUnitId] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
@@ -67,7 +67,7 @@ const RoomCalendarTable = () => {
   const handleOpeneditPricePerDatesModal = (date: string, category: string) => {
     setIsRoomQuantityEditOpen(true)
     setSelectedDate(date)
-    setSelectedCategory(category)
+    setSelectedUnitId(category)
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
@@ -303,7 +303,7 @@ const RoomCalendarTable = () => {
                               onClick={(e) => {
                                 handleOpeneditPricePerDatesModal(
                                   date,
-                                  category.name
+                                  category.id
                                 )
                                 e.stopPropagation()
                               }}
@@ -423,6 +423,7 @@ const RoomCalendarTable = () => {
             isModalOpen={isEditPricePerDatesModalOpen}
             onClose={() => setIsEditPricePerDatesModalOpen(false)}
             selectedDate={selectedDate}
+            unitId={selectedUnitId}
           />
           <AddReservationModal
             isModalOpen={isAddReservationModalOpen}

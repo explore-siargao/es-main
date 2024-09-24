@@ -40,11 +40,10 @@ const RoomCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [selectedUnitId, setSelectedUnitId] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
@@ -66,9 +65,9 @@ const RoomCalendarTable = () => {
   const closeAddReservationModal = () => setIsAddReservationModalOpen(false)
 
   const handleOpeneditPricePerDatesModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
     setSelectedDate(date)
-    setSelectedCategory(category)
+    setSelectedUnitId(category)
+    console.log("test unitId: ", selectedUnitId)
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
@@ -300,25 +299,27 @@ const RoomCalendarTable = () => {
                             key={i}
                             className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
                           >
-                            <div
-                              onClick={(e) => {
-                                handleOpeneditPricePerDatesModal(
-                                  date,
-                                  category.name
-                                )
-                                e.stopPropagation()
-                              }}
-                              className="flex flex-col"
-                            >
-                              <div>
-                                {customQuantity
-                                  ? customQuantity.quantity
-                                  : roomQuantity.defaultQuantity}
+                            {category.bookableUnitTypes.map((unit) => (
+                              <div
+                                onClick={(e) => {
+                                  handleOpeneditPricePerDatesModal(
+                                    date,
+                                    unit.id
+                                  )
+                                  e.stopPropagation()
+                                }}
+                                className="flex flex-col"
+                              >
+                                <div>
+                                  {customQuantity
+                                    ? customQuantity.quantity
+                                    : roomQuantity.defaultQuantity}
+                                </div>
+                                <div>
+                                  ${parseFloat(category.price).toFixed(2)}
+                                </div>
                               </div>
-                              <div>
-                                ${parseFloat(category.price).toFixed(2)}
-                              </div>
-                            </div>
+                            ))}
                           </td>
                         )
                       })}
@@ -426,6 +427,7 @@ const RoomCalendarTable = () => {
             isModalOpen={isEditPricePerDatesModalOpen}
             onClose={() => setIsEditPricePerDatesModalOpen(false)}
             selectedDate={selectedDate}
+            unitId={selectedUnitId}
           />
           <AddReservationModal
             isModalOpen={isAddReservationModalOpen}
