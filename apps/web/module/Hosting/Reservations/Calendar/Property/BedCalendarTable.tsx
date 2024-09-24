@@ -288,7 +288,7 @@ const BedCalendarTable = () => {
                           >
                             {category.bookableUnitTypes.map((unit) => (
                               <button
-                              key={unit.id}
+                                key={unit.id}
                                 onClick={(e) => {
                                   handleOpeneditPricePerDatesModal(
                                     date,
