@@ -102,15 +102,9 @@ const Units = ({ pageType }: Prop) => {
 
   const propertyType = data?.item?.type
 
-  const bookableUnitsLength = data?.item?.bookableUnits?.length ?? 0
-
   const handleAddNewClick = () => {
-    if (data?.item?.type === "WHOLE_PLACE") {
-      if (bookableUnitsLength === 0) {
-        setIsSelectUnitTypeWholePlaceModalOpen(true)
-      } else {
-        addUnitWholePlace()
-      }
+    if (data?.item?.wholeplaceType) {
+      addUnitWholePlace()
     } else {
       setIsSelectUnitTypeModalOpen(true)
     }
@@ -132,7 +126,11 @@ const Units = ({ pageType }: Prop) => {
         className="flex items-center"
       >
         <span>
-          Manage your <span className="font-bold">{propertyType}</span> units
+          Manage your{" "}
+          <span className="font-bold">
+            {propertyType === "WHOLE_PLACE" ? "WHOLE PLACE" : propertyType}
+          </span>{" "}
+          units
         </span>
         <div className="flex-grow"></div>
         <Button

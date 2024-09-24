@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 import useAddBlankUnitWholePlace from "../hooks/useAddBlankUnitWholePlace"
 import { cn } from "@/common/helpers/cn"
-import useUnitTypeStore from "../Edit/store/useUnitTypeStore"
+import useWholePlaceStore from "../../WholePlaceType/store/useWholePlaceTypeSelectedStore"
 
 type Props = {
   isOpen: boolean
@@ -31,8 +31,8 @@ const SelectUnitTypeWholePlaceModal = ({
     isPending: isAddBlankUnitWholePlacePending,
   } = useAddBlankUnitWholePlace(listingId)
 
-  const setSelectedUnitType = useUnitTypeStore(
-    (state) => state.setSelectedUnitType
+  const setSelectedUnitType = useWholePlaceStore(
+    (state) => state.setSelectedWholePlaceType
   )
 
   const handleSelect = (unitType: E_WholePlace_Property_Type) => {

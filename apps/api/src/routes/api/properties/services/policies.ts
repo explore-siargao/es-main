@@ -112,6 +112,7 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
       $set: {
         finishedSections: [
           'type',
+          'wholePlaceType',
           'basicInfo',
           'location',
           'facilities',

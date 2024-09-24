@@ -3,7 +3,6 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  LayoutList,
   Plus,
   Search,
   X,
@@ -11,14 +10,12 @@ import {
 import { useState } from "react"
 import CalendarTab from "../components/CalendarTab"
 import MonthYearSelectorModal from "./SidebarActionModals/MonthYearSelectorModal"
-import {
-  addDays,
-  format,
-} from "date-fns"
+import PropertySearchCalendarModal from "./SidebarActionModals/SideBarSearchModals/PropertySearchCalendar"
 
 type SideBarProps = {
   nextPrevFunction: Function
   openAddReservationModal: Function
+  resetToToday?: Function
   filterCalendarDate?: string
   setFilterCalendarDate?: (filter: string) => void
   setStartDate?: (date: Date) => void
@@ -29,16 +26,14 @@ const Sidebar = ({
   openAddReservationModal,
   filterCalendarDate,
   setFilterCalendarDate,
-  setStartDate
+  resetToToday,
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  console.log(new Date().toLocaleDateString())
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+
   return (
     <div className="p-4 flex flex-col gap-4">
       <div className="flex gap-2 items-center w-full">
-        <Button size={"sm"} variant={"default"} className="rounded-full w-full">
-          <LayoutList className="w-5" />
-        </Button>
         {!filterCalendarDate ? (
           <Button
             size={"sm"}
@@ -58,10 +53,12 @@ const Sidebar = ({
             <X className="w-5" />
           </Button>
         )}
-        {/* <Button size={"sm"} variant={"default"} className="rounded-full w-full" onClick={() => setIsModalOpen(true)}>
-          <Calendar className="w-5" />
-        </Button> */}
-        <Button size={"sm"} variant={"default"} className="rounded-full w-full">
+        <Button
+          size={"sm"}
+          variant={"default"}
+          className="rounded-full w-full"
+          onClick={() => setIsSearchModalOpen(true)}
+        >
           <Search className="w-5" />
         </Button>
         <Button
@@ -81,7 +78,15 @@ const Sidebar = ({
         >
           <ChevronLeft />
         </Button>
-        <Button variant={"outline"} className="py-2 px-4 rounded-none w-full" onClick={() => setStartDate && setStartDate(addDays(new Date(), -4))}>
+        <Button
+          variant={"outline"}
+          className="py-2 px-4 rounded-none w-full"
+          onClick={() => {
+            //@ts-ignore
+            setFilterCalendarDate("") // Clear the filter
+            resetToToday?.() // Trigger the reset to today's date
+          }}
+        >
           TODAY
         </Button>
         <Button
@@ -101,6 +106,10 @@ const Sidebar = ({
         onClose={() => setIsModalOpen(false)}
         filterCalendarDate={filterCalendarDate}
         setFilterCalendarDate={setFilterCalendarDate}
+      />
+      <PropertySearchCalendarModal
+        isModalOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
       />
     </div>
   )

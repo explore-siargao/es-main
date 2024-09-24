@@ -125,12 +125,17 @@ const ActivitiesCalendarTable = () => {
 
   const generateCalendarHeader = () => {
     const headers = []
+    const today = new Date() // Get today's date
     for (let i = 0; i < daysPerPage; i++) {
       const date = addDays(startDate, i)
+      const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd") // Check if it's today
+
       headers.push(
         <th
           key={i}
-          className={`border p-2 w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+          className={`border p-2 w-24 ${
+            i + 1 === daysPerPage && "border-r-0"
+          } ${isToday ? "bg-primary-100" : ""}`} // Apply highlight if it's today
         >
           {format(date, "EEE dd")}
         </th>
@@ -156,11 +161,14 @@ const ActivitiesCalendarTable = () => {
 
   const generateCalendarRowBorder = () => {
     const headers = []
+    const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
+      const date = addDays(startDate, i)
+      const isToday = format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
       headers.push(
         <th
           key={i}
-          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24`}
+          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday ? "bg-primary-100" : ""}`}
         ></th>
       )
     }
@@ -209,6 +217,21 @@ const ActivitiesCalendarTable = () => {
     queryClient.invalidateQueries({
       queryKey: ["calendar-property"],
     })
+  }
+
+  const resetToToday = () => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
+    } else {
+      setStartDate(addDays(new Date(), -4))
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
+    }
   }
 
   const getBookingStyle = (
@@ -275,6 +298,7 @@ const ActivitiesCalendarTable = () => {
                   openAddReservationModal={handleOpenAddReservationModal}
                   filterCalendarDate={filterCalendarDate}
                   setFilterCalendarDate={setFilterCalendarDate}
+                  resetToToday={resetToToday}
                 />
               </td>
               {generateMonthHeader()}
@@ -301,14 +325,17 @@ const ActivitiesCalendarTable = () => {
                     </span>
                   </td>
                   {[...Array(daysPerPage)].map((_, i) => {
+                    const today = new Date()
                     const date = format(addDays(startDate, i), "yyyy-MM-dd")
                     const customQuantity = roomQuantity.customQuantity.find(
                       (item) => item.date === date
                     )
+                    const isToday =
+                      format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
                     return (
                       <td
                         key={i}
-                        className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                        className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday ? "bg-primary-100" : ""}`}
                       >
                         <div
                           onClick={(e) => {

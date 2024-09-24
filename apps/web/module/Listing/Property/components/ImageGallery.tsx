@@ -6,12 +6,17 @@ import { Dialog } from "@headlessui/react"
 import { useState } from "react"
 import SliderImages from "@/common/components/SliderImages"
 
+type ImageGalleryProps = T_ImagesProps & {
+  galleryHeight?: string
+}
+
 const ImageGallery = ({
   images,
   isViewModal,
   showThreeOnly,
   isRoundedEdge,
-}: T_ImagesProps) => {
+  galleryHeight = "500px",
+}: ImageGalleryProps) => {
   const getImgSrc = (index: number) => {
     const image = images[index]
     const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`
@@ -21,15 +26,33 @@ const ImageGallery = ({
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const getRoundedEdgeClass = (
+    index: number,
+    isRoundedEdge: boolean = false
+  ) => {
+    if (!isRoundedEdge) return ""
+
+    switch (index) {
+      case 0:
+        return "rounded-l-xl"
+      case 2:
+        return "rounded-tr-xl"
+      case 4:
+        return "rounded-br-xl"
+      default:
+        return ""
+    }
+  }
+
   const renderImage = (index: number, additionalClasses: string) => (
-    <div className={`relative bg-gray-200 ${additionalClasses}`}>
+    <div className={`relative ${additionalClasses} w-full h-full`}>
       <Image
         onClick={() => setIsOpen(true)}
         src={images ? getImgSrc(index).src : ""}
         layout="fill"
         objectFit="cover"
         alt={images ? getImgSrc(index).alt : ""}
-        className={`${isRoundedEdge && index === 0 ? "rounded-l-xl" : isRoundedEdge && index === 2 ? "rounded-tr-xl" : isRoundedEdge && index === 4 ? "rounded-br-xl" : ""} cursor-pointer`}
+        className={`${getRoundedEdgeClass(index, isRoundedEdge)} cursor-pointer`}
       />
     </div>
   )
@@ -64,9 +87,9 @@ const ImageGallery = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ height: galleryHeight }}>
       <div
-        className={`grid grid-cols-1 ${!isViewModal ? "border border-primary-500 rounded-xl" : ""} md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-96`}
+        className={`grid grid-cols-1 ${!isViewModal ? "border border-primary-500 rounded-xl" : ""} md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-full`}
       >
         {renderImage(
           0,

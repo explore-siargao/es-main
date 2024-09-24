@@ -39,12 +39,28 @@ const slots = new Schema({
   minimumGuestCount: Number,
 })
 
+const pricePerDates = new Schema({
+  fromDate: Date,
+  toDate: Date,
+  price: price,
+})
+
 const activities = new Schema({
   host: {
     type: mongoose.Schema.ObjectId,
     ref: "Users",
   },
   title: String,
+  activityType: {
+    type: String,
+    enum: ["Island hopping tour", "Land tour", "Surfboarding", ""],
+    default: "",
+  },
+  experienceType: {
+    type: String,
+    enum: ["private", "shared"],
+    default: "private",
+  },
   description: String,
   highLights: {
     type: [String],
@@ -116,6 +132,10 @@ const activities = new Schema({
   },
   price: {
     type: price,
+  },
+  pricePerDates: {
+    type: [pricePerDates],
+    default: [],
   },
   slots: {
     type: [slots],

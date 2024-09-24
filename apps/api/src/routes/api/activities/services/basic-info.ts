@@ -1,4 +1,8 @@
-import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+  USER_NOT_AUTHORIZED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import {
   T_Update_Activity_Basic_Info,
@@ -14,6 +18,8 @@ export const updateActivities = async (req: Request, res: Response) => {
   const activityId = req.params.activityId
   const {
     title,
+    activityType,
+    experienceType,
     highLights,
     description,
     durationHour,
@@ -38,6 +44,8 @@ export const updateActivities = async (req: Request, res: Response) => {
         {
           $set: {
             title: title,
+            activityType: activityType,
+            experienceType: experienceType,
             description: description,
             highLights: highLights,
             durationHour: durationHour,
@@ -47,7 +55,7 @@ export const updateActivities = async (req: Request, res: Response) => {
             updatedAt: Date.now(),
           },
         },
-        { new: true }
+        { new: true, runValidators: true }
       )
       res.json(
         response.success({
@@ -63,9 +71,7 @@ export const updateActivities = async (req: Request, res: Response) => {
       )
     }
   } else {
-    return res.json(
-      response.error({ message: JSON.parse(isValidInput.error.message) })
-    )
+    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
 
@@ -89,6 +95,8 @@ export const getActivities = async (req: Request, res: Response) => {
     const data = {
       id: activitiesData._id,
       title: activitiesData.title,
+      activityType: activitiesData.activityType,
+      experienceType: activitiesData.experienceType,
       description: activitiesData.description,
       highLights: activitiesData.highLights,
       durationHour: activitiesData.durationHour,

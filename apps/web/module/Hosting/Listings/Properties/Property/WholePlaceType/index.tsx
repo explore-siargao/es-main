@@ -9,33 +9,39 @@ import {
   Hotel,
   Waves,
   Building2,
+  Store,
 } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import useUpdatePropertyType from "../hooks/useUpdatePropertyType"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
-import useGetPropertyById from "../hooks/useGetPropertyById"
+import useGetPropertyById from "../../hooks/useGetPropertyById"
+import useUpdateWholePlaceType from "../../hooks/useUpdateWholePlaceType"
+import { WholePlaceTypes } from "./constants"
+import useWholePlaceTypeSelectedStore from "./store/useWholePlaceTypeSelectedStore"
 
 type Prop = {
   pageType: "setup" | "edit"
 }
 
-const PropertyType = ({ pageType }: Prop) => {
+const WholePlaceType = ({ pageType }: Prop) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { mutate, isPending } = useUpdatePropertyType(listingId)
+  const { mutate, isPending } = useUpdateWholePlaceType(listingId)
   const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
-  const [selectedProperty, setSelectedProperty] = useState("")
+  const [selectedWholePlace, setSelectedWholePlace] = useState("")
+  const { selectedWholePlaceType, setSelectedWholePlaceType } =
+    useWholePlaceTypeSelectedStore()
   useEffect(() => {
-    if (!typeIsPending && data?.item?.type) {
-      setSelectedProperty(data.item.type)
+    if (!typeIsPending && data?.item?.wholeplaceType) {
+      setSelectedWholePlace(data.item.wholeplaceType)
     }
   }, [typeIsPending, data])
+
   const handleSave = () => {
-    if (selectedProperty) {
+    if (selectedWholePlace) {
       const callBackReq = {
         onSuccess: (data: any) => {
           if (!data.error) {
@@ -45,7 +51,7 @@ const PropertyType = ({ pageType }: Prop) => {
             })
             if (pageType === "setup") {
               router.push(
-                `/hosting/listings/properties/setup/${listingId}/${selectedProperty === "WHOLE_PLACE" ? "whole-place-type" : "basic-info"}`
+                `/hosting/listings/properties/setup/${listingId}/basic-info`
               )
             }
           } else {
@@ -56,63 +62,48 @@ const PropertyType = ({ pageType }: Prop) => {
           toast.error(String(err))
         },
       }
-      mutate({ type: selectedProperty }, callBackReq)
+      mutate({ type: selectedWholePlace }, callBackReq)
     } else {
       toast.error("Please select Property Type first")
     }
   }
 
-  const PROPERTY_TYPES = [
+  const WHOLE_PLACE_TYPES = [
     {
-      type: "Hostel",
-      value: "HOSTEL",
+      type: "Villa",
+      value: WholePlaceTypes.Villa,
       description:
-        "A high-density property accommodating people in shared dorms and common areas.",
-      icon: <BrickWall className="h-4 w-4" strokeWidth={1.3} />,
-      isSelected: data?.item?.type === "HOSTEL",
+        "A spacious and stylish retreat with shared living spaces, ideal for group gatherings.",
+      icon: <Building2 className="h-4 w-4" strokeWidth={1.3} />,
+      isSelected: data?.item?.type === WholePlaceTypes.Villa,
     },
     {
-      type: "Apartment",
-      value: "APARTMENT",
+      type: "House",
+      value: WholePlaceTypes.House,
       description:
-        "A self-contained residence with private entrance, suitable for longer stays often, in a complex with other apartments.",
-      icon: <Building className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "APARTMENT",
-    },
-    {
-      type: "Homestay",
-      value: "HOMESTAY",
-      description:
-        "A communal living environment in which guests have private rooms but share bathrooms and kitchen facilities.",
+        "A cozy and private residence perfect for families or extended stays.",
       icon: <Home className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "HOMESTAY",
+      isSelected: data?.item?.type === WholePlaceTypes.House,
     },
     {
-      type: "Hotel",
-      value: "HOTEL",
+      type: "Bungalow",
+      value: WholePlaceTypes.Bungalow,
       description:
-        "A commercial establishment offering short-term lodging and variety of services and amenities.",
-      icon: <Hotel className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "HOTEL",
+        "A charming spot with private rooms and shared amenities, fostering a community vibe.",
+      icon: <Home className="h-4 w-4" strokeWidth={1.7} />,
+      isSelected: data?.item?.type === WholePlaceTypes.Bungalow,
     },
     {
-      type: "Resort",
-      value: "RESORT",
+      type: "Cottage",
+      value: WholePlaceTypes.Cottage,
       description:
-        "A place designed to provide recreation, entertainment, and accommodation especially to vacationers.",
-      icon: <Waves className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "RESORT",
-    },
-    {
-      type: "Whole place",
-      value: "WHOLE_PLACE",
-      description:
-        "A standalone, self-contained residence with multiple common areas, bedrooms and bathrooms.",
-      icon: <Building2 className="h-4 w-4" strokeWidth={1.7} />,
-      isSelected: data?.item?.type === "WHOLE_PLACE",
+        "A quaint getaway that combines comfort and convenience for short-term visitors.",
+      icon: <Store className="h-4 w-4" strokeWidth={1.7} />,
+      isSelected: data?.item?.type === WholePlaceTypes.Cottage,
     },
   ]
 
+  console.log("this is my store: ", selectedWholePlaceType)
   return (
     <div className="mt-20 mb-14">
       <div className="mb-8">
@@ -121,20 +112,20 @@ const PropertyType = ({ pageType }: Prop) => {
           fontWeight="semibold"
           className="flex justify-between items-center"
         >
-          Property Type
+          Whole Place Type
         </Typography>
       </div>
       <div className="grid grid-cols-3 gap-6">
-        {PROPERTY_TYPES.map((property) => (
+        {WHOLE_PLACE_TYPES.map((property) => (
           <div
             key={property.description}
-            className={`${(property.isSelected && selectedProperty === "") || selectedProperty === property.value ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
+            className={`${(property.isSelected && selectedWholePlaceType === "") || selectedWholePlaceType === property.value ? "border-2 border-secondary-500" : "border border-gray-300"} rounded-xl p-4 ${pageType === "setup" ? "hover:cursor-pointer hover:bg-gray-50" : "cursor-not-allowed"} select-none`} // Updated className to disable selection if pageType is 'edit'
             onClick={() =>
-              pageType === "setup" && setSelectedProperty(property.value)
+              pageType === "setup" && setSelectedWholePlaceType(property.value)
             }
           >
-            {(property.isSelected && selectedProperty === "") ||
-            selectedProperty === property.value ? (
+            {(property.isSelected && selectedWholePlaceType === "") ||
+            selectedWholePlaceType === property.value ? (
               <div className="flex justify-center">
                 <span className="absolute mt-[-32px] rounded-md bg-secondary-500 px-2 py-1 text-sm font-medium text-white">
                   Selected
@@ -173,4 +164,4 @@ const PropertyType = ({ pageType }: Prop) => {
   )
 }
 
-export default PropertyType
+export default WholePlaceType

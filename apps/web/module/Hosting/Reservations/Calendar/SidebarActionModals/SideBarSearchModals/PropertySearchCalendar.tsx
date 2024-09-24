@@ -1,28 +1,23 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
-import { Input } from "@/common/components/ui/Input"
+import { Input2 } from "@/common/components/ui/Input2"
 
-interface IMonthYearSelectorModalProps {
+interface ISearchCalendarProps {
   isModalOpen: boolean
   onClose: () => void
-  filterCalendarDate?: string
-  setFilterCalendarDate?: (filter: string) => void
 }
 
-const MonthYearSelectorModal = ({
+const PropertySearchCalendarModal = ({
   isModalOpen,
   onClose,
-  filterCalendarDate,
-  setFilterCalendarDate,
-}: IMonthYearSelectorModalProps) => {
-  const [selectedDate, setSelectedDate] = useState("")
+}: ISearchCalendarProps) => {
+  const [searchItem, setSearchItem] = useState("")
 
   const handleConfirm = () => {
-    setFilterCalendarDate && setFilterCalendarDate(selectedDate)
     onClose()
     setTimeout(() => {
-      setSelectedDate("")
+      setSearchItem("")
     }, 300)
   }
 
@@ -31,17 +26,19 @@ const MonthYearSelectorModal = ({
       onClose={onClose}
       isOpen={isModalOpen}
       size="sm"
-      title="Filter calendar"
+      title="Search for Units"
     >
       <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
         <div className="flex flex-col gap-4 pb-4">
           <div className="flex gap-4">
             <div className="flex flex-col w-full">
-              <Input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                label={"Select date"}
+              <Input2
+                type="text"
+                label={"Enter unit name or keyword"}
+                value={searchItem}
+                onChange={(e) => setSearchItem(e.target.value)}
+                description="Enter unit name you want to search"
+                placeholder="e.g., Liwana Siargao Suites"
               />
             </div>
           </div>
@@ -54,11 +51,15 @@ const MonthYearSelectorModal = ({
             <Button
               type="button"
               variant="default"
-              onClick={() => setSelectedDate("")}
+              onClick={() => setSearchItem("")}
             >
               Clear
             </Button>
-            <Button type="button" variant="primary" onClick={handleConfirm}>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => handleConfirm()}
+            >
               Confirm
             </Button>
           </div>
@@ -68,4 +69,4 @@ const MonthYearSelectorModal = ({
   )
 }
 
-export default MonthYearSelectorModal
+export default PropertySearchCalendarModal

@@ -39,10 +39,10 @@ import { Option } from "@/common/components/ui/Select"
 import { RadioInput } from "@/module/Hosting/Listings/Activities/Activity/Inclusions"
 import Livingroom from "./components/Livingroom"
 import { useLivingroomStore } from "./store/useLivingroomStore"
-import useUnitTypeStore from "./store/useUnitTypeStore"
 import { Select2 } from "@/common/components/ui/Select2"
 import { Input2 } from "@/common/components/ui/Input2"
 import EditPhotoModal from "@/module/Hosting/Listings/components/modals/EditPhotoModal"
+import useWholePlaceStore from "../../WholePlaceType/store/useWholePlaceTypeSelectedStore"
 
 type T_WholePlaceUnit = {
   title: string
@@ -94,7 +94,7 @@ const WholePlace = ({ pageType }: Prop) => {
   )
 
   const [exactUnitCount, setExactUnitCount] = useState<number>(
-    Number(data?.item?.numExactUnit) || 0
+    Number(data?.item?.numExactUnit) || 1
   )
 
   const { mutateAsync: updateWholePlaceBasicInfo } =
@@ -112,12 +112,13 @@ const WholePlace = ({ pageType }: Prop) => {
     listingId as string
   )
   const photos = usePhotoStore((state) => state.photos)
+  console.log(photos)
   const setPhotos = usePhotoStore((state) => state.setPhotos)
   const setAmenties = useSelectAmenityStore(
     (state) => state.setDefaultAmenities
   )
   const selectedUnitType: string | undefined = String(
-    useUnitTypeStore((state) => state.selectedUnitType) ?? ""
+    useWholePlaceStore((state) => state.selectedWholePlaceType) ?? ""
   )
 
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
@@ -146,7 +147,7 @@ const WholePlace = ({ pageType }: Prop) => {
   const updatePhotosInDb = async () => {
     const toAddPhotos =
       photos
-        .filter((photo) => !photo._id)
+        .filter((photo) => !photo._id && !photo.isDeleted)
         .map(async (photo) => {
           return await addMutateAsync(photo)
         }) || []
@@ -183,25 +184,20 @@ const WholePlace = ({ pageType }: Prop) => {
       })
   }
 
-  const handleSavePhotos = async () => {
-    const activePhotos = photos.filter((photo) => !photo.isDeleted)
-
-    if (activePhotos.length >= 3) {
-      await updatePhotosInDb()
-      setIsSavings(false)
-    } else {
-      toast.error("Please add at least 3 photos")
-    }
-  }
-
   const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
+    const activePhotos = photos.filter((photo) => !photo.isDeleted)
 
-    const missingTags = photos.filter(
+    const missingTags = activePhotos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
     )
-    const missingDescription = photos.filter(
+
+    const missingDescription = activePhotos.filter(
       (photo) => !photo.description || photo.description.length === 0
+    )
+
+    const filterSelectedAmenities = amenities.filter(
+      (amenity) => amenity.isSelected
     )
 
     if (formData.size <= 0) {
@@ -218,12 +214,23 @@ const WholePlace = ({ pageType }: Prop) => {
       toast.error("Please fill out bathroom count field")
       return
     }
+    if (activePhotos.length < 3) {
+      toast.error("Please add at least 3 photos")
+      return
+    }
+
     if (missingDescription.length > 0) {
       toast.error("Please add descriptions to all photos")
       return
     }
+
     if (missingTags.length > 0) {
       toast.error("Please add tags to all photos")
+      return
+    }
+
+    if (filterSelectedAmenities.length <= 0) {
+      toast.error("Please select at least one amenity")
       return
     }
 
@@ -296,9 +303,7 @@ const WholePlace = ({ pageType }: Prop) => {
       if (filterSelectedAmenities.length > 0) {
         await updatePhotosInDb()
         setIsSavings(false)
-        await Promise.all([saveBasicInfo, saveAmenities]).then(() => {
-          handleSavePhotos()
-        })
+        await Promise.all([saveBasicInfo, saveAmenities])
       } else {
         toast.error("Please select at least one amenity")
       }
@@ -349,7 +354,6 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const isLivingRoomVisible =
     unitType === "Studio" || hasSleepingSpaces === "yes"
-
   useEffect(() => {
     if (data) {
       setUnitType(data?.item?.subtitle || "villa")
@@ -390,7 +394,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const renderUnitTypeSelect = () => {
     switch (propertyType) {
-      case "Hotel":
+      case "HOTEL":
         return (
           <Select2
             label="Unit Type"
@@ -401,13 +405,13 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio apartment</Option>
-            <Option value="Condominium">Bungalow</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio apartment</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
           </Select2>
         )
-      case "Resort":
+      case "RESORT":
         return (
           <Select2
             label="Unit Type"
@@ -418,14 +422,14 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio Apartment</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio Apartment</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
           </Select2>
         )
-      case "Whole place":
+      case "WHOLE_PLACE":
         return pageType === "setup" ? (
           <Select2
             label="Unit Type"
@@ -435,10 +439,10 @@ const WholePlace = ({ pageType }: Prop) => {
             {...register("subtitle", {})}
             className="bg-gray-100 cursor-not-allowed"
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
-            <Option value="Cottage">Cottage</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
+            <Option value="COTTAGE">Cottage</Option>
           </Select2>
         ) : (
           <Select2
@@ -450,14 +454,14 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             className="bg-gray-100 cursor-not-allowed"
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Bungalow</Option>
-            <Option value="Cottage">Cottage</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="BUNGALOW">Bungalow</Option>
+            <Option value="COTTAGE">Cottage</Option>
           </Select2>
         )
 
-      case "Apartment":
+      case "APARTMENT":
         return (
           <Select2
             label="Unit Type"
@@ -468,8 +472,8 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio Apartment</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio Apartment</Option>
           </Select2>
         )
       default:
@@ -483,11 +487,11 @@ const WholePlace = ({ pageType }: Prop) => {
             })}
             onChange={(e) => setUnitType(e.currentTarget.value)}
           >
-            <Option value="Villa">Villa</Option>
-            <Option value="Apartment">Apartment</Option>
-            <Option value="Studio">Studio apartment</Option>
-            <Option value="House">House</Option>
-            <Option value="Condominium">Condominium</Option>
+            <Option value="VILLA">Villa</Option>
+            <Option value="APARTMENT">Apartment</Option>
+            <Option value="STUDIO">Studio apartment</Option>
+            <Option value="HOUSE">House</Option>
+            <Option value="CONDOMINIUM">Condominium</Option>
           </Select2>
         )
     }
@@ -495,6 +499,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
   const category = data?.item?.category
   console.log("test: ", category)
+
   return (
     <>
       {isPending || isFetching ? (
@@ -800,7 +805,7 @@ const WholePlace = ({ pageType }: Prop) => {
                   className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
                   type="button"
                   onClick={() => {
-                    exactUnitCount > 0 &&
+                    exactUnitCount > 1 &&
                       setExactUnitCount(
                         (exactUnitCount: any) => exactUnitCount - 1
                       )
@@ -809,12 +814,12 @@ const WholePlace = ({ pageType }: Prop) => {
                   <MinusIcon className="h-3 w-3" />
                 </button>
                 <input
-                  disabled={isPending || isFetching}
+                  disabled
                   type="number"
                   id="exactUnit"
                   className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
                   value={exactUnitCount}
-                  min={0}
+                  min={1}
                   onChange={(e) => {
                     const val = Number(e.target.value)
                     setExactUnitCount(val)

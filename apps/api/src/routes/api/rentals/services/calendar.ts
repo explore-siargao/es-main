@@ -1,8 +1,11 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
-import { dbProperties, dbRentals, dbReservations } from '@repo/database'
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { dbRentalRates, dbRentals, dbReservations } from '@repo/database'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 
 const response = new ResponseService()
 
@@ -69,6 +72,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
     const carRentals = await dbRentals
       .find({ category: 'Car', host: res.locals.user.id })
       .populate('pricing')
+      .populate('pricePerDates')
 
     if (!carRentals.length) {
       return res.json(
@@ -144,9 +148,11 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       })
 
       return {
+        id: rental._id,
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
+        pricePerDates: rental.pricePerDates,
         cars: cars.filter((car) => car.abbr !== 'Unknown'),
       }
     })
@@ -176,6 +182,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     const bicycleRentals = await dbRentals
       .find({ category: 'Bicycle', host: res.locals.user.id })
       .populate('pricing')
+      .populate('pricePerDates')
 
     if (!bicycleRentals.length) {
       return res.json(
@@ -253,9 +260,11 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       })
 
       return {
+        id: rental._id,
         name: rental.make ?? 'Unknown',
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
+        pricePerDates: rental.pricePerDates,
         bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
       }
     })
@@ -285,6 +294,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     const motorcycleRentals = await dbRentals
       .find({ category: 'Motorbike', host: res.locals.user.id })
       .populate('pricing')
+      .populate('pricePerDates')
 
     if (!motorcycleRentals.length) {
       return res.json(
@@ -362,11 +372,13 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       })
 
       return {
+        id: rental._id,
         name:
           `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ??
           'Unknown',
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
+        pricePerDates: rental.pricePerDates,
         motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
       }
     })
@@ -402,6 +414,84 @@ export const editChildName = async (req: Request, res: Response) => {
       response.success({
         item: updateVehicle,
         message: 'Successfully changed rental vehicle name',
+      })
+    )
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const addRentalPricePerDates = async (req: Request, res: Response) => {
+  const rentalId = req.params.rentalId
+  const { fromDate, toDate, dayRate, requiredDeposit } = req.body
+  try {
+    const getRental = await dbRentals.findOne({
+      _id: rentalId,
+      deletedAt: null,
+    })
+    if (!getRental) {
+      return res.json(
+        response.error({ message: 'Rental not found on our system' })
+      )
+    }
+    if (!fromDate || !toDate || !dayRate || !requiredDeposit) {
+      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    }
+
+    // Parse incoming dates for comparison
+    const newFromDate = new Date(fromDate)
+    const newToDate = new Date(toDate)
+
+    // Check for overlapping date ranges
+    const isConflict = getRental.pricePerDates.some((dateRange: any) => {
+      const existingFromDate = new Date(dateRange.fromDate)
+      const existingToDate = new Date(dateRange.toDate)
+
+      // Check if the new range overlaps with any existing ranges
+      return newFromDate <= existingToDate && newToDate >= existingFromDate
+    })
+
+    if (isConflict) {
+      return res.json(
+        response.error({
+          message: 'The date range conflicts with existing price periods.',
+        })
+      )
+    }
+
+    const newRentalRates = new dbRentalRates({
+      dayRate: dayRate,
+      requiredDeposit: requiredDeposit,
+      adminBookingCharge: null,
+      createdAt: Date.now(),
+      deletedAt: null,
+    })
+    await newRentalRates.save()
+
+    const newPricePerDates = {
+      fromDate: fromDate,
+      toDate: toDate,
+      price: newRentalRates._id,
+    }
+
+    await dbRentals.findByIdAndUpdate(
+      rentalId,
+      {
+        $push: {
+          pricePerDates: newPricePerDates,
+        },
+      },
+      { new: true }
+    )
+
+    return res.json(
+      response.success({
+        item: newRentalRates,
+        message: 'Price for specific dates successfully setted',
       })
     )
   } catch (err: any) {

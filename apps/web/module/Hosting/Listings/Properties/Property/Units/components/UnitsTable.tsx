@@ -86,15 +86,19 @@ const UnitsTable: React.FC<UnitsTableProps> = ({
     columnHelper.accessor("category", {
       header: "Type",
       size: 400,
-      cell: (context) => (
-        <Link
-          href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${(context.getValue() || "").toLowerCase() + "s"}/${context.row.original?._id}/edit`}
-        >
-          <Typography variant="p">
-            {context.getValue() ? context.getValue() : ""}
-          </Typography>
-        </Link>
-      ),
+      cell: (context) => {
+        const type = context.getValue()
+        const displayType = type === "Whole-Place" ? "Whole Place" : type
+
+        return (
+          <Link
+            href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${(context.getValue() || "").toLowerCase() + "s"}/${context.row.original?._id}/edit`}
+            className="flex items-center gap-4"
+          >
+            <Typography variant="p">{displayType || ""}</Typography>
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor("qty", {
       header: "Quantity",
