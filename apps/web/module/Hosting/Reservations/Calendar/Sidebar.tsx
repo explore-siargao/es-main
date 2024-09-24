@@ -15,6 +15,7 @@ import PropertySearchCalendarModal from "./SidebarActionModals/SideBarSearchModa
 type SideBarProps = {
   nextPrevFunction: Function
   openAddReservationModal: Function
+  resetToToday?: Function
   filterCalendarDate?: string
   setFilterCalendarDate?: (filter: string) => void
 }
@@ -24,6 +25,7 @@ const Sidebar = ({
   openAddReservationModal,
   filterCalendarDate,
   setFilterCalendarDate,
+  resetToToday,
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
@@ -75,7 +77,15 @@ const Sidebar = ({
         >
           <ChevronLeft />
         </Button>
-        <Button variant={"outline"} className="py-2 px-4 rounded-none w-full">
+        <Button
+          variant={"outline"}
+          className="py-2 px-4 rounded-none w-full"
+          onClick={() => {
+            //@ts-ignore
+            setFilterCalendarDate("") // Clear the filter
+            resetToToday?.() // Trigger the reset to today's date
+          }}
+        >
           TODAY
         </Button>
         <Button
