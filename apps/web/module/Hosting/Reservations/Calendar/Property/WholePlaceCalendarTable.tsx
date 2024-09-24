@@ -297,7 +297,6 @@ const RoomCalendarTable = () => {
                                 }}
                                 className="flex flex-col"
                               >
-                                
                                 <div>
                                   ${parseFloat(category.price).toFixed(2)}
                                 </div>

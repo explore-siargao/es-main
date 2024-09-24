@@ -318,7 +318,7 @@ const ActivitiesCalendarTable = () => {
                   {[...Array(daysPerPage)].map((_, i) => {
                     const today = new Date()
                     const date = format(addDays(startDate, i), "yyyy-MM-dd")
-                   
+
                     const isToday =
                       format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
                     return (
@@ -336,7 +336,6 @@ const ActivitiesCalendarTable = () => {
                           }}
                           className="flex flex-col"
                         >
-                          
                           <div>${parseFloat(category.price).toFixed(2)}</div>
                         </div>
                       </td>

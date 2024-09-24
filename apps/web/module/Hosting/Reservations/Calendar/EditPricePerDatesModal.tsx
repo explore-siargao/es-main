@@ -18,8 +18,7 @@ const EditPricePerDatesModal = ({
 
   const handleSave = () => {
     onClose()
-    setTimeout(() => {
-    }, 300)
+    setTimeout(() => {}, 300)
   }
   const handleCancel = () => {
     onClose()
