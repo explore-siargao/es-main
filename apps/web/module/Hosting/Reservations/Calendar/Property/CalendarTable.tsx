@@ -229,7 +229,7 @@ const PropertyCalendarTable = () => {
       headers.push(
         <th
           key={i}
-          className={`border p-2 w-24 ${isToday ? 'bg-secondary-100' : ''} ${
+          className={`border p-2 w-24 ${isToday && 'bg-primary-100'} ${
             i + 1 === daysPerPage && "border-r-0"
           }`}
         >
@@ -242,11 +242,14 @@ const PropertyCalendarTable = () => {
 
   const generateCalendarRowBorder = () => {
     const headers = []
+    const today = new Date()
     for (let i = 0; i < daysPerPage; i++) {
+      const date = addDays(startDate, i);
+      const isToday = isSameDay(date, today);
       headers.push(
         <th
           key={i}
-          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24`}
+          className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday && 'bg-primary-100'}`}
         ></th>
       )
     }
@@ -289,6 +292,24 @@ const PropertyCalendarTable = () => {
 
     return headers
   }
+
+  const resetToToday = () => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }
+
+  // Use useEffect to trigger refetch after startDate changes
+  useEffect(() => {
+    if (startDate) {
+      queryClient.invalidateQueries({
+        queryKey: ["calendar-property"],
+      })
+    }
+  }, [startDate])
 
   const moveStartDateByOneDay = (direction: number) => {
     setStartDate((prevDate) => addDays(prevDate, direction))
@@ -387,6 +408,7 @@ const PropertyCalendarTable = () => {
                         openAddReservationModal={handleOpenAddReservationModal}
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
+                        resetToToday={resetToToday}
                       />
                     </td>
                     {generateMonthHeader()}
@@ -415,10 +437,13 @@ const PropertyCalendarTable = () => {
                           </span>
                         </td>
                         {[...Array(daysPerPage)].map((_, i) => {
+                          const today = new Date()
                           const date = format(
                             addDays(startDate, i),
                             "yyyy-MM-dd"
                           )
+                          const isToday = isSameDay(date, today);
+
                           const noReservationCount =
                             category?.bookableUnitTypes?.reduce(
                               (
@@ -449,7 +474,7 @@ const PropertyCalendarTable = () => {
                           return (
                             <td
                               key={i}
-                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"}`}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && 'bg-primary-100'}`}
                             >
                               <div
                                 onClick={(e) => {
