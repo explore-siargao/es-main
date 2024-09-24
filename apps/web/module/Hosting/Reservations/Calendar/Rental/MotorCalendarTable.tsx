@@ -14,7 +14,6 @@ import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import RoomQuantityEdit from "../RoomQuantityEdit"
 import {
   SelectedReservation,
   SampleData,
@@ -28,6 +27,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
+import RentalsEditPricePerDatesModal from "./RentalsEditPricePerDatesModal"
 
 const MotorCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -46,35 +46,27 @@ const MotorCalendarTable = () => {
   const [selectedReservation, setSelectedReservation] =
     useState<SelectedReservation | null>(null)
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false)
-  const [isRoomQuantityEditOpen, setIsRoomQuantityEditOpen] = useState(false)
   const [isAddReservationModalOpen, setIsAddReservationModalOpen] =
     useState(false)
   const [selectedDate, setSelectedDate] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [selectedRentalId, setSelectedRentalId] = useState<string>("")
   //@ts-ignore
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempMotorAbbr, setMotorAbbr] = useState<string>("")
-  const [roomQuantity, setRoomQuantity] = useState({
-    defaultQuantity: 5,
-    customQuantity: [
-      {
-        date: "2024-06-03",
-        quantity: 4,
-      },
-    ],
-  })
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
   const daysPerPage = 13
 
   const queryClient = useQueryClient()
   const closeReservationModal = () => setIsReservationModalOpen(false)
-  const closeRoomQuantityEditModal = () => setIsRoomQuantityEditOpen(false)
 
-  const handleOpenRoomQuantityEditModal = (date: string, category: string) => {
-    setIsRoomQuantityEditOpen(true)
+  const handleOpenRentalsEditPricePerDatesModal = (
+    date: string,
+    category: string
+  ) => {
+    setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
-    setSelectedCategory(category)
+    setSelectedRentalId(category)
   }
 
   const closeAddReservationModal = () => {
@@ -89,6 +81,8 @@ const MotorCalendarTable = () => {
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
   const [filterCalendarDate, setFilterCalendarDate] = useState("")
+  const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
+    useState(false)
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
@@ -387,9 +381,9 @@ const MotorCalendarTable = () => {
                             >
                               <div
                                 onClick={(e) => {
-                                  handleOpenRoomQuantityEditModal(
+                                  handleOpenRentalsEditPricePerDatesModal(
                                     date,
-                                    category.name
+                                    category.id
                                   )
                                   e.stopPropagation()
                                 }}
@@ -514,13 +508,11 @@ const MotorCalendarTable = () => {
               </form>
             </FormProvider>
 
-            <RoomQuantityEdit
-              isModalOpen={isRoomQuantityEditOpen}
-              onClose={closeRoomQuantityEditModal}
+            <RentalsEditPricePerDatesModal
+              isModalOpen={isEditPricePerDatesModalOpen}
+              onClose={() => setIsEditPricePerDatesModalOpen(false)}
               selectedDate={selectedDate}
-              roomQuantity={roomQuantity}
-              setRoomQuantity={setRoomQuantity}
-              category={selectedCategory}
+              rentalId={selectedRentalId}
             />
             <FormProvider {...form}>
               <form>

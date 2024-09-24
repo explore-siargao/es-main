@@ -62,6 +62,7 @@ export interface Rental {
 }
 
 export interface Category {
+  id: string
   name: string
   price: string
   rooms?: Room[]
@@ -70,6 +71,7 @@ export interface Category {
   motorcycles?: Rental[]
   bicycles?: Rental[]
   cars?: Rental[]
+  bookableUnitTypes: BookableUnitType[]
 }
 
 export interface SampleData {
