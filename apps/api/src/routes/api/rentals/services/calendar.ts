@@ -76,7 +76,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         path: 'pricePerDates',
         populate: {
           path: 'price',
-        }
+        },
       })
 
     if (!carRentals.length) {
@@ -191,7 +191,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
         path: 'pricePerDates',
         populate: {
           path: 'price',
-        }
+        },
       })
 
     if (!bicycleRentals.length) {
@@ -308,7 +308,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
         path: 'pricePerDates',
         populate: {
           path: 'price',
-        }
+        },
       })
 
     if (!motorcycleRentals.length) {
