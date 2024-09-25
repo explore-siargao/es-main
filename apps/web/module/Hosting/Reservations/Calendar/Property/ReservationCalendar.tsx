@@ -3,8 +3,15 @@ import { Typography } from "@/common/components/ui/Typography"
 import CalendarTable from "./CalendarTable"
 import ReservationTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
+import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 
 const ReservationCalendar = () => {
+  const currentDate = new Date()
+  const { data: sampleData } = useGetCalendarProperty(
+    currentDate.toLocaleDateString(),
+    currentDate.toLocaleDateString()
+  )
+
   return (
     <div className="mt-20">
       <div className="mb-4">
@@ -34,7 +41,7 @@ const ReservationCalendar = () => {
         </div>
 
         <div className="fixed bottom-4 right-4 z-20">
-          <CalendarLegend />
+          {sampleData?.items?.length !== 0 && <CalendarLegend />}
         </div>
       </div>
     </div>
