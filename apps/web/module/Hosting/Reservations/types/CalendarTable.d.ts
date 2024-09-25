@@ -65,6 +65,7 @@ export interface Category {
   id: string
   name: string
   price: string
+  pricePerDates?:any[]
   rooms?: Room[]
   wholePlaces?: WholePlace[]
   beds?: Bed[]

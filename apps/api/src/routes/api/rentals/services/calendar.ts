@@ -72,7 +72,12 @@ export const getCarCalendar = async (req: Request, res: Response) => {
     const carRentals = await dbRentals
       .find({ category: 'Car', host: res.locals.user.id })
       .populate('pricing')
-      .populate('pricePerDates')
+      .populate({
+        path: 'pricePerDates',
+        populate: {
+          path: 'price',
+        }
+      })
 
     if (!carRentals.length) {
       return res.json(
@@ -182,7 +187,12 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     const bicycleRentals = await dbRentals
       .find({ category: 'Bicycle', host: res.locals.user.id })
       .populate('pricing')
-      .populate('pricePerDates')
+      .populate({
+        path: 'pricePerDates',
+        populate: {
+          path: 'price',
+        }
+      })
 
     if (!bicycleRentals.length) {
       return res.json(
@@ -294,7 +304,12 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     const motorcycleRentals = await dbRentals
       .find({ category: 'Motorbike', host: res.locals.user.id })
       .populate('pricing')
-      .populate('pricePerDates')
+      .populate({
+        path: 'pricePerDates',
+        populate: {
+          path: 'price',
+        }
+      })
 
     if (!motorcycleRentals.length) {
       return res.json(
