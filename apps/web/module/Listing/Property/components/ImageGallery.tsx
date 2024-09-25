@@ -15,7 +15,7 @@ const ImageGallery = ({
   isViewModal,
   showThreeOnly,
   isRoundedEdge,
-  galleryHeight = "500px",
+  galleryHeight = "600px",
 }: ImageGalleryProps) => {
   const getImgSrc = (index: number) => {
     const image = images[index]

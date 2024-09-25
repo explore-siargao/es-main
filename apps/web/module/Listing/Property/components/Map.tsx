@@ -61,7 +61,7 @@ const WhereYoullBeDescription: React.FC<WhereYoullBeDescriptionProps> = ({
         )}
         {desc && (
           <div className="flex text-sm mb-4">
-            <p>{slicedDescription}</p>
+            <p className="w-full break-words">{slicedDescription}</p>
           </div>
         )}
       </div>
