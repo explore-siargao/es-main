@@ -29,6 +29,7 @@ import PropertyCalendarModal from "../PropertyCalendarModal"
 import { getColorClasses } from "../../helpers/legends"
 import { Spinner } from "@/common/components/ui/Spinner"
 import PropertyEditPricePerDatesModal from "./PropertyEditPricePerDatesModal"
+import { Typography } from "@/common/components/ui/Typography"
 
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
@@ -378,7 +379,6 @@ const PropertyCalendarTable = () => {
     mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
-
   return (
     <>
       {isLoading ? (
@@ -386,239 +386,257 @@ const PropertyCalendarTable = () => {
           <Spinner variant={"primary"} />
         </div>
       ) : (
-        <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
-          <div>
-            <div className="overflow-auto">
-              <table className="min-w-max w-full rounded-xl">
-                <thead className="">
-                  <tr className="uppercase text-sm leading-normal">
-                    <td colSpan={1} rowSpan={2} className="">
-                      <Sidebar
-                        nextPrevFunction={moveStartDateByOneDay}
-                        //@ts-ignore
-                        openAddReservationModal={handleOpenAddReservationModal}
-                        filterCalendarDate={filterCalendarDate}
-                        setFilterCalendarDate={setFilterCalendarDate}
-                        resetToToday={resetToToday}
-                      />
-                    </td>
-                    {generateMonthHeader()}
-                  </tr>
-                  <tr className="uppercase text-sm leading-normal">
-                    {generateCalendarHeader()}
-                  </tr>
-                </thead>
-                <tbody>
-                  {unitData?.items?.map((category: any, index: number) => (
-                    <React.Fragment key={category.name}>
-                      <tr
-                        className="hover:bg-gray-100 cursor-pointer"
-                        onClick={() => toggleCollapse(category.name)}
-                      >
-                        <td
-                          className={`border p-4 text-left font-bold border-l-0`}
-                        >
-                          <span className="flex gap-2 items-center">
-                            {collapsed[category.name] ? (
-                              <ChevronRight />
-                            ) : (
-                              <ChevronDown />
-                            )}
-                            {category.name}
-                          </span>
-                        </td>
-                        {[...Array(daysPerPage)].map((_, i) => {
-                          const today = new Date()
-                          const date = format(
-                            addDays(startDate, i),
-                            "yyyy-MM-dd"
-                          )
-                          const isToday = isSameDay(date, today)
-
-                          const noReservationCount =
-                            category?.bookableUnitTypes?.reduce(
-                              (
-                                count: number,
-                                bookableUnitType: { reservations: any[] }
-                              ) => {
-                                const hasReservation =
-                                  bookableUnitType.reservations.some(
-                                    (reservation) => {
-                                      const reservationStart = format(
-                                        new Date(reservation.startDate),
-                                        "yyyy-MM-dd"
-                                      )
-                                      const reservationEnd = format(
-                                        new Date(reservation.endDate),
-                                        "yyyy-MM-dd"
-                                      )
-                                      return (
-                                        date >= reservationStart &&
-                                        date <= reservationEnd
-                                      )
-                                    }
-                                  )
-                                return count + (hasReservation ? 0 : 1)
-                              },
-                              0
-                            )
-                          return (
-                            <td
-                              key={i}
-                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
-                            >
-                              <div
-                                onClick={(e) => {
-                                  handleOpeneditPricePerDatesModal(
-                                    date,
-                                    category.bookableUnitTypes.id
-                                  )
-                                  e.stopPropagation()
-                                }}
-                                className="flex flex-col"
-                              >
-                                <div>{noReservationCount}</div>
-                                <div>
-                                  ${parseFloat(category.price).toFixed(2)}
-                                </div>
-                              </div>
-                            </td>
-                          )
-                        })}
-                      </tr>
-                      {!collapsed[category.name] &&
-                        category?.bookableUnitTypes?.map(
-                          (bed: Room, bedIndex: number) => (
-                            <tr
-                              key={bed.abbr}
-                              className="hover:bg-gray-100 relative"
-                            >
-                              <td className="border py-4 pr-4 pl-12 text-left border-l-0">
-                                <div className="flex justify-between items-center">
-                                  {editingRoom === bed.abbr ? (
-                                    <Input
-                                      type="text"
-                                      value={tempRoomAbbr}
-                                      onChange={(e) =>
-                                        setTempRoomAbbr(e.target.value)
-                                      }
-                                      autoFocus
-                                      className="mr-2"
-                                      label={""}
-                                    />
-                                  ) : (
-                                    <span>{bed.abbr}</span>
-                                  )}
-                                  {editingRoom === bed.abbr ? (
-                                    <Button
-                                      size={"icon"}
-                                      variant={"link"}
-                                      onClick={(e) =>
-                                        handleSaveUnitName(bed.id, tempRoomAbbr)
-                                      }
-                                    >
-                                      <Save className="text-gray-500 w-5" />
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      size={"icon"}
-                                      variant={"link"}
-                                      onClick={() => handleEditRoom(bed.abbr)}
-                                    >
-                                      <Edit3 className="text-gray-500 w-5" />
-                                    </Button>
-                                  )}
-                                </div>
-                              </td>
-                              <td
-                                colSpan={daysPerPage}
-                                className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
-                              >
-                                {bed.reservations.map(
-                                  (booking: Reservation) => {
-                                    const style = getBookingStyle(
-                                      startDate,
-                                      daysPerPage,
-                                      booking
-                                    )
-                                    if (!style) return null
-
-                                    const { startCol, colSpan } = style
-                                    const { colorClass, hoverColorClass } =
-                                      getColorClasses(booking.status)
-
-                                    return (
-                                      <div
-                                        key={booking.id}
-                                        style={{
-                                          left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                          width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                                        }}
-                                        onClick={() => {
-                                          setIsReservationModalOpen(true)
-                                          setSelectedReservation({
-                                            unit: bed.abbr,
-                                            reservation: booking,
-                                          })
-                                          console.log(selectedReservation)
-                                        }}
-                                        className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                                      >
-                                        <span className="text-white text-sm truncate px-2">
-                                          {booking.status ===
-                                          "Out-of-Service-Dates"
-                                            ? "Out of service"
-                                            : booking.name}
-                                        </span>
-                                      </div>
-                                    )
-                                  }
-                                )}
-                                <div className="absolute inset-0 z-10 flex h-full">
-                                  {generateCalendarRowBorder()}
-                                </div>
-                              </td>
-                            </tr>
-                          )
-                        )}
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
+        <>
+          {sampleData?.items?.length === 0 ? (
+            <div className="flex w-full h-[75vh] overflow-hidden pt-2 overflow-y-hidden">
+                <Typography fontWeight="semibold">
+                  Property units have not been created yet. Please create a
+                  property unit to display on the calendar.
+                </Typography>
             </div>
-            <FormProvider {...form}>
-              <form>
-                {selectedReservation && (
-                  <PropertyCalendarModal
-                    isModalOpen={isReservationModalOpen}
-                    onClose={closeReservationModal}
-                    selectedReservation={selectedReservation}
-                    isEditReservation={isEditReservation}
-                    setIsEditReservation={setIsEditReservation}
-                  />
-                )}
-              </form>
-            </FormProvider>
-            <PropertyEditPricePerDatesModal
-              isModalOpen={isEditPricePerDatesModalOpen}
-              onClose={() => setIsEditPricePerDatesModalOpen(false)}
-              selectedDate={selectedDate}
-              unitId={selectedUnitId}
-            />
-            <FormProvider {...form}>
-              <form>
-                <AddPropertyReservationModal
-                  isModalOpen={isAddReservationModalOpen}
-                  onClose={closeAddReservationModal}
-                  selectedLegendType={selectedLegendType}
-                  setSelectedLegendType={setSelectedLegendType}
-                  setIsLegendTypeSelected={setIsLegendTypeSelected}
-                  isLegendTypeSelected={isLegendTypeSelected}
+          ) : (
+            <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
+              <div>
+                <div className="overflow-auto">
+                  <table className="min-w-max w-full rounded-xl">
+                    <thead className="">
+                      <tr className="uppercase text-sm leading-normal">
+                        <td colSpan={1} rowSpan={2} className="">
+                          <Sidebar
+                            nextPrevFunction={moveStartDateByOneDay}
+                            //@ts-ignore
+                            openAddReservationModal={
+                              handleOpenAddReservationModal
+                            }
+                            filterCalendarDate={filterCalendarDate}
+                            setFilterCalendarDate={setFilterCalendarDate}
+                            resetToToday={resetToToday}
+                          />
+                        </td>
+                        {generateMonthHeader()}
+                      </tr>
+                      <tr className="uppercase text-sm leading-normal">
+                        {generateCalendarHeader()}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {unitData?.items?.map((category: any, index: number) => (
+                        <React.Fragment key={category.name}>
+                          <tr
+                            className="hover:bg-gray-100 cursor-pointer"
+                            onClick={() => toggleCollapse(category.name)}
+                          >
+                            <td
+                              className={`border p-4 text-left font-bold border-l-0`}
+                            >
+                              <span className="flex gap-2 items-center">
+                                {collapsed[category.name] ? (
+                                  <ChevronRight />
+                                ) : (
+                                  <ChevronDown />
+                                )}
+                                {category.name}
+                              </span>
+                            </td>
+                            {[...Array(daysPerPage)].map((_, i) => {
+                              const today = new Date()
+                              const date = format(
+                                addDays(startDate, i),
+                                "yyyy-MM-dd"
+                              )
+                              const isToday = isSameDay(date, today)
+
+                              const noReservationCount =
+                                category?.bookableUnitTypes?.reduce(
+                                  (
+                                    count: number,
+                                    bookableUnitType: { reservations: any[] }
+                                  ) => {
+                                    const hasReservation =
+                                      bookableUnitType.reservations.some(
+                                        (reservation) => {
+                                          const reservationStart = format(
+                                            new Date(reservation.startDate),
+                                            "yyyy-MM-dd"
+                                          )
+                                          const reservationEnd = format(
+                                            new Date(reservation.endDate),
+                                            "yyyy-MM-dd"
+                                          )
+                                          return (
+                                            date >= reservationStart &&
+                                            date <= reservationEnd
+                                          )
+                                        }
+                                      )
+                                    return count + (hasReservation ? 0 : 1)
+                                  },
+                                  0
+                                )
+                              return (
+                                <td
+                                  key={i}
+                                  className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
+                                >
+                                  <div
+                                    onClick={(e) => {
+                                      handleOpeneditPricePerDatesModal(
+                                        date,
+                                        category.bookableUnitTypes.id
+                                      )
+                                      e.stopPropagation()
+                                    }}
+                                    className="flex flex-col"
+                                  >
+                                    <div>{noReservationCount}</div>
+                                    <div>
+                                      ${parseFloat(category.price).toFixed(2)}
+                                    </div>
+                                  </div>
+                                </td>
+                              )
+                            })}
+                          </tr>
+                          {!collapsed[category.name] &&
+                            category?.bookableUnitTypes?.map(
+                              (bed: Room, bedIndex: number) => (
+                                <tr
+                                  key={bed.abbr}
+                                  className="hover:bg-gray-100 relative"
+                                >
+                                  <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+                                    <div className="flex justify-between items-center">
+                                      {editingRoom === bed.abbr ? (
+                                        <Input
+                                          type="text"
+                                          value={tempRoomAbbr}
+                                          onChange={(e) =>
+                                            setTempRoomAbbr(e.target.value)
+                                          }
+                                          autoFocus
+                                          className="mr-2"
+                                          label={""}
+                                        />
+                                      ) : (
+                                        <span>{bed.abbr}</span>
+                                      )}
+                                      {editingRoom === bed.abbr ? (
+                                        <Button
+                                          size={"icon"}
+                                          variant={"link"}
+                                          onClick={(e) =>
+                                            handleSaveUnitName(
+                                              bed.id,
+                                              tempRoomAbbr
+                                            )
+                                          }
+                                        >
+                                          <Save className="text-gray-500 w-5" />
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          size={"icon"}
+                                          variant={"link"}
+                                          onClick={() =>
+                                            handleEditRoom(bed.abbr)
+                                          }
+                                        >
+                                          <Edit3 className="text-gray-500 w-5" />
+                                        </Button>
+                                      )}
+                                    </div>
+                                  </td>
+                                  <td
+                                    colSpan={daysPerPage}
+                                    className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                                  >
+                                    {bed.reservations.map(
+                                      (booking: Reservation) => {
+                                        const style = getBookingStyle(
+                                          startDate,
+                                          daysPerPage,
+                                          booking
+                                        )
+                                        if (!style) return null
+
+                                        const { startCol, colSpan } = style
+                                        const { colorClass, hoverColorClass } =
+                                          getColorClasses(booking.status)
+
+                                        return (
+                                          <div
+                                            key={booking.id}
+                                            style={{
+                                              left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                              width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                            }}
+                                            onClick={() => {
+                                              setIsReservationModalOpen(true)
+                                              setSelectedReservation({
+                                                unit: bed.abbr,
+                                                reservation: booking,
+                                              })
+                                              console.log(selectedReservation)
+                                            }}
+                                            className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                          >
+                                            <span className="text-white text-sm truncate px-2">
+                                              {booking.status ===
+                                              "Out-of-Service-Dates"
+                                                ? "Out of service"
+                                                : booking.name}
+                                            </span>
+                                          </div>
+                                        )
+                                      }
+                                    )}
+                                    <div className="absolute inset-0 z-10 flex h-full">
+                                      {generateCalendarRowBorder()}
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <FormProvider {...form}>
+                  <form>
+                    {selectedReservation && (
+                      <PropertyCalendarModal
+                        isModalOpen={isReservationModalOpen}
+                        onClose={closeReservationModal}
+                        selectedReservation={selectedReservation}
+                        isEditReservation={isEditReservation}
+                        setIsEditReservation={setIsEditReservation}
+                      />
+                    )}
+                  </form>
+                </FormProvider>
+                <PropertyEditPricePerDatesModal
+                  isModalOpen={isEditPricePerDatesModalOpen}
+                  onClose={() => setIsEditPricePerDatesModalOpen(false)}
+                  selectedDate={selectedDate}
+                  unitId={selectedUnitId}
                 />
-              </form>
-            </FormProvider>
-          </div>
-        </div>
+                <FormProvider {...form}>
+                  <form>
+                    <AddPropertyReservationModal
+                      isModalOpen={isAddReservationModalOpen}
+                      onClose={closeAddReservationModal}
+                      selectedLegendType={selectedLegendType}
+                      setSelectedLegendType={setSelectedLegendType}
+                      setIsLegendTypeSelected={setIsLegendTypeSelected}
+                      isLegendTypeSelected={isLegendTypeSelected}
+                    />
+                  </form>
+                </FormProvider>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   )

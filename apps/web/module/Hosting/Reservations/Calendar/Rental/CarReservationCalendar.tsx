@@ -2,10 +2,16 @@
 import { Typography } from "@/common/components/ui/Typography"
 import CarCalendarTable from "./CarCalendarTable"
 import ReservationTab from "../../components/ReservationTab"
-import CalendarLegend from "../../components/CalendarLegend"
 import RentalCalendarLegend from "../../components/RentalCalendarLegend"
+import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 
 const CarReservationCalendar = () => {
+  const currentDate = new Date()
+  const { data: sampleData } = useGetCalendarProperty(
+    currentDate.toLocaleDateString(),
+    currentDate.toLocaleDateString()
+  )
+
   return (
     <div className="mt-20">
       <div className="mb-4">
@@ -16,7 +22,7 @@ const CarReservationCalendar = () => {
               fontWeight="semibold"
               className="flex justify-between items-center"
             >
-              Reservations
+              Reservation
             </Typography>
             {/* <Button
               onClick={() => router.push("/hosting/reservations/upcoming")}
@@ -29,13 +35,22 @@ const CarReservationCalendar = () => {
           </div>
           <ReservationTab />
         </div>
-
-        <div className="flex mt-2">
-          <CarCalendarTable />
-        </div>
-
-        <div className="fixed bottom-4 right-4 z-20">
-          <RentalCalendarLegend />
+        <div>
+          {sampleData?.items?.length === 0 ? (
+            <Typography fontWeight="semibold" className="pt-4">
+              Rental units have not been created yet. Please create a rental
+              unit to display on the calendar.
+            </Typography>
+          ) : (
+            <>
+              <div className="flex mt-2">
+                <CarCalendarTable />
+              </div>
+              <div className="fixed bottom-4 right-4 z-20">
+                <RentalCalendarLegend />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
