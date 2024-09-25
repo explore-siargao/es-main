@@ -10,7 +10,6 @@ const ActivityCalendarLegend = () => {
   const date = new Date()
 
   return (
-    <>
       <div className="flex items-center bg-white p-1">
         <Button
           variant="link"
@@ -37,7 +36,6 @@ const ActivityCalendarLegend = () => {
           date={date}
         />
       </div>
-    </>
   )
 }
 
