@@ -4,11 +4,11 @@ import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
 import { SelectedReservation } from "../../types/CalendarTable"
 import { Input } from "@/common/components/ui/Input"
-import useUpdateRentalReservation from "../hooks/useUpdateRentalReservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { useFormContext } from "react-hook-form"
+import useUpdateUnitReservation from "../hooks/useUpdateUnitReservation"
 
 interface IRentalCalendarModalProps {
   isModalOpen: boolean
@@ -28,7 +28,7 @@ const PropertyCalendarModal = ({
   const queryClient = useQueryClient()
 
   const { register, handleSubmit, getValues } = useFormContext()
-  const { mutate } = useUpdateRentalReservation(
+  const { mutate } = useUpdateUnitReservation(
     String(selectedReservation.reservation?.id)
   )
 

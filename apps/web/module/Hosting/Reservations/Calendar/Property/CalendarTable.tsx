@@ -143,7 +143,8 @@ const PropertyCalendarTable = () => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) ||
+        isBefore(bookingEnd, addDays(startDate, -1))
       )
     }
 
@@ -318,12 +319,15 @@ const PropertyCalendarTable = () => {
     const bookingEnd = new Date(booking.endDate)
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
+    if (
+      isAfter(bookingStart, calendarEnd) ||
+      isBefore(bookingEnd, addDays(startDate, -1))
+    ) {
       return null
     }
 
-    const startOffset = differenceInDays(bookingStart, startDate)
-    const endOffset = differenceInDays(bookingEnd, startDate)
+    const startOffset = differenceInDays(bookingStart, addDays(startDate, -1))
+    const endOffset = differenceInDays(bookingEnd, addDays(startDate, -1))
     const startCol = Math.max(startOffset, 0)
     const endCol = Math.min(endOffset, daysPerPage)
 
