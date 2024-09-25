@@ -2,33 +2,31 @@
 
 ## [0.23.0](https://github.com/explore-siargao/es-main/compare/v0.22.0...v0.23.0) (2024-09-24)
 
-
 ### 🚀 Features
 
-* **api:** Added endpoint for adding price per dates on units ([56ccc2f](https://github.com/explore-siargao/es-main/commit/56ccc2f4a182202d0dd5775c377f8fc6ce31a772))
-* **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([a8dd71f](https://github.com/explore-siargao/es-main/commit/a8dd71fefa1c832068ffa0b3455a2023e0563b24))
-* **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([489b829](https://github.com/explore-siargao/es-main/commit/489b82989b2f3ed5ded024eff89020f4a887935d))
-* **api:** Modified activity model added experienceType field ([69b4d41](https://github.com/explore-siargao/es-main/commit/69b4d41798d510bbae7c5ab88f4a21d3f299b4a8))
-* Change backgound color for hovering checkout, drop off and completed bar ([67f7536](https://github.com/explore-siargao/es-main/commit/67f7536f2c0a4a480922f8e1fbd7600711cc6b96))
-* Rental cancelling calendar button not displaying the reservation blocks ([9bfa7ca](https://github.com/explore-siargao/es-main/commit/9bfa7ca1154a7dffaf51f94aa57927e6c262e792))
-* **web:** Added today function on property calendar and add highlight for today date ([73e0c5b](https://github.com/explore-siargao/es-main/commit/73e0c5bfbc9109836dd49fc801b156ece95c5519))
-* **web:** Added today function to activity calendar and add highlights to current day ([984f742](https://github.com/explore-siargao/es-main/commit/984f742b6f7203c1a256f68387130904f87d8c91))
-* **web:** Added today functions to Rental car, motor and bike and add highlight for today ([6e6b0d0](https://github.com/explore-siargao/es-main/commit/6e6b0d0f6822be27e17e68a701798ba84617887f))
-* **web:** Created calendar search modal ([c080996](https://github.com/explore-siargao/es-main/commit/c080996694505816e3befef2f373628c6c217003))
-* **web:** Created edit price per days modal ([895f73b](https://github.com/explore-siargao/es-main/commit/895f73ba9801a12487e844deab2cbf7dad1651d2))
-* **web:** Created edit price per days modal ([113e30e](https://github.com/explore-siargao/es-main/commit/113e30ecae55353f47ddae3c57072330a5f8ecfb))
-* **web:** Created edit price per days modal ([3620b19](https://github.com/explore-siargao/es-main/commit/3620b191116c89c5f568b2558a72bd2e6385ca65))
-* **web:** Created edit price per days modal ([8f0623a](https://github.com/explore-siargao/es-main/commit/8f0623a8a25b79c4c6059ee5d912b998dd378d0e))
-* **web:** Created edit price per days modal ([d3d4b88](https://github.com/explore-siargao/es-main/commit/d3d4b88a7f50dd4fc5b3ae6bea4a01db575ce840))
-* **web:** Created edit price per days modal ([7d52ab2](https://github.com/explore-siargao/es-main/commit/7d52ab270854b6dbf4c666e3f302f66b1444d184))
-* **web:** Modified clandar legends colors ([adbb3fb](https://github.com/explore-siargao/es-main/commit/adbb3fbc224180a9c0e5bddfc9a65d0785ee3dc0))
-* **web:** Removed the whole place modal in the process ([c69e228](https://github.com/explore-siargao/es-main/commit/c69e228d3ae4c8cfa0f3af912718c126a62e1727))
-* **web:** Removed the whole place modal in the process ([b29c858](https://github.com/explore-siargao/es-main/commit/b29c85820fd16443f2721dc01685ae82c860c46d))
-
+- **api:** Added endpoint for adding price per dates on units ([56ccc2f](https://github.com/explore-siargao/es-main/commit/56ccc2f4a182202d0dd5775c377f8fc6ce31a772))
+- **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([a8dd71f](https://github.com/explore-siargao/es-main/commit/a8dd71fefa1c832068ffa0b3455a2023e0563b24))
+- **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([489b829](https://github.com/explore-siargao/es-main/commit/489b82989b2f3ed5ded024eff89020f4a887935d))
+- **api:** Modified activity model added experienceType field ([69b4d41](https://github.com/explore-siargao/es-main/commit/69b4d41798d510bbae7c5ab88f4a21d3f299b4a8))
+- Change backgound color for hovering checkout, drop off and completed bar ([67f7536](https://github.com/explore-siargao/es-main/commit/67f7536f2c0a4a480922f8e1fbd7600711cc6b96))
+- Rental cancelling calendar button not displaying the reservation blocks ([9bfa7ca](https://github.com/explore-siargao/es-main/commit/9bfa7ca1154a7dffaf51f94aa57927e6c262e792))
+- **web:** Added today function on property calendar and add highlight for today date ([73e0c5b](https://github.com/explore-siargao/es-main/commit/73e0c5bfbc9109836dd49fc801b156ece95c5519))
+- **web:** Added today function to activity calendar and add highlights to current day ([984f742](https://github.com/explore-siargao/es-main/commit/984f742b6f7203c1a256f68387130904f87d8c91))
+- **web:** Added today functions to Rental car, motor and bike and add highlight for today ([6e6b0d0](https://github.com/explore-siargao/es-main/commit/6e6b0d0f6822be27e17e68a701798ba84617887f))
+- **web:** Created calendar search modal ([c080996](https://github.com/explore-siargao/es-main/commit/c080996694505816e3befef2f373628c6c217003))
+- **web:** Created edit price per days modal ([895f73b](https://github.com/explore-siargao/es-main/commit/895f73ba9801a12487e844deab2cbf7dad1651d2))
+- **web:** Created edit price per days modal ([113e30e](https://github.com/explore-siargao/es-main/commit/113e30ecae55353f47ddae3c57072330a5f8ecfb))
+- **web:** Created edit price per days modal ([3620b19](https://github.com/explore-siargao/es-main/commit/3620b191116c89c5f568b2558a72bd2e6385ca65))
+- **web:** Created edit price per days modal ([8f0623a](https://github.com/explore-siargao/es-main/commit/8f0623a8a25b79c4c6059ee5d912b998dd378d0e))
+- **web:** Created edit price per days modal ([d3d4b88](https://github.com/explore-siargao/es-main/commit/d3d4b88a7f50dd4fc5b3ae6bea4a01db575ce840))
+- **web:** Created edit price per days modal ([7d52ab2](https://github.com/explore-siargao/es-main/commit/7d52ab270854b6dbf4c666e3f302f66b1444d184))
+- **web:** Modified clandar legends colors ([adbb3fb](https://github.com/explore-siargao/es-main/commit/adbb3fbc224180a9c0e5bddfc9a65d0785ee3dc0))
+- **web:** Removed the whole place modal in the process ([c69e228](https://github.com/explore-siargao/es-main/commit/c69e228d3ae4c8cfa0f3af912718c126a62e1727))
+- **web:** Removed the whole place modal in the process ([b29c858](https://github.com/explore-siargao/es-main/commit/b29c85820fd16443f2721dc01685ae82c860c46d))
 
 ### 🧰 Maintenance
 
-* Modify pnpm lock yaml ([652851b](https://github.com/explore-siargao/es-main/commit/652851bddf628143f797911d7f17634a1ca9f50e))
+- Modify pnpm lock yaml ([652851b](https://github.com/explore-siargao/es-main/commit/652851bddf628143f797911d7f17634a1ca9f50e))
 
 ## [0.22.0](https://github.com/explore-siargao/es-main/compare/v0.21.0...v0.22.0) (2024-09-20)
 

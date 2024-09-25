@@ -52,8 +52,7 @@ const activities = new Schema({
   },
   title: String,
   activityType: {
-    type: String,
-    enum: ["Island hopping tour", "Land tour", "Surfboarding", ""],
+    type: [String],
     default: "",
   },
   experienceType: {
