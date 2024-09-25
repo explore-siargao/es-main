@@ -389,10 +389,10 @@ const PropertyCalendarTable = () => {
         <>
           {sampleData?.items?.length === 0 ? (
             <div className="flex w-full h-[75vh] overflow-hidden pt-2 overflow-y-hidden">
-                <Typography fontWeight="semibold">
-                  Property units have not been created yet. Please create a
-                  property unit to display on the calendar.
-                </Typography>
+              <Typography fontWeight="semibold">
+                Property units have not been created yet. Please create a
+                property unit to display on the calendar.
+              </Typography>
             </div>
           ) : (
             <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">

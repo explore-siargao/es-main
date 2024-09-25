@@ -4,13 +4,10 @@ import { Button } from "@/common/components/ui/Button"
 import ActivityLegendModal from "./ActivityLegendModal"
 import { activitylegends } from "../helpers/activitylegends"
 
-
 const ActivityCalendarLegend = () => {
   const [legendModalOpen, setLegendModalOpen] = useState(false)
 
   const date = new Date()
-
-
 
   return (
     <>
@@ -33,7 +30,7 @@ const ActivityCalendarLegend = () => {
             </div>
           ))}
         </button>
-       
+
         <ActivityLegendModal
           isOpen={legendModalOpen}
           onClose={() => setLegendModalOpen(false)}
