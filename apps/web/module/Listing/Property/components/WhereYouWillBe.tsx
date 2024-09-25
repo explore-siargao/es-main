@@ -14,7 +14,7 @@ const WhereYouWillBe: React.FC<WhereYouWillBe> = ({ locationDescription }) => {
       </Typography>
       <div className="px-4">
         <Typography variant="p" fontWeight="normal">
-        <p className="w-full break-words">{locationDescription}</p>
+          <p className="w-full break-words">{locationDescription}</p>
         </Typography>
       </div>
     </div>
