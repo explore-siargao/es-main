@@ -22,15 +22,19 @@ type Guest = {
 }
 
 type Reservation = {
-  id: String
+  _id?: any
+  guestName?: string
+  id: string
   category?: string
   unit?: string
   name: string // Ensure this is typed as Guest
   startDate: Date
   endDate: Date
+  guest?: Guest
   guestCount: number
-  notes?: String
-  status: String
+  notes?: string
+  status: string
+  unitId?: string
 }
 
 export type Room = {
@@ -91,7 +95,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
     const roomIds: string[] = []
     const wholePlaceIds: string[] = []
     const bedIds: string[] = []
-
+    
     bedProperties.forEach((property: any) => {
       property.bookableUnits.forEach((unit: any) => {
         if (unit.category === 'Room') {
@@ -103,13 +107,13 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         }
       })
     })
+    
 
-    // Fetch reservations for each category
     const [roomReservations, wholePlaceReservations, bedReservations] =
       await Promise.all([
         dbReservations
           .find({
-            unitId: { $in: roomIds.map((room: any) => room?._id) }, // Extracting _id from each object
+            unitId: { $in: roomIds.map((room: any) => room?._id) }, 
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -119,7 +123,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           .find({
             unitId: {
               $in: wholePlaceIds.map((wholePlace: any) => wholePlace?._id),
-            }, // Extracting _id from each object
+            }, 
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -135,83 +139,76 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           })
           .populate('guest'),
       ])
-
-    const formatUnits = (
-      units: any[],
-      reservations: any[],
-      idField: string,
-      propertyName: string
-    ) =>
-      units.map((unit: any) => {
-        const formattedItems = unit.ids.map((idObj: any) => {
-          return {
+      const formatUnits = (units: any[], reservations: any[], idField: string, propertyName: string) =>
+        units.map((unit: { ids: any[]; category: any; _id: string; title: string; pricing: { dayRate: any }; pricePerDates: any }) => {
+          const formattedItems = unit.ids.map((idObj: { _id: string; name: string }) => ({
             id: idObj._id,
             abbr: idObj.name,
             status: 'available',
             reservations: [],
-          }
-        })
-
-        reservations.forEach((reservation: any) => {
-          if (reservation.status !== 'Cancelled') {
-            const guest = reservation.guest
-            let reservationStatus = reservation.status
-            if (
-              (reservationStatus === 'Confirmed' ||
-                reservationStatus === 'Blocked-Dates' ||
-                reservationStatus === 'Checked-In') &&
-              currentDate >= reservation.startDate &&
-              currentDate <= reservation.endDate
-            ) {
-              reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-            } else if (
-              (reservationStatus === 'Confirmed' ||
-                reservationStatus === 'Blocked-Dates' ||
-                reservationStatus === 'Checked-In' ||
-                reservationStatus === 'Checked-Out') &&
-              currentDate > reservation.endDate
-            ) {
-              reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
-            }
-            const reservationItem: Reservation = {
-              id: reservation._id,
-              category: unit.category,
-              name: STATUS_DISPLAY.includes(reservation.status)
-                ? reservation.status
-                : guest
-                  ? `${guest.firstName} ${guest.lastName}`
-                  : reservation.guestName || 'Unknown',
-              startDate: reservation.startDate ?? new Date(),
-              endDate: reservation.endDate ?? new Date(),
-              guestCount: reservation.guestCount ?? 0,
-              notes: reservation.notes ?? '',
-              status: reservationStatus,
-            }
-
-            for (let i = 0; i < formattedItems.length; i++) {
-              const item = formattedItems[i]
-
-              if (item) {
-                const currentReservations = item.reservations ?? []
-
-                if (!hasDateConflict(currentReservations, reservationItem)) {
-                  item.reservations.push(reservationItem)
-                  item.status = 'occupied'
-                  break
-                }
+          }));
+      
+          reservations.forEach((reservation: Reservation) => {
+            if (reservation.status !== 'Cancelled') {
+              const guest = reservation.guest;
+              let reservationStatus = reservation.status;
+      
+              const startDate = new Date(reservation.startDate);
+              const endDate = new Date(reservation.endDate);
+              const currentDate = new Date(); 
+      
+              if (
+                (reservationStatus === 'Confirmed' ||
+                  reservationStatus === 'Blocked-Dates' ||
+                  reservationStatus === 'Checked-In') &&
+                currentDate >= startDate &&
+                currentDate <= endDate
+              ) {
+                reservationStatus = 'Checked-In';
+              } else if (
+                (reservationStatus === 'Confirmed' ||
+                  reservationStatus === 'Blocked-Dates' ||
+                  reservationStatus === 'Checked-In' ||
+                  reservationStatus === 'Checked-Out') &&
+                currentDate > endDate
+              ) {
+                reservationStatus = 'Checked-Out';
               }
+      
+              const reservationItem = {
+                id: reservation._id,
+                category: unit.category,
+                name: STATUS_DISPLAY.includes(reservation.status)
+                  ? reservation.status
+                  : guest ? `${guest.firstName} ${guest.lastName}` : reservation.guestName || 'Unknown',
+                startDate: startDate,
+                endDate: endDate,
+                guestCount: reservation.guestCount ?? 0,
+                notes: reservation.notes ?? '',
+                status: reservationStatus,
+              };
+    
+              formattedItems.forEach((item: { id: string; reservations: Reservation[]; status: string }) => {
+                if (item.id.toString() === reservation?.unitId?.toString()) {
+                  const currentReservations = item.reservations ?? [];
+                  if (!hasDateConflict(currentReservations, reservationItem)) {
+                    item.reservations.push(reservationItem);
+                    item.status = 'occupied';
+                  }
+                }
+              });
             }
-          }
-        })
-
-        return {
-          id: unit._id,
-          name: unit.title || 'Unknown',
-          price: unit.pricing?.dayRate ?? 0,
-          pricePerDates: unit.pricePerDates,
-          [propertyName]: formattedItems,
-        }
-      })
+          });
+      
+          return {
+            id: unit._id,
+            name: unit.title || 'Unknown',
+            price: unit.pricing?.dayRate ?? 0,
+            pricePerDates: unit.pricePerDates,
+            [propertyName]: formattedItems,
+          };
+        });
+      
 
     const groupedByProperty: any = {}
 
