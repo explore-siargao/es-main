@@ -245,11 +245,11 @@ const MotorCalendarTable = () => {
     }
 
     const startOffset = isBefore(bookingStart, addDays(startDate, -1))
-    ? differenceInDays(bookingStart, addDays(startDate, -1)) - 0.5
-    : differenceInDays(bookingStart, addDays(startDate, -1));
+      ? differenceInDays(bookingStart, addDays(startDate, -1)) - 0.5
+      : differenceInDays(bookingStart, addDays(startDate, -1))
     const endOffset = differenceInDays(bookingEnd, addDays(startDate, -1))
-    const startCol = Math.max(startOffset, -.5)
-    const endCol = Math.min(endOffset, daysPerPage - .5)
+    const startCol = Math.max(startOffset, -0.5)
+    const endCol = Math.min(endOffset, daysPerPage - 0.5)
 
     const colSpan = endCol - startCol + 1
     return { startCol, colSpan }
