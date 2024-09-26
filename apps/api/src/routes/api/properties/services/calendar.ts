@@ -179,13 +179,16 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
               const guest = reservation.guest;
               const currentDate = new Date();
               const reservationStatus = getReservationStatus(reservation, currentDate);
-          
+              const guestName = STATUS_DISPLAY.includes(reservation.status)
+              ? reservation.status
+              : guest 
+                ? `${guest.firstName} ${guest.lastName}` 
+                : reservation.guestName || 'Unknown';
+            
               const reservationItem = {
                 id: reservation._id,
                 category: unit.category,
-                name: STATUS_DISPLAY.includes(reservation.status)
-                  ? reservation.status
-                  : guest ? `${guest.firstName} ${guest.lastName}` : reservation.guestName || 'Unknown',
+                name: guestName,
                 startDate: new Date(reservation.startDate),
                 endDate: new Date(reservation.endDate),
                 guestCount: reservation.guestCount ?? 0,
