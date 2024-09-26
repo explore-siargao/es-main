@@ -37,6 +37,7 @@ type Reservation = {
   unitId?: string
 }
 
+
 export type Room = {
   abbr: string
   status: string
@@ -148,46 +149,50 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
             reservations: [],
           }));
       
+          function getReservationStatus(reservation: Reservation, currentDate: Date) {
+            const startDate = new Date(reservation.startDate);
+            const endDate = new Date(reservation.endDate);
+            const reservationStatus = reservation.status;
+          
+            if (
+              (reservationStatus === 'Confirmed' ||
+                reservationStatus === 'Blocked-Dates' ||
+                reservationStatus === 'Checked-In') &&
+              currentDate >= startDate &&
+              currentDate <= endDate
+            ) {
+              return 'Checked-In';
+            } else if (
+              (reservationStatus === 'Confirmed' ||
+                reservationStatus === 'Blocked-Dates' ||
+                reservationStatus === 'Checked-In' ||
+                reservationStatus === 'Checked-Out') &&
+              currentDate > endDate
+            ) {
+              return 'Checked-Out';
+            }
+            return reservationStatus;
+          }
+          
           reservations.forEach((reservation: Reservation) => {
             if (reservation.status !== 'Cancelled') {
               const guest = reservation.guest;
-              let reservationStatus = reservation.status;
-      
-              const startDate = new Date(reservation.startDate);
-              const endDate = new Date(reservation.endDate);
-              const currentDate = new Date(); 
-      
-              if (
-                (reservationStatus === 'Confirmed' ||
-                  reservationStatus === 'Blocked-Dates' ||
-                  reservationStatus === 'Checked-In') &&
-                currentDate >= startDate &&
-                currentDate <= endDate
-              ) {
-                reservationStatus = 'Checked-In';
-              } else if (
-                (reservationStatus === 'Confirmed' ||
-                  reservationStatus === 'Blocked-Dates' ||
-                  reservationStatus === 'Checked-In' ||
-                  reservationStatus === 'Checked-Out') &&
-                currentDate > endDate
-              ) {
-                reservationStatus = 'Checked-Out';
-              }
-      
+              const currentDate = new Date();
+              const reservationStatus = getReservationStatus(reservation, currentDate);
+          
               const reservationItem = {
                 id: reservation._id,
                 category: unit.category,
                 name: STATUS_DISPLAY.includes(reservation.status)
                   ? reservation.status
                   : guest ? `${guest.firstName} ${guest.lastName}` : reservation.guestName || 'Unknown',
-                startDate: startDate,
-                endDate: endDate,
+                startDate: new Date(reservation.startDate),
+                endDate: new Date(reservation.endDate),
                 guestCount: reservation.guestCount ?? 0,
                 notes: reservation.notes ?? '',
                 status: reservationStatus,
               };
-    
+          
               formattedItems.forEach((item: { id: string; reservations: Reservation[]; status: string }) => {
                 if (item.id.toString() === reservation?.unitId?.toString()) {
                   const currentReservations = item.reservations ?? [];
@@ -199,6 +204,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
               });
             }
           });
+          
       
           return {
             id: unit._id,
