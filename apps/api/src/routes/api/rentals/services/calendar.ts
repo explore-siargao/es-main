@@ -6,7 +6,6 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
-import moment from 'moment-timezone'
 
 const response = new ResponseService()
 
@@ -159,8 +158,8 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
         pricePerDates: rental.pricePerDates.map((priceDate)=>({
-          fromDate:moment(priceDate.fromDate).tz('Asia/Manila').format(),
-          toDate:moment(priceDate.toDate).tz('Asia/Manila').format(),
+          fromDate:priceDate.fromDate,
+          toDate:priceDate.toDate,
           price:priceDate?.price
         })),
         cars: cars.filter((car) => car.abbr !== 'Unknown'),
