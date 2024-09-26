@@ -14,7 +14,8 @@ import { cn } from "@/common/helpers/cn"
 import useGetActivityById from "../../hooks/useGetActivityById"
 import { Input2 } from "@/common/components/ui/Input2"
 import { Textarea2 } from "@/common/components/ui/Textarea2"
-import { Option, Select } from "@/common/components/ui/Select"
+import { T_Update_Activity_Basic_Info } from "@repo/contract"
+import { useForm } from "react-hook-form"
 
 interface Item {
   id: number
@@ -22,6 +23,17 @@ interface Item {
 }
 
 const languages = ["English", "Filipino", "Others"]
+const activityTypes = [
+  "Island hopping",
+  "Land tour",
+  "Surfing lessons",
+  "Wakeboarding",
+  "Kite surfing",
+  "Scuba diving",
+  "Freediving",
+  "Fishing",
+  "ATV tour",
+]
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -41,12 +53,12 @@ const BasicInfo = ({ pageType }: Prop) => {
   const [durationHour, setDurationHour] = useState(0)
   const [durationMinute, setDurationMinute] = useState(0)
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
-  const [activityType, setActivityType] = useState<string>("")
+  const [selectedActivityType, setSelectedActivityType] = useState<string[]>([])
+  const { register, watch } = useForm<T_Update_Activity_Basic_Info>()
   const lastId = itemList.reduce(
     (max, item) => (Number(item.id) > max ? Number(item.id) : max),
     0
   )
-  console.log(description)
   const addButton = () => {
     if (itemData.length === 0) {
       toast.error("Please add phrase in the Highlight input")
@@ -79,11 +91,20 @@ const BasicInfo = ({ pageType }: Prop) => {
       }
     })
   }
+  const toggleCheckboxActivityType = (activityType: string) => {
+    setSelectedActivityType((prevActivityType) => {
+      if (prevActivityType.includes(activityType)) {
+        return prevActivityType.filter((lang) => lang !== activityType)
+      } else {
+        return [...prevActivityType, activityType]
+      }
+    })
+  }
   useEffect(() => {
     if (data) {
       setDurationHour(data?.item?.durationHour || 0)
       setDurationMinute(data?.item?.durationMinute || 0)
-      setActivityType(data?.item?.activityType)
+      setSelectedActivityType(data?.item?.activityType)
       setItemList(
         data?.item?.highLights?.map((itemName: string, index: number) => ({
           id: index + 1,
@@ -110,6 +131,7 @@ const BasicInfo = ({ pageType }: Prop) => {
       }
     }
   }
+  const experienceType = watch("experienceType", data?.item?.experienceType)
 
   const onSubmit = () => {
     if (title && description) {
@@ -125,14 +147,15 @@ const BasicInfo = ({ pageType }: Prop) => {
         if (numberOfHighlights >= 3 && numberOfHighlights <= 5) {
           const updatedFormData = {
             title: title,
-            activityType: activityType,
+            activityType: selectedActivityType,
+            experienceType: experienceType,
             description: description,
             languages: selectedLanguages,
             durationHour: durationHour,
             durationMinute: durationMinute,
             highLights: itemList.map((item) => item.itemName),
           }
-          console.log("Test: ", updatedFormData.languages)
+          console.log("Test: ", updatedFormData)
 
           const callBackReq = {
             onSuccess: (data: any) => {
@@ -210,21 +233,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
-              <div className="mt-2">
-                <Select
-                  label="Activity Type"
-                  id="activityType"
-                  required
-                  value={activityType}
-                  onChange={(e) => setActivityType(e.target.value)}
-                >
-                  <Option value={""}>Select Type</Option>
-                  <Option value={"private"}>Private</Option>
-                  <Option value={"joiner"}>Joiner</Option>
-                </Select>
-              </div>
+
               <div>
-                <div className="mt-2">
+                <div className="mt-4">
                   <Textarea2
                     label="Description"
                     description="Provide a full description about what customers will
@@ -240,7 +251,74 @@ const BasicInfo = ({ pageType }: Prop) => {
                 </div>
                 <p className=" flex text-xs text-gray-500 justify-end">{`${description.length}/3000 characters`}</p>
               </div>
-
+              <div className="mt-4">
+                <Typography variant="h4" fontWeight="semibold">
+                  Acitivty Type
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic mb-2">
+                  You can choose multiple activities from the list by selecting
+                  the appropriate checkboxes.
+                </Typography>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2">
+                  {activityTypes.map((activityType: string, index: number) => (
+                    <div key={activityType} className="flex gap-2">
+                      <Checkbox
+                        id={index}
+                        colorVariant="primary"
+                        checked={selectedActivityType.includes(activityType)}
+                        onChange={() =>
+                          toggleCheckboxActivityType(activityType)
+                        }
+                      />
+                      <label>{activityType}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-4">
+                <Typography variant="h4" fontWeight="semibold">
+                  Experience type
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic mb-2">
+                  Choose whether the experience is Shared, where participants
+                  may interact with others, or Private, offering a more
+                  exclusive and personal setting.
+                </Typography>
+                <div className="flex items-center mt-2">
+                  <label
+                    htmlFor="haveDriverLicense-no"
+                    className="mr-2 text-md leading-6 text-gray-900"
+                  >
+                    Private
+                  </label>
+                  <input
+                    id="private"
+                    type="radio"
+                    disabled={isPending || isLoading}
+                    {...register("experienceType", { required: true })}
+                    className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                    value="private"
+                    required
+                    checked={experienceType === "private"}
+                  />
+                  <label
+                    htmlFor="haveDriverLicense-yes"
+                    className="mr-2 ml-6 text-md leading-6 text-gray-900"
+                  >
+                    Shared
+                  </label>
+                  <input
+                    id="shared"
+                    type="radio"
+                    disabled={isPending || isLoading}
+                    {...register("experienceType", { required: true })}
+                    className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
+                    value="shared"
+                    required
+                    checked={experienceType === "shared"}
+                  />
+                </div>
+              </div>
               <div className="mt-4">
                 <Typography variant="h4" fontWeight="semibold">
                   Highlights
@@ -303,10 +381,14 @@ const BasicInfo = ({ pageType }: Prop) => {
                 </div>
               </div>
               <div className="mt-4">
-                <Typography variant="h4" fontWeight="semibold" className="mb-4">
+                <Typography variant="h4" fontWeight="semibold">
                   Activity Duration
                 </Typography>
-                <div className="flex gap-12">
+                <Typography className="text-xs text-gray-500 italic">
+                  How long does your activity last from start to finish? Try to
+                  be as accurate as possible.
+                </Typography>
+                <div className="flex gap-12 mt-2">
                   <div>
                     <Typography variant="h4" className="mb-2">
                       Hours
@@ -387,19 +469,14 @@ const BasicInfo = ({ pageType }: Prop) => {
                     </div>
                   </div>
                 </div>
-                <Typography className="text-xs text-gray-500 italic mt-2 mb-8">
-                  How long does your activity last from start to finish? Try to
-                  be as accurate as possible.
-                </Typography>
               </div>
 
               <div className="mt-4">
-                <Typography
-                  variant="h4"
-                  fontWeight="semibold"
-                  className="mt-8 mb-4"
-                >
+                <Typography variant="h4" fontWeight="semibold" className="mt-8">
                   Language/s spoken by host
+                </Typography>
+                <Typography className="text-xs text-gray-500 italic">
+                  What languages does the activity guide speak?
                 </Typography>
                 {languages.map((language: string, index: number) => (
                   <div key={language} className="flex gap-2 my-2 ">
@@ -412,9 +489,6 @@ const BasicInfo = ({ pageType }: Prop) => {
                     <label className="pt-0.5">{language}</label>
                   </div>
                 ))}
-                <Typography className="text-xs text-gray-500 italic mt-2">
-                  What languages does the activity guide speak?
-                </Typography>
               </div>
             </div>
             <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
