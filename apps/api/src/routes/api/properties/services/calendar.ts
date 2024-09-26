@@ -33,13 +33,19 @@ type Reservation = {
   status: String
 }
 
-type Room = {
+export type Room = {
   abbr: string
   status: string
   reservations: Reservation[]
 }
 
-type Bed = {
+export type WholePlace = {
+  abbr: string
+  status: string
+  reservations: Reservation[]
+}
+
+export type Bed = {
   abbr: string
   status: string
   reservations: Reservation[]
