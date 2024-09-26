@@ -37,7 +37,6 @@ type Reservation = {
   unitId?: string
 }
 
-
 export type Room = {
   abbr: string
   status: string
@@ -82,56 +81,77 @@ const hasDateConflict = (
 }
 
 export const getPropertyCalendar = async (req: Request, res: Response) => {
-  const startDate = new Date(req.query.startDate as string);
-  const endDate = new Date(req.query.endDate as string);
-  const currentDate = new Date();
-  currentDate.setUTCHours(0, 0, 0, 0);
-  
+  const startDate = new Date(req.query.startDate as string)
+  const endDate = new Date(req.query.endDate as string)
+  const currentDate = new Date()
+  currentDate.setUTCHours(0, 0, 0, 0)
+
   try {
     const bedProperties = await dbProperties
       .find({ offerBy: res.locals.user.id })
-      .populate('bookableUnits');
+      .populate('bookableUnits')
 
-    const roomIds: string[] = [];
-    const wholePlaceIds: string[] = [];
-    const bedIds: string[] = [];
+    const roomIds: string[] = []
+    const wholePlaceIds: string[] = []
+    const bedIds: string[] = []
 
     bedProperties.forEach((property: any) => {
       property.bookableUnits.forEach((unit: any) => {
         if (unit.category === 'Room') {
-          roomIds.push(...unit.ids);
+          roomIds.push(...unit.ids)
         } else if (unit.category === 'Whole-Place') {
-          wholePlaceIds.push(...unit.ids);
+          wholePlaceIds.push(...unit.ids)
         } else if (unit.category === 'Bed') {
-          bedIds.push(...unit.ids);
+          bedIds.push(...unit.ids)
         }
-      });
-    });
+      })
+    })
 
-    const [roomReservations, wholePlaceReservations, bedReservations] = await Promise.all([
-      dbReservations.find({
-        unitId: { $in: roomIds.map((room: any) => room?._id) },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
-      }).populate('guest'),
-      dbReservations.find({
-        unitId: { $in: wholePlaceIds.map((wholePlace: any) => wholePlace?._id) },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
-      }).populate('guest'),
-      dbReservations.find({
-        unitId: { $in: bedIds.map((bed: any) => bed?._id) },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
-      }).populate('guest'),
-    ]);
+    const [roomReservations, wholePlaceReservations, bedReservations] =
+      await Promise.all([
+        dbReservations
+          .find({
+            unitId: { $in: roomIds.map((room: any) => room?._id) },
+            $or: [
+              { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
+            ],
+          })
+          .populate('guest'),
+        dbReservations
+          .find({
+            unitId: {
+              $in: wholePlaceIds.map((wholePlace: any) => wholePlace?._id),
+            },
+            $or: [
+              { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
+            ],
+          })
+          .populate('guest'),
+        dbReservations
+          .find({
+            unitId: { $in: bedIds.map((bed: any) => bed?._id) },
+            $or: [
+              { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
+            ],
+          })
+          .populate('guest'),
+      ])
 
-    const formatUnitItems = (unit: any, reservations: any[], propertyName: string) => {
-      const formattedItems = unit.ids.map((idObj: { _id: string; name: string }) => ({
-        id: idObj._id,
-        abbr: idObj.name,
-        status: 'available',
-        reservations: [],
-      }));
+    const formatUnitItems = (
+      unit: any,
+      reservations: any[],
+      propertyName: string
+    ) => {
+      const formattedItems = unit.ids.map(
+        (idObj: { _id: string; name: string }) => ({
+          id: idObj._id,
+          abbr: idObj.name,
+          status: 'available',
+          reservations: [],
+        })
+      )
 
-      handleReservations(formattedItems, reservations);
+      handleReservations(formattedItems, reservations)
 
       return {
         id: unit._id,
@@ -139,33 +159,44 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         price: unit.pricing?.dayRate ?? 0,
         pricePerDates: unit.pricePerDates,
         [propertyName]: formattedItems,
-      };
-    };
+      }
+    }
 
     const handleReservations = (formattedItems: any[], reservations: any[]) => {
       reservations.forEach((reservation: Reservation) => {
         if (reservation.status !== 'Cancelled') {
-          const guestName = getGuestName(reservation);
-          const reservationItem = createReservationItem(reservation, guestName);
+          const guestName = getGuestName(reservation)
+          const reservationItem = createReservationItem(reservation, guestName)
 
-          formattedItems.forEach((item: { id: string; reservations: Reservation[]; status: string }) => {
-            if (item.id.toString() === reservation?.unitId?.toString()) {
-              if (!hasDateConflict(item.reservations, reservationItem)) {
-                item.reservations.push(reservationItem);
-                item.status = 'occupied';
+          formattedItems.forEach(
+            (item: {
+              id: string
+              reservations: Reservation[]
+              status: string
+            }) => {
+              if (item.id.toString() === reservation?.unitId?.toString()) {
+                if (!hasDateConflict(item.reservations, reservationItem)) {
+                  item.reservations.push(reservationItem)
+                  item.status = 'occupied'
+                }
               }
             }
-          });
+          )
         }
-      });
-    };
+      })
+    }
 
     const getGuestName = (reservation: Reservation) => {
-      const guest = reservation.guest;
-      return guest ? `${guest.firstName} ${guest.lastName}` : reservation.guestName || 'Unknown';
-    };
+      const guest = reservation.guest
+      return guest
+        ? `${guest.firstName} ${guest.lastName}`
+        : reservation.guestName || 'Unknown'
+    }
 
-    const createReservationItem = (reservation: Reservation, guestName: string) => ({
+    const createReservationItem = (
+      reservation: Reservation,
+      guestName: string
+    ) => ({
       id: reservation._id,
       category: reservation.category,
       name: guestName,
@@ -174,63 +205,88 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       guestCount: reservation.guestCount ?? 0,
       notes: reservation.notes ?? '',
       status: getReservationStatus(reservation, new Date()),
-    });
+    })
 
-    const getReservationStatus = (reservation: Reservation, currentDate: Date) => {
-      const startDate = new Date(reservation.startDate);
-      const endDate = new Date(reservation.endDate);
-      const reservationStatus = reservation.status;
+    const getReservationStatus = (
+      reservation: Reservation,
+      currentDate: Date
+    ) => {
+      const startDate = new Date(reservation.startDate)
+      const endDate = new Date(reservation.endDate)
+      const reservationStatus = reservation.status
 
-      if ((reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates' || reservationStatus === 'Checked-In') && currentDate >= startDate && currentDate <= endDate) {
-        return 'Checked-In';
-      } else if ((reservationStatus === 'Confirmed' || reservationStatus === 'Blocked-Dates' || reservationStatus === 'Checked-In' || reservationStatus === 'Checked-Out') && currentDate > endDate) {
-        return 'Checked-Out';
+      if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In') &&
+        currentDate >= startDate &&
+        currentDate <= endDate
+      ) {
+        return 'Checked-In'
+      } else if (
+        (reservationStatus === 'Confirmed' ||
+          reservationStatus === 'Blocked-Dates' ||
+          reservationStatus === 'Checked-In' ||
+          reservationStatus === 'Checked-Out') &&
+        currentDate > endDate
+      ) {
+        return 'Checked-Out'
       }
-      return reservationStatus;
-    };
+      return reservationStatus
+    }
 
-    const formatUnits = (units: any[], reservations: any[], idField: string, propertyName: string) =>
-      units.map(unit => formatUnitItems(unit, reservations, propertyName));
+    const formatUnits = (
+      units: any[],
+      reservations: any[],
+      idField: string,
+      propertyName: string
+    ) => units.map((unit) => formatUnitItems(unit, reservations, propertyName))
 
-    const groupedByProperty: any = {};
+    const groupedByProperty: any = {}
 
     bedProperties.forEach((property: any) => {
-      const bookableUnits = [];
+      const bookableUnits = []
 
       bookableUnits.push(
         ...formatUnits(
-          property.bookableUnits.filter((unit: any) => unit?.category === 'Whole-Place'),
+          property.bookableUnits.filter(
+            (unit: any) => unit?.category === 'Whole-Place'
+          ),
           wholePlaceReservations,
           'wholePlaceId',
           'wholePlaces'
         )
-      );
+      )
 
       bookableUnits.push(
         ...formatUnits(
-          property.bookableUnits.filter((unit: any) => unit?.category === 'Room'),
+          property.bookableUnits.filter(
+            (unit: any) => unit?.category === 'Room'
+          ),
           roomReservations,
           'roomId',
           'rooms'
         )
-      );
+      )
 
       bookableUnits.push(
         ...formatUnits(
-          property.bookableUnits.filter((unit: any) => unit?.category === 'Bed'),
+          property.bookableUnits.filter(
+            (unit: any) => unit?.category === 'Bed'
+          ),
           bedReservations,
           'bedId',
           'beds'
         )
-      );
+      )
 
-      groupedByProperty[property.title] = bookableUnits;
-    });
+      groupedByProperty[property.title] = bookableUnits
+    })
 
     const items = Object.keys(groupedByProperty).map((propertyTitle) => ({
       propertyTitle,
       bookableUnitTypes: groupedByProperty[propertyTitle],
-    }));
+    }))
 
     res.json(
       response.success({
@@ -238,16 +294,15 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
         allItemCount: items.length,
         message: 'Property calendar fetched successfully.',
       })
-    );
+    )
   } catch (err: any) {
     return res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
-    );
+    )
   }
-};
-
+}
 
 export const editUnitChildName = async (req: Request, res: Response) => {
   const { id, name } = req.body
