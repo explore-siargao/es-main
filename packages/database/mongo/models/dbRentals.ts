@@ -103,6 +103,10 @@ const rentals = new Schema({
     type: [pricePerDates],
     default: [],
   },
+  daysCanCancel:{
+    type:Number,
+    required:true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

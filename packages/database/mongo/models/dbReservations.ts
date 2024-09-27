@@ -69,6 +69,20 @@ const reservations = new Schema({
     type: String,
     enum: statusEnum,
   },
+  hostHavePenalty:{
+    type:Boolean,
+    default:false
+  },
+  cancelledBy:{
+    type:String,
+    enum:["host","guest"],
+    default:null
+  },
+  cancellationDate:{
+    type:Date,
+    required:false,
+    default:null
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

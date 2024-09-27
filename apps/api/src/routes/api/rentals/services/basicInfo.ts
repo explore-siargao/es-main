@@ -39,11 +39,13 @@ export const getRentalBasicInfo = async (req: Request, res: Response) => {
         fuel: getRental?.fuel,
         transmission: getRental?.transmission,
         year: getRental?.year,
+        daysCanCancel:getRental.daysCanCancel
       }
     } else if (category === E_Rental_Category.Bicycle) {
       basicInfo = {
         category: getRental.category,
         make: getRental.make,
+        daysCanCancel:getRental.daysCanCancel
       }
     }
     res.json(response.success({ item: basicInfo }))
@@ -68,6 +70,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
     transmission,
     year,
     qty,
+    daysCanCancel
   }: T_Rental_Basic_Info = req.body
   const isValidInput = Z_Rental_Basic_Info.safeParse(
     req.body as T_Rental_Basic_Info
@@ -95,6 +98,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.transmission = transmission || rental.transmission
         ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
         rental.ids = rental.ids
+        rental.daysCanCancel = rental.daysCanCancel
         // Generate the name based on year, make, modelBadge, and transmission
         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
         const nameBase = `${year} ${make} ${modelBadge} ${transShort}`
@@ -124,6 +128,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.year = category === 'Motorbike' ? year || rental.year : null
         rental.qty = qty || rental.qty
         rental.ids = rental.ids
+        rental.daysCanCancel = rental.daysCanCancel
         // Generate the name based on year, make, modelBadge, and transmission
         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
         const nameBase =
@@ -156,6 +161,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         transmission: rental.transmission,
         year: rental.year,
         qty: rental.qty,
+        daysCanCancel:daysCanCancel
       }
 
       res.json(
