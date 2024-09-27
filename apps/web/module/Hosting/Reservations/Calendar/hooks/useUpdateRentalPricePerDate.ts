@@ -14,7 +14,10 @@ export async function updateRentalPricePerDate(
   id: string
 ) {
   const apiService = new ApiService()
-  return await apiService.patch(`${API_URL_RENTALS}/${id}/price-per-dates`, props)
+  return await apiService.patch(
+    `${API_URL_RENTALS}/${id}/price-per-dates`,
+    props
+  )
 }
 
 function useUpdateRentalPricePerDate(id: string) {
