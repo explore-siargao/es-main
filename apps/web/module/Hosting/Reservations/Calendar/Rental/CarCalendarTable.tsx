@@ -62,7 +62,7 @@ const CarCalendarTable = () => {
   const [filteredData, setFilteredData] = useState<SampleData>(sampleData)
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempCarAbbr, setTempCarAbbr] = useState<string>("")
-  
+
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
@@ -101,23 +101,25 @@ const CarCalendarTable = () => {
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
 
   useEffect(() => {
-    const calendarEnd = addDays(startDate, daysPerPage - 1);
-    
+    const calendarEnd = addDays(startDate, daysPerPage - 1)
+
     const isReservationWithinRange = (reservation: {
-      startDate: string | number | Date;
-      endDate: string | number | Date;
+      startDate: string | number | Date
+      endDate: string | number | Date
     }) => {
-      const bookingStart = new Date(reservation.startDate);
-      const bookingEnd = new Date(reservation.endDate);
-      return !(isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate));
-    };
-  
+      const bookingStart = new Date(reservation.startDate)
+      const bookingEnd = new Date(reservation.endDate)
+      return !(
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+      )
+    }
+
     const filterReservations = (reservations: any[]) =>
-      reservations.filter(isReservationWithinRange);
-  
+      reservations.filter(isReservationWithinRange)
+
     const filterCars = (cars: any[]) =>
       cars
-        .map((car: { reservations: any, abbr: string }) => ({
+        .map((car: { reservations: any; abbr: string }) => ({
           ...car,
           reservations: filterReservations(car.reservations),
         }))
@@ -125,29 +127,30 @@ const CarCalendarTable = () => {
           (car: { abbr: string }) =>
             !searchString ||
             car.abbr.toLowerCase().includes(searchString.toLowerCase())
-        );
-  
+        )
+
     const filterCategories = (categories: any[]) =>
       categories
         .map((category: { cars: any }) => ({
           ...category,
           cars: filterCars(category.cars),
         }))
-        .filter((category: { cars: string | any[] }) => category.cars.length > 0);
-  
+        .filter(
+          (category: { cars: string | any[] }) => category.cars.length > 0
+        )
+
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
-    };
-    
-    if(newFilteredData.items.length > 0) {
-      setFilteredData(newFilteredData as SampleData);
-    } else if(searchString && newFilteredData.items.length == 0) {
+    }
+
+    if (newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData)
+    } else if (searchString && newFilteredData.items.length == 0) {
       toast.error(`No matched results for "${searchString}"`)
       setSearchString("")
     }
-    
-  }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData]);
-  
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData])
+
   useEffect(() => {
     if (filterCalendarDate !== "") {
       const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())

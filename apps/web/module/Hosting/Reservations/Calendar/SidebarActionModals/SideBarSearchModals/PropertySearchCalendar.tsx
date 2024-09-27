@@ -14,10 +14,10 @@ const PropertySearchCalendarModal = ({
   isModalOpen,
   onClose,
   searchString,
-  setSearchString
+  setSearchString,
 }: ISearchCalendarProps) => {
   const [value, setValue] = useState("")
-  
+
   const handleConfirm = () => {
     setSearchString(value)
     onClose()
@@ -25,7 +25,7 @@ const PropertySearchCalendarModal = ({
       setValue("")
     }, 300)
   }
-  
+
   return (
     <ModalContainer
       onClose={onClose}

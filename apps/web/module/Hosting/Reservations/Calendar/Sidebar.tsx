@@ -19,7 +19,7 @@ type SideBarProps = {
   filterCalendarDate?: string
   setFilterCalendarDate?: (filter: string) => void
   setStartDate?: (date: Date) => void
-  searchString?: string,
+  searchString?: string
   setSearchString?: (searchSring: string) => void
 }
 
@@ -30,11 +30,11 @@ const Sidebar = ({
   setFilterCalendarDate,
   resetToToday,
   searchString,
-  setSearchString
+  setSearchString,
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
-  
+
   return (
     <div className="p-4 flex flex-col gap-4">
       <div className="flex gap-2 items-center w-1/2">
