@@ -26,11 +26,11 @@ export default async function RootLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <GuideHeader contentWidth="medium" />
-              <YMarginWrapper>{children}</YMarginWrapper>
-              <Footer contentWidth="medium" />
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <GuideHeader contentWidth="medium" />
+          <YMarginWrapper>{children}</YMarginWrapper>
+          <Footer contentWidth="medium" />
+        </GlobalWrappers>
       </body>
     </html>
   )

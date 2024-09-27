@@ -427,7 +427,9 @@ const CarCalendarTable = () => {
                                   {category.pricePerDates?.length === 0
                                     ? parseFloat(`${category.price}`).toFixed(2)
                                     : category.pricePerDates?.find((item) => {
-                                          const itemFromDate = formatDateTZ(startOfDay(item.fromDate))
+                                          const itemFromDate = formatDateTZ(
+                                            startOfDay(item.fromDate)
+                                          )
                                           const itemToDate = formatDateTZ(
                                             endOfDay(item.toDate)
                                           )
@@ -443,10 +445,10 @@ const CarCalendarTable = () => {
                                           category.pricePerDates.find(
                                             (item: any) => {
                                               const itemFromDate = formatDateTZ(
-                                                startOfDay(item.fromDate),
+                                                startOfDay(item.fromDate)
                                               )
                                               const itemToDate = formatDateTZ(
-                                                endOfDay(item.toDate),
+                                                endOfDay(item.toDate)
                                               )
                                               const currentDate = formatDateTZ(
                                                 startOfDay(date)

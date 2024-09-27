@@ -25,12 +25,11 @@ export default async function AccommodationLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <Header contentWidth="small" />
-              <div className="min-h-screen">{children}</div>
-              <Footer contentWidth="small" />
-            </GlobalWrappers>
-
+        <GlobalWrappers>
+          <Header contentWidth="small" />
+          <div className="min-h-screen">{children}</div>
+          <Footer contentWidth="small" />
+        </GlobalWrappers>
       </body>
     </html>
   )

@@ -24,10 +24,10 @@ export default async function ConversationLayout({
       <body className={`overflow-hidden h-screen bg-gray-50`}>
         <Toaster />
 
-            <GlobalWrappers>
-              <Header contentWidth="wide" isFixed={false} />
-              {children}
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <Header contentWidth="wide" isFixed={false} />
+          {children}
+        </GlobalWrappers>
       </body>
     </html>
   )

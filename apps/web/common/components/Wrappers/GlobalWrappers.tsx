@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react"
 import QueryClientWrapper from "@/common/components/Wrappers/QueryClientWrapper"
 import GlobalModalWrapper from "@/common/components/Wrappers/GlobalModalWrapper"
 import TimeZoneWrapper from "@/common/components/Wrappers/TimeZoneWrapper"
@@ -10,7 +10,7 @@ const wrappers = [
   AuthStateProviderWrapper,
   GlobalModalWrapper,
   TimeZoneWrapper,
-];
+]
 
 // Wrapper component
 const GlobalWrappers = ({ children }: { children: React.ReactNode }) => {
@@ -18,7 +18,7 @@ const GlobalWrappers = ({ children }: { children: React.ReactNode }) => {
   return wrappers.reduceRight(
     (acc, WrapperComponent) => <WrapperComponent>{acc}</WrapperComponent>,
     children
-  );
-};
+  )
+}
 
-export default GlobalWrappers;
+export default GlobalWrappers

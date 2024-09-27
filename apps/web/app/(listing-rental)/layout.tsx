@@ -27,15 +27,15 @@ export default async function HostListingLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <ListingHeader
-                listingStatus={E_Listing_Status.edit}
-                category={E_Listing_Category.Rental}
-              />
-              <ListingSidebar category={E_Listing_Category.Rental}>
-                {children}
-              </ListingSidebar>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <ListingHeader
+            listingStatus={E_Listing_Status.edit}
+            category={E_Listing_Category.Rental}
+          />
+          <ListingSidebar category={E_Listing_Category.Rental}>
+            {children}
+          </ListingSidebar>
+        </GlobalWrappers>
       </body>
     </html>
   )

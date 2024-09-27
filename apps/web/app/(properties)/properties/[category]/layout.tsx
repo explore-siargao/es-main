@@ -26,12 +26,12 @@ export default async function RootLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <Header />
-              <ClientHeroSection />
-              {children}
-              <Footer contentWidth="small" />
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <Header />
+          <ClientHeroSection />
+          {children}
+          <Footer contentWidth="small" />
+        </GlobalWrappers>
       </body>
     </html>
   )

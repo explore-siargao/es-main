@@ -27,15 +27,15 @@ export default async function HostListingPropertyLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <ListingHeader
-                listingStatus={E_Listing_Status.edit}
-                category={E_Listing_Category.Property}
-              />
-              <ListingSidebar category={E_Listing_Category.Property}>
-                {children}
-              </ListingSidebar>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <ListingHeader
+            listingStatus={E_Listing_Status.edit}
+            category={E_Listing_Category.Property}
+          />
+          <ListingSidebar category={E_Listing_Category.Property}>
+            {children}
+          </ListingSidebar>
+        </GlobalWrappers>
       </body>
     </html>
   )

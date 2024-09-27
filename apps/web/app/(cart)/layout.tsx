@@ -25,12 +25,11 @@ export default async function CartLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <Header />
-              <div className="min-h-screen">{children}</div>
-              <Footer contentWidth="medium" />
-            </GlobalWrappers>
-
+        <GlobalWrappers>
+          <Header />
+          <div className="min-h-screen">{children}</div>
+          <Footer contentWidth="medium" />
+        </GlobalWrappers>
       </body>
     </html>
   )

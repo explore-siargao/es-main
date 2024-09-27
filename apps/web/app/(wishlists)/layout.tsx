@@ -24,10 +24,10 @@ export default async function WishlistLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <Header />
-              <div className="min-h-screen">{children}</div>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <Header />
+          <div className="min-h-screen">{children}</div>
+        </GlobalWrappers>
       </body>
     </html>
   )

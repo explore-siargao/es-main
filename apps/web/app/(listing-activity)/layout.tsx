@@ -26,15 +26,15 @@ export default async function HostListingActivityLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-            <GlobalWrappers>
-              <ListingHeader
-                listingStatus={E_Listing_Status.edit}
-                category={E_Listing_Category.Activity}
-              />
-              <ListingSidebar category={E_Listing_Category.Activity}>
-                {children}
-              </ListingSidebar>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <ListingHeader
+            listingStatus={E_Listing_Status.edit}
+            category={E_Listing_Category.Activity}
+          />
+          <ListingSidebar category={E_Listing_Category.Activity}>
+            {children}
+          </ListingSidebar>
+        </GlobalWrappers>
       </body>
     </html>
   )

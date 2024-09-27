@@ -25,13 +25,13 @@ export default async function RootLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <div className="flex flex-col gap-2">
-                <Header />
-              </div>
-              <div>{children}</div>
-              <Footer />
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <div className="flex flex-col gap-2">
+            <Header />
+          </div>
+          <div>{children}</div>
+          <Footer />
+        </GlobalWrappers>
       </body>
     </html>
   )

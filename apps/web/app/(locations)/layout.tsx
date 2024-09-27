@@ -25,15 +25,14 @@ export default function RootLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <div className="flex flex-col gap-2">
-                <Header />
-                <ClientHeroSection />
-              </div>
-              <div className="min-h-screen">{children}</div>
-              <Footer />
-            </GlobalWrappers>
-
+        <GlobalWrappers>
+          <div className="flex flex-col gap-2">
+            <Header />
+            <ClientHeroSection />
+          </div>
+          <div className="min-h-screen">{children}</div>
+          <Footer />
+        </GlobalWrappers>
       </body>
     </html>
   )

@@ -26,18 +26,15 @@ export default async function HostNewListingRentalLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-            <GlobalWrappers>
-              <ListingHeader
-                listingStatus={E_Listing_Status.setup}
-                category={E_Listing_Category.Rental}
-              />
-              <ListingSidebar
-                status="setup"
-                category={E_Listing_Category.Rental}
-              >
-                {children}
-              </ListingSidebar>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <ListingHeader
+            listingStatus={E_Listing_Status.setup}
+            category={E_Listing_Category.Rental}
+          />
+          <ListingSidebar status="setup" category={E_Listing_Category.Rental}>
+            {children}
+          </ListingSidebar>
+        </GlobalWrappers>
       </body>
     </html>
   )

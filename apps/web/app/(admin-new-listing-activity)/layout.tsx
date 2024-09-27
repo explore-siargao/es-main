@@ -25,10 +25,10 @@ export default async function HostListingLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <Header />
-              <Sidebar>{children}</Sidebar>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <Header />
+          <Sidebar>{children}</Sidebar>
+        </GlobalWrappers>
       </body>
     </html>
   )

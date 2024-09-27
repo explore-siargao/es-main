@@ -23,9 +23,9 @@ export default async function AuthLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <div className="min-h-screen">{children}</div>
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <div className="min-h-screen">{children}</div>
+        </GlobalWrappers>
       </body>
     </html>
   )

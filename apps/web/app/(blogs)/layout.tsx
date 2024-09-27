@@ -26,11 +26,11 @@ export default async function BlogGuideLayout({
       <body>
         <Toaster />
 
-            <GlobalWrappers>
-              <BlogHeader contentWidth="medium" />
-              <YMarginWrapper>{children}</YMarginWrapper>
-              <Footer contentWidth="medium" />
-            </GlobalWrappers>
+        <GlobalWrappers>
+          <BlogHeader contentWidth="medium" />
+          <YMarginWrapper>{children}</YMarginWrapper>
+          <Footer contentWidth="medium" />
+        </GlobalWrappers>
       </body>
     </html>
   )

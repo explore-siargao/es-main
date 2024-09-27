@@ -7,19 +7,15 @@ type Props = {
 
 const TimeZoneWrapper = ({ children }: Props) => {
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const currTimeZone = localStorage.getItem('timeZone');
-      if(!currTimeZone) {
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        localStorage.setItem('timeZone', timeZone);
+    if (typeof window !== "undefined") {
+      const currTimeZone = localStorage.getItem("timeZone")
+      if (!currTimeZone) {
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        localStorage.setItem("timeZone", timeZone)
       }
     }
-  }, []);
-  return (
-    <>
-      {children}
-    </>
-  )
+  }, [])
+  return <>{children}</>
 }
 
 export default TimeZoneWrapper

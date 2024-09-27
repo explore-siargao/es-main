@@ -5,7 +5,11 @@ import { T_Session } from "@repo/contract"
 import useGetSessionUser from "../../hooks/useGetSessionUser"
 import { Spinner } from "../ui/Spinner"
 
-const AuthStateProviderWrapper = ({ children }: { children: React.ReactNode }) => {
+const AuthStateProviderWrapper = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const { data, isLoading } = useGetSessionUser()
   const updateSession = useSessionStore((state) => state.update)
   const removeSession = useSessionStore((state) => state.remove)

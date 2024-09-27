@@ -32,10 +32,7 @@ export default async function HostNewListingActivityLayout({
             listingStatus={E_Listing_Status.setup}
             category={E_Listing_Category.Activity}
           />
-          <ListingSidebar
-            status="setup"
-            category={E_Listing_Category.Activity}
-          >
+          <ListingSidebar status="setup" category={E_Listing_Category.Activity}>
             {children}
           </ListingSidebar>
         </GlobalWrappers>
