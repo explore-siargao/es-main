@@ -11,7 +11,6 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
-import { populate } from 'dotenv'
 
 const response = new ResponseService()
 
