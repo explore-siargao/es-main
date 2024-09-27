@@ -6,21 +6,26 @@ import { Input2 } from "@/common/components/ui/Input2"
 interface ISearchCalendarProps {
   isModalOpen: boolean
   onClose: () => void
+  searchString: string
+  setSearchString: (searchString: string) => void
 }
 
 const PropertySearchCalendarModal = ({
   isModalOpen,
   onClose,
+  searchString,
+  setSearchString
 }: ISearchCalendarProps) => {
-  const [searchItem, setSearchItem] = useState("")
-
+  const [value, setValue] = useState("")
+  
   const handleConfirm = () => {
+    setSearchString(value)
     onClose()
     setTimeout(() => {
-      setSearchItem("")
+      setValue("")
     }, 300)
   }
-
+  
   return (
     <ModalContainer
       onClose={onClose}
@@ -35,8 +40,8 @@ const PropertySearchCalendarModal = ({
               <Input2
                 type="text"
                 label={"Enter unit name or keyword"}
-                value={searchItem}
-                onChange={(e) => setSearchItem(e.target.value)}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
                 description="Enter unit name you want to search"
                 placeholder="e.g., Liwana Siargao Suites"
               />
@@ -51,7 +56,7 @@ const PropertySearchCalendarModal = ({
             <Button
               type="button"
               variant="default"
-              onClick={() => setSearchItem("")}
+              onClick={() => setValue("")}
             >
               Clear
             </Button>

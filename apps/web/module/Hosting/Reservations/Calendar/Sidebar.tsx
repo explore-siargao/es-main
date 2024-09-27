@@ -19,6 +19,8 @@ type SideBarProps = {
   filterCalendarDate?: string
   setFilterCalendarDate?: (filter: string) => void
   setStartDate?: (date: Date) => void
+  searchString?: string,
+  setSearchString?: (searchSring: string) => void
 }
 
 const Sidebar = ({
@@ -27,10 +29,12 @@ const Sidebar = ({
   filterCalendarDate,
   setFilterCalendarDate,
   resetToToday,
+  searchString,
+  setSearchString
 }: SideBarProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
-
+  
   return (
     <div className="p-4 flex flex-col gap-4">
       <div className="flex gap-2 items-center w-full">
@@ -53,14 +57,25 @@ const Sidebar = ({
             <X className="w-5" />
           </Button>
         )}
-        <Button
-          size={"sm"}
-          variant={"default"}
-          className="rounded-full w-full"
-          onClick={() => setIsSearchModalOpen(true)}
-        >
-          <Search className="w-5" />
-        </Button>
+        {!searchString ? (
+          <Button
+            size={"sm"}
+            variant={"default"}
+            className="rounded-full w-full"
+            onClick={() => setIsSearchModalOpen(true)}
+          >
+            <Search className="w-5" />
+          </Button>
+        ) : (
+          <Button
+            size={"sm"}
+            variant={"default"}
+            className="rounded-full w-full"
+            onClick={() => setSearchString && setSearchString("")}
+          >
+            <X className="w-5" />
+          </Button>
+        )}
         <Button
           size={"sm"}
           variant={"secondary"}
@@ -110,6 +125,8 @@ const Sidebar = ({
       <PropertySearchCalendarModal
         isModalOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
+        searchString={searchString!}
+        setSearchString={setSearchString!}
       />
     </div>
   )

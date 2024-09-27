@@ -55,6 +55,9 @@ const MotorCalendarTable = () => {
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempMotorAbbr, setMotorAbbr] = useState<string>("")
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+
+  const [searchString, setSearchString] = useState("")
+
   const daysPerPage = 13
 
   const queryClient = useQueryClient()
@@ -121,9 +124,62 @@ const MotorCalendarTable = () => {
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
     }
-    //@ts-ignore
-    setFilteredData(newFilteredData)
+    
+    if(newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData);
+    } else if(searchString && newFilteredData.items.length == 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
+
+  useEffect(() => {
+    const calendarEnd = addDays(startDate, daysPerPage - 1);
+    
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date;
+      endDate: string | number | Date;
+    }) => {
+      const bookingStart = new Date(reservation.startDate);
+      const bookingEnd = new Date(reservation.endDate);
+      return !(isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate));
+    };
+  
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange);
+  
+    const filterMotorcycles = (motorcycles: any[]) =>
+      motorcycles
+        .map((motorcycles: { reservations: any, abbr: string }) => ({
+          ...motorcycles,
+          reservations: filterReservations(motorcycles.reservations),
+        }))
+        .filter(
+          (car: { abbr: string }) =>
+            !searchString ||
+            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+        );
+  
+    const filterCategories = (categories: any[]) =>
+      categories
+        .map((category: { motorcycles: any }) => ({
+          ...category,
+          motorcycles: filterMotorcycles(category.motorcycles),
+        }))
+        .filter((category: { motorcycles: string | any[] }) => category.motorcycles.length > 0);
+  
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    };
+    
+    if(newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData);
+    } else if(searchString && newFilteredData.items.length == 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
+    
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData]);
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -314,6 +370,8 @@ const MotorCalendarTable = () => {
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
                         resetToToday={resetToToday}
+                        searchString={searchString}
+                        setSearchString={setSearchString}
                       />
                     </td>
                     {generateMonthHeader()}

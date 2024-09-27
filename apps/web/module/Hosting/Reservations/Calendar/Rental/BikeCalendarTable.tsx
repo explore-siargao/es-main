@@ -61,6 +61,8 @@ const BikeCalendarTable = () => {
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
 
+  const [searchString, setSearchString] = useState("")
+
   const handleOpenRentalsEditPricePerDatesModal = (
     date: string,
     category: string
@@ -119,9 +121,65 @@ const BikeCalendarTable = () => {
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
     }
-    //@ts-ignore
-    setFilteredData(newFilteredData)
+
+    if(newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData);
+    } else if(searchString && newFilteredData.items.length == 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
   }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
+
+  useEffect(() => {
+    const calendarEnd = addDays(startDate, daysPerPage - 1);
+    
+    const isReservationWithinRange = (reservation: {
+      startDate: string | number | Date;
+      endDate: string | number | Date;
+    }) => {
+      const bookingStart = new Date(reservation.startDate);
+      const bookingEnd = new Date(reservation.endDate);
+      return !(isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate));
+    };
+  
+    const filterReservations = (reservations: any[]) =>
+      reservations.filter(isReservationWithinRange);
+  
+    const filterBicycles = (bicycles: any[]) =>
+      bicycles
+        .map((bicycles: { reservations: any, abbr: string }) => ({
+          ...bicycles,
+          reservations: filterReservations(bicycles.reservations),
+        }))
+        .filter(
+          (car: { abbr: string }) =>
+            !searchString ||
+            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+        );
+  
+        const filterCategories = (categories: any[]) =>
+          categories
+            .map((category: { bicycles: any }) => ({
+              ...category,
+              bicycles: filterBicycles(category.bicycles),
+            }))
+            .filter(
+              (category: { bicycles: string | any[] }) =>
+                category.bicycles.length > 0
+            )
+  
+    const newFilteredData = {
+      items: filterCategories(sampleData?.items ?? []),
+    };
+    
+    if(newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData);
+    } else if(searchString && newFilteredData.items.length == 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
+    
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData]);
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -327,13 +385,15 @@ const BikeCalendarTable = () => {
                 <thead className="">
                   <tr className="uppercase text-sm leading-normal">
                     <td colSpan={1} rowSpan={2} className="">
-                      <Sidebar
+                    <Sidebar
                         nextPrevFunction={moveStartDateByOneDay}
                         //@ts-ignore
                         openAddReservationModal={handleOpenAddReservationModal}
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
                         resetToToday={resetToToday}
+                        searchString={searchString}
+                        setSearchString={setSearchString}
                       />
                     </td>
                     {generateMonthHeader()}
