@@ -157,10 +157,10 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
         //@ts-ignore
         price: rental.pricing?.dayRate ?? 0,
-        pricePerDates: rental.pricePerDates.map((priceDate)=>({
-          fromDate:priceDate.fromDate,
-          toDate:priceDate.toDate,
-          price:priceDate?.price
+        pricePerDates: rental.pricePerDates.map((priceDate) => ({
+          fromDate: priceDate.fromDate,
+          toDate: priceDate.toDate,
+          price: priceDate?.price,
         })),
         cars: cars.filter((car) => car.abbr !== 'Unknown'),
       }
