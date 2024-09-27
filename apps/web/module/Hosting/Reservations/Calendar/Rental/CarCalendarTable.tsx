@@ -272,15 +272,19 @@ const CarCalendarTable = () => {
     const bookingEnd = new Date(booking.endDate)
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
+    if (
+      isAfter(bookingStart, calendarEnd) ||
+      isBefore(bookingEnd, addDays(startDate, -1))
+    ) {
       return null
     }
 
-    const startOffset = differenceInDays(bookingStart, startDate)
-    const endOffset = differenceInDays(bookingEnd, startDate)
-
-    const startCol = Math.max(startOffset, 0)
-    const endCol = Math.min(endOffset, daysPerPage - 1)
+    const startOffset = isBefore(bookingStart, addDays(startDate, -1))
+      ? differenceInDays(bookingStart, addDays(startDate, -1)) - 0.5
+      : differenceInDays(bookingStart, addDays(startDate, -1))
+    const endOffset = differenceInDays(bookingEnd, addDays(startDate, -1))
+    const startCol = Math.max(startOffset, -0.5)
+    const endCol = Math.min(endOffset, daysPerPage - 0.5)
 
     const colSpan = endCol - startCol + 1
     return { startCol, colSpan }
@@ -395,6 +399,7 @@ const CarCalendarTable = () => {
                             },
                             0
                           )
+                          console.log(category, date)
                           return (
                             <td
                               key={i}
@@ -412,7 +417,48 @@ const CarCalendarTable = () => {
                               >
                                 <div>{noReservationCount}</div>
                                 <div>
-                                  ${parseFloat(category.price).toFixed(2)}
+                                  &#8369;
+                                  {category.pricePerDates?.length === 0
+                                    ? parseFloat(`${category.price}`).toFixed(2)
+                                    : category.pricePerDates?.find((item) => {
+                                          const itemFromDate = new Date(
+                                            item.fromDate
+                                          ).setUTCHours(0, 0, 0, 0)
+                                          const itemToDate = new Date(
+                                            item.toDate
+                                          ).setUTCHours(0, 0, 0, 0)
+                                          const currentDate = new Date(
+                                            date
+                                          ).setUTCHours(0, 0, 0, 0)
+
+                                          return (
+                                            currentDate >= itemFromDate &&
+                                            currentDate <= itemToDate
+                                          )
+                                        })?.price
+                                      ? parseFloat(
+                                          category.pricePerDates.find(
+                                            (item) => {
+                                              const itemFromDate = new Date(
+                                                item.fromDate
+                                              ).setUTCHours(0, 0, 0, 0)
+                                              const itemToDate = new Date(
+                                                item.toDate
+                                              ).setUTCHours(0, 0, 0, 0)
+                                              const currentDate = new Date(
+                                                date
+                                              ).setUTCHours(0, 0, 0, 0)
+
+                                              return (
+                                                currentDate >= itemFromDate &&
+                                                currentDate <= itemToDate
+                                              )
+                                            }
+                                          ).price.dayRate
+                                        ).toFixed(2)
+                                      : parseFloat(`${category.price}`).toFixed(
+                                          2
+                                        )}
                                 </div>
                               </div>
                             </td>

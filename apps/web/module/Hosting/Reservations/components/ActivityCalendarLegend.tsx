@@ -29,6 +29,7 @@ const ActivityCalendarLegend = () => {
           </div>
         ))}
       </button>
+
       <ActivityLegendModal
         isOpen={legendModalOpen}
         onClose={() => setLegendModalOpen(false)}

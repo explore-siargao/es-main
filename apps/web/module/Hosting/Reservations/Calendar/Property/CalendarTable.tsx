@@ -19,6 +19,8 @@ import {
   SampleData,
   Reservation,
   Room,
+  Bed,
+  WholePlace,
 } from "../../types/CalendarTable"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 import AddPropertyReservationModal from "../AddReservationModal/Property"
@@ -29,6 +31,7 @@ import PropertyCalendarModal from "../PropertyCalendarModal"
 import { getColorClasses } from "../../helpers/legends"
 import { Spinner } from "@/common/components/ui/Spinner"
 import PropertyEditPricePerDatesModal from "./PropertyEditPricePerDatesModal"
+import { Typography } from "@/common/components/ui/Typography"
 
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
@@ -143,55 +146,67 @@ const PropertyCalendarTable = () => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) ||
+        isBefore(bookingEnd, addDays(startDate, -1))
       )
     }
 
     const transformUnitType = (unitType: {
-      beds: any
-      rooms: any
-      wholePlaces: any
+      beds: Bed[]
+      rooms: Room[]
+      wholePlaces: WholePlace[]
     }) => {
-      const bookableUnits = []
+      const bookableUnits: Bed[] = []
 
-      if (unitType.beds) {
-        bookableUnits.push(...transformUnits(unitType.beds))
-      }
+      const units = [
+        ...(unitType.beds || []),
+        ...(unitType.rooms || []),
+        ...(unitType.wholePlaces || []),
+      ]
 
-      if (unitType.rooms) {
-        bookableUnits.push(...transformUnits(unitType.rooms))
-      }
-
-      if (unitType.wholePlaces) {
-        bookableUnits.push(...transformUnits(unitType.wholePlaces))
-      }
+      units.forEach((unit) => {
+        const filteredReservations = unit.reservations.filter(
+          isReservationWithinRange
+        )
+        bookableUnits.push({
+          id: unit.id,
+          abbr: unit.abbr,
+          status: unit.status,
+          reservations: filteredReservations,
+          bookings: [],
+        })
+      })
 
       return bookableUnits
     }
 
-    const transformUnits = (units: any[]) =>
-      units.map(
-        (unit: {
-          id: string
-          abbr: any
-          status: any
-          reservations: any[]
-        }) => ({
-          id: unit.id,
-          abbr: unit.abbr,
-          status: unit.status,
-          reservations: unit.reservations.filter(isReservationWithinRange),
-        })
-      )
-
     const filterItems = (items: any[]) =>
       items
-        .map((item: { propertyTitle: any; bookableUnitTypes: any[] }) => ({
+        .map((item: { propertyTitle: string; bookableUnitTypes: any[] }) => ({
           name: item.propertyTitle,
-          price: 0,
-          bookableUnitTypes: item.bookableUnitTypes
-            .map(transformUnitType)
-            .flat(),
+          bookableUnitTypes: item.bookableUnitTypes.reduce(
+            (
+              acc: { unitType: any; units: any[] }[],
+              unitType: {
+                beds: any
+                rooms: any
+                wholePlaces: any
+                name: string
+              }
+            ) => {
+              if (unitType.beds || unitType.rooms || unitType.wholePlaces) {
+                const transformedUnits = transformUnitType(unitType)
+                if (transformedUnits.length > 0) {
+                  acc.push({
+                    unitType: unitType.name,
+                    units: transformedUnits,
+                  })
+                }
+              }
+              return acc
+            },
+            []
+          ),
         }))
         .filter(
           (item: { bookableUnitTypes: string | any[] }) =>
@@ -208,7 +223,6 @@ const PropertyCalendarTable = () => {
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-  // console.log(unitData)
   const generateCalendarHeader = () => {
     const headers = []
     const today = new Date()
@@ -318,19 +332,23 @@ const PropertyCalendarTable = () => {
     const bookingEnd = new Date(booking.endDate)
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    if (isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)) {
+    if (
+      isAfter(bookingStart, calendarEnd) ||
+      isBefore(bookingEnd, addDays(startDate, -1))
+    ) {
       return null
     }
 
-    const startOffset = differenceInDays(bookingStart, startDate)
-    const endOffset = differenceInDays(bookingEnd, startDate)
-    const startCol = Math.max(startOffset, 0)
-    const endCol = Math.min(endOffset, daysPerPage)
+    const startOffset = isBefore(bookingStart, addDays(startDate, -1))
+      ? differenceInDays(bookingStart, addDays(startDate, -1)) - 0.5
+      : differenceInDays(bookingStart, addDays(startDate, -1))
+    const endOffset = differenceInDays(bookingEnd, addDays(startDate, -1))
+    const startCol = Math.max(startOffset, -0.5)
+    const endCol = Math.min(endOffset, daysPerPage - 0.5)
 
     const colSpan = endCol - startCol + 1
     return { startCol, colSpan }
   }
-
   const handleEditRoom = (abbr: string) => {
     setEditingRoom(abbr)
     setTempRoomAbbr(abbr)
@@ -378,247 +396,279 @@ const PropertyCalendarTable = () => {
     mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
-
   return (
+    //<div></div>
     <>
       {isLoading ? (
         <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
           <Spinner variant={"primary"} />
         </div>
       ) : (
-        <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
-          <div>
-            <div className="overflow-auto">
-              <table className="min-w-max w-full rounded-xl">
-                <thead className="">
-                  <tr className="uppercase text-sm leading-normal">
-                    <td colSpan={1} rowSpan={2} className="">
-                      <Sidebar
-                        nextPrevFunction={moveStartDateByOneDay}
-                        //@ts-ignore
-                        openAddReservationModal={handleOpenAddReservationModal}
-                        filterCalendarDate={filterCalendarDate}
-                        setFilterCalendarDate={setFilterCalendarDate}
-                        resetToToday={resetToToday}
-                      />
-                    </td>
-                    {generateMonthHeader()}
-                  </tr>
-                  <tr className="uppercase text-sm leading-normal">
-                    {generateCalendarHeader()}
-                  </tr>
-                </thead>
-                <tbody>
-                  {unitData?.items?.map((category: any, index: number) => (
-                    <React.Fragment key={category.name}>
-                      <tr
-                        className="hover:bg-gray-100 cursor-pointer"
-                        onClick={() => toggleCollapse(category.name)}
-                      >
-                        <td
-                          className={`border p-4 text-left font-bold border-l-0`}
-                        >
-                          <span className="flex gap-2 items-center">
-                            {collapsed[category.name] ? (
-                              <ChevronRight />
-                            ) : (
-                              <ChevronDown />
-                            )}
-                            {category.name}
-                          </span>
-                        </td>
-                        {[...Array(daysPerPage)].map((_, i) => {
-                          const today = new Date()
-                          const date = format(
-                            addDays(startDate, i),
-                            "yyyy-MM-dd"
-                          )
-                          const isToday = isSameDay(date, today)
-
-                          const noReservationCount =
-                            category?.bookableUnitTypes?.reduce(
-                              (
-                                count: number,
-                                bookableUnitType: { reservations: any[] }
-                              ) => {
-                                const hasReservation =
-                                  bookableUnitType.reservations.some(
-                                    (reservation) => {
-                                      const reservationStart = format(
-                                        new Date(reservation.startDate),
-                                        "yyyy-MM-dd"
-                                      )
-                                      const reservationEnd = format(
-                                        new Date(reservation.endDate),
-                                        "yyyy-MM-dd"
-                                      )
-                                      return (
-                                        date >= reservationStart &&
-                                        date <= reservationEnd
-                                      )
-                                    }
-                                  )
-                                return count + (hasReservation ? 0 : 1)
-                              },
-                              0
-                            )
-                          return (
-                            <td
-                              key={i}
-                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
-                            >
-                              <div
-                                onClick={(e) => {
-                                  handleOpeneditPricePerDatesModal(
-                                    date,
-                                    category.bookableUnitTypes.id
-                                  )
-                                  e.stopPropagation()
-                                }}
-                                className="flex flex-col"
-                              >
-                                <div>{noReservationCount}</div>
-                                <div>
-                                  ${parseFloat(category.price).toFixed(2)}
-                                </div>
-                              </div>
-                            </td>
-                          )
-                        })}
-                      </tr>
-                      {!collapsed[category.name] &&
-                        category?.bookableUnitTypes?.map(
-                          (bed: Room, bedIndex: number) => (
-                            <tr
-                              key={bed.abbr}
-                              className="hover:bg-gray-100 relative"
-                            >
-                              <td className="border py-4 pr-4 pl-12 text-left border-l-0">
-                                <div className="flex justify-between items-center">
-                                  {editingRoom === bed.abbr ? (
-                                    <Input
-                                      type="text"
-                                      value={tempRoomAbbr}
-                                      onChange={(e) =>
-                                        setTempRoomAbbr(e.target.value)
-                                      }
-                                      autoFocus
-                                      className="mr-2"
-                                      label={""}
-                                    />
-                                  ) : (
-                                    <span>{bed.abbr}</span>
-                                  )}
-                                  {editingRoom === bed.abbr ? (
-                                    <Button
-                                      size={"icon"}
-                                      variant={"link"}
-                                      onClick={(e) =>
-                                        handleSaveUnitName(bed.id, tempRoomAbbr)
-                                      }
-                                    >
-                                      <Save className="text-gray-500 w-5" />
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      size={"icon"}
-                                      variant={"link"}
-                                      onClick={() => handleEditRoom(bed.abbr)}
-                                    >
-                                      <Edit3 className="text-gray-500 w-5" />
-                                    </Button>
-                                  )}
-                                </div>
-                              </td>
-                              <td
-                                colSpan={daysPerPage}
-                                className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
-                              >
-                                {bed.reservations.map(
-                                  (booking: Reservation) => {
-                                    const style = getBookingStyle(
-                                      startDate,
-                                      daysPerPage,
-                                      booking
-                                    )
-                                    if (!style) return null
-
-                                    const { startCol, colSpan } = style
-                                    const { colorClass, hoverColorClass } =
-                                      getColorClasses(booking.status)
-
-                                    return (
-                                      <div
-                                        key={booking.id}
-                                        style={{
-                                          left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                          width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                                        }}
-                                        onClick={() => {
-                                          setIsReservationModalOpen(true)
-                                          setSelectedReservation({
-                                            unit: bed.abbr,
-                                            reservation: booking,
-                                          })
-                                          console.log(selectedReservation)
-                                        }}
-                                        className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                                      >
-                                        <span className="text-white text-sm truncate px-2">
-                                          {booking.status ===
-                                          "Out-of-Service-Dates"
-                                            ? "Out of service"
-                                            : booking.name}
-                                        </span>
-                                      </div>
-                                    )
-                                  }
-                                )}
-                                <div className="absolute inset-0 z-10 flex h-full">
-                                  {generateCalendarRowBorder()}
-                                </div>
-                              </td>
-                            </tr>
-                          )
-                        )}
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
+        <>
+          {sampleData?.items?.length === 0 ? (
+            <div className="flex w-full h-[75vh] overflow-hidden pt-2 overflow-y-hidden">
+              <Typography fontWeight="semibold">
+                Property units have not been created yet. Please create a
+                property unit to display on the calendar.
+              </Typography>
             </div>
-            <FormProvider {...form}>
-              <form>
-                {selectedReservation && (
-                  <PropertyCalendarModal
-                    isModalOpen={isReservationModalOpen}
-                    onClose={closeReservationModal}
-                    selectedReservation={selectedReservation}
-                    isEditReservation={isEditReservation}
-                    setIsEditReservation={setIsEditReservation}
-                  />
-                )}
-              </form>
-            </FormProvider>
-            <PropertyEditPricePerDatesModal
-              isModalOpen={isEditPricePerDatesModalOpen}
-              onClose={() => setIsEditPricePerDatesModalOpen(false)}
-              selectedDate={selectedDate}
-              unitId={selectedUnitId}
-            />
-            <FormProvider {...form}>
-              <form>
-                <AddPropertyReservationModal
-                  isModalOpen={isAddReservationModalOpen}
-                  onClose={closeAddReservationModal}
-                  selectedLegendType={selectedLegendType}
-                  setSelectedLegendType={setSelectedLegendType}
-                  setIsLegendTypeSelected={setIsLegendTypeSelected}
-                  isLegendTypeSelected={isLegendTypeSelected}
+          ) : (
+            <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
+              <div>
+                <div className="overflow-auto">
+                  <table className="min-w-max w-full rounded-xl">
+                    <thead className="">
+                      <tr className="uppercase text-sm leading-normal">
+                        <td colSpan={1} rowSpan={2} className="">
+                          <Sidebar
+                            nextPrevFunction={moveStartDateByOneDay}
+                            //@ts-ignore
+                            openAddReservationModal={
+                              handleOpenAddReservationModal
+                            }
+                            filterCalendarDate={filterCalendarDate}
+                            setFilterCalendarDate={setFilterCalendarDate}
+                            resetToToday={resetToToday}
+                          />
+                        </td>
+                        {generateMonthHeader()}
+                      </tr>
+                      <tr className="uppercase text-sm leading-normal">
+                        {generateCalendarHeader()}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {unitData?.items?.map((category: any, index: number) => (
+                        <React.Fragment key={category.name}>
+                          {category.bookableUnitTypes.map((unitType: any) => (
+                            <React.Fragment key={unitType.unitType}>
+                              <tr
+                                className="hover:bg-gray-100 cursor-pointer"
+                                onClick={() =>
+                                  toggleCollapse(unitType.unitType)
+                                }
+                              >
+                                <td
+                                  className={`border p-4 text-left font-bold border-l-0`}
+                                >
+                                  <span className="flex gap-2 items-center">
+                                    {collapsed[unitType.unitType] ? (
+                                      <ChevronRight />
+                                    ) : (
+                                      <ChevronDown />
+                                    )}
+                                    {`${unitType.unitType} (${category.name})`}
+                                  </span>
+                                </td>
+                                {[...Array(daysPerPage)].map((_, i) => {
+                                  const today = new Date()
+                                  const date = format(
+                                    addDays(startDate, i),
+                                    "yyyy-MM-dd"
+                                  )
+                                  const isToday = isSameDay(date, today)
+
+                                  const noReservationCount =
+                                    unitType?.units?.reduce(
+                                      (
+                                        count: number,
+                                        unit: { reservations: any[] }
+                                      ) => {
+                                        const hasReservation =
+                                          unit.reservations.some(
+                                            (reservation) => {
+                                              const reservationStart = format(
+                                                new Date(reservation.startDate),
+                                                "yyyy-MM-dd"
+                                              )
+                                              const reservationEnd = format(
+                                                new Date(reservation.endDate),
+                                                "yyyy-MM-dd"
+                                              )
+                                              return (
+                                                date >= reservationStart &&
+                                                date <= reservationEnd
+                                              )
+                                            }
+                                          )
+                                        return count + (hasReservation ? 0 : 1)
+                                      },
+                                      0
+                                    ) || 0
+
+                                  return (
+                                    <td
+                                      key={i}
+                                      className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
+                                    >
+                                      <div
+                                        onClick={(e) => {
+                                          handleOpeneditPricePerDatesModal(
+                                            date,
+                                            unitType.units[0]?.id
+                                          )
+                                          e.stopPropagation()
+                                        }}
+                                        className="flex flex-col"
+                                      >
+                                        <div>{noReservationCount}</div>
+                                        <div>
+                                          $
+                                          {parseFloat(
+                                            unitType.price ?? "0"
+                                          ).toFixed(2)}
+                                        </div>
+                                      </div>
+                                    </td>
+                                  )
+                                })}
+                              </tr>
+
+                              {!collapsed[unitType.unitType] &&
+                                unitType.units.map(
+                                  (bed: Room, bedIndex: number) => (
+                                    <tr
+                                      key={bed.abbr}
+                                      className="hover:bg-gray-100 relative"
+                                    >
+                                      <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+                                        <div className="flex justify-between items-center">
+                                          {editingRoom === bed.abbr ? (
+                                            <Input
+                                              type="text"
+                                              value={tempRoomAbbr}
+                                              onChange={(e) =>
+                                                setTempRoomAbbr(e.target.value)
+                                              }
+                                              autoFocus
+                                              className="mr-2"
+                                              label={""}
+                                            />
+                                          ) : (
+                                            <span>{bed.abbr}</span>
+                                          )}
+                                          {editingRoom === bed.abbr ? (
+                                            <Button
+                                              size={"icon"}
+                                              variant={"link"}
+                                              onClick={(e) =>
+                                                handleSaveUnitName(
+                                                  bed.id,
+                                                  tempRoomAbbr
+                                                )
+                                              }
+                                            >
+                                              <Save className="text-gray-500 w-5" />
+                                            </Button>
+                                          ) : (
+                                            <Button
+                                              size={"icon"}
+                                              variant={"link"}
+                                              onClick={() =>
+                                                handleEditRoom(bed.abbr)
+                                              }
+                                            >
+                                              <Edit3 className="text-gray-500 w-5" />
+                                            </Button>
+                                          )}
+                                        </div>
+                                      </td>
+                                      <td
+                                        colSpan={daysPerPage}
+                                        className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                                      >
+                                        {bed.reservations.map(
+                                          (booking: Reservation) => {
+                                            const style = getBookingStyle(
+                                              startDate,
+                                              daysPerPage,
+                                              booking
+                                            )
+                                            if (!style) return null
+
+                                            const { startCol, colSpan } = style
+                                            const {
+                                              colorClass,
+                                              hoverColorClass,
+                                            } = getColorClasses(booking.status)
+
+                                            return (
+                                              <div
+                                                key={booking.id}
+                                                style={{
+                                                  left: `${(startCol * 100) / daysPerPage + 4}%`,
+                                                  width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                                }}
+                                                onClick={() => {
+                                                  setIsReservationModalOpen(
+                                                    true
+                                                  )
+                                                  setSelectedReservation({
+                                                    unit: bed.abbr,
+                                                    reservation: booking,
+                                                  })
+                                                }}
+                                                className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                              >
+                                                <span className="text-white text-sm truncate px-2">
+                                                  {booking.status ===
+                                                  "Out-of-Service-Dates"
+                                                    ? "Out of service"
+                                                    : booking.name}
+                                                </span>
+                                              </div>
+                                            )
+                                          }
+                                        )}
+                                        <div className="absolute inset-0 z-10 flex h-full">
+                                          {generateCalendarRowBorder()}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )
+                                )}
+                            </React.Fragment>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <FormProvider {...form}>
+                  <form>
+                    {selectedReservation && (
+                      <PropertyCalendarModal
+                        isModalOpen={isReservationModalOpen}
+                        onClose={closeReservationModal}
+                        selectedReservation={selectedReservation}
+                        isEditReservation={isEditReservation}
+                        setIsEditReservation={setIsEditReservation}
+                      />
+                    )}
+                  </form>
+                </FormProvider>
+                <PropertyEditPricePerDatesModal
+                  isModalOpen={isEditPricePerDatesModalOpen}
+                  onClose={() => setIsEditPricePerDatesModalOpen(false)}
+                  selectedDate={selectedDate}
+                  unitId={selectedUnitId}
                 />
-              </form>
-            </FormProvider>
-          </div>
-        </div>
+                <FormProvider {...form}>
+                  <form>
+                    <AddPropertyReservationModal
+                      isModalOpen={isAddReservationModalOpen}
+                      onClose={closeAddReservationModal}
+                      selectedLegendType={selectedLegendType}
+                      setSelectedLegendType={setSelectedLegendType}
+                      setIsLegendTypeSelected={setIsLegendTypeSelected}
+                      isLegendTypeSelected={isLegendTypeSelected}
+                    />
+                  </form>
+                </FormProvider>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   )

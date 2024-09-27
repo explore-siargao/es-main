@@ -3,8 +3,17 @@ import { Typography } from "@/common/components/ui/Typography"
 import ActivitiesCalendarTable from "./CalendarTable"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import ActivityCalendarLegend from "../../components/ActivityCalendarLegend"
+import sampleData from "../Rental/SampleData.json"
 
 const ActivitiesReservationCalendar = () => {
+  const hasData =
+    sampleData &&
+    Array.isArray(sampleData.categories) &&
+    sampleData.categories.length > 0 &&
+    sampleData.categories.some((category) =>
+      category?.rooms?.some((room) => room.bookings.length > 0)
+    )
+
   return (
     <div className="mt-20">
       <div className="mb-4">
@@ -29,13 +38,23 @@ const ActivitiesReservationCalendar = () => {
           <ReservationCalendarTab />
         </div>
 
-        <div className="flex mt-2">
-          <ActivitiesCalendarTable />
-        </div>
-
-        <div className="fixed bottom-4 right-4 z-20">
-          <ActivityCalendarLegend />
-        </div>
+        {hasData ? (
+          <>
+            <div className="flex mt-2">
+              <ActivitiesCalendarTable />
+            </div>
+            <div className="fixed bottom-4 right-4 z-20">
+              <ActivityCalendarLegend />
+            </div>
+          </>
+        ) : (
+          <div>
+            <Typography fontWeight="semibold" className="pt-4">
+              Activity have not been created yet. Please create a activity to
+              display on the calendar.
+            </Typography>
+          </div>
+        )}
       </div>
     </div>
   )
