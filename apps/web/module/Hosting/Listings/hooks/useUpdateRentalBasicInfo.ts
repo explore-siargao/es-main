@@ -8,6 +8,7 @@ export async function updateRentalBasicInfo(
   props: T_Rental_Basic_Info
 ) {
   const apiService = new ApiService()
+  console.log("hello")
   return await apiService.patch(`${API_URL_RENTALS}/${id}/basic-info`, props)
 }
 

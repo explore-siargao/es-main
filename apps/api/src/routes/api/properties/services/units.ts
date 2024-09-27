@@ -379,7 +379,6 @@ export const updateWholePlaceUnitBasicInfo = async (
     daysCanCancel,
   } = req.body
   if (
-    !subtitle ||
     !numBathRooms ||
     !totalSize ||
     !bedRooms ||

@@ -72,6 +72,7 @@ export const Z_Update_Bed_Basic_Info = z.object({
   title: z.string(),
   subtitle: z.string(),
   qty: z.number(),
+  daysCanCancel: z.number(),
   isHaveSharedBathRoom: z.enum(["Yes", "No"]).optional().nullable(),
   isSmokingAllowed: z.enum(["Yes", "No"]).optional().nullable(),
   totalSize: z.number(),

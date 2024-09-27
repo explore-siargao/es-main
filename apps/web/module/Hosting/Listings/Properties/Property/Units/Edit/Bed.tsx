@@ -67,6 +67,10 @@ const Bed = ({ pageType }: Prop) => {
   const amenities = useSelectAmenityStore((state) => state.amenities)
   const { control, register, handleSubmit, setValue, watch } =
     useForm<T_Update_Bed_Basic_Info>()
+  // up
+  const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
+    Number(1)
+  )
 
   const totalSizeInSqm = useWatch({
     control,
@@ -126,6 +130,7 @@ const Bed = ({ pageType }: Prop) => {
   }
 
   const onSubmit = async (formData: T_Update_Bed_Basic_Info) => {
+    formData.daysCanCancel = cancellationDaysCount
     formData.amenities = amenities
     const missingTags = photos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
@@ -160,6 +165,7 @@ const Bed = ({ pageType }: Prop) => {
         title: formData.title,
         subtitle: formData.subtitle,
         qty: Number(typeCount),
+        daysCanCancel: Number(cancellationDaysCount),
         isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
         isSmokingAllowed: formData.isSmokingAllowed,
         totalSize: formData.totalSize,
@@ -356,10 +362,10 @@ const Bed = ({ pageType }: Prop) => {
             </div>
           </div>
         </div>
-        <Typography variant="h4" fontWeight="semibold" className="flex mb-2">
+        <Typography variant="h4" fontWeight="semibold" className="flex">
           How big is this dorm room?
         </Typography>
-        <Typography className="text-xs text-gray-500 italic mt-2 mb-2">
+        <Typography className="text-xs text-gray-500 italic mb-2">
           Enter the dorm room size in square meters. We will automatically
           convert to square foot.
         </Typography>
@@ -388,10 +394,10 @@ const Bed = ({ pageType }: Prop) => {
           </div>
         </div>
         <div className="mt-6">
-          <Typography variant="h4" fontWeight="semibold" className="mb-2">
+          <Typography variant="h4" fontWeight="semibold">
             How many of this type you have?
           </Typography>
-          <Typography className="text-xs text-gray-500 italic mt-2 mb-2">
+          <Typography className="text-xs text-gray-500 italic mb-2">
             Identical units that will have the same price per night.
           </Typography>
           <div className="flex rounded-md">
@@ -423,6 +429,58 @@ const Bed = ({ pageType }: Prop) => {
               className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
               type="button"
               onClick={() => setTypeCount((typeCount: any) => typeCount + 1)}
+            >
+              <PlusIcon className="h-3 w-3" />
+            </button>
+          </div>
+        </div>
+        {/* working */}
+        <div>
+          <Typography variant="h4" fontWeight="semibold" className="mt-2">
+            How many days before cancellation allowed?
+          </Typography>
+          <Typography
+            variant="h5"
+            fontWeight="normal"
+            className="text-xs text-gray-500 italic mb-2"
+          >
+            How far in advance can a guest cancel their reservation?
+          </Typography>
+          <div className="flex">
+            <button
+              disabled={isPending || isFetching}
+              className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+              type="button"
+              onClick={() => {
+                cancellationDaysCount > 1 &&
+                  setCancellationDaysCount(
+                    (cancellationDaysCount: any) => cancellationDaysCount - 1
+                  )
+              }}
+            >
+              <MinusIcon className="h-3 w-3" />
+            </button>
+            <input
+              // disabled
+              type="number"
+              id="daysCanCancel"
+              className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+              value={cancellationDaysCount}
+              min={1}
+              onChange={(e) => {
+                const val = Number(e.target.value)
+                setCancellationDaysCount(val)
+              }}
+            />
+            <button
+              disabled={isPending || isFetching}
+              className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+              type="button"
+              onClick={() =>
+                setCancellationDaysCount(
+                  (cancellationDaysCount: number) => cancellationDaysCount + 1
+                )
+              }
             >
               <PlusIcon className="h-3 w-3" />
             </button>

@@ -44,6 +44,7 @@ type T_RoomUnit = {
   description: string
   size: number
   typeCount: number
+  daysCanCancel: number
   amenities: T_Property_Amenity[]
   bedRooms: IBedroom[]
   isHaveSharedBathRoom: "Yes" | "No" | null | undefined
@@ -90,6 +91,10 @@ const Room = ({ pageType }: Prop) => {
     sqm: 0,
     squareFoot: 0,
   })
+    // up
+    const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
+      Number(1)
+    )
 
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
   useEffect(() => {
@@ -158,6 +163,7 @@ const Room = ({ pageType }: Prop) => {
   }
 
   const onSubmit = async (formData: T_RoomUnit) => {
+    formData.daysCanCancel = cancellationDaysCount
     formData.amenities = amenities
     console.log("test: ", formData)
     const missingTags = photos.filter(
@@ -199,6 +205,7 @@ const Room = ({ pageType }: Prop) => {
         totalSize: Number(formData.size),
         description: "",
         qty: Number(typeCount),
+        daysCanCancel: Number(cancellationDaysCount),
         bedRooms: bedRooms,
         isHaveSharedBathRoom: formData.isHaveSharedBathRoom,
         isHaveSharedAmenities: formData.isHaveSharedAmenities,
@@ -445,6 +452,58 @@ const Room = ({ pageType }: Prop) => {
             >
               Yes
             </label>
+          </div>
+        </div>
+         {/* working */}
+         <div>
+          <Typography variant="h4" fontWeight="semibold" className="mt-2">
+            How many days before cancellation allowed?
+          </Typography>
+          <Typography
+            variant="h5"
+            fontWeight="normal"
+            className="text-xs text-gray-500 italic mb-2"
+          >
+            How far in advance can a guest cancel their reservation?
+          </Typography>
+          <div className="flex">
+            <button
+              disabled={isPending || isFetching}
+              className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+              type="button"
+              onClick={() => {
+                cancellationDaysCount > 1 &&
+                  setCancellationDaysCount(
+                    (cancellationDaysCount: any) => cancellationDaysCount - 1
+                  )
+              }}
+            >
+              <MinusIcon className="h-3 w-3" />
+            </button>
+            <input
+              // disabled
+              type="number"
+              id="daysCanCancel"
+              className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+              value={cancellationDaysCount}
+              min={1}
+              onChange={(e) => {
+                const val = Number(e.target.value)
+                setCancellationDaysCount(val)
+              }}
+            />
+            <button
+              disabled={isPending || isFetching}
+              className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+              type="button"
+              onClick={() =>
+                setCancellationDaysCount(
+                  (cancellationDaysCount: number) => cancellationDaysCount + 1
+                )
+              }
+            >
+              <PlusIcon className="h-3 w-3" />
+            </button>
           </div>
         </div>
         <hr className="mt-6 mb-4" />

@@ -98,7 +98,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.transmission = transmission || rental.transmission
         ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
         rental.ids = rental.ids
-        rental.daysCanCancel = rental.daysCanCancel
+        rental.daysCanCancel = daysCanCancel || rental.daysCanCancel 
         // Generate the name based on year, make, modelBadge, and transmission
         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
         const nameBase = `${year} ${make} ${modelBadge} ${transShort}`
@@ -128,7 +128,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.year = category === 'Motorbike' ? year || rental.year : null
         rental.qty = qty || rental.qty
         rental.ids = rental.ids
-        rental.daysCanCancel = rental.daysCanCancel
+        rental.daysCanCancel = daysCanCancel || rental.daysCanCancel
         // Generate the name based on year, make, modelBadge, and transmission
         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
         const nameBase =
