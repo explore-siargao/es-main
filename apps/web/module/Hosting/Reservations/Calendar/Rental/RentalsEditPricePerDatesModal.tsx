@@ -4,6 +4,9 @@ import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
 import { T_Rentals } from "@repo/contract"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import useUpdateRentalPricePerDate from "../hooks/useUpdateRentalPricePerDate"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface IEditPricePerDateProps {
   isModalOpen: boolean
@@ -18,11 +21,14 @@ const RentalsEditPricePerDatesModal = ({
   selectedDate,
   rentalId,
 }: IEditPricePerDateProps) => {
+  const queryClient = useQueryClient()
   const [toDate, setToDate] = useState("")
   const [dayRate, setDayRate] = useState("")
-  const [dateFrom, setDateFrom] = useState(selectedDate || "")
+  const [fromDate, setFromDate] = useState(selectedDate || "")
   const [requiredDeposit, setRequiredDeposit] = useState("")
   const { handleSubmit } = useForm<T_Rentals>({})
+
+  const { mutate, isPending } = useUpdateRentalPricePerDate(rentalId!)
 
   const clearInputs = () => {
     setToDate("")
@@ -37,12 +43,27 @@ const RentalsEditPricePerDatesModal = ({
 
   const handleSave = () => {
     const payload = {
-      dateFrom: dateFrom,
+      fromDate: fromDate,
       toDate: toDate,
       dayRate: Number(dayRate),
       requiredDeposit: Number(requiredDeposit),
     }
-    console.log(payload)
+    mutate(payload, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-car"],
+          })
+          toast.success(data.message)
+          onClose()
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    })
     clearInputs()
   }
 
@@ -51,7 +72,7 @@ const RentalsEditPricePerDatesModal = ({
   }
 
   useEffect(() => {
-    setDateFrom(selectedDate)
+    setFromDate(selectedDate)
   }, [selectedDate])
 
   console.log("RentalId:", rentalId)
@@ -69,8 +90,8 @@ const RentalsEditPricePerDatesModal = ({
               <Input2
                 type="date"
                 label={"From Date"}
-                value={dateFrom}
-                onChange={(e) => setDateFrom(e.target.value)}
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
                 description="Enter the start date"
                 placeholder="e.g., 2024-09-23"
                 className="w-full"
@@ -127,10 +148,11 @@ const RentalsEditPricePerDatesModal = ({
                 type="button"
                 variant="danger"
                 onClick={() => handleCancel()}
+                disabled={isPending}
               >
                 Cancel
               </Button>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={isPending}>
                 Save
               </Button>
             </div>
