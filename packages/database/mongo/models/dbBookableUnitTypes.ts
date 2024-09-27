@@ -122,9 +122,9 @@ const bookableUnitTypes = new Schema({
     ],
     default: [],
   },
-  daysCanCancel:{
-    type:Number,
-    required:true
+  daysCanCancel: {
+    type: Number,
+    required: true,
   },
   createdAt: {
     type: Date,

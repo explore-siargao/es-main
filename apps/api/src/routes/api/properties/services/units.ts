@@ -37,7 +37,7 @@ export const addWholePlaceUnit = async (req: Request, res: Response) => {
     isMultiRoomUnit: false,
     unitPrice: null,
     qty: 1,
-    daysCanCancel:0
+    daysCanCancel: 0,
   })
   await newBookableUnitType.save()
 
@@ -79,7 +79,7 @@ export const addRoomUnit = async (req: Request, res: Response) => {
     isMultiRoomUnit: false,
     qty: 0,
     unitPrice: null,
-    daysCanCancel:0
+    daysCanCancel: 0,
   })
 
   await newBookableUnitType.save()
@@ -126,7 +126,7 @@ export const addBedUnit = async (req: Request, res: Response) => {
     isMultiRoomUnit: false,
     qty: 0,
     unitPrice: null,
-    daysCanCancel:0
+    daysCanCancel: 0,
   })
   await newBookableUnitType.save()
   await dbProperties.findByIdAndUpdate(
@@ -160,7 +160,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
     isHaveSharedBathRoom,
     isSmokingAllowed,
     totalSize,
-    daysCanCancel
+    daysCanCancel,
   } = req.body
 
   if (
@@ -227,7 +227,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
           isHaveSharedBathRoom: isHaveSharedBathRoom,
           isSmokingAllowed: isSmokingAllowed,
           totalSize: totalSize,
-          daysCanCancel:daysCanCancel,
+          daysCanCancel: daysCanCancel,
           updatedAt: Date.now(),
         },
         ...(newIdsNeeded > 0 && {
@@ -264,7 +264,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
     bedRooms,
     isHaveSharedBathRoom,
     isHaveSharedAmenities,
-    daysCanCancel
+    daysCanCancel,
   } = req.body
 
   if (
@@ -332,7 +332,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
           bedRooms: bedRooms,
           isHaveSharedBathRoom: isHaveSharedBathRoom,
           isHaveSharedAmenities: isHaveSharedAmenities,
-          daysCanCancel:daysCanCancel,
+          daysCanCancel: daysCanCancel,
           updatedAt: Date.now(),
         },
         ...(newIdsNeeded > 0 && {
@@ -376,7 +376,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     livingRooms,
     singleBedRoom,
     singleLivingRoom,
-    daysCanCancel
+    daysCanCancel,
   } = req.body
   if (
     !subtitle ||
@@ -452,7 +452,7 @@ export const updateWholePlaceUnitBasicInfo = async (
             singleBedRoom: singleBedRoom,
             singleLivingRoom: singleLivingRoom,
             qty: qty,
-            daysCanCancel:daysCanCancel,
+            daysCanCancel: daysCanCancel,
             updatedAt: Date.now(),
           },
           ...(newIdsNeeded > 0 && {

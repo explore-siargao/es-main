@@ -39,13 +39,13 @@ export const getRentalBasicInfo = async (req: Request, res: Response) => {
         fuel: getRental?.fuel,
         transmission: getRental?.transmission,
         year: getRental?.year,
-        daysCanCancel:getRental.daysCanCancel
+        daysCanCancel: getRental.daysCanCancel,
       }
     } else if (category === E_Rental_Category.Bicycle) {
       basicInfo = {
         category: getRental.category,
         make: getRental.make,
-        daysCanCancel:getRental.daysCanCancel
+        daysCanCancel: getRental.daysCanCancel,
       }
     }
     res.json(response.success({ item: basicInfo }))
@@ -70,7 +70,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
     transmission,
     year,
     qty,
-    daysCanCancel
+    daysCanCancel,
   }: T_Rental_Basic_Info = req.body
   const isValidInput = Z_Rental_Basic_Info.safeParse(
     req.body as T_Rental_Basic_Info
@@ -161,7 +161,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         transmission: rental.transmission,
         year: rental.year,
         qty: rental.qty,
-        daysCanCancel:daysCanCancel
+        daysCanCancel: daysCanCancel,
       }
 
       res.json(
