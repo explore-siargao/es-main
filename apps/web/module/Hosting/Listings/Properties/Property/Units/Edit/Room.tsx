@@ -91,10 +91,9 @@ const Room = ({ pageType }: Prop) => {
     sqm: 0,
     squareFoot: 0,
   })
-    // up
-    const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
-      Number(1)
-    )
+  const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
+    Number(1)
+  )
 
   const updateBedrooms = useBedroomStore((state) => state.updateBedrooms)
   useEffect(() => {
@@ -232,6 +231,7 @@ const Room = ({ pageType }: Prop) => {
       setValue("subtitle", data?.item?.subtitle || "")
       setValue("description", data?.item?.description)
       setTypeCount(data?.item?.qty)
+      setCancellationDaysCount(Number(data?.item.daysCanCancel) || Number(1))
       setPhotos(data?.item?.photos)
       setAmenties(data?.item?.amenities)
       setValue("size", data?.item?.totalSize)
@@ -454,8 +454,7 @@ const Room = ({ pageType }: Prop) => {
             </label>
           </div>
         </div>
-         {/* working */}
-         <div>
+        <div>
           <Typography variant="h4" fontWeight="semibold" className="mt-2">
             How many days before cancellation allowed?
           </Typography>

@@ -98,7 +98,6 @@ const WholePlace = ({ pageType }: Prop) => {
   const [exactUnitCount, setExactUnitCount] = useState<number>(
     Number(data?.item?.numExactUnit) || 1
   )
-  // up
   const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
     Number(1)
   )
@@ -844,7 +843,6 @@ const WholePlace = ({ pageType }: Prop) => {
                 </button>
               </div>
             </div>
-            {/* working */}
             <div>
               <Typography variant="h4" fontWeight="semibold" className="mt-2">
                 How many days before cancellation allowed?

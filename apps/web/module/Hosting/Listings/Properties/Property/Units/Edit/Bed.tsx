@@ -67,7 +67,6 @@ const Bed = ({ pageType }: Prop) => {
   const amenities = useSelectAmenityStore((state) => state.amenities)
   const { control, register, handleSubmit, setValue, watch } =
     useForm<T_Update_Bed_Basic_Info>()
-  // up
   const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
     Number(1)
   )
@@ -192,6 +191,7 @@ const Bed = ({ pageType }: Prop) => {
       setValue("title", data?.item?.title)
       setValue("subtitle", data?.item?.subtitle)
       setTypeCount(data?.item.qty)
+      setCancellationDaysCount(Number(data?.item.daysCanCancel) || Number(1))
       setValue("isHaveSharedBathRoom", data?.item?.isHaveSharedBathRoom)
       setValue("isSmokingAllowed", data?.item?.isSmokingAllowed)
       setValue("totalSize", data?.item?.totalSize)
@@ -434,7 +434,6 @@ const Bed = ({ pageType }: Prop) => {
             </button>
           </div>
         </div>
-        {/* working */}
         <div>
           <Typography variant="h4" fontWeight="semibold" className="mt-2">
             How many days before cancellation allowed?

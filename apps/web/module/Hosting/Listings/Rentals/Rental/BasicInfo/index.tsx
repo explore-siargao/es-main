@@ -256,7 +256,6 @@ const BasicInfo = ({ pageType }: Prop) => {
             disabled={isPending || isLoading}
             {...register("qty", { required: true, valueAsNumber: true })}
           />
-          {/* working */}
           <div>
             <Typography variant="h4" fontWeight="semibold" className="mt-2">
               How many days before cancellation allowed?
