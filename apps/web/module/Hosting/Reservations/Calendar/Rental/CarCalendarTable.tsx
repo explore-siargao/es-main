@@ -30,7 +30,7 @@ import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
 import { Spinner } from "@/common/components/ui/Spinner"
 import RentalsEditPricePerDatesModal from "./RentalsEditPricePerDatesModal"
-import { TZDate } from "@date-fns/tz"
+import formatDateTZ from "@/common/helpers/formatDateTZ"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -427,17 +427,12 @@ const CarCalendarTable = () => {
                                   {category.pricePerDates?.length === 0
                                     ? parseFloat(`${category.price}`).toFixed(2)
                                     : category.pricePerDates?.find((item) => {
-                                          const itemFromDate = new TZDate(
-                                            startOfDay(item.fromDate),
-                                            "Asia/Manila"
+                                          const itemFromDate = formatDateTZ(startOfDay(item.fromDate))
+                                          const itemToDate = formatDateTZ(
+                                            endOfDay(item.toDate)
                                           )
-                                          const itemToDate = new TZDate(
-                                            endOfDay(item.toDate),
-                                            "Asia/Manila"
-                                          )
-                                          const currentDate = new TZDate(
-                                            startOfDay(date),
-                                            "Asia/Manila"
+                                          const currentDate = formatDateTZ(
+                                            startOfDay(date)
                                           )
                                           return isWithinInterval(currentDate, {
                                             start: itemFromDate,
@@ -447,17 +442,14 @@ const CarCalendarTable = () => {
                                       ? parseFloat(
                                           category.pricePerDates.find(
                                             (item: any) => {
-                                              const itemFromDate = new TZDate(
+                                              const itemFromDate = formatDateTZ(
                                                 startOfDay(item.fromDate),
-                                                "Asia/Manila"
                                               )
-                                              const itemToDate = new TZDate(
+                                              const itemToDate = formatDateTZ(
                                                 endOfDay(item.toDate),
-                                                "Asia/Manila"
                                               )
-                                              const currentDate = new TZDate(
-                                                startOfDay(date),
-                                                "Asia/Manila"
+                                              const currentDate = formatDateTZ(
+                                                startOfDay(date)
                                               )
                                               return isWithinInterval(
                                                 currentDate,

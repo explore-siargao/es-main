@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { Button } from "@/common/components/ui/Button"
 import { Flag } from "lucide-react"
 import { useState } from "react"

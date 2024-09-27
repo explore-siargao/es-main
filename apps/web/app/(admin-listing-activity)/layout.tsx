@@ -1,15 +1,13 @@
 import type { Metadata } from "next"
 
 import "@/app/globals.css"
-import QueryClientWrapper from "@/common/components/QueryClientWrapper"
-import GlobalModalWrapper from "@/common/components/GlobalModalWrapper"
 import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import Header from "@/common/components/AdminLayout/ListingActivityHeader"
 import Sidebar from "@/common/components/AdminLayout/ListingActivitySidebar"
-import AuthStateProvider from "@/common/components/AuthStateProvider"
+import GlobalWrappers from "@/common/components/Wrappers/GlobalWrappers"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -26,14 +24,10 @@ export default async function HostListingLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-        <QueryClientWrapper>
-          <AuthStateProvider>
-            <GlobalModalWrapper>
-              <Header />
-              <Sidebar>{children}</Sidebar>
-            </GlobalModalWrapper>
-          </AuthStateProvider>
-        </QueryClientWrapper>
+        <GlobalWrappers>
+          <Header />
+          <Sidebar>{children}</Sidebar>
+        </GlobalWrappers>
       </body>
     </html>
   )

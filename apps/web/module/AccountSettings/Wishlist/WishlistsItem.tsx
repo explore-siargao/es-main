@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import WishlistsItemContainer from "@/module/AccountSettings/Wishlist/WishlistsItemContainer"
 import React from "react"
 import dynamic from "next/dynamic"

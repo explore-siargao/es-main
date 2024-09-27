@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import SectionInfo from "./SectionInfo"
 import RestaurantLocation from "./RestaurantLocation"
 import { Separator } from "@/common/components/ui/Separator"

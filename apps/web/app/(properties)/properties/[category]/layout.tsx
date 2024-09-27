@@ -1,16 +1,14 @@
 import type { Metadata } from "next"
 
 import "@/app/globals.css"
-import QueryClientWrapper from "@/common/components/QueryClientWrapper"
-import GlobalModalWrapper from "@/common/components/GlobalModalWrapper"
 import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
-import AuthStateProvider from "@/common/components/AuthStateProvider"
 import Footer from "@/common/components/Footer"
 import Header from "@/common/components/Header"
 import ClientHeroSection from "@/app/(locations)/ClientHeroSection"
+import GlobalWrappers from "@/common/components/Wrappers/GlobalWrappers"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -27,16 +25,13 @@ export default async function RootLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-        <QueryClientWrapper>
-          <AuthStateProvider>
-            <GlobalModalWrapper>
+
+            <GlobalWrappers>
               <Header />
               <ClientHeroSection />
               {children}
               <Footer contentWidth="small" />
-            </GlobalModalWrapper>
-          </AuthStateProvider>
-        </QueryClientWrapper>
+            </GlobalWrappers>
       </body>
     </html>
   )

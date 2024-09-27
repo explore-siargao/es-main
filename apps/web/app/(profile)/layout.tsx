@@ -1,15 +1,13 @@
 import type { Metadata } from "next"
 
 import "@/app/globals.css"
-import QueryClientWrapper from "@/common/components/QueryClientWrapper"
-import GlobalModalWrapper from "@/common/components/GlobalModalWrapper"
 import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import Header from "@/common/components/Header"
 import Footer from "@/common/components/Footer"
-import AuthStateProvider from "@/common/components/AuthStateProvider"
+import GlobalWrappers from "@/common/components/Wrappers/GlobalWrappers"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -26,15 +24,13 @@ export default async function AccommodationLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-        <QueryClientWrapper>
-          <AuthStateProvider>
-            <GlobalModalWrapper>
+
+            <GlobalWrappers>
               <Header contentWidth="small" />
               <div className="min-h-screen">{children}</div>
               <Footer contentWidth="small" />
-            </GlobalModalWrapper>
-          </AuthStateProvider>
-        </QueryClientWrapper>
+            </GlobalWrappers>
+
       </body>
     </html>
   )

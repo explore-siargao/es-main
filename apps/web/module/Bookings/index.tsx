@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import Table from "../../common/components/Table"
 import Image from "next/image"
 import { Typography } from "@/common/components/ui/Typography"

@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import ListingItems from "./components/ListingItems"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import SideFilter from "./components/SideFilter"
 import { Typography } from "@/common/components/ui/Typography"
 import { useSearchParams } from "next/navigation"

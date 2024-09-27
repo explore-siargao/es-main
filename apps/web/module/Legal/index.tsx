@@ -1,6 +1,6 @@
 "use client"
 import serialize from "@/common/components/RichText/serialize"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 
 type T_Prop = {
   data: any

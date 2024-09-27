@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link"
-import { WidthWrapper } from "../WidthWrapper"
 import { Typography } from "../ui/Typography"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -11,6 +10,7 @@ import {
 import { APP_NAME } from "@repo/constants"
 import { SUPPORT, EXPLORE_SIARGAO, DESTINATION, PARTNER_WITH_US } from "./links"
 import { Globe } from "lucide-react"
+import { WidthWrapper } from "../Wrappers/WidthWrapper"
 
 const Footer = ({
   contentWidth = "medium",

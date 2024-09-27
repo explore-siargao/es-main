@@ -1,17 +1,15 @@
 import type { Metadata } from "next"
 
 import "@/app/globals.css"
-import QueryClientWrapper from "@/common/components/QueryClientWrapper"
-import GlobalModalWrapper from "@/common/components/GlobalModalWrapper"
 import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import ListingHeader from "@/common/components/HostLayout/ListingHeader"
 import ListingSidebar from "@/common/components/HostLayout/ListingSidebar"
-import AuthStateProvider from "@/common/components/AuthStateProvider"
 import { E_Listing_Category } from "@repo/contract"
 import { E_Listing_Status } from "@/common/types/global"
+import GlobalWrappers from "@/common/components/Wrappers/GlobalWrappers"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -28,9 +26,8 @@ export default async function HostNewListingPropertyLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-        <QueryClientWrapper>
-          <AuthStateProvider>
-            <GlobalModalWrapper>
+
+            <GlobalWrappers>
               <ListingHeader
                 listingStatus={E_Listing_Status.setup}
                 category={E_Listing_Category.Property}
@@ -41,9 +38,7 @@ export default async function HostNewListingPropertyLayout({
               >
                 {children}
               </ListingSidebar>
-            </GlobalModalWrapper>
-          </AuthStateProvider>
-        </QueryClientWrapper>
+            </GlobalWrappers>
       </body>
     </html>
   )
