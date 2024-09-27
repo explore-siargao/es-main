@@ -23,26 +23,6 @@ const SetupSidebar = ({
 }) => {
   const { data: finishedData } = useGetFinishedSections({ listingId, category })
 
-  let categoryData
-
-  // Conditionally call the hooks based on the category
-  switch (category) {
-    case E_Listing_Category.Property:
-      const { data: propertyData } = useGetPropertyById(listingId)
-      categoryData = propertyData
-      break
-    case E_Listing_Category.Activity:
-      const { data: activityData } = useGetActivityById(listingId)
-      categoryData = activityData
-      break
-    case E_Listing_Category.Rental:
-      const { data: rentalData } = useGetRentalById(listingId)
-      categoryData = rentalData
-      break
-    default:
-      categoryData = null
-  }
-
   const getLinks = (
     category: E_Listing_Category,
     listingId: string,
@@ -50,11 +30,19 @@ const SetupSidebar = ({
   ) => {
     const links = {
       [E_Listing_Category.Property]: getPropertyLinks(listingId, type ?? ""),
+
       [E_Listing_Category.Activity]: getActivityLinks(listingId),
       [E_Listing_Category.Rental]: getRentalLinks(listingId),
     }
     return links[category]
   }
+
+  const { data: categoryData } =
+    category === E_Listing_Category.Property
+      ? useGetPropertyById(listingId)
+      : category === E_Listing_Category.Activity
+        ? useGetActivityById(listingId)
+        : useGetRentalById(listingId)
 
   const finishedSections = finishedData?.item?.finishedSections || []
   const SECTION_LINKS = getLinks(category, listingId, categoryData?.item?.type)
