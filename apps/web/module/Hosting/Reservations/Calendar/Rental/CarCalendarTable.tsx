@@ -67,6 +67,8 @@ const CarCalendarTable = () => {
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
 
+  const [searchString, setSearchString] = useState("")
+
   const daysPerPage = 13
 
   const closeReservationModal = () => {
@@ -108,8 +110,7 @@ const CarCalendarTable = () => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, addDays(startDate, -1))
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
@@ -117,10 +118,16 @@ const CarCalendarTable = () => {
       reservations.filter(isReservationWithinRange)
 
     const filterCars = (cars: any[]) =>
-      cars.map((car: { reservations: any }) => ({
-        ...car,
-        reservations: filterReservations(car.reservations),
-      }))
+      cars
+        .map((car: { reservations: any; abbr: string }) => ({
+          ...car,
+          reservations: filterReservations(car.reservations),
+        }))
+        .filter(
+          (car: { abbr: string }) =>
+            !searchString ||
+            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+        )
 
     const filterCategories = (categories: any[]) =>
       categories
@@ -135,9 +142,14 @@ const CarCalendarTable = () => {
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
     }
-    //@ts-ignore
-    setFilteredData(newFilteredData)
-  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
+
+    if (newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData)
+    } else if (searchString && newFilteredData.items.length == 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData])
 
   useEffect(() => {
     if (filterCalendarDate !== "") {
@@ -330,6 +342,8 @@ const CarCalendarTable = () => {
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
                         resetToToday={resetToToday}
+                        searchString={searchString}
+                        setSearchString={setSearchString}
                       />
                     </td>
                     {generateMonthHeader()}
