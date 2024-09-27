@@ -176,14 +176,19 @@ const PropertyCalendarTable = () => {
           name: item.propertyTitle,
           bookableUnitTypes: item.bookableUnitTypes.reduce(
             (
-              acc: { unitType: any; units: any[], price:any, pricePerDates:any[] }[],
+              acc: {
+                unitType: any
+                units: any[]
+                price: any
+                pricePerDates: any[]
+              }[],
               unitType: {
                 beds: any
                 rooms: any
                 wholePlaces: any
                 name: any
-                price:any
-                pricePerDates:any[]
+                price: any
+                pricePerDates: any[]
               }
             ) => {
               if (unitType.beds || unitType.rooms || unitType.wholePlaces) {
@@ -193,7 +198,7 @@ const PropertyCalendarTable = () => {
                     unitType: unitType.name,
                     price: unitType.price,
                     units: transformedUnits,
-                    pricePerDates: unitType.pricePerDates
+                    pricePerDates: unitType.pricePerDates,
                   })
                 }
               }
@@ -552,56 +557,72 @@ const PropertyCalendarTable = () => {
                                       >
                                         <div>{noReservationCount}</div>
                                         <div>
-                                        &#8369;
-                                  {
-                                  unitType.pricePerDates?.length === 0
-                                    ? parseFloat(`${unitType.price}`).toFixed(2)
-                                    : unitType.pricePerDates?.find((item:any) => {
-                                          const itemFromDate = new TZDate(
-                                            startOfDay(item.fromDate),
-                                            "Asia/Manila"
-                                          )
-                                          const itemToDate = new TZDate(
-                                            endOfDay(item.toDate),
-                                            "Asia/Manila"
-                                          )
-                                          const currentDate = new TZDate(
-                                            startOfDay(date),
-                                            "Asia/Manila"
-                                          )
-                                          return isWithinInterval(currentDate, {
-                                            start: itemFromDate,
-                                            end: itemToDate,
-                                          })
-                                        })?.price
-                                      ? parseFloat(
-                                        unitType.pricePerDates.find(
-                                            (item: any) => {
-                                              const itemFromDate = new TZDate(
-                                                startOfDay(item.fromDate),
-                                                "Asia/Manila"
-                                              )
-                                              const itemToDate = new TZDate(
-                                                endOfDay(item.toDate),
-                                                "Asia/Manila"
-                                              )
-                                              const currentDate = new TZDate(
-                                                startOfDay(date),
-                                                "Asia/Manila"
-                                              )
-                                              return isWithinInterval(
-                                                currentDate,
-                                                {
-                                                  start: itemFromDate,
-                                                  end: itemToDate,
-                                                }
-                                              )
-                                            }
-                                          ).price.baseRate
-                                        ).toFixed(2)
-                                      : parseFloat(`${unitType.price}`).toFixed(
-                                          2
-                                        )}
+                                          &#8369;
+                                          {unitType.pricePerDates?.length === 0
+                                            ? parseFloat(
+                                                `${unitType.price}`
+                                              ).toFixed(2)
+                                            : unitType.pricePerDates?.find(
+                                                  (item: any) => {
+                                                    const itemFromDate =
+                                                      new TZDate(
+                                                        startOfDay(
+                                                          item.fromDate
+                                                        ),
+                                                        "Asia/Manila"
+                                                      )
+                                                    const itemToDate =
+                                                      new TZDate(
+                                                        endOfDay(item.toDate),
+                                                        "Asia/Manila"
+                                                      )
+                                                    const currentDate =
+                                                      new TZDate(
+                                                        startOfDay(date),
+                                                        "Asia/Manila"
+                                                      )
+                                                    return isWithinInterval(
+                                                      currentDate,
+                                                      {
+                                                        start: itemFromDate,
+                                                        end: itemToDate,
+                                                      }
+                                                    )
+                                                  }
+                                                )?.price
+                                              ? parseFloat(
+                                                  unitType.pricePerDates.find(
+                                                    (item: any) => {
+                                                      const itemFromDate =
+                                                        new TZDate(
+                                                          startOfDay(
+                                                            item.fromDate
+                                                          ),
+                                                          "Asia/Manila"
+                                                        )
+                                                      const itemToDate =
+                                                        new TZDate(
+                                                          endOfDay(item.toDate),
+                                                          "Asia/Manila"
+                                                        )
+                                                      const currentDate =
+                                                        new TZDate(
+                                                          startOfDay(date),
+                                                          "Asia/Manila"
+                                                        )
+                                                      return isWithinInterval(
+                                                        currentDate,
+                                                        {
+                                                          start: itemFromDate,
+                                                          end: itemToDate,
+                                                        }
+                                                      )
+                                                    }
+                                                  ).price.baseRate
+                                                ).toFixed(2)
+                                              : parseFloat(
+                                                  `${unitType.price}`
+                                                ).toFixed(2)}
                                         </div>
                                       </div>
                                     </td>

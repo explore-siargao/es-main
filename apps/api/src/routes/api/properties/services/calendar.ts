@@ -99,11 +99,11 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           {
             path: 'pricePerDates',
             populate: {
-              path: 'price' // Populate price within each pricePerDate
-            }
-          }
-        ]
-      });
+              path: 'price', // Populate price within each pricePerDate
+            },
+          },
+        ],
+      })
 
     const roomIds: string[] = []
     const wholePlaceIds: string[] = []
@@ -166,7 +166,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       )
 
       handleReservations(formattedItems, reservations)
-      const baseRate = unit.unitPrice?.baseRate ? unit.unitPrice.baseRate : 0;
+      const baseRate = unit.unitPrice?.baseRate ? unit.unitPrice.baseRate : 0
       return {
         id: unit._id,
         name: unit.title || 'Unknown',
