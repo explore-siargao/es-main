@@ -1,6 +1,6 @@
 import React from "react"
-import { cn } from "../helpers/cn"
 import { VariantProps, cva } from "class-variance-authority"
+import { cn } from "@/common/helpers/cn"
 
 const WidthWrapperVariants = cva(
   "flex flex-col mx-auto w-full max-w-[2520px] justify-center",

@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ImageCards from "./components/ImageCards"
 import prop1 from "@/common/assets/sample/prop-1.png"
 import prop2 from "@/common/assets/sample/prop-2.png"

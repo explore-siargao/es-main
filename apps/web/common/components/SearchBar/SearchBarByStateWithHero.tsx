@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ApplyToHostModal from "../../../module/LandingPage/components/ApplyToHostModal"
 import { useForm } from "react-hook-form"
 import { useSearchStore } from "../../store/useSearchStore"

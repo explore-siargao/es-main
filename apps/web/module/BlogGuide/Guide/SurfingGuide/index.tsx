@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import React from "react"
 import { Separator } from "@/common/components/ui/Separator"
 import SurfGuide from "./SurfGuide"

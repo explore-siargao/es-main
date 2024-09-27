@@ -1,6 +1,6 @@
 "use client"
 import { Separator } from "@/common/components/ui/Separator"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import GuideContent from "../components/Content"
 import Guides from "../components/RecommendedListing"
 

@@ -1,14 +1,12 @@
 import type { Metadata } from "next"
 
 import "@/app/globals.css"
-import QueryClientWrapper from "@/common/components/QueryClientWrapper"
-import GlobalModalWrapper from "@/common/components/GlobalModalWrapper"
 import { Toaster } from "react-hot-toast"
 import React from "react"
 import { LOGO_SINGLE_IMAGE } from "@/common/constants/index"
 import { APP_NAME } from "@repo/constants"
 import Header from "@/common/components/Header"
-import AuthStateProvider from "@/common/components/AuthStateProvider"
+import GlobalWrappers from "@/common/components/Wrappers/GlobalWrappers"
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -25,14 +23,11 @@ export default async function WishlistLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-        <QueryClientWrapper>
-          <AuthStateProvider>
-            <GlobalModalWrapper>
-              <Header />
-              <div className="min-h-screen">{children}</div>
-            </GlobalModalWrapper>
-          </AuthStateProvider>
-        </QueryClientWrapper>
+
+        <GlobalWrappers>
+          <Header />
+          <div className="min-h-screen">{children}</div>
+        </GlobalWrappers>
       </body>
     </html>
   )

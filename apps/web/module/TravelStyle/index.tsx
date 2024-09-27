@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import TravelStyleContainer from "./components/TravelStyleContainer"
 import { useSearchParams } from "next/navigation"
 import ErrorContent from "@/common/components/ErrorContent"

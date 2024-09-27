@@ -1,6 +1,6 @@
 "use client"
 
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import React, { useEffect } from "react"
 import FirstLevel from "./FirstLevel"
 import SetUpProfileAboutYou from "./SetUpProfileAboutYou"

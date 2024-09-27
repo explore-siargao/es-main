@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Typography } from "../ui/Typography"
-import { WidthWrapper } from "../WidthWrapper"
+import { WidthWrapper } from "../Wrappers/WidthWrapper"
 import {
   LucideBarChartHorizontalBig,
   LucideCoins,

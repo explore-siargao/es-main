@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import CartList from "./components/CartList"
 import SubTotalBox from "./components/SubTotalBox"
 

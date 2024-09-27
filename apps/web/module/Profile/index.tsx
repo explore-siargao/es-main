@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ProfileCard from "./components/ProfileCard"
 import ConfirmedInformation from "./components/ConfirmedInformation"
 import { FlagIcon } from "@heroicons/react/24/outline"

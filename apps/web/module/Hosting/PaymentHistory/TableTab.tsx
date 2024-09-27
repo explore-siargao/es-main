@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import Tabs from "@/common/components/Tabs"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import OverAllSummary from "./components/OverAllSummary"

@@ -1,11 +1,15 @@
 "use client"
 import React from "react"
-import useSessionStore from "../store/useSessionStore"
+import useSessionStore from "../../store/useSessionStore"
 import { T_Session } from "@repo/contract"
-import useGetSessionUser from "../hooks/useGetSessionUser"
-import { Spinner } from "./ui/Spinner"
+import useGetSessionUser from "../../hooks/useGetSessionUser"
+import { Spinner } from "../ui/Spinner"
 
-const AuthStateProvider = ({ children }: { children: React.ReactNode }) => {
+const AuthStateProviderWrapper = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const { data, isLoading } = useGetSessionUser()
   const updateSession = useSessionStore((state) => state.update)
   const removeSession = useSessionStore((state) => state.remove)
@@ -23,4 +27,4 @@ const AuthStateProvider = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
-export default AuthStateProvider
+export default AuthStateProviderWrapper

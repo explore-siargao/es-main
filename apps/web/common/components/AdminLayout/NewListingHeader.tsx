@@ -11,7 +11,7 @@ import {
   LINK_LOGOUT,
 } from "@/common/constants"
 import Link from "next/link"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { cn } from "@/common/helpers/cn"
 import { Popover, Transition } from "@headlessui/react"
 import { LucideArrowLeft, LucideEye } from "lucide-react"
