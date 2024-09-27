@@ -7,6 +7,9 @@ import {
   isAfter,
   isBefore,
   parse,
+  isWithinInterval,
+  startOfDay,
+  endOfDay,
   isSameDay,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
@@ -32,6 +35,7 @@ import { getColorClasses } from "../../helpers/legends"
 import { Spinner } from "@/common/components/ui/Spinner"
 import PropertyEditPricePerDatesModal from "./PropertyEditPricePerDatesModal"
 import { Typography } from "@/common/components/ui/Typography"
+import { TZDate } from "@date-fns/tz"
 
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
@@ -172,12 +176,14 @@ const PropertyCalendarTable = () => {
           name: item.propertyTitle,
           bookableUnitTypes: item.bookableUnitTypes.reduce(
             (
-              acc: { unitType: any; units: any[] }[],
+              acc: { unitType: any; units: any[], price:any, pricePerDates:any[] }[],
               unitType: {
                 beds: any
                 rooms: any
                 wholePlaces: any
-                name: string
+                name: any
+                price:any
+                pricePerDates:any[]
               }
             ) => {
               if (unitType.beds || unitType.rooms || unitType.wholePlaces) {
@@ -185,7 +191,9 @@ const PropertyCalendarTable = () => {
                 if (transformedUnits.length > 0) {
                   acc.push({
                     unitType: unitType.name,
+                    price: unitType.price,
                     units: transformedUnits,
+                    pricePerDates: unitType.pricePerDates
                   })
                 }
               }
@@ -243,7 +251,6 @@ const PropertyCalendarTable = () => {
 
     // Apply the search filter to newFilteredData
     const finalFilteredData = applySearchFilter(newFilteredData)
-    console.log(newFilteredData)
     // Update the state based on the final filtered data
     if (finalFilteredData.items.length > 0) {
       setUnitData(finalFilteredData)
@@ -391,7 +398,6 @@ const PropertyCalendarTable = () => {
     const category = newFilteredData?.items?.find(
       (category) => category.name === categoryName
     )
-    console.log(newFilteredData)
     if (category) {
       //@ts-ignore
       const bed = category?.beds[bedIndex]
@@ -501,7 +507,6 @@ const PropertyCalendarTable = () => {
                                     "yyyy-MM-dd"
                                   )
                                   const isToday = isSameDay(date, today)
-
                                   const noReservationCount =
                                     unitType?.units?.reduce(
                                       (
@@ -547,10 +552,56 @@ const PropertyCalendarTable = () => {
                                       >
                                         <div>{noReservationCount}</div>
                                         <div>
-                                          $
-                                          {parseFloat(
-                                            unitType.price ?? "0"
-                                          ).toFixed(2)}
+                                        &#8369;
+                                  {
+                                  unitType.pricePerDates?.length === 0
+                                    ? parseFloat(`${unitType.price}`).toFixed(2)
+                                    : unitType.pricePerDates?.find((item:any) => {
+                                          const itemFromDate = new TZDate(
+                                            startOfDay(item.fromDate),
+                                            "Asia/Manila"
+                                          )
+                                          const itemToDate = new TZDate(
+                                            endOfDay(item.toDate),
+                                            "Asia/Manila"
+                                          )
+                                          const currentDate = new TZDate(
+                                            startOfDay(date),
+                                            "Asia/Manila"
+                                          )
+                                          return isWithinInterval(currentDate, {
+                                            start: itemFromDate,
+                                            end: itemToDate,
+                                          })
+                                        })?.price
+                                      ? parseFloat(
+                                        unitType.pricePerDates.find(
+                                            (item: any) => {
+                                              const itemFromDate = new TZDate(
+                                                startOfDay(item.fromDate),
+                                                "Asia/Manila"
+                                              )
+                                              const itemToDate = new TZDate(
+                                                endOfDay(item.toDate),
+                                                "Asia/Manila"
+                                              )
+                                              const currentDate = new TZDate(
+                                                startOfDay(date),
+                                                "Asia/Manila"
+                                              )
+                                              return isWithinInterval(
+                                                currentDate,
+                                                {
+                                                  start: itemFromDate,
+                                                  end: itemToDate,
+                                                }
+                                              )
+                                            }
+                                          ).price.baseRate
+                                        ).toFixed(2)
+                                      : parseFloat(`${unitType.price}`).toFixed(
+                                          2
+                                        )}
                                         </div>
                                       </div>
                                     </td>

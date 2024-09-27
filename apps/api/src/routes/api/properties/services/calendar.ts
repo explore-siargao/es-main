@@ -11,6 +11,7 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { populate } from 'dotenv'
 
 const response = new ResponseService()
 
@@ -89,7 +90,20 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
   try {
     const bedProperties = await dbProperties
       .find({ offerBy: res.locals.user.id })
-      .populate('bookableUnits')
+      .populate({
+        path: 'bookableUnits',
+        populate: [
+          {
+            path: 'unitPrice', // Assuming unitPrice references another collection
+          },
+          {
+            path: 'pricePerDates',
+            populate: {
+              path: 'price' // Populate price within each pricePerDate
+            }
+          }
+        ]
+      });
 
     const roomIds: string[] = []
     const wholePlaceIds: string[] = []
@@ -152,11 +166,11 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       )
 
       handleReservations(formattedItems, reservations)
-
+      const baseRate = unit.unitPrice?.baseRate ? unit.unitPrice.baseRate : 0;
       return {
         id: unit._id,
         name: unit.title || 'Unknown',
-        price: unit.pricing?.dayRate ?? 0,
+        price: baseRate,
         pricePerDates: unit.pricePerDates,
         [propertyName]: formattedItems,
       }
