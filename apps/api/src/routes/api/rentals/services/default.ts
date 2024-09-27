@@ -111,6 +111,7 @@ export const addRental = async (req: Request, res: Response) => {
       qty: null,
       finishedSections: '',
       status: 'Incomplete',
+      daysCanCancel: 0,
     })
 
     await rental.save()
