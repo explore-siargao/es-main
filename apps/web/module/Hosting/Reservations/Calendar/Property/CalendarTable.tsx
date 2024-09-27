@@ -64,6 +64,8 @@ const PropertyCalendarTable = () => {
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
 
+  const [searchString, setSearchString] = useState("")
+
   const daysPerPage = 13
 
   const closeReservationModal = () => {
@@ -121,65 +123,45 @@ const PropertyCalendarTable = () => {
   }
 
   useEffect(() => {
-    if (filterCalendarDate !== "") {
-      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
-      console.log(parsedDate)
-      setStartDate(addDays(parsedDate, -4))
-      queryClient.invalidateQueries({
-        queryKey: ["calendar-property"],
-      })
-    } else {
-      setStartDate(addDays(new Date(), -4))
-      queryClient.invalidateQueries({
-        queryKey: ["calendar-property"],
-      })
-    }
-  }, [filterCalendarDate])
-
-  useEffect(() => {
-    const calendarEnd = addDays(startDate, daysPerPage - 1)
-
+    const calendarEnd = addDays(startDate, daysPerPage - 1);
+  
     const isReservationWithinRange = (reservation: {
-      startDate: string | number | Date
-      endDate: string | number | Date
+      startDate: string | number | Date;
+      endDate: string | number | Date;
     }) => {
-      const bookingStart = new Date(reservation.startDate)
-      const bookingEnd = new Date(reservation.endDate)
-      return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, addDays(startDate, -1))
-      )
-    }
-
+      const bookingStart = new Date(reservation.startDate);
+      const bookingEnd = new Date(reservation.endDate);
+      return !(isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate));
+    };
+  
     const transformUnitType = (unitType: {
-      beds: Bed[]
-      rooms: Room[]
-      wholePlaces: WholePlace[]
+      beds: Bed[];
+      rooms: Room[];
+      wholePlaces: WholePlace[];
     }) => {
-      const bookableUnits: Bed[] = []
-
+      const bookableUnits: Bed[] = [];
+  
       const units = [
         ...(unitType.beds || []),
         ...(unitType.rooms || []),
         ...(unitType.wholePlaces || []),
-      ]
-
+      ];
+  
       units.forEach((unit) => {
-        const filteredReservations = unit.reservations.filter(
-          isReservationWithinRange
-        )
+        const filteredReservations = unit.reservations.filter(isReservationWithinRange);
+  
         bookableUnits.push({
           id: unit.id,
           abbr: unit.abbr,
           status: unit.status,
           reservations: filteredReservations,
           bookings: [],
-        })
-      })
-
-      return bookableUnits
-    }
-
+        });
+      });
+  
+      return bookableUnits;
+    };
+  
     const filterItems = (items: any[]) =>
       items
         .map((item: { propertyTitle: string; bookableUnitTypes: any[] }) => ({
@@ -187,38 +169,72 @@ const PropertyCalendarTable = () => {
           bookableUnitTypes: item.bookableUnitTypes.reduce(
             (
               acc: { unitType: any; units: any[] }[],
-              unitType: {
-                beds: any
-                rooms: any
-                wholePlaces: any
-                name: string
-              }
+              unitType: { beds: any; rooms: any; wholePlaces: any; name: string }
             ) => {
               if (unitType.beds || unitType.rooms || unitType.wholePlaces) {
-                const transformedUnits = transformUnitType(unitType)
+                const transformedUnits = transformUnitType(unitType);
                 if (transformedUnits.length > 0) {
                   acc.push({
                     unitType: unitType.name,
                     units: transformedUnits,
-                  })
+                  });
                 }
               }
-              return acc
+              return acc;
             },
             []
           ),
         }))
-        .filter(
-          (item: { bookableUnitTypes: string | any[] }) =>
-            item.bookableUnitTypes.length > 0
-        )
-
+        .filter((item: { bookableUnitTypes: string | any[] }) => item.bookableUnitTypes.length > 0);
+  
+        const applySearchFilter = (data: any) => {
+          if (!searchString) return data; // No search string, return original data
+        
+          const trimmedSearchString = searchString.toLowerCase().trim();
+        
+          const filteredItems = data.items
+            .map((category: { name: string; bookableUnitTypes: any[] }) => ({
+              ...category,
+              bookableUnitTypes: category.bookableUnitTypes
+                .map((unitType: any) => ({
+                  ...unitType,
+                  units: unitType.units.filter((unit: { abbr: string; reservations: any[] }) => {
+                    const trimmedAbbr = unit.abbr.toLowerCase().trim();
+                    return trimmedAbbr.includes(trimmedSearchString) ||
+                      unit.reservations.some((reservation: { name: string }) => {
+                        const trimmedName = reservation.name.toLowerCase().trim();
+                        return trimmedName.includes(trimmedSearchString);
+                      });
+                  }),
+                }))
+                .filter((unitType: { units: any[] }) => unitType.units.length > 0), // Only keep unitTypes with matching units
+            }))
+            .filter((category: { bookableUnitTypes: any[] }) => 
+              category.bookableUnitTypes.length > 0 // Only keep categories with matching bookableUnitTypes
+            );
+        
+          return {
+            ...data,
+            items: filteredItems,
+          };
+        };
+  
+    // Create the newFilteredData based on the original filter logic
     const newFilteredData = {
       items: filterItems(sampleData?.items ?? []),
+    };
+  
+    // Apply the search filter to newFilteredData
+    const finalFilteredData = applySearchFilter(newFilteredData);
+    console.log(newFilteredData)
+    // Update the state based on the final filtered data
+    if (finalFilteredData.items.length > 0) {
+      setUnitData(finalFilteredData);
+    } else if (searchString && finalFilteredData.items.length === 0) {
+      toast.error(`No matched results for "${searchString}"`);
+      setSearchString('');
     }
-
-    setUnitData(newFilteredData)
-  }, [startDate, daysPerPage, sampleData?.items, setUnitData])
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setUnitData]);
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -229,7 +245,7 @@ const PropertyCalendarTable = () => {
 
     for (let i = 0; i < daysPerPage; i++) {
       const date = addDays(startDate, i)
-      const isToday = isSameDay(date, today) // Check if the current date matches
+      const isToday = isSameDay(date, today)
 
       headers.push(
         <th
@@ -307,7 +323,6 @@ const PropertyCalendarTable = () => {
     }
   }
 
-  // Use useEffect to trigger refetch after startDate changes
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
@@ -423,12 +438,12 @@ const PropertyCalendarTable = () => {
                           <Sidebar
                             nextPrevFunction={moveStartDateByOneDay}
                             //@ts-ignore
-                            openAddReservationModal={
-                              handleOpenAddReservationModal
-                            }
+                            openAddReservationModal={handleOpenAddReservationModal}
                             filterCalendarDate={filterCalendarDate}
                             setFilterCalendarDate={setFilterCalendarDate}
                             resetToToday={resetToToday}
+                            searchString={searchString}
+                            setSearchString={setSearchString}
                           />
                         </td>
                         {generateMonthHeader()}
