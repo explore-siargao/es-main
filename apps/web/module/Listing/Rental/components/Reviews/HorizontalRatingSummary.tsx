@@ -7,15 +7,15 @@ import {
   MessageSquare,
   Map,
   Tag,
+  LucideStar,
 } from "lucide-react"
-import { StarIcon } from "@heroicons/react/20/solid"
 import { Typography } from "@/common/components/ui/Typography"
 
 const HorizontalRatingSummary = () => {
   return (
     <>
       <div className="flex mb-4 space-x-2 mt-20">
-        <StarIcon className="h-7 w-7" />
+        <LucideStar className="h-7 w-7" />
         <Typography variant={"h3"} className="font-semibold mt-0.5">
           4.60 • 4 reviews
         </Typography>

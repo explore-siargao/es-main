@@ -26,7 +26,7 @@ const isHostActivityOwner = async (
       _id: activityId,
     })
   } catch (err) {
-    return res.status(400).json(
+    res.status(400).json(
       response.error({
         message: 'Invalid activity ID format.',
       })
@@ -36,7 +36,7 @@ const isHostActivityOwner = async (
   if (activity && loggedInUser.isHost) {
     return next()
   } else {
-    return res.status(403).json(
+    res.status(403).json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })

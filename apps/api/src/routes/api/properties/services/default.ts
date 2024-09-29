@@ -14,7 +14,7 @@ export const addProperty = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const isHost = res.locals.user?.isHost
   if (!isHost) {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })
@@ -55,7 +55,7 @@ export const addProperty = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -128,15 +128,15 @@ export const deleteProperty = async (req: Request, res: Response) => {
     })
 
     if (!property) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Property not found or already deleted!',
         })
       )
     }
 
-    if (property.offerBy?.toString() !== userId) {
-      return res.json(
+    if (property?.offerBy?.toString() !== userId) {
+      res.json(
         response.error({
           message: USER_NOT_AUTHORIZED,
         })
@@ -204,15 +204,15 @@ export const updatePropertyType = async (req: Request, res: Response) => {
       .exec()
 
     if (!updatePropertyType) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Property not found for the given host id and property id',
         })
       )
     }
-    return res.json(
+    res.json(
       response.success({
-        item: { type: updatePropertyType.type },
+        item: { type: updatePropertyType?.type },
         message: 'Property type updated successfully',
       })
     )
@@ -245,13 +245,13 @@ export const updateWholePlaceType = async (req: Request, res: Response) => {
       .exec()
 
     if (!updateWholePlaceType) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Property not found for the given host id and property id',
         })
       )
     }
-    return res.json(
+    res.json(
       response.success({
         item: { updateWholePlaceType },
         message: 'Whole place type updated successfully',
@@ -333,7 +333,7 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
         { new: true }
       )
       if (!updatedProperty) {
-        return res.json(
+        res.json(
           response.error({
             message: 'Property not found!',
           })
@@ -346,14 +346,14 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: JSON.parse(isValidInput.error.message),
       })
@@ -380,7 +380,7 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
     !latitude &&
     !howToGetThere
   ) {
-    return res.json(response.error({ message: 'Required value is empty' }))
+    res.json(response.error({ message: 'Required value is empty' }))
   }
 
   try {
@@ -389,10 +389,10 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
       .populate('location')
 
     if (!property) {
-      return res.json(response.error({ message: 'Property not found' }))
+      res.json(response.error({ message: 'Property not found' }))
     }
 
-    if (property.location === null) {
+    if (property?.location === null) {
       const newLocation = new dbLocations({
         streetAddress: streetAddress,
         barangay: barangay,

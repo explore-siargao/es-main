@@ -22,14 +22,14 @@ export const getAllRentals = async (req: Request, res: Response) => {
       .populate('photos')
       .populate('location')
 
-    return res.json(
+    res.json(
       response.success({
         items: filteredDataGetAllRentals,
         allItemCount: filteredDataGetAllRentals.length,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -41,7 +41,7 @@ export const addRental = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const isHost = res.locals.user?.isHost
   if (!isHost) {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })
@@ -114,7 +114,7 @@ export const addRental = async (req: Request, res: Response) => {
       daysCanCancel: 0,
     })
 
-    await rental.save()
+    await rental?.save()
 
     res.json(
       response.success({
@@ -143,16 +143,16 @@ export const getRentalDetails = async (req: Request, res: Response) => {
       .exec()
 
     if (!getRental) {
-      return res.json(response.error({ message: 'No rental details found' }))
+      res.json(response.error({ message: 'No rental details found' }))
     }
 
-    const category = getRental.category as unknown as string
+    const category = getRental?.category as unknown as string
 
     if (category === E_Rental_Category.Car) {
-      rentalDetail = getRental.details
+      rentalDetail = getRental?.details
     } else if ('Motorbike' === E_Rental_Category.Motorbike) {
       // FIX ANY HERE
-      const details = getRental.details as any
+      const details = getRental?.details as any
       rentalDetail = {
         // id: details._id,
         engineCapacityLiter: details.engineCapacityLiter,
@@ -166,7 +166,7 @@ export const getRentalDetails = async (req: Request, res: Response) => {
       }
     } else if (category === E_Rental_Category.Bicycle) {
       // FIX ANY HERE
-      const details = getRental.details as any
+      const details = getRental?.details as any
       rentalDetail = {
         // id: details._id,
         condition: details.condition,
@@ -175,12 +175,12 @@ export const getRentalDetails = async (req: Request, res: Response) => {
         minAgeReq: details.minAgeReq,
       }
     } else {
-      return res.json(response.error({ message: 'Invalid rental category' }))
+      res.json(response.error({ message: 'Invalid rental category' }))
     }
 
     res.json(response.success({ item: rentalDetail }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -210,20 +210,20 @@ export const getRental = async (req: Request, res: Response) => {
       .exec()
 
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental with given ID not found!',
         })
       )
     }
 
-    return res.json(
+    res.json(
       response.success({
         item: rental,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -280,15 +280,15 @@ export const deleteRental = async (req: Request, res: Response) => {
     const rental = await dbRentals.findOne({ _id: rentalId, deletedAt: null })
 
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental not found or already deleted!',
         })
       )
     }
 
-    if (rental.host?.toString() !== userId) {
-      return res.json(
+    if (rental?.host?.toString() !== userId) {
+      res.json(
         response.error({
           message: USER_NOT_AUTHORIZED,
         })
@@ -335,7 +335,7 @@ export const getRentalCounts = async (req: Request, res: Response) => {
       host: hostId,
     })
 
-    return res.json(
+    res.json(
       response.success({
         item: {
           cars: carCount,
@@ -345,7 +345,7 @@ export const getRentalCounts = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

@@ -1,11 +1,11 @@
 "use client"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { StarIcon } from "@heroicons/react/20/solid"
 import React, { useState } from "react"
 import { APP_NAME } from "@repo/constants"
 import Image from "next/image"
 import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
+import { LucideStar } from "lucide-react"
 
 const ListingPriceDetailsBox = () => {
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
@@ -27,7 +27,7 @@ const ListingPriceDetailsBox = () => {
               Villa Manao · Private Pool | Bathtub | Sky shower
             </Typography>
             <div className="flex">
-              <StarIcon height={15} />
+              <LucideStar height={15} />
               <Typography variant="h5">0 (0 review)</Typography>
             </div>
           </div>

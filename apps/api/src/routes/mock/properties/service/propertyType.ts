@@ -18,15 +18,15 @@ export const addPropertyType = async (req: Request, res: Response) => {
   const hostId = Number(res.locals.user.id)
   const type: string = req.body.type
   if (!hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!type) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   if (
     !Object.values(PropertyType).includes(type.toUpperCase() as PropertyType)
   ) {
-    return res.json(response.error({ message: 'Invalid property type' }))
+    res.json(response.error({ message: 'Invalid property type' }))
   }
 
   properties.push({

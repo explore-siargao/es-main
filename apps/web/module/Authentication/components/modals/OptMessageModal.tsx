@@ -2,12 +2,12 @@ import ModalContainer from "@/common/components/ModalContainer"
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
-import { CheckCircleIcon } from "@heroicons/react/24/outline"
 import { Button } from "@/common/components/ui/Button"
 import useSetReceivedEmail from "../../hooks/useSetReceivedEmail"
 import toast from "react-hot-toast"
 import useSessionStore from "@/common/store/useSessionStore"
 import { APP_NAME } from "@repo/constants"
+import { LucideCheckCircle } from "lucide-react"
 
 const OptMessageModal = () => {
   const isOpen = useOptMessageStore((state) => state.isOpen)
@@ -37,7 +37,7 @@ const OptMessageModal = () => {
   return (
     <ModalContainer onClose={() => closeModal()} isOpen={isOpen} size="sm">
       <div className="p-6 text-center h-screen md:h-full">
-        <CheckCircleIcon className="mx-auto w-12 h-12 text-success-700" />
+        <LucideCheckCircle className="mx-auto w-12 h-12 text-success-700" />
         <Typography variant={"h3"} fontWeight={"semibold"}>
           You’re all signed up!
         </Typography>

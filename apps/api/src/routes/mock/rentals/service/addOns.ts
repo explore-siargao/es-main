@@ -18,35 +18,36 @@ export const getAddOns = async (req: Request, res: Response) => {
       (item) => item.id === id && hostId === item.hostId
     )
     if (!getRental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental not found',
         })
       )
-    }
-    if (getRental.category === 'Car') {
-      addOns = {
-        roofRack: getRental.AddOns.roofRack,
-        dashCam: getRental.AddOns.dashCam,
-        others: getRental.AddOns.others,
-      }
-    } else if (
-      getRental.category === 'Motorbike' ||
-      getRental.category === 'Bicycle'
-    ) {
-      addOns = {
-        boardRack: getRental.AddOns.boardRack,
-        babySeat: getRental.AddOns.babySeat,
-        includesHelmet: getRental.AddOns.includesHelmet,
-        others: getRental.AddOns.others,
-      }
     } else {
-      return res.json(response.error({ message: 'Invalid rental category' }))
-    }
+      if (getRental.category === 'Car') {
+        addOns = {
+          roofRack: getRental?.AddOns.roofRack,
+          dashCam: getRental?.AddOns.dashCam,
+          others: getRental?.AddOns.others,
+        }
+      } else if (
+        getRental?.category === 'Motorbike' ||
+        getRental?.category === 'Bicycle'
+      ) {
+        addOns = {
+          boardRack: getRental?.AddOns.boardRack,
+          babySeat: getRental?.AddOns.babySeat,
+          includesHelmet: getRental?.AddOns.includesHelmet,
+          others: getRental?.AddOns.others,
+        }
+      } else {
+        res.json(response.error({ message: 'Invalid rental category' }))
+      }
 
-    res.json(response.success({ item: addOns }))
+      res.json(response.success({ item: addOns }))
+    }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -72,13 +73,13 @@ export const updateAddOns = async (req: Request, res: Response) => {
         (item) => item.id === id && userId === item.hostId
       )
       if (!getRental) {
-        return res.json(response.error({ message: 'Rental not found' }))
+        res.json(response.error({ message: 'Rental not found' }))
       }
-      if (getRental.hostId !== userId) {
-        return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      if (getRental?.hostId !== userId) {
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
       }
-      const addOns = getRental.AddOns
-      if (getRental.category === 'Car') {
+      const addOns = getRental?.AddOns
+      if (addOns && getRental?.category === 'Car') {
         addOns.roofRack = roofRack || (addOns.roofRack as boolean)
         addOns.boardRack = false || (addOns.roofRack as boolean)
         addOns.babySeat = false || (addOns.babySeat as boolean)
@@ -87,8 +88,9 @@ export const updateAddOns = async (req: Request, res: Response) => {
         //@ts-ignore
         addOns.others = others || addOns.others
       } else if (
-        getRental.category === 'Motorbike' ||
-        getRental.category === 'Bicycle'
+        addOns &&
+        (getRental?.category === 'Motorbike' ||
+          getRental?.category === 'Bicycle')
       ) {
         addOns.roofRack = false || (addOns.roofRack as boolean)
         addOns.boardRack = boardRack || (addOns.roofRack as boolean)
@@ -98,7 +100,9 @@ export const updateAddOns = async (req: Request, res: Response) => {
         //@ts-ignore
         addOns.others = others || addOns.others
       }
-      getRental.finishedSections = '["basicInfo", "details", "addOns"]'
+      if (getRental) {
+        getRental.finishedSections = '["basicInfo", "details", "addOns"]'
+      }
       res.json(
         response.success({
           item: addOns,
@@ -106,14 +110,14 @@ export const updateAddOns = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

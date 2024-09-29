@@ -28,7 +28,7 @@ export const updateActivities = async (req: Request, res: Response) => {
   }: T_Update_Activity_Basic_Info = req.body
   const isValidInput = Z_Update_Activity_Basic_Info.safeParse(req.body)
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (isValidInput.success) {
     try {
@@ -37,10 +37,10 @@ export const updateActivities = async (req: Request, res: Response) => {
         deletedAt: null,
       })
       if (!getActivity) {
-        return res.json(response.error({ message: 'Activity not found' }))
+        res.json(response.error({ message: 'Activity not found' }))
       }
       const updateBasicInfo = await dbActivities.findByIdAndUpdate(
-        getActivity._id,
+        getActivity?._id,
         {
           $set: {
             title: title,
@@ -64,14 +64,14 @@ export const updateActivities = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
 
@@ -79,13 +79,13 @@ export const getActivities = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
   const id = req.params.activityId
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   try {
     const activitiesData = await dbActivities.findOne({ _id: id })
 
     if (!activitiesData) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Activities with the given ID not found!',
         })
@@ -93,24 +93,24 @@ export const getActivities = async (req: Request, res: Response) => {
     }
 
     const data = {
-      id: activitiesData._id,
-      title: activitiesData.title,
-      activityType: activitiesData.activityType,
-      experienceType: activitiesData.experienceType,
-      description: activitiesData.description,
-      highLights: activitiesData.highLights,
-      durationHour: activitiesData.durationHour,
-      durationMinute: activitiesData.durationMinute,
-      languages: activitiesData.languages,
+      id: activitiesData?._id,
+      title: activitiesData?.title,
+      activityType: activitiesData?.activityType,
+      experienceType: activitiesData?.experienceType,
+      description: activitiesData?.description,
+      highLights: activitiesData?.highLights,
+      durationHour: activitiesData?.durationHour,
+      durationMinute: activitiesData?.durationMinute,
+      languages: activitiesData?.languages,
     }
 
-    return res.json(
+    res.json(
       response.success({
         item: data,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

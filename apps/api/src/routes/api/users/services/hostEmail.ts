@@ -9,7 +9,7 @@ export type TSendEmailParams = {
 export class HostEmail extends EmailService {
   async sendHostConfirmation(sendEmailParams: TSendEmailParams) {
     const { to } = sendEmailParams
-    const emailHtml = render(BecomeHostEmailConfirmation())
+    const emailHtml = await render(BecomeHostEmailConfirmation())
     const sendEmail = super.sendEmail({
       to: typeof to === 'string' ? [to] : to,
       template: emailHtml,

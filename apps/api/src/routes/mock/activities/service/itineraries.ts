@@ -23,7 +23,7 @@ export const addItineraries = async (req: Request, res: Response) => {
     )
     console.log(activitiesData?.isBuilderEnabled)
     if (!isHost || !activities.some((item) => item.hostId === userId)) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (activitiesData?.isBuilderEnabled) {
@@ -33,14 +33,14 @@ export const addItineraries = async (req: Request, res: Response) => {
       //@ts-ignore
       activitiesData.Itineraries = null
     }
-    return res.json(
+    res.json(
       response.success({
         item: activitiesData?.Itineraries,
         message: 'New itinerary successfully added for the specific activity!',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -58,45 +58,45 @@ export const getItineraries = async (req: Request, res: Response) => {
     )
 
     if (!isHost || !activities.some((item) => item.hostId === userId)) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (!activitiesData) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Activities with the given ID not found!',
         })
       )
-    }
+    } else {
+      const data = {
+        id: activitiesData.id,
+        meetingPointDescription: activitiesData.meetingPointDescription,
+        latitude: activitiesData.latitude,
+        longitude: activitiesData.longitude,
+        address: activitiesData.Address,
+        howToGetThere: activitiesData.howToGetThere,
+        isBuilderEnbled: activitiesData.isBuilderEnabled,
+        itineraries:
+          activitiesData.Itineraries !== null
+            ? activitiesData.Itineraries.map((item) => {
+                return {
+                  ...item,
+                  activities: item.activities
+                    ? JSON.parse(item.activities)
+                    : null,
+                }
+              }).sort((l, h) => l.destinationNumber - h.destinationNumber)
+            : null,
+      }
 
-    const data = {
-      id: activitiesData.id,
-      meetingPointDescription: activitiesData.meetingPointDescription,
-      latitude: activitiesData.latitude,
-      longitude: activitiesData.longitude,
-      address: activitiesData.Address,
-      howToGetThere: activitiesData.howToGetThere,
-      isBuilderEnbled: activitiesData.isBuilderEnabled,
-      itineraries:
-        activitiesData.Itineraries !== null
-          ? activitiesData.Itineraries.map((item) => {
-              return {
-                ...item,
-                activities: item.activities
-                  ? JSON.parse(item.activities)
-                  : null,
-              }
-            }).sort((l, h) => l.destinationNumber - h.destinationNumber)
-          : null,
+      res.json(
+        response.success({
+          item: data,
+        })
+      )
     }
-
-    return res.json(
-      response.success({
-        item: data,
-      })
-    )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -114,11 +114,11 @@ export const updateItinerary = async (req: Request, res: Response) => {
     )
 
     if (!activities.some((item) => item.hostId === userId)) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (activityIndex === -1) {
-      return res.json(
+      res.json(
         response.error({ message: 'Activity with the given ID not found!' })
       )
     }
@@ -161,21 +161,21 @@ export const updateItinerary = async (req: Request, res: Response) => {
       activities[activityIndex].Itineraries = updatedActivityData.itineraries
       //@ts-ignore
       activities[activityIndex].finishedSections = '["basicInfo","itinerary"]'
-      return res.json(
+      res.json(
         response.success({
           item: updatedActivityData,
           message: 'Activity successfully updated!',
         })
       )
     } else {
-      return res.json(
+      res.json(
         response.error({
           message: 'Error updating activities!',
         })
       )
     }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -195,45 +195,45 @@ export const deleteItinerary = async (req: Request, res: Response) => {
     )
 
     if (!isHost || !activities.some((item) => item.hostId === userId)) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (!activitiesData) {
-      return res.json(
+      res.json(
         response.error({ message: 'Activity with the given ID not found!' })
       )
-    }
+    } else {
+      const itineraryIndex =
+        activitiesData.Itineraries !== null
+          ? activitiesData.Itineraries.findIndex(
+              (itinerary) => itinerary.id === itineraryId
+            )
+          : -1
 
-    const itineraryIndex =
-      activitiesData.Itineraries !== null
-        ? activitiesData.Itineraries.findIndex(
-            (itinerary) => itinerary.id === itineraryId
-          )
-        : -1
+      if (itineraryIndex === -1) {
+        res.json(
+          response.error({ message: 'Itinerary with the given ID not found!' })
+        )
+      }
 
-    if (itineraryIndex === -1) {
-      return res.json(
-        response.error({ message: 'Itinerary with the given ID not found!' })
+      const deleteItinerary =
+        activitiesData.Itineraries !== null &&
+        activitiesData.Itineraries.splice(itineraryIndex, 1)
+
+      res.json(
+        response.success({
+          //@ts-ignore
+          item: deleteItinerary[0] || null,
+          message: 'Itinerary successfully deleted from the specific activity',
+          allItemCount:
+            activitiesData.Itineraries !== null
+              ? activitiesData.Itineraries.length
+              : 0,
+        })
       )
     }
-
-    const deleteItinerary =
-      activitiesData.Itineraries !== null &&
-      activitiesData.Itineraries.splice(itineraryIndex, 1)
-
-    return res.json(
-      response.success({
-        //@ts-ignore
-        item: deleteItinerary[0] || null,
-        message: 'Itinerary successfully deleted from the specific activity',
-        allItemCount:
-          activitiesData.Itineraries !== null
-            ? activitiesData.Itineraries.length
-            : 0,
-      })
-    )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

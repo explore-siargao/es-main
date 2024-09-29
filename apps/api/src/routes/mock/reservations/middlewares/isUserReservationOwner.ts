@@ -26,7 +26,7 @@ const isUserReservationOwner = async (
   if (reservation) {
     return next()
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })

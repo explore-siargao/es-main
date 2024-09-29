@@ -19,13 +19,13 @@ export const getPoliciesByProperty = async (req: Request, res: Response) => {
     })
 
     if (!property) {
-      return res.json(response.error({ message: 'Property not found!' }))
+      res.json(response.error({ message: 'Property not found!' }))
     }
-    const policies = property.policies
+    const policies = property?.policies
 
-    return res.json(response.success({ items: policies }))
+    res.json(response.success({ items: policies }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -43,11 +43,11 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
     deletedAt: null,
   })
   if (!getProperty) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
 
   if (!policies || !Array.isArray(policies)) {
-    return res.json(
+    res.json(
       response.error({
         message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
       })

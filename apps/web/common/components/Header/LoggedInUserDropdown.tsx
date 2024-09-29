@@ -4,13 +4,13 @@ import {
   LINK_ACCOUNT_WISHLIST,
   LINK_LOGOUT,
 } from "@/common/constants"
-import { Bars3Icon, UserCircleIcon } from "@heroicons/react/20/solid"
 import React, { Fragment } from "react"
 import { Popover, Transition } from "@headlessui/react"
 import { ACCOUNT, WISHLISTS } from "@/common/constants"
 import useSessionStore from "@/common/store/useSessionStore"
 import { usePathname } from "next/navigation"
 import { E_UserRole } from "@repo/contract"
+import { LucideCircleUser, LucideMenu } from "lucide-react"
 
 const LoggedInUserDropdown = () => {
   const path = usePathname()
@@ -64,8 +64,8 @@ const LoggedInUserDropdown = () => {
   return (
     <Popover className="relative">
       <Popover.Button className="flex gap-1 rounded-full border-text-50 border items-center focus:ring-gray-400 focus:border-gray-400 px-2 py-1">
-        <Bars3Icon className="h-5 text-text-200" />
-        <UserCircleIcon className="h-8 text-gray-400" />
+        <LucideMenu className="h-5 text-text-200" />
+        <LucideCircleUser className="h-8 text-gray-400" />
       </Popover.Button>
       <Transition
         as={Fragment}

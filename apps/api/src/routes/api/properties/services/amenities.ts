@@ -32,15 +32,15 @@ export const updateBookableUnitTypeAmenities = async (
     deletedAt: null,
   })
   if (!getProperty) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
-  if (!getProperty.bookableUnits.includes(bookableUnitTypeId as any)) {
-    return res.json(
+  if (!getProperty?.bookableUnits.includes(bookableUnitTypeId as any)) {
+    res.json(
       response.error({ message: 'Bookable unit not exists on this property' })
     )
   }
   if (!amenities || !Array.isArray(amenities)) {
-    return res.json(
+    res.json(
       response.error({ message: REQUIRED_VALUE_EMPTY + ' or invalid data' })
     )
   }
@@ -81,14 +81,14 @@ export const updateBookableUnitTypeAmenities = async (
         { new: true }
       )
     }
-    return res.json(
+    res.json(
       response.success({
         items: amenities,
         message: 'Bookable unit amenities successfully updated',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -126,10 +126,10 @@ export const getAmenitiesByBookableUnitTypeId = async (
       })
 
     if (!getProperty) {
-      return res.json(response.error({ message: 'Property not found' }))
+      res.json(response.error({ message: 'Property not found' }))
     }
 
-    const getBookableUnits = getProperty.bookableUnits
+    const getBookableUnits = getProperty?.bookableUnits || []
 
     // Use .some() to find the matching bookable unit by ObjectId comparison
     const getBookableUnit: any = getBookableUnits.find((item: any) =>
@@ -138,9 +138,9 @@ export const getAmenitiesByBookableUnitTypeId = async (
 
     const amenities = getBookableUnit?.amenities
 
-    return res.json(response.success({ item: amenities }))
+    res.json(response.success({ item: amenities }))
   } catch (err: any) {
-    return res.status(500).json(
+    res.status(500).json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

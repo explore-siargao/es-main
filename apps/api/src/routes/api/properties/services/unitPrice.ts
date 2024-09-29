@@ -22,11 +22,11 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     })
 
   if (!getProperty) {
-    return res.json(response.error({ message: 'This property does not exist' }))
+    res.json(response.error({ message: 'This property does not exist' }))
   }
 
   if (!unitPrice) {
-    return res.json(
+    res.json(
       response.error({
         message: REQUIRED_VALUE_EMPTY + ' or invalid data format',
       })
@@ -98,13 +98,13 @@ export const getUnitPrice = async (req: Request, res: Response) => {
     })
 
   if (!getProperty) {
-    return res.json(response.error({ message: 'This property does not exist' }))
+    res.json(response.error({ message: 'This property does not exist' }))
   }
 
-  const bookableUnits = getProperty.bookableUnits
+  const bookableUnits = getProperty?.bookableUnits || []
 
   if (bookableUnits.length === 0) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable unit not found for this property',
       })

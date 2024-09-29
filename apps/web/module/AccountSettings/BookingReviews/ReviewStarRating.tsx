@@ -1,5 +1,5 @@
+import { LucideStar } from "lucide-react"
 import React from "react"
-import { StarIcon } from "@heroicons/react/20/solid"
 
 export interface ReviewStartRatingProps {
   totalStars: number
@@ -28,7 +28,9 @@ const ReviewStarRating = ({
   const renderStar = (index: number) => {
     console.log(rating % 1)
     if (index < Math.floor(rating)) {
-      return <StarIcon width={getStarWidth()} className="text-secondary-500" />
+      return (
+        <LucideStar width={getStarWidth()} className="text-secondary-500" />
+      )
     } else if (index < rating && rating % 1 !== 0) {
       return (
         <div
@@ -39,11 +41,11 @@ const ReviewStarRating = ({
           }}
         >
           <div className="relative">
-            <StarIcon
+            <LucideStar
               width={getStarWidth()}
               className="absolute top-0 left-0 text-gray-400"
             />
-            <StarIcon
+            <LucideStar
               width={getStarWidth()}
               className="absolute top-0 left-0 text-secondary-500"
               style={{ clipPath: "inset(0 50% 0 0)" }}
@@ -52,7 +54,7 @@ const ReviewStarRating = ({
         </div>
       )
     } else {
-      return <StarIcon width={getStarWidth()} className="text-gray-400" />
+      return <LucideStar width={getStarWidth()} className="text-gray-400" />
     }
   }
 

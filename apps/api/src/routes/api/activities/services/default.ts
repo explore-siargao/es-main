@@ -59,7 +59,7 @@ export const addActivity = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -83,7 +83,7 @@ export const getActivity = async (req: Request, res: Response) => {
       .populate('photos')
     res.json(response.success({ item: getActivity }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -95,7 +95,7 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const isHost = res.locals.user?.isHost
   if (!isHost) {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })
@@ -114,7 +114,7 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -127,7 +127,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
 
   if (!isHost) {
-    return res.json(
+    res.json(
       response.error({
         message: 'User is not authorized to perform this action.',
       })
@@ -138,7 +138,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
     const activity = await dbActivities.findOne({ _id: activityId })
 
     if (!activity) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Activity with the given ID not found!',
         })
@@ -148,7 +148,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
     const { meetingPoint, isSegmentBuilderEnabled, segments } = req.body
 
     const updateMeetingPoint = await dbLocations.findByIdAndUpdate(
-      activity.meetingPoint,
+      activity?.meetingPoint,
       {
         $set: {
           streetAddress: meetingPoint.streetAddress,
@@ -165,7 +165,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
 
     if (isSegmentBuilderEnabled) {
       if (segments.length < 2) {
-        return res.json(
+        res.json(
           response.error({
             message: 'Please add at least 2 items in the itinerary builder',
           })
@@ -186,7 +186,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
     )
 
     if (
-      activity.status === 'Incomplete' &&
+      activity?.status === 'Incomplete' &&
       !activity.finishedSections.includes('itinerary')
     ) {
       await dbActivities.findByIdAndUpdate(
@@ -212,7 +212,7 @@ export const updateItinerary = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : 'An unknown error occurred.',
       })

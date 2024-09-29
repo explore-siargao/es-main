@@ -16,7 +16,7 @@ export const getFinishedSections = async (req: Request, res: Response) => {
       : []
     res.json(response.success({ item: { finishedSections } }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -40,7 +40,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
       response.success({ item: sections, message: 'Finished sections saved' })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

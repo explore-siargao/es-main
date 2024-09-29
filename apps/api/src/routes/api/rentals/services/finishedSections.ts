@@ -13,7 +13,7 @@ export const getFinishedSections = async (req: Request, res: Response) => {
     const finishedSections = getRental?.finishedSections
     res.json(response.success({ item: { finishedSections } }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -28,21 +28,21 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
   try {
     const rental = await dbRentals.findById({ _id: rentalId })
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental not found!',
         })
       )
     }
-    if (rental.host?.toString() !== hostId) {
-      return res.json(
+    if (rental?.host?.toString() !== hostId) {
+      res.json(
         response.error({
           message: USER_NOT_AUTHORIZED,
         })
       )
     }
     const updatedRental = await dbRentals.findByIdAndUpdate(
-      rental._id,
+      rental?._id,
       {
         $push: {
           finishedSections: newFinishedSection,
@@ -61,7 +61,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

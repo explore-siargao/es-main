@@ -19,39 +19,39 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
     try {
       const getActivity = activities.find((item) => item.id === activityId)
       if (!getActivity) {
-        return res.json(response.error({ message: 'Activity not found' }))
-      }
+        res.json(response.error({ message: 'Activity not found' }))
+      } else {
+        if (!getActivity.hostId === userId) {
+          res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+        }
 
-      if (!getActivity.hostId === userId) {
-        return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+        getActivity.whatToBring = JSON.stringify(whatToBring)
+        getActivity.notAllowed = JSON.stringify(notAllowed)
+        getActivity.policies = JSON.stringify(policies)
+        getActivity.cancellationDays = cancellationDays
+        getActivity.finishedSections =
+          '["basicInfo","itinerary","inclusions","additionalInfo"]'
+        res.json(
+          response.success({
+            item: {
+              whatToBring: getActivity.whatToBring,
+              notAllowed: getActivity.notAllowed,
+              policies: getActivity.policies,
+              cancellationDays: getActivity.cancellationDays,
+            },
+            message: 'Activity additonal informational successfully saved',
+          })
+        )
       }
-
-      getActivity.whatToBring = JSON.stringify(whatToBring)
-      getActivity.notAllowed = JSON.stringify(notAllowed)
-      getActivity.policies = JSON.stringify(policies)
-      getActivity.cancellationDays = cancellationDays
-      getActivity.finishedSections =
-        '["basicInfo","itinerary","inclusions","additionalInfo"]'
-      res.json(
-        response.success({
-          item: {
-            whatToBring: getActivity.whatToBring,
-            notAllowed: getActivity.notAllowed,
-            policies: getActivity.policies,
-            cancellationDays: getActivity.cancellationDays,
-          },
-          message: 'Activity additonal informational successfully saved',
-        })
-      )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -63,23 +63,23 @@ export const getAdditionalInfo = async (req: Request, res: Response) => {
   try {
     const getActivity = activities.find((item) => item.id === activityId)
     if (!getActivity) {
-      return res.json(response.error({ message: 'Activity not found' }))
-    }
+      res.json(response.error({ message: 'Activity not found' }))
+    } else {
+      if (!getActivity.hostId === userId) {
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      }
 
-    if (!getActivity.hostId === userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-    }
+      const additionalInfo = {
+        whatToBring: JSON.parse(getActivity.whatToBring),
+        notAllowed: JSON.parse(getActivity.notAllowed),
+        policies: JSON.parse(getActivity.policies),
+        cancellationDays: getActivity.cancellationDays,
+      }
 
-    const additionalInfo = {
-      whatToBring: JSON.parse(getActivity.whatToBring),
-      notAllowed: JSON.parse(getActivity.notAllowed),
-      policies: JSON.parse(getActivity.policies),
-      cancellationDays: getActivity.cancellationDays,
+      res.json(response.success({ item: additionalInfo }))
     }
-
-    res.json(response.success({ item: additionalInfo }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

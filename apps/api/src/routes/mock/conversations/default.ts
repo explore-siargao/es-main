@@ -9,7 +9,7 @@ const response = new ResponseService()
 export const getConversations = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   if (!userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   const filterConvo = conversations.filter(
     (item) => item.hostId === userId || item.guestId === userId
@@ -53,9 +53,7 @@ export const getConversations = async (req: Request, res: Response) => {
       return dateA - dateB
     })
 
-  return res.json(
-    response.success({ items: convos, allItemCount: convos.length })
-  )
+  res.json(response.success({ items: convos, allItemCount: convos.length }))
 }
 
 export const addMessage = async (req: Request, res: Response) => {
@@ -64,7 +62,7 @@ export const addMessage = async (req: Request, res: Response) => {
   const now = new Date()
   const { listingId, message, receiverId } = req.body
   if (!listingId || (!message && !receiverId)) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   const messageData = {
     id: 10,
@@ -130,7 +128,7 @@ export const addMessage = async (req: Request, res: Response) => {
   }
   //@ts-ignore
   if (!userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   conversations.push(newConversation)
 
@@ -145,7 +143,7 @@ export const addMessage = async (req: Request, res: Response) => {
 export const getMessages = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   if (!userId) {
-    return res.json({ messages: USER_NOT_AUTHORIZED })
+    res.json({ messages: USER_NOT_AUTHORIZED })
   }
   const conversationId = Number(req.params.conversationId)
   const convos = conversations.filter(

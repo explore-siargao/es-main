@@ -106,10 +106,10 @@ export const oldAddProperty = async (req: Request, res: Response) => {
 
   const isValidInput = Z_Property.safeParse(req.body)
   if (!hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!isValidInput.success) {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -244,7 +244,7 @@ export const addProperty = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const isHost = res.locals.user?.isHost
   if (!hostId || !isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   const host = {
     id: hostId,
@@ -275,7 +275,7 @@ export const updatePropertyType = async (req: Request, res: Response) => {
     (item) => item.hostId === hostId && item.id === propertyId
   )
   if (propertyIndex === -1) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Property not found for the given host id and property id',
       })
@@ -300,7 +300,7 @@ export const updateProperty = async (req: Request, res: Response) => {
     (item) => item.hostId === hostId && item.id === propertyId
   )
   if (propertyIndex === -1) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Property not found for the given host id and property id',
       })
@@ -325,7 +325,7 @@ export const deleteProperty = async (req: Request, res: Response) => {
       (property) => property.id === id && hostId === property.hostId
     )
     if (propertyIndex === -1 || propertyIndex === 0) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Property not found for the given host ID and ID',
         })
@@ -333,7 +333,7 @@ export const deleteProperty = async (req: Request, res: Response) => {
     }
 
     if (properties[propertyIndex]?.hostId !== hostId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
     properties.splice(propertyIndex, 1)
 
@@ -343,7 +343,7 @@ export const deleteProperty = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -371,7 +371,7 @@ export const getPropertyPhotos = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const id = Number(req.params.propertyId)
   if (!hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   const findPropertyInfo = properties.find(
     (item) => item.id === id && hostId === item.hostId
@@ -396,13 +396,13 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
   const propertyId = Number(req.params.propertyId)
   const { name, description } = req.body
   if (!name && !description) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   const findPropertyIndex = properties.findIndex(
     (item) => item.id === propertyId
   )
   if (findPropertyIndex === -1) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
   if (name !== undefined) {
     //@ts-ignore
@@ -428,18 +428,18 @@ export const updatePropertyPhotos = async (req: Request, res: Response) => {
   const photos = req.body.photos
   // const file = req.files
   if (!hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   // if (!file) {
-  //   return res.json(response.error({ message: 'No file found' }))
+  //   res.json(response.error({ message: 'No file found' }))
   // }
   const findPropertyIndex = properties.findIndex((item) => item.id === id)
   if (findPropertyIndex === -1) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
 
   if (properties[findPropertyIndex]?.hostId !== hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   const removeFileKey = photos.map((photo: any) => {
@@ -476,13 +476,13 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
     !latitude &&
     !howToGetThere
   ) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   const findPropertyIndex = properties.findIndex(
     (item) => item.id === propertyId
   )
   if (findPropertyIndex === -1) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
   if (properties[findPropertyIndex]?.Location) {
     if (street !== undefined) {
@@ -542,13 +542,13 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
   const propertyId = Number(req.params.propertyId)
   const { facilities } = req.body
   if (!facilities) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   const findPropertyIndex = properties.findIndex(
     (item) => item.id === propertyId
   )
   if (findPropertyIndex === -1) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
 
   const property = { ...properties[findPropertyIndex] }
@@ -595,7 +595,7 @@ export const getPropertiesBookableUnits = async (
     category.toLowerCase() !== categoryEnum.ROOM.toLowerCase() &&
     category.toLowerCase() !== categoryEnum.WHOLEPLACE.toLowerCase()
   ) {
-    return res.json(response.error({ message: 'Not valid category' }))
+    res.json(response.error({ message: 'Not valid category' }))
   }
 
   const filterUnits = filterByCategory(category)?.map((item) => ({

@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
-import { ArrowLeftIcon, XMarkIcon } from "@heroicons/react/20/solid"
 import { Typography } from "./ui/Typography"
+import { LucideArrowLeft, LucideX } from "lucide-react"
 type Props = {
   children: React.ReactNode
   title: string
@@ -16,13 +16,13 @@ const AuthContainer = ({ children, title, onClose, onBack }: Props) => {
           <div className="flex border-b-gray-200 border-b p-4">
             <div>
               {onClose ? (
-                <XMarkIcon
+                <LucideX
                   className="h-6 w-6 cursor-pointer rounded-full hover:bg-gray-300/30"
                   onClick={() => onClose()}
                 />
               ) : null}
               {onBack ? (
-                <ArrowLeftIcon
+                <LucideArrowLeft
                   className="h-6 w-6 cursor-pointer rounded-full hover:bg-gray-300/30"
                   onClick={() => onBack()}
                 />

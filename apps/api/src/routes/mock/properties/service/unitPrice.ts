@@ -14,19 +14,19 @@ export const getUnitPrice = async (req: Request, res: Response) => {
       item.BookableUnit.some((item) => item.id === bookableUnitId)
   )
   if (!getProperty) {
-    return res.json(response.error({ message: 'This property not exist' }))
+    res.json(response.error({ message: 'This property not exist' }))
   }
 
-  const bookableUnit = getProperty.BookableUnit
+  const bookableUnit = getProperty?.BookableUnit
 
   if (!bookableUnit) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable unit not found for this property',
       })
     )
   }
-  const bookableUnits = bookableUnit.map((item) => ({
+  const bookableUnits = bookableUnit?.map((item) => ({
     id: item.BookableUnitType.id,
     unitName: item.BookableUnitType.name,
     unitPrice: item.BookableUnitType.unitPrice,
@@ -44,25 +44,25 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     (item) => item.id === propertyId && item.hostId === userId
   )
   if (!getProperty) {
-    return res.json(response.error({ message: 'This property not exist' }))
+    res.json(response.error({ message: 'This property not exist' }))
   }
 
-  const bookableUnit: any = getProperty.BookableUnit.find(
+  const bookableUnit: any = getProperty?.BookableUnit.find(
     (unit) => unit.id === bookableUnitId
   )
 
   if (!bookableUnit) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable unit not found for this property',
       })
     )
   }
   if (!unitPrices) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
-  if (getProperty.hostId !== userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+  if (getProperty?.hostId !== userId) {
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   unitPrices?.forEach((item, index) => {
     if (item._id === bookableUnit.unitPrice._id) {

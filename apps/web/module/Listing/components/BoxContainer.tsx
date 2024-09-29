@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { HeartIcon } from "@heroicons/react/24/outline"
-import { StarIcon } from "@heroicons/react/20/solid"
 import { Typography } from "../../../common/components/ui/Typography"
 import AddWishlistModal from "@/module/AccountSettings/components/modals/AddWishlistModal"
 import useSessionStore from "../../../common/store/useSessionStore"
@@ -9,6 +7,7 @@ import useRemoveFromWishGroup from "@/module/AccountSettings/hooks/useRemoveFrom
 import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import CustomSquareSlider from "@/common/components/CustomSquareSlider"
+import { LucideHeart, LucideStar } from "lucide-react"
 
 type BoxContainerProps = {
   listingId: number
@@ -93,7 +92,7 @@ const BoxContainer = ({
               }}
               className="absolute top-3 right-3 z-40"
             >
-              <HeartIcon
+              <LucideHeart
                 className={`h-7 w-7 text-text-50 active:scale-90 ${
                   isAdded ? "fill-error-500" : "fill-text-500/50"
                 }`}
@@ -111,7 +110,7 @@ const BoxContainer = ({
                 {location}
               </Typography>
               <div className="flex text-text-500 items-center gap-1">
-                <StarIcon className="h-4 w-auto" />
+                <LucideStar className="h-4 w-auto" />
                 {ratings}
               </div>
             </div>

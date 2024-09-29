@@ -27,7 +27,6 @@ const ScheduleDateModal = ({ isOpen, onClose }: CheckInOutModalProps) => {
         </Typography>
         <div className="mt-6">
           <Calendar
-            initialFocus
             mode="single"
             defaultMonth={selectedDate}
             selected={selectedDate}

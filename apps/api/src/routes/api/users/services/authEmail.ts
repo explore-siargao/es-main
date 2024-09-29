@@ -12,7 +12,7 @@ export class AuthEmail extends EmailService {
     sendEmailParams: TSendEmailParams & { magicLink: string }
   ) {
     const { to, magicLink } = sendEmailParams
-    const emailHtml = render(ForgotPasswordEmail({ magicLink }))
+    const emailHtml = await render(ForgotPasswordEmail({ magicLink }))
     const sendEmail = super.sendEmail({
       to: typeof to === 'string' ? [to] : to,
       template: emailHtml,
@@ -22,7 +22,7 @@ export class AuthEmail extends EmailService {
   }
   async sendMFA(sendEmailParams: TSendEmailParams & { code: string }) {
     const { to, code } = sendEmailParams
-    const emailHtml = render(MultiFactorAuth({ validationCode: code }))
+    const emailHtml = await render(MultiFactorAuth({ validationCode: code }))
     const sendEmail = super.sendEmail({
       to: typeof to === 'string' ? [to] : to,
       template: emailHtml,

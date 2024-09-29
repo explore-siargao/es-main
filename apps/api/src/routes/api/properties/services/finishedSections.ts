@@ -19,7 +19,7 @@ export const getFinishedSections = async (req: Request, res: Response) => {
     const finishedSections = getProperty?.finishedSections
     res.json(response.success({ item: { finishedSections } }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -32,7 +32,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
   const finishedSections = req.body.newFinishedSection
   if (!finishedSections) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   try {
     const getProperty = await dbProperties.findOne({
@@ -42,7 +42,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
     })
     const section = getProperty?.finishedSections
     if (section?.includes(finishedSections)) {
-      return res.json(
+      res.json(
         response.success({
           item: getProperty,
           message: 'Finished sections saved',
@@ -68,7 +68,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

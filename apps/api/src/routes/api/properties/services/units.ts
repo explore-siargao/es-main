@@ -170,7 +170,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
     !isSmokingAllowed ||
     !totalSize
   ) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   try {
@@ -179,7 +179,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
       category: 'Bed',
     })
     if (!getBookableUnitBed) {
-      return res.json(response.error({ message: 'Bookable unit not found' }))
+      res.json(response.error({ message: 'Bookable unit not found' }))
     }
 
     const getProperty = await dbProperties.findOne({
@@ -189,7 +189,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
     const findUnitInProperty =
       getProperty?.bookableUnits.includes(bookableUnitId)
     if (!findUnitInProperty) {
-      return res.json(
+      res.json(
         response.error({ message: 'Bookable unit not found in property' })
       )
     }
@@ -202,11 +202,11 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
 
     if (!currentBed) {
       // Handle case where the document is not found
-      return res.status(404).json({ error: 'Bed not found' })
+      res.status(404).json({ error: 'Bed not found' })
     }
 
     // Step 2: Calculate the number of new ObjectIds needed
-    const currentIdsCount = currentBed.ids.length
+    const currentIdsCount = currentBed?.ids.length || 0
     const newIdsNeeded = qty - currentIdsCount
 
     let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
@@ -239,14 +239,14 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    return res.json(
+    res.json(
       response.success({
         item: updateBedBasicInfo,
         message: 'Bookable Unit basic info saved',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -274,7 +274,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
     !isHaveSharedBathRoom ||
     !isHaveSharedAmenities
   ) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   try {
@@ -283,7 +283,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       category: 'Room',
     })
     if (!getBookableUnitRoom) {
-      return res.json(response.error({ message: 'Bookable unit not found' }))
+      res.json(response.error({ message: 'Bookable unit not found' }))
     }
 
     const getProperty = await dbProperties.findOne({
@@ -293,7 +293,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
     const findUnitInProperty =
       getProperty?.bookableUnits.includes(bookableUnitId)
     if (!findUnitInProperty) {
-      return res.json(
+      res.json(
         response.error({ message: 'Bookable unit not found in property' })
       )
     }
@@ -306,11 +306,11 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
 
     if (!currentRoom) {
       // Handle case where the document is not found
-      return res.status(404).json({ error: 'Room not found' })
+      res.status(404).json({ error: 'Room not found' })
     }
 
     // Step 2: Calculate the number of new ObjectIds needed
-    const currentIdsCount = currentRoom.ids.length
+    const currentIdsCount = currentRoom?.ids.length || 0
     const newIdsNeeded = qty - currentIdsCount
 
     let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
@@ -344,14 +344,14 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    return res.json(
+    res.json(
       response.success({
         item: updateRoomBasicInfo,
         message: 'Bookable Unit basic info saved',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -386,7 +386,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     !qty ||
     !livingRooms
   ) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   try {
@@ -396,7 +396,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     })
     if (!getBookableUnitWholePlace) {
       console.log('Bookable unit not found')
-      return res.json(response.error({ message: 'Bookable unit not found' }))
+      res.json(response.error({ message: 'Bookable unit not found' }))
     }
 
     const getProperty = await dbProperties.findOne({
@@ -407,7 +407,7 @@ export const updateWholePlaceUnitBasicInfo = async (
       getProperty?.bookableUnits.includes(bookableUnitId)
     if (!findUnitInProperty) {
       console.log('Bookable unit not found in property')
-      return res.json(
+      res.json(
         response.error({ message: 'Bookable unit not found in property' })
       )
     }
@@ -420,11 +420,11 @@ export const updateWholePlaceUnitBasicInfo = async (
 
     if (!currentWholePlace) {
       // Handle case where the document is not found
-      return res.status(404).json({ error: 'Whole place not found' })
+      res.status(404).json({ error: 'Whole place not found' })
     }
 
     // Step 2: Calculate the number of new ObjectIds needed
-    const currentIdsCount = currentWholePlace.ids.length
+    const currentIdsCount = currentWholePlace?.ids.length || 0
     const newIdsNeeded = qty - currentIdsCount
 
     let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
@@ -464,7 +464,7 @@ export const updateWholePlaceUnitBasicInfo = async (
         { new: true }
       )
 
-    return res.json(
+    res.json(
       response.success({
         item: updateWholePlaceBasicInfo,
         message: 'Bookable Unit basic info saved',
@@ -472,7 +472,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     )
   } catch (err: any) {
     console.log(err)
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -511,7 +511,7 @@ export const getPropertiesBookableUnits = async (
     category.toLowerCase() !== categoryEnum.ROOM.toLowerCase() &&
     category.toLowerCase() !== categoryEnum.WHOLEPLACE.toLowerCase()
   ) {
-    return res.json(response.error({ message: 'Not valid category' }))
+    res.json(response.error({ message: 'Not valid category' }))
   }
 
   const filterUnits = filterByCategory(category)?.map((item: any) =>
@@ -531,11 +531,11 @@ export const getUnitById = async (req: Request, res: Response) => {
       .populate('amenities')
       .populate('photos')
     if (!getUnit) {
-      return res.json(response.error({ message: 'No bookable unit found' }))
+      res.json(response.error({ message: 'No bookable unit found' }))
     }
     res.json(response.success({ item: getUnit }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -551,14 +551,12 @@ export const getUnitIds = async (req: Request, res: Response) => {
       deletedAt: null,
     })
     if (!bookableUnit) {
-      return res.json(response.error({ message: 'No bookable units found' }))
+      res.json(response.error({ message: 'No bookable units found' }))
     }
-    const units = bookableUnit.ids
-    return res.json(
-      response.success({ items: units, allItemCount: units.length })
-    )
+    const units = bookableUnit?.ids
+    res.json(response.success({ items: units, allItemCount: units?.length }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

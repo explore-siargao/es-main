@@ -15,16 +15,16 @@ export const updatePassword = async (req: Request, res: Response) => {
   try {
     const getUser = await dbUsers.findById(userId)
     if (!getUser) {
-      return res.json(response.error({ message: USER_NOT_EXIST }))
+      res.json(response.error({ message: USER_NOT_EXIST }))
     }
     if (!(currentPassword && newPassword && confirmNewPassword)) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
     if (newPassword !== confirmNewPassword) {
-      return res.json(response.error({ message: 'Password not matched' }))
+      res.json(response.error({ message: 'Password not matched' }))
     }
     const decryptPassword = CryptoJS.AES.decrypt(
-      getUser.password as string,
+      getUser?.password as string,
       PASSWORD_ENCRYPT_KEY
     )
     const encryptCurrentPassword = CryptoJS.AES.encrypt(
@@ -36,7 +36,7 @@ export const updatePassword = async (req: Request, res: Response) => {
       PASSWORD_ENCRYPT_KEY
     )
     if (decryptCurrentPassword.toString() !== decryptPassword.toString()) {
-      return res.json(response.error({ message: 'Wrong old password' }))
+      res.json(response.error({ message: 'Wrong old password' }))
     }
     const encryptNewPassword = CryptoJS.AES.encrypt(
       newPassword,
@@ -71,7 +71,7 @@ export const deactivateAccount = async (req: Request, res: Response) => {
   try {
     const getUser = await dbUsers.findOne({ _id: userId })
     if (!getUser) {
-      return res.json(response.error({ message: USER_NOT_EXIST }))
+      res.json(response.error({ message: USER_NOT_EXIST }))
     }
     const deactivateUser = await dbUsers.findByIdAndUpdate(userId, {
       deactivated: true,

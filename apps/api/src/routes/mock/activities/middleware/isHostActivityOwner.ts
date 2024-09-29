@@ -23,7 +23,7 @@ const isHostActivityOwner = async (
   if (activity && loggedInUser.isHost) {
     return next()
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })

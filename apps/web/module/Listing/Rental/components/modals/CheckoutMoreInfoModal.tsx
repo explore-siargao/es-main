@@ -1,8 +1,8 @@
 "use Client"
-import { XMarkIcon } from "@heroicons/react/20/solid"
 import React, { useRef, Fragment } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { Typography } from "@/common/components/ui/Typography"
+import { LucideX } from "lucide-react"
 
 interface CheckoutMoreInfoModalProps {
   isOpen: boolean
@@ -49,7 +49,7 @@ const CheckoutMoreInfoModal = ({
                 <div className="bg-white shadow rounded-2xl">
                   <div className="flex border-b-gray-200 border-b p-4">
                     <div>
-                      <XMarkIcon
+                      <LucideX
                         className="h-6 w-6 cursor-pointer rounded-full hover:bg-gray-300/30"
                         onClick={() => onClose()}
                       />
