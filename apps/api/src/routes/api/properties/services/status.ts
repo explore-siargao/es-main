@@ -18,7 +18,7 @@ export const updateStatus = async (req: Request, res: Response) => {
         deletedAt: null,
       })
       if (!getProperty) {
-        return res.json(response.error({ message: 'Property not found' }))
+        res.json(response.error({ message: 'Property not found' }))
       }
 
       const updateStatus = await dbProperties.findByIdAndUpdate(
@@ -38,14 +38,14 @@ export const updateStatus = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

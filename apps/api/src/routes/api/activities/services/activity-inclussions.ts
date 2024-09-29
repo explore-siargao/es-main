@@ -14,11 +14,11 @@ export const getActivityInclusions = async (req: Request, res: Response) => {
     const activityInclusionData = await dbActivities.findById(activityId)
 
     if (!isHost) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (!activityInclusionData) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Activity inclusions with the given ID not found!',
         })
@@ -26,25 +26,25 @@ export const getActivityInclusions = async (req: Request, res: Response) => {
     }
 
     const data = {
-      _id: activityInclusionData._id,
-      isFoodIncluded: activityInclusionData.isFoodIncluded,
-      includedFoods: activityInclusionData.includedFoods || [],
+      _id: activityInclusionData?._id,
+      isFoodIncluded: activityInclusionData?.isFoodIncluded,
+      includedFoods: activityInclusionData?.includedFoods || [],
       isNonAlcoholicDrinkIncluded:
-        activityInclusionData.isNonAlcoholicDrinkIncluded,
-      isAlcoholicDrinkIncluded: activityInclusionData.isAlcoholicDrinkIncluded,
+        activityInclusionData?.isNonAlcoholicDrinkIncluded,
+      isAlcoholicDrinkIncluded: activityInclusionData?.isAlcoholicDrinkIncluded,
       includedAlcoholicDrinks:
-        activityInclusionData.includedAlcoholicDrinks || [],
-      otherInclusion: activityInclusionData.otherInclusion || [],
-      notIncluded: activityInclusionData.notIncluded || [],
+        activityInclusionData?.includedAlcoholicDrinks || [],
+      otherInclusion: activityInclusionData?.otherInclusion || [],
+      notIncluded: activityInclusionData?.notIncluded || [],
     }
 
-    return res.json(
+    res.json(
       response.success({
         item: data,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -87,7 +87,7 @@ export const updateActivityInclusions = async (req: Request, res: Response) => {
         { new: true }
       )
       if (!updatedActivityInclusions) {
-        return res.json(
+        res.json(
           response.error({
             message: 'Activity not found!',
           })
@@ -96,29 +96,29 @@ export const updateActivityInclusions = async (req: Request, res: Response) => {
       res.json(
         response.success({
           item: {
-            isFoodIncluded: updatedActivityInclusions.isFoodIncluded,
-            includedFoods: updatedActivityInclusions.includedFoods,
+            isFoodIncluded: updatedActivityInclusions?.isFoodIncluded,
+            includedFoods: updatedActivityInclusions?.includedFoods,
             isNonAlcoholicDrinkIncluded:
-              updatedActivityInclusions.isNonAlcoholicDrinkIncluded,
+              updatedActivityInclusions?.isNonAlcoholicDrinkIncluded,
             isAlcoholicDrinkIncluded:
-              updatedActivityInclusions.isAlcoholicDrinkIncluded,
+              updatedActivityInclusions?.isAlcoholicDrinkIncluded,
             includedAlcoholicDrinks:
-              updatedActivityInclusions.includedAlcoholicDrinks,
-            otherInclusion: updatedActivityInclusions.otherInclusion,
-            notIncluded: updatedActivityInclusions.notIncluded,
+              updatedActivityInclusions?.includedAlcoholicDrinks,
+            otherInclusion: updatedActivityInclusions?.otherInclusion,
+            notIncluded: updatedActivityInclusions?.notIncluded,
           },
           message: 'Activity updated',
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: isValidInput.error.message,
       })

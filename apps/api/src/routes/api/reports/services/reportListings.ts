@@ -17,7 +17,7 @@ export const getAllReportListingByReportedBy = async (
     })
 
     if (!getUser) {
-      return res.json(response.error({ message: USER_NOT_EXIST }))
+      res.json(response.error({ message: USER_NOT_EXIST }))
     }
     const reportListings = await dbReportListings
       .find({
@@ -66,7 +66,7 @@ export const getReportsByListing = async (req: Request, res: Response) => {
   try {
     const getListing = await dbListings.findById(listingId)
     if (!getListing) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Listing not found!',
         })
@@ -132,7 +132,7 @@ export const addReport = async (req: Request, res: Response) => {
   try {
     const getUser = await dbUsers.findById({ _id: userId })
     if (!getUser) {
-      return res.json(
+      res.json(
         response.error({
           message: isInputValid.error?.message,
         })
@@ -140,7 +140,7 @@ export const addReport = async (req: Request, res: Response) => {
     }
     const getListing = await dbListings.findById({ _id: listingId })
     if (!getListing) {
-      return res.json(
+      res.json(
         response.error({
           message: 'The listing you are trying to report was not found!',
         })
@@ -179,14 +179,14 @@ export const deleteReport = async (req: Request, res: Response) => {
       _id: id,
     })
     if (!getUser) {
-      return res.json(
+      res.json(
         response.error({
           message: USER_NOT_EXIST,
         })
       )
     }
     if (!getReport) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Report not found or already deleted',
         })
@@ -221,14 +221,14 @@ export const updateReport = async (req: Request, res: Response) => {
     const getUser = await dbUsers.findById(userId)
     const getReport = await dbReportListings.findById(id)
     if (!getUser) {
-      return res.json(
+      res.json(
         response.error({
           message: USER_NOT_EXIST,
         })
       )
     }
     if (!getReport) {
-      return res.json(
+      res.json(
         response.error({
           message: 'The report that you are trying to update was not found!',
         })

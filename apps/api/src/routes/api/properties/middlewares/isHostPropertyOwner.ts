@@ -25,7 +25,7 @@ const isHostPropertyOwner = async (
       _id: propertyId,
     })
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Invalid property ID format',
       })
@@ -35,7 +35,7 @@ const isHostPropertyOwner = async (
   if (listing && loggedInUser.isHost) {
     return next()
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })

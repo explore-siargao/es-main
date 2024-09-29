@@ -1,10 +1,10 @@
 "use client"
 import React, { useState } from "react"
 import Image from "next/image"
-import { XMarkIcon } from "@heroicons/react/24/outline"
 import DeleteWIshlistsModal from "@/module/AccountSettings/modals/DeleteWIshlistsModal"
 import { Typography } from "../../../common/components/ui/Typography"
 import Link from "next/link"
+import { LucideX } from "lucide-react"
 
 type Props = {
   photo: string
@@ -30,7 +30,7 @@ const WishlistBoxContainer = ({ title, link, text, photo }: Props) => {
               onClick={() => setRemoveModal(true)}
               className="absolute top-4 left-4 p-1 bg-primary-100 rounded-full hover:bg-white hover:shadow-lg transition hover:scale-105"
             >
-              <XMarkIcon
+              <LucideX
                 className=" h-7 w-7 text-text-400 "
                 aria-hidden="true"
               />

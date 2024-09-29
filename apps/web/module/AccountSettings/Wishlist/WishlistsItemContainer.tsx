@@ -1,11 +1,5 @@
 "use client"
 import { useState } from "react"
-import {
-  ArrowLeftIcon,
-  CheckCircleIcon,
-  HeartIcon,
-} from "@heroicons/react/20/solid"
-import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import toast from "react-hot-toast"
@@ -17,7 +11,7 @@ import AddNoteModal from "@/module/AccountSettings/components/modals/AddNoteModa
 import MenuModal from "@/module/AccountSettings/components/modals/MenuModal"
 import { Typography } from "../../../common/components/ui/Typography"
 import { ComponentProps, DetailsType } from "../../../common/types/global"
-import { Copy, MoreHorizontal } from "lucide-react"
+import { Copy, LucideArrowLeft, LucideCheckCircle, LucideHeart, MoreHorizontal } from "lucide-react"
 import useRemoveFromWishGroup from "@/module/AccountSettings/hooks/useRemoveFromWishGroup"
 import { useQueryClient } from "@tanstack/react-query"
 import SavedWishlists from "./SavedWishlists"
@@ -44,7 +38,7 @@ const HeartButton = ({
   onClick: () => void
   id: number
 }) => (
-  <HeartIcon
+  <LucideHeart
     id={"heart" + id}
     className="absolute top-3 right-3 h-7 w-7 text-text-50 active:scale-90 fill-error-500"
     onClick={onClick}
@@ -164,7 +158,7 @@ const WishlistsItemContainer = () => {
           {/* ... (other components remain unchanged) */}
           <div className="sticky w-full top-0 bg-white flex border-b-gray-100 border-b py-4 px-6 items-center mt-1">
             <Link href={LINK_ACCOUNT_WISHLIST}>
-              <ArrowLeftIcon className="h-10 w-10 cursor-pointer rounded-full hover:bg-gray-50 p-2 -ml-3" />
+              <LucideArrowLeft className="h-10 w-10 cursor-pointer rounded-full hover:bg-gray-50 p-2 -ml-3" />
             </Link>
             <Typography
               variant={"h4"}
@@ -178,7 +172,7 @@ const WishlistsItemContainer = () => {
                 onClick={() => {
                   toast("Link copied!", {
                     icon: (
-                      <CheckCircleIcon className="h-5 w-5 text-success-500" />
+                      <LucideCheckCircle className="h-5 w-5 text-success-500" />
                     ),
                   })
                   copyToClipboard()

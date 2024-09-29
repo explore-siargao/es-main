@@ -19,10 +19,10 @@ export const addPhoto = async (req: Request, res: Response) => {
   const { description, tags, isMain } = req.body
   const isValidInput = Z_Photo.safeParse(req.body)
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!files || !propertyId) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   if (isValidInput.success) {
     try {
@@ -56,14 +56,14 @@ export const addPhoto = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -77,10 +77,10 @@ export const addUnitPhoto = async (req: Request, res: Response) => {
   const { description, tags, isMain } = req.body
   const isValidInput = Z_Photo.safeParse(req.body)
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!files || !propertyId || !bookableUnitId) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   if (isValidInput.success) {
     try {
@@ -115,14 +115,14 @@ export const addUnitPhoto = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -135,7 +135,7 @@ export const updatePhoto = async (req: Request, res: Response) => {
   const { description, tags, isMain } = req.body
   const isValidInput = Z_Update_Photo.safeParse(req.body)
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (isValidInput.success) {
     try {
@@ -145,53 +145,54 @@ export const updatePhoto = async (req: Request, res: Response) => {
         deletedAt: null,
       })
       if (!getPhoto) {
-        return res.json(response.error({ message: 'Photo not found' }))
-      }
-      const {
-        description: dbDescription,
-        tags: dbTags,
-        isMain: dbIsMain,
-      } = getPhoto
-      // Needed this to not update if nothing changes
-      if (
-        dbDescription === description &&
-        dbTags === tags &&
-        dbIsMain === isMain
-      ) {
-        return res.json(
+        res.json(response.error({ message: 'Photo not found' }))
+      } else {
+        const {
+          description: dbDescription,
+          tags: dbTags,
+          isMain: dbIsMain,
+        } = getPhoto
+        // Needed this to not update if nothing changes
+        if (
+          dbDescription === description &&
+          dbTags === tags &&
+          dbIsMain === isMain
+        ) {
+          res.json(
+            response.success({
+              item: getPhoto,
+              message: 'Photos was updated',
+            })
+          )
+        }
+        const updatePhoto = await dbPhotos.findByIdAndUpdate(
+          photoId,
+          {
+            $set: {
+              description,
+              tags,
+              isMain,
+              updatedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
+        res.json(
           response.success({
-            item: getPhoto,
+            item: updatePhoto,
             message: 'Photos was updated',
           })
         )
       }
-      const updatePhoto = await dbPhotos.findByIdAndUpdate(
-        photoId,
-        {
-          $set: {
-            description,
-            tags,
-            isMain,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
-      res.json(
-        response.success({
-          item: updatePhoto,
-          message: 'Photos was updated',
-        })
-      )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -201,7 +202,7 @@ export const getPhotosByPropertyId = async (req: Request, res: Response) => {
   const isHost = res.locals.user?.isHost
   const propertyId = req.params.propertyId
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   try {
     const photosData = await dbPhotos
@@ -209,19 +210,19 @@ export const getPhotosByPropertyId = async (req: Request, res: Response) => {
       .populate('photos')
       .exec()
     if (!photosData) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Photos with the given rental does not exist',
         })
       )
     }
-    return res.json(
+    res.json(
       response.success({
         items: photosData,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -234,10 +235,10 @@ export const deletePhoto = async (req: Request, res: Response) => {
   const propertyId = req.params.propertyId
   const photoId = req.params.photoId
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!propertyId || !photoId) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   try {
     const getPhoto = await dbPhotos.findOne({
@@ -245,11 +246,11 @@ export const deletePhoto = async (req: Request, res: Response) => {
       deletedAt: null,
     })
     if (!getPhoto) {
-      return res.json(response.error({ message: 'Photo not found' }))
+      res.json(response.error({ message: 'Photo not found' }))
     }
     const deletePhoto = await dbPhotos.findByIdAndDelete(photoId)
     await dbProperties.findByIdAndUpdate(
-      getPhoto.propertyId,
+      getPhoto?.propertyId,
       {
         $pull: {
           photos: photoId,
@@ -267,7 +268,7 @@ export const deletePhoto = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -282,24 +283,24 @@ export const getPhotosByBookableUnitId = async (
   const isHost = res.locals.user?.isHost
   const bookableUnitId = req.params.bookableUnitId
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   try {
     const photosData = await dbPhotos.find({ bookableUnitId })
     if (!photosData) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Photos with the given property unit does not exist',
         })
       )
     }
-    return res.json(
+    res.json(
       response.success({
         items: photosData,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

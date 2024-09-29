@@ -33,7 +33,7 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
         { new: true }
       )
       if (!updatedActivity) {
-        return res.json(
+        res.json(
           response.error({
             message: 'Activity not found!',
           })
@@ -42,23 +42,23 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
       res.json(
         response.success({
           item: {
-            whatToBring: updatedActivity.whatToBring,
-            notAllowed: updatedActivity.notAllowed,
-            policies: updatedActivity.policies,
-            cancellationDays: updatedActivity.cancellationDays,
+            whatToBring: updatedActivity?.whatToBring,
+            notAllowed: updatedActivity?.notAllowed,
+            policies: updatedActivity?.policies,
+            cancellationDays: updatedActivity?.cancellationDays,
           },
           message: 'Activity updated',
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: isValidInput.error.message,
       })
@@ -76,23 +76,23 @@ export const getAdditionalInfo = async (req: Request, res: Response) => {
       .findOne({ _id: activityId })
       .populate('host')
     if (!getActivity) {
-      return res.json(response.error({ message: 'Activity not found' }))
+      res.json(response.error({ message: 'Activity not found' }))
     }
 
-    if (!getActivity.host === userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    if (!getActivity?.host === userId) {
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     const additionalInfo = {
-      whatToBring: getActivity.whatToBring,
-      notAllowed: getActivity.notAllowed,
-      policies: getActivity.policies,
-      cancellationDays: getActivity.cancellationDays,
+      whatToBring: getActivity?.whatToBring,
+      notAllowed: getActivity?.notAllowed,
+      policies: getActivity?.policies,
+      cancellationDays: getActivity?.cancellationDays,
     }
 
     res.json(response.success({ item: additionalInfo }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

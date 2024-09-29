@@ -23,7 +23,7 @@ const isHostRentalOwner = async (
   if (rental && loggedInUser.isHost) {
     return next()
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: USER_NOT_AUTHORIZED,
       })

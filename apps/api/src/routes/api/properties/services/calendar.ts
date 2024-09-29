@@ -309,7 +309,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -326,16 +326,16 @@ export const editUnitChildName = async (req: Request, res: Response) => {
       { new: true }
     )
     if (!updateUnitName) {
-      return res.json(response.error({ message: 'Unit not found' }))
+      res.json(response.error({ message: 'Unit not found' }))
     }
-    return res.json(
+    res.json(
       response.success({
         item: updateUnitName,
         message: 'Successfully changed unit name',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -361,7 +361,7 @@ export const addUnitPricePerDates = async (req: Request, res: Response) => {
     })
 
     if (!getUnit) {
-      return res.json(
+      res.json(
         response.error({ message: 'Bookable unit not exist on our system' })
       )
     }
@@ -374,20 +374,20 @@ export const addUnitPricePerDates = async (req: Request, res: Response) => {
       !baseRateMaxCapacity ||
       !pricePerAdditionalPerson
     ) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
 
     const newFromDate = new Date(fromDate)
     const newToDate = new Date(toDate)
 
-    const isConflict = getUnit.pricePerDates.some((dateRange: any) => {
+    const isConflict = getUnit?.pricePerDates.some((dateRange: any) => {
       const existingFromDate = new Date(dateRange.fromDate)
       const existingToDate = new Date(dateRange.toDate)
       return newFromDate <= existingToDate && newToDate >= existingFromDate
     })
 
     if (isConflict) {
-      return res.json(
+      res.json(
         response.error({
           message: 'The date range conflicts with existing price periods.',
         })
@@ -416,14 +416,14 @@ export const addUnitPricePerDates = async (req: Request, res: Response) => {
       },
       { new: true }
     )
-    return res.json(
+    res.json(
       response.success({
         item: pricePerDates,
         message: 'Price for specific dates successfully setted',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

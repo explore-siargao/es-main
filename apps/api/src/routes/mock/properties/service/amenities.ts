@@ -16,9 +16,9 @@ export const getAmenitiesByBookableUnitTypeId = async (
     (item) => item.id === propertyId && item.hostId === hostId
   )
   if (!getProperty) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
-  const getBookableUnits = getProperty.BookableUnit
+  const getBookableUnits = getProperty?.BookableUnit || []
   const getBookableUnit = getBookableUnits.find(
     (item) => item.BookableUnitType.id === bookableUnitTypeId
   )
@@ -45,9 +45,9 @@ export const addBookableUnitTypeAmenities = async (
     (item) => item.id === propertyId && item.hostId === hostId
   )
   if (!getProperty) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
-  const getBookableUnits = getProperty.BookableUnit
+  const getBookableUnits = getProperty?.BookableUnit || []
   const getBookableUnit = getBookableUnits.find(
     (item) => item.BookableUnitType.id === bookableUnitTypeId
   )

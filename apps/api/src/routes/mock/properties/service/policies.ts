@@ -18,14 +18,14 @@ export const getPoliciesByProperty = async (req: Request, res: Response) => {
     const property = properties.find((item) => item.id === propertyId)
 
     if (!isHost || !property?.hostId === userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (!property) {
-      return res.json(response.error({ message: 'Property not found!' }))
+      res.json(response.error({ message: 'Property not found!' }))
     }
 
-    const policies = property.Policies.map((item) => ({
+    const policies = property?.Policies.map((item) => ({
       id: item.id,
       category: item.category,
       policy: item.policy,
@@ -34,9 +34,9 @@ export const getPoliciesByProperty = async (req: Request, res: Response) => {
       isSelected: item.isSelected,
     }))
 
-    return res.json(response.success({ item: policies }))
+    res.json(response.success({ item: policies }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -51,7 +51,7 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
   const updatedPolicies: T_Property_Policy[] = req.body.policies
 
   if (!Array.isArray(updatedPolicies)) {
-    return res.json(
+    res.json(
       response.error({ message: 'Invalid type of data in policies' })
     )
   }
@@ -59,25 +59,25 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
   const property = properties.find((item) => item.id === propertyId)
 
   if (!isHost || !property?.hostId === userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   if (!property) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  } else {
+
+    const updatedAddedPolicies = updatedPolicies.filter(
+      (updatedPolicy) => updatedPolicy._id || updatedPolicy.isSelected
+    )
+    // @ts-ignore
+    property.policies = updatedAddedPolicies
+    property.finishedSections =
+      '["type", "basicInfo", "location", "facilities", "units", "photos", "pricing", "policies"]'
+    res.json(
+      response.success({
+        item: property.Policies,
+        message: 'Policies successfully updated',
+      })
+    )
   }
-
-  const updatedAddedPolicies = updatedPolicies.filter(
-    (updatedPolicy) => updatedPolicy._id || updatedPolicy.isSelected
-  )
-
-  //@ts-ignore
-  property.Policies = updatedAddedPolicies
-  property.finishedSections =
-    '["type", "basicInfo", "location", "facilities", "units", "photos", "pricing", "policies"]'
-  res.json(
-    response.success({
-      item: property.Policies,
-      message: 'Policies successfully updated',
-    })
-  )
 }

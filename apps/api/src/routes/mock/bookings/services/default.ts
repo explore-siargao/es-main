@@ -13,7 +13,7 @@ export const getBookingsToreviews = async (req: Request, res: Response) => {
   })
 
   if (!toReviews.some((item) => item.id === userId)) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   res.json(
@@ -29,7 +29,7 @@ export const getToReviewById = async (req: Request, res: Response) => {
   const id = Number(req.params.id)
   const getOne = toReviews.find((item) => item.id === id)
   if (!toReviews.some((item) => item.id === userId)) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   res.json(response.success({ item: getOne, allItemCount: 1 }))
 }

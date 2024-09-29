@@ -1,9 +1,9 @@
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import { StarIcon } from "@heroicons/react/20/solid"
 import { useState } from "react"
 import UserReviewModal from "../modals/UserReviewModal"
 import AvatarTitleDescription from "../AvatarTitleDescription"
+import { LucideStar } from "lucide-react"
 
 interface UserReviewProps {
   avatarKey: string
@@ -27,7 +27,7 @@ const Review = ({
   const displayStars = () => {
     const stars = []
     for (let i = 0; i < rate; i++) {
-      stars.push(<StarIcon key={i} className="h-3 w-3" />)
+      stars.push(<LucideStar key={i} className="h-3 w-3" />)
     }
 
     return stars

@@ -100,7 +100,7 @@ export const getProfile = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
   const getUserProfile = profiles.find((profile) => profile.id === userId)
   if (getUserProfile === undefined) {
-    return res.json(response.error({ message: 'This profile not found' }))
+    res.json(response.error({ message: 'This profile not found' }))
   }
   res.json(
     response.success({

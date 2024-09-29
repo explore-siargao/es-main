@@ -18,40 +18,40 @@ export const getAddOns = async (req: Request, res: Response) => {
       })
       .populate('addOns')
     if (!getRental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental not found',
         })
       )
     }
 
-    addOns = getRental.addOns as unknown as T_Rental_AddOns
+    addOns = getRental?.addOns as unknown as T_Rental_AddOns
 
-    if (getRental.category === 'Car') {
+    if (getRental?.category === 'Car') {
       addOns = {
-        category: getRental.category,
+        category: getRental?.category,
         roofRack: addOns.roofRack,
         dashCam: addOns.dashCam,
         others: addOns.others,
       }
     } else if (
-      getRental.category === 'Motorbike' ||
-      getRental.category === 'Bicycle'
+      getRental?.category === 'Motorbike' ||
+      getRental?.category === 'Bicycle'
     ) {
       addOns = {
-        category: getRental.category,
+        category: getRental?.category,
         boardRack: addOns.boardRack,
         babySeat: addOns.babySeat,
         includesHelmet: addOns.includesHelmet,
         others: addOns.others,
       }
     } else {
-      return res.json(response.error({ message: 'Invalid rental category' }))
+      res.json(response.error({ message: 'Invalid rental category' }))
     }
 
     res.json(response.success({ item: addOns }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -79,37 +79,37 @@ export const updateAddOns = async (req: Request, res: Response) => {
       })
 
       if (!getRental) {
-        return res.json(response.error({ message: 'Rental not found' }))
+        res.json(response.error({ message: 'Rental not found' }))
       }
 
-      if (getRental.host?.toString() !== userId) {
-        return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      if (getRental?.host?.toString() !== userId) {
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
       }
 
       const addOns: T_Rental_AddOns =
-        getRental.addOns as unknown as T_Rental_AddOns
+        getRental?.addOns as unknown as T_Rental_AddOns
 
-      if (getRental.category === 'Car') {
+      if (getRental?.category === 'Car') {
         addOns.roofRack = roofRack ?? addOns.roofRack
-        addOns.boardRack = false ?? addOns.boardRack
-        addOns.babySeat = false ?? addOns.babySeat
-        addOns.includesHelmet = false ?? addOns.includesHelmet
+        addOns.boardRack = addOns.boardRack
+        addOns.babySeat = addOns.babySeat
+        addOns.includesHelmet = addOns.includesHelmet
         addOns.dashCam = dashCam ?? addOns.dashCam
         addOns.others = others ?? (addOns.others || [])
       } else if (
-        getRental.category === 'Motorbike' ||
-        getRental.category === 'Bicycle'
+        getRental?.category === 'Motorbike' ||
+        getRental?.category === 'Bicycle'
       ) {
-        addOns.roofRack = false ?? addOns.roofRack
+        addOns.roofRack = addOns.roofRack
         addOns.boardRack = boardRack ?? addOns.boardRack
         addOns.babySeat = babySeat ?? addOns.babySeat
         addOns.includesHelmet = includesHelmet ?? addOns.includesHelmet
-        addOns.dashCam = false ?? addOns.dashCam
+        addOns.dashCam = addOns.dashCam
         addOns.others = others ?? (addOns.others || [])
       }
 
       await dbRentalAddOns.findByIdAndUpdate(
-        getRental.addOns,
+        getRental?.addOns,
         {
           $set: {
             roofRack: roofRack,
@@ -142,14 +142,14 @@ export const updateAddOns = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : 'Unknown error occurred',
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

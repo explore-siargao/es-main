@@ -11,13 +11,13 @@ export const getPropertyFacilities = async (req: Request, res: Response) => {
     (property) => property.id === propertyId && hostId === property.hostId
   )
   if (!property) {
-    return res.json(
+    res.json(
       response.error({
         message: 'No facilities found for the given property id!',
       })
     )
   }
-  const facilities = property.Facilities.filter(
+  const facilities = property?.Facilities.filter(
     (item) => item.propertyId === propertyId
   )
   res.json(response.success({ items: facilities }))
@@ -31,18 +31,19 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
     (item) => item.id === propertyId && item.hostId === hostId
   )
   if (!getProperty) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
+  } else {
+    const updatedAddedFacilities = facilities.filter(
+      (facilty: T_Property_Facility) => facilty.id || facilty.isSelected
+    )
+    getProperty.Facilities = updatedAddedFacilities
+    getProperty.finishedSections =
+      '["type", "basicInfo", "location", "facilities"]'
+    res.json(
+      response.success({
+        items: getProperty.Facilities,
+        message: 'Property facilities successfully updated',
+      })
+    )
   }
-  const updatedAddedFacilities = facilities.filter(
-    (facilty: T_Property_Facility) => facilty.id || facilty.isSelected
-  )
-  getProperty.Facilities = updatedAddedFacilities
-  getProperty.finishedSections =
-    '["type", "basicInfo", "location", "facilities"]'
-  res.json(
-    response.success({
-      items: getProperty.Facilities,
-      message: 'Property facilities successfully updated',
-    })
-  )
 }

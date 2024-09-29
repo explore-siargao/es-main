@@ -122,14 +122,13 @@ const ImageGallery = ({
         onClose={() => setIsOpen(false)}
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
-        <div className="relative w-full h-full bg-white bg-opacity-10">
+        <div className="relative w-full h-full bg-text-950 bg-opacity-70">
           <SliderImages
-            //@ts-ignore
             images={images}
           />
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full hover:bg-gray-400 focus:outline-none"
+            className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
           >
             <svg
               className="h-6 w-6 text-gray-600"

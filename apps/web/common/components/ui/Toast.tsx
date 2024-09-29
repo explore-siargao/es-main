@@ -1,14 +1,8 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/common/helpers/cn"
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationTriangleIcon,
-  QuestionMarkCircleIcon,
-  XMarkIcon,
-} from "@heroicons/react/20/solid"
 import { Typography } from "./Typography"
+import { LucideAlertCircle, LucideAlertTriangle, LucideCheckCircle, LucideHelpCircle, LucideX } from "lucide-react"
 
 const toastVariants = cva(
   "pointer-events-auto w-full max-w-sm overflow-hidden rounded-xl",
@@ -59,18 +53,18 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
     let iconComponent
 
     if (variant === "success") {
-      iconComponent = <CheckCircleIcon className="h-6 w-6" aria-hidden="true" />
+      iconComponent = <LucideCheckCircle className="h-6 w-6" aria-hidden="true" />
     } else if (variant === "warning") {
       iconComponent = (
-        <ExclamationTriangleIcon className="h-6 w-6" aria-hidden="true" />
+        <LucideAlertTriangle className="h-6 w-6" aria-hidden="true" />
       )
     } else if (variant === "danger") {
       iconComponent = (
-        <ExclamationCircleIcon className="h-6 w-6" aria-hidden="true" />
+        <LucideAlertCircle className="h-6 w-6" aria-hidden="true" />
       )
     } else {
       iconComponent = (
-        <QuestionMarkCircleIcon className="h-6 w-6" aria-hidden="true" />
+        <LucideHelpCircle className="h-6 w-6" aria-hidden="true" />
       )
     }
     return (
@@ -89,7 +83,7 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
                 onClick={onClose}
               >
                 <span className="sr-only">Close</span>
-                <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                <LucideX className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
           </div>

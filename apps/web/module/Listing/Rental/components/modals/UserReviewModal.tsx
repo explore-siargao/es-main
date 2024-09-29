@@ -7,8 +7,8 @@ import {
   MessageSquare,
   Map,
   Tag,
+  LucideStar,
 } from "lucide-react"
-import { StarIcon } from "@heroicons/react/20/solid"
 import Category from "../Reviews/Category"
 import { Typography } from "@/common/components/ui/Typography"
 import UserReview from "../Reviews/Review"
@@ -67,7 +67,7 @@ const UserReviewModal = ({ isOpen, onClose }: UserReviewModalProps) => {
       <div className="md:flex px-7 md:px-8 py-6 md:space-x-14 h-[80vh] overflow-y-scroll">
         <div className="md:w-[30%]">
           <div className="flex items-center mb-5">
-            <StarIcon className="h-6 w-6 mb-1 mr-2" />
+            <LucideStar className="h-6 w-6 mb-1 mr-2" />
             <Typography className="text-2xl" fontWeight="semibold">
               4.60
             </Typography>

@@ -15,7 +15,7 @@ export const addRental = async (req: Request, res: Response) => {
   const lastName = res.locals.user?.lastName
   const isHost = res.locals.user?.isHost
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   const rentalsData = {
     id: rentals.length + 1,
@@ -71,7 +71,7 @@ export const addRental = async (req: Request, res: Response) => {
 
   //@ts-ignore
   rentals.push(rentalsData)
-  return res.json(
+  res.json(
     response.success({
       item: rentalsData,
       message: 'New rentals data successfully added',
@@ -84,17 +84,17 @@ export const getAllRentals = async (req: Request, res: Response) => {
   try {
     const hostId = res.locals.user?.id
     const filteredDataGetAllRentals = rentals
-      .filter((rental) => rental.hostId === hostId)
+      .filter((rental) => rental?.hostId === hostId)
       .reverse()
 
-    return res.json(
+    res.json(
       response.success({
         items: filteredDataGetAllRentals,
         allItemCount: filteredDataGetAllRentals.length,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -105,7 +105,7 @@ export const getAllRentals = async (req: Request, res: Response) => {
 export const getAllRentalsByHostId = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
 
-  const filterRentals = rentals.filter((rental) => rental.hostId === hostId)
+  const filterRentals = rentals.filter((rental) => rental?.hostId === hostId)
 
   res.json(
     response.success({
@@ -119,24 +119,24 @@ export const getRental = async (req: Request, res: Response) => {
     const id = Number(req.params.rentalId)
     const hostId = res.locals.user?.id
     const rental = rentals.find(
-      (rental) => rental.id === id && hostId === rental.hostId
+      (rental) => rental?.id === id && hostId === rental?.hostId
     )
 
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental with given ID not found!',
         })
       )
     }
 
-    return res.json(
+    res.json(
       response.success({
         item: rental,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -151,11 +151,11 @@ export const updateRentals = async (req: Request, res: Response) => {
     const updateData = req.body
 
     const rentalIndex = rentals.findIndex(
-      (rental) => rental.id === id && rental.hostId === hostId
+      (rental) => rental?.id === id && rental?.hostId === hostId
     )
 
     if (rentalIndex === -1) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental with given ID not found!',
         })
@@ -178,21 +178,21 @@ export const updateRentals = async (req: Request, res: Response) => {
         year: updatedRental.year,
       }
 
-      return res.json(
+      res.json(
         response.success({
           message: 'Rental updated successfully!',
           item: updatedRentalData,
         })
       )
     } else {
-      return res.json(
+      res.json(
         response.error({
           message: 'Error updating rental!',
         })
       )
     }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -206,32 +206,34 @@ export const editPhotoInfo = async (req: Request, res: Response) => {
   const photoId = Number(req.params.photoId)
   const { tag, description } = req.body
   if (!tag && !description) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   try {
     const getrental = rentals.find(
       (item) => item.id === id && item.hostId === userId
     )
     if (!getrental) {
-      return res.json(response.error({ message: 'Rental not exists' }))
+      res.json(response.error({ message: 'Rental not exists' }))
+    } else {
+      if (getrental.hostId !== userId) {
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      }
+      // @ts-ignore
+      const getPhoto = getRental?.Photos.find((item) => item.id === photoId)
+      if (!getPhoto) {
+        res.json(response.error({ message: 'Photo not exists' }))
+      }
+      getPhoto.description = description
+      getPhoto.tag = tag
+      res.json(
+        response.success({
+          item: { tag: tag, description: description },
+          message: 'Rental photo information successfully updated',
+        })
+      )
     }
-    if (getrental.hostId !== userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-    }
-    const getPhoto = getrental.Photos.find((item) => item.id === photoId)
-    if (!getPhoto) {
-      return res.json(response.error({ message: 'Photo not exists' }))
-    }
-    getPhoto.description = description
-    getPhoto.tag = tag
-    res.json(
-      response.success({
-        item: { tag: tag, description: description },
-        message: 'Rental photo information successfully updated',
-      })
-    )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -244,28 +246,28 @@ export const deleteRentals = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.rentalId)
     const rentalIndex = rentals.findIndex(
-      (rental) => rental.id === id && rental.hostId === hostId
+      (rental) => rental?.id === id && rental?.hostId === hostId
     )
 
     if (rentalIndex === -1) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental with given ID not found!',
         })
       )
     }
     if (rentals[rentalIndex]?.hostId !== hostId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
     rentals.splice(rentalIndex, 1)
 
-    return res.json(
+    res.json(
       response.success({
         message: 'Rental deleted successfully!',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -286,45 +288,45 @@ export const deleteRentalPhotosByPhotoId = async (
     )
 
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({ message: 'Rental with the given ID not found!' })
       )
     }
-    if (rental.hostId !== userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    if (rental?.hostId !== userId) {
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
-    const photoIndex = rental.Photos.findIndex((photo) => photo.id === photoId)
+    const photoIndex = rental?.Photos.findIndex((photo) => photo.id === photoId) || -1
 
     if (photoIndex === -1) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Photo with the given ID not found in the rental!',
         })
       )
     }
 
-    rental.Photos.splice(photoIndex, 1)
+    rental?.Photos.splice(photoIndex, 1)
     const filteredDataDeleteRentalPhotosByPhotoId = {
-      id: rental.id,
-      category: rental.category,
-      make: rental.make,
-      modelBadge: rental.modelBadge,
-      bodyType: rental.bodyType,
-      fuel: rental.fuel,
-      transmission: rental.transmission,
-      year: rental.year,
-      Photos: rental.Photos,
-      Location: rental.Location,
+      id: rental?.id,
+      category: rental?.category,
+      make: rental?.make,
+      modelBadge: rental?.modelBadge,
+      bodyType: rental?.bodyType,
+      fuel: rental?.fuel,
+      transmission: rental?.transmission,
+      year: rental?.year,
+      Photos: rental?.Photos,
+      Location: rental?.Location,
     }
 
-    return res.json(
+    res.json(
       response.success({
         item: filteredDataDeleteRentalPhotosByPhotoId,
         message: 'Rental photo with the given photo id successfully deleted!',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

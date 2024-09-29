@@ -17,12 +17,12 @@ export const getRentalLocation = async (req: Request, res: Response) => {
       (item) => item.id === id && item.hostId === hostId
     )
     if (!getRental) {
-      return res.json(response.error({ message: 'Rental location not found!' }))
+      res.json(response.error({ message: 'Rental location not found!' }))
     }
     const rentalLocation = getRental?.Location
     res.json(response.success({ item: rentalLocation }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -36,7 +36,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
   const { street, city, barangay, latitude, longitude, howToGetThere } =
     req.body
   if (!street && !city && !barangay) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   try {
     const getRental = rentals.find(
@@ -53,17 +53,19 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       getLocation.howToGetThere = howToGetThere || getLocation.howToGetThere
       getLocation.latitude = latitude || getLocation.latitude
       getLocation.longitude = longitude || getLocation.longitude
-      getRental.finishedSections =
-        '["basicInfo", "details", "addOns", "photos", "pricing", "location"]'
+      if(getRental) {
+        getRental.finishedSections =
+          '["basicInfo", "details", "addOns", "photos", "pricing", "location"]'
+      }
     }
-    return res.json(
+    res.json(
       response.success({
         item: getLocation,
         message: 'Rental location successfully updated!',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

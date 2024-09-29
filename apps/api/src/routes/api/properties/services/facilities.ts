@@ -14,13 +14,13 @@ export const getPropertyFacilities = async (req: Request, res: Response) => {
     deletedAt: null,
   })
   if (!property) {
-    return res.json(
+    res.json(
       response.error({
         message: 'No facilities found for the given property id!',
       })
     )
   }
-  const facilities = property.facilities
+  const facilities = property?.facilities
   res.json(response.success({ items: facilities }))
 }
 
@@ -34,10 +34,10 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
     deletedAt: null,
   })
   if (!getProperty) {
-    return res.json(response.error({ message: 'Property not found' }))
+    res.json(response.error({ message: 'Property not found' }))
   }
   if (!facilities || !Array.isArray(facilities)) {
-    return res.json(
+    res.json(
       response.error({
         message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
       })

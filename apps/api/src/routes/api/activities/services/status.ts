@@ -16,10 +16,10 @@ export const updateStatus = async (req: Request, res: Response) => {
         deletedAt: null,
       })
       if (!getActivity) {
-        return res.json(response.error({ message: 'Activity not found' }))
+        res.json(response.error({ message: 'Activity not found' }))
       }
       const updateStatus = await dbActivities.findByIdAndUpdate(
-        getActivity._id,
+        getActivity?._id,
         {
           $set: {
             status: status,
@@ -34,14 +34,14 @@ export const updateStatus = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

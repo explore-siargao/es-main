@@ -16,15 +16,15 @@ export const getRentalRates = async (req: Request, res: Response) => {
       (item) => item.id === id && item.hostId === hostId
     )
     if (!getRental) {
-      return res.json(response.error({ message: 'rental not found' }))
+      res.json(response.error({ message: 'rental not found' }))
     }
     const rentalRate = getRental?.Pricing
     if (!rentalRate) {
-      return res.json(response.error({ message: 'Rental rates not avilable' }))
+      res.json(response.error({ message: 'Rental rates not avilable' }))
     }
     res.json(response.success({ item: rentalRate }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -37,21 +37,25 @@ export const updateRentalRate = async (req: Request, res: Response) => {
   const id = Number(req.params.rentalId)
   const { dayRate, requiredDeposit, adminBookingCharge } = req.body
   if (!dayRate && !requiredDeposit && !adminBookingCharge) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   try {
     const getRental = rentals.find((item) => item.id === id)
     if (!getRental) {
-      return res.json(response.error({ message: 'Rental not found' }))
+      res.json(response.error({ message: 'Rental not found' }))
     }
-    if (getRental.hostId !== userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    if (getRental?.hostId !== userId) {
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
-    const rate = getRental.Pricing
-    rate.dayRate = dayRate || rate.dayRate
-    rate.requiredDeposit = requiredDeposit || rate.requiredDeposit
-    getRental.finishedSections =
-      '["basicInfo", "details", "addOns", "photos", "pricing"]'
+    const rate = getRental?.Pricing
+    if(rate) {
+      rate.dayRate = dayRate || rate.dayRate
+      rate.requiredDeposit = requiredDeposit || rate.requiredDeposit
+    }
+    if(getRental) {
+      getRental.finishedSections =
+        '["basicInfo", "details", "addOns", "photos", "pricing"]'
+    }
     res.json(
       response.success({
         item: rate,
@@ -59,7 +63,7 @@ export const updateRentalRate = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

@@ -1,5 +1,5 @@
 "use client"
-import { StarIcon } from "@heroicons/react/20/solid"
+import { LucideStar } from "lucide-react"
 import React, { forwardRef, useState } from "react"
 import { useFormContext } from "react-hook-form"
 
@@ -64,7 +64,7 @@ const StarRating = forwardRef<HTMLDivElement, StarRatingProps>(
             onMouseEnter={() => handleStarHover(index)}
             onMouseLeave={handleMouseLeave}
           >
-            <StarIcon width={getStarWidth()} />
+            <LucideStar width={getStarWidth()} />
           </button>
         ))}
       </div>

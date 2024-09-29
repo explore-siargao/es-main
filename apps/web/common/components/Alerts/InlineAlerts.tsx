@@ -1,9 +1,5 @@
 import React, { useState } from "react"
-import { CheckCircleIcon, XCircleIcon, XIcon } from "lucide-react"
-import {
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/20/solid"
+import { LucideAlertTriangle, LucideInfo, LucideXCircle, LucideCheckCircle, LucideX } from "lucide-react"
 import { cn } from "@/common/helpers/cn"
 
 interface AlertProps {
@@ -29,10 +25,10 @@ const InlineAlerts: React.FC<AlertProps> = ({
   if (!showAlert) return null
 
   const iconMap = {
-    success: CheckCircleIcon,
-    danger: XCircleIcon,
-    info: InformationCircleIcon,
-    warning: ExclamationTriangleIcon,
+    success: LucideCheckCircle,
+    danger: LucideXCircle,
+    info: LucideInfo,
+    warning: LucideAlertTriangle,
   }
 
   const Icon = iconMap[type]
@@ -91,7 +87,7 @@ const InlineAlerts: React.FC<AlertProps> = ({
                 )}
                 onClick={handleClose}
               >
-                <XIcon className="h-4 w-4" aria-hidden="true" size={"md"} />
+                <LucideX className="h-4 w-4" aria-hidden="true" size={"md"} />
               </button>
             </h3>
             <div className={descClasses}>

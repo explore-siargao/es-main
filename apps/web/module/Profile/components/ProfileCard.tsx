@@ -1,8 +1,8 @@
 import Image from "next/image"
-import { ShieldCheckIcon, StarIcon } from "@heroicons/react/20/solid"
 import { Typography } from "@/common/components/ui/Typography"
 import { ASSET_ROOT } from "@/common/constants/index"
 import { ProfileCardProps } from "../types/ProfileCard"
+import { LucideShieldCheck, LucideStar } from "lucide-react"
 
 const ProfileCard = ({
   name,
@@ -27,7 +27,7 @@ const ProfileCard = ({
               />
             )}
             <div className="bg-primary-600 h-8 w-8 rounded-full absolute bottom-1 right-[-5px] flex items-center">
-              <ShieldCheckIcon className="h-5 w-5 mx-auto text-white" />
+              <LucideShieldCheck className="h-5 w-5 mx-auto text-white" />
             </div>
           </div>
           <Typography
@@ -56,7 +56,7 @@ const ProfileCard = ({
             <Typography variant="h2" fontWeight="semibold">
               {rating}
             </Typography>
-            <StarIcon className="h-4 w-4" />
+            <LucideStar className="h-4 w-4" />
           </div>
           <Typography variant="h6" fontWeight="semibold">
             Rating

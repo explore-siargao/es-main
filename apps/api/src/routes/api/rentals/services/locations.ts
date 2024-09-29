@@ -20,12 +20,12 @@ export const getRentalLocation = async (req: Request, res: Response) => {
       })
       .populate('location')
     if (!getRental) {
-      return res.json(response.error({ message: 'Rental location not found!' }))
+      res.json(response.error({ message: 'Rental location not found!' }))
     }
     const rentalLocation = getRental?.location
     res.json(response.success({ item: rentalLocation }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -45,7 +45,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
     howToGetThere,
   }: T_UpdateRentalLocation = req.body
   if (!streetAddress && !city && !barangay) {
-    return res.json(
+    res.json(
       response.error({
         message: REQUIRED_VALUE_EMPTY,
       })
@@ -54,20 +54,20 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
   try {
     const rental = await dbRentals.findById({ _id: rentalId })
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental not found!',
         })
       )
     }
-    if (rental.host?.toString() !== hostId) {
-      return res.json(
+    if (rental?.host?.toString() !== hostId) {
+      res.json(
         response.error({
           message: USER_NOT_AUTHORIZED,
         })
       )
     }
-    const location = await dbLocations.findById(rental.location)
+    const location = await dbLocations.findById(rental?.location)
     if (location) {
       location.streetAddress = streetAddress || location.streetAddress
       location.city = city || location.city
@@ -78,16 +78,18 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       location.updatedAt = new Date()
       await location?.save()
     }
-    rental.finishedSections = [
-      'basicInfo',
-      'details',
-      'addOns',
-      'photos',
-      'pricing',
-      'location',
-    ]
-    rental.updatedAt = new Date()
-    await rental.save()
+    if(rental) {
+      rental.finishedSections = [
+        'basicInfo',
+        'details',
+        'addOns',
+        'photos',
+        'pricing',
+        'location',
+      ]
+      rental.updatedAt = new Date()
+      await rental?.save()
+    }
     res.json(
       response.success({
         item: location,
@@ -95,7 +97,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

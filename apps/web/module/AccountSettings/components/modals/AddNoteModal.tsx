@@ -1,7 +1,6 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
 import { Typography } from "@/common/components/ui/Typography"
-import { ExclamationCircleIcon, StarIcon } from "@heroicons/react/20/solid"
 import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
 import PriceBreakdownModal from "./PriceBreakdownModal"
@@ -11,6 +10,7 @@ import useAddEditWishListNote from "../../hooks/useAddEditWishListNote"
 import useSessionStore from "@/common/store/useSessionStore"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
+import { LucideAlertCircle, LucideStar } from "lucide-react"
 
 interface AddNoteProps {
   id: number
@@ -88,7 +88,7 @@ const AddNoteModal = ({
                   {title}
                 </Typography>
                 <div className="flex text-text-500 place-items-center gap-1">
-                  <StarIcon className="h-4 w-auto" />
+                  <LucideStar className="h-4 w-auto" />
                   5.0 <span className="text-text-400">(123)</span>
                 </div>
               </div>
@@ -152,7 +152,7 @@ const AddNoteModal = ({
                       : "text-text-400 mt-2"
                   }`}
                 >
-                  <ExclamationCircleIcon className="h-5 w-auto" />
+                  <LucideAlertCircle className="h-5 w-auto" />
                   Over character limit
                 </Typography>
               )}

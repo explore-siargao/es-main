@@ -19,11 +19,11 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
     try {
       const getActivity = activities.find((item) => item.id === activityId)
       if (!getActivity) {
-        return res.json(response.error({ message: 'Activity not found' }))
-      }
+        res.json(response.error({ message: 'Activity not found' }))
+      } else {
 
       if (!getActivity.hostId === userId) {
-        return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
       }
 
       getActivity.whatToBring = JSON.stringify(whatToBring)
@@ -43,15 +43,16 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
           message: 'Activity additonal informational successfully saved',
         })
       )
+    }
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -63,11 +64,11 @@ export const getAdditionalInfo = async (req: Request, res: Response) => {
   try {
     const getActivity = activities.find((item) => item.id === activityId)
     if (!getActivity) {
-      return res.json(response.error({ message: 'Activity not found' }))
-    }
+      res.json(response.error({ message: 'Activity not found' }))
+    } else {
 
     if (!getActivity.hostId === userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     const additionalInfo = {
@@ -78,8 +79,9 @@ export const getAdditionalInfo = async (req: Request, res: Response) => {
     }
 
     res.json(response.success({ item: additionalInfo }))
+  }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

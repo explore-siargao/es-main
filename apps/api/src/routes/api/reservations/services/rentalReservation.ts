@@ -19,12 +19,12 @@ export const addRentalReservation = async (req: Request, res: Response) => {
     ]
 
     if (!validStatuses.includes(status)) {
-      return res.json(response.error({ message: 'Invalid status' }))
+      res.json(response.error({ message: 'Invalid status' }))
     }
 
     // Check if required fields are provided
     if (!start_date || !end_date || !status || !unit) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
 
     // Check for overlapping reservations on the same rentalId
@@ -42,7 +42,7 @@ export const addRentalReservation = async (req: Request, res: Response) => {
     })
 
     if (overlappingReservation) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Reservation dates overlap with an existing reservation.',
         })
@@ -61,14 +61,14 @@ export const addRentalReservation = async (req: Request, res: Response) => {
     })
 
     await newRentalReservation.save()
-    return res.json(
+    res.json(
       response.success({
         item: newRentalReservation,
         message: 'Rental reservation added successfully',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -82,7 +82,7 @@ export const editRentalReservation = async (req: Request, res: Response) => {
 
   try {
     if (!startDate || !endDate) {
-      return res.json(
+      res.json(
         response.error({
           message: REQUIRED_VALUE_EMPTY,
         })
@@ -106,7 +106,7 @@ export const editRentalReservation = async (req: Request, res: Response) => {
     })
 
     if (overlappingReservation) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Reservation dates overlap with an existing reservation.',
         })
@@ -125,17 +125,17 @@ export const editRentalReservation = async (req: Request, res: Response) => {
         },
         { new: true }
       )
-      return res.json(
+      res.json(
         response.success({
           item: updateReservation,
           message: 'Reservation successfully updated',
         })
       )
     } else {
-      return res.json(response.error({ message: 'Reservation not found' }))
+      res.json(response.error({ message: 'Reservation not found' }))
     }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

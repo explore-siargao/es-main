@@ -37,7 +37,6 @@ const CheckInOutModal = ({ isOpen, onClose }: CheckInOutModalProps) => {
         </Typography>
         <div className="mt-6">
           <Calendar
-            initialFocus
             mode="range"
             defaultMonth={dateRange?.from}
             selected={dateRange}

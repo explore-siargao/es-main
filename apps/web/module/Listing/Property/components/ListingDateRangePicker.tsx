@@ -35,7 +35,6 @@ const ListingDateRangePicker = ({ title }: ListingDRProps) => {
       </Typography>
       <div className="py-4">
         <Calendar
-          initialFocus
           mode="range"
           defaultMonth={dateRange?.from}
           selected={dateRange}

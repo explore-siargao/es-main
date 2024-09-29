@@ -1,7 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
-import { ChevronRightIcon } from "@heroicons/react/24/outline"
 import { Typography } from "./Typography"
+import { LucideChevronRight } from "lucide-react"
 
 export interface BreadcrumbProps
   extends React.DetailsHTMLAttributes<HTMLDivElement> {
@@ -18,7 +18,7 @@ const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
         <Link href={link} className="font-semibold hover:underline">
           {home}
         </Link>
-        <ChevronRightIcon
+        <LucideChevronRight
           className="h-5 w-5 flex-shrink-0 mx-3"
           aria-hidden="true"
         />

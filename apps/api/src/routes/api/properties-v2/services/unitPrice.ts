@@ -23,13 +23,13 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
       })
 
     if (!getProperty) {
-      return res.json(
+      res.json(
         response.error({ message: 'This property does not exist' })
       )
     }
 
     if (!unitPrice) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Required value is empty or invalid data format',
         })
@@ -70,7 +70,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
     }
 
     // Find the specific unit within the property using the unitId
-    const specificUnit = getProperty.bookableUnits.find(
+    const specificUnit = getProperty?.bookableUnits.find(
       (unit) => unit._id.toString() === unitPrice._id?.toString()
     )
 
@@ -86,7 +86,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
         { new: true }
       )
     } else {
-      return res.json(response.error({ message: 'Unit not found' }))
+      res.json(response.error({ message: 'Unit not found' }))
     }
 
     res.json(
@@ -117,13 +117,13 @@ export const getUnitPrice = async (req: Request, res: Response) => {
     })
 
   if (!getProperty) {
-    return res.json(response.error({ message: 'This property does not exist' }))
+    res.json(response.error({ message: 'This property does not exist' }))
   }
 
-  const bookableUnits = getProperty.bookableUnits
+  const bookableUnits = getProperty?.bookableUnits || []
 
   if (bookableUnits.length === 0) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable unit not found for this property',
       })
