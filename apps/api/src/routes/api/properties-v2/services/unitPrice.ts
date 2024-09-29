@@ -23,9 +23,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
       })
 
     if (!getProperty) {
-      res.json(
-        response.error({ message: 'This property does not exist' })
-      )
+      res.json(response.error({ message: 'This property does not exist' }))
     }
 
     if (!unitPrice) {

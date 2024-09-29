@@ -64,7 +64,7 @@ export const updateRentalRate = async (req: Request, res: Response) => {
       rates.updatedAt = new Date()
     }
     await rates?.save()
-    if(rental) {
+    if (rental) {
       rental.finishedSections = [
         'basicInfo',
         'details',

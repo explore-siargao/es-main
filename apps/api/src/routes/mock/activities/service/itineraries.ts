@@ -68,34 +68,33 @@ export const getItineraries = async (req: Request, res: Response) => {
         })
       )
     } else {
+      const data = {
+        id: activitiesData.id,
+        meetingPointDescription: activitiesData.meetingPointDescription,
+        latitude: activitiesData.latitude,
+        longitude: activitiesData.longitude,
+        address: activitiesData.Address,
+        howToGetThere: activitiesData.howToGetThere,
+        isBuilderEnbled: activitiesData.isBuilderEnabled,
+        itineraries:
+          activitiesData.Itineraries !== null
+            ? activitiesData.Itineraries.map((item) => {
+                return {
+                  ...item,
+                  activities: item.activities
+                    ? JSON.parse(item.activities)
+                    : null,
+                }
+              }).sort((l, h) => l.destinationNumber - h.destinationNumber)
+            : null,
+      }
 
-    const data = {
-      id: activitiesData.id,
-      meetingPointDescription: activitiesData.meetingPointDescription,
-      latitude: activitiesData.latitude,
-      longitude: activitiesData.longitude,
-      address: activitiesData.Address,
-      howToGetThere: activitiesData.howToGetThere,
-      isBuilderEnbled: activitiesData.isBuilderEnabled,
-      itineraries:
-        activitiesData.Itineraries !== null
-          ? activitiesData.Itineraries.map((item) => {
-              return {
-                ...item,
-                activities: item.activities
-                  ? JSON.parse(item.activities)
-                  : null,
-              }
-            }).sort((l, h) => l.destinationNumber - h.destinationNumber)
-          : null,
+      res.json(
+        response.success({
+          item: data,
+        })
+      )
     }
-
-    res.json(
-      response.success({
-        item: data,
-      })
-    )
-  }
   } catch (err: any) {
     res.json(
       response.error({
@@ -204,36 +203,35 @@ export const deleteItinerary = async (req: Request, res: Response) => {
         response.error({ message: 'Activity with the given ID not found!' })
       )
     } else {
+      const itineraryIndex =
+        activitiesData.Itineraries !== null
+          ? activitiesData.Itineraries.findIndex(
+              (itinerary) => itinerary.id === itineraryId
+            )
+          : -1
 
-    const itineraryIndex =
-      activitiesData.Itineraries !== null
-        ? activitiesData.Itineraries.findIndex(
-            (itinerary) => itinerary.id === itineraryId
-          )
-        : -1
+      if (itineraryIndex === -1) {
+        res.json(
+          response.error({ message: 'Itinerary with the given ID not found!' })
+        )
+      }
 
-    if (itineraryIndex === -1) {
+      const deleteItinerary =
+        activitiesData.Itineraries !== null &&
+        activitiesData.Itineraries.splice(itineraryIndex, 1)
+
       res.json(
-        response.error({ message: 'Itinerary with the given ID not found!' })
+        response.success({
+          //@ts-ignore
+          item: deleteItinerary[0] || null,
+          message: 'Itinerary successfully deleted from the specific activity',
+          allItemCount:
+            activitiesData.Itineraries !== null
+              ? activitiesData.Itineraries.length
+              : 0,
+        })
       )
     }
-
-    const deleteItinerary =
-      activitiesData.Itineraries !== null &&
-      activitiesData.Itineraries.splice(itineraryIndex, 1)
-
-    res.json(
-      response.success({
-        //@ts-ignore
-        item: deleteItinerary[0] || null,
-        message: 'Itinerary successfully deleted from the specific activity',
-        allItemCount:
-          activitiesData.Itineraries !== null
-            ? activitiesData.Itineraries.length
-            : 0,
-      })
-    )
-  }
   } catch (err: any) {
     res.json(
       response.error({

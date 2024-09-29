@@ -48,11 +48,11 @@ export const updateRentalRate = async (req: Request, res: Response) => {
       res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
     const rate = getRental?.Pricing
-    if(rate) {
+    if (rate) {
       rate.dayRate = dayRate || rate.dayRate
       rate.requiredDeposit = requiredDeposit || rate.requiredDeposit
     }
-    if(getRental) {
+    if (getRental) {
       getRental.finishedSections =
         '["basicInfo", "details", "addOns", "photos", "pricing"]'
     }

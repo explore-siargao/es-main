@@ -53,7 +53,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       getLocation.howToGetThere = howToGetThere || getLocation.howToGetThere
       getLocation.latitude = latitude || getLocation.latitude
       getLocation.longitude = longitude || getLocation.longitude
-      if(getRental) {
+      if (getRental) {
         getRental.finishedSections =
           '["basicInfo", "details", "addOns", "photos", "pricing", "location"]'
       }

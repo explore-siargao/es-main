@@ -554,9 +554,7 @@ export const getUnitIds = async (req: Request, res: Response) => {
       res.json(response.error({ message: 'No bookable units found' }))
     }
     const units = bookableUnit?.ids
-    res.json(
-      response.success({ items: units, allItemCount: units?.length })
-    )
+    res.json(response.success({ items: units, allItemCount: units?.length }))
   } catch (err: any) {
     res.json(
       response.error({

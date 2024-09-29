@@ -392,9 +392,9 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
 
       return {
         id: rental?._id,
-        name:
-          rental ? `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` :
-          'Unknown',
+        name: rental
+          ? `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`
+          : 'Unknown',
         //@ts-ignore
         price: rental?.pricing?.dayRate ?? 0,
         pricePerDates: rental?.pricePerDates,
@@ -453,9 +453,7 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
       deletedAt: null,
     })
     if (!getRental) {
-      res.json(
-        response.error({ message: 'Rental not found on our system' })
-      )
+      res.json(response.error({ message: 'Rental not found on our system' }))
     }
     if (!fromDate || !toDate || !dayRate || !requiredDeposit) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))

@@ -2,7 +2,13 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/common/helpers/cn"
 import { Typography } from "./Typography"
-import { LucideAlertCircle, LucideAlertTriangle, LucideCheckCircle, LucideHelpCircle, LucideX } from "lucide-react"
+import {
+  LucideAlertCircle,
+  LucideAlertTriangle,
+  LucideCheckCircle,
+  LucideHelpCircle,
+  LucideX,
+} from "lucide-react"
 
 const toastVariants = cva(
   "pointer-events-auto w-full max-w-sm overflow-hidden rounded-xl",
@@ -53,7 +59,9 @@ const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
     let iconComponent
 
     if (variant === "success") {
-      iconComponent = <LucideCheckCircle className="h-6 w-6" aria-hidden="true" />
+      iconComponent = (
+        <LucideCheckCircle className="h-6 w-6" aria-hidden="true" />
+      )
     } else if (variant === "warning") {
       iconComponent = (
         <LucideAlertTriangle className="h-6 w-6" aria-hidden="true" />

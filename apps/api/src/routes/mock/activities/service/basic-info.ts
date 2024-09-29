@@ -25,7 +25,6 @@ export const getActivities = async (req: Request, res: Response) => {
         })
       )
     } else {
-
       const data = {
         id: activitiesData.id,
         title: activitiesData.title,
@@ -80,8 +79,10 @@ export const updateActivities = async (req: Request, res: Response) => {
         getActivity.highLights =
           JSON.stringify(highLights) || getActivity.highLights
         getActivity.durationHour = durationHour || getActivity.durationHour
-        getActivity.durationMinute = durationMinute || getActivity.durationMinute
-        getActivity.languages = JSON.stringify(languages) || getActivity.languages
+        getActivity.durationMinute =
+          durationMinute || getActivity.durationMinute
+        getActivity.languages =
+          JSON.stringify(languages) || getActivity.languages
         const basicInfoData = {
           title: getActivity.title,
           description: getActivity.description,

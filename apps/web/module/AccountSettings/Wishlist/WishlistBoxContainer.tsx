@@ -30,10 +30,7 @@ const WishlistBoxContainer = ({ title, link, text, photo }: Props) => {
               onClick={() => setRemoveModal(true)}
               className="absolute top-4 left-4 p-1 bg-primary-100 rounded-full hover:bg-white hover:shadow-lg transition hover:scale-105"
             >
-              <LucideX
-                className=" h-7 w-7 text-text-400 "
-                aria-hidden="true"
-              />
+              <LucideX className=" h-7 w-7 text-text-400 " aria-hidden="true" />
             </button>
           )}
           <Link href={"/account-settings/wishlist/" + link}>

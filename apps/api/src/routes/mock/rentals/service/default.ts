@@ -295,7 +295,8 @@ export const deleteRentalPhotosByPhotoId = async (
     if (rental?.hostId !== userId) {
       res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
-    const photoIndex = rental?.Photos.findIndex((photo) => photo.id === photoId) || -1
+    const photoIndex =
+      rental?.Photos.findIndex((photo) => photo.id === photoId) || -1
 
     if (photoIndex === -1) {
       res.json(

@@ -88,9 +88,9 @@ export const updateAddOns = async (req: Request, res: Response) => {
         //@ts-ignore
         addOns.others = others || addOns.others
       } else if (
-        addOns && 
+        addOns &&
         (getRental?.category === 'Motorbike' ||
-        getRental?.category === 'Bicycle')
+          getRental?.category === 'Bicycle')
       ) {
         addOns.roofRack = false || (addOns.roofRack as boolean)
         addOns.boardRack = boardRack || (addOns.roofRack as boolean)
@@ -100,7 +100,7 @@ export const updateAddOns = async (req: Request, res: Response) => {
         //@ts-ignore
         addOns.others = others || addOns.others
       }
-      if(getRental) {
+      if (getRental) {
         getRental.finishedSections = '["basicInfo", "details", "addOns"]'
       }
       res.json(

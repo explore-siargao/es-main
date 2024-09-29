@@ -21,9 +21,7 @@ export const getAllBookableUnitTypeByHost = async (
   }
 
   if (!bookableUnitTypeData) {
-    res.json(
-      response.error({ message: 'Not found for the given host ID!' })
-    )
+    res.json(response.error({ message: 'Not found for the given host ID!' }))
   }
   try {
     const filteredData = bookableUnitTypeData?.BookableUnit.map((item) => ({
@@ -120,10 +118,8 @@ export const getPaginatedBookableUnitByPropertyId = async (
 
   const startIndex = (page - 1) * rowsPerPage
   const endIndex = startIndex + rowsPerPage
-  const paginatedBookableUnits = bookableUnitsData?.BookableUnit.slice(
-    startIndex,
-    endIndex
-  ) || []
+  const paginatedBookableUnits =
+    bookableUnitsData?.BookableUnit.slice(startIndex, endIndex) || []
   try {
     const filteredData = paginatedBookableUnits.map((item) => ({
       bookableUnitId: item.id,

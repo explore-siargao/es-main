@@ -112,7 +112,10 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
             }
           }
         }
-      } else if (rental && (category === 'Motorbike' || category === 'Bicycle')) {
+      } else if (
+        rental &&
+        (category === 'Motorbike' || category === 'Bicycle')
+      ) {
         rental.category =
           rental?.category === '' || rental?.category === null
             ? category
@@ -152,7 +155,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         rental.finishedSections = ['basicInfo']
         rental.updatedAt = new Date()
       }
-      
+
       await rental?.save()
 
       const basicInfo = {

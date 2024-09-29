@@ -53,9 +53,7 @@ export const getConversations = async (req: Request, res: Response) => {
       return dateA - dateB
     })
 
-  res.json(
-    response.success({ items: convos, allItemCount: convos.length })
-  )
+  res.json(response.success({ items: convos, allItemCount: convos.length }))
 }
 
 export const addMessage = async (req: Request, res: Response) => {

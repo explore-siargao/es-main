@@ -33,7 +33,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
     const getRental = rentals.find((item) => item.id === rentalId && hostId)
     const sections = JSON.parse(getRental?.finishedSections as string)
     sections.push(finishedSections)
-    if(getRental) {
+    if (getRental) {
       getRental.finishedSections = JSON.stringify(sections)
     }
     res.json(

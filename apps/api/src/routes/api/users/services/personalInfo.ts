@@ -27,7 +27,7 @@ export const getPersonalInfo = async (req: Request, res: Response) => {
         response.success({ message: 'No user found with the provided ID' })
       )
     }
-    
+
     const plainUserInfo = getUserInfo?.toObject()
 
     res.json(response.success({ item: plainUserInfo }))

@@ -61,9 +61,7 @@ export const updateRentalPhotos = async (req: Request, res: Response) => {
     }
     if (rental?.category === E_Rental_Category.Motorbike) {
       if (newRentalPhotos.length < 3) {
-        res.json(
-          response.error({ message: 'Minimum of 3 Photos allowed!' })
-        )
+        res.json(response.error({ message: 'Minimum of 3 Photos allowed!' }))
       }
       const updatedRentalPhotos = newRentalPhotos.map(
         (photos: T_Photo, photoIndex: number) => {
@@ -76,9 +74,7 @@ export const updateRentalPhotos = async (req: Request, res: Response) => {
       rental.Photos = updatedRentalPhotos
     } else if (rental?.category === E_Rental_Category.Bicycle) {
       if (newRentalPhotos.length < 3) {
-        res.json(
-          response.error({ message: 'Minimum of 3 Photos allowed!' })
-        )
+        res.json(response.error({ message: 'Minimum of 3 Photos allowed!' }))
       }
       const updatedRentalPhotos = newRentalPhotos.map(
         (photos: T_Photo, photoIndex: number) => {
@@ -91,9 +87,7 @@ export const updateRentalPhotos = async (req: Request, res: Response) => {
       rental.Photos = updatedRentalPhotos
     } else if (rental?.category === E_Rental_Category.Car) {
       if (newRentalPhotos.length < 5) {
-        res.json(
-          response.error({ message: 'Minimum of 5 Photos allowed!' })
-        )
+        res.json(response.error({ message: 'Minimum of 5 Photos allowed!' }))
       }
       const updatedRentalPhotos = newRentalPhotos.map(
         (photos: T_Photo, photoIndex: number) => {

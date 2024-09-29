@@ -1,5 +1,11 @@
 import React, { useState } from "react"
-import { LucideAlertTriangle, LucideInfo, LucideXCircle, LucideCheckCircle, LucideX } from "lucide-react"
+import {
+  LucideAlertTriangle,
+  LucideInfo,
+  LucideXCircle,
+  LucideCheckCircle,
+  LucideX,
+} from "lucide-react"
 import { cn } from "@/common/helpers/cn"
 
 interface AlertProps {

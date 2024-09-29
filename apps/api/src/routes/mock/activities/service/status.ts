@@ -18,14 +18,14 @@ export const updateStatus = async (req: Request, res: Response) => {
       if (!getActivity) {
         res.json(response.error({ message: 'Activity not found' }))
       } else {
-      getActivity.status = status || getActivity.status
-      res.json(
-        response.success({
-          item: { status: status },
-          message: 'Activity is now ' + status,
-        })
-      )
-    }
+        getActivity.status = status || getActivity.status
+        res.json(
+          response.success({
+            item: { status: status },
+            message: 'Activity is now ' + status,
+          })
+        )
+      }
     } catch (err: any) {
       res.json(
         response.error({

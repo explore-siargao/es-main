@@ -96,9 +96,7 @@ export const updateCart = async (req: Request, res: Response) => {
     res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (findCart === -1) {
-    res.json(
-      response.error({ message: 'No cart found or already deleted' })
-    )
+    res.json(response.error({ message: 'No cart found or already deleted' }))
   }
   const updatedcart = {
     ...carts[findCart],
@@ -137,9 +135,7 @@ export const deleteCart = async (req: Request, res: Response) => {
   })
 
   if (deletedCarts.length === 0) {
-    res.json(
-      response.error({ message: 'No carts found with provided IDs' })
-    )
+    res.json(response.error({ message: 'No carts found with provided IDs' }))
   }
   //@ts-ignore
   res.json({

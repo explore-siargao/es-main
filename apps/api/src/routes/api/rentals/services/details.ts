@@ -119,12 +119,12 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
           haveDriverLicense || details.haveDriverLicense
         details.isRegistered = details.isRegistered ?? null
       }
-      if(details) {
+      if (details) {
         details.updatedAt = new Date()
         await details.save()
       }
 
-      if(rental) {
+      if (rental) {
         rental.finishedSections = ['basicInfo', 'details']
         rental.updatedAt = new Date()
       }

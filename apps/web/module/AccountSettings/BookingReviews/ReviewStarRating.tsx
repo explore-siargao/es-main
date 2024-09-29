@@ -28,7 +28,9 @@ const ReviewStarRating = ({
   const renderStar = (index: number) => {
     console.log(rating % 1)
     if (index < Math.floor(rating)) {
-      return <LucideStar width={getStarWidth()} className="text-secondary-500" />
+      return (
+        <LucideStar width={getStarWidth()} className="text-secondary-500" />
+      )
     } else if (index < rating && rating % 1 !== 0) {
       return (
         <div

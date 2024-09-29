@@ -17,7 +17,6 @@ export const getRentalDetails = async (req: Request, res: Response) => {
     if (!getRental) {
       res.json(response.error({ message: 'No rental details found' }))
     } else {
-
       if (getRental.category === 'Car') {
         rentalDetail = getRental?.Details
       } else if (getRental.category === 'Motorbike') {
@@ -168,7 +167,7 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         getDetail.seatingCapacity = getDetail.seatingCapacity ?? null
         getDetail.weightCapacity = weightCapacity || getDetail.weightCapacity
       }
-      if(getRental) {
+      if (getRental) {
         getRental.finishedSections = '["basicInfo", "details"]'
       }
       res.json(

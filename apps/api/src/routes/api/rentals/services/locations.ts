@@ -78,7 +78,7 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
       location.updatedAt = new Date()
       await location?.save()
     }
-    if(rental) {
+    if (rental) {
       rental.finishedSections = [
         'basicInfo',
         'details',

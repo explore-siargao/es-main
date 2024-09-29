@@ -36,9 +36,7 @@ export const getRentalsByHostAndCategory = async (
       }))
     }
 
-    res.json(
-      response.success({ items: results, allItemCount: rentals.length })
-    )
+    res.json(response.success({ items: results, allItemCount: rentals.length }))
   } catch (err: any) {
     res.json(
       response.error({

@@ -123,9 +123,7 @@ const ImageGallery = ({
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
         <div className="relative w-full h-full bg-text-950 bg-opacity-70">
-          <SliderImages
-            images={images}
-          />
+          <SliderImages images={images} />
           <button
             onClick={() => setIsOpen(false)}
             className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"

@@ -29,7 +29,6 @@ export const getActivityInclusions = (req: Request, res: Response) => {
         })
       )
     } else {
-
       const data = {
         id: activityInclusionData.id,
         isFoodIncluded: activityInclusionData.isFoodIncluded,
@@ -38,7 +37,8 @@ export const getActivityInclusions = (req: Request, res: Response) => {
         ),
         isNonAlcoholicDrinkIncluded:
           activityInclusionData.isNonAlcoholicDrinkIncluded,
-        isAlcoholicDrinkIncluded: activityInclusionData.isAlcoholicDrinkIncluded,
+        isAlcoholicDrinkIncluded:
+          activityInclusionData.isAlcoholicDrinkIncluded,
         selectedAlcoholicDrinkOptions: JSON.parse(
           activityInclusionData.selectedAlcoholicDrinkOptions
         ),

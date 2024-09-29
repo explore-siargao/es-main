@@ -11,7 +11,13 @@ import AddNoteModal from "@/module/AccountSettings/components/modals/AddNoteModa
 import MenuModal from "@/module/AccountSettings/components/modals/MenuModal"
 import { Typography } from "../../../common/components/ui/Typography"
 import { ComponentProps, DetailsType } from "../../../common/types/global"
-import { Copy, LucideArrowLeft, LucideCheckCircle, LucideHeart, MoreHorizontal } from "lucide-react"
+import {
+  Copy,
+  LucideArrowLeft,
+  LucideCheckCircle,
+  LucideHeart,
+  MoreHorizontal,
+} from "lucide-react"
 import useRemoveFromWishGroup from "@/module/AccountSettings/hooks/useRemoveFromWishGroup"
 import { useQueryClient } from "@tanstack/react-query"
 import SavedWishlists from "./SavedWishlists"

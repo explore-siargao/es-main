@@ -51,9 +51,7 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
   const updatedPolicies: T_Property_Policy[] = req.body.policies
 
   if (!Array.isArray(updatedPolicies)) {
-    res.json(
-      response.error({ message: 'Invalid type of data in policies' })
-    )
+    res.json(response.error({ message: 'Invalid type of data in policies' }))
   }
 
   const property = properties.find((item) => item.id === propertyId)
@@ -65,7 +63,6 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
   if (!property) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   } else {
-
     const updatedAddedPolicies = updatedPolicies.filter(
       (updatedPolicy) => updatedPolicy._id || updatedPolicy.isSelected
     )
