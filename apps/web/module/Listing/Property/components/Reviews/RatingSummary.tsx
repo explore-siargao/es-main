@@ -7,8 +7,8 @@ import {
   MessageSquare,
   Map,
   Tag,
+  LucideStar,
 } from "lucide-react"
-import { StarIcon } from "@heroicons/react/20/solid"
 import { Typography } from "@/common/components/ui/Typography"
 import { T_RatingSummaryProps } from "../../types/RatingSummary"
 
@@ -16,7 +16,7 @@ const HeadReview = ({ ratings, reviews, categories }: T_RatingSummaryProps) => {
   return (
     <>
       <div className="flex mb-4 space-x-2">
-        <StarIcon className="h-6 w-6" />
+        <LucideStar className="h-6 w-6" />
         <Typography variant="h3" fontWeight="semibold">
           {ratings} &middot; {reviews} reviews
         </Typography>

@@ -16,24 +16,25 @@ export const updateStatus = async (req: Request, res: Response) => {
         (item) => item.id === rentalId && item.hostId === hostId
       )
       if (!getRental) {
-        return res.json(response.error({ message: 'Rental not found.' }))
+        res.json(response.error({ message: 'Rental not found.' }))
+      } else {
+        getRental.status = status || getRental?.status
+        res.json(
+          response.success({
+            item: { status: status },
+            message: 'Rental is now ' + status,
+          })
+        )
       }
-      getRental.status = status || getRental.status
-      res.json(
-        response.success({
-          item: { status: status },
-          message: 'Rental is now ' + status,
-        })
-      )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

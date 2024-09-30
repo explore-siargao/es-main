@@ -1,5 +1,5 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import HostInformation from "./components/HostInformation"
 import BookingDescription from "./components/BookingDescription"
 import SectionInfo from "./components/SectionInfo"

@@ -1,16 +1,13 @@
 "use client"
 import Link from "next/link"
-import { WidthWrapper } from "../WidthWrapper"
 import { Typography } from "../ui/Typography"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-  faFacebook,
-  faTwitter,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons"
 import { APP_NAME } from "@repo/constants"
 import { SUPPORT, EXPLORE_SIARGAO, DESTINATION, PARTNER_WITH_US } from "./links"
 import { Globe } from "lucide-react"
+import { WidthWrapper } from "../Wrappers/WidthWrapper"
+import FacebookIcon from "../svg/FacebookIcon"
+import XIcon from "../svg/XIcon"
+import InstagramIcon from "../svg/InstagramIcon"
 
 const Footer = ({
   contentWidth = "medium",
@@ -114,25 +111,13 @@ const Footer = ({
               PHP
             </Typography>
             <Link href={"/"}>
-              <FontAwesomeIcon
-                icon={faFacebook}
-                size="sm"
-                className="hover:underline hover:duration-300 cursor-pointer"
-              />
+              <FacebookIcon className="w-4 h-4 hover:fill-primary-500 transition" />
             </Link>
             <Link href={"/"}>
-              <FontAwesomeIcon
-                icon={faTwitter}
-                size="sm"
-                className="hover:underline hover:duration-300 cursor-pointer"
-              />
+              <XIcon className="w-4 h-4 hover:fill-primary-500 transition" />
             </Link>
             <Link href={"/"}>
-              <FontAwesomeIcon
-                icon={faInstagram}
-                size="sm"
-                className="hover:underline hover:duration-300 cursor-pointer"
-              />
+              <InstagramIcon className="w-4 h-4 hover:fill-primary-500 transition" />
             </Link>
           </div>
         </div>

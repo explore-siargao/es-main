@@ -16,7 +16,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
   const isValidInput = Z_Update_Activity_Pice_Slots.safeParse(req.body)
   if (isValidInput.success) {
     if (!isHost) {
-      return res.json(
+      res.json(
         response.error({
           message: USER_NOT_AUTHORIZED,
         })
@@ -28,14 +28,14 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
         deletedAt: null,
       })
       if (!activity) {
-        return res.json(
+        res.json(
           response.error({
             message: 'Activity not found!',
           })
         )
       }
       const updatedPriceAndSlots = await dbActivities.findByIdAndUpdate(
-        activity._id,
+        activity?._id,
         {
           $set: {
             price: price,
@@ -52,14 +52,14 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: JSON.parse(isValidInput.error.message),
       })

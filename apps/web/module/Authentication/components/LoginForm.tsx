@@ -2,7 +2,6 @@
 import React from "react"
 import fb from "@/common/assets/facebook-logo.png"
 import google from "@/common/assets/google-logo.png"
-import { EnvelopeIcon } from "@heroicons/react/20/solid"
 import toast from "react-hot-toast"
 import { IUser } from "@/common/types/global"
 import { useForm } from "react-hook-form"
@@ -21,6 +20,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { EncryptionService } from "@repo/services/"
 import useGoogleLogin from "../hooks/useGoogleLogin"
 import { useQueryClient } from "@tanstack/react-query"
+import { LucideMail } from "lucide-react"
 
 enum Position {
   "end",
@@ -202,7 +202,7 @@ const LoginForm = () => {
                   router.push(LINK_CREATE_ACCOUNT)
                 }}
                 imagePosition={Position.start}
-                icon={<EnvelopeIcon className="h-5 w-auto" />}
+                icon={<LucideMail className="h-5 w-auto" />}
               >
                 <span className="text-sm font-medium leading-6 text-center w-full">
                   Register using email

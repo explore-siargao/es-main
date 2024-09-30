@@ -23,12 +23,12 @@ export const getPersonalInfo = async (req: Request, res: Response) => {
     const getUserInfo = await dbUsers.findOne({ _id: userId }).populate('guest')
 
     if (!getUserInfo) {
-      return res.json(
+      res.json(
         response.success({ message: 'No user found with the provided ID' })
       )
     }
 
-    const plainUserInfo = getUserInfo.toObject()
+    const plainUserInfo = getUserInfo?.toObject()
 
     res.json(response.success({ item: plainUserInfo }))
   } catch (err: any) {
@@ -57,7 +57,7 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
     const userId = req.params.userId
 
     if (!userId) {
-      return res.status(400).json(
+      res.status(400).json(
         response.error({
           message: 'Invalid user ID format',
         })
@@ -82,7 +82,7 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
     )
 
     if (!editPersonalInfo) {
-      return res.status(404).json(
+      res.status(404).json(
         response.error({
           message: 'User not found',
         })
@@ -291,7 +291,7 @@ export const addEmergencyContact = async (req: Request, res: Response) => {
       )
     }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -358,14 +358,14 @@ export const updateCurrency = async (req: Request, res: Response) => {
   const { currency } = req.body
   try {
     if (!currency) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
     const getPersonalInfo = await dbGuests.findOne({
       _id: guestId,
       deletedAt: null,
     })
     if (!getPersonalInfo) {
-      return res.json(response.error({ message: 'Personal info not found' }))
+      res.json(response.error({ message: 'Personal info not found' }))
     }
     const updateUserCurrency = await dbGuests.findByIdAndUpdate(
       guestId,
@@ -427,11 +427,11 @@ export const updateLanguage = async (req: Request, res: Response) => {
   try {
     console.log('personalInfoId:', personalInfoId)
     if (!language) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
     const getPersonalInfo = await dbGuests.findOne({ _id: personalInfoId })
     if (getPersonalInfo) {
-      return res.json(response.error({ message: 'Personal info not found' }))
+      res.json(response.error({ message: 'Personal info not found' }))
     }
     const updateUserLanguage = await dbGuests.findByIdAndUpdate(
       personalInfoId,

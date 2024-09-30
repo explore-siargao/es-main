@@ -1,4 +1,4 @@
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ContactHost from "./components/ContactHost"
 import CheckoutProcess from "./components/CheckoutBox"
 import { LucideChevronLeft } from "lucide-react"

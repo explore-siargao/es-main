@@ -1,8 +1,7 @@
 "use client"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ProfileCard from "./components/ProfileCard"
 import ConfirmedInformation from "./components/ConfirmedInformation"
-import { FlagIcon } from "@heroicons/react/24/outline"
 import AboutHost from "./components/AboutHost"
 import HostReviews from "./components/HostReviews"
 import HostListings from "./components/HostListings"
@@ -74,7 +73,7 @@ const HostProfile = ({ profile }: { profile: any }) => {
           <HostGuideBooks name={profile?.userName} />
           <hr className="lg:hidden" />
           <div className="items-center flex lg:hidden">
-            <FlagIcon className="h-5 w-5 mr-3" />
+            <LucideFlag className="h-5 w-5 mr-3" />
             <button
               className="underline font-semibold"
               onClick={() => setOpenReportModal(true)}

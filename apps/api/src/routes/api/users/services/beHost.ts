@@ -15,7 +15,7 @@ export const beAHost = async (req: Request, res: Response) => {
       deletedAt: null,
     })
     if (checkUserIsHost) {
-      return res.json(response.error({ message: "You're already a host" }))
+      res.json(response.error({ message: "You're already a host" }))
     }
     const addAsHost = await dbUsers.findByIdAndUpdate(
       res.locals.user.id,

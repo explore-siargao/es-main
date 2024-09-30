@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { WidthWrapper } from "@/common/components/WidthWrapper"
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import useSessionStore from "@/common/store/useSessionStore"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
 import { useSearchStore } from "@/common/store/useSearchStore"

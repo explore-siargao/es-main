@@ -1,6 +1,4 @@
 import { Popup } from "react-leaflet"
-import { StarIcon, HeartIcon } from "@heroicons/react/20/solid"
-import { XMarkIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper/modules"
@@ -8,6 +6,7 @@ import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import Link from "next/link"
+import { LucideHeart, LucideStar, LucideX } from "lucide-react"
 
 type Prop = {
   itemId: number
@@ -42,7 +41,7 @@ const MapCustomPopup = ({
           className="bg-white rounded-full z-10 p-1 border border-gray-300 absolute right-1 top-1"
           onClick={onClose}
         >
-          <XMarkIcon className="h-4 w-4" />
+          <LucideX className="h-4 w-4" />
         </button>
         <Link
           href={process.env.WEB_URL + "/accommodation/" + itemId}
@@ -94,7 +93,7 @@ const MapCustomPopup = ({
               ))}
             </Swiper>
             <div className="z-10 p-1 absolute right-9 top-[1px]">
-              <HeartIcon
+              <LucideHeart
                 className={`h-6 w-6 text-text-50 active:scale-90 fill-error-500`}
               />
             </div>
@@ -106,7 +105,7 @@ const MapCustomPopup = ({
                   {location}
                 </h4>
                 <div className="space-x-0.5 flex items-center">
-                  <StarIcon className="h-4 w-4 mb-0.5 text-text-700" />
+                  <LucideStar className="h-4 w-4 mb-0.5 text-text-700" />
                   <h4 className="text-sm text-text-700">{rating}</h4>
                 </div>
               </div>

@@ -2,8 +2,8 @@
 import Link from "next/link"
 import { cn } from "@/common/helpers/cn"
 import * as React from "react"
-import { ChevronRightIcon } from "@heroicons/react/24/outline"
 import { Typography } from "./ui/Typography"
+import { LucideChevronRight } from "lucide-react"
 
 type Props = {
   title: string
@@ -37,7 +37,7 @@ const AccountMenuContainer = ({
       </div>
       <div className="flex md:hidden self-center justify-between w-full">
         {title}
-        <ChevronRightIcon className="h-5 w-auto" />
+        <LucideChevronRight className="h-5 w-auto" />
       </div>
     </Link>
   )

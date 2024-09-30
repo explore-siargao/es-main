@@ -15,7 +15,7 @@ export const getRentalsByHostAndCategory = async (
 
     // Validate category
     if (!['Car', 'Motorbike', 'Bicycle'].includes(category as string)) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Invalid category. Must be Car, Motorbike, or Bicycle.',
         })
@@ -26,21 +26,19 @@ export const getRentalsByHostAndCategory = async (
     let results: any = null
     if (category === 'Car' || category === 'Motorbike') {
       results = rentals.map((rental) => ({
-        id: rental._id,
+        id: rental?._id,
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
       }))
     } else {
       results = rentals.map((rental) => ({
-        id: rental._id,
+        id: rental?._id,
         name: `${rental.make}`,
       }))
     }
 
-    return res.json(
-      response.success({ items: results, allItemCount: rentals.length })
-    )
+    res.json(response.success({ items: results, allItemCount: rentals.length }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -53,7 +51,7 @@ export const getRentalIds = async (req: Request, res: Response) => {
     const { rentalId } = req.params
 
     if (!rentalId) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental ID is required.',
         })
@@ -63,18 +61,18 @@ export const getRentalIds = async (req: Request, res: Response) => {
     const rental = await dbRentals.findById(rentalId)
 
     if (!rental) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Rental not found.',
         })
       )
     }
 
-    const ids = rental.ids
+    const ids = rental?.ids
 
-    return res.json(response.success({ items: ids, allItemCount: ids.length }))
+    res.json(response.success({ items: ids, allItemCount: ids?.length }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

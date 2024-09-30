@@ -7,6 +7,9 @@ import {
   isAfter,
   isBefore,
   parse,
+  isWithinInterval,
+  startOfDay,
+  endOfDay,
   isSameDay,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
@@ -32,6 +35,7 @@ import { getColorClasses } from "../../helpers/legends"
 import { Spinner } from "@/common/components/ui/Spinner"
 import PropertyEditPricePerDatesModal from "./PropertyEditPricePerDatesModal"
 import { Typography } from "@/common/components/ui/Typography"
+import { TZDate } from "@date-fns/tz"
 
 const PropertyCalendarTable = () => {
   const { mutate } = useUpdateCalendarUnitName()
@@ -63,6 +67,8 @@ const PropertyCalendarTable = () => {
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+
+  const [searchString, setSearchString] = useState("")
 
   const daysPerPage = 13
 
@@ -121,22 +127,6 @@ const PropertyCalendarTable = () => {
   }
 
   useEffect(() => {
-    if (filterCalendarDate !== "") {
-      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
-      console.log(parsedDate)
-      setStartDate(addDays(parsedDate, -4))
-      queryClient.invalidateQueries({
-        queryKey: ["calendar-property"],
-      })
-    } else {
-      setStartDate(addDays(new Date(), -4))
-      queryClient.invalidateQueries({
-        queryKey: ["calendar-property"],
-      })
-    }
-  }, [filterCalendarDate])
-
-  useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
     const isReservationWithinRange = (reservation: {
@@ -146,8 +136,7 @@ const PropertyCalendarTable = () => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, addDays(startDate, -1))
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
@@ -168,6 +157,7 @@ const PropertyCalendarTable = () => {
         const filteredReservations = unit.reservations.filter(
           isReservationWithinRange
         )
+
         bookableUnits.push({
           id: unit.id,
           abbr: unit.abbr,
@@ -186,12 +176,19 @@ const PropertyCalendarTable = () => {
           name: item.propertyTitle,
           bookableUnitTypes: item.bookableUnitTypes.reduce(
             (
-              acc: { unitType: any; units: any[] }[],
+              acc: {
+                unitType: any
+                units: any[]
+                price: any
+                pricePerDates: any[]
+              }[],
               unitType: {
                 beds: any
                 rooms: any
                 wholePlaces: any
-                name: string
+                name: any
+                price: any
+                pricePerDates: any[]
               }
             ) => {
               if (unitType.beds || unitType.rooms || unitType.wholePlaces) {
@@ -199,7 +196,9 @@ const PropertyCalendarTable = () => {
                 if (transformedUnits.length > 0) {
                   acc.push({
                     unitType: unitType.name,
+                    price: unitType.price,
                     units: transformedUnits,
+                    pricePerDates: unitType.pricePerDates,
                   })
                 }
               }
@@ -213,12 +212,58 @@ const PropertyCalendarTable = () => {
             item.bookableUnitTypes.length > 0
         )
 
+    const applySearchFilter = (data: any) => {
+      if (!searchString) return data // No search string, return original data
+
+      const trimmedSearchString = searchString.toLowerCase().trim()
+
+      const filteredItems = data.items
+        .map((category: { name: string; bookableUnitTypes: any[] }) => ({
+          ...category,
+          bookableUnitTypes: category.bookableUnitTypes
+            .map((unitType: any) => ({
+              ...unitType,
+              units: unitType.units.filter(
+                (unit: { abbr: string; reservations: any[] }) => {
+                  const trimmedAbbr = unit.abbr.toLowerCase().trim()
+                  return (
+                    trimmedAbbr.includes(trimmedSearchString) ||
+                    unit.reservations.some((reservation: { name: string }) => {
+                      const trimmedName = reservation.name.toLowerCase().trim()
+                      return trimmedName.includes(trimmedSearchString)
+                    })
+                  )
+                }
+              ),
+            }))
+            .filter((unitType: { units: any[] }) => unitType.units.length > 0), // Only keep unitTypes with matching units
+        }))
+        .filter(
+          (category: { bookableUnitTypes: any[] }) =>
+            category.bookableUnitTypes.length > 0 // Only keep categories with matching bookableUnitTypes
+        )
+
+      return {
+        ...data,
+        items: filteredItems,
+      }
+    }
+
+    // Create the newFilteredData based on the original filter logic
     const newFilteredData = {
       items: filterItems(sampleData?.items ?? []),
     }
 
-    setUnitData(newFilteredData)
-  }, [startDate, daysPerPage, sampleData?.items, setUnitData])
+    // Apply the search filter to newFilteredData
+    const finalFilteredData = applySearchFilter(newFilteredData)
+    // Update the state based on the final filtered data
+    if (finalFilteredData.items.length > 0) {
+      setUnitData(finalFilteredData)
+    } else if (searchString && finalFilteredData.items.length === 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setUnitData])
 
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
@@ -229,7 +274,7 @@ const PropertyCalendarTable = () => {
 
     for (let i = 0; i < daysPerPage; i++) {
       const date = addDays(startDate, i)
-      const isToday = isSameDay(date, today) // Check if the current date matches
+      const isToday = isSameDay(date, today)
 
       headers.push(
         <th
@@ -307,7 +352,6 @@ const PropertyCalendarTable = () => {
     }
   }
 
-  // Use useEffect to trigger refetch after startDate changes
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
@@ -359,7 +403,6 @@ const PropertyCalendarTable = () => {
     const category = newFilteredData?.items?.find(
       (category) => category.name === categoryName
     )
-    console.log(newFilteredData)
     if (category) {
       //@ts-ignore
       const bed = category?.beds[bedIndex]
@@ -429,6 +472,8 @@ const PropertyCalendarTable = () => {
                             filterCalendarDate={filterCalendarDate}
                             setFilterCalendarDate={setFilterCalendarDate}
                             resetToToday={resetToToday}
+                            searchString={searchString}
+                            setSearchString={setSearchString}
                           />
                         </td>
                         {generateMonthHeader()}
@@ -467,7 +512,6 @@ const PropertyCalendarTable = () => {
                                     "yyyy-MM-dd"
                                   )
                                   const isToday = isSameDay(date, today)
-
                                   const noReservationCount =
                                     unitType?.units?.reduce(
                                       (
@@ -513,10 +557,72 @@ const PropertyCalendarTable = () => {
                                       >
                                         <div>{noReservationCount}</div>
                                         <div>
-                                          $
-                                          {parseFloat(
-                                            unitType.price ?? "0"
-                                          ).toFixed(2)}
+                                          &#8369;
+                                          {unitType.pricePerDates?.length === 0
+                                            ? parseFloat(
+                                                `${unitType.price}`
+                                              ).toFixed(2)
+                                            : unitType.pricePerDates?.find(
+                                                  (item: any) => {
+                                                    const itemFromDate =
+                                                      new TZDate(
+                                                        startOfDay(
+                                                          item.fromDate
+                                                        ),
+                                                        "Asia/Manila"
+                                                      )
+                                                    const itemToDate =
+                                                      new TZDate(
+                                                        endOfDay(item.toDate),
+                                                        "Asia/Manila"
+                                                      )
+                                                    const currentDate =
+                                                      new TZDate(
+                                                        startOfDay(date),
+                                                        "Asia/Manila"
+                                                      )
+                                                    return isWithinInterval(
+                                                      currentDate,
+                                                      {
+                                                        start: itemFromDate,
+                                                        end: itemToDate,
+                                                      }
+                                                    )
+                                                  }
+                                                )?.price
+                                              ? parseFloat(
+                                                  unitType.pricePerDates.find(
+                                                    (item: any) => {
+                                                      const itemFromDate =
+                                                        new TZDate(
+                                                          startOfDay(
+                                                            item.fromDate
+                                                          ),
+                                                          "Asia/Manila"
+                                                        )
+                                                      const itemToDate =
+                                                        new TZDate(
+                                                          endOfDay(item.toDate),
+                                                          "Asia/Manila"
+                                                        )
+                                                      const currentDate =
+                                                        new TZDate(
+                                                          startOfDay(date),
+                                                          "Asia/Manila"
+                                                        )
+                                                      return isWithinInterval(
+                                                        currentDate,
+                                                        {
+                                                          start: itemFromDate,
+                                                          end: itemToDate,
+                                                        }
+                                                      )
+                                                    }
+                                                  ).price.baseRate
+                                                ).toFixed(2)
+                                              : parseFloat(
+                                                  `${unitType.price}`
+                                                ).toFixed(2)}
                                         </div>
                                       </div>
                                     </td>

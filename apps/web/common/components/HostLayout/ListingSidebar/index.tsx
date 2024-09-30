@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { Typography } from "../../ui/Typography"
-import { WidthWrapper } from "../../WidthWrapper"
+import { WidthWrapper } from "../../Wrappers/WidthWrapper"
 import { useParams } from "next/navigation"
 import { BOTTOM_LINKS } from "@/common/constants"
 import { E_Listing_Category } from "@repo/contract"

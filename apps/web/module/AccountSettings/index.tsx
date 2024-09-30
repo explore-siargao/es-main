@@ -14,7 +14,6 @@ import {
 } from "@/common/constants"
 import { Typography } from "@/common/components/ui/Typography"
 import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
-import { ChevronRightIcon } from "@heroicons/react/20/solid"
 import Link from "next/link"
 import useSessionStore from "@/common/store/useSessionStore"
 import {
@@ -26,6 +25,7 @@ import {
   Settings2,
   File,
   Megaphone,
+  LucideChevronRight,
 } from "lucide-react"
 import { E_UserRole } from "@repo/contract"
 import {
@@ -164,7 +164,7 @@ const AccountSettings = () => {
                 </Typography>
               </div>
             </div>
-            <ChevronRightIcon className="h-5 w-auto" />
+            <LucideChevronRight className="h-5 w-auto" />
           </Link>
         </div>
         <div className="grid gap-2 md:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

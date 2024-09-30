@@ -1,9 +1,9 @@
 "use Client"
-import { XMarkIcon } from "@heroicons/react/20/solid"
 import React, { useRef, Fragment } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { cn } from "@/common/helpers/cn"
 import { Typography } from "../ui/Typography"
+import { LucideX } from "lucide-react"
 
 type Props = {
   children: React.ReactNode
@@ -68,7 +68,7 @@ const ModalContainer = ({
                   <div className="flex border-b-gray-200 border-b p-4">
                     {onClose && (
                       <div>
-                        <XMarkIcon
+                        <LucideX
                           className="h-6 w-6 cursor-pointer rounded-full hover:bg-gray-300/30"
                           onClick={onClose}
                         />

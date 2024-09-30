@@ -9,7 +9,7 @@ export const getBookableUnitTypeById = async (req: Request, res: Response) => {
   const id = Number(req.params.id)
   const getBookableUnitType = bookableUnitTypes.find((item) => item.id === id)
   if (!getBookableUnitType) {
-    return res.json(response.error({ message: 'No data found' }))
+    res.json(response.error({ message: 'No data found' }))
   }
   res.json(response.success({ item: getBookableUnitType }))
 }
@@ -23,7 +23,7 @@ export const getBookableUnitTypeByHost = async (
     return item.hostId === hostId
   })
   if (getBookableUnitTypeByHostId.length === 0) {
-    return res.json(
+    res.json(
       response.success({
         items: getBookableUnitTypeByHostId,
         allItemCount: getBookableUnitTypeByHostId.length,
@@ -57,10 +57,10 @@ export const addBookableUnitType = async (req: Request, res: Response) => {
   } = req.body
   const isValidInput = Z_BookableUnitTypes.safeParse(req.body)
   if (!hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!isValidInput.success) {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }
@@ -152,7 +152,7 @@ export const updateBookableUnitTypeById = async (
     thresholdOccupancyForAdditionalCharge,
   } = req.body
   if (!hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (
     !category &&
@@ -169,13 +169,13 @@ export const updateBookableUnitTypeById = async (
     !additionalPricePerPerson &&
     !thresholdOccupancyForAdditionalCharge
   ) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   const findBookableUnitType = bookableUnitTypes.findIndex(
     (item) => item.id === id
   )
   if (findBookableUnitType === -1) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable Unit Type not exist or its already deleted',
       })

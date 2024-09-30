@@ -27,35 +27,35 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
       const rental = await dbRentals.findOne({ _id: rentalId, host: userId })
 
       if (!rental || !isHost) {
-        return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
       }
 
-      const details = await dbRentalDetails.findById(rental.details)
+      const details = await dbRentalDetails.findById(rental?.details)
 
       if (!details) {
-        return res.json(
+        res.json(
           response.error({
             message: 'Rental details not found!',
           })
         )
       }
 
-      if (rental.category === 'Car') {
+      if (details && rental?.category === 'Car') {
         // if ((engineCapacityLiter ?? 0) < 1) {
-        //   return res.json(
+        //   res.json(
         //     response.error({
         //       message: 'Minimum engine capacity is 1000 in (cc) 1 in (liter)',
         //     })
         //   )
         // } else if ((engineCapacityLiter ?? 0) > 8) {
-        //   return res.json(
+        //   res.json(
         //     response.error({
         //       message: 'Maximum engine capacity is 8000 in (cc) 8 in (liter)',
         //     })
         //   )
         // }
         // if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
-        //   return res.json(
+        //   res.json(
         //     response.error({
         //       message:
         //         'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
@@ -73,15 +73,15 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         details.haveDriverLicense =
           haveDriverLicense || details.haveDriverLicense
         details.isRegistered = isRegistered || details.isRegistered
-      } else if (rental.category === 'Motorbike') {
+      } else if (details && rental?.category === 'Motorbike') {
         // if ((engineCapacityLiter ?? 0) < 0.11) {
-        //   return res.json(
+        //   res.json(
         //     response.error({
         //       message: 'Minimum engine capacity is 110 in (cc) 0.11 in (liter)',
         //     })
         //   )
         // } else if ((engineCapacityLiter ?? 0) > 6.5) {
-        //   return res.json(
+        //   res.json(
         //     response.error({
         //       message:
         //         'Maximum engine capacity is 65000 in (cc) 6.5 in (liter)',
@@ -89,7 +89,7 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         //   )
         // }
         // if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
-        //   return res.json(
+        //   res.json(
         //     response.error({
         //       message:
         //         'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
@@ -107,24 +107,28 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         details.haveDriverLicense =
           haveDriverLicense || details.haveDriverLicense
         details.isRegistered = isRegistered || details.isRegistered
-      } else if (rental.category === 'Bicycle') {
+      } else if (details && rental?.category === 'Bicycle') {
         details.condition = condition || details.condition
-        details.engineCapacityLiter = null || details.engineCapacityLiter
-        details.engineCapacityCc = null || details.engineCapacityCc
+        details.engineCapacityLiter = details.engineCapacityLiter ?? null
+        details.engineCapacityCc = details.engineCapacityCc ?? null
         details.exteriorColor = exteriorColor || details.exteriorColor
-        details.interiorColor = null || details.interiorColor
-        details.seatingCapacity = null || details.seatingCapacity
+        details.interiorColor = details.interiorColor ?? null
+        details.seatingCapacity = details.seatingCapacity ?? null
         details.weightCapacityKg = weightCapacity || details.weightCapacityKg
         details.haveDriverLicense =
           haveDriverLicense || details.haveDriverLicense
-        details.isRegistered = null || details.isRegistered
+        details.isRegistered = details.isRegistered ?? null
       }
-      details.updatedAt = new Date()
-      await details.save()
+      if (details) {
+        details.updatedAt = new Date()
+        await details.save()
+      }
 
-      rental.finishedSections = ['basicInfo', 'details']
-      rental.updatedAt = new Date()
-      await rental.save()
+      if (rental) {
+        rental.finishedSections = ['basicInfo', 'details']
+        rental.updatedAt = new Date()
+      }
+      await rental?.save()
 
       res.json(
         response.success({
@@ -133,14 +137,14 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: JSON.parse(isValidInput.error.message),
       })

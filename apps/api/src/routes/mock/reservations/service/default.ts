@@ -11,7 +11,7 @@ export const getReservationsByGuest = async (req: Request, res: Response) => {
   const guestId = req.params.guestId
 
   if (guestId !== userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   const filterReservations = reservations.filter((item) => {
@@ -37,7 +37,7 @@ export const getReservationsByHost = async (req: Request, res: Response) => {
   const monthFilter = month === 'All' ? '' : month
 
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   const filterReservations = reservations.filter((item) => {
@@ -86,7 +86,7 @@ export const addReservation = async (req: Request, res: Response) => {
   const { propertyId, startDate, endDate } = req.body
 
   if (!propertyId || !startDate || !endDate) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   res.json(
@@ -107,7 +107,7 @@ export const updateReservation = async (req: Request, res: Response) => {
   )
 
   if (findReservation === -1) {
-    return res.json(
+    res.json(
       response.error({ message: 'No reservation found or already deleted' })
     )
   }
@@ -121,7 +121,7 @@ export const updateReservation = async (req: Request, res: Response) => {
     bookedUnits: bookedUnits,
   }
   if (reservations[findReservation]?.guest._id !== userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   // @ts-ignore
   reservations[findReservation] = updatedReservation
@@ -138,7 +138,7 @@ export const deleteReservation = async (req: Request, res: Response) => {
   const reservationId = req.params.reservationId
 
   if (!reservationId) {
-    return res.json(response.error({ message: 'No reservation id provided' }))
+    res.json(response.error({ message: 'No reservation id provided' }))
   }
 
   const findReservationIndex = reservations.findIndex(
@@ -149,18 +149,18 @@ export const deleteReservation = async (req: Request, res: Response) => {
 
   if (findReservationIndex !== -1) {
     if (reservations[findReservationIndex]?.guest._id !== userId) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
     deletedReservation.push(reservations.splice(findReservationIndex, 1)[0])
   }
 
   if (deletedReservation.length === 0) {
-    return res.json(
+    res.json(
       response.error({ message: 'No reservation found with provided ID' })
     )
   }
 
-  return res.json({
+  res.json({
     message: 'Reservation deleted successfully',
     items: deletedReservation,
   })

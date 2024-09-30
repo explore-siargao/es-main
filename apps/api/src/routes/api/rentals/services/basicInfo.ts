@@ -22,10 +22,10 @@ export const getRentalBasicInfo = async (req: Request, res: Response) => {
       .exec()
 
     if (!getRental) {
-      return res.json(response.error({ message: 'No rental details found' }))
+      res.json(response.error({ message: 'No rental details found' }))
     }
 
-    const category = getRental.category as unknown as string
+    const category = getRental?.category as unknown as string
 
     if (
       category === E_Rental_Category.Car ||
@@ -39,18 +39,18 @@ export const getRentalBasicInfo = async (req: Request, res: Response) => {
         fuel: getRental?.fuel,
         transmission: getRental?.transmission,
         year: getRental?.year,
-        daysCanCancel: getRental.daysCanCancel,
+        daysCanCancel: getRental?.daysCanCancel,
       }
     } else if (category === E_Rental_Category.Bicycle) {
       basicInfo = {
-        category: getRental.category,
-        make: getRental.make,
-        daysCanCancel: getRental.daysCanCancel,
+        category: getRental?.category,
+        make: getRental?.make,
+        daysCanCancel: getRental?.daysCanCancel,
       }
     }
     res.json(response.success({ item: basicInfo }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -79,16 +79,16 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
     try {
       const rental = await dbRentals.findOne({ _id: rentalId })
       if (!rental || !isHost) {
-        return res.json(
+        res.json(
           response.error({
             message: USER_NOT_AUTHORIZED,
           })
         )
       }
 
-      if (category === 'Car') {
+      if (rental && category === 'Car') {
         rental.category =
-          rental.category === '' || rental.category === null
+          rental?.category === '' || rental?.category === null
             ? category
             : rental.category
         rental.make = make || rental.make
@@ -99,30 +99,34 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
         rental.ids = rental.ids
         rental.daysCanCancel = daysCanCancel || rental.daysCanCancel
+
         // Generate the name based on year, make, modelBadge, and transmission
         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
         const nameBase = `${year} ${make} ${modelBadge} ${transShort}`
         if (rental.qty) {
-          for (let i = 0; i < rental.qty; i++) {
+          for (let i = 0; i < rental?.qty; i++) {
             if (!rental.ids[i]) {
-              rental.ids.push({
+              rental?.ids.push({
                 _id: new mongoose.Types.ObjectId(),
                 name: `${nameBase} ${i + 1}`,
               })
             }
           }
         }
-      } else if (category === 'Motorbike' || category === 'Bicycle') {
+      } else if (
+        rental &&
+        (category === 'Motorbike' || category === 'Bicycle')
+      ) {
         rental.category =
-          rental.category === '' || rental.category === null
+          rental?.category === '' || rental?.category === null
             ? category
-            : rental.category
-        rental.make = make || rental.make
+            : rental?.category
+        rental.make = make || rental?.make
         rental.modelBadge =
-          category === 'Motorbike' ? modelBadge || rental.modelBadge : null
+          category === 'Motorbike' ? modelBadge || rental?.modelBadge : null
         rental.bodyType =
-          category === 'Motorbike' ? bodyType || rental.bodyType : null
-        rental.fuel = category === 'Motorbike' ? fuel || rental.fuel : null
+          category === 'Motorbike' ? bodyType || rental?.bodyType : null
+        rental.fuel = category === 'Motorbike' ? fuel || rental?.fuel : null
         rental.transmission =
           category === 'Motorbike' ? transmission || rental.transmission : null
         rental.year = category === 'Motorbike' ? year || rental.year : null
@@ -132,14 +136,14 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         // Generate the name based on year, make, modelBadge, and transmission
         const transShort = transmission === 'Manual' ? 'MT' : 'AT'
         const nameBase =
-          rental.category === 'Motorbike'
+          rental?.category === 'Motorbike'
             ? `${year} ${make} ${modelBadge} ${transShort}`
-            : rental.make
+            : rental?.make
 
         if (rental.qty) {
-          for (let i = 0; i < rental.qty; i++) {
+          for (let i = 0; i < rental?.qty; i++) {
             if (!rental.ids[i]) {
-              rental.ids.push({
+              rental?.ids.push({
                 _id: new mongoose.Types.ObjectId(),
                 name: `${nameBase} ${i + 1}`,
               })
@@ -148,19 +152,22 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         }
       }
 
-      rental.finishedSections = ['basicInfo']
-      rental.updatedAt = new Date()
-      await rental.save()
+      if (rental) {
+        rental.finishedSections = ['basicInfo']
+        rental.updatedAt = new Date()
+      }
+
+      await rental?.save()
 
       const basicInfo = {
-        category: rental.category,
-        make: rental.make,
-        modelBadge: rental.modelBadge,
-        bodyType: rental.bodyType,
-        fuel: rental.fuel,
-        transmission: rental.transmission,
-        year: rental.year,
-        qty: rental.qty,
+        category: rental?.category,
+        make: rental?.make,
+        modelBadge: rental?.modelBadge,
+        bodyType: rental?.bodyType,
+        fuel: rental?.fuel,
+        transmission: rental?.transmission,
+        year: rental?.year,
+        qty: rental?.qty,
         daysCanCancel: daysCanCancel,
       }
 
@@ -171,14 +178,14 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         })
       )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({
         message: JSON.parse(isValidInput.error.message),
       })

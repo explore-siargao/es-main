@@ -10,7 +10,7 @@ const response = new ResponseService()
 export const addUnitReservation = async (req: Request, res: Response) => {
   const { unitId, name, startDate, endDate, notes, status } = req.body
   if (!unitId || !startDate || !endDate) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   try {
@@ -22,7 +22,7 @@ export const addUnitReservation = async (req: Request, res: Response) => {
       'Out-of-Service-Dates',
     ]
     if (!validStatuses.includes(status)) {
-      return res.json(response.error({ message: 'Invalid status' }))
+      res.json(response.error({ message: 'Invalid status' }))
     }
 
     // Check for overlapping reservations on the same rentalId
@@ -36,7 +36,7 @@ export const addUnitReservation = async (req: Request, res: Response) => {
       ],
     })
     if (overlappingReservation) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Reservation dates overlap with an existing reservation.',
         })
@@ -52,14 +52,14 @@ export const addUnitReservation = async (req: Request, res: Response) => {
       createdAt: Date.now(),
     })
     await newUnitReservation.save()
-    return res.json(
+    res.json(
       response.success({
         item: newUnitReservation,
         message: 'Unit reservation added successfully',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -73,7 +73,7 @@ export const editUnitReservation = async (req: Request, res: Response) => {
 
   try {
     if (!startDate || !endDate) {
-      return res.json(
+      res.json(
         response.error({
           message: REQUIRED_VALUE_EMPTY,
         })
@@ -97,7 +97,7 @@ export const editUnitReservation = async (req: Request, res: Response) => {
     })
 
     if (overlappingReservation) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Reservation dates overlap with an existing reservation.',
         })
@@ -116,17 +116,17 @@ export const editUnitReservation = async (req: Request, res: Response) => {
         },
         { new: true }
       )
-      return res.json(
+      res.json(
         response.success({
           item: updateReservation,
           message: 'Reservation successfully updated',
         })
       )
     } else {
-      return res.json(response.error({ message: 'Reservation not found' }))
+      res.json(response.error({ message: 'Reservation not found' }))
     }
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

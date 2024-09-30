@@ -25,13 +25,13 @@ export const getRentalBasicInfo = async (req: Request, res: Response) => {
       }
     } else if (getRental?.category === 'Bicycle') {
       basicInfo = {
-        category: getRental.category,
-        make: getRental.make,
+        category: getRental?.category,
+        make: getRental?.make,
       }
     }
     res.json(response.success({ item: basicInfo }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -59,45 +59,32 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
       const getRental = rentals.find(
         (item) => item.id === rentalId && item.hostId === hostId
       )
-      if (category === 'Car' || category === 'Motorbike') {
-        //@ts-ignore
+      if (getRental && (category === 'Car' || category === 'Motorbike')) {
         getRental.category =
           getRental?.category === '' || getRental?.category === null
             ? category
             : getRental?.category
-        //@ts-ignore
-        getRental.make = make || getRental.make
-        //@ts-ignore
-        getRental.modelBadge = modelBadge || getRental.modelBadge
-        //@ts-ignore
-        getRental.bodyType = bodyType || getRental.bodyType
-        //@ts-ignore
+        getRental.make = make || getRental?.make
+        getRental.modelBadge = modelBadge || getRental?.modelBadge
+        getRental.bodyType = bodyType || getRental?.bodyType
         getRental.fuel = fuel || getRental?.fuel
-        //@ts-ignore
-        getRental.transmission = transmission || getRental.transmission
-        //@ts-ignore
-        getRental.year = year || getRental.year
-      } else if (category === 'Bicycle') {
-        //@ts-ignore
+        getRental.transmission = transmission || getRental?.transmission
+        getRental.year = year || getRental?.year
+      } else if (getRental && category === 'Bicycle') {
         getRental.category =
           getRental?.category === '' || getRental?.category === null
             ? category
             : getRental?.category
-        //@ts-ignore
-        getRental.make = make || getRental.make
-        //@ts-ignore
-        getRental.modelBadge = null || getRental.modelBadge
-        //@ts-ignore
-        getRental.bodyType = null || getRental.bodyType
-        //@ts-ignore
-        getRental.fuel = null || getRental?.fuel
-        //@ts-ignore
-        getRental.transmission = null || getRental.transmission
-        //@ts-ignore
-        getRental.year = null || getRental.year
+        getRental.make = make || getRental?.make
+        getRental.modelBadge = getRental?.modelBadge ?? null
+        getRental.bodyType = getRental?.bodyType ?? null
+        getRental.fuel = getRental?.fuel ?? null
+        getRental.transmission = getRental?.transmission ?? null
+        getRental.year = getRental?.year ?? null
       }
-      //@ts-ignore
-      getRental.finishedSections = '["basicInfo"]'
+      if (getRental) {
+        getRental.finishedSections = '["basicInfo"]'
+      }
       const basicInfo = {
         category: getRental?.category,
         make: getRental?.make,
@@ -121,7 +108,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

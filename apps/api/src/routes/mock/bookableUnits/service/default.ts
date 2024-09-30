@@ -17,16 +17,14 @@ export const getAllBookableUnitTypeByHost = async (
     item.BookableUnit.find((item) => item.id === hostId)
   )
   if (!isHost || !bookableUnitTypeData?.hostId === hostId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   if (!bookableUnitTypeData) {
-    return res.json(
-      response.error({ message: 'Not found for the given host ID!' })
-    )
+    res.json(response.error({ message: 'Not found for the given host ID!' }))
   }
   try {
-    const filteredData = bookableUnitTypeData.BookableUnit.map((item) => ({
+    const filteredData = bookableUnitTypeData?.BookableUnit.map((item) => ({
       bookableUnitId: item.BookableUnitType.id,
       propertyId: item.propertyId,
       name: item.BookableUnitType.name,
@@ -38,11 +36,11 @@ export const getAllBookableUnitTypeByHost = async (
     res.json(
       response.success({
         items: filteredData,
-        allItemCount: bookableUnitTypeData.BookableUnit.length,
+        allItemCount: bookableUnitTypeData?.BookableUnit.length,
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -60,12 +58,12 @@ export const getBookableUnitTypeByBookableUnitId = async (
   )
 
   if (!found) {
-    return res.json(
+    res.json(
       response.error({ message: 'Not found for the given bookable unit ID!' })
     )
   }
 
-  const bookableUnitTypeData = found.BookableUnit.find(
+  const bookableUnitTypeData = found?.BookableUnit.find(
     (item) => item.id === bookableUnitId
   )
 
@@ -93,7 +91,7 @@ export const getBookableUnitTypeByBookableUnitId = async (
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -111,7 +109,7 @@ export const getPaginatedBookableUnitByPropertyId = async (
 
   const bookableUnitsData = bookableUnits.find((item) => item.id === propertyId)
   if (!bookableUnitsData || bookableUnitsData.BookableUnit.length === 0) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable units with the given property ID not found',
       })
@@ -120,10 +118,8 @@ export const getPaginatedBookableUnitByPropertyId = async (
 
   const startIndex = (page - 1) * rowsPerPage
   const endIndex = startIndex + rowsPerPage
-  const paginatedBookableUnits = bookableUnitsData.BookableUnit.slice(
-    startIndex,
-    endIndex
-  )
+  const paginatedBookableUnits =
+    bookableUnitsData?.BookableUnit.slice(startIndex, endIndex) || []
   try {
     const filteredData = paginatedBookableUnits.map((item) => ({
       bookableUnitId: item.id,
@@ -143,7 +139,7 @@ export const getPaginatedBookableUnitByPropertyId = async (
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -166,7 +162,7 @@ export const updateBookableUnitByBookableUnitId = async (
 
   let bookableUnitToUpdate
   for (const bookableUnit of bookableUnits) {
-    const found = bookableUnit.BookableUnit.find(
+    const found = bookableUnit?.BookableUnit.find(
       (item) => item.id === bookableUnitId
     )
     if (found) {
@@ -176,40 +172,41 @@ export const updateBookableUnitByBookableUnitId = async (
   }
 
   if (!bookableUnitToUpdate) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Bookable unit with the given ID not found!',
       })
     )
-  }
-  try {
-    bookableUnitToUpdate.BookableUnitType.name =
-      name || bookableUnitToUpdate.BookableUnitType.name
-    bookableUnitToUpdate.BookableUnitType.description =
-      description || bookableUnitToUpdate.BookableUnitType.description
-    bookableUnitToUpdate.BookableUnitType.qty =
-      qty || bookableUnitToUpdate.BookableUnitType.qty
-    //@ts-ignore
-    bookableUnitToUpdate.BookableUnitType.Amenities =
+  } else {
+    try {
+      bookableUnitToUpdate.BookableUnitType.name =
+        name || bookableUnitToUpdate.BookableUnitType.name
+      bookableUnitToUpdate.BookableUnitType.description =
+        description || bookableUnitToUpdate.BookableUnitType.description
+      bookableUnitToUpdate.BookableUnitType.qty =
+        qty || bookableUnitToUpdate.BookableUnitType.qty
       //@ts-ignore
-      Amenities || bookableUnitToUpdate.BookableUnitType.Amenities
-    //@ts-ignore
-    bookableUnitToUpdate.BookableUnitType.Photo =
+      bookableUnitToUpdate.BookableUnitType.Amenities =
+        //@ts-ignore
+        Amenities || bookableUnitToUpdate.BookableUnitType.Amenities
       //@ts-ignore
-      Photos || bookableUnitToUpdate.BookableUnitType.Photo
+      bookableUnitToUpdate.BookableUnitType.Photo =
+        //@ts-ignore
+        Photos || bookableUnitToUpdate.BookableUnitType.Photo
 
-    res.json(
-      response.success({
-        item: bookableUnitToUpdate.BookableUnitType,
-        message: 'Bookable unit updated successfully!',
-      })
-    )
-  } catch (err: any) {
-    return res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
+      res.json(
+        response.success({
+          item: bookableUnitToUpdate.BookableUnitType,
+          message: 'Bookable unit updated successfully!',
+        })
+      )
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
   }
 }
 
@@ -218,16 +215,16 @@ export const addBookableUnit = async (req: Request, res: Response) => {
   const newBookableUnitType = req.body
   const bookableUnit = bookableUnits.find((unit) => unit.id === propertyId)
   if (!bookableUnit) {
-    return res.json(
+    res.json(
       response.error({
         message: 'Property ID not found!',
       })
     )
   }
 
-  newBookableUnitType.id = bookableUnit.BookableUnit.length + 1
+  newBookableUnitType.id = (bookableUnit?.BookableUnit.length || 0) + 1
   try {
-    bookableUnit.BookableUnit.push({
+    bookableUnit?.BookableUnit.push({
       id: newBookableUnitType.id,
       propertyId: propertyId,
       BookableUnitType: newBookableUnitType,
@@ -237,7 +234,7 @@ export const addBookableUnit = async (req: Request, res: Response) => {
       response.success({
         item: newBookableUnitType,
         message: 'New bookable unit type added successfully!',
-        allItemCount: bookableUnit.BookableUnit.length,
+        allItemCount: bookableUnit?.BookableUnit.length,
       })
     )
   } catch (err: any) {

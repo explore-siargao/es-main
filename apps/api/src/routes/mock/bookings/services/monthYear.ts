@@ -51,7 +51,7 @@ export const getMonthYearEarnings = async (req: Request, res: Response) => {
   })
 
   if (!isHost || !earnings.some((item) => item.user.id === userId)) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
 
   const consolidatedEarnings = allDates.map((date) => {

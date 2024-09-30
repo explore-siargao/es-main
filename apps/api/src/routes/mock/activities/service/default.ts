@@ -30,7 +30,7 @@ export const addActivity = async (req: Request, res: Response) => {
       response.success({ item: value, message: 'Activity successfully added' })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -43,7 +43,7 @@ export const deleteActivity = async (req: Request, res: Response) => {
   try {
     const getActivityIndex = activities.findIndex((item) => item.id === id)
     if (getActivityIndex === -1) {
-      return res.json(response.error({ message: 'No activity found' }))
+      res.json(response.error({ message: 'No activity found' }))
     }
     const deleteActivity = activities.splice(getActivityIndex, 1)[0]
     res.json(
@@ -53,7 +53,7 @@ export const deleteActivity = async (req: Request, res: Response) => {
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

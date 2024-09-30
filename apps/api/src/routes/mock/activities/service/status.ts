@@ -16,24 +16,25 @@ export const updateStatus = async (req: Request, res: Response) => {
         (item) => item.id === activityId && item.hostId === hostId
       )
       if (!getActivity) {
-        return res.json(response.error({ message: 'Activity not found' }))
+        res.json(response.error({ message: 'Activity not found' }))
+      } else {
+        getActivity.status = status || getActivity.status
+        res.json(
+          response.success({
+            item: { status: status },
+            message: 'Activity is now ' + status,
+          })
+        )
       }
-      getActivity.status = status || getActivity.status
-      res.json(
-        response.success({
-          item: { status: status },
-          message: 'Activity is now ' + status,
-        })
-      )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isValidInput.error.message) })
     )
   }

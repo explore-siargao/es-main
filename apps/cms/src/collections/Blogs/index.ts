@@ -74,10 +74,10 @@ export const Blogs: CollectionConfig = {
         })
 
         if (!data) {
-          return res.status(404).json({ message: "Data not found." })
+          res.status(404).json({ message: "Data not found." })
         }
 
-        return res.json(data)
+        res.json(data)
       },
     },
   ],

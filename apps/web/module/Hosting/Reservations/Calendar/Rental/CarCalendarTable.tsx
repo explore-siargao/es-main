@@ -7,6 +7,9 @@ import {
   isAfter,
   isBefore,
   parse,
+  isWithinInterval,
+  startOfDay,
+  endOfDay,
 } from "date-fns"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
@@ -27,6 +30,7 @@ import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
 import { Spinner } from "@/common/components/ui/Spinner"
 import RentalsEditPricePerDatesModal from "./RentalsEditPricePerDatesModal"
+import formatDateTZ from "@/common/helpers/formatDateTZ"
 
 const CarCalendarTable = () => {
   const { mutate } = useUpdateVehicleName()
@@ -66,6 +70,8 @@ const CarCalendarTable = () => {
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
+
+  const [searchString, setSearchString] = useState("")
 
   const daysPerPage = 13
 
@@ -108,8 +114,7 @@ const CarCalendarTable = () => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) ||
-        isBefore(bookingEnd, addDays(startDate, -1))
+        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
       )
     }
 
@@ -117,10 +122,16 @@ const CarCalendarTable = () => {
       reservations.filter(isReservationWithinRange)
 
     const filterCars = (cars: any[]) =>
-      cars.map((car: { reservations: any }) => ({
-        ...car,
-        reservations: filterReservations(car.reservations),
-      }))
+      cars
+        .map((car: { reservations: any; abbr: string }) => ({
+          ...car,
+          reservations: filterReservations(car.reservations),
+        }))
+        .filter(
+          (car: { abbr: string }) =>
+            !searchString ||
+            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+        )
 
     const filterCategories = (categories: any[]) =>
       categories
@@ -135,9 +146,14 @@ const CarCalendarTable = () => {
     const newFilteredData = {
       items: filterCategories(sampleData?.items ?? []),
     }
-    //@ts-ignore
-    setFilteredData(newFilteredData)
-  }, [startDate, daysPerPage, sampleData?.items, setFilteredData])
+
+    if (newFilteredData.items.length > 0) {
+      setFilteredData(newFilteredData as SampleData)
+    } else if (searchString && newFilteredData.items.length == 0) {
+      toast.error(`No matched results for "${searchString}"`)
+      setSearchString("")
+    }
+  }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData])
 
   useEffect(() => {
     if (filterCalendarDate !== "") {
@@ -330,6 +346,8 @@ const CarCalendarTable = () => {
                         filterCalendarDate={filterCalendarDate}
                         setFilterCalendarDate={setFilterCalendarDate}
                         resetToToday={resetToToday}
+                        searchString={searchString}
+                        setSearchString={setSearchString}
                       />
                     </td>
                     {generateMonthHeader()}
@@ -388,7 +406,6 @@ const CarCalendarTable = () => {
                             },
                             0
                           )
-                          console.log(category, date)
                           return (
                             <td
                               key={i}
@@ -410,37 +427,38 @@ const CarCalendarTable = () => {
                                   {category.pricePerDates?.length === 0
                                     ? parseFloat(`${category.price}`).toFixed(2)
                                     : category.pricePerDates?.find((item) => {
-                                          const itemFromDate = new Date(
-                                            item.fromDate
-                                          ).setUTCHours(0, 0, 0, 0)
-                                          const itemToDate = new Date(
-                                            item.toDate
-                                          ).setUTCHours(0, 0, 0, 0)
-                                          const currentDate = new Date(
-                                            date
-                                          ).setUTCHours(0, 0, 0, 0)
-
-                                          return (
-                                            currentDate >= itemFromDate &&
-                                            currentDate <= itemToDate
+                                          const itemFromDate = formatDateTZ(
+                                            startOfDay(item.fromDate)
                                           )
+                                          const itemToDate = formatDateTZ(
+                                            endOfDay(item.toDate)
+                                          )
+                                          const currentDate = formatDateTZ(
+                                            startOfDay(date)
+                                          )
+                                          return isWithinInterval(currentDate, {
+                                            start: itemFromDate,
+                                            end: itemToDate,
+                                          })
                                         })?.price
                                       ? parseFloat(
                                           category.pricePerDates.find(
-                                            (item) => {
-                                              const itemFromDate = new Date(
-                                                item.fromDate
-                                              ).setUTCHours(0, 0, 0, 0)
-                                              const itemToDate = new Date(
-                                                item.toDate
-                                              ).setUTCHours(0, 0, 0, 0)
-                                              const currentDate = new Date(
-                                                date
-                                              ).setUTCHours(0, 0, 0, 0)
-
-                                              return (
-                                                currentDate >= itemFromDate &&
-                                                currentDate <= itemToDate
+                                            (item: any) => {
+                                              const itemFromDate = formatDateTZ(
+                                                startOfDay(item.fromDate)
+                                              )
+                                              const itemToDate = formatDateTZ(
+                                                endOfDay(item.toDate)
+                                              )
+                                              const currentDate = formatDateTZ(
+                                                startOfDay(date)
+                                              )
+                                              return isWithinInterval(
+                                                currentDate,
+                                                {
+                                                  start: itemFromDate,
+                                                  end: itemToDate,
+                                                }
                                               )
                                             }
                                           ).price.dayRate

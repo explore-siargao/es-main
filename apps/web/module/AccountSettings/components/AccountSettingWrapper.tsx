@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { WidthWrapper } from "../../../common/components/WidthWrapper"
+import { WidthWrapper } from "../../../common/components/Wrappers/WidthWrapper"
 import { cn } from "@/common/helpers/cn"
 
 type Props = {

@@ -1,8 +1,8 @@
 import Image from "next/image"
-import { StarIcon } from "@heroicons/react/20/solid"
 import Link from "next/link"
 import { ASSET_ROOT } from "@/common/constants/index"
 import { ListingCardProps } from "../types/ListingCard"
+import { LucideStar } from "lucide-react"
 
 const ListingCard = ({
   image,
@@ -24,7 +24,7 @@ const ListingCard = ({
       <div className="flex mt-3 justify-between items-center">
         <h4 className="font-semibold">{title}</h4>
         <div className="flex items-center space-x-1">
-          <StarIcon className="h-4 w-4" />
+          <LucideStar className="h-4 w-4" />
           <h4>
             {" "}
             {

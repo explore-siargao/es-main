@@ -80,7 +80,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       })
 
     if (!carRentals.length) {
-      return res.json(
+      res.json(
         response.success({
           items: [],
           message: 'No car rentals found.',
@@ -89,7 +89,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
     }
 
     const allRentalIds = carRentals.flatMap((rental) =>
-      rental.ids.map((idObj) => idObj._id)
+      rental?.ids.map((idObj) => idObj._id)
     )
 
     const reservations = await dbReservations
@@ -139,7 +139,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
     })
 
     const items = carRentals.map((rental) => {
-      const cars = rental.ids.map((idObj) => {
+      const cars = rental?.ids.map((idObj) => {
         const carReservations = reservationMap[idObj._id.toString()] || []
 
         const isOccupied = carReservations.length > 0
@@ -153,11 +153,15 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       })
 
       return {
-        id: rental._id,
+        id: rental?._id,
         name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 0,
-        pricePerDates: rental.pricePerDates,
+        price: rental?.pricing?.dayRate ?? 0,
+        pricePerDates: rental?.pricePerDates.map((priceDate) => ({
+          fromDate: priceDate.fromDate,
+          toDate: priceDate.toDate,
+          price: priceDate?.price,
+        })),
         cars: cars.filter((car) => car.abbr !== 'Unknown'),
       }
     })
@@ -195,7 +199,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       })
 
     if (!bicycleRentals.length) {
-      return res.json(
+      res.json(
         response.success({
           items: [],
           message: 'No bicycle rentals found.',
@@ -204,7 +208,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     }
 
     const allRentalIds = bicycleRentals.flatMap((rental) =>
-      rental.ids.map((idObj) => idObj._id)
+      rental?.ids.map((idObj) => idObj._id)
     )
 
     const reservations = await dbReservations
@@ -256,7 +260,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
     })
 
     const items = bicycleRentals.map((rental) => {
-      const bicycles = rental.ids.map((idObj) => {
+      const bicycles = rental?.ids.map((idObj) => {
         const bicycleReservations = reservationMap[idObj._id.toString()] || []
 
         const isOccupied = bicycleReservations.length > 0
@@ -270,11 +274,11 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       })
 
       return {
-        id: rental._id,
-        name: rental.make ?? 'Unknown',
+        id: rental?._id,
+        name: rental?.make ?? 'Unknown',
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 0,
-        pricePerDates: rental.pricePerDates,
+        price: rental?.pricing?.dayRate ?? 0,
+        pricePerDates: rental?.pricePerDates,
         bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
       }
     })
@@ -312,7 +316,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       })
 
     if (!motorcycleRentals.length) {
-      return res.json(
+      res.json(
         response.success({
           items: [],
           message: 'No motorcycle rentals found.',
@@ -321,7 +325,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     }
 
     const allRentalIds = motorcycleRentals.flatMap((rental) =>
-      rental.ids.map((idObj) => idObj._id)
+      rental?.ids.map((idObj) => idObj._id)
     )
 
     const reservations = await dbReservations
@@ -373,7 +377,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
     })
 
     const items = motorcycleRentals.map((rental) => {
-      const motorcycles = rental.ids.map((idObj) => {
+      const motorcycles = rental?.ids.map((idObj) => {
         const motorcycleReservations =
           reservationMap[idObj._id.toString()] || []
         const isOccupied = motorcycleReservations.length > 0
@@ -387,13 +391,13 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       })
 
       return {
-        id: rental._id,
-        name:
-          `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}` ??
-          'Unknown',
+        id: rental?._id,
+        name: rental
+          ? `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`
+          : 'Unknown',
         //@ts-ignore
-        price: rental.pricing?.dayRate ?? 0,
-        pricePerDates: rental.pricePerDates,
+        price: rental?.pricing?.dayRate ?? 0,
+        pricePerDates: rental?.pricePerDates,
         motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
       }
     })
@@ -423,16 +427,16 @@ export const editChildName = async (req: Request, res: Response) => {
       { new: true }
     )
     if (!updateVehicle) {
-      return res.json(response.error({ message: 'Rental vehicle not found' }))
+      res.json(response.error({ message: 'Rental vehicle not found' }))
     }
-    return res.json(
+    res.json(
       response.success({
         item: updateVehicle,
         message: 'Successfully changed rental vehicle name',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -449,12 +453,10 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
       deletedAt: null,
     })
     if (!getRental) {
-      return res.json(
-        response.error({ message: 'Rental not found on our system' })
-      )
+      res.json(response.error({ message: 'Rental not found on our system' }))
     }
     if (!fromDate || !toDate || !dayRate || !requiredDeposit) {
-      return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
 
     // Parse incoming dates for comparison
@@ -462,7 +464,7 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
     const newToDate = new Date(toDate)
 
     // Check for overlapping date ranges
-    const isConflict = getRental.pricePerDates.some((dateRange: any) => {
+    const isConflict = getRental?.pricePerDates.some((dateRange: any) => {
       const existingFromDate = new Date(dateRange.fromDate)
       const existingToDate = new Date(dateRange.toDate)
 
@@ -471,7 +473,7 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
     })
 
     if (isConflict) {
-      return res.json(
+      res.json(
         response.error({
           message: 'The date range conflicts with existing price periods.',
         })
@@ -488,8 +490,8 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
     await newRentalRates.save()
 
     const newPricePerDates = {
-      fromDate: fromDate,
-      toDate: toDate,
+      fromDate: newFromDate,
+      toDate: newToDate,
       price: newRentalRates._id,
     }
 
@@ -503,14 +505,14 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
       { new: true }
     )
 
-    return res.json(
+    res.json(
       response.success({
         item: newRentalRates,
         message: 'Price for specific dates successfully setted',
       })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

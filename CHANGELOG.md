@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.24.0](https://github.com/explore-siargao/es-main/compare/v0.23.0...v0.24.0) (2024-09-27)
+
+### 🚀 Features
+
+- Added reusable date format for timezone and included general Global Wrappers ([abb022d](https://github.com/explore-siargao/es-main/commit/abb022d0be9fd1d23ea99dd048ed680ba87dc0b5))
+- **api:** Adjusted database model reservation units and rental ([e0a90e0](https://github.com/explore-siargao/es-main/commit/e0a90e00df12206cf2d144bcb754565fea5062dc))
+- **api:** Modified activities model for activity type field ([5f2b44b](https://github.com/explore-siargao/es-main/commit/5f2b44bbc158f26bc68fa3076adb0c2a10c69330))
+- Connect PricePerdates add modal of rental to backend ([7909f7c](https://github.com/explore-siargao/es-main/commit/7909f7c305b6a145e8cb6b710b8dbb130c695888))
+- Rental Calendar search button function ([d3d9022](https://github.com/explore-siargao/es-main/commit/d3d9022dcafe3990fa28630584b541429ea1d559))
+- Rental Calendar search button function ([ead95fb](https://github.com/explore-siargao/es-main/commit/ead95fb4defca7fd27a9c1700854f38892ad4174))
+- **web:** Added displays of price per dates on property calendar ([0b4b42a](https://github.com/explore-siargao/es-main/commit/0b4b42a940a87953ccf06a0aae129fce7ba4098c))
+- **web:** Added displays of price per dates on property calendar ([0dd3fac](https://github.com/explore-siargao/es-main/commit/0dd3fac821afc636636393751e4f0ec8ff41c88d))
+- **web:** Added more height for image box in public listing page ([d9c5b36](https://github.com/explore-siargao/es-main/commit/d9c5b36aba2b4ba575e8b2dfc834bd04feae874c))
+- **web:** Correct the alignment on left of blocksbars on calendar ([2e575d2](https://github.com/explore-siargao/es-main/commit/2e575d276bfce6a079b36b1965507683a4788bc1))
+- **web:** Created text descriptions for no bookableunits in calendar ([8b5dcd9](https://github.com/explore-siargao/es-main/commit/8b5dcd91cb8e85e1eb8c03067a985d0b758095ab))
+- **web:** Created text descriptions for no bookableunits in calendar ([317e2d9](https://github.com/explore-siargao/es-main/commit/317e2d991d55ddb58f49a6ef5ccdb22ea01f571f))
+- **web:** Display dynamic price on rental calendar ([31f725b](https://github.com/explore-siargao/es-main/commit/31f725b4399aca2795ce56ef885b9afee2907e14))
+- **web:** Hide search button on calendar ([514b975](https://github.com/explore-siargao/es-main/commit/514b975db79e2454432a6f33717a1d5f4f939a33))
+- **web:** Modified activity setup basic info ui ([deef355](https://github.com/explore-siargao/es-main/commit/deef35594af47eeabfd9303c24b6cc20dc782fc9))
+- **web:** Modified activity setup basic info ui ([339b4a4](https://github.com/explore-siargao/es-main/commit/339b4a4e71d71e67da00f2e082b1ec8884c92d13))
+- **web:** Modified activity setup basic info ui ([08c5609](https://github.com/explore-siargao/es-main/commit/08c560956f132e5ccbf0b89e86794fc1f97d0d21))
+- **web:** Modify calendar side items property ui ([4c5ecde](https://github.com/explore-siargao/es-main/commit/4c5ecdef42094b861066372a9b70ef1660f7db00))
+
+### 🛠 Bug Fixes
+
+- **api:** Bug on adding reservation on property multiple display ([190dd42](https://github.com/explore-siargao/es-main/commit/190dd4267fa55176b9f0fbb9ed8e6572686c4982))
+- **api:** Bug on adding reservation on property multiple display ([0d8917e](https://github.com/explore-siargao/es-main/commit/0d8917efff4e70166b3a0a836ed266656dc18681))
+- **api:** Bug on adding reservation on property multiple display ([1498150](https://github.com/explore-siargao/es-main/commit/1498150d4ef48a20b05c771d1656c546a19dfeb1))
+- **api:** Error on dates on pricePerDates ([4891d42](https://github.com/explore-siargao/es-main/commit/4891d4206e7830ede494ae2259d8204f1d40fac2))
+- Bug on adding reservation on property multiple display ([cb38070](https://github.com/explore-siargao/es-main/commit/cb38070157eb26a3cac166c194995a97ba674099))
+- Fix the not match dates of reservation blocks on the calendar dates ([79bb635](https://github.com/explore-siargao/es-main/commit/79bb635de8163f4922b8acb253832cdd81e029ee))
+
 ## [0.23.0](https://github.com/explore-siargao/es-main/compare/v0.22.0...v0.23.0) (2024-09-24)
 
 ### 🚀 Features

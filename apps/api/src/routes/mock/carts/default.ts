@@ -7,7 +7,7 @@ const response = new ResponseService()
 export const getCartsByUser = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   if (!userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   const filterCarts = carts.filter((item) => {
     return userId === item.userId
@@ -21,7 +21,7 @@ export const getCartsByHost = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const isHost = res.locals.user?.isHost
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   const filterCarts = carts.filter((item) => {
     return hostId === item.Listing.hostId
@@ -60,10 +60,10 @@ export const addCart = async (req: Request, res: Response) => {
     lastName: 'Gomez',
   }
   if (!userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!listingId || !guestCounts || !totalFee || !dateFrom || !dateTo) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
   const cartsData = {
     id: 10,
@@ -93,12 +93,10 @@ export const updateCart = async (req: Request, res: Response) => {
   const { guestCounts, totalFee, dateFrom, dateTo } = req.body
   const findCart = carts.findIndex((item) => item.id === cartId)
   if (!userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (findCart === -1) {
-    return res.json(
-      response.error({ message: 'No cart found or already deleted' })
-    )
+    res.json(response.error({ message: 'No cart found or already deleted' }))
   }
   const updatedcart = {
     ...carts[findCart],
@@ -122,10 +120,10 @@ export const deleteCart = async (req: Request, res: Response) => {
   const cartIds = req.body.cartIds.map(Number) // Assuming cartIds are sent in the request body as an array
 
   if (!userId) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (!cartIds || cartIds.length === 0) {
-    return res.json(response.error({ message: 'No cart IDs provided' }))
+    res.json(response.error({ message: 'No cart IDs provided' }))
   }
   //@ts-ignore
   const deletedCarts = []
@@ -137,12 +135,10 @@ export const deleteCart = async (req: Request, res: Response) => {
   })
 
   if (deletedCarts.length === 0) {
-    return res.json(
-      response.error({ message: 'No carts found with provided IDs' })
-    )
+    res.json(response.error({ message: 'No carts found with provided IDs' }))
   }
   //@ts-ignore
-  return res.json({
+  res.json({
     message: 'Carts deleted successfully',
     //@ts-ignore
     items: deletedCarts,

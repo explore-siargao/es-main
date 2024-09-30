@@ -77,7 +77,7 @@ const Pricing = ({ pageType }: Prop) => {
             type="number"
             id="requiredDeposit"
             label="Required Deposit"
-            description="This upfront payment needed to secure the rental."
+            description="This upfront payment needed to secure the rental?."
             step=".01"
             required
             {...register("requiredDeposit", {

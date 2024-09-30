@@ -17,7 +17,7 @@ export const getFinishedSections = async (req: Request, res: Response) => {
       : []
     res.json(response.success({ item: { finishedSections } }))
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -33,13 +33,14 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
     const getRental = rentals.find((item) => item.id === rentalId && hostId)
     const sections = JSON.parse(getRental?.finishedSections as string)
     sections.push(finishedSections)
-    //@ts-ignore
-    getRental.finishedSections = JSON.stringify(sections)
+    if (getRental) {
+      getRental.finishedSections = JSON.stringify(sections)
+    }
     res.json(
       response.success({ item: sections, message: 'Finished sections saved' })
     )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })

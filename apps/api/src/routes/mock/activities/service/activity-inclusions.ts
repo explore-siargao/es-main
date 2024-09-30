@@ -19,39 +19,40 @@ export const getActivityInclusions = (req: Request, res: Response) => {
     )
 
     if (!isHost) {
-      return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
     }
 
     if (!activityInclusionData) {
-      return res.json(
+      res.json(
         response.error({
           message: 'Activity inclusions with the given ID not found!',
         })
       )
+    } else {
+      const data = {
+        id: activityInclusionData.id,
+        isFoodIncluded: activityInclusionData.isFoodIncluded,
+        selectedFoodOptions: JSON.parse(
+          activityInclusionData.selectedFoodOptions
+        ),
+        isNonAlcoholicDrinkIncluded:
+          activityInclusionData.isNonAlcoholicDrinkIncluded,
+        isAlcoholicDrinkIncluded:
+          activityInclusionData.isAlcoholicDrinkIncluded,
+        selectedAlcoholicDrinkOptions: JSON.parse(
+          activityInclusionData.selectedAlcoholicDrinkOptions
+        ),
+        otherInclusion: JSON.parse(activityInclusionData.otherInclusion),
+        notIncluded: JSON.parse(activityInclusionData.notIncluded),
+      }
+      res.json(
+        response.success({
+          item: data,
+        })
+      )
     }
-
-    const data = {
-      id: activityInclusionData.id,
-      isFoodIncluded: activityInclusionData.isFoodIncluded,
-      selectedFoodOptions: JSON.parse(
-        activityInclusionData.selectedFoodOptions
-      ),
-      isNonAlcoholicDrinkIncluded:
-        activityInclusionData.isNonAlcoholicDrinkIncluded,
-      isAlcoholicDrinkIncluded: activityInclusionData.isAlcoholicDrinkIncluded,
-      selectedAlcoholicDrinkOptions: JSON.parse(
-        activityInclusionData.selectedAlcoholicDrinkOptions
-      ),
-      otherInclusion: JSON.parse(activityInclusionData.otherInclusion),
-      notIncluded: JSON.parse(activityInclusionData.notIncluded),
-    }
-    return res.json(
-      response.success({
-        item: data,
-      })
-    )
   } catch (err: any) {
-    return res.json(
+    res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
@@ -74,7 +75,7 @@ export const updateActivityInclusions = (req: Request, res: Response) => {
   } = req.body
   const isInputValid = Z_Update_Activity_Inclusions.safeParse(req.body)
   if (!isHost) {
-    return res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    res.json(response.error({ message: USER_NOT_AUTHORIZED }))
   }
   if (isInputValid.success) {
     try {
@@ -82,52 +83,53 @@ export const updateActivityInclusions = (req: Request, res: Response) => {
         (item) => item.id === id && item.hostId === hostId
       )
       if (!getActivity) {
-        return res.json(response.error({ message: 'Activity not found' }))
+        res.json(response.error({ message: 'Activity not found' }))
+      } else {
+        getActivity.isFoodIncluded = isFoodIncluded
+        isFoodIncluded === true
+          ? (getActivity.selectedFoodOptions =
+              JSON.stringify(selectedFoodOptions) ||
+              getActivity.selectedFoodOptions)
+          : (getActivity.selectedFoodOptions = '[]')
+        getActivity.isNonAlcoholicDrinkIncluded =
+          isNonAlcoholicDrinkIncluded || getActivity.isNonAlcoholicDrinkIncluded
+        getActivity.isAlcoholicDrinkIncluded = isAlcoholicDrinkIncluded
+        isAlcoholicDrinkIncluded === true
+          ? (getActivity.selectedAlcoholicDrinkOptions =
+              JSON.stringify(selectedAlcoholicDrinkOptions) ||
+              getActivity.selectedAlcoholicDrinkOptions)
+          : (getActivity.selectedAlcoholicDrinkOptions = '[]')
+        getActivity.otherInclusion =
+          JSON.stringify(otherInclusion) || getActivity.otherInclusion
+        getActivity.notIncluded =
+          JSON.stringify(notIncluded) || getActivity.notIncluded
+        const updatedData = {
+          isFoodIncluded: getActivity.isFoodIncluded,
+          selectedFoodOptions: getActivity.selectedFoodOptions,
+          isNonAlcoholicDrinkIncluded: getActivity.isNonAlcoholicDrinkIncluded,
+          isAlcoholicDrinkIncluded: getActivity.isAlcoholicDrinkIncluded,
+          selectedAlcoholicDrinkOptions:
+            getActivity.selectedAlcoholicDrinkOptions,
+          otherInclusion: getActivity.otherInclusion,
+          notIncluded: getActivity.notIncluded,
+        }
+        getActivity.finishedSections = '["basicInfo","itinerary","inclusions"]'
+        res.json(
+          response.success({
+            item: updatedData,
+            message: 'Activity inclussion successfully saved',
+          })
+        )
       }
-      getActivity.isFoodIncluded = isFoodIncluded
-      isFoodIncluded === true
-        ? (getActivity.selectedFoodOptions =
-            JSON.stringify(selectedFoodOptions) ||
-            getActivity.selectedFoodOptions)
-        : (getActivity.selectedFoodOptions = '[]')
-      getActivity.isNonAlcoholicDrinkIncluded =
-        isNonAlcoholicDrinkIncluded || getActivity.isNonAlcoholicDrinkIncluded
-      getActivity.isAlcoholicDrinkIncluded = isAlcoholicDrinkIncluded
-      isAlcoholicDrinkIncluded === true
-        ? (getActivity.selectedAlcoholicDrinkOptions =
-            JSON.stringify(selectedAlcoholicDrinkOptions) ||
-            getActivity.selectedAlcoholicDrinkOptions)
-        : (getActivity.selectedAlcoholicDrinkOptions = '[]')
-      getActivity.otherInclusion =
-        JSON.stringify(otherInclusion) || getActivity.otherInclusion
-      getActivity.notIncluded =
-        JSON.stringify(notIncluded) || getActivity.notIncluded
-      const updatedData = {
-        isFoodIncluded: getActivity.isFoodIncluded,
-        selectedFoodOptions: getActivity.selectedFoodOptions,
-        isNonAlcoholicDrinkIncluded: getActivity.isNonAlcoholicDrinkIncluded,
-        isAlcoholicDrinkIncluded: getActivity.isAlcoholicDrinkIncluded,
-        selectedAlcoholicDrinkOptions:
-          getActivity.selectedAlcoholicDrinkOptions,
-        otherInclusion: getActivity.otherInclusion,
-        notIncluded: getActivity.notIncluded,
-      }
-      getActivity.finishedSections = '["basicInfo","itinerary","inclusions"]'
-      res.json(
-        response.success({
-          item: updatedData,
-          message: 'Activity inclussion successfully saved',
-        })
-      )
     } catch (err: any) {
-      return res.json(
+      res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
   } else {
-    return res.json(
+    res.json(
       response.error({ message: JSON.parse(isInputValid.error.message) })
     )
   }

@@ -86,12 +86,12 @@ export const cardSingleUse = async (req: Request, res: Response) => {
         reusability: 'ONE_TIME_USE',
       }
       const req = await apiXendit.post(`/v1/payment_methods`, data, false, true)
-      return res.json(response.success({ item: req }))
+      res.json(response.success({ item: req }))
     } catch (err: any) {
-      return res.json(response.error({ message: err.message }))
+      res.json(response.error({ message: err.message }))
     }
   } else {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
 
@@ -105,12 +105,12 @@ export const cardCreatePayment = async (req: Request, res: Response) => {
         payment_method_id: paymentMethodId,
       }
       const req = await apiXendit.post(`/payment_requests`, data, false, true)
-      return res.json(response.success({ item: req }))
+      res.json(response.success({ item: req }))
     } catch (err: any) {
-      return res.json(response.error({ message: err.message }))
+      res.json(response.error({ message: err.message }))
     }
   } else {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
 
@@ -128,12 +128,12 @@ export const cardInitiatePayment = async (req: Request, res: Response) => {
         false,
         true
       )
-      return res.json(response.success({ item: req }))
+      res.json(response.success({ item: req }))
     } catch (err: any) {
-      return res.json(response.error({ message: err.message }))
+      res.json(response.error({ message: err.message }))
     }
   } else {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
 
@@ -158,11 +158,11 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
         },
       }
       const req = await apiXendit.post(`/payment_requests`, data, false, true)
-      return res.json(response.success({ item: req }))
+      res.json(response.success({ item: req }))
     } catch (err: any) {
-      return res.json(response.error({ message: err.message }))
+      res.json(response.error({ message: err.message }))
     }
   } else {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }

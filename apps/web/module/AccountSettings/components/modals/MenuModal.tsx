@@ -4,11 +4,6 @@ import ModalContainerFooter from "@/common/components/ModalContainer/ModalContai
 import { Input } from "@/common/components/ui/Input"
 import { Typography } from "@/common/components/ui/Typography"
 import useSessionStore from "@/common/store/useSessionStore"
-import {
-  ChevronRightIcon,
-  PencilIcon,
-  TrashIcon,
-} from "@heroicons/react/20/solid"
 import React, { useState } from "react"
 import useEditWishGroupTitle from "../../hooks/useEditWishGroupTitle"
 import { useForm } from "react-hook-form"
@@ -18,6 +13,7 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { LINK_ACCOUNT_WISHLIST } from "@/common/constants"
 import useDeleteWishGroupByTitle from "../../hooks/useDeleteWishGroupByTitle"
+import { LucideChevronRight, LucidePencil, LucideTrash } from "lucide-react"
 
 interface MenuProps {
   isOpen: boolean
@@ -102,20 +98,20 @@ const MenuModal = ({
             className="flex justify-between w-full py-5"
           >
             <div className="flex">
-              <PencilIcon className="h-5 w-auto text-text-400 mr-2" />
+              <LucidePencil className="h-5 w-auto text-text-400 mr-2" />
               <Typography variant={"h5"}>Rename</Typography>
             </div>
-            <ChevronRightIcon className="h-7 w-auto" />
+            <LucideChevronRight className="h-7 w-auto" />
           </button>
           <button
             onClick={() => setModalState(2)}
             className="flex justify-between w-full py-5"
           >
             <div className="flex">
-              <TrashIcon className="h-5 w-auto text-text-400 mr-2" />
+              <LucideTrash className="h-5 w-auto text-text-400 mr-2" />
               <Typography variant={"h5"}>Delete</Typography>
             </div>
-            <ChevronRightIcon className="h-7 w-auto" />
+            <LucideChevronRight className="h-7 w-auto" />
           </button>
         </div>
       </ModalContainer>
