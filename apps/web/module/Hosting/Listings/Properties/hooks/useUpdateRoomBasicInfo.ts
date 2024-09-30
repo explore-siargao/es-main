@@ -10,6 +10,7 @@ interface IRoomBasicInfo {
   totalSize: number
   description?: string | ""
   qty: number
+  daysCanCancel: number
   bedRooms: IBedroom[]
   isHaveSharedBathRoom: "Yes" | "No" | null | undefined
   isHaveSharedAmenities: "Yes" | "No" | null | undefined

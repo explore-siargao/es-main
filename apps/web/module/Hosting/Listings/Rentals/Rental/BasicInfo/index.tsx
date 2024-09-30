@@ -17,6 +17,8 @@ import useUpdateRentalBasicInfo from "../../../hooks/useUpdateRentalBasicInfo"
 import { cn } from "@/common/helpers/cn"
 import { Input2 } from "@/common/components/ui/Input2"
 import { Select2 } from "@/common/components/ui/Select2"
+import { MinusIcon, PlusIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -27,13 +29,18 @@ const BasicInfo = ({ pageType }: Prop) => {
   const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
-  const { data, isLoading } = useGetRentalById(listingId)
+  const { data, isLoading, isFetching } = useGetRentalById(listingId)
   const { mutate, isPending } = useUpdateRentalBasicInfo(listingId)
   const { register, handleSubmit, watch } = useForm<T_Rental_Basic_Info>({
     values: data?.item as T_Rental_Basic_Info,
   })
-
+  const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
+    Number(data?.item?.daysCanCancel) || 1
+  )
+  console.log(cancellationDaysCount)
   const onSubmit = (formData: T_Rental_Basic_Info) => {
+    formData.daysCanCancel = cancellationDaysCount
+    console.log("Submitting data:", formData)
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -109,6 +116,12 @@ const BasicInfo = ({ pageType }: Prop) => {
         return "Example: Manufacturer"
     }
   }
+  useEffect(() => {
+    if (!isPending && !isFetching && data?.item?.daysCanCancel) {
+      const daysCanCancel = Number(data?.item?.daysCanCancel)
+      setCancellationDaysCount(daysCanCancel)
+    }
+  }, [data, isPending, isFetching])
 
   return (
     <div className="mt-20 mb-32">
@@ -243,6 +256,57 @@ const BasicInfo = ({ pageType }: Prop) => {
             disabled={isPending || isLoading}
             {...register("qty", { required: true, valueAsNumber: true })}
           />
+          <div>
+            <Typography variant="h4" fontWeight="semibold" className="mt-2">
+              How many days before cancellation allowed?
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight="normal"
+              className="text-xs text-gray-500 italic mb-2"
+            >
+              How far in advance can a guest cancel their reservation?
+            </Typography>
+            <div className="flex">
+              <button
+                disabled={isPending || isFetching}
+                className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                type="button"
+                onClick={() => {
+                  cancellationDaysCount > 1 &&
+                    setCancellationDaysCount(
+                      (cancellationDaysCount: any) => cancellationDaysCount - 1
+                    )
+                }}
+              >
+                <MinusIcon className="h-3 w-3" />
+              </button>
+              <input
+                disabled={isLoading || isPending}
+                type="number"
+                id="daysCanCel"
+                className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                value={cancellationDaysCount}
+                min={1}
+                onChange={(e) => {
+                  const val = Number(e.target.value)
+                  setCancellationDaysCount(val)
+                }}
+              />
+              <button
+                disabled={isPending || isFetching}
+                className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                type="button"
+                onClick={() =>
+                  setCancellationDaysCount(
+                    (cancellationDaysCount: number) => cancellationDaysCount + 1
+                  )
+                }
+              >
+                <PlusIcon className="h-3 w-3" />
+              </button>
+            </div>
+          </div>
         </div>
         <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
           <Button

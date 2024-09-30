@@ -65,6 +65,7 @@ export const Z_Rental = z.object({
   year: z.string().optional(),
   RentalPhotos: z.array(Z_Photo),
   RentalLocation: Z_Listing_Location,
+  daysCanCancel: z.number(),
   section: z.string().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
@@ -83,7 +84,7 @@ export const Z_Rental_Basic_Info = z.object({
     .nullable(),
   year: z.string().optional().nullable(),
   qty: z.number(),
-  daysCanCancel: z.boolean(),
+  daysCanCancel: z.number(),
 })
 
 export const Z_UpdateRentalLocation = z.object({

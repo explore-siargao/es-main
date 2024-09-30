@@ -59,6 +59,7 @@ type T_WholePlaceUnit = {
   livingRoom: IBedroom[]
   description?: string
   tags?: string
+  daysCanCancel: number
 }
 
 interface IWholePlaceBasicInfo {
@@ -84,7 +85,8 @@ const WholePlace = ({ pageType }: Prop) => {
   const wholePlaceId = String(params.wholePlaceId)
   const [isSavings, setIsSavings] = useState(false)
   const queryClient = useQueryClient()
-  const { data, refetch, isFetching, isPending } = useGetUnitById(wholePlaceId)
+  const { data, refetch, isFetching, isPending, isLoading } =
+    useGetUnitById(wholePlaceId)
   const bedrooms = useBedroomStore((state) => state.bedrooms)
   const bedroomsStudio = useBedroomStudioStore((state) => state.bedroomsStudio)
   const [editPhotoModal, setEditPhotoModal] = useState(false)
@@ -96,7 +98,9 @@ const WholePlace = ({ pageType }: Prop) => {
   const [exactUnitCount, setExactUnitCount] = useState<number>(
     Number(data?.item?.numExactUnit) || 1
   )
-
+  const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
+    Number(1)
+  )
   const { mutateAsync: updateWholePlaceBasicInfo } =
     useUpdateWholePlaceBasicInfo(listingId)
   const { mutateAsync: updateAmenties } = useUpdateAmenities(
@@ -187,11 +191,9 @@ const WholePlace = ({ pageType }: Prop) => {
   const onSubmit = async (formData: T_WholePlaceUnit) => {
     formData.amenities = amenities
     const activePhotos = photos.filter((photo) => !photo.isDeleted)
-
     const missingTags = activePhotos.filter(
       (photo) => !photo.tags || photo.tags.length === 0
     )
-
     const missingDescription = activePhotos.filter(
       (photo) => !photo.description || photo.description.length === 0
     )
@@ -255,6 +257,7 @@ const WholePlace = ({ pageType }: Prop) => {
         numBathRooms: bathroomCount,
         totalSize: formData.size,
         qty: Number(exactUnitCount),
+        daysCanCancel: Number(cancellationDaysCount),
       }
 
       if (bedroomsStudio.length > 0) {
@@ -321,6 +324,7 @@ const WholePlace = ({ pageType }: Prop) => {
       setValue("size", data?.item?.totalSize)
       setBathroomCount(Number(data?.item.numBathRooms))
       setExactUnitCount(Number(data?.item.qty))
+      setCancellationDaysCount(Number(data?.item.daysCanCancel) || Number(1))
       setPhotos(data?.item?.photos)
       setAmenties(data.item?.amenities)
       handleSqmChange(data.item?.totalSize)
@@ -832,6 +836,59 @@ const WholePlace = ({ pageType }: Prop) => {
                   onClick={() =>
                     setExactUnitCount(
                       (exactUnitCount: number) => exactUnitCount + 1
+                    )
+                  }
+                >
+                  <PlusIcon className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+            <div>
+              <Typography variant="h4" fontWeight="semibold" className="mt-2">
+                How many days before cancellation allowed?
+              </Typography>
+              <Typography
+                variant="h5"
+                fontWeight="normal"
+                className="text-xs text-gray-500 italic mb-2"
+              >
+                How far in advance can a guest cancel their reservation?
+              </Typography>
+              <div className="flex">
+                <button
+                  disabled={isPending || isFetching}
+                  className="inline-flex items-center rounded-l-xl border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  type="button"
+                  onClick={() => {
+                    cancellationDaysCount > 1 &&
+                      setCancellationDaysCount(
+                        (cancellationDaysCount: any) =>
+                          cancellationDaysCount - 1
+                      )
+                  }}
+                >
+                  <MinusIcon className="h-3 w-3" />
+                </button>
+                <input
+                  // disabled
+                  type="number"
+                  id="daysCanCancel"
+                  className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
+                  value={cancellationDaysCount}
+                  min={1}
+                  onChange={(e) => {
+                    const val = Number(e.target.value)
+                    setCancellationDaysCount(val)
+                  }}
+                />
+                <button
+                  disabled={isPending || isFetching}
+                  className="inline-flex items-center rounded-r-xl border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
+                  type="button"
+                  onClick={() =>
+                    setCancellationDaysCount(
+                      (cancellationDaysCount: number) =>
+                        cancellationDaysCount + 1
                     )
                   }
                 >
