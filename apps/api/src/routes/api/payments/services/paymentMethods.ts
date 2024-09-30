@@ -5,7 +5,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { dbUsers, dbPaymentMethods } from '@repo/database'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 
 const response = new ResponseService()
 
@@ -48,7 +48,11 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
   }
 }
 
-export const updatePaymentMethod = async (req: Request, res: Response) => {
+export const updatePaymentMethod = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let successDefault = null
   const { cardInfo, isDefault } = req.body
   const userId = res.locals.user?.id
@@ -59,7 +63,6 @@ export const updatePaymentMethod = async (req: Request, res: Response) => {
       _id: userId,
     })
 
-    console.log(userId)
     if (getUser) {
       const getPaymentMethod = await dbPaymentMethods.findOne({
         _id: paymentMethodId,
@@ -80,6 +83,8 @@ export const updatePaymentMethod = async (req: Request, res: Response) => {
               }
             )
             successDefault = updateCurrentDefault
+          } else {
+            next()
           }
           const updatePaymentMethod = await dbPaymentMethods.findOneAndUpdate(
             {
@@ -93,6 +98,7 @@ export const updatePaymentMethod = async (req: Request, res: Response) => {
               },
             }
           )
+
           res.json(
             response.success({
               item: [updatePaymentMethod, successDefault],

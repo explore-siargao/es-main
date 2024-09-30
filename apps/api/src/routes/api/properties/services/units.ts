@@ -379,7 +379,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     daysCanCancel,
   } = req.body
   if (!numBathRooms || !totalSize || !bedRooms || !qty || !livingRooms) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   try {
@@ -525,8 +525,9 @@ export const getUnitById = async (req: Request, res: Response) => {
       .populate('photos')
     if (!getUnit) {
       res.json(response.error({ message: 'No bookable unit found' }))
+    } else {
+      res.json(response.success({ item: getUnit }))
     }
-    res.json(response.success({ item: getUnit }))
   } catch (err: any) {
     res.json(
       response.error({

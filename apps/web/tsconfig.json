@@ -4,13 +4,11 @@
     "plugins": [
       {
         "name": "next",
-        "jsx": "react"
+        "jsx": "react-jsx"
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "forceConsistentCasingInFileNames": true
   },
@@ -19,9 +17,8 @@
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "app/(accommodation)/accommodation/message"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    ".next/types/**/*.ts",
+    "app/(accommodation)/accommodation/message"
+  ],
+  "exclude": ["node_modules"]
 }

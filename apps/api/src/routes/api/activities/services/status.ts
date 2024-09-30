@@ -17,22 +17,23 @@ export const updateStatus = async (req: Request, res: Response) => {
       })
       if (!getActivity) {
         res.json(response.error({ message: 'Activity not found' }))
+      } else {
+        const updateStatus = await dbActivities.findByIdAndUpdate(
+          getActivity?._id,
+          {
+            $set: {
+              status: status,
+              updatedAt: Date.now(),
+            },
+          }
+        )
+        res.json(
+          response.success({
+            item: { status: updateStatus },
+            message: 'Activity is now ' + status,
+          })
+        )
       }
-      const updateStatus = await dbActivities.findByIdAndUpdate(
-        getActivity?._id,
-        {
-          $set: {
-            status: status,
-            updatedAt: Date.now(),
-          },
-        }
-      )
-      res.json(
-        response.success({
-          item: { status: updateStatus },
-          message: 'Activity is now ' + status,
-        })
-      )
     } catch (err: any) {
       res.json(
         response.error({

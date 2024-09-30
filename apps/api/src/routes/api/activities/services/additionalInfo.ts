@@ -38,18 +38,19 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
             message: 'Activity not found!',
           })
         )
+      } else {
+        res.json(
+          response.success({
+            item: {
+              whatToBring: updatedActivity?.whatToBring,
+              notAllowed: updatedActivity?.notAllowed,
+              policies: updatedActivity?.policies,
+              cancellationDays: updatedActivity?.cancellationDays,
+            },
+            message: 'Activity updated',
+          })
+        )
       }
-      res.json(
-        response.success({
-          item: {
-            whatToBring: updatedActivity?.whatToBring,
-            notAllowed: updatedActivity?.notAllowed,
-            policies: updatedActivity?.policies,
-            cancellationDays: updatedActivity?.cancellationDays,
-          },
-          message: 'Activity updated',
-        })
-      )
     } catch (err: any) {
       res.json(
         response.error({
@@ -69,28 +70,26 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
 export const getAdditionalInfo = async (req: Request, res: Response) => {
   const userId = res.locals.user?.id
   const activityId = req.params.activityId
-
-  console.log(activityId)
   try {
     const getActivity = await dbActivities
       .findOne({ _id: activityId })
       .populate('host')
     if (!getActivity) {
       res.json(response.error({ message: 'Activity not found' }))
-    }
+    } else {
+      if (!getActivity?.host === userId) {
+        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+      } else {
+        const additionalInfo = {
+          whatToBring: getActivity?.whatToBring,
+          notAllowed: getActivity?.notAllowed,
+          policies: getActivity?.policies,
+          cancellationDays: getActivity?.cancellationDays,
+        }
 
-    if (!getActivity?.host === userId) {
-      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+        res.json(response.success({ item: additionalInfo }))
+      }
     }
-
-    const additionalInfo = {
-      whatToBring: getActivity?.whatToBring,
-      notAllowed: getActivity?.notAllowed,
-      policies: getActivity?.policies,
-      cancellationDays: getActivity?.cancellationDays,
-    }
-
-    res.json(response.success({ item: additionalInfo }))
   } catch (err: any) {
     res.json(
       response.error({

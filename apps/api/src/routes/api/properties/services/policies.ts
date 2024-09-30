@@ -20,10 +20,11 @@ export const getPoliciesByProperty = async (req: Request, res: Response) => {
 
     if (!property) {
       res.json(response.error({ message: 'Property not found!' }))
-    }
-    const policies = property?.policies
+    } else {
+      const policies = property?.policies
 
-    res.json(response.success({ items: policies }))
+      res.json(response.success({ items: policies }))
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -44,93 +45,93 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
   })
   if (!getProperty) {
     res.json(response.error({ message: 'Property not found' }))
-  }
-
-  if (!policies || !Array.isArray(policies)) {
-    res.json(
-      response.error({
-        message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
-      })
-    )
-  }
-
-  const policiesWithoutId = policies.filter((item) => item._id === null)
-  const policiesWithId = policies.filter((item) => item._id !== null)
-
-  if (policiesWithoutId.length > 0) {
-    policies.forEach(async (item) => {
-      if (!item._id) {
-        const newPolicies = new dbPolicies({
-          index: item.index,
-          category: item.category,
-          policy: item.policy,
-          reason: item.reason,
-          isSelected: item.isSelected,
-          createdAt: Date.now(),
-          updatedAt: null,
-          deletedAt: null,
+  } else {
+    if (!policies || !Array.isArray(policies)) {
+      res.json(
+        response.error({
+          message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
         })
+      )
+    } else {
+      const policiesWithoutId = policies.filter((item) => item._id === null)
+      const policiesWithId = policies.filter((item) => item._id !== null)
 
-        await newPolicies.save()
-        await dbProperties.findByIdAndUpdate(
-          propertyId,
-          {
-            $push: {
-              policies: newPolicies._id,
-            },
-          },
-          { new: true }
-        )
-      }
-    })
-  }
-
-  if (policiesWithId.length > 0) {
-    policiesWithId.forEach(async (item) => {
-      if (item._id) {
-        await dbPolicies.findByIdAndUpdate(
-          item._id,
-          {
-            $set: {
+      if (policiesWithoutId.length > 0) {
+        policies.forEach(async (item) => {
+          if (!item._id) {
+            const newPolicies = new dbPolicies({
               index: item.index,
               category: item.category,
               policy: item.policy,
               reason: item.reason,
               isSelected: item.isSelected,
-              updatedAt: Date.now(),
-            },
-          },
-          { new: true }
-        )
+              createdAt: Date.now(),
+              updatedAt: null,
+              deletedAt: null,
+            })
+
+            await newPolicies.save()
+            await dbProperties.findByIdAndUpdate(
+              propertyId,
+              {
+                $push: {
+                  policies: newPolicies._id,
+                },
+              },
+              { new: true }
+            )
+          }
+        })
       }
-    })
+
+      if (policiesWithId.length > 0) {
+        policiesWithId.forEach(async (item) => {
+          if (item._id) {
+            await dbPolicies.findByIdAndUpdate(
+              item._id,
+              {
+                $set: {
+                  index: item.index,
+                  category: item.category,
+                  policy: item.policy,
+                  reason: item.reason,
+                  isSelected: item.isSelected,
+                  updatedAt: Date.now(),
+                },
+              },
+              { new: true }
+            )
+          }
+        })
+      }
+
+      await dbProperties.findByIdAndUpdate(
+        propertyId,
+        {
+          $set: {
+            finishedSections: [
+              'type',
+              'wholePlaceType',
+              'basicInfo',
+              'location',
+              'facilities',
+              'units',
+              'photos',
+              'pricing',
+              'policies',
+            ],
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+
+      res.json(
+        response.success({
+          items: policies,
+          message: 'Property policies successfully updated',
+        })
+      )
+    }
   }
-
-  await dbProperties.findByIdAndUpdate(
-    propertyId,
-    {
-      $set: {
-        finishedSections: [
-          'type',
-          'wholePlaceType',
-          'basicInfo',
-          'location',
-          'facilities',
-          'units',
-          'photos',
-          'pricing',
-          'policies',
-        ],
-        updatedAt: Date.now(),
-      },
-    },
-    { new: true }
-  )
-
-  res.json(
-    response.success({
-      items: policies,
-      message: 'Property policies successfully updated',
-    })
-  )
 }
