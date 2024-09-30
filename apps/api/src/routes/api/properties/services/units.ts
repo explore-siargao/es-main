@@ -379,7 +379,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     daysCanCancel,
   } = req.body
   if (!numBathRooms || !totalSize || !bedRooms || !qty || !livingRooms) {
-    return res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 
   try {

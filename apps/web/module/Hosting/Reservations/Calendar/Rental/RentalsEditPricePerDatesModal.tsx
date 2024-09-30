@@ -113,7 +113,7 @@ const RentalsEditPricePerDatesModal = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 pb-2 mt-4">
+          <div className="flex flex-col gap-4 pb-2 mt-4 mb-2">
             <div className="flex flex-col w-full">
               <Input2
                 type="number"
@@ -127,21 +127,6 @@ const RentalsEditPricePerDatesModal = ({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-4 pb-4 mt-2">
-            <div className="flex flex-col w-full">
-              <Input2
-                type="number"
-                label={"Required Deposit"}
-                value={requiredDeposit}
-                onChange={(e) => setRequiredDeposit(e.target.value)}
-                description="This upfront payment needed to secure the rental"
-                placeholder="e.g., 1000"
-                className="w-full"
-                required
-              />
-            </div>
-          </div>
-
           <div className="flex items-center pt-4 border-t border-gray-200">
             <div className="flex justify-end gap-2 w-full">
               <Button
