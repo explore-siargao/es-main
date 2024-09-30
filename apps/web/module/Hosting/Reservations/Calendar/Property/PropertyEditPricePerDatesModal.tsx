@@ -98,7 +98,7 @@ const PropertyEditPricePerDatesModal = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 pb-2 mt-4">
+          <div className="flex flex-col gap-4 pb-2 mt-4 mb-2">
             <div className="flex flex-col w-full">
               <Input2
                 type="number"
@@ -107,48 +107,6 @@ const PropertyEditPricePerDatesModal = ({
                 onChange={(e) => setBaseRate(e.target.value)}
                 description="Enter the base price for a single day within the selected date range"
                 placeholder="e.g., 10000"
-                className="w-full"
-                required
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-4 pb-2 mt-2">
-            <div className="flex flex-col w-full">
-              <Input2
-                type="number"
-                label={"Base Rate Maximum Capacity"}
-                value={baseRateMaxCapacity}
-                onChange={(e) => setBaseRateMaxCapacity(e.target.value)}
-                description="The base price for the maximum capacity. The total number of people or items included"
-                placeholder="e.g., 20000"
-                className="w-full"
-                required
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-4 pb-2 mt-2">
-            <div className="flex flex-col w-full">
-              <Input2
-                type="number"
-                label={"Maximum Capacity"}
-                value={maxCapacity}
-                onChange={(e) => setMaxCapacity(e.target.value)}
-                description="The maximum number of people or items allowed"
-                placeholder="e.g., 20"
-                className="w-full"
-                required
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-4 pb-4 mt-2">
-            <div className="flex flex-col w-full">
-              <Input2
-                type="number"
-                label={"Price Per Additional Person"}
-                value={pricePerAdditionalPerson}
-                onChange={(e) => setPricePerAdditionalperson(e.target.value)}
-                description="The extra cost per additional person beyond the base rate"
-                placeholder="e.g., 5000"
                 className="w-full"
                 required
               />
