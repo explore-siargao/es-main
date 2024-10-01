@@ -23,7 +23,7 @@ import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import { getColorClasses } from "../../helpers/legends"
-import { useQueryClient } from "@tanstack/react-query"
+import { isCancelledError, useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
@@ -55,7 +55,7 @@ const MotorCalendarTable = () => {
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempMotorAbbr, setMotorAbbr] = useState<string>("")
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
-
+  const [cancelReservation, setIsCancelReservation] = useState<boolean>(false)
   const [searchString, setSearchString] = useState("")
 
   const daysPerPage = 13
@@ -610,6 +610,8 @@ const MotorCalendarTable = () => {
                     onClose={closeReservationModal}
                     selectedReservation={selectedReservation}
                     isEditReservation={isEditReservation}
+                    isCancelReservation={cancelReservation}
+                    setIsCancelReservation={setIsCancelReservation}
                     setIsEditReservation={setIsEditReservation}
                   />
                 )}

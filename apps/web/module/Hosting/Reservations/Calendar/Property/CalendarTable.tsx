@@ -67,16 +67,20 @@ const PropertyCalendarTable = () => {
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
+  const [cancelReservation, setIsCancelReservation] = useState<boolean>(false)
 
   const [searchString, setSearchString] = useState("")
 
   const daysPerPage = 13
+
+  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
 
   const closeReservationModal = () => {
     setSelectedLegendType("")
     setTimeout(() => {
       setIsReservationModalOpen(false)
       setIsEditReservation(false)
+      setIsCancelReservation(false)
       form.reset()
     }, 200)
   }
@@ -89,6 +93,7 @@ const PropertyCalendarTable = () => {
       form.reset()
     }, 200)
   }
+
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
 
@@ -97,8 +102,6 @@ const PropertyCalendarTable = () => {
     setSelectedDate(date)
     setSelectedUnitId(category)
   }
-
-  const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
 
   const handleSaveNewReservation = (newReservation: any, reset: Function) => {
     const updatedData = { ...filteredData }
@@ -440,7 +443,6 @@ const PropertyCalendarTable = () => {
     setEditingRoom(null)
   }
   return (
-    //<div></div>
     <>
       {isLoading ? (
         <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
@@ -743,13 +745,17 @@ const PropertyCalendarTable = () => {
                 <FormProvider {...form}>
                   <form>
                     {selectedReservation && (
-                      <PropertyCalendarModal
-                        isModalOpen={isReservationModalOpen}
-                        onClose={closeReservationModal}
-                        selectedReservation={selectedReservation}
-                        isEditReservation={isEditReservation}
-                        setIsEditReservation={setIsEditReservation}
-                      />
+                      <>
+                        <PropertyCalendarModal
+                          isModalOpen={isReservationModalOpen}
+                          onClose={closeReservationModal}
+                          selectedReservation={selectedReservation}
+                          isEditReservation={isEditReservation}
+                          isCancelReservation={cancelReservation}
+                          setIsEditReservation={setIsEditReservation}
+                          setIsCancelReservation={setIsCancelReservation}
+                        />
+                      </>
                     )}
                   </form>
                 </FormProvider>
