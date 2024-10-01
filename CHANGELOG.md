@@ -4,17 +4,17 @@
 
 ### 🚀 Features
 
-* Allow listing page for rental and property to be viewed publicly ([2717cef](https://github.com/explore-siargao/es-main/commit/2717cef84d13348d56ae497724c4d99b905a4b2e))
-* **api:** Modified endpoint for updating price per dates in rental and properties ([f48d48b](https://github.com/explore-siargao/es-main/commit/f48d48bbf7c482f91bc1c8d50cc19fdb73a1008d))
-* Removed not needed fields in edit price modal ([1b3e838](https://github.com/explore-siargao/es-main/commit/1b3e838da858c4a131cdca51909b4d4100ba6f83))
-* **web:** Adjusted functions of adding price per dates in properties and rentals ([231400d](https://github.com/explore-siargao/es-main/commit/231400d3c95819adab528c33055206ea5e53a79f))
-* **web:** Created reservation cancellation modal for all calendar types ([71b9b38](https://github.com/explore-siargao/es-main/commit/71b9b380bf8b14b157f42e65dd8f3dc4bb3c79d5), [8bbcda4](https://github.com/explore-siargao/es-main/commit/8bbcda4c7812c3350d983065a442b8233aa22e9c), [96d8d34](https://github.com/explore-siargao/es-main/commit/96d8d3439df1621b018e187b2e875fe614473bad))
-* **web:** Modified rental and unit basic info added input number of cancellation days ([5dba085](https://github.com/explore-siargao/es-main/commit/5dba085c049d7b3903b1540160d2a62e03109b16), [d2eb814](https://github.com/explore-siargao/es-main/commit/d2eb814c8adc6925261129ed2003b0232f153e4c))
+- Allow listing page for rental and property to be viewed publicly ([2717cef](https://github.com/explore-siargao/es-main/commit/2717cef84d13348d56ae497724c4d99b905a4b2e))
+- **api:** Modified endpoint for updating price per dates in rental and properties ([f48d48b](https://github.com/explore-siargao/es-main/commit/f48d48bbf7c482f91bc1c8d50cc19fdb73a1008d))
+- Removed not needed fields in edit price modal ([1b3e838](https://github.com/explore-siargao/es-main/commit/1b3e838da858c4a131cdca51909b4d4100ba6f83))
+- **web:** Adjusted functions of adding price per dates in properties and rentals ([231400d](https://github.com/explore-siargao/es-main/commit/231400d3c95819adab528c33055206ea5e53a79f))
+- **web:** Created reservation cancellation modal for all calendar types ([71b9b38](https://github.com/explore-siargao/es-main/commit/71b9b380bf8b14b157f42e65dd8f3dc4bb3c79d5), [8bbcda4](https://github.com/explore-siargao/es-main/commit/8bbcda4c7812c3350d983065a442b8233aa22e9c), [96d8d34](https://github.com/explore-siargao/es-main/commit/96d8d3439df1621b018e187b2e875fe614473bad))
+- **web:** Modified rental and unit basic info added input number of cancellation days ([5dba085](https://github.com/explore-siargao/es-main/commit/5dba085c049d7b3903b1540160d2a62e03109b16), [d2eb814](https://github.com/explore-siargao/es-main/commit/d2eb814c8adc6925261129ed2003b0232f153e4c))
 
 ### 🧰 Maintenance
 
-* Added else statement to all endpoint that have if statement on res.json ([0bb1d97](https://github.com/explore-siargao/es-main/commit/0bb1d970d958757bb94d39e108a0c3b0da846a9f), [bd6f677](https://github.com/explore-siargao/es-main/commit/bd6f677e0fc0d75bf09cc84cdd902fc3f87a8b80))
-* Remove heroicons, return in endpoints and upgrade and clean all packages ([d78e2a5](https://github.com/explore-siargao/es-main/commit/d78e2a5dd1f05608823638abc02c54e203570939))
+- Added else statement to all endpoint that have if statement on res.json ([0bb1d97](https://github.com/explore-siargao/es-main/commit/0bb1d970d958757bb94d39e108a0c3b0da846a9f), [bd6f677](https://github.com/explore-siargao/es-main/commit/bd6f677e0fc0d75bf09cc84cdd902fc3f87a8b80))
+- Remove heroicons, return in endpoints and upgrade and clean all packages ([d78e2a5](https://github.com/explore-siargao/es-main/commit/d78e2a5dd1f05608823638abc02c54e203570939))
 
 ## [0.24.0](https://github.com/explore-siargao/es-main/compare/v0.23.0...v0.24.0) (2024-09-27)
 
