@@ -170,86 +170,86 @@ export const Rental = ({ rentalData: data }: { rentalData: any }) => {
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
-          <div>
-            <SectionInfo
-              images={data?.item?.photos}
-              title={`${data?.item?.year ? data?.item?.year : ""} ${data?.item?.make ? data?.item?.make : ""} ${data?.item?.modelBadge ? data?.item?.modelBadge : ""}`}
+      <div>
+        <SectionInfo
+          images={data?.item?.photos}
+          title={`${data?.item?.year ? data?.item?.year : ""} ${data?.item?.make ? data?.item?.make : ""} ${data?.item?.modelBadge ? data?.item?.modelBadge : ""}`}
+        />
+      </div>
+      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+        <div className="flex-1 md:w-1/2 2xl:w-full">
+          <div className="divide-y">
+            <div className="py-6">
+              <BookingDescription aboutData={aboutData} />
+            </div>
+            <div className="py-6 ">
+              <Inclusions rentalData={data?.item?.addOns} />
+            </div>
+            <div className="py-6 ">
+              <Requirements requirementData={requirementData} />
+            </div>
+          </div>
+        </div>
+
+        <div className="md:w-96 md:relative">
+          <div className="md:sticky md:top-6">
+            <CheckoutBox
+              checkoutDesc={{
+                serviceFee: data?.item?.pricing?.dayRate,
+                durationCost: 1500,
+                descTotalBeforeTaxes: data?.item?.pricing?.dayRate,
+                totalBeforeTaxes: 1800,
+                titlePrice: data?.item?.pricing?.dayRate,
+                downPayment: data?.item?.pricing?.requiredDeposit,
+              }}
             />
-          </div>
-          <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
-            <div className="flex-1 md:w-1/2 2xl:w-full">
-              <div className="divide-y">
-                <div className="py-6">
-                  <BookingDescription aboutData={aboutData} />
-                </div>
-                <div className="py-6 ">
-                  <Inclusions rentalData={data?.item?.addOns} />
-                </div>
-                <div className="py-6 ">
-                  <Requirements requirementData={requirementData} />
-                </div>
-              </div>
-            </div>
-
-            <div className="md:w-96 md:relative">
-              <div className="md:sticky md:top-6">
-                <CheckoutBox
-                  checkoutDesc={{
-                    serviceFee: data?.item?.pricing?.dayRate,
-                    durationCost: 1500,
-                    descTotalBeforeTaxes: data?.item?.pricing?.dayRate,
-                    totalBeforeTaxes: 1800,
-                    titlePrice: data?.item?.pricing?.dayRate,
-                    downPayment: data?.item?.pricing?.requiredDeposit,
-                  }}
-                />
-                <div>
-                  <ListingMark
-                    icon={<Tag />}
-                    title="Lower Price"
-                    desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-                  />
-                </div>
-
-                <div className="flex justify-center">
-                  <div className="justify-items-center">
-                    <Button
-                      variant="ghost"
-                      className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                      size="sm"
-                      onClick={handleOpenModal}
-                    >
-                      <Flag className="h-4 w-4" />
-                      Report this listing
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="divide-y border-t">
-            <div className="py-8">
-              <PickUpLocation mapData={data?.item?.location} />
-            </div>
-
-            <div className="py-8">
-              <RatingSummary
-                ratings={ratingSummary.ratings}
-                reviews={ratingSummary.reviews}
-                categories={ratingSummary.categories}
+            <div>
+              <ListingMark
+                icon={<Tag />}
+                title="Lower Price"
+                desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
               />
             </div>
-            <div className="py-8">
-              <UserReviews reviews={userReviews} />
-            </div>
-            <div className="py-8">
-              <HostInformation {...hostDummy} />
-            </div>
-            <div className="py-8">
-              <SimilarRentals />
+
+            <div className="flex justify-center">
+              <div className="justify-items-center">
+                <Button
+                  variant="ghost"
+                  className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
+                  size="sm"
+                  onClick={handleOpenModal}
+                >
+                  <Flag className="h-4 w-4" />
+                  Report this listing
+                </Button>
+              </div>
             </div>
           </div>
-          <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+        </div>
+      </div>
+      <div className="divide-y border-t">
+        <div className="py-8">
+          <PickUpLocation mapData={data?.item?.location} />
+        </div>
+
+        <div className="py-8">
+          <RatingSummary
+            ratings={ratingSummary.ratings}
+            reviews={ratingSummary.reviews}
+            categories={ratingSummary.categories}
+          />
+        </div>
+        <div className="py-8">
+          <UserReviews reviews={userReviews} />
+        </div>
+        <div className="py-8">
+          <HostInformation {...hostDummy} />
+        </div>
+        <div className="py-8">
+          <SimilarRentals />
+        </div>
+      </div>
+      <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
     </WidthWrapper>
   )
 }

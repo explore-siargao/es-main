@@ -91,7 +91,11 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
   try {
     const propertyId = req.params.propertyId
     const property = await dbProperties
-      .findOne({ _id: propertyId, status: E_Property_Status.pending, deletedAt: null })
+      .findOne({
+        _id: propertyId,
+        status: E_Property_Status.pending,
+        deletedAt: null,
+      })
       .populate({
         path: 'offerBy',
         populate: [{ path: 'guest' }],
@@ -107,20 +111,20 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
         },
       })
       .populate('reservations')
-      if (!property) {
-        res.json(
-          response.error({
-            status: 404,
-            message: 'Property with given ID not found!',
-          })
-        )
-      } else {
-        res.json(
-          response.success({
-            item: property,
-          })
-        )
-      }
+    if (!property) {
+      res.json(
+        response.error({
+          status: 404,
+          message: 'Property with given ID not found!',
+        })
+      )
+    } else {
+      res.json(
+        response.success({
+          item: property,
+        })
+      )
+    }
   } catch (err: any) {
     res.json(
       response.error({

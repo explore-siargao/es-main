@@ -24,8 +24,8 @@ const PropertyPublicPage = async ({ params: { propertyId } }: T_Props) => {
     notFound()
   }
 
-  if((listing && listing.status === 500) || !listing) {
-    throw new Error('Internal Server Error');
+  if ((listing && listing.status === 500) || !listing) {
+    throw new Error("Internal Server Error")
   }
 
   return <Property propertyData={listing} />

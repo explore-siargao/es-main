@@ -1,7 +1,7 @@
-'use client'
-import { useEffect } from 'react'
+"use client"
+import { useEffect } from "react"
 import ErrorContent from "@/common/components/ErrorContent"
- 
+
 export default function Error({
   error,
   reset,
@@ -12,7 +12,7 @@ export default function Error({
   useEffect(() => {
     console.error(error)
   }, [error])
- 
+
   return (
     <ErrorContent
       mainError="500 - UNEXPECTED ERROR"

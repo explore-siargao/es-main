@@ -70,11 +70,7 @@ router.get(
   getRental
 )
 
-router.get(
-  '/public/:rentalId',
-  isOriginValid,
-  getRentalByIdPublic
-)
+router.get('/public/:rentalId', isOriginValid, getRentalByIdPublic)
 
 router.get(
   '/:rentalId/details',
