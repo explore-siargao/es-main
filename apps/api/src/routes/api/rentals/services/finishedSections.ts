@@ -33,33 +33,35 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
           message: 'Rental not found!',
         })
       )
-    }
-    if (rental?.host?.toString() !== hostId) {
-      res.json(
-        response.error({
-          message: USER_NOT_AUTHORIZED,
-        })
-      )
-    }
-    const updatedRental = await dbRentals.findByIdAndUpdate(
-      rental?._id,
-      {
-        $push: {
-          finishedSections: newFinishedSection,
-        },
-        $set: {
-          updatedAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
+    } else {
+      if (rental?.host?.toString() !== hostId) {
+        res.json(
+          response.error({
+            message: USER_NOT_AUTHORIZED,
+          })
+        )
+      } else {
+        const updatedRental = await dbRentals.findByIdAndUpdate(
+          rental?._id,
+          {
+            $push: {
+              finishedSections: newFinishedSection,
+            },
+            $set: {
+              updatedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
 
-    res.json(
-      response.success({
-        item: updatedRental?.finishedSections,
-        message: 'Finished sections saved',
-      })
-    )
+        res.json(
+          response.success({
+            item: updatedRental?.finishedSections,
+            message: 'Finished sections saved',
+          })
+        )
+      }
+    }
   } catch (err: any) {
     res.json(
       response.error({

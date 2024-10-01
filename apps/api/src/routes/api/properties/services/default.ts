@@ -19,47 +19,48 @@ export const addProperty = async (req: Request, res: Response) => {
         message: USER_NOT_AUTHORIZED,
       })
     )
-  }
-  try {
-    const newProperty = new dbProperties({
-      offerBy: hostId,
-      status: 'Incomplete',
-      finishedSections: [],
-      title: '',
-      description: '',
-      currency: null,
-      primaryLanguage: null,
-      phone: null,
-      email: null,
-      location: null,
-      checkInTime: null,
-      checkOutTime: null,
-      isLateCheckOutAllowed: false,
-      lateCheckOutType: null,
-      lateCheckOutValue: null,
-      termsAndConditions: null,
-      taxId: null,
-      taxId2: null,
-      companyLegalName: null,
-      type: null,
-      facilities: [],
-      policies: [],
-      bookableUnits: [],
-      reservations: [],
-    })
-    await newProperty.save()
-    res.json(
-      response.success({
-        item: newProperty,
-        message: 'New property added successfully',
+  } else {
+    try {
+      const newProperty = new dbProperties({
+        offerBy: hostId,
+        status: 'Incomplete',
+        finishedSections: [],
+        title: '',
+        description: '',
+        currency: null,
+        primaryLanguage: null,
+        phone: null,
+        email: null,
+        location: null,
+        checkInTime: null,
+        checkOutTime: null,
+        isLateCheckOutAllowed: false,
+        lateCheckOutType: null,
+        lateCheckOutValue: null,
+        termsAndConditions: null,
+        taxId: null,
+        taxId2: null,
+        companyLegalName: null,
+        type: null,
+        facilities: [],
+        policies: [],
+        bookableUnits: [],
+        reservations: [],
       })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
+      await newProperty.save()
+      res.json(
+        response.success({
+          item: newProperty,
+          message: 'New property added successfully',
+        })
+      )
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
   }
 }
 
@@ -133,28 +134,28 @@ export const deleteProperty = async (req: Request, res: Response) => {
           message: 'Property not found or already deleted!',
         })
       )
+    } else {
+      if (property?.offerBy?.toString() !== userId) {
+        res.json(
+          response.error({
+            message: USER_NOT_AUTHORIZED,
+          })
+        )
+      } else {
+        const updateProperty = await dbProperties.findOneAndUpdate(
+          { _id: propertyId, offerBy: userId, deletedAt: null },
+          { deletedAt: Date.now() },
+          { new: true }
+        )
+
+        res.json(
+          response.success({
+            item: updateProperty,
+            message: 'Property successfully deleted!',
+          })
+        )
+      }
     }
-
-    if (property?.offerBy?.toString() !== userId) {
-      res.json(
-        response.error({
-          message: USER_NOT_AUTHORIZED,
-        })
-      )
-    }
-
-    const updateProperty = await dbProperties.findOneAndUpdate(
-      { _id: propertyId, offerBy: userId, deletedAt: null },
-      { deletedAt: Date.now() },
-      { new: true }
-    )
-
-    res.json(
-      response.success({
-        item: updateProperty,
-        message: 'Property successfully deleted!',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -209,13 +210,14 @@ export const updatePropertyType = async (req: Request, res: Response) => {
           message: 'Property not found for the given host id and property id',
         })
       )
+    } else {
+      res.json(
+        response.success({
+          item: { type: updatePropertyType?.type },
+          message: 'Property type updated successfully',
+        })
+      )
     }
-    res.json(
-      response.success({
-        item: { type: updatePropertyType?.type },
-        message: 'Property type updated successfully',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -250,13 +252,14 @@ export const updateWholePlaceType = async (req: Request, res: Response) => {
           message: 'Property not found for the given host id and property id',
         })
       )
+    } else {
+      res.json(
+        response.success({
+          item: { updateWholePlaceType },
+          message: 'Whole place type updated successfully',
+        })
+      )
     }
-    res.json(
-      response.success({
-        item: { updateWholePlaceType },
-        message: 'Whole place type updated successfully',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -338,13 +341,14 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
             message: 'Property not found!',
           })
         )
+      } else {
+        res.json(
+          response.success({
+            item: updatedProperty,
+            message: 'Property basic info successfully updated',
+          })
+        )
       }
-      res.json(
-        response.success({
-          item: updatedProperty,
-          message: 'Property basic info successfully updated',
-        })
-      )
     } catch (err: any) {
       res.json(
         response.error({
@@ -381,69 +385,75 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
     !howToGetThere
   ) {
     res.json(response.error({ message: 'Required value is empty' }))
-  }
+  } else {
+    try {
+      const property = await dbProperties
+        .findById(propertyId)
+        .populate('location')
 
-  try {
-    const property = await dbProperties
-      .findById(propertyId)
-      .populate('location')
+      if (!property) {
+        res.json(response.error({ message: 'Property not found' }))
+      } else {
+        if (property?.location === null) {
+          const newLocation = new dbLocations({
+            streetAddress: streetAddress,
+            barangay: barangay,
+            city: city,
+            longitude: longitude,
+            latitude: latitude,
+            howToGetThere: howToGetThere,
+          })
+          await newLocation.save()
+          await dbProperties.findByIdAndUpdate(
+            propertyId,
+            {
+              $set: {
+                location: newLocation._id,
+                finishedSections: [
+                  'type',
+                  'wholePlaceType',
+                  'basicInfo',
+                  'location',
+                ],
+              },
+            },
+            { new: true }
+          )
+        } else {
+          await dbLocations.findByIdAndUpdate(property?.location, {
+            $set: {
+              streetAddress: streetAddress,
+              barangay: barangay,
+              city: city,
+              longitude: longitude,
+              latitude: latitude,
+              howToGetThere: howToGetThere,
+              finishedSections: [
+                'type',
+                'wholePlaceType',
+                'basicInfo',
+                'location',
+              ],
+            },
+          })
+        }
 
-    if (!property) {
-      res.json(response.error({ message: 'Property not found' }))
-    }
+        // property.finishedSections = ['type', 'basicInfo', 'location']
 
-    if (property?.location === null) {
-      const newLocation = new dbLocations({
-        streetAddress: streetAddress,
-        barangay: barangay,
-        city: city,
-        longitude: longitude,
-        latitude: latitude,
-        howToGetThere: howToGetThere,
-      })
-      await newLocation.save()
-      await dbProperties.findByIdAndUpdate(
-        propertyId,
-        {
-          $set: {
-            location: newLocation._id,
-            finishedSections: [
-              'type',
-              'wholePlaceType',
-              'basicInfo',
-              'location',
-            ],
-          },
-        },
-        { new: true }
+        res.json(
+          response.success({
+            item: property,
+            message: 'Property location updated',
+          })
+        )
+      }
+    } catch (err: any) {
+      console.error(err)
+      res.json(
+        response.error({
+          message: err.message ? err.message : 'Unknown error occurred',
+        })
       )
-    } else {
-      await dbLocations.findByIdAndUpdate(property?.location, {
-        $set: {
-          streetAddress: streetAddress,
-          barangay: barangay,
-          city: city,
-          longitude: longitude,
-          latitude: latitude,
-          howToGetThere: howToGetThere,
-        },
-      })
     }
-
-    // property.finishedSections = ['type', 'basicInfo', 'location']
-
-    res.json(
-      response.success({
-        item: property,
-        message: 'Property location updated',
-      })
-    )
-  } catch (err: any) {
-    console.error(err)
-    res.json(
-      response.error({
-        message: err.message ? err.message : 'Unknown error occurred',
-      })
-    )
   }
 }

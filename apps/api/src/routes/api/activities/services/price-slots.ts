@@ -21,42 +21,44 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
           message: USER_NOT_AUTHORIZED,
         })
       )
-    }
-    try {
-      const activity = await dbActivities.findOne({
-        _id: activityId,
-        deletedAt: null,
-      })
-      if (!activity) {
+    } else {
+      try {
+        const activity = await dbActivities.findOne({
+          _id: activityId,
+          deletedAt: null,
+        })
+        if (!activity) {
+          res.json(
+            response.error({
+              message: 'Activity not found!',
+            })
+          )
+        } else {
+          const updatedPriceAndSlots = await dbActivities.findByIdAndUpdate(
+            activity?._id,
+            {
+              $set: {
+                price: price,
+                slots: slots,
+                updatedAt: Date.now(),
+              },
+            },
+            { new: true }
+          )
+          res.json(
+            response.success({
+              item: updatedPriceAndSlots,
+              message: 'Price and slots successfully updated!',
+            })
+          )
+        }
+      } catch (err: any) {
         res.json(
           response.error({
-            message: 'Activity not found!',
+            message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
           })
         )
       }
-      const updatedPriceAndSlots = await dbActivities.findByIdAndUpdate(
-        activity?._id,
-        {
-          $set: {
-            price: price,
-            slots: slots,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
-      res.json(
-        response.success({
-          item: updatedPriceAndSlots,
-          message: 'Price and slots successfully updated!',
-        })
-      )
-    } catch (err: any) {
-      res.json(
-        response.error({
-          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-        })
-      )
     }
   } else {
     res.json(

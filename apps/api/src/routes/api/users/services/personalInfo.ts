@@ -26,11 +26,11 @@ export const getPersonalInfo = async (req: Request, res: Response) => {
       res.json(
         response.success({ message: 'No user found with the provided ID' })
       )
+    } else {
+      const plainUserInfo = getUserInfo?.toObject()
+
+      res.json(response.success({ item: plainUserInfo }))
     }
-
-    const plainUserInfo = getUserInfo?.toObject()
-
-    res.json(response.success({ item: plainUserInfo }))
   } catch (err: any) {
     console.error('Error fetching user data:', err)
     res.json(
@@ -62,39 +62,39 @@ export const updatePersonalInfo = async (req: Request, res: Response) => {
           message: 'Invalid user ID format',
         })
       )
-    }
+    } else {
+      const getUser = await dbUsers.findById(userId)
 
-    const getUser = await dbUsers.findById(userId)
-
-    const editPersonalInfo = await dbGuests.findByIdAndUpdate(
-      getUser?.guest,
-      {
-        firstName: firstName,
-        lastName: lastName,
-        middleName: middleName,
-        birthDate: birthDate,
-        governmentId: governmentId,
-        cellPhone: cellPhone,
-        phone: phone,
-        confirm: JSON.stringify(confirm),
-      },
-      { new: true }
-    )
-
-    if (!editPersonalInfo) {
-      res.status(404).json(
-        response.error({
-          message: 'User not found',
-        })
+      const editPersonalInfo = await dbGuests.findByIdAndUpdate(
+        getUser?.guest,
+        {
+          firstName: firstName,
+          lastName: lastName,
+          middleName: middleName,
+          birthDate: birthDate,
+          governmentId: governmentId,
+          cellPhone: cellPhone,
+          phone: phone,
+          confirm: JSON.stringify(confirm),
+        },
+        { new: true }
       )
-    }
 
-    res.json(
-      response.success({
-        item: editPersonalInfo,
-        message: 'Successfully updated',
-      })
-    )
+      if (!editPersonalInfo) {
+        res.status(404).json(
+          response.error({
+            message: 'User not found',
+          })
+        )
+      } else {
+        res.json(
+          response.success({
+            item: editPersonalInfo,
+            message: 'Successfully updated',
+          })
+        )
+      }
+    }
   } catch (err: any) {
     console.error('Error updating personal info:', err)
     res.status(500).json(
@@ -359,30 +359,32 @@ export const updateCurrency = async (req: Request, res: Response) => {
   try {
     if (!currency) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
-    const getPersonalInfo = await dbGuests.findOne({
-      _id: guestId,
-      deletedAt: null,
-    })
-    if (!getPersonalInfo) {
-      res.json(response.error({ message: 'Personal info not found' }))
-    }
-    const updateUserCurrency = await dbGuests.findByIdAndUpdate(
-      guestId,
-      {
-        $set: {
-          currency: currency,
-        },
-      },
-      { new: true }
-    )
-    res.json(
-      response.success({
-        item: updateUserCurrency,
-        allItemCount: 1,
-        message: 'Currency successfully updated',
+    } else {
+      const getPersonalInfo = await dbGuests.findOne({
+        _id: guestId,
+        deletedAt: null,
       })
-    )
+      if (!getPersonalInfo) {
+        res.json(response.error({ message: 'Personal info not found' }))
+      } else {
+        const updateUserCurrency = await dbGuests.findByIdAndUpdate(
+          guestId,
+          {
+            $set: {
+              currency: currency,
+            },
+          },
+          { new: true }
+        )
+        res.json(
+          response.success({
+            item: updateUserCurrency,
+            allItemCount: 1,
+            message: 'Currency successfully updated',
+          })
+        )
+      }
+    }
   } catch (err: any) {
     const message = err.message ? err.message : UNKNOWN_ERROR_OCCURRED
     res.json(response.error({ message: message }))
@@ -428,25 +430,26 @@ export const updateLanguage = async (req: Request, res: Response) => {
     console.log('personalInfoId:', personalInfoId)
     if (!language) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
-    const getPersonalInfo = await dbGuests.findOne({ _id: personalInfoId })
-    if (getPersonalInfo) {
-      res.json(response.error({ message: 'Personal info not found' }))
-    }
-    const updateUserLanguage = await dbGuests.findByIdAndUpdate(
-      personalInfoId,
-      { language: language },
-      { new: true }
-    )
+    } else {
+      const getPersonalInfo = await dbGuests.findOne({ _id: personalInfoId })
+      if (getPersonalInfo) {
+        res.json(response.error({ message: 'Personal info not found' }))
+      } else {
+        const updateUserLanguage = await dbGuests.findByIdAndUpdate(
+          personalInfoId,
+          { language: language },
+          { new: true }
+        )
 
-    res.json(
-      response.success({
-        item: updateUserLanguage,
-        allItemCount: 1,
-        message: 'Language successfully updated',
-      })
-    )
-    console.log('Update User Language:', updateUserLanguage)
+        res.json(
+          response.success({
+            item: updateUserLanguage,
+            allItemCount: 1,
+            message: 'Language successfully updated',
+          })
+        )
+      }
+    }
   } catch (err: any) {
     const message = err.message ? err.message : UNKNOWN_ERROR_OCCURRED
     res.json(response.error({ message: message }))

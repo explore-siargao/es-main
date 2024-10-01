@@ -327,13 +327,14 @@ export const editUnitChildName = async (req: Request, res: Response) => {
     )
     if (!updateUnitName) {
       res.json(response.error({ message: 'Unit not found' }))
+    } else {
+      res.json(
+        response.success({
+          item: updateUnitName,
+          message: 'Successfully changed unit name',
+        })
+      )
     }
-    res.json(
-      response.success({
-        item: updateUnitName,
-        message: 'Successfully changed unit name',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -364,64 +365,64 @@ export const addUnitPricePerDates = async (req: Request, res: Response) => {
       res.json(
         response.error({ message: 'Bookable unit not exist on our system' })
       )
-    }
+    } else {
+      if (
+        !fromDate ||
+        !toDate ||
+        !baseRate ||
+        !maximumCapacity ||
+        !baseRateMaxCapacity ||
+        !pricePerAdditionalPerson
+      ) {
+        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      } else {
+        const newFromDate = new Date(fromDate)
+        const newToDate = new Date(toDate)
 
-    if (
-      !fromDate ||
-      !toDate ||
-      !baseRate ||
-      !maximumCapacity ||
-      !baseRateMaxCapacity ||
-      !pricePerAdditionalPerson
-    ) {
-      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
-
-    const newFromDate = new Date(fromDate)
-    const newToDate = new Date(toDate)
-
-    const isConflict = getUnit?.pricePerDates.some((dateRange: any) => {
-      const existingFromDate = new Date(dateRange.fromDate)
-      const existingToDate = new Date(dateRange.toDate)
-      return newFromDate <= existingToDate && newToDate >= existingFromDate
-    })
-
-    if (isConflict) {
-      res.json(
-        response.error({
-          message: 'The date range conflicts with existing price periods.',
+        const isConflict = getUnit?.pricePerDates.some((dateRange: any) => {
+          const existingFromDate = new Date(dateRange.fromDate)
+          const existingToDate = new Date(dateRange.toDate)
+          return newFromDate <= existingToDate && newToDate >= existingFromDate
         })
-      )
-    }
 
-    const newUnitPrice = new dbUnitPrices({
-      baseRate: baseRate,
-      baseRateMaxCapacity: baseRateMaxCapacity,
-      maximumCapacity: maximumCapacity,
-      pricePerAdditionalPerson: pricePerAdditionalPerson,
-    })
+        if (isConflict) {
+          res.json(
+            response.error({
+              message: 'The date range conflicts with existing price periods.',
+            })
+          )
+        } else {
+          const newUnitPrice = new dbUnitPrices({
+            baseRate: baseRate,
+            baseRateMaxCapacity: baseRateMaxCapacity,
+            maximumCapacity: maximumCapacity,
+            pricePerAdditionalPerson: pricePerAdditionalPerson,
+          })
 
-    await newUnitPrice.save()
-    const pricePerDates = {
-      fromDate: fromDate,
-      toDate: toDate,
-      price: newUnitPrice._id,
+          await newUnitPrice.save()
+          const pricePerDates = {
+            fromDate: fromDate,
+            toDate: toDate,
+            price: newUnitPrice._id,
+          }
+          await dbBookableUnitTypes.findByIdAndUpdate(
+            unitId,
+            {
+              $push: {
+                pricePerDates: pricePerDates,
+              },
+            },
+            { new: true }
+          )
+          res.json(
+            response.success({
+              item: pricePerDates,
+              message: 'Price for specific dates successfully setted',
+            })
+          )
+        }
+      }
     }
-    await dbBookableUnitTypes.findByIdAndUpdate(
-      unitId,
-      {
-        $push: {
-          pricePerDates: pricePerDates,
-        },
-      },
-      { new: true }
-    )
-    res.json(
-      response.success({
-        item: pricePerDates,
-        message: 'Price for specific dates successfully setted',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({

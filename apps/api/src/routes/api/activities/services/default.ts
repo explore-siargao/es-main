@@ -100,25 +100,26 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
         message: USER_NOT_AUTHORIZED,
       })
     )
-  }
-  try {
-    const filteredActivities = await dbActivities
-      .find({ host: hostId })
-      .populate('host', 'email isHost')
-      .populate('meetingPoint')
-      .populate('photos')
-      .select('title description status')
-    res.json(
-      response.success({
-        items: filteredActivities,
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
+  } else {
+    try {
+      const filteredActivities = await dbActivities
+        .find({ host: hostId })
+        .populate('host', 'email isHost')
+        .populate('meetingPoint')
+        .populate('photos')
+        .select('title description status')
+      res.json(
+        response.success({
+          items: filteredActivities,
+        })
+      )
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
   }
 }
 
@@ -132,90 +133,106 @@ export const updateItinerary = async (req: Request, res: Response) => {
         message: 'User is not authorized to perform this action.',
       })
     )
-  }
+  } else {
+    try {
+      const activity = await dbActivities.findOne({ _id: activityId })
 
-  try {
-    const activity = await dbActivities.findOne({ _id: activityId })
-
-    if (!activity) {
-      res.json(
-        response.error({
-          message: 'Activity with the given ID not found!',
-        })
-      )
-    }
-
-    const { meetingPoint, isSegmentBuilderEnabled, segments } = req.body
-
-    const updateMeetingPoint = await dbLocations.findByIdAndUpdate(
-      activity?.meetingPoint,
-      {
-        $set: {
-          streetAddress: meetingPoint.streetAddress,
-          barangay: meetingPoint.barangay,
-          city: meetingPoint.city,
-          howToGetThere: meetingPoint.howToGetThere,
-          longitude: meetingPoint.longitude,
-          latitude: meetingPoint.latitude,
-          updatedAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
-
-    if (isSegmentBuilderEnabled) {
-      if (segments.length < 2) {
+      if (!activity) {
         res.json(
           response.error({
-            message: 'Please add at least 2 items in the itinerary builder',
+            message: 'Activity with the given ID not found!',
+          })
+        )
+      } else {
+        const { meetingPoint, isSegmentBuilderEnabled, segments } = req.body
+
+        const updateMeetingPoint = await dbLocations.findByIdAndUpdate(
+          activity?.meetingPoint,
+          {
+            $set: {
+              streetAddress: meetingPoint.streetAddress,
+              barangay: meetingPoint.barangay,
+              city: meetingPoint.city,
+              howToGetThere: meetingPoint.howToGetThere,
+              longitude: meetingPoint.longitude,
+              latitude: meetingPoint.latitude,
+              updatedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
+
+        if (isSegmentBuilderEnabled) {
+          if (segments.length < 2) {
+            res.json(
+              response.error({
+                message: 'Please add at least 2 items in the itinerary builder',
+              })
+            )
+          } else {
+            // Handle the case where there are enough segments
+            await dbActivities.findByIdAndUpdate(
+              activityId,
+              {
+                $set: {
+                  segments: segments,
+                  isSegmentBuilderEnabled: isSegmentBuilderEnabled,
+                  updatedAt: Date.now(),
+                },
+              },
+              { new: true }
+            )
+          }
+        } else {
+          // Handle the case where the segment builder is not enabled
+          await dbActivities.findByIdAndUpdate(
+            activityId,
+            {
+              $set: {
+                segments: segments,
+                isSegmentBuilderEnabled: isSegmentBuilderEnabled,
+                updatedAt: Date.now(),
+              },
+            },
+            { new: true }
+          )
+        }
+
+        if (
+          activity?.status === 'Incomplete' &&
+          !activity.finishedSections.includes('itinerary')
+        ) {
+          await dbActivities.findByIdAndUpdate(
+            activityId,
+            {
+              $set: {
+                finishedSections: ['basicInfo', 'itinerary'],
+                updatedAt: Date.now(),
+              },
+            },
+            { new: true }
+          )
+        } else {
+          console.log('Completed')
+        }
+
+        res.json(
+          response.success({
+            item: {
+              meetingPoint: updateMeetingPoint,
+              isSegmentBuilderEnabled,
+              segments,
+            },
+            message: 'Itinerary successfully updated',
           })
         )
       }
-    }
-
-    await dbActivities.findByIdAndUpdate(
-      activityId,
-      {
-        $set: {
-          segments: segments,
-          isSegmentBuilderEnabled: isSegmentBuilderEnabled,
-          updatedAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
-
-    if (
-      activity?.status === 'Incomplete' &&
-      !activity.finishedSections.includes('itinerary')
-    ) {
-      await dbActivities.findByIdAndUpdate(
-        activityId,
-        {
-          $set: {
-            finishedSections: ['basicInfo', 'itinerary'],
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : 'An unknown error occurred.',
+        })
       )
     }
-
-    res.json(
-      response.success({
-        item: {
-          meetingPoint: updateMeetingPoint,
-          isSegmentBuilderEnabled,
-          segments,
-        },
-        message: 'Itinerary successfully updated',
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : 'An unknown error occurred.',
-      })
-    )
   }
 }

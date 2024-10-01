@@ -19,24 +19,24 @@ export const updateStatus = async (req: Request, res: Response) => {
       })
       if (!getProperty) {
         res.json(response.error({ message: 'Property not found' }))
-      }
-
-      const updateStatus = await dbProperties.findByIdAndUpdate(
-        propertyId,
-        {
-          $set: {
-            status: status,
-            updatedAt: Date.now(),
+      } else {
+        const updateStatus = await dbProperties.findByIdAndUpdate(
+          propertyId,
+          {
+            $set: {
+              status: status,
+              updatedAt: Date.now(),
+            },
           },
-        },
-        { new: true }
-      )
-      res.json(
-        response.success({
-          item: updateStatus,
-          message: 'Property is now ' + status,
-        })
-      )
+          { new: true }
+        )
+        res.json(
+          response.success({
+            item: updateStatus,
+            message: 'Property is now ' + status,
+          })
+        )
+      }
     } catch (err: any) {
       res.json(
         response.error({

@@ -20,23 +20,25 @@ export const getRentalsByHostAndCategory = async (
           message: 'Invalid category. Must be Car, Motorbike, or Bicycle.',
         })
       )
-    }
-
-    const rentals = await dbRentals.find({ host: hostId, category })
-    let results: any = null
-    if (category === 'Car' || category === 'Motorbike') {
-      results = rentals.map((rental) => ({
-        id: rental?._id,
-        name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
-      }))
     } else {
-      results = rentals.map((rental) => ({
-        id: rental?._id,
-        name: `${rental.make}`,
-      }))
-    }
+      const rentals = await dbRentals.find({ host: hostId, category })
+      let results: any = null
+      if (category === 'Car' || category === 'Motorbike') {
+        results = rentals.map((rental) => ({
+          id: rental?._id,
+          name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
+        }))
+      } else {
+        results = rentals.map((rental) => ({
+          id: rental?._id,
+          name: `${rental.make}`,
+        }))
+      }
 
-    res.json(response.success({ items: results, allItemCount: rentals.length }))
+      res.json(
+        response.success({ items: results, allItemCount: rentals.length })
+      )
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -56,21 +58,21 @@ export const getRentalIds = async (req: Request, res: Response) => {
           message: 'Rental ID is required.',
         })
       )
+    } else {
+      const rental = await dbRentals.findById(rentalId)
+
+      if (!rental) {
+        res.json(
+          response.error({
+            message: 'Rental not found.',
+          })
+        )
+      } else {
+        const ids = rental?.ids
+
+        res.json(response.success({ items: ids, allItemCount: ids?.length }))
+      }
     }
-
-    const rental = await dbRentals.findById(rentalId)
-
-    if (!rental) {
-      res.json(
-        response.error({
-          message: 'Rental not found.',
-        })
-      )
-    }
-
-    const ids = rental?.ids
-
-    res.json(response.success({ items: ids, allItemCount: ids?.length }))
   } catch (err: any) {
     res.json(
       response.error({

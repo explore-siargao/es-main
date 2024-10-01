@@ -28,114 +28,76 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
 
       if (!rental || !isHost) {
         res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-      }
+      } else {
+        const details = await dbRentalDetails.findById(rental?.details)
 
-      const details = await dbRentalDetails.findById(rental?.details)
+        if (!details) {
+          res.json(
+            response.error({
+              message: 'Rental details not found!',
+            })
+          )
+        } else {
+          if (details && rental?.category === 'Car') {
+            details.condition = condition || details.condition
+            details.engineCapacityLiter =
+              engineCapacityLiter || details.engineCapacityLiter
+            details.engineCapacityCc =
+              engineCapacityCc || details.engineCapacityCc
+            details.exteriorColor = exteriorColor || details.exteriorColor
+            details.interiorColor = interiorColor || details.interiorColor
+            details.seatingCapacity = seatingCapacity || details.seatingCapacity
+            details.weightCapacityKg =
+              weightCapacity || details.weightCapacityKg
+            details.haveDriverLicense =
+              haveDriverLicense || details.haveDriverLicense
+            details.isRegistered = isRegistered || details.isRegistered
+          } else if (details && rental?.category === 'Motorbike') {
+            details.condition = condition || details.condition
+            details.engineCapacityLiter =
+              engineCapacityLiter || details.engineCapacityLiter
+            details.engineCapacityCc =
+              engineCapacityCc || details.engineCapacityCc
+            details.exteriorColor = exteriorColor || details.exteriorColor
+            details.interiorColor = interiorColor || details.interiorColor
+            details.seatingCapacity = seatingCapacity || details.seatingCapacity
+            details.weightCapacityKg =
+              weightCapacity || details.weightCapacityKg
+            details.haveDriverLicense =
+              haveDriverLicense || details.haveDriverLicense
+            details.isRegistered = isRegistered || details.isRegistered
+          } else if (details && rental?.category === 'Bicycle') {
+            details.condition = condition || details.condition
+            details.engineCapacityLiter = details.engineCapacityLiter ?? null
+            details.engineCapacityCc = details.engineCapacityCc ?? null
+            details.exteriorColor = exteriorColor || details.exteriorColor
+            details.interiorColor = details.interiorColor ?? null
+            details.seatingCapacity = details.seatingCapacity ?? null
+            details.weightCapacityKg =
+              weightCapacity || details.weightCapacityKg
+            details.haveDriverLicense =
+              haveDriverLicense || details.haveDriverLicense
+            details.isRegistered = details.isRegistered ?? null
+          }
+          if (details) {
+            details.updatedAt = new Date()
+            await details.save()
+          }
 
-      if (!details) {
-        res.json(
-          response.error({
-            message: 'Rental details not found!',
-          })
-        )
-      }
+          if (rental) {
+            rental.finishedSections = ['basicInfo', 'details']
+            rental.updatedAt = new Date()
+          }
+          await rental?.save()
 
-      if (details && rental?.category === 'Car') {
-        // if ((engineCapacityLiter ?? 0) < 1) {
-        //   res.json(
-        //     response.error({
-        //       message: 'Minimum engine capacity is 1000 in (cc) 1 in (liter)',
-        //     })
-        //   )
-        // } else if ((engineCapacityLiter ?? 0) > 8) {
-        //   res.json(
-        //     response.error({
-        //       message: 'Maximum engine capacity is 8000 in (cc) 8 in (liter)',
-        //     })
-        //   )
-        // }
-        // if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
-        //   res.json(
-        //     response.error({
-        //       message:
-        //         'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
-        //     })
-        //   )
-        // }
-        details.condition = condition || details.condition
-        details.engineCapacityLiter =
-          engineCapacityLiter || details.engineCapacityLiter
-        details.engineCapacityCc = engineCapacityCc || details.engineCapacityCc
-        details.exteriorColor = exteriorColor || details.exteriorColor
-        details.interiorColor = interiorColor || details.interiorColor
-        details.seatingCapacity = seatingCapacity || details.seatingCapacity
-        details.weightCapacityKg = weightCapacity || details.weightCapacityKg
-        details.haveDriverLicense =
-          haveDriverLicense || details.haveDriverLicense
-        details.isRegistered = isRegistered || details.isRegistered
-      } else if (details && rental?.category === 'Motorbike') {
-        // if ((engineCapacityLiter ?? 0) < 0.11) {
-        //   res.json(
-        //     response.error({
-        //       message: 'Minimum engine capacity is 110 in (cc) 0.11 in (liter)',
-        //     })
-        //   )
-        // } else if ((engineCapacityLiter ?? 0) > 6.5) {
-        //   res.json(
-        //     response.error({
-        //       message:
-        //         'Maximum engine capacity is 65000 in (cc) 6.5 in (liter)',
-        //     })
-        //   )
-        // }
-        // if (engineCapacityCc !== (engineCapacityLiter ?? 0) * 1000) {
-        //   res.json(
-        //     response.error({
-        //       message:
-        //         'Engine capacity in (cc) does not matched with the given engine capacity in (liter)',
-        //     })
-        //   )
-        // }
-        details.condition = condition || details.condition
-        details.engineCapacityLiter =
-          engineCapacityLiter || details.engineCapacityLiter
-        details.engineCapacityCc = engineCapacityCc || details.engineCapacityCc
-        details.exteriorColor = exteriorColor || details.exteriorColor
-        details.interiorColor = interiorColor || details.interiorColor
-        details.seatingCapacity = seatingCapacity || details.seatingCapacity
-        details.weightCapacityKg = weightCapacity || details.weightCapacityKg
-        details.haveDriverLicense =
-          haveDriverLicense || details.haveDriverLicense
-        details.isRegistered = isRegistered || details.isRegistered
-      } else if (details && rental?.category === 'Bicycle') {
-        details.condition = condition || details.condition
-        details.engineCapacityLiter = details.engineCapacityLiter ?? null
-        details.engineCapacityCc = details.engineCapacityCc ?? null
-        details.exteriorColor = exteriorColor || details.exteriorColor
-        details.interiorColor = details.interiorColor ?? null
-        details.seatingCapacity = details.seatingCapacity ?? null
-        details.weightCapacityKg = weightCapacity || details.weightCapacityKg
-        details.haveDriverLicense =
-          haveDriverLicense || details.haveDriverLicense
-        details.isRegistered = details.isRegistered ?? null
+          res.json(
+            response.success({
+              item: details,
+              message: 'Rental details successfully updated',
+            })
+          )
+        }
       }
-      if (details) {
-        details.updatedAt = new Date()
-        await details.save()
-      }
-
-      if (rental) {
-        rental.finishedSections = ['basicInfo', 'details']
-        rental.updatedAt = new Date()
-      }
-      await rental?.save()
-
-      res.json(
-        response.success({
-          item: details,
-          message: 'Rental details successfully updated',
-        })
-      )
     } catch (err: any) {
       res.json(
         response.error({

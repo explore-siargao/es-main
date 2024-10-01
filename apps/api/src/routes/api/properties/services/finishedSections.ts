@@ -33,45 +33,47 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
   const finishedSections = req.body.newFinishedSection
   if (!finishedSections) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-  }
-  try {
-    const getProperty = await dbProperties.findOne({
-      _id: propertyId,
-      offerBy: hostId,
-      deletedAt: null,
-    })
-    const section = getProperty?.finishedSections
-    if (section?.includes(finishedSections)) {
+  } else {
+    try {
+      const getProperty = await dbProperties.findOne({
+        _id: propertyId,
+        offerBy: hostId,
+        deletedAt: null,
+      })
+      const section = getProperty?.finishedSections
+      if (section?.includes(finishedSections)) {
+        res.json(
+          response.success({
+            item: getProperty,
+            message: 'Finished sections saved',
+          })
+        )
+      } else {
+        const updateFinishedSection = await dbProperties.findByIdAndUpdate(
+          propertyId,
+          {
+            $push: {
+              finishedSections: finishedSections,
+            },
+            $set: {
+              updatedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
+        res.json(
+          response.success({
+            item: updateFinishedSection,
+            message: 'Finished sections saved',
+          })
+        )
+      }
+    } catch (err: any) {
       res.json(
-        response.success({
-          item: getProperty,
-          message: 'Finished sections saved',
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
-    const updateFinishedSection = await dbProperties.findByIdAndUpdate(
-      propertyId,
-      {
-        $push: {
-          finishedSections: finishedSections,
-        },
-        $set: {
-          updatedAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
-    res.json(
-      response.success({
-        item: updateFinishedSection,
-        message: 'Finished sections saved',
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }

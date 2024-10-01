@@ -19,49 +19,53 @@ export const addPropertyType = async (req: Request, res: Response) => {
   const type: string = req.body.type
   if (!hostId) {
     res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-  }
-  if (!type) {
-    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-  }
-  if (
-    !Object.values(PropertyType).includes(type.toUpperCase() as PropertyType)
-  ) {
-    res.json(response.error({ message: 'Invalid property type' }))
-  }
+  } else {
+    if (!type) {
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    } else {
+      if (
+        !Object.values(PropertyType).includes(
+          type.toUpperCase() as PropertyType
+        )
+      ) {
+        res.json(response.error({ message: 'Invalid property type' }))
+      } else {
+        const newProperty = new dbProperties({
+          offerBy: hostId,
+          status: 'Incomplete',
+          finishedSections: [],
+          title: '',
+          description: '',
+          currency: '',
+          primaryLanguage: '',
+          photos: [],
+          phone: '',
+          email: '',
+          location: null,
+          checkInTime: null,
+          checkOutTime: null,
+          isLateCheckOutAllowed: false,
+          lateCheckOutType: null,
+          lateCheckOutValue: 0,
+          termsAndConditions: null,
+          taxId: null,
+          taxId2: null,
+          companyLegalName: '',
+          type: type,
+          facilities: [],
+          policies: [],
+          bookableUnits: [],
+          reservations: [],
+        })
+        await newProperty.save()
 
-  const newProperty = new dbProperties({
-    offerBy: hostId,
-    status: 'Incomplete',
-    finishedSections: [],
-    title: '',
-    description: '',
-    currency: '',
-    primaryLanguage: '',
-    photos: [],
-    phone: '',
-    email: '',
-    location: null,
-    checkInTime: null,
-    checkOutTime: null,
-    isLateCheckOutAllowed: false,
-    lateCheckOutType: null,
-    lateCheckOutValue: 0,
-    termsAndConditions: null,
-    taxId: null,
-    taxId2: null,
-    companyLegalName: '',
-    type: type,
-    facilities: [],
-    policies: [],
-    bookableUnits: [],
-    reservations: [],
-  })
-  await newProperty.save()
-
-  res.json(
-    response.success({
-      item: { type: type },
-      message: 'Property Type successfully added',
-    })
-  )
+        res.json(
+          response.success({
+            item: { type: type },
+            message: 'Property Type successfully added',
+          })
+        )
+      }
+    }
+  }
 }

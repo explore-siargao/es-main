@@ -18,44 +18,45 @@ export const getAllReportListingByReportedBy = async (
 
     if (!getUser) {
       res.json(response.error({ message: USER_NOT_EXIST }))
-    }
-    const reportListings = await dbReportListings
-      .find({
-        reportedBy: userId,
-      })
-      .populate({
-        path: 'reportedBy',
-        select: 'email profilePicture ',
-        populate: {
-          path: 'guest',
-          select: 'firstName lastName',
-        },
-      })
-      .populate({
-        path: 'listing',
-      })
+    } else {
+      const reportListings = await dbReportListings
+        .find({
+          reportedBy: userId,
+        })
+        .populate({
+          path: 'reportedBy',
+          select: 'email profilePicture ',
+          populate: {
+            path: 'guest',
+            select: 'firstName lastName',
+          },
+        })
+        .populate({
+          path: 'listing',
+        })
 
-    const modifiedResult = reportListings.map((reportListing: any) => ({
-      id: reportListing.id,
-      reports: reportListing.reports,
-      listing: reportListing.listing,
-      reportedBy: {
-        email: reportListing.reportedBy.email,
-        name:
-          reportListing.reportedBy.guest?.firstName +
-          ' ' +
-          reportListing.reportedBy.guest?.lastName,
-        profilePicture: reportListing.reportedBy.profilePicture,
-      },
-      createdAt: reportListing.createdAt,
-    }))
-    res.json(
-      response.success({
-        items: modifiedResult,
-        allItemCount: modifiedResult.length,
-        message: '',
-      })
-    )
+      const modifiedResult = reportListings.map((reportListing: any) => ({
+        id: reportListing.id,
+        reports: reportListing.reports,
+        listing: reportListing.listing,
+        reportedBy: {
+          email: reportListing.reportedBy.email,
+          name:
+            reportListing.reportedBy.guest?.firstName +
+            ' ' +
+            reportListing.reportedBy.guest?.lastName,
+          profilePicture: reportListing.reportedBy.profilePicture,
+        },
+        createdAt: reportListing.createdAt,
+      }))
+      res.json(
+        response.success({
+          items: modifiedResult,
+          allItemCount: modifiedResult.length,
+          message: '',
+        })
+      )
+    }
   } catch (err: any) {
     res.json(response.error({ message: err.message }))
   }
@@ -71,50 +72,51 @@ export const getReportsByListing = async (req: Request, res: Response) => {
           message: 'Listing not found!',
         })
       )
-    }
-    const reportsByListingId = await dbReportListings
-      .find({ listing: listingId })
-      .populate('reportedBy', 'email profilePicture')
+    } else {
+      const reportsByListingId = await dbReportListings
+        .find({ listing: listingId })
+        .populate('reportedBy', 'email profilePicture')
 
-    const modifyResult = reportsByListingId.map((reportListing: any) => ({
-      ...reportListing._doc,
-      listing: {
-        ...reportListing.listing._doc,
-        images: JSON.parse(reportListing.listing.images),
-        whereYoullBe: JSON.parse(reportListing.listing.whereYoullBe),
-        whereYoullSleep: JSON.parse(reportListing.listing.whereYoullSleep),
-      },
-    }))
-
-    const getReportsByListingNewResults = modifyResult.map(
-      (reportListing: any) => ({
-        id: reportListing.id,
-        reports: reportListing.reports.map((report: string) =>
-          JSON.parse(report)
-        ),
-        listing: reportListing.listing,
-        reportedBy: {
-          email: reportListing.reportedBy.email,
-          name:
-            reportListing.reportedBy.firstName +
-            ' ' +
-            reportListing.reportedBy.lastName,
-          profilePicture: reportListing.reportedBy.profilePicture,
+      const modifyResult = reportsByListingId.map((reportListing: any) => ({
+        ...reportListing._doc,
+        listing: {
+          ...reportListing.listing._doc,
+          images: JSON.parse(reportListing.listing.images),
+          whereYoullBe: JSON.parse(reportListing.listing.whereYoullBe),
+          whereYoullSleep: JSON.parse(reportListing.listing.whereYoullSleep),
         },
-        createdAt: reportListing.createdAt,
-      })
-    )
+      }))
 
-    if (reportsByListingId.length !== 0) {
-      res.json(
-        response.success({
-          items: getReportsByListingNewResults,
-          allItemCount: reportsByListingId.length,
-          message: '',
+      const getReportsByListingNewResults = modifyResult.map(
+        (reportListing: any) => ({
+          id: reportListing.id,
+          reports: reportListing.reports.map((report: string) =>
+            JSON.parse(report)
+          ),
+          listing: reportListing.listing,
+          reportedBy: {
+            email: reportListing.reportedBy.email,
+            name:
+              reportListing.reportedBy.firstName +
+              ' ' +
+              reportListing.reportedBy.lastName,
+            profilePicture: reportListing.reportedBy.profilePicture,
+          },
+          createdAt: reportListing.createdAt,
         })
       )
-    } else {
-      res.json(response.error({ message: 'No reports found' }))
+
+      if (reportsByListingId.length !== 0) {
+        res.json(
+          response.success({
+            items: getReportsByListingNewResults,
+            allItemCount: reportsByListingId.length,
+            message: '',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'No reports found' }))
+      }
     }
   } catch (err: any) {
     res.json(
@@ -137,28 +139,30 @@ export const addReport = async (req: Request, res: Response) => {
           message: isInputValid.error?.message,
         })
       )
-    }
-    const getListing = await dbListings.findById({ _id: listingId })
-    if (!getListing) {
-      res.json(
-        response.error({
-          message: 'The listing you are trying to report was not found!',
+    } else {
+      const getListing = await dbListings.findById({ _id: listingId })
+      if (!getListing) {
+        res.json(
+          response.error({
+            message: 'The listing you are trying to report was not found!',
+          })
+        )
+      } else {
+        const newReport = await new dbReportListings({
+          reports: reports,
+          listingId: listingId,
+          reportedBy: userId,
         })
-      )
+        await newReport.save()
+        res.json(
+          response.success({
+            item: newReport,
+            allItemCount: 1,
+            message: 'Report successfully submitted!',
+          })
+        )
+      }
     }
-    const newReport = await new dbReportListings({
-      reports: reports,
-      listingId: listingId,
-      reportedBy: userId,
-    })
-    await newReport.save()
-    res.json(
-      response.success({
-        item: newReport,
-        allItemCount: 1,
-        message: 'Report successfully submitted!',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -184,30 +188,32 @@ export const deleteReport = async (req: Request, res: Response) => {
           message: USER_NOT_EXIST,
         })
       )
+    } else {
+      if (!getReport) {
+        res.json(
+          response.error({
+            message: 'Report not found or already deleted',
+          })
+        )
+      } else {
+        const removeReport = await dbReportListings.findByIdAndUpdate(
+          id,
+          {
+            $set: {
+              deletedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
+        res.json(
+          response.success({
+            item: removeReport,
+            allItemCount: 1,
+            message: 'Report sucessfully deleted',
+          })
+        )
+      }
     }
-    if (!getReport) {
-      res.json(
-        response.error({
-          message: 'Report not found or already deleted',
-        })
-      )
-    }
-    const removeReport = await dbReportListings.findByIdAndUpdate(
-      id,
-      {
-        $set: {
-          deletedAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
-    res.json(
-      response.success({
-        item: removeReport,
-        allItemCount: 1,
-        message: 'Report sucessfully deleted',
-      })
-    )
   } catch (err: any) {
     res.json(response.error({ message: err.message }))
   }
@@ -226,33 +232,35 @@ export const updateReport = async (req: Request, res: Response) => {
           message: USER_NOT_EXIST,
         })
       )
-    }
-    if (!getReport) {
-      res.json(
-        response.error({
-          message: 'The report that you are trying to update was not found!',
-        })
-      )
-    }
-    if (reports) {
-      const updateReportById = await dbReportListings.findOneAndUpdate(
-        { _id: id },
-        { reports: reports },
-        { new: true }
-      )
-      res.json(
-        response.success({
-          item: updateReportById,
-          allItemCount: 1,
-          message: 'Report successfully updated!',
-        })
-      )
     } else {
-      res.json(
-        response.error({
-          message: REQUIRED_VALUE_EMPTY,
-        })
-      )
+      if (!getReport) {
+        res.json(
+          response.error({
+            message: 'The report that you are trying to update was not found!',
+          })
+        )
+      } else {
+        if (reports) {
+          const updateReportById = await dbReportListings.findOneAndUpdate(
+            { _id: id },
+            { reports: reports },
+            { new: true }
+          )
+          res.json(
+            response.success({
+              item: updateReportById,
+              allItemCount: 1,
+              message: 'Report successfully updated!',
+            })
+          )
+        } else {
+          res.json(
+            response.error({
+              message: REQUIRED_VALUE_EMPTY,
+            })
+          )
+        }
+      }
     }
   } catch (err: any) {
     res.json(

@@ -19,9 +19,10 @@ export const getPropertyFacilities = async (req: Request, res: Response) => {
         message: 'No facilities found for the given property id!',
       })
     )
+  } else {
+    const facilities = property?.facilities
+    res.json(response.success({ items: facilities }))
   }
-  const facilities = property?.facilities
-  res.json(response.success({ items: facilities }))
 }
 
 export const updatePropertyFacilities = async (req: Request, res: Response) => {
@@ -35,85 +36,86 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
   })
   if (!getProperty) {
     res.json(response.error({ message: 'Property not found' }))
-  }
-  if (!facilities || !Array.isArray(facilities)) {
-    res.json(
-      response.error({
-        message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
-      })
-    )
-  }
-
-  const facilitiesWithoutId = facilities.filter((item) => !('_id' in item))
-  const facilitiesWithId = facilities.filter((item) => '_id' in item)
-
-  if (facilitiesWithoutId.length > 0) {
-    facilities.forEach(async (item) => {
-      if (!item._id) {
-        const newFacilities = new dbFacilities({
-          index: item.index,
-          category: item.category,
-          facility: item.facility,
-          isSelected: item.isSelected,
-          createdAt: Date.now(),
-          updatedAt: null,
-          deletedAt: null,
+  } else {
+    if (!facilities || !Array.isArray(facilities)) {
+      res.json(
+        response.error({
+          message: REQUIRED_VALUE_EMPTY + ' or data format is not valid',
         })
+      )
+    } else {
+      const facilitiesWithoutId = facilities.filter((item) => !('_id' in item))
+      const facilitiesWithId = facilities.filter((item) => '_id' in item)
 
-        await newFacilities.save()
-        await dbProperties.findByIdAndUpdate(
-          propertyId,
-          {
-            $push: {
-              facilities: newFacilities._id,
-            },
-          },
-          { new: true }
-        )
-      }
-    })
-  }
-
-  if (facilitiesWithId.length > 0) {
-    facilitiesWithId.forEach(async (item) => {
-      if (item._id) {
-        await dbFacilities.findByIdAndUpdate(
-          item._id,
-          {
-            $set: {
+      if (facilitiesWithoutId.length > 0) {
+        facilities.forEach(async (item) => {
+          if (!item._id) {
+            const newFacilities = new dbFacilities({
               index: item.index,
               category: item.category,
               facility: item.facility,
               isSelected: item.isSelected,
-              updatedAt: Date.now(),
-            },
-          },
-          { new: true }
-        )
-      }
-    })
-  }
-  await dbProperties.findByIdAndUpdate(
-    propertyId,
-    {
-      $set: {
-        finishedSections: [
-          'type',
-          'wholePlaceType',
-          'basicInfo',
-          'location',
-          'facilities',
-        ],
-        updatedAt: Date.now(),
-      },
-    },
-    { new: true }
-  )
+              createdAt: Date.now(),
+              updatedAt: null,
+              deletedAt: null,
+            })
 
-  res.json(
-    response.success({
-      items: facilities,
-      message: 'Property facilities successfully updated',
-    })
-  )
+            await newFacilities.save()
+            await dbProperties.findByIdAndUpdate(
+              propertyId,
+              {
+                $push: {
+                  facilities: newFacilities._id,
+                },
+              },
+              { new: true }
+            )
+          }
+        })
+      }
+
+      if (facilitiesWithId.length > 0) {
+        facilitiesWithId.forEach(async (item) => {
+          if (item._id) {
+            await dbFacilities.findByIdAndUpdate(
+              item._id,
+              {
+                $set: {
+                  index: item.index,
+                  category: item.category,
+                  facility: item.facility,
+                  isSelected: item.isSelected,
+                  updatedAt: Date.now(),
+                },
+              },
+              { new: true }
+            )
+          }
+        })
+      }
+      await dbProperties.findByIdAndUpdate(
+        propertyId,
+        {
+          $set: {
+            finishedSections: [
+              'type',
+              'wholePlaceType',
+              'basicInfo',
+              'location',
+              'facilities',
+            ],
+            updatedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+
+      res.json(
+        response.success({
+          items: facilities,
+          message: 'Property facilities successfully updated',
+        })
+      )
+    }
+  }
 }
