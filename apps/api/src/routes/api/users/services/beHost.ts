@@ -16,27 +16,28 @@ export const beAHost = async (req: Request, res: Response) => {
     })
     if (checkUserIsHost) {
       res.json(response.error({ message: "You're already a host" }))
-    }
-    const addAsHost = await dbUsers.findByIdAndUpdate(
-      res.locals.user.id,
-      {
-        $set: {
-          isHost: true,
+    } else {
+      const addAsHost = await dbUsers.findByIdAndUpdate(
+        res.locals.user.id,
+        {
+          $set: {
+            isHost: true,
+          },
         },
-      },
-      { new: true }
-    )
+        { new: true }
+      )
 
-    if (addAsHost) {
-      hostEmail.sendHostConfirmation(sendEmailParams)
+      if (addAsHost) {
+        hostEmail.sendHostConfirmation(sendEmailParams)
+      }
+      res.json(
+        response.success({
+          item: { isHost: addAsHost?.isHost },
+          allItemCount: 1,
+          message: 'User sucessfully added as a host',
+        })
+      )
     }
-    res.json(
-      response.success({
-        item: { isHost: addAsHost?.isHost },
-        allItemCount: 1,
-        message: 'User sucessfully added as a host',
-      })
-    )
   } catch (err: any) {
     const message = err.message ? err.message : UNKNOWN_ERROR_OCCURRED
     res.json(

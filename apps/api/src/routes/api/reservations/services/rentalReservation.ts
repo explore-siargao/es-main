@@ -20,53 +20,54 @@ export const addRentalReservation = async (req: Request, res: Response) => {
 
     if (!validStatuses.includes(status)) {
       res.json(response.error({ message: 'Invalid status' }))
-    }
-
-    // Check if required fields are provided
-    if (!start_date || !end_date || !status || !unit) {
-      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
-
-    // Check for overlapping reservations on the same rentalId
-    const overlappingReservation = await dbReservations.findOne({
-      rentalId: unit,
-      $or: [
-        {
-          startDate: { $lt: end_date },
-          endDate: { $gt: start_date },
-        },
-        {
-          startDate: { $lte: end_date, $gte: start_date },
-        },
-      ],
-    })
-
-    if (overlappingReservation) {
-      res.json(
-        response.error({
-          message: 'Reservation dates overlap with an existing reservation.',
+    } else {
+      // Check if required fields are provided
+      if (!start_date || !end_date || !status || !unit) {
+        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      } else {
+        // Check for overlapping reservations on the same rentalId
+        const overlappingReservation = await dbReservations.findOne({
+          rentalId: unit,
+          $or: [
+            {
+              startDate: { $lt: end_date },
+              endDate: { $gt: start_date },
+            },
+            {
+              startDate: { $lte: end_date, $gte: start_date },
+            },
+          ],
         })
-      )
+
+        if (overlappingReservation) {
+          res.json(
+            response.error({
+              message:
+                'Reservation dates overlap with an existing reservation.',
+            })
+          )
+        } else {
+          // Create a new reservation
+          const newRentalReservation = new dbReservations({
+            startDate: start_date,
+            endDate: end_date,
+            status: status,
+            rentalId: unit,
+            guestName: name || null,
+            notes: notes || null,
+            createdAt: Date.now(),
+          })
+
+          await newRentalReservation.save()
+          res.json(
+            response.success({
+              item: newRentalReservation,
+              message: 'Rental reservation added successfully',
+            })
+          )
+        }
+      }
     }
-
-    // Create a new reservation
-    const newRentalReservation = new dbReservations({
-      startDate: start_date,
-      endDate: end_date,
-      status: status,
-      rentalId: unit,
-      guestName: name || null,
-      notes: notes || null,
-      createdAt: Date.now(),
-    })
-
-    await newRentalReservation.save()
-    res.json(
-      response.success({
-        item: newRentalReservation,
-        message: 'Rental reservation added successfully',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -87,52 +88,53 @@ export const editRentalReservation = async (req: Request, res: Response) => {
           message: REQUIRED_VALUE_EMPTY,
         })
       )
-    }
-
-    const reservation = await dbReservations.findOne({
-      _id: reservationId,
-      deletedAt: null,
-    })
-
-    const overlappingReservation = await dbReservations.findOne({
-      rentalId: reservation?.rentalId,
-      _id: { $ne: reservation?._id },
-      $or: [
-        {
-          startDate: { $lt: endDate },
-          endDate: { $gt: startDate },
-        },
-      ],
-    })
-
-    if (overlappingReservation) {
-      res.json(
-        response.error({
-          message: 'Reservation dates overlap with an existing reservation.',
-        })
-      )
-    }
-    if (reservation) {
-      const updateReservation = await dbReservations.findByIdAndUpdate(
-        reservationId,
-        {
-          $set: {
-            startDate: startDate,
-            endDate: endDate,
-            notes: notes,
-            updatedAt: Date.now(),
-          },
-        },
-        { new: true }
-      )
-      res.json(
-        response.success({
-          item: updateReservation,
-          message: 'Reservation successfully updated',
-        })
-      )
     } else {
-      res.json(response.error({ message: 'Reservation not found' }))
+      const reservation = await dbReservations.findOne({
+        _id: reservationId,
+        deletedAt: null,
+      })
+
+      const overlappingReservation = await dbReservations.findOne({
+        rentalId: reservation?.rentalId,
+        _id: { $ne: reservation?._id },
+        $or: [
+          {
+            startDate: { $lt: endDate },
+            endDate: { $gt: startDate },
+          },
+        ],
+      })
+
+      if (overlappingReservation) {
+        res.json(
+          response.error({
+            message: 'Reservation dates overlap with an existing reservation.',
+          })
+        )
+      } else {
+        if (reservation) {
+          const updateReservation = await dbReservations.findByIdAndUpdate(
+            reservationId,
+            {
+              $set: {
+                startDate: startDate,
+                endDate: endDate,
+                notes: notes,
+                updatedAt: Date.now(),
+              },
+            },
+            { new: true }
+          )
+          res.json(
+            response.success({
+              item: updateReservation,
+              message: 'Reservation successfully updated',
+            })
+          )
+        } else {
+          res.json(response.error({ message: 'Reservation not found' }))
+        }
+      }
     }
   } catch (err: any) {
     res.json(

@@ -171,86 +171,87 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
     !totalSize
   ) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-  }
+  } else {
+    try {
+      const getBookableUnitBed = await dbBookableUnitTypes.findOne({
+        _id: bookableUnitId,
+        category: 'Bed',
+      })
+      if (!getBookableUnitBed) {
+        res.json(response.error({ message: 'Bookable unit not found' }))
+      } else {
+        const getProperty = await dbProperties.findOne({
+          _id: propertyId,
+          deletedAt: null,
+        })
+        const findUnitInProperty =
+          getProperty?.bookableUnits.includes(bookableUnitId)
+        if (!findUnitInProperty) {
+          res.json(
+            response.error({ message: 'Bookable unit not found in property' })
+          )
+        } else {
+          // Step 1: Retrieve the current document
+          const currentBed = await dbBookableUnitTypes.findOne(
+            { _id: bookableUnitId, category: 'Bed', deletedAt: null },
+            { ids: 1 } // Only retrieve the ids field
+          )
 
-  try {
-    const getBookableUnitBed = await dbBookableUnitTypes.findOne({
-      _id: bookableUnitId,
-      category: 'Bed',
-    })
-    if (!getBookableUnitBed) {
-      res.json(response.error({ message: 'Bookable unit not found' }))
-    }
+          if (!currentBed) {
+            // Handle case where the document is not found
+            res.json(response.error({ message: 'Bad Request' }))
+          } else {
+            // Step 2: Calculate the number of new ObjectIds needed
+            const currentIdsCount = currentBed?.ids.length || 0
+            const newIdsNeeded = qty - currentIdsCount
 
-    const getProperty = await dbProperties.findOne({
-      _id: propertyId,
-      deletedAt: null,
-    })
-    const findUnitInProperty =
-      getProperty?.bookableUnits.includes(bookableUnitId)
-    if (!findUnitInProperty) {
+            let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
+            if (newIdsNeeded > 0) {
+              newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
+                _id: new mongoose.Types.ObjectId(),
+                name: `${subtitle} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
+              }))
+            }
+            //Step 3
+            const updateBedBasicInfo =
+              await dbBookableUnitTypes.findOneAndUpdate(
+                { _id: bookableUnitId, category: 'Bed', deletedAt: null },
+                {
+                  $set: {
+                    title: title,
+                    subtitle: subtitle,
+                    qty: qty,
+                    isHaveSharedBathRoom: isHaveSharedBathRoom,
+                    isSmokingAllowed: isSmokingAllowed,
+                    totalSize: totalSize,
+                    daysCanCancel: daysCanCancel,
+                    updatedAt: Date.now(),
+                  },
+                  ...(newIdsNeeded > 0 && {
+                    $push: {
+                      ids: { $each: newIds },
+                    },
+                  }),
+                },
+                { new: true }
+              )
+
+            res.json(
+              response.success({
+                item: updateBedBasicInfo,
+                message: 'Bookable Unit basic info saved',
+              })
+            )
+          }
+        }
+      }
+    } catch (err: any) {
       res.json(
-        response.error({ message: 'Bookable unit not found in property' })
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
       )
     }
-
-    // Step 1: Retrieve the current document
-    const currentBed = await dbBookableUnitTypes.findOne(
-      { _id: bookableUnitId, category: 'Bed', deletedAt: null },
-      { ids: 1 } // Only retrieve the ids field
-    )
-
-    if (!currentBed) {
-      // Handle case where the document is not found
-      res.status(404).json({ error: 'Bed not found' })
-    }
-
-    // Step 2: Calculate the number of new ObjectIds needed
-    const currentIdsCount = currentBed?.ids.length || 0
-    const newIdsNeeded = qty - currentIdsCount
-
-    let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
-    if (newIdsNeeded > 0) {
-      newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
-        _id: new mongoose.Types.ObjectId(),
-        name: `${subtitle} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
-      }))
-    }
-    //Step 3
-    const updateBedBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
-      { _id: bookableUnitId, category: 'Bed', deletedAt: null },
-      {
-        $set: {
-          title: title,
-          subtitle: subtitle,
-          qty: qty,
-          isHaveSharedBathRoom: isHaveSharedBathRoom,
-          isSmokingAllowed: isSmokingAllowed,
-          totalSize: totalSize,
-          daysCanCancel: daysCanCancel,
-          updatedAt: Date.now(),
-        },
-        ...(newIdsNeeded > 0 && {
-          $push: {
-            ids: { $each: newIds },
-          },
-        }),
-      },
-      { new: true }
-    )
-
-    res.json(
-      response.success({
-        item: updateBedBasicInfo,
-        message: 'Bookable Unit basic info saved',
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }
 
@@ -275,87 +276,88 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
     !isHaveSharedAmenities
   ) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-  }
+  } else {
+    try {
+      const getBookableUnitRoom = await dbBookableUnitTypes.findOne({
+        _id: bookableUnitId,
+        category: 'Room',
+      })
+      if (!getBookableUnitRoom) {
+        res.json(response.error({ message: 'Bookable unit not found' }))
+      } else {
+        const getProperty = await dbProperties.findOne({
+          _id: propertyId,
+          deletedAt: null,
+        })
+        const findUnitInProperty =
+          getProperty?.bookableUnits.includes(bookableUnitId)
+        if (!findUnitInProperty) {
+          res.json(
+            response.error({ message: 'Bookable unit not found in property' })
+          )
+        } else {
+          // Step 1: Retrieve the current document
+          const currentRoom = await dbBookableUnitTypes.findOne(
+            { _id: bookableUnitId, category: 'Room', deletedAt: null },
+            { ids: 1 } // Only retrieve the ids field
+          )
 
-  try {
-    const getBookableUnitRoom = await dbBookableUnitTypes.findOne({
-      _id: bookableUnitId,
-      category: 'Room',
-    })
-    if (!getBookableUnitRoom) {
-      res.json(response.error({ message: 'Bookable unit not found' }))
-    }
+          if (!currentRoom) {
+            // Handle case where the document is not found
+            res.status(404).json({ error: 'Room not found' })
+          } else {
+            // Step 2: Calculate the number of new ObjectIds needed
+            const currentIdsCount = currentRoom?.ids.length || 0
+            const newIdsNeeded = qty - currentIdsCount
 
-    const getProperty = await dbProperties.findOne({
-      _id: propertyId,
-      deletedAt: null,
-    })
-    const findUnitInProperty =
-      getProperty?.bookableUnits.includes(bookableUnitId)
-    if (!findUnitInProperty) {
+            let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
+            if (newIdsNeeded > 0) {
+              newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
+                _id: new mongoose.Types.ObjectId(),
+                name: `${title} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
+              }))
+            }
+
+            // Step 3: Update the document by adding new ObjectIds
+            const updateRoomBasicInfo =
+              await dbBookableUnitTypes.findOneAndUpdate(
+                { _id: bookableUnitId, category: 'Room', deletedAt: null },
+                {
+                  $set: {
+                    title: title,
+                    totalSize: totalSize,
+                    qty: qty,
+                    bedRooms: bedRooms,
+                    isHaveSharedBathRoom: isHaveSharedBathRoom,
+                    isHaveSharedAmenities: isHaveSharedAmenities,
+                    daysCanCancel: daysCanCancel,
+                    updatedAt: Date.now(),
+                  },
+                  ...(newIdsNeeded > 0 && {
+                    $push: {
+                      ids: { $each: newIds },
+                    },
+                  }),
+                },
+                { new: true }
+              )
+
+            res.json(
+              response.success({
+                item: updateRoomBasicInfo,
+                message: 'Bookable Unit basic info saved',
+              })
+            )
+          }
+        }
+      }
+    } catch (err: any) {
       res.json(
-        response.error({ message: 'Bookable unit not found in property' })
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
       )
     }
-
-    // Step 1: Retrieve the current document
-    const currentRoom = await dbBookableUnitTypes.findOne(
-      { _id: bookableUnitId, category: 'Room', deletedAt: null },
-      { ids: 1 } // Only retrieve the ids field
-    )
-
-    if (!currentRoom) {
-      // Handle case where the document is not found
-      res.status(404).json({ error: 'Room not found' })
-    }
-
-    // Step 2: Calculate the number of new ObjectIds needed
-    const currentIdsCount = currentRoom?.ids.length || 0
-    const newIdsNeeded = qty - currentIdsCount
-
-    let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
-    if (newIdsNeeded > 0) {
-      newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
-        _id: new mongoose.Types.ObjectId(),
-        name: `${title} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
-      }))
-    }
-
-    // Step 3: Update the document by adding new ObjectIds
-    const updateRoomBasicInfo = await dbBookableUnitTypes.findOneAndUpdate(
-      { _id: bookableUnitId, category: 'Room', deletedAt: null },
-      {
-        $set: {
-          title: title,
-          totalSize: totalSize,
-          qty: qty,
-          bedRooms: bedRooms,
-          isHaveSharedBathRoom: isHaveSharedBathRoom,
-          isHaveSharedAmenities: isHaveSharedAmenities,
-          daysCanCancel: daysCanCancel,
-          updatedAt: Date.now(),
-        },
-        ...(newIdsNeeded > 0 && {
-          $push: {
-            ids: { $each: newIds },
-          },
-        }),
-      },
-      { new: true }
-    )
-
-    res.json(
-      response.success({
-        item: updateRoomBasicInfo,
-        message: 'Bookable Unit basic info saved',
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }
 
@@ -380,96 +382,99 @@ export const updateWholePlaceUnitBasicInfo = async (
   } = req.body
   if (!numBathRooms || !totalSize || !bedRooms || !qty || !livingRooms) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-  }
+  } else {
+    try {
+      const getBookableUnitWholePlace = await dbBookableUnitTypes.findOne({
+        _id: bookableUnitId,
+        category: 'Whole-Place',
+      })
+      if (!getBookableUnitWholePlace) {
+        res.json(response.error({ message: 'Bookable unit not found' }))
+      } else {
+        const getProperty = await dbProperties.findOne({
+          _id: propertyId,
+          deletedAt: null,
+        })
+        const findUnitInProperty =
+          getProperty?.bookableUnits.includes(bookableUnitId)
+        if (!findUnitInProperty) {
+          console.log('Bookable unit not found in property')
+          res.json(
+            response.error({ message: 'Bookable unit not found in property' })
+          )
+        } else {
+          // Step 1: Retrieve the current document
+          const currentWholePlace = await dbBookableUnitTypes.findOne(
+            { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
+            { ids: 1 } // Only retrieve the ids field
+          )
 
-  try {
-    const getBookableUnitWholePlace = await dbBookableUnitTypes.findOne({
-      _id: bookableUnitId,
-      category: 'Whole-Place',
-    })
-    if (!getBookableUnitWholePlace) {
-      console.log('Bookable unit not found')
-      res.json(response.error({ message: 'Bookable unit not found' }))
-    }
+          if (!currentWholePlace) {
+            // Handle case where the document is not found
+            res.json(response.error({ message: 'Whole place not found' }))
+          } else {
+            // Step 2: Calculate the number of new ObjectIds needed
+            const currentIdsCount = currentWholePlace?.ids.length || 0
+            const newIdsNeeded = qty - currentIdsCount
 
-    const getProperty = await dbProperties.findOne({
-      _id: propertyId,
-      deletedAt: null,
-    })
-    const findUnitInProperty =
-      getProperty?.bookableUnits.includes(bookableUnitId)
-    if (!findUnitInProperty) {
-      console.log('Bookable unit not found in property')
+            let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
+            if (newIdsNeeded > 0) {
+              newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
+                _id: new mongoose.Types.ObjectId(),
+                name: `${title} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
+              }))
+            }
+
+            // Step 3: Update data
+            const updateWholePlaceBasicInfo =
+              await dbBookableUnitTypes.findOneAndUpdate(
+                {
+                  _id: bookableUnitId,
+                  category: 'Whole-Place',
+                  deletedAt: null,
+                },
+                {
+                  $set: {
+                    title: title,
+                    subtitle: subtitle,
+                    totalSize: totalSize,
+                    numBedRooms: 0,
+                    numBathRooms: numBathRooms,
+                    bedRooms: bedRooms,
+                    bedroomStudio: bedroomStudio,
+                    livingRooms: livingRooms,
+                    singleBedRoom: singleBedRoom,
+                    singleLivingRoom: singleLivingRoom,
+                    qty: qty,
+                    daysCanCancel: daysCanCancel,
+                    updatedAt: Date.now(),
+                  },
+                  ...(newIdsNeeded > 0 && {
+                    $push: {
+                      ids: { $each: newIds },
+                    },
+                  }),
+                },
+                { new: true }
+              )
+
+            res.json(
+              response.success({
+                item: updateWholePlaceBasicInfo,
+                message: 'Bookable Unit basic info saved',
+              })
+            )
+          }
+        }
+      }
+    } catch (err: any) {
+      console.log(err)
       res.json(
-        response.error({ message: 'Bookable unit not found in property' })
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
       )
     }
-
-    // Step 1: Retrieve the current document
-    const currentWholePlace = await dbBookableUnitTypes.findOne(
-      { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
-      { ids: 1 } // Only retrieve the ids field
-    )
-
-    if (!currentWholePlace) {
-      // Handle case where the document is not found
-      res.status(404).json({ error: 'Whole place not found' })
-    }
-
-    // Step 2: Calculate the number of new ObjectIds needed
-    const currentIdsCount = currentWholePlace?.ids.length || 0
-    const newIdsNeeded = qty - currentIdsCount
-
-    let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
-    if (newIdsNeeded > 0) {
-      newIds = Array.from({ length: newIdsNeeded }, (_, index) => ({
-        _id: new mongoose.Types.ObjectId(),
-        name: `${title} ${currentIdsCount + index + 1}`, // Generate name based on title and iteration count
-      }))
-    }
-
-    // Step 3: Update data
-    const updateWholePlaceBasicInfo =
-      await dbBookableUnitTypes.findOneAndUpdate(
-        { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
-        {
-          $set: {
-            title: title,
-            subtitle: subtitle,
-            totalSize: totalSize,
-            numBedRooms: 0,
-            numBathRooms: numBathRooms,
-            bedRooms: bedRooms,
-            bedroomStudio: bedroomStudio,
-            livingRooms: livingRooms,
-            singleBedRoom: singleBedRoom,
-            singleLivingRoom: singleLivingRoom,
-            qty: qty,
-            daysCanCancel: daysCanCancel,
-            updatedAt: Date.now(),
-          },
-          ...(newIdsNeeded > 0 && {
-            $push: {
-              ids: { $each: newIds },
-            },
-          }),
-        },
-        { new: true }
-      )
-
-    res.json(
-      response.success({
-        item: updateWholePlaceBasicInfo,
-        message: 'Bookable Unit basic info saved',
-      })
-    )
-  } catch (err: any) {
-    console.log(err)
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }
 
@@ -505,15 +510,15 @@ export const getPropertiesBookableUnits = async (
     category.toLowerCase() !== categoryEnum.WHOLEPLACE.toLowerCase()
   ) {
     res.json(response.error({ message: 'Not valid category' }))
+  } else {
+    const filterUnits = filterByCategory(category)?.map((item: any) =>
+      item.toObject()
+    )
+
+    const units = filterUnits?.filter((item) => ({ ...item }))
+
+    res.json(response.success({ items: units, allItemCount: units?.length }))
   }
-
-  const filterUnits = filterByCategory(category)?.map((item: any) =>
-    item.toObject()
-  )
-
-  const units = filterUnits?.filter((item) => ({ ...item }))
-
-  res.json(response.success({ items: units, allItemCount: units?.length }))
 }
 
 export const getUnitById = async (req: Request, res: Response) => {
@@ -546,9 +551,10 @@ export const getUnitIds = async (req: Request, res: Response) => {
     })
     if (!bookableUnit) {
       res.json(response.error({ message: 'No bookable units found' }))
+    } else {
+      const units = bookableUnit?.ids
+      res.json(response.success({ items: units, allItemCount: units?.length }))
     }
-    const units = bookableUnit?.ids
-    res.json(response.success({ items: units, allItemCount: units?.length }))
   } catch (err: any) {
     res.json(
       response.error({

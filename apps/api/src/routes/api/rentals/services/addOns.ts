@@ -23,33 +23,33 @@ export const getAddOns = async (req: Request, res: Response) => {
           message: 'Rental not found',
         })
       )
-    }
-
-    addOns = getRental?.addOns as unknown as T_Rental_AddOns
-
-    if (getRental?.category === 'Car') {
-      addOns = {
-        category: getRental?.category,
-        roofRack: addOns.roofRack,
-        dashCam: addOns.dashCam,
-        others: addOns.others,
-      }
-    } else if (
-      getRental?.category === 'Motorbike' ||
-      getRental?.category === 'Bicycle'
-    ) {
-      addOns = {
-        category: getRental?.category,
-        boardRack: addOns.boardRack,
-        babySeat: addOns.babySeat,
-        includesHelmet: addOns.includesHelmet,
-        others: addOns.others,
-      }
     } else {
-      res.json(response.error({ message: 'Invalid rental category' }))
-    }
+      addOns = getRental?.addOns as unknown as T_Rental_AddOns
 
-    res.json(response.success({ item: addOns }))
+      if (getRental?.category === 'Car') {
+        addOns = {
+          category: getRental?.category,
+          roofRack: addOns.roofRack,
+          dashCam: addOns.dashCam,
+          others: addOns.others,
+        }
+      } else if (
+        getRental?.category === 'Motorbike' ||
+        getRental?.category === 'Bicycle'
+      ) {
+        addOns = {
+          category: getRental?.category,
+          boardRack: addOns.boardRack,
+          babySeat: addOns.babySeat,
+          includesHelmet: addOns.includesHelmet,
+          others: addOns.others,
+        }
+      } else {
+        res.json(response.error({ message: 'Invalid rental category' }))
+      }
+
+      res.json(response.success({ item: addOns }))
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -80,67 +80,67 @@ export const updateAddOns = async (req: Request, res: Response) => {
 
       if (!getRental) {
         res.json(response.error({ message: 'Rental not found' }))
-      }
+      } else {
+        if (getRental?.host?.toString() !== userId) {
+          res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+        } else {
+          const addOns: T_Rental_AddOns =
+            getRental?.addOns as unknown as T_Rental_AddOns
 
-      if (getRental?.host?.toString() !== userId) {
-        res.json(response.error({ message: USER_NOT_AUTHORIZED }))
-      }
+          if (getRental?.category === 'Car') {
+            addOns.roofRack = roofRack ?? addOns.roofRack
+            addOns.boardRack = addOns.boardRack
+            addOns.babySeat = addOns.babySeat
+            addOns.includesHelmet = addOns.includesHelmet
+            addOns.dashCam = dashCam ?? addOns.dashCam
+            addOns.others = others ?? (addOns.others || [])
+          } else if (
+            getRental?.category === 'Motorbike' ||
+            getRental?.category === 'Bicycle'
+          ) {
+            addOns.roofRack = addOns.roofRack
+            addOns.boardRack = boardRack ?? addOns.boardRack
+            addOns.babySeat = babySeat ?? addOns.babySeat
+            addOns.includesHelmet = includesHelmet ?? addOns.includesHelmet
+            addOns.dashCam = addOns.dashCam
+            addOns.others = others ?? (addOns.others || [])
+          }
 
-      const addOns: T_Rental_AddOns =
-        getRental?.addOns as unknown as T_Rental_AddOns
+          await dbRentalAddOns.findByIdAndUpdate(
+            getRental?.addOns,
+            {
+              $set: {
+                roofRack: roofRack,
+                boardRack: boardRack,
+                babySeat: babySeat,
+                dashCam: dashCam,
+                includesHelmet: includesHelmet,
+                others: others || [],
+              },
+            },
+            {
+              new: true,
+            }
+          )
 
-      if (getRental?.category === 'Car') {
-        addOns.roofRack = roofRack ?? addOns.roofRack
-        addOns.boardRack = addOns.boardRack
-        addOns.babySeat = addOns.babySeat
-        addOns.includesHelmet = addOns.includesHelmet
-        addOns.dashCam = dashCam ?? addOns.dashCam
-        addOns.others = others ?? (addOns.others || [])
-      } else if (
-        getRental?.category === 'Motorbike' ||
-        getRental?.category === 'Bicycle'
-      ) {
-        addOns.roofRack = addOns.roofRack
-        addOns.boardRack = boardRack ?? addOns.boardRack
-        addOns.babySeat = babySeat ?? addOns.babySeat
-        addOns.includesHelmet = includesHelmet ?? addOns.includesHelmet
-        addOns.dashCam = addOns.dashCam
-        addOns.others = others ?? (addOns.others || [])
-      }
+          await dbRentals.updateOne(
+            { _id: rentalId },
+            {
+              $set: {
+                AddOns: addOns,
+                finishedSections: ['basicInfo', 'details', 'addOns'],
+              },
+            }
+          )
 
-      await dbRentalAddOns.findByIdAndUpdate(
-        getRental?.addOns,
-        {
-          $set: {
-            roofRack: roofRack,
-            boardRack: boardRack,
-            babySeat: babySeat,
-            dashCam: dashCam,
-            includesHelmet: includesHelmet,
-            others: others || [],
-          },
-        },
-        {
-          new: true,
+          res.json(
+            response.success({
+              item: addOns,
+              message: 'Rental Add-ons successfully updated',
+            })
+          )
         }
-      )
-
-      await dbRentals.updateOne(
-        { _id: rentalId },
-        {
-          $set: {
-            AddOns: addOns,
-            finishedSections: ['basicInfo', 'details', 'addOns'],
-          },
-        }
-      )
-
-      res.json(
-        response.success({
-          item: addOns,
-          message: 'Rental Add-ons successfully updated',
-        })
-      )
+      }
     } catch (err: any) {
       res.json(
         response.error({

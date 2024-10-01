@@ -86,93 +86,93 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           message: 'No car rentals found.',
         })
       )
-    }
+    } else {
+      const allRentalIds = carRentals.flatMap((rental) =>
+        rental?.ids.map((idObj) => idObj._id)
+      )
 
-    const allRentalIds = carRentals.flatMap((rental) =>
-      rental?.ids.map((idObj) => idObj._id)
-    )
+      const reservations = await dbReservations
+        .find({
+          rentalId: { $in: allRentalIds },
+          $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+        })
+        .populate('guest')
 
-    const reservations = await dbReservations
-      .find({
-        rentalId: { $in: allRentalIds },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+      const reservationMap: Record<string, Reservation[]> = {}
+      reservations.forEach((reservation: any) => {
+        const guest = reservation.guest
+        let reservationStatus = reservation.status
+        if (
+          (reservationStatus === 'Confirmed' ||
+            reservationStatus === 'Blocked-Dates') &&
+          currentDate >= reservation.startDate &&
+          currentDate <= reservation.endDate
+        ) {
+          reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+        } else if (
+          (reservationStatus === 'Confirmed' ||
+            reservationStatus === 'Blocked-Dates' ||
+            reservationStatus === 'Checked-In') &&
+          currentDate > reservation.endDate
+        ) {
+          reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+        }
+        const reservationItem: Reservation = {
+          id: reservation._id,
+          name: STATUS_DISPLAY.includes(reservation.status)
+            ? reservation.status
+            : guest
+              ? `${guest.firstName} ${guest.lastName}`
+              : reservation.guestName || 'Unknown',
+          startDate: reservation.startDate ?? new Date(),
+          endDate: reservation.endDate ?? new Date(),
+          guestCount: reservation.guestCount ?? 0,
+          status: reservationStatus,
+          notes: reservation.notes,
+        }
+
+        if (!reservationMap[reservation.rentalId.toString()]) {
+          reservationMap[reservation.rentalId.toString()] = []
+        }
+        reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
       })
-      .populate('guest')
 
-    const reservationMap: Record<string, Reservation[]> = {}
-    reservations.forEach((reservation: any) => {
-      const guest = reservation.guest
-      let reservationStatus = reservation.status
-      if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates') &&
-        currentDate >= reservation.startDate &&
-        currentDate <= reservation.endDate
-      ) {
-        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      } else if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In') &&
-        currentDate > reservation.endDate
-      ) {
-        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
-      }
-      const reservationItem: Reservation = {
-        id: reservation._id,
-        name: STATUS_DISPLAY.includes(reservation.status)
-          ? reservation.status
-          : guest
-            ? `${guest.firstName} ${guest.lastName}`
-            : reservation.guestName || 'Unknown',
-        startDate: reservation.startDate ?? new Date(),
-        endDate: reservation.endDate ?? new Date(),
-        guestCount: reservation.guestCount ?? 0,
-        status: reservationStatus,
-        notes: reservation.notes,
-      }
+      const items = carRentals.map((rental) => {
+        const cars = rental?.ids.map((idObj) => {
+          const carReservations = reservationMap[idObj._id.toString()] || []
 
-      if (!reservationMap[reservation.rentalId.toString()]) {
-        reservationMap[reservation.rentalId.toString()] = []
-      }
-      reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
-    })
+          const isOccupied = carReservations.length > 0
 
-    const items = carRentals.map((rental) => {
-      const cars = rental?.ids.map((idObj) => {
-        const carReservations = reservationMap[idObj._id.toString()] || []
-
-        const isOccupied = carReservations.length > 0
+          return {
+            id: idObj._id,
+            abbr: idObj.name ? idObj.name : 'Unknown',
+            status: isOccupied ? 'occupied' : 'available',
+            reservations: carReservations,
+          }
+        })
 
         return {
-          id: idObj._id,
-          abbr: idObj.name ? idObj.name : 'Unknown',
-          status: isOccupied ? 'occupied' : 'available',
-          reservations: carReservations,
+          id: rental?._id,
+          name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
+          //@ts-ignore
+          price: rental?.pricing?.dayRate ?? 0,
+          pricePerDates: rental?.pricePerDates.map((priceDate) => ({
+            fromDate: priceDate.fromDate,
+            toDate: priceDate.toDate,
+            price: priceDate?.price,
+          })),
+          cars: cars.filter((car) => car.abbr !== 'Unknown'),
         }
       })
 
-      return {
-        id: rental?._id,
-        name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
-        //@ts-ignore
-        price: rental?.pricing?.dayRate ?? 0,
-        pricePerDates: rental?.pricePerDates.map((priceDate) => ({
-          fromDate: priceDate.fromDate,
-          toDate: priceDate.toDate,
-          price: priceDate?.price,
-        })),
-        cars: cars.filter((car) => car.abbr !== 'Unknown'),
-      }
-    })
-
-    res.json(
-      response.success({
-        items,
-        allItemCount: items.length,
-        message: 'Cars calendar fetched successfully.',
-      })
-    )
+      res.json(
+        response.success({
+          items,
+          allItemCount: items.length,
+          message: 'Cars calendar fetched successfully.',
+        })
+      )
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -205,91 +205,91 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           message: 'No bicycle rentals found.',
         })
       )
-    }
+    } else {
+      const allRentalIds = bicycleRentals.flatMap((rental) =>
+        rental?.ids.map((idObj) => idObj._id)
+      )
 
-    const allRentalIds = bicycleRentals.flatMap((rental) =>
-      rental?.ids.map((idObj) => idObj._id)
-    )
+      const reservations = await dbReservations
+        .find({
+          rentalId: { $in: allRentalIds },
+          $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+        })
+        .populate('guest')
 
-    const reservations = await dbReservations
-      .find({
-        rentalId: { $in: allRentalIds },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+      const reservationMap: Record<string, Reservation[]> = {}
+      reservations.forEach((reservation: any) => {
+        const guest = reservation.guest
+        let reservationStatus = reservation.status
+        if (
+          (reservationStatus === 'Confirmed' ||
+            reservationStatus === 'Blocked-Dates' ||
+            reservationStatus === 'Checked-In') &&
+          currentDate >= reservation.startDate &&
+          currentDate <= reservation.endDate
+        ) {
+          reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+        } else if (
+          (reservationStatus === 'Confirmed' ||
+            reservationStatus === 'Blocked-Dates' ||
+            reservationStatus === 'Checked-In' ||
+            reservationStatus === 'Checked-Out') &&
+          currentDate > reservation.endDate
+        ) {
+          reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+        }
+        const reservationItem: Reservation = {
+          id: reservation._id,
+          name: STATUS_DISPLAY.includes(reservation.status)
+            ? reservation.status
+            : guest
+              ? `${guest.firstName} ${guest.lastName}`
+              : reservation.guestName || 'Unknown',
+          startDate: reservation.startDate ?? new Date(),
+          endDate: reservation.endDate ?? new Date(),
+          guestCount: reservation.guestCount ?? 0,
+          status: reservationStatus,
+          notes: reservation.note,
+        }
+
+        if (!reservationMap[reservation.rentalId.toString()]) {
+          reservationMap[reservation.rentalId.toString()] = []
+        }
+        reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
       })
-      .populate('guest')
 
-    const reservationMap: Record<string, Reservation[]> = {}
-    reservations.forEach((reservation: any) => {
-      const guest = reservation.guest
-      let reservationStatus = reservation.status
-      if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In') &&
-        currentDate >= reservation.startDate &&
-        currentDate <= reservation.endDate
-      ) {
-        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      } else if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In' ||
-          reservationStatus === 'Checked-Out') &&
-        currentDate > reservation.endDate
-      ) {
-        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
-      }
-      const reservationItem: Reservation = {
-        id: reservation._id,
-        name: STATUS_DISPLAY.includes(reservation.status)
-          ? reservation.status
-          : guest
-            ? `${guest.firstName} ${guest.lastName}`
-            : reservation.guestName || 'Unknown',
-        startDate: reservation.startDate ?? new Date(),
-        endDate: reservation.endDate ?? new Date(),
-        guestCount: reservation.guestCount ?? 0,
-        status: reservationStatus,
-        notes: reservation.note,
-      }
+      const items = bicycleRentals.map((rental) => {
+        const bicycles = rental?.ids.map((idObj) => {
+          const bicycleReservations = reservationMap[idObj._id.toString()] || []
 
-      if (!reservationMap[reservation.rentalId.toString()]) {
-        reservationMap[reservation.rentalId.toString()] = []
-      }
-      reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
-    })
+          const isOccupied = bicycleReservations.length > 0
 
-    const items = bicycleRentals.map((rental) => {
-      const bicycles = rental?.ids.map((idObj) => {
-        const bicycleReservations = reservationMap[idObj._id.toString()] || []
-
-        const isOccupied = bicycleReservations.length > 0
+          return {
+            id: idObj._id,
+            abbr: idObj.name ? idObj.name : 'Unknown',
+            status: isOccupied ? 'occupied' : 'available',
+            reservations: bicycleReservations,
+          }
+        })
 
         return {
-          id: idObj._id,
-          abbr: idObj.name ? idObj.name : 'Unknown',
-          status: isOccupied ? 'occupied' : 'available',
-          reservations: bicycleReservations,
+          id: rental?._id,
+          name: rental?.make ?? 'Unknown',
+          //@ts-ignore
+          price: rental?.pricing?.dayRate ?? 0,
+          pricePerDates: rental?.pricePerDates,
+          bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
         }
       })
 
-      return {
-        id: rental?._id,
-        name: rental?.make ?? 'Unknown',
-        //@ts-ignore
-        price: rental?.pricing?.dayRate ?? 0,
-        pricePerDates: rental?.pricePerDates,
-        bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
-      }
-    })
-
-    res.json(
-      response.success({
-        items,
-        allItemCount: items.length,
-        message: 'Bicycle calendar fetched successfully.',
-      })
-    )
+      res.json(
+        response.success({
+          items,
+          allItemCount: items.length,
+          message: 'Bicycle calendar fetched successfully.',
+        })
+      )
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -322,93 +322,93 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           message: 'No motorcycle rentals found.',
         })
       )
-    }
+    } else {
+      const allRentalIds = motorcycleRentals.flatMap((rental) =>
+        rental?.ids.map((idObj) => idObj._id)
+      )
 
-    const allRentalIds = motorcycleRentals.flatMap((rental) =>
-      rental?.ids.map((idObj) => idObj._id)
-    )
+      const reservations = await dbReservations
+        .find({
+          rentalId: { $in: allRentalIds },
+          $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+        })
+        .populate('guest')
 
-    const reservations = await dbReservations
-      .find({
-        rentalId: { $in: allRentalIds },
-        $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+      const reservationMap: Record<string, Reservation[]> = {}
+      reservations.forEach((reservation: any) => {
+        const guest = reservation.guest
+        let reservationStatus = reservation.status
+        if (
+          (reservationStatus === 'Confirmed' ||
+            reservationStatus === 'Blocked-Dates' ||
+            reservationStatus === 'Checked-In') &&
+          currentDate >= reservation.startDate &&
+          currentDate <= reservation.endDate
+        ) {
+          reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
+        } else if (
+          (reservationStatus === 'Confirmed' ||
+            reservationStatus === 'Blocked-Dates' ||
+            reservationStatus === 'Checked-In' ||
+            reservationStatus === 'Checked-Out') &&
+          currentDate > reservation.endDate
+        ) {
+          reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
+        }
+        const reservationItem: Reservation = {
+          id: reservation._id,
+          name: STATUS_DISPLAY.includes(reservation.status)
+            ? reservation.status
+            : guest
+              ? `${guest.firstName} ${guest.lastName}`
+              : reservation.guestName || 'Unknown',
+          startDate: reservation.startDate ?? new Date(),
+          endDate: reservation.endDate ?? new Date(),
+          guestCount: reservation.guestCount ?? 0,
+          status: reservationStatus,
+          notes: reservation.notes,
+        }
+
+        if (!reservationMap[reservation.rentalId.toString()]) {
+          reservationMap[reservation.rentalId.toString()] = []
+        }
+        reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
       })
-      .populate('guest')
 
-    const reservationMap: Record<string, Reservation[]> = {}
-    reservations.forEach((reservation: any) => {
-      const guest = reservation.guest
-      let reservationStatus = reservation.status
-      if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In') &&
-        currentDate >= reservation.startDate &&
-        currentDate <= reservation.endDate
-      ) {
-        reservationStatus = 'Checked-In' // Update the status to 'Checked-In'
-      } else if (
-        (reservationStatus === 'Confirmed' ||
-          reservationStatus === 'Blocked-Dates' ||
-          reservationStatus === 'Checked-In' ||
-          reservationStatus === 'Checked-Out') &&
-        currentDate > reservation.endDate
-      ) {
-        reservationStatus = 'Checked-Out' // Update the status to 'Checked-Out'
-      }
-      const reservationItem: Reservation = {
-        id: reservation._id,
-        name: STATUS_DISPLAY.includes(reservation.status)
-          ? reservation.status
-          : guest
-            ? `${guest.firstName} ${guest.lastName}`
-            : reservation.guestName || 'Unknown',
-        startDate: reservation.startDate ?? new Date(),
-        endDate: reservation.endDate ?? new Date(),
-        guestCount: reservation.guestCount ?? 0,
-        status: reservationStatus,
-        notes: reservation.notes,
-      }
+      const items = motorcycleRentals.map((rental) => {
+        const motorcycles = rental?.ids.map((idObj) => {
+          const motorcycleReservations =
+            reservationMap[idObj._id.toString()] || []
+          const isOccupied = motorcycleReservations.length > 0
 
-      if (!reservationMap[reservation.rentalId.toString()]) {
-        reservationMap[reservation.rentalId.toString()] = []
-      }
-      reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
-    })
-
-    const items = motorcycleRentals.map((rental) => {
-      const motorcycles = rental?.ids.map((idObj) => {
-        const motorcycleReservations =
-          reservationMap[idObj._id.toString()] || []
-        const isOccupied = motorcycleReservations.length > 0
+          return {
+            id: idObj._id,
+            abbr: idObj.name ? idObj.name : 'Unknown',
+            status: isOccupied ? 'occupied' : 'available',
+            reservations: motorcycleReservations,
+          }
+        })
 
         return {
-          id: idObj._id,
-          abbr: idObj.name ? idObj.name : 'Unknown',
-          status: isOccupied ? 'occupied' : 'available',
-          reservations: motorcycleReservations,
+          id: rental?._id,
+          name: rental
+            ? `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`
+            : 'Unknown',
+          //@ts-ignore
+          price: rental?.pricing?.dayRate ?? 0,
+          pricePerDates: rental?.pricePerDates,
+          motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
         }
       })
 
-      return {
-        id: rental?._id,
-        name: rental
-          ? `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`
-          : 'Unknown',
-        //@ts-ignore
-        price: rental?.pricing?.dayRate ?? 0,
-        pricePerDates: rental?.pricePerDates,
-        motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
-      }
-    })
-
-    res.json(
-      response.success({
-        items,
-        allItemCount: items.length,
-        message: 'Motorcycle calendar fetched successfully.',
-      })
-    )
+      res.json(
+        response.success({
+          items,
+          allItemCount: items.length,
+          message: 'Motorcycle calendar fetched successfully.',
+        })
+      )
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -428,13 +428,14 @@ export const editChildName = async (req: Request, res: Response) => {
     )
     if (!updateVehicle) {
       res.json(response.error({ message: 'Rental vehicle not found' }))
+    } else {
+      res.json(
+        response.success({
+          item: updateVehicle,
+          message: 'Successfully changed rental vehicle name',
+        })
+      )
     }
-    res.json(
-      response.success({
-        item: updateVehicle,
-        message: 'Successfully changed rental vehicle name',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -454,63 +455,64 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
     })
     if (!getRental) {
       res.json(response.error({ message: 'Rental not found on our system' }))
-    }
-    if (!fromDate || !toDate || !dayRate || !requiredDeposit) {
-      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
+    } else {
+      if (!fromDate || !toDate || !dayRate || !requiredDeposit) {
+        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      } else {
+        // Parse incoming dates for comparison
+        const newFromDate = new Date(fromDate)
+        const newToDate = new Date(toDate)
 
-    // Parse incoming dates for comparison
-    const newFromDate = new Date(fromDate)
-    const newToDate = new Date(toDate)
+        // Check for overlapping date ranges
+        const isConflict = getRental?.pricePerDates.some((dateRange: any) => {
+          const existingFromDate = new Date(dateRange.fromDate)
+          const existingToDate = new Date(dateRange.toDate)
 
-    // Check for overlapping date ranges
-    const isConflict = getRental?.pricePerDates.some((dateRange: any) => {
-      const existingFromDate = new Date(dateRange.fromDate)
-      const existingToDate = new Date(dateRange.toDate)
-
-      // Check if the new range overlaps with any existing ranges
-      return newFromDate <= existingToDate && newToDate >= existingFromDate
-    })
-
-    if (isConflict) {
-      res.json(
-        response.error({
-          message: 'The date range conflicts with existing price periods.',
+          // Check if the new range overlaps with any existing ranges
+          return newFromDate <= existingToDate && newToDate >= existingFromDate
         })
-      )
+
+        if (isConflict) {
+          res.json(
+            response.error({
+              message: 'The date range conflicts with existing price periods.',
+            })
+          )
+        } else {
+          const newRentalRates = new dbRentalRates({
+            dayRate: dayRate,
+            requiredDeposit: requiredDeposit,
+            adminBookingCharge: null,
+            createdAt: Date.now(),
+            deletedAt: null,
+          })
+          await newRentalRates.save()
+
+          const newPricePerDates = {
+            fromDate: newFromDate,
+            toDate: newToDate,
+            price: newRentalRates._id,
+          }
+
+          await dbRentals.findByIdAndUpdate(
+            rentalId,
+            {
+              $push: {
+                pricePerDates: newPricePerDates,
+              },
+            },
+            { new: true }
+          )
+
+          res.json(
+            response.success({
+              item: newRentalRates,
+              message: 'Price for specific dates successfully setted',
+            })
+          )
+        }
+      }
     }
-
-    const newRentalRates = new dbRentalRates({
-      dayRate: dayRate,
-      requiredDeposit: requiredDeposit,
-      adminBookingCharge: null,
-      createdAt: Date.now(),
-      deletedAt: null,
-    })
-    await newRentalRates.save()
-
-    const newPricePerDates = {
-      fromDate: newFromDate,
-      toDate: newToDate,
-      price: newRentalRates._id,
-    }
-
-    await dbRentals.findByIdAndUpdate(
-      rentalId,
-      {
-        $push: {
-          pricePerDates: newPricePerDates,
-        },
-      },
-      { new: true }
-    )
-
-    res.json(
-      response.success({
-        item: newRentalRates,
-        message: 'Price for specific dates successfully setted',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({

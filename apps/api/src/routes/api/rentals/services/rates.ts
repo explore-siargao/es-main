@@ -15,11 +15,12 @@ export const getRentalRates = async (req: Request, res: Response) => {
     const getRental = await dbRentals.findOne({ _id: rentalId })
     if (!getRental) {
       res.json(response.error({ message: 'rental not found' }))
+    } else {
+      const getRentalRate = await dbRentalRates.findOne({
+        _id: getRental?.pricing,
+      })
+      res.json(response.success({ item: getRentalRate }))
     }
-    const getRentalRate = await dbRentalRates.findOne({
-      _id: getRental?.pricing,
-    })
-    res.json(response.success({ item: getRentalRate }))
   } catch (err: any) {
     res.json(
       response.error({
@@ -39,53 +40,57 @@ export const updateRentalRate = async (req: Request, res: Response) => {
         message: REQUIRED_VALUE_EMPTY,
       })
     )
-  }
-  try {
-    const rental = await dbRentals.findById({ _id: rentalId })
-    if (!rental) {
+  } else {
+    try {
+      const rental = await dbRentals.findById({ _id: rentalId })
+      if (!rental) {
+        res.json(
+          response.error({
+            message: 'Rental not found!',
+          })
+        )
+      } else {
+        if (rental?.host?.toString() !== userId) {
+          res.json(
+            response.error({
+              message: USER_NOT_AUTHORIZED,
+            })
+          )
+        } else {
+          const rates = await dbRentalRates.findById(rental?.pricing)
+          if (rates) {
+            rates.dayRate = dayRate || rates.dayRate
+            rates.requiredDeposit = requiredDeposit || rates.requiredDeposit
+            rates.adminBookingCharge =
+              adminBookingCharge || rates.adminBookingCharge
+            rates.updatedAt = new Date()
+          }
+          await rates?.save()
+          if (rental) {
+            rental.finishedSections = [
+              'basicInfo',
+              'details',
+              'addOns',
+              'photos',
+              'pricing',
+            ]
+            rental.updatedAt = new Date()
+          }
+          await rental?.save()
+          res.json(
+            response.success({
+              item: rates,
+              message: 'Rental rates successfully updated!',
+            })
+          )
+        }
+      }
+    } catch (err: any) {
       res.json(
         response.error({
-          message: 'Rental not found!',
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
-    if (rental?.host?.toString() !== userId) {
-      res.json(
-        response.error({
-          message: USER_NOT_AUTHORIZED,
-        })
-      )
-    }
-    const rates = await dbRentalRates.findById(rental?.pricing)
-    if (rates) {
-      rates.dayRate = dayRate || rates.dayRate
-      rates.requiredDeposit = requiredDeposit || rates.requiredDeposit
-      rates.adminBookingCharge = adminBookingCharge || rates.adminBookingCharge
-      rates.updatedAt = new Date()
-    }
-    await rates?.save()
-    if (rental) {
-      rental.finishedSections = [
-        'basicInfo',
-        'details',
-        'addOns',
-        'photos',
-        'pricing',
-      ]
-      rental.updatedAt = new Date()
-    }
-    await rental?.save()
-    res.json(
-      response.success({
-        item: rates,
-        message: 'Rental rates successfully updated!',
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }

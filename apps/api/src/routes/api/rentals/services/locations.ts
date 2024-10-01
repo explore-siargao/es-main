@@ -21,9 +21,10 @@ export const getRentalLocation = async (req: Request, res: Response) => {
       .populate('location')
     if (!getRental) {
       res.json(response.error({ message: 'Rental location not found!' }))
+    } else {
+      const rentalLocation = getRental?.location
+      res.json(response.success({ item: rentalLocation }))
     }
-    const rentalLocation = getRental?.location
-    res.json(response.success({ item: rentalLocation }))
   } catch (err: any) {
     res.json(
       response.error({
@@ -50,57 +51,59 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
         message: REQUIRED_VALUE_EMPTY,
       })
     )
-  }
-  try {
-    const rental = await dbRentals.findById({ _id: rentalId })
-    if (!rental) {
+  } else {
+    try {
+      const rental = await dbRentals.findById({ _id: rentalId })
+      if (!rental) {
+        res.json(
+          response.error({
+            message: 'Rental not found!',
+          })
+        )
+      }
+      if (rental?.host?.toString() !== hostId) {
+        res.json(
+          response.error({
+            message: USER_NOT_AUTHORIZED,
+          })
+        )
+      } else {
+        const location = await dbLocations.findById(rental?.location)
+        if (location) {
+          location.streetAddress = streetAddress || location.streetAddress
+          location.city = city || location.city
+          location.barangay = barangay || location.barangay
+          location.longitude = longitude || location.longitude
+          location.latitude = latitude || location.latitude
+          location.howToGetThere = howToGetThere || location.howToGetThere
+          location.updatedAt = new Date()
+          await location?.save()
+        }
+        if (rental) {
+          rental.finishedSections = [
+            'basicInfo',
+            'details',
+            'addOns',
+            'photos',
+            'pricing',
+            'location',
+          ]
+          rental.updatedAt = new Date()
+          await rental?.save()
+        }
+        res.json(
+          response.success({
+            item: location,
+            message: 'Rental location successfully updated!',
+          })
+        )
+      }
+    } catch (err: any) {
       res.json(
         response.error({
-          message: 'Rental not found!',
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
         })
       )
     }
-    if (rental?.host?.toString() !== hostId) {
-      res.json(
-        response.error({
-          message: USER_NOT_AUTHORIZED,
-        })
-      )
-    }
-    const location = await dbLocations.findById(rental?.location)
-    if (location) {
-      location.streetAddress = streetAddress || location.streetAddress
-      location.city = city || location.city
-      location.barangay = barangay || location.barangay
-      location.longitude = longitude || location.longitude
-      location.latitude = latitude || location.latitude
-      location.howToGetThere = howToGetThere || location.howToGetThere
-      location.updatedAt = new Date()
-      await location?.save()
-    }
-    if (rental) {
-      rental.finishedSections = [
-        'basicInfo',
-        'details',
-        'addOns',
-        'photos',
-        'pricing',
-        'location',
-      ]
-      rental.updatedAt = new Date()
-      await rental?.save()
-    }
-    res.json(
-      response.success({
-        item: location,
-        message: 'Rental location successfully updated!',
-      })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }

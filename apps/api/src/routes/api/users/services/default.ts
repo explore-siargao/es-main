@@ -16,50 +16,56 @@ export const updatePassword = async (req: Request, res: Response) => {
     const getUser = await dbUsers.findById(userId)
     if (!getUser) {
       res.json(response.error({ message: USER_NOT_EXIST }))
-    }
-    if (!(currentPassword && newPassword && confirmNewPassword)) {
-      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    }
-    if (newPassword !== confirmNewPassword) {
-      res.json(response.error({ message: 'Password not matched' }))
-    }
-    const decryptPassword = CryptoJS.AES.decrypt(
-      getUser?.password as string,
-      PASSWORD_ENCRYPT_KEY
-    )
-    const encryptCurrentPassword = CryptoJS.AES.encrypt(
-      currentPassword,
-      PASSWORD_ENCRYPT_KEY
-    )
-    const decryptCurrentPassword = CryptoJS.AES.decrypt(
-      encryptCurrentPassword.toString(),
-      PASSWORD_ENCRYPT_KEY
-    )
-    if (decryptCurrentPassword.toString() !== decryptPassword.toString()) {
-      res.json(response.error({ message: 'Wrong old password' }))
-    }
-    const encryptNewPassword = CryptoJS.AES.encrypt(
-      newPassword,
-      PASSWORD_ENCRYPT_KEY
-    )
-    const updateUserPassword = await dbUsers.findByIdAndUpdate(
-      userId,
-      {
-        $set: {
-          password: encryptNewPassword.toString(),
-          changePasswordAt: Date.now(),
-        },
-      },
-      { new: true }
-    )
+    } else {
+      if (!(currentPassword && newPassword && confirmNewPassword)) {
+        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      } else {
+        if (newPassword !== confirmNewPassword) {
+          res.json(response.error({ message: 'Password not matched' }))
+        } else {
+          const decryptPassword = CryptoJS.AES.decrypt(
+            getUser?.password as string,
+            PASSWORD_ENCRYPT_KEY
+          )
+          const encryptCurrentPassword = CryptoJS.AES.encrypt(
+            currentPassword,
+            PASSWORD_ENCRYPT_KEY
+          )
+          const decryptCurrentPassword = CryptoJS.AES.decrypt(
+            encryptCurrentPassword.toString(),
+            PASSWORD_ENCRYPT_KEY
+          )
+          if (
+            decryptCurrentPassword.toString() !== decryptPassword.toString()
+          ) {
+            res.json(response.error({ message: 'Wrong old password' }))
+          } else {
+            const encryptNewPassword = CryptoJS.AES.encrypt(
+              newPassword,
+              PASSWORD_ENCRYPT_KEY
+            )
+            const updateUserPassword = await dbUsers.findByIdAndUpdate(
+              userId,
+              {
+                $set: {
+                  password: encryptNewPassword.toString(),
+                  changePasswordAt: Date.now(),
+                },
+              },
+              { new: true }
+            )
 
-    res.json(
-      response.success({
-        item: updateUserPassword,
-        allItemCount: 1,
-        message: 'Password successfully updated',
-      })
-    )
+            res.json(
+              response.success({
+                item: updateUserPassword,
+                allItemCount: 1,
+                message: 'Password successfully updated',
+              })
+            )
+          }
+        }
+      }
+    }
   } catch (err: any) {
     const message = err.message ? err.message : UNKNOWN_ERROR_OCCURRED
     res.json(response.error({ message: message }))
@@ -72,18 +78,19 @@ export const deactivateAccount = async (req: Request, res: Response) => {
     const getUser = await dbUsers.findOne({ _id: userId })
     if (!getUser) {
       res.json(response.error({ message: USER_NOT_EXIST }))
-    }
-    const deactivateUser = await dbUsers.findByIdAndUpdate(userId, {
-      deactivated: true,
-    })
-
-    res.json(
-      response.success({
-        item: deactivateUser,
-        allItemCount: 1,
-        message: 'User Account successfully deactivated',
+    } else {
+      const deactivateUser = await dbUsers.findByIdAndUpdate(userId, {
+        deactivated: true,
       })
-    )
+
+      res.json(
+        response.success({
+          item: deactivateUser,
+          allItemCount: 1,
+          message: 'User Account successfully deactivated',
+        })
+      )
+    }
   } catch (err: any) {
     const message = err.message ? err.message : UNKNOWN_ERROR_OCCURRED
     res.json(response.error({ message: message }))

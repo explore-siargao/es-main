@@ -46,88 +46,89 @@ export const addRental = async (req: Request, res: Response) => {
         message: USER_NOT_AUTHORIZED,
       })
     )
-  }
-  try {
-    const details = new dbRentalDetails({
-      engineCapacityLiter: null,
-      engineCapacityCc: null,
-      condition: '',
-      exteriorColor: '',
-      interiorColor: '',
-      seatingCapacity: null,
-      weightCapacity: null,
-      minAgeReq: null,
-      isRegistered: 'No',
-    })
-
-    const pricing = new dbRentalRates({
-      dayRate: null,
-      requiredDeposit: null,
-      adminBookingCharge: null,
-    })
-
-    const addOns = new dbRentalAddOns({
-      roofRack: false,
-      babySeat: false,
-      dashCam: false,
-      others: '',
-    })
-
-    const photos = new dbPhotos({
-      photos: null,
-    })
-
-    const location = new dbLocations({
-      streetAddress: null,
-      barangay: null,
-      city: null,
-      latitude: null,
-      longitude: null,
-      howToGetThere: '',
-    })
-
-    await Promise.all([
-      details.save(),
-      pricing.save(),
-      addOns.save(),
-      photos.save(),
-      location.save(),
-    ])
-
-    const rental = new dbRentals({
-      host: hostId,
-      details: details._id,
-      pricing: pricing._id,
-      addOns: addOns._id,
-      //photos: [photos._id],
-      location: location._id,
-      category: '',
-      make: '',
-      modelBadge: '',
-      bodyType: null,
-      fuel: null,
-      transmission: null,
-      year: '',
-      qty: null,
-      finishedSections: '',
-      status: 'Incomplete',
-      daysCanCancel: 0,
-    })
-
-    await rental?.save()
-
-    res.json(
-      response.success({
-        item: rental,
-        message: 'New rentals data successfully added',
+  } else {
+    try {
+      const details = new dbRentalDetails({
+        engineCapacityLiter: null,
+        engineCapacityCc: null,
+        condition: '',
+        exteriorColor: '',
+        interiorColor: '',
+        seatingCapacity: null,
+        weightCapacity: null,
+        minAgeReq: null,
+        isRegistered: 'No',
       })
-    )
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+
+      const pricing = new dbRentalRates({
+        dayRate: null,
+        requiredDeposit: null,
+        adminBookingCharge: null,
       })
-    )
+
+      const addOns = new dbRentalAddOns({
+        roofRack: false,
+        babySeat: false,
+        dashCam: false,
+        others: '',
+      })
+
+      const photos = new dbPhotos({
+        photos: null,
+      })
+
+      const location = new dbLocations({
+        streetAddress: null,
+        barangay: null,
+        city: null,
+        latitude: null,
+        longitude: null,
+        howToGetThere: '',
+      })
+
+      await Promise.all([
+        details.save(),
+        pricing.save(),
+        addOns.save(),
+        photos.save(),
+        location.save(),
+      ])
+
+      const rental = new dbRentals({
+        host: hostId,
+        details: details._id,
+        pricing: pricing._id,
+        addOns: addOns._id,
+        //photos: [photos._id],
+        location: location._id,
+        category: '',
+        make: '',
+        modelBadge: '',
+        bodyType: null,
+        fuel: null,
+        transmission: null,
+        year: '',
+        qty: null,
+        finishedSections: '',
+        status: 'Incomplete',
+        daysCanCancel: 0,
+      })
+
+      await rental?.save()
+
+      res.json(
+        response.success({
+          item: rental,
+          message: 'New rentals data successfully added',
+        })
+      )
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
   }
 }
 
@@ -144,41 +145,41 @@ export const getRentalDetails = async (req: Request, res: Response) => {
 
     if (!getRental) {
       res.json(response.error({ message: 'No rental details found' }))
-    }
-
-    const category = getRental?.category as unknown as string
-
-    if (category === E_Rental_Category.Car) {
-      rentalDetail = getRental?.details
-    } else if ('Motorbike' === E_Rental_Category.Motorbike) {
-      // FIX ANY HERE
-      const details = getRental?.details as any
-      rentalDetail = {
-        // id: details._id,
-        engineCapacityLiter: details.engineCapacityLiter,
-        engineCapacityCc: details.engineCapacityCc,
-        condition: details.condition,
-        exteriorColor: details.exteriorColor,
-        seatingCapacity: details.seatingCapacity,
-        weightCapacityKg: details.weightCapacityKg,
-        minAgeReq: details.minAgeReq,
-        isRegistered: details.isRegistered,
-      }
-    } else if (category === E_Rental_Category.Bicycle) {
-      // FIX ANY HERE
-      const details = getRental?.details as any
-      rentalDetail = {
-        // id: details._id,
-        condition: details.condition,
-        exteriorColor: details.exteriorColor,
-        weightCapacityKg: details.weightCapacityKg,
-        minAgeReq: details.minAgeReq,
-      }
     } else {
-      res.json(response.error({ message: 'Invalid rental category' }))
-    }
+      const category = getRental?.category as unknown as string
 
-    res.json(response.success({ item: rentalDetail }))
+      if (category === E_Rental_Category.Car) {
+        rentalDetail = getRental?.details
+      } else if ('Motorbike' === E_Rental_Category.Motorbike) {
+        // FIX ANY HERE
+        const details = getRental?.details as any
+        rentalDetail = {
+          // id: details._id,
+          engineCapacityLiter: details.engineCapacityLiter,
+          engineCapacityCc: details.engineCapacityCc,
+          condition: details.condition,
+          exteriorColor: details.exteriorColor,
+          seatingCapacity: details.seatingCapacity,
+          weightCapacityKg: details.weightCapacityKg,
+          minAgeReq: details.minAgeReq,
+          isRegistered: details.isRegistered,
+        }
+      } else if (category === E_Rental_Category.Bicycle) {
+        // FIX ANY HERE
+        const details = getRental?.details as any
+        rentalDetail = {
+          // id: details._id,
+          condition: details.condition,
+          exteriorColor: details.exteriorColor,
+          weightCapacityKg: details.weightCapacityKg,
+          minAgeReq: details.minAgeReq,
+        }
+      } else {
+        res.json(response.error({ message: 'Invalid rental category' }))
+      }
+
+      res.json(response.success({ item: rentalDetail }))
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -215,13 +216,13 @@ export const getRental = async (req: Request, res: Response) => {
           message: 'Rental with given ID not found!',
         })
       )
+    } else {
+      res.json(
+        response.success({
+          item: rental,
+        })
+      )
     }
-
-    res.json(
-      response.success({
-        item: rental,
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({
@@ -285,28 +286,28 @@ export const deleteRental = async (req: Request, res: Response) => {
           message: 'Rental not found or already deleted!',
         })
       )
+    } else {
+      if (rental?.host?.toString() !== userId) {
+        res.json(
+          response.error({
+            message: USER_NOT_AUTHORIZED,
+          })
+        )
+      } else {
+        const updatedRental = await dbRentals.findOneAndUpdate(
+          { _id: rentalId, host: userId, deletedAt: null },
+          { deletedAt: Date.now() },
+          { new: true }
+        )
+
+        res.json(
+          response.success({
+            item: updatedRental,
+            message: 'Rental successfully deleted!',
+          })
+        )
+      }
     }
-
-    if (rental?.host?.toString() !== userId) {
-      res.json(
-        response.error({
-          message: USER_NOT_AUTHORIZED,
-        })
-      )
-    }
-
-    const updatedRental = await dbRentals.findOneAndUpdate(
-      { _id: rentalId, host: userId, deletedAt: null },
-      { deletedAt: Date.now() },
-      { new: true }
-    )
-
-    res.json(
-      response.success({
-        item: updatedRental,
-        message: 'Rental successfully deleted!',
-      })
-    )
   } catch (err: any) {
     res.json(
       response.error({

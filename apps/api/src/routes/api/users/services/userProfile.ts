@@ -101,14 +101,15 @@ export const getProfile = async (req: Request, res: Response) => {
   const getUserProfile = profiles.find((profile) => profile.id === userId)
   if (getUserProfile === undefined) {
     res.json(response.error({ message: 'This profile not found' }))
+  } else {
+    res.json(
+      response.success({
+        item: getUserProfile,
+        allItemCount: 1,
+        message: '',
+      })
+    )
   }
-  res.json(
-    response.success({
-      item: getUserProfile,
-      allItemCount: 1,
-      message: '',
-    })
-  )
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
