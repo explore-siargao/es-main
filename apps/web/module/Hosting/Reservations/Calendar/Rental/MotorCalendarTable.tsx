@@ -55,7 +55,7 @@ const MotorCalendarTable = () => {
   const [editingRoom, setEditingRoom] = useState<string | null>(null)
   const [tempMotorAbbr, setMotorAbbr] = useState<string>("")
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
-  const [cancelReservation, setIsCancelReservation] = useState<boolean>(false)
+  const [isCancelReservation, setIsCancelReservation] = useState<boolean>(false)
   const [searchString, setSearchString] = useState("")
 
   const daysPerPage = 13
@@ -610,7 +610,7 @@ const MotorCalendarTable = () => {
                     onClose={closeReservationModal}
                     selectedReservation={selectedReservation}
                     isEditReservation={isEditReservation}
-                    isCancelReservation={cancelReservation}
+                    isCancelReservation={isCancelReservation}
                     setIsCancelReservation={setIsCancelReservation}
                     setIsEditReservation={setIsEditReservation}
                   />

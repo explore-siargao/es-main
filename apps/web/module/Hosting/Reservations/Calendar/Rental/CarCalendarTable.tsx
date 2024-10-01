@@ -68,7 +68,7 @@ const CarCalendarTable = () => {
   const [tempCarAbbr, setTempCarAbbr] = useState<string>("")
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
-  const [cancelReservation, setIsCancelReservation] = useState<boolean>(false)
+  const [isCancelReservation, setIsCancelReservation] = useState<boolean>(false)
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
 
@@ -575,7 +575,7 @@ const CarCalendarTable = () => {
                     onClose={closeReservationModal}
                     selectedReservation={selectedReservation}
                     isEditReservation={isEditReservation}
-                    isCancelReservation={cancelReservation}
+                    isCancelReservation={isCancelReservation}
                     setIsCancelReservation={setIsCancelReservation}
                     setIsEditReservation={setIsEditReservation}
                   />

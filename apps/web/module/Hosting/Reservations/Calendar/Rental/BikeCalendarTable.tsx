@@ -60,7 +60,7 @@ const BikeCalendarTable = () => {
   const closeReservationModal = () => setIsReservationModalOpen(false)
   const [isEditPricePerDatesModalOpen, setIsEditPricePerDatesModalOpen] =
     useState(false)
-  const [cancelReservation, setIsCancelReservation] = useState<boolean>(false)
+  const [isCancelReservation, setIsCancelReservation] = useState<boolean>(false)
   const [searchString, setSearchString] = useState("")
 
   const handleOpenRentalsEditPricePerDatesModal = (
@@ -630,7 +630,7 @@ const BikeCalendarTable = () => {
                     onClose={closeReservationModal}
                     selectedReservation={selectedReservation}
                     isEditReservation={isEditReservation}
-                    isCancelReservation={cancelReservation}
+                    isCancelReservation={isCancelReservation}
                     setIsCancelReservation={setIsCancelReservation}
                     setIsEditReservation={setIsEditReservation}
                   />

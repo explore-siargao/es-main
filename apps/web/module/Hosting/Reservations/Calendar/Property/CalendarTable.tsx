@@ -67,7 +67,7 @@ const PropertyCalendarTable = () => {
   const [tempRoomAbbr, setTempRoomAbbr] = useState<string>("")
 
   const [isEditReservation, setIsEditReservation] = useState<boolean>(false)
-  const [cancelReservation, setIsCancelReservation] = useState<boolean>(false)
+  const [isCancelReservation, setIsCancelReservation] = useState<boolean>(false)
 
   const [searchString, setSearchString] = useState("")
 
@@ -745,17 +745,15 @@ const PropertyCalendarTable = () => {
                 <FormProvider {...form}>
                   <form>
                     {selectedReservation && (
-                      <>
-                        <PropertyCalendarModal
-                          isModalOpen={isReservationModalOpen}
-                          onClose={closeReservationModal}
-                          selectedReservation={selectedReservation}
-                          isEditReservation={isEditReservation}
-                          isCancelReservation={cancelReservation}
-                          setIsEditReservation={setIsEditReservation}
-                          setIsCancelReservation={setIsCancelReservation}
-                        />
-                      </>
+                      <PropertyCalendarModal
+                        isModalOpen={isReservationModalOpen}
+                        onClose={closeReservationModal}
+                        selectedReservation={selectedReservation}
+                        isEditReservation={isEditReservation}
+                        isCancelReservation={isCancelReservation}
+                        setIsEditReservation={setIsEditReservation}
+                        setIsCancelReservation={setIsCancelReservation}
+                      />
                     )}
                   </form>
                 </FormProvider>
