@@ -89,7 +89,7 @@ const ActivityEditPricePerDatesModal = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 pb-2 mt-4">
+          <div className="flex flex-col gap-4 pb-2 mt-4 mb-2">
             <div className="flex flex-col w-full">
               <Input2
                 type="number"
@@ -103,21 +103,6 @@ const ActivityEditPricePerDatesModal = ({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-4 pb-4 mt-2">
-            <div className="flex flex-col w-full">
-              <Input2
-                type="number"
-                label={"Exceed Person Price"}
-                value={exceededPersonPrice}
-                onChange={(e) => setExceededPersonPrice(e.target.value)}
-                description=" Enter the price that will be charged for each person exceeding the default limit within the selected date range"
-                placeholder="e.g., 1000"
-                className="w-full"
-                required
-              />
-            </div>
-          </div>
-
           <div className="flex items-center pt-4 border-t border-gray-200">
             <div className="flex justify-end gap-2 w-full">
               <Button type="button" variant="danger" onClick={handleCancel}>
