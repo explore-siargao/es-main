@@ -180,6 +180,7 @@ const PropertyCalendarTable = () => {
           bookableUnitTypes: item.bookableUnitTypes.reduce(
             (
               acc: {
+                id: string
                 unitType: any
                 units: any[]
                 price: any
@@ -198,6 +199,8 @@ const PropertyCalendarTable = () => {
                 const transformedUnits = transformUnitType(unitType)
                 if (transformedUnits.length > 0) {
                   acc.push({
+                    //@ts-ignore
+                    id: unitType.id,
                     unitType: unitType.name,
                     price: unitType.price,
                     units: transformedUnits,
@@ -256,9 +259,9 @@ const PropertyCalendarTable = () => {
     const newFilteredData = {
       items: filterItems(sampleData?.items ?? []),
     }
-
     // Apply the search filter to newFilteredData
     const finalFilteredData = applySearchFilter(newFilteredData)
+    console.log(finalFilteredData)
     // Update the state based on the final filtered data
     if (finalFilteredData.items.length > 0) {
       setUnitData(finalFilteredData)
@@ -551,7 +554,10 @@ const PropertyCalendarTable = () => {
                                         onClick={(e) => {
                                           handleOpeneditPricePerDatesModal(
                                             date,
-                                            unitType.units[0]?.id
+                                            unitType.id
+                                          )
+                                          console.log(
+                                            category.bookableUnitTypes
                                           )
                                           e.stopPropagation()
                                         }}
