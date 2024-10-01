@@ -12,7 +12,7 @@ const Inclusions = ({ rentalData, group }: any) => {
     { key: "includesHelmet", label: "Includes Helmet" },
   ]
 
-  if (rentalData["others"].length > 0) {
+  if (rentalData && rentalData["others"].length > 0) {
     rentalData["others"].forEach((item: any) => {
       fieldsToDisplay.push({ key: item, label: item })
     })
@@ -22,19 +22,23 @@ const Inclusions = ({ rentalData, group }: any) => {
     <>
       <TitleSection size="lg" title="Inclusions">
         <div className="grid grid-cols-2">
-          {fieldsToDisplay.map(({ key, label }) =>
-            key === "others" && !rentalData[key] ? null : (
-              <div key={key} className="flex my-3">
-                {rentalData[key] ||
-                rentalData[key] === rentalData["others"][key] ? (
-                  <Check className="text-primary-500 mr-4" />
-                ) : (
-                  <X className="text-error-500 mr-4" />
-                )}
-                {key === "others" && rentalData[key] ? "" : label || "Others"}
-              </div>
-            )
-          )}
+          {rentalData
+            ? fieldsToDisplay.map(({ key, label }) =>
+                key === "others" && !rentalData[key] ? null : (
+                  <div key={key} className="flex my-3">
+                    {rentalData[key] ||
+                    rentalData[key] === rentalData["others"][key] ? (
+                      <Check className="text-primary-500 mr-4" />
+                    ) : (
+                      <X className="text-error-500 mr-4" />
+                    )}
+                    {key === "others" && rentalData[key]
+                      ? ""
+                      : label || "Others"}
+                  </div>
+                )
+              )
+            : null}
         </div>
       </TitleSection>
     </>

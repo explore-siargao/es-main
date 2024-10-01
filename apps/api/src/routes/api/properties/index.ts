@@ -24,6 +24,7 @@ import {
   updatePropertyLocation,
   updatePropertyBasicInfo,
   updateWholePlaceType,
+  getPropertyByIdPublic,
 } from './services/default'
 import { addPropertyType } from './services/propertyType'
 import {
@@ -66,6 +67,7 @@ const router = express.Router()
 //property
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
+router.get('/public/:propertyId', isOriginValid, getPropertyByIdPublic)
 router.get(
   '/:propertyId',
   isOriginValid,

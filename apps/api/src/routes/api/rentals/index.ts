@@ -8,6 +8,7 @@ import {
   deleteRental,
   getAllRentalsByHostId,
   getRentalCounts,
+  getRentalByIdPublic,
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
@@ -68,6 +69,8 @@ router.get(
   isHostRentalOwner,
   getRental
 )
+
+router.get('/public/:rentalId', isOriginValid, getRentalByIdPublic)
 
 router.get(
   '/:rentalId/details',
