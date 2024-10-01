@@ -4,6 +4,9 @@ import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
 import { T_Property } from "@repo/contract"
 import { useForm } from "react-hook-form"
+import useUpdateUnitPricePerDate from "../hooks/useUpdaateUnitPricePerDate"
+import { useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
 
 interface IEditPricePerDateProps {
   isModalOpen: boolean
@@ -21,17 +24,13 @@ const PropertyEditPricePerDatesModal = ({
   const [toDate, setToDate] = useState("")
   const [baseRate, setBaseRate] = useState("")
   const [dateFrom, setDateFrom] = useState(selectedDate || "")
-  const [baseRateMaxCapacity, setBaseRateMaxCapacity] = useState("")
-  const [maxCapacity, setMaxCapacity] = useState("")
-  const [pricePerAdditionalPerson, setPricePerAdditionalperson] = useState("")
+  const queryClient = useQueryClient()
   const { handleSubmit } = useForm<T_Property>({})
+  const { mutate, isPending } = useUpdateUnitPricePerDate(unitId as string)
 
   const clearInputs = () => {
     setToDate("")
     setBaseRate("")
-    setBaseRateMaxCapacity("")
-    setMaxCapacity("")
-    setPricePerAdditionalperson("")
   }
 
   const handleClose = () => {
@@ -41,14 +40,26 @@ const PropertyEditPricePerDatesModal = ({
 
   const handleSave = () => {
     const payload = {
-      dateFrom: dateFrom,
+      fromDate: dateFrom,
       toDate: toDate,
       baseRate: Number(baseRate),
-      baseRateMaxCapacity: Number(baseRateMaxCapacity),
-      maxCapacity: Number(maxCapacity),
-      pricePerAdditionalPerson: Number(pricePerAdditionalPerson),
     }
-    console.log(payload)
+    mutate(payload, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-property"],
+          })
+          toast.success(data.message)
+          onClose()
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    })
     clearInputs()
   }
 
@@ -60,7 +71,6 @@ const PropertyEditPricePerDatesModal = ({
     setDateFrom(selectedDate)
   }, [selectedDate])
 
-  console.log("unitId: ", unitId)
   return (
     <ModalContainer
       onClose={handleClose}
@@ -122,7 +132,7 @@ const PropertyEditPricePerDatesModal = ({
               >
                 Cancel
               </Button>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={isPending}>
                 Save
               </Button>
             </div>

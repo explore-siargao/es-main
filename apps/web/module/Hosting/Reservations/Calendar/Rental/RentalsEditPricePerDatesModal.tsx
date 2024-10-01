@@ -46,13 +46,18 @@ const RentalsEditPricePerDatesModal = ({
       fromDate: fromDate,
       toDate: toDate,
       dayRate: Number(dayRate),
-      requiredDeposit: Number(requiredDeposit),
     }
     mutate(payload, {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
             queryKey: ["calendar-car"],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-motor"],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-bike"],
           })
           toast.success(data.message)
           onClose()

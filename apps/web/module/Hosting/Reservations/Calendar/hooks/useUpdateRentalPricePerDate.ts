@@ -6,7 +6,6 @@ type T_RentalPricePerDate = {
   fromDate: string
   toDate: string
   dayRate: number
-  requiredDeposit: number
 }
 
 export async function updateRentalPricePerDate(
