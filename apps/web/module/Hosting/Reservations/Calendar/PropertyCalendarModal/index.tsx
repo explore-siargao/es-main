@@ -267,7 +267,7 @@ const PropertyCalendarModal = ({
                     variant="primary"
                     onClick={() => setIsEditReservation(true)}
                   >
-                    Edit  
+                    Edit
                   </Button>
                 </div>
               )}
