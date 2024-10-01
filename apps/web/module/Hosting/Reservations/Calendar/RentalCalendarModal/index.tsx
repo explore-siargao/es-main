@@ -15,7 +15,9 @@ interface IRentalCalendarModalProps {
   onClose: () => void
   selectedReservation: SelectedReservation
   isEditReservation: boolean
+  isCancelReservation: boolean
   setIsEditReservation: (data: boolean) => void
+  setIsCancelReservation: (data: boolean) => void
 }
 
 const RentalCalendarModal = ({
@@ -23,6 +25,8 @@ const RentalCalendarModal = ({
   onClose,
   selectedReservation,
   isEditReservation,
+  isCancelReservation,
+  setIsCancelReservation,
   setIsEditReservation,
 }: IRentalCalendarModalProps) => {
   const queryClient = useQueryClient()
@@ -62,169 +66,191 @@ const RentalCalendarModal = ({
       onClose={onClose}
       isOpen={isModalOpen}
       size="sm"
-      title="Reservation"
+      title={isCancelReservation ? "Cancel Reservation" : "Reservation"}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
           <div className="flex flex-col gap-4 pb-4">
-            <div className="flex gap-4">
-              <div className="flex flex-col w-full">
-                <Typography variant="h4" className="font-semibold">
-                  Rental Category
-                </Typography>
-                <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation.cars && "Car"}
-                  {selectedReservation.motorcycles && "Motorcycle"}
-                  {selectedReservation.bicyles && "Bicycle"}
+            {isCancelReservation ? (
+              <div className="flex flex-col gap-4">
+                <Typography variant="h3">
+                  Are you sure you want to cancel this reservation?
                 </Typography>
               </div>
-              <div className="flex flex-col w-full">
-                <Typography variant="h4" className="font-semibold">
-                  Vehicle
-                </Typography>
-                <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation.cars && selectedReservation.cars}
-                  {selectedReservation.motorcycles &&
-                    selectedReservation.motorcycles}
-                  {selectedReservation.bicyles && selectedReservation.bicyles}
-                </Typography>
-              </div>
-            </div>
-            {selectedReservation?.reservation?.status !==
-              "Out-of-Service-Dates" && (
-              <div className="flex flex-col">
-                <Typography variant="h4" className="font-semibold">
-                  Guest
-                </Typography>
-                <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation?.reservation?.name}
-                </Typography>
+            ) : (
+              <div>
+                <div className="flex gap-4">
+                  <div className="flex flex-col w-full">
+                    <Typography variant="h4" className="font-semibold">
+                      Rental Category
+                    </Typography>
+                    <Typography variant="h3" className="text-gray-500">
+                      {selectedReservation.cars && "Car"}
+                      {selectedReservation.motorcycles && "Motorcycle"}
+                      {selectedReservation.bicyles && "Bicycle"}
+                    </Typography>
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <Typography variant="h4" className="font-semibold">
+                      Vehicle
+                    </Typography>
+                    <Typography variant="h3" className="text-gray-500">
+                      {selectedReservation.cars && selectedReservation.cars}
+                      {selectedReservation.motorcycles &&
+                        selectedReservation.motorcycles}
+                      {selectedReservation.bicyles &&
+                        selectedReservation.bicyles}
+                    </Typography>
+                  </div>
+                </div>
+                {selectedReservation?.reservation?.status !==
+                  "Out-of-Service-Dates" && (
+                  <div className="flex flex-col">
+                    <Typography variant="h4" className="font-semibold">
+                      Guest
+                    </Typography>
+                    <Typography variant="h3" className="text-gray-500">
+                      {selectedReservation?.reservation?.name}
+                    </Typography>
+                  </div>
+                )}
+                <div className="flex gap-4">
+                  <div className="flex flex-col w-full">
+                    <Typography variant="h4" className="font-semibold">
+                      Start date
+                    </Typography>
+                    {isEditReservation ? (
+                      <div className="flex flex-col gap-4 items-center">
+                        <div className="flex flex-col w-full">
+                          <Input
+                            type="date"
+                            id="startDate"
+                            label="Start Date"
+                            defaultValue={
+                              (
+                                selectedReservation?.reservation
+                                  ?.startDate as string
+                              ).split("T")[0]
+                            }
+                            {...register("startDate", {
+                              required: "This field is required",
+                            })}
+                            required
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex gap-4 items-center">
+                        <Typography variant="h3" className="text-gray-500">
+                          {getValues("startDate") ? (
+                            <div>
+                              {format(getValues("startDate") as string, "PPPP")}
+                            </div>
+                          ) : (
+                            <div>
+                              {format(
+                                selectedReservation?.reservation
+                                  ?.startDate as string,
+                                "PPPP"
+                              )}
+                            </div>
+                          )}
+                        </Typography>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <Typography variant="h4" className="font-semibold">
+                      End date
+                    </Typography>
+                    {isEditReservation ? (
+                      <div className="flex flex-col gap-4 items-center">
+                        <div className="flex flex-col w-full">
+                          <Input
+                            type="date"
+                            id="endDate"
+                            label="End Date"
+                            defaultValue={
+                              (
+                                selectedReservation?.reservation
+                                  ?.endDate as string
+                              ).split("T")[0]
+                            }
+                            {...register("endDate", {
+                              required: "This field is required",
+                            })}
+                            required
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex gap-4 items-center">
+                        <Typography variant="h3" className="text-gray-500">
+                          {getValues("endDate") ? (
+                            <div>
+                              {format(getValues("endDate") as string, "PPPP")}
+                            </div>
+                          ) : (
+                            <div>
+                              {format(
+                                selectedReservation?.reservation
+                                  ?.endDate as string,
+                                "PPPP"
+                              )}
+                            </div>
+                          )}
+                        </Typography>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col">
+                  <Typography variant="h4" className="font-semibold">
+                    Notes(Optional)
+                  </Typography>
+                  {isEditReservation ? (
+                    <div className="flex flex-col w-full">
+                      <Textarea
+                        id="notes"
+                        label=""
+                        defaultValue={String(
+                          selectedReservation?.reservation?.notes
+                            ? selectedReservation?.reservation?.notes
+                            : ""
+                        )}
+                        {...register("notes")}
+                        required={false}
+                        className="p-3 h-28"
+                      />
+                    </div>
+                  ) : (
+                    <Typography variant="h3" className="text-gray-500">
+                      {selectedReservation?.reservation?.notes
+                        ? selectedReservation?.reservation?.notes
+                        : "No notes for this reservation"}
+                    </Typography>
+                  )}
+                </div>
               </div>
             )}
-            <div className="flex gap-4">
-              <div className="flex flex-col w-full">
-                <Typography variant="h4" className="font-semibold">
-                  Start date
-                </Typography>
-                {isEditReservation ? (
-                  <div className="flex flex-col gap-4 items-center">
-                    <div className="flex flex-col w-full">
-                      <Input
-                        type="date"
-                        id="startDate"
-                        label="Start Date"
-                        defaultValue={
-                          (
-                            selectedReservation?.reservation
-                              ?.startDate as string
-                          ).split("T")[0]
-                        }
-                        {...register("startDate", {
-                          required: "This field is required",
-                        })}
-                        required
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex gap-4 items-center">
-                    <Typography variant="h3" className="text-gray-500">
-                      {getValues("startDate") ? (
-                        <>{format(getValues("startDate") as string, "PPPP")}</>
-                      ) : (
-                        <>
-                          {format(
-                            selectedReservation?.reservation
-                              ?.startDate as string,
-                            "PPPP"
-                          )}
-                        </>
-                      )}
-                    </Typography>
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-col w-full">
-                <Typography variant="h4" className="font-semibold">
-                  End date
-                </Typography>
-                {isEditReservation ? (
-                  <div className="flex flex-col gap-4 items-center">
-                    <div className="flex flex-col w-full">
-                      <Input
-                        type="date"
-                        id="endDate"
-                        label="End Date"
-                        defaultValue={
-                          (
-                            selectedReservation?.reservation?.endDate as string
-                          ).split("T")[0]
-                        }
-                        {...register("endDate", {
-                          required: "This field is required",
-                        })}
-                        required
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex gap-4 items-center">
-                    <Typography variant="h3" className="text-gray-500">
-                      {getValues("endDate") ? (
-                        <>{format(getValues("endDate") as string, "PPPP")}</>
-                      ) : (
-                        <>
-                          {format(
-                            selectedReservation?.reservation?.endDate as string,
-                            "PPPP"
-                          )}
-                        </>
-                      )}
-                    </Typography>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-col">
-              <Typography variant="h4" className="font-semibold">
-                Notes(Optional)
-              </Typography>
-              {isEditReservation ? (
-                <div className="flex flex-col w-full">
-                  <Textarea
-                    id="notes"
-                    label=""
-                    defaultValue={String(
-                      selectedReservation?.reservation?.notes
-                        ? selectedReservation?.reservation?.notes
-                        : ""
-                    )}
-                    {...register("notes")}
-                    required={false}
-                    className="p-3 h-28"
-                  />
-                </div>
-              ) : (
-                <Typography variant="h3" className="text-gray-500">
-                  {selectedReservation?.reservation?.notes
-                    ? selectedReservation?.reservation?.notes
-                    : "No notes for this reservation"}
-                </Typography>
-              )}
-            </div>
           </div>
+
           <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
             <div className="flex justify-end gap-2 w-full">
               {isEditReservation ? (
-                <>
+                <div>
                   <Button type="submit" variant="primary">
                     Save
                   </Button>
-                </>
+                </div>
               ) : (
-                <>
-                  <Button type="button" variant="danger">
+                <div className="flex justify-end gap-2">
+                  <Button
+                    type="button"
+                    variant="danger"
+                    onClick={() => setIsCancelReservation(true)}
+                  >
                     Request to Cancel
                   </Button>
                   <Button
@@ -234,7 +260,7 @@ const RentalCalendarModal = ({
                   >
                     Edit
                   </Button>
-                </>
+                </div>
               )}
             </div>
           </div>
