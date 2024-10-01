@@ -346,34 +346,22 @@ export const editUnitChildName = async (req: Request, res: Response) => {
 
 export const addUnitPricePerDates = async (req: Request, res: Response) => {
   const unitId = req.params.unitId
-  const {
-    fromDate,
-    toDate,
-    baseRate,
-    baseRateMaxCapacity,
-    maximumCapacity,
-    pricePerAdditionalPerson,
-  } = req.body
+  const { fromDate, toDate, baseRate } = req.body
 
   try {
-    const getUnit = await dbBookableUnitTypes.findOne({
-      _id: unitId,
-      deletedAt: null,
-    })
+    const getUnit = await dbBookableUnitTypes
+      .findOne({
+        _id: unitId,
+        deletedAt: null,
+      })
+      .populate('unitPrice')
 
     if (!getUnit) {
       res.json(
         response.error({ message: 'Bookable unit not exist on our system' })
       )
     } else {
-      if (
-        !fromDate ||
-        !toDate ||
-        !baseRate ||
-        !maximumCapacity ||
-        !baseRateMaxCapacity ||
-        !pricePerAdditionalPerson
-      ) {
+      if (!fromDate || !toDate || !baseRate) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         const newFromDate = new Date(fromDate)
@@ -394,9 +382,13 @@ export const addUnitPricePerDates = async (req: Request, res: Response) => {
         } else {
           const newUnitPrice = new dbUnitPrices({
             baseRate: baseRate,
-            baseRateMaxCapacity: baseRateMaxCapacity,
-            maximumCapacity: maximumCapacity,
-            pricePerAdditionalPerson: pricePerAdditionalPerson,
+            //@ts-ignore
+            baseRateMaxCapacity: getUnit?.unitPrice?.baseRateMaxCapacity,
+            //@ts-ignore
+            maximumCapacity: getUnit?.unitPrice?.maximumCapacity,
+            pricePerAdditionalPerson:
+              //@ts-ignore
+              getUnit?.unitPrice?.pricePerAdditionalPerson,
           })
 
           await newUnitPrice.save()

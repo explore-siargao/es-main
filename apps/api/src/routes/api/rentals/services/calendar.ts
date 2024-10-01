@@ -447,16 +447,18 @@ export const editChildName = async (req: Request, res: Response) => {
 
 export const addRentalPricePerDates = async (req: Request, res: Response) => {
   const rentalId = req.params.rentalId
-  const { fromDate, toDate, dayRate, requiredDeposit } = req.body
+  const { fromDate, toDate, dayRate } = req.body
   try {
-    const getRental = await dbRentals.findOne({
-      _id: rentalId,
-      deletedAt: null,
-    })
+    const getRental = await dbRentals
+      .findOne({
+        _id: rentalId,
+        deletedAt: null,
+      })
+      .populate('pricing')
     if (!getRental) {
       res.json(response.error({ message: 'Rental not found on our system' }))
     } else {
-      if (!fromDate || !toDate || !dayRate || !requiredDeposit) {
+      if (!fromDate || !toDate || !dayRate) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         // Parse incoming dates for comparison
@@ -481,7 +483,8 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
         } else {
           const newRentalRates = new dbRentalRates({
             dayRate: dayRate,
-            requiredDeposit: requiredDeposit,
+            //@ts-ignore
+            requiredDeposit: getRental.pricing?.requiredDeposit,
             adminBookingCharge: null,
             createdAt: Date.now(),
             deletedAt: null,
