@@ -9,6 +9,7 @@ export const Z_BackendResponse = z.object({
   overallRating: z.number().optional(),
   pageItemCount: z.number().optional(),
   allItemCount: z.number().optional(),
+  status: z.number().optional(),
   currPage: z.number().optional(),
   action: z
     .object({

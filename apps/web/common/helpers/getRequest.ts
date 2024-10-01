@@ -7,7 +7,9 @@ export async function getRequest(url: string, isMock?: false) {
     next: { revalidate: CACHE_REVALIDATE },
   })
   if (!res.ok) {
-    throw new Error("Failed to fetch data")
+    return {
+      error: true,
+    }
   }
   const jsonData = await res.json()
   return jsonData

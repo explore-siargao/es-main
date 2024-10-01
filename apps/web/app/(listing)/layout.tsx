@@ -24,7 +24,6 @@ export default async function AccommodationLayout({
       <link rel="icon" type="image/x-icon" href={LOGO_SINGLE_IMAGE} />
       <body>
         <Toaster />
-
         <GlobalWrappers>
           <Header contentWidth="medium" isFixed={false} />
           <div className="min-h-screen">{children}</div>

@@ -9,7 +9,7 @@ import {
   dbRentalRates,
   dbRentals,
 } from '@repo/database'
-import { E_Rental_Category } from '@repo/contract'
+import { E_Rental_Category, E_Rental_Status } from '@repo/contract'
 
 const response = new ResponseService()
 
@@ -225,6 +225,50 @@ export const getRental = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.json(
       response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const getRentalByIdPublic = async (req: Request, res: Response) => {
+  try {
+    const rentalId = req.params.rentalId
+    const rental = await dbRentals
+      .findOne({ _id: rentalId, status: E_Rental_Status.Pending, deletedAt: null })
+      .populate({
+        path: 'host',
+        select: 'guest createdAt',
+        populate: {
+          path: 'guest',
+          select: 'firstName lastName',
+        },
+      })
+      .populate('details')
+      .populate('photos')
+      .populate('addOns')
+      .populate('pricing')
+      .populate('location')
+      .exec()
+
+    if (!rental) {
+      res.json(
+        response.error({
+          status: 404,
+          message: 'Rental with given ID not found!',
+        })
+      )
+    } else {
+      res.json(
+        response.success({
+          item: rental,
+        })
+      )
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        status: 500,
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )

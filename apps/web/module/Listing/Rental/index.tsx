@@ -15,8 +15,7 @@ import ReportListingModal from "./components/modals/ReportListingModal"
 import Requirements from "./components/Requirements"
 import Inclusions from "./components/Inclusions"
 import SimilarRentals from "./components/SimilarRentals"
-import useGetRentalById from "@/module/Admin/Listings/hooks/useGetRentalById"
-import { notFound, useParams } from "next/navigation"
+import { useParams } from "next/navigation"
 import { T_BookingAboutDescriptionProps } from "./types/BookingAboutDescription"
 
 export const ratingSummary = {
@@ -121,7 +120,7 @@ type T_RequirementData = {
   haveDriverLicense: string | null
   requiredDeposit: number | null
 }
-export const RentalSingleView = () => {
+export const Rental = ({ rentalData: data }: { rentalData: any }) => {
   const [showModal, setShowModal] = useState(false)
   const params = useParams<{ rentalId: string }>()
   const rentalId = String(params.rentalId)
@@ -138,14 +137,8 @@ export const RentalSingleView = () => {
   })
   const [aboutData, setAboutData] = useState<T_AboutData | null>(null)
 
-  const { data, isPending } = useGetRentalById(rentalId)
-
-  if ((!isPending && !data) || (!isPending && !data.item)) {
-    notFound()
-  }
-
   useEffect(() => {
-    if (!isPending && data?.item) {
+    if (data?.item) {
       setAboutData({
         category: data?.item?.category,
         bodyType: data?.item?.bodyType,
@@ -173,14 +166,10 @@ export const RentalSingleView = () => {
         day: "numeric",
       })
     }
-  }, [data, isPending])
+  }, [data])
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
-      {isPending ? (
-        <></>
-      ) : (
-        <>
           <div>
             <SectionInfo
               images={data?.item?.photos}
@@ -261,9 +250,7 @@ export const RentalSingleView = () => {
             </div>
           </div>
           <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
-        </>
-      )}
     </WidthWrapper>
   )
 }
-export default RentalSingleView
+export default Rental
