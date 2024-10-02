@@ -69,7 +69,9 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 {" "}
                 <span className="font-semibold">Description:</span>{" "}
-                {data?.item?.description}
+                <div className="flex break-all whitespace-normal">
+                  {data?.item?.description}
+                </div>
               </Typography>
 
               <Typography variant="h5" className="mt-2">

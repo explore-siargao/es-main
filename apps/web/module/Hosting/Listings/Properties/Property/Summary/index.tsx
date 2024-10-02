@@ -118,7 +118,9 @@ const Summary = () => {
                   </Typography>
                   <Typography variant="h5" className="mt-2">
                     <span className="font-semibold">Description:</span>{" "}
-                    {data?.item?.description}
+                    <div className="flex break-all whitespace-normal  w-1/2">
+                      {data?.item?.description}
+                    </div>
                   </Typography>
                 </>
               ) : (
@@ -153,7 +155,9 @@ const Summary = () => {
                   <div className="w-1/2">
                     <Typography variant="h5" className="mt-2">
                       <span className="font-semibold">How to get there:</span>{" "}
-                      {data?.item?.location?.howToGetThere}
+                      <div className="flex break-all whitespace-normal">
+                        {data?.item?.location?.howToGetThere}
+                      </div>
                     </Typography>
                   </div>
                 </>
