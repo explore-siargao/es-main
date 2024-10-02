@@ -45,7 +45,7 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
               whatToBring: updatedActivity?.whatToBring,
               notAllowed: updatedActivity?.notAllowed,
               policies: updatedActivity?.policies,
-              cancellationDays: updatedActivity?.cancellationDays,
+              cancellationDays: updatedActivity?.daysCanCancel,
             },
             message: 'Activity updated',
           })
@@ -84,7 +84,7 @@ export const getAdditionalInfo = async (req: Request, res: Response) => {
           whatToBring: getActivity?.whatToBring,
           notAllowed: getActivity?.notAllowed,
           policies: getActivity?.policies,
-          cancellationDays: getActivity?.cancellationDays,
+          cancellationDays: getActivity?.daysCanCancel,
         }
 
         res.json(response.success({ item: additionalInfo }))

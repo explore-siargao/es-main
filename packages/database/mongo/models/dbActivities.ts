@@ -2,6 +2,10 @@ import mongoose, { Schema } from "mongoose"
 
 const statusEnum = ["Pending", "Incomplete", "Live"]
 
+const slotCapacity = new Schema({
+  minimum: Number,
+  maximum: Number,
+})
 const segments = new Schema({
   index: Number,
   activities: {
@@ -29,20 +33,46 @@ const segments = new Schema({
   },
 })
 
-const price = new Schema({
-  basePrice: Number,
-  exceedPersonPrice: Number,
+const timeSlots = new Schema({
+  startTime: String,
+  endTime: String,
 })
 
-const slots = new Schema({
-  time: String,
-  minimumGuestCount: Number,
+const schedule = new Schema({
+  monday: {
+    type: [timeSlots],
+    default: [],
+  },
+  tuesday: {
+    type: [timeSlots],
+    default: [],
+  },
+  wednesday: {
+    type: [timeSlots],
+    default: [],
+  },
+  thursday: {
+    type: [timeSlots],
+    default: [],
+  },
+  friday: {
+    type: [timeSlots],
+    default: [],
+  },
+  saturday: {
+    type: [timeSlots],
+    default: [],
+  },
+  sunday: {
+    type: [timeSlots],
+    default: [],
+  },
 })
 
 const pricePerDates = new Schema({
   fromDate: Date,
   toDate: Date,
-  price: price,
+  price: Number,
 })
 
 const activities = new Schema({
@@ -111,7 +141,7 @@ const activities = new Schema({
     type: [String],
     default: [],
   },
-  cancellationDays: String,
+
   isSegmentBuilderEnabled: {
     type: Boolean,
     default: false,
@@ -129,16 +159,30 @@ const activities = new Schema({
     ref: "Photos",
     default: [],
   },
-  price: {
-    type: price,
+  slotslotCapacity: {
+    type: slotCapacity,
+    required: true,
+  },
+  schedule: {
+    type: schedule,
+    default: null,
+  },
+  pricePerPerson: {
+    type: Number,
+    default: 0,
+  },
+  pricePerSlot: {
+    type: Number,
+    default: 0,
   },
   pricePerDates: {
     type: [pricePerDates],
     default: [],
   },
-  slots: {
-    type: [slots],
-    default: [],
+
+  daysCanCancel: {
+    type: Number,
+    required: true,
   },
   status: {
     type: String,
