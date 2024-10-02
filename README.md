@@ -1,4 +1,4 @@
-# ExploreSiargao (Outdated since 05/29/2024)
+# ExploreSiargao
 
 ### 1. Install `Node.js`
 
@@ -19,19 +19,21 @@ nvm use 20.10.0
 Make sure you have <a href="https://git-scm.com/" target="_blank">Git</a> installed in local machine then run this command in your PowerShell or any other Terminal
 
 ```
-git clone https://github.com/explore-siargao/explore-siargao.git
+git clone https://github.com/explore-siargao/es-main.git
 ```
 
-### 3. Database Setup
-
-Go to this <a href="/docs/local_database_setup.md" target="_blank">file</a> to implement the setup
-
-### 4. Setup TypeScript
+### 3. Setup TypeScript
 
 Install `typescript` as a global dependency using this command
 
 ```
 npm install -g typescript
+```
+
+### 4. Setup PNPM
+
+```
+npm install -g pnpm@8.14.1
 ```
 
 ### 5. Setup environment variables
@@ -40,18 +42,29 @@ Create `.env` file in the root of the project then ask the Admins for you to hav
 
 ### 6. Run setup command
 
-Make sure that your current directory is `explore-siargao` folder, then run this command
+Make sure that your current directory is `es-main` folder, then run this command
 
 ```
-npm run setup
+pnpm run install
 ```
 
 This will install the dependencies and build the project
 
-### 6. Run the project
+### 7. Run the project
 
 You can now start your local development by running this command
 
 ```
-npm run dev
+pnpm run dev
 ```
+
+## URL and Ports
+
+### Main Web
+http://localhost:3000
+
+### REST API
+http://localhost:9000
+
+### CMS
+http://localhost:3001
