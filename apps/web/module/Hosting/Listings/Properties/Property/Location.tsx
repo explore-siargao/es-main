@@ -44,7 +44,7 @@ const ListingLocation = ({ pageType }: Prop) => {
   const [selectedMunicipality, setSelectedMunicipality] = useState("")
   const { mutateAsync: updateFinishedSection } =
     useUpdatePropertyFinishedSection(listingId)
-
+ 
   const {
     register,
     handleSubmit,
@@ -126,34 +126,16 @@ const ListingLocation = ({ pageType }: Prop) => {
     formData.latitude = currentCoords[0]
     formData.longitude = currentCoords[1]
 
-    const callBackReq = {
+     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          if (
-            pageType === "setup" &&
-            !data?.item?.finishedSections?.includes("location")
-          ) {
-            const callBack2 = {
-              onSuccess: (data: any) => {
-                if (!data.error) {
-                  queryClient.invalidateQueries({
-                    queryKey: ["property-finished-sections", listingId],
-                  })
-                } else {
-                  toast.error(String(data.message))
-                }
-              },
-              onError: (err: any) => {
-                toast.error(String(err))
-              },
-            }
-            updateFinishedSection({ newFinishedSection: "location" }, callBack2)
-          } else {
-            queryClient.invalidateQueries({
-              queryKey: ["property", listingId],
-            })
-          }
+          queryClient.invalidateQueries({
+            queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property", listingId],
+          })
           if (pageType === "setup") {
             router.push(
               `/hosting/listings/properties/setup/${listingId}/facilities`
@@ -199,8 +181,8 @@ const ListingLocation = ({ pageType }: Prop) => {
               fontWeight="normal"
               className="text-gray-500 pt-1 italic"
             >
-              Click to open map and drop a pin exactly where your listing or
-              meeting point is located. This will help your customers find you.
+              Click to open map and drop a pin exactly where your listing or 
+              meeting point is located. This will help your customers find you. 
             </Typography>
             <DynamicMapWithPin
               disablePinMovement={true}
