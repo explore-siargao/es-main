@@ -69,7 +69,9 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 {" "}
                 <span className="font-semibold">Description:</span>{" "}
+                <div className="flex break-all whitespace-normal">
                 {data?.item?.description}
+                </div>
               </Typography>
 
               <Typography variant="h5" className="mt-2">
@@ -309,6 +311,7 @@ const ActivitySummary = () => {
                       <Image
                         src={"/assets/" + photo.key}
                         alt={`preview-` + index}
+                       
                         layout="fill"
                         objectFit="cover"
                         objectPosition="center"
