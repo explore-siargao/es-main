@@ -70,7 +70,7 @@ const ActivitySummary = () => {
                 {" "}
                 <span className="font-semibold">Description:</span>{" "}
                 <div className="flex break-all whitespace-normal">
-                {data?.item?.description}
+                  {data?.item?.description}
                 </div>
               </Typography>
 
@@ -311,7 +311,6 @@ const ActivitySummary = () => {
                       <Image
                         src={"/assets/" + photo.key}
                         alt={`preview-` + index}
-                       
                         layout="fill"
                         objectFit="cover"
                         objectPosition="center"
