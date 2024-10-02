@@ -33,7 +33,7 @@ export const addActivity = async (req: Request, res: Response) => {
       otherInclusion: [],
       notIncluded: [],
       whatToBrings: [],
-      cancellationDays: null,
+      daysCanCancel: 0,
       notAllowed: [],
       policies: [],
       cancellationPolicies: [],
@@ -41,11 +41,21 @@ export const addActivity = async (req: Request, res: Response) => {
       isSegmentBuilderEnabled: false,
       segments: [],
       meetingPoint: location._id,
-      price: {
-        basePrice: 0,
-        exceedPersonPrice: 0,
+      pricePerSlot: 0,
+      pricePerPerson: 0,
+      slotCapacity: {
+        minimum: 0,
+        maximum: 0,
       },
-      slots: [],
+      schedule: {
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: [],
+        saturday: [],
+        sunday: [],
+      },
       status: 'Incomplete',
     }
 

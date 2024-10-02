@@ -63,7 +63,7 @@ export const Z_Update_Activity_Additional_Info = z.object({
   whatToBring: z.array(z.string()).optional(),
   notAllowed: z.array(z.string()).optional(),
   policies: z.array(z.string()).optional(),
-  cancellationDays: z.string().nullable().optional(),
+  cancellationDays: z.number().nullable().optional(),
 })
 
 export const Z_Update_Activity_Inclusions = z.object({

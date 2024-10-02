@@ -159,7 +159,7 @@ const activities = new Schema({
     ref: "Photos",
     default: [],
   },
-  slotslotCapacity: {
+  slotCapacity: {
     type: slotCapacity,
     required: true,
   },
