@@ -43,7 +43,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
   const [policies, setPolicies] = useState<Item[]>([])
   const [policyName, setPolicyName] = useState<string>("")
 
-  const [cancellationDays, setCancellationDays] = useState<string | null>(null)
+  const [cancellationDays, setCancellationDays] = useState<number | null>(null)
   const { data, isPending } = useGetActivityById(activityId)
   const { mutate, isPending: updateActivityAdditionalInfo } =
     useUpdateActivityAdditionalInfo(activityId)
@@ -69,7 +69,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
           name,
         }))
       )
-      setCancellationDays(data?.item?.cancellationDays || null)
+      setCancellationDays(data?.item?.daysCanCancel || 0)
     }
   }, [data, isPending])
 
@@ -348,10 +348,12 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       type="radio"
                       name="cancellationDays"
                       disabled={isPending}
-                      defaultChecked={data?.item?.cancellationDays === "5 Days"}
+                      defaultChecked={data?.item?.daysCanCancel === 5}
                       className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
-                      onChange={(e) => setCancellationDays(e.target.value)}
-                      value="5 Days"
+                      onChange={(e) =>
+                        setCancellationDays(Number(e.target.value))
+                      }
+                      value="5"
                     />
                     <label
                       htmlFor="fiveDays"
@@ -366,12 +368,12 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       type="radio"
                       name="cancellationDays"
                       disabled={isPending}
-                      defaultChecked={
-                        data?.item?.cancellationDays === "10 Days"
-                      }
+                      defaultChecked={data?.item?.daysCanCancel === 10}
                       className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
-                      onChange={(e) => setCancellationDays(e.target.value)}
-                      value="10 Days"
+                      onChange={(e) =>
+                        setCancellationDays(Number(e.target.value))
+                      }
+                      value="10"
                     />
                     <label
                       htmlFor="tenDays"
@@ -387,11 +389,14 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                       name="cancellationDays"
                       disabled={isPending}
                       defaultChecked={
-                        data?.item?.cancellationDays === "Non-refundable"
+                        data?.item?.daysCanCancel === null ||
+                        data?.item?.daysCanCancel === 0
                       }
                       className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
-                      onChange={(e) => setCancellationDays(e.target.value)}
-                      value="Non-refundable"
+                      onChange={(e) =>
+                        setCancellationDays(Number(e.target.value))
+                      }
+                      value="0"
                     />
                     <label
                       htmlFor="nonRefundable"

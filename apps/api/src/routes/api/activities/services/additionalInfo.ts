@@ -20,7 +20,7 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
             whatToBring: whatToBring,
             notAllowed: notAllowed,
             policies: policies,
-            cancellationDays: cancellationDays,
+            daysCanCancel: cancellationDays,
             updatedAt: Date.now(),
             finishedSections: [
               'basicInfo',
