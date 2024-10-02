@@ -476,7 +476,6 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
               longitude: longitude,
               latitude: latitude,
               howToGetThere: howToGetThere,
-
             },
           })
           await dbProperties.findByIdAndUpdate(
