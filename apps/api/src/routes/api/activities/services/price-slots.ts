@@ -38,11 +38,19 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
               message: 'Activity not found!',
             })
           )
-        } else {
+        } else { 
           const updatedPriceAndSlots = await dbActivities.findByIdAndUpdate(
             activity?._id,
             {
               $set: {
+                finishedSections: [
+                  'basicInfo',
+                  'itinerary',
+                  'inclusions',
+                  'additionalInfo',
+                  'photos',
+                  'pricing'
+                ],
                 experienceType: experienceType,
                 schedule: schedule,
                 slotCapacity: slotCapacity,
