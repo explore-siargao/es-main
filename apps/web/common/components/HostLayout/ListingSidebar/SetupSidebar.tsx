@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import Link from "next/link"
 import { Typography } from "@/common/components/ui/Typography"
 import {
@@ -23,6 +23,10 @@ const SetupSidebar = ({
 }) => {
   const { data: finishedData } = useGetFinishedSections({ listingId, category })
 
+  useEffect(() => {
+    console.log("Category:", category)
+  }, [category])
+
   const getLinks = (
     category: E_Listing_Category,
     listingId: string,
@@ -30,7 +34,6 @@ const SetupSidebar = ({
   ) => {
     const links = {
       [E_Listing_Category.Property]: getPropertyLinks(listingId, type ?? ""),
-
       [E_Listing_Category.Activity]: getActivityLinks(listingId),
       [E_Listing_Category.Rental]: getRentalLinks(listingId),
     }
@@ -41,8 +44,8 @@ const SetupSidebar = ({
     category === E_Listing_Category.Property
       ? useGetPropertyById(listingId)
       : category === E_Listing_Category.Activity
-        ? useGetActivityById(listingId)
-        : useGetRentalById(listingId)
+      ? useGetActivityById(listingId)
+      : useGetRentalById(listingId)
 
   const finishedSections = finishedData?.item?.finishedSections || []
   const SECTION_LINKS = getLinks(category, listingId, categoryData?.item?.type)
@@ -54,7 +57,7 @@ const SetupSidebar = ({
 
     const Icon = (
       <div
-        className={`h-8 w-8 flex items-center justify-center rounded-full ${
+        className={`h-10 w-10 flex items-center justify-center rounded-full mb-4 ${
           isSectionFinished
             ? "bg-primary-100 text-primary-600"
             : "bg-gray-100 text-text-300"
@@ -65,12 +68,12 @@ const SetupSidebar = ({
     )
 
     return (
-      <li key={item.title}>
+      <li key={item.title} className="relative mb-4">
         {isLinkEnabled ? (
           <Link
             href={item.link}
             passHref={true}
-            className="text-text-400 hover:text-text-700 hover:underline group flex items-center gap-x-2 rounded-md text-sm leading-6 font-semibold"
+            className="text-text-400 hover:text-text-700 hover:underline group flex items-center gap-x-3 rounded-md text-sm leading-6 font-semibold"
           >
             {Icon}
             <Typography
@@ -82,7 +85,7 @@ const SetupSidebar = ({
             </Typography>
           </Link>
         ) : (
-          <div className="text-text-400 group flex items-center gap-x-2 rounded-md text-sm leading-6 font-semibold hover:cursor-not-allowed">
+          <div className="text-text-400 group flex items-center gap-x-3 rounded-md text-sm leading-6 font-semibold hover:cursor-not-allowed">
             {Icon}
             <Typography
               variant="p"
@@ -94,20 +97,22 @@ const SetupSidebar = ({
           </div>
         )}
 
-        {finishedSections.length < SECTION_LINKS.length && (
+        {index + 1 !== SECTION_LINKS.length && (
           <div
-            className={`ml-4 w-[2px] h-6 ${
-              isSectionFinished || SECTION_LINKS.length > index + 1
-                ? "bg-primary-600"
-                : "bg-gray-200"
-            } mt-2`}
+            className={`absolute left-[1.25rem] top-[3rem] w-[2px] h-[30px] ${
+              isSectionFinished ? "bg-primary-600" : "bg-gray-200"
+            }`}
           />
         )}
       </li>
     )
   }
 
-  return <>{SECTION_LINKS.map(renderLink)}</>
+  return (
+    <ul className="relative">
+      {SECTION_LINKS.map(renderLink)}
+    </ul>
+  )
 }
 
 export default SetupSidebar

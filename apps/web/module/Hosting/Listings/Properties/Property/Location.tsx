@@ -69,6 +69,9 @@ const ListingLocation = ({ pageType }: Prop) => {
   const handleHowToGetThereChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setHowToGetThere(e.target.value)
   }
+  const [rerender, setRerender] = useState(false);
+
+  
 
   useEffect(() => {
     if (data && !isFetching) {
@@ -168,6 +171,7 @@ const ListingLocation = ({ pageType }: Prop) => {
       },
     }
     mutate(formData, callBackReq)
+    setRerender((prev) => !prev);
   }
 
   const handleMarkerSetter = (coords: { lat: number; lng: number }) => {
