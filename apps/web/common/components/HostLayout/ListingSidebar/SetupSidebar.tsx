@@ -44,8 +44,8 @@ const SetupSidebar = ({
     category === E_Listing_Category.Property
       ? useGetPropertyById(listingId)
       : category === E_Listing_Category.Activity
-      ? useGetActivityById(listingId)
-      : useGetRentalById(listingId)
+        ? useGetActivityById(listingId)
+        : useGetRentalById(listingId)
 
   const finishedSections = finishedData?.item?.finishedSections || []
   const SECTION_LINKS = getLinks(category, listingId, categoryData?.item?.type)
@@ -108,11 +108,7 @@ const SetupSidebar = ({
     )
   }
 
-  return (
-    <ul className="relative">
-      {SECTION_LINKS.map(renderLink)}
-    </ul>
-  )
+  return <ul className="relative">{SECTION_LINKS.map(renderLink)}</ul>
 }
 
 export default SetupSidebar
