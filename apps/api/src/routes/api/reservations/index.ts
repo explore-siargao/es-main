@@ -39,7 +39,6 @@ router.post(
   addActivityReservation
 )
 
-
 //edit reservations
 router.patch(
   '/:reservationId/rental',

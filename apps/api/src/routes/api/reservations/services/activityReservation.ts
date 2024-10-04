@@ -74,5 +74,3 @@ export const addActivityReservation = async (req: Request, res: Response) => {
     )
   }
 }
-
-
