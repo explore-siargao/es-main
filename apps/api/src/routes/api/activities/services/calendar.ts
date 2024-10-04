@@ -191,7 +191,7 @@ export const getPrivateActivityCalendar = async (
       res.json(
         response.success({
           //@ts-ignore
-          items,
+          items: items.filter((item) => item.privateActivities.length > 0),
           allItemCount: items.length,
           message: 'Private activities calendar fetched successfully.',
         })
