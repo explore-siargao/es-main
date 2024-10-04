@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.26.0](https://github.com/explore-siargao/es-main/compare/v0.25.0...v0.26.0) (2024-10-04)
+
+
+### 🚀 Features
+
+* after updating property locations sidebar location not turn to green ([28b0565](https://github.com/explore-siargao/es-main/commit/28b05657e0a854039794639ddbd1c3d7eafd994e))
+* **api:** Activity add price per dates endpoint ([95b8bb6](https://github.com/explore-siargao/es-main/commit/95b8bb682c2d9d43db85f0a7ef12c15297c71f79))
+* **api:** Added endpoint for cancelling rental reservation and getting activity counts ([dbe285a](https://github.com/explore-siargao/es-main/commit/dbe285a580d53d55fce9a543527e3a2a33e7b952))
+* **api:** Added endpoint for edit and get slots price ([75ea753](https://github.com/explore-siargao/es-main/commit/75ea753dfd9aa863a72f5a91785d27db23968273))
+* **api:** Added endpoint for get private and joiner activities ([ef0e7de](https://github.com/explore-siargao/es-main/commit/ef0e7def7a4d535d49dcb3da184d5779afc02adf))
+* **api:** Create add activity calendar reservation ([dc764e9](https://github.com/explore-siargao/es-main/commit/dc764e95d08c5a06c4912dedeae6ff0211f548c2))
+* **api:** Modified activity model schema added schedule and time slots ([515fee3](https://github.com/explore-siargao/es-main/commit/515fee3e20c6da89214f8d965a32acbbff41eea1))
+* **api:** Modified activity model schema added schedule and time slots ([fa87e57](https://github.com/explore-siargao/es-main/commit/fa87e57d0cec29a5f159dcb029a3fd928dcfd828))
+* **api:** Modified affected endpoint functions due to modifying activity model ([42e2619](https://github.com/explore-siargao/es-main/commit/42e261967541fa66a3cbe435122aa82bf16aa650))
+* Connect calendar activity reservation backend to frontend ([25d4164](https://github.com/explore-siargao/es-main/commit/25d4164b8981a80618fe04b51f7fad15a52db355))
+* Connect calendar activity reservation backend to frontend ([1df4287](https://github.com/explore-siargao/es-main/commit/1df4287d7059cf5ea8d1b7270cbc143e44d15fef))
+* Connect calendar activity reservation backend to frontend ([2d7e2ec](https://github.com/explore-siargao/es-main/commit/2d7e2ec22cbc8df3adcc945d01aeb6ec86f4c355))
+* Connect calendar activity reservation backend to frontend ([2582dc6](https://github.com/explore-siargao/es-main/commit/2582dc6ac8174e721b86df18276bf7820b8e3583))
+* Create pricing ui for activity setup ([5960846](https://github.com/explore-siargao/es-main/commit/59608462ef8429f8b923878d61a6081ab59c390d))
+* **web:** Added cancel rental reservation function ([47be292](https://github.com/explore-siargao/es-main/commit/47be29232e258cc8de23d7fee0492a01b65e6fb8))
+
+
+### 🛠 Bug Fixes
+
+* fixed bug after saving property policies sidebar changing layout ([8914b2e](https://github.com/explore-siargao/es-main/commit/8914b2e74fde5c70b8ab0f606d6296a3e67d3ff9))
+* fixed bug after saving property policies sidebar changing layout ([b73fc3c](https://github.com/explore-siargao/es-main/commit/b73fc3c7733b7a561f4e6f7036862836e99c7b18))
+* **web:** Activity setup summary error on image UI ([37b42ce](https://github.com/explore-siargao/es-main/commit/37b42ce89ed580ca2cb38cb45e29f574ddff5581))
+
+
+### 🧰 Maintenance
+
+* Import not imported constants ([9557680](https://github.com/explore-siargao/es-main/commit/955768056f241da80aed7d75d5a0e08b83d6bbca))
+* Updated read me setup of project ([5960707](https://github.com/explore-siargao/es-main/commit/5960707946513b975c92c9180245c899c51a98d0))
+
 ## [0.25.0](https://github.com/explore-siargao/es-main/compare/v0.24.0...v0.25.0) (2024-10-01)
 
 ### 🚀 Features
