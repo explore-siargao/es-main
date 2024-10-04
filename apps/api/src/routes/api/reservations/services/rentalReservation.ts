@@ -169,7 +169,7 @@ export const cancelRentalReservationByHost = async (
       res.json(
         response.success({
           item: cancelReservation,
-          message: 'Activity reservation successfully cancelled',
+          message: 'Rental reservation successfully cancelled',
         })
       )
     } else {

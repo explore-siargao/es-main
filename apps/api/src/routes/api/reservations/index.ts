@@ -58,7 +58,7 @@ router.patch(
 )
 
 router.patch(
-  '/:reservationId/cancel-reservation',
+  '/rental/:reservationId/cancel-reservation',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
