@@ -1,4 +1,7 @@
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { dbActivities, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
