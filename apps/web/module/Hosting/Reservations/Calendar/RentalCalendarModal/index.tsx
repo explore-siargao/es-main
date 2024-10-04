@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { useFormContext } from "react-hook-form"
+import useCancelRentalReservation from "../hooks/useCancelRentalReservation"
 
 interface IRentalCalendarModalProps {
   isModalOpen: boolean
@@ -35,6 +36,8 @@ const RentalCalendarModal = ({
   const { mutate } = useUpdateRentalReservation(
     String(selectedReservation.reservation?.id)
   )
+  const { mutate: cancelReservation, isPending: isLoading } =
+    useCancelRentalReservation(String(selectedReservation.reservation?.id))
 
   const onSubmit = (data: any) => {
     mutate(data, {
@@ -59,6 +62,29 @@ const RentalCalendarModal = ({
         toast.error(String(data.message))
       },
     })
+  }
+
+  const callBackReq = {
+    onSuccess: (data: any) => {
+      if (!data.error) {
+        queryClient.invalidateQueries({
+          queryKey: ["calendar-car"],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ["calendar-motor"],
+        })
+        queryClient.invalidateQueries({
+          queryKey: ["calendar-bike"],
+        })
+        toast.success(data.message)
+        onClose()
+      } else {
+        toast.error(String(data.message))
+      }
+    },
+    onError: (err: any) => {
+      toast.error(String(err))
+    },
   }
 
   return (
@@ -238,20 +264,39 @@ const RentalCalendarModal = ({
 
           <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
             <div className="flex justify-end gap-2 w-full">
-              {isEditReservation ? (
+              {isCancelReservation ? (
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="danger"
+                    disabled={isLoading}
+                    onClick={() => cancelReservation(null, callBackReq)}
+                  >
+                    Confirm Cancellation
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setIsCancelReservation(false)}
+                    disabled={isLoading}
+                  >
+                    Go Back
+                  </Button>
+                </div>
+              ) : isEditReservation ? (
                 <div>
                   <Button type="submit" variant="primary">
                     Save
                   </Button>
                 </div>
               ) : (
-                <div className="flex justify-end gap-2">
+                <div className="flex gap-2">
                   <Button
                     type="button"
                     variant="danger"
                     onClick={() => setIsCancelReservation(true)}
                   >
-                    Request to Cancel
+                    Cancel Reservation
                   </Button>
                   <Button
                     type="button"
