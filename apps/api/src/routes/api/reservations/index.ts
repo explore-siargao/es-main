@@ -4,6 +4,7 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import express from 'express'
 import {
   addRentalReservation,
+  cancelRentalReservationByHost,
   editRentalReservation,
 } from './services/rentalReservation'
 import {
@@ -47,4 +48,11 @@ router.patch(
   editUnitReservation
 )
 
+router.patch(
+  '/:reservationId/cancel-reservation',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cancelRentalReservationByHost
+)
 export default router

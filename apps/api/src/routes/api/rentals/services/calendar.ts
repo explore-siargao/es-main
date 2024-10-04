@@ -94,7 +94,13 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       const reservations = await dbReservations
         .find({
           rentalId: { $in: allRentalIds },
-          $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+          $or: [
+            {
+              startDate: { $lte: endDate },
+              endDate: { $gte: startDate },
+              status: { $ne: 'Cancelled' },
+            },
+          ],
         })
         .populate('guest')
 
@@ -213,7 +219,13 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       const reservations = await dbReservations
         .find({
           rentalId: { $in: allRentalIds },
-          $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+          $or: [
+            {
+              startDate: { $lte: endDate },
+              endDate: { $gte: startDate },
+              status: { $ne: 'Cancelled' },
+            },
+          ],
         })
         .populate('guest')
 
@@ -330,7 +342,13 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       const reservations = await dbReservations
         .find({
           rentalId: { $in: allRentalIds },
-          $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+          $or: [
+            {
+              startDate: { $lte: endDate },
+              endDate: { $gte: startDate },
+              status: { $ne: 'Cancelled' },
+            },
+          ],
         })
         .populate('guest')
 

@@ -144,3 +144,46 @@ export const editRentalReservation = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const cancelRentalReservationByHost = async (
+  req: Request,
+  res: Response
+) => {
+  const reservationId = req.params.reservationId
+  try {
+    const reservation = await dbReservations.findOne({
+      _id: reservationId,
+      deletedAt: null,
+      status: { $ne: 'Cancelled' },
+    })
+    if (reservation) {
+      const cancelReservation = await dbReservations.findByIdAndUpdate(
+        reservation._id,
+        {
+          status: 'Cancelled',
+          cancelledBy: 'host',
+          cancellationDate: Date.now(),
+          updatedAt: Date.now(),
+        }
+      )
+      res.json(
+        response.success({
+          item: cancelReservation,
+          message: 'Activity reservation successfully cancelled',
+        })
+      )
+    } else {
+      res.json(
+        response.error({
+          message: 'Reservation not exist or already cancelled',
+        })
+      )
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
