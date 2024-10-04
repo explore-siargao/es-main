@@ -6,6 +6,7 @@ import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import {
   addActivity,
   getActivity,
+  getActivityCounts,
   getAllActivitiesByHostId,
   updateItinerary,
 } from './services/default'
@@ -215,6 +216,14 @@ router.patch(
   isCsrfTokenValid,
   isHostActivityOwner,
   addActivityPricePerDates
+)
+
+router.get(
+  '/counts/all',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getActivityCounts
 )
 
 export default router
