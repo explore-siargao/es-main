@@ -12,22 +12,17 @@ import {
   endOfDay,
   isWithinInterval,
 } from "date-fns"
-import sampleData from "./SampleData.json"
 import { ChevronDown, ChevronRight, Edit3, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
 import toast from "react-hot-toast"
 import { Button } from "@/common/components/ui/Button"
 import Sidebar from "../Sidebar"
-import ReservationCalendarModal from "../ReservationCalendarModal"
 import {
   SelectedReservation,
   SampleData,
-  Booking,
   Reservation,
 } from "../../types/CalendarTable"
-import AddActivityReservationModal from "../AddReservationModal/Activity"
 import { useQueryClient } from "@tanstack/react-query"
-import ActivityEditPricePerDatesModal from "./ActivityEditPricePerDatesModal"
 import useGetPrivateActivityCalendar from "../hooks/useGetCalendarPrivateActivities"
 import { FormProvider, useForm } from "react-hook-form"
 import formatDateTZ from "@/common/helpers/formatDateTZ"
@@ -141,11 +136,11 @@ const PrivateCalendarTable = () => {
       setSearchString("")
     }
   }, [startDate, daysPerPage, sampleData?.items, searchString, setFilteredData])
-
+  
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-  console.log(filteredData)
+  
   const generateCalendarHeader = () => {
     const headers = []
     const today = new Date() // Get today's date
@@ -279,7 +274,7 @@ const PrivateCalendarTable = () => {
     const endOffset = differenceInDays(bookingEnd, addDays(startDate, -1))
     const startCol = Math.max(startOffset, -0.5)
     const endCol = Math.min(endOffset, daysPerPage - 0.5)
-
+    console.log(startOffset, endOffset)
     const colSpan = endCol - startCol + 1
     return { startCol, colSpan }
   }
@@ -412,7 +407,7 @@ const PrivateCalendarTable = () => {
                               <div>
                                 &#8369;
                                 {category.pricePerDates?.length === 0
-                                  ? parseFloat(`${category.price}`).toFixed(2)
+                                  ? !parseFloat(`${category.price}`).toFixed(2) ? parseFloat(`${category.price}`).toFixed(2) : 0
                                   : category.pricePerDates?.find((item) => {
                                         const itemFromDate = formatDateTZ(
                                           startOfDay(item.fromDate)
@@ -522,8 +517,8 @@ const PrivateCalendarTable = () => {
                                 <div
                                   key={booking.id}
                                   style={{
-                                    left: `${(startCol * 100) / daysPerPage + 4}%`,
-                                    width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                                    left: `${(startCol * 100) / daysPerPage + 0.5}%`,
+                                    width: `${(colSpan * 100) / daysPerPage - 1}%`,
                                   }}
                                   onClick={() => {
                                     setIsReservationModalOpen(true)

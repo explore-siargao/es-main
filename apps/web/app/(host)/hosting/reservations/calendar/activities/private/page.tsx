@@ -3,6 +3,7 @@ import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import AuthGuard from "@/common/components/AuthGuard"
 import CalendarActivity from "@/module/Hosting/Reservations/Calendar/Activity"
+import PrivateReservationCalendar from "@/module/Hosting/Reservations/Calendar/Activity/PrivateReservationCalendar"
 
 export const metadata: Metadata = {
   title: `${HOST} - ${APP_NAME}`,
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 const ReservationCalendarPage = () => {
   return (
     <AuthGuard>
-      <CalendarActivity />
+      <PrivateReservationCalendar />
     </AuthGuard>
   )
 }

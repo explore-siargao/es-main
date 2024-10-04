@@ -80,7 +80,6 @@ const RentalsEditPricePerDatesModal = ({
     setFromDate(selectedDate)
   }, [selectedDate])
 
-  console.log("RentalId:", rentalId)
   return (
     <ModalContainer
       onClose={handleClose}

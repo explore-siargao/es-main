@@ -37,21 +37,23 @@ const CalendarTab = () => {
         link: "/hosting/reservations/calendar/rentals/bicycles",
       })
     }
-  } else if(activityCountsData && !activityCountsPending) {
+  } 
+  
+  if(activityCountsData && !activityCountsPending) {
     if (activityCountsData?.item?.private > 0) {
       activityTabs.push({
         name: "Private",
         link: "/hosting/reservations/calendar/activities/private",
       })
     }
-    if (activityCountsData?.item?.joiners > 0) {
+    if (activityCountsData?.item?.joiner > 0) {
       activityTabs.push({
         name: "Joiners",
         link: "/hosting/reservations/calendar/activities/joiners",
       })
     }
   }
-
+  
   return (
     <>
       {pathType === "rentals" ? (

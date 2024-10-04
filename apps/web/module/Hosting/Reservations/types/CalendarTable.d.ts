@@ -74,6 +74,7 @@ export interface Category {
   bicycles?: Rental[]
   cars?: Rental[]
   privateActivities?: Rental[]
+  joinerActivities?: Rental[]
   bookableUnitTypes: BookableUnitType[]
 }
 

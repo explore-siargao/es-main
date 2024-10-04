@@ -2,7 +2,7 @@
 import { Typography } from "@/common/components/ui/Typography"
 import ReservationTab from "../../components/ReservationTab"
 import RentalCalendarLegend from "../../components/RentalCalendarLegend"
-import PrivateCalendarTable from "./PrivateCalendarTable"
+import JoinerCalendarTable from "./JoinerCalendarTable"
 
 const JoinerActivityCalendar = () => {
   return (
@@ -30,7 +30,7 @@ const JoinerActivityCalendar = () => {
         </div>
 
         <div className="flex mt-2">
-          <PrivateCalendarTable />
+          <JoinerCalendarTable />
         </div>
 
         <div className="fixed bottom-4 right-4 z-20">
