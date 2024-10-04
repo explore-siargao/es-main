@@ -85,7 +85,7 @@ const JoinerCalendarTable = () => {
   }
 
   const handleOpenAddReservationModal = () => setIsAddReservationModalOpen(true)
-  
+
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
@@ -112,7 +112,9 @@ const JoinerCalendarTable = () => {
         .filter(
           (joinerActivity: { abbr: string }) =>
             !searchString ||
-            joinerActivity.abbr.toLowerCase().includes(searchString.toLowerCase())
+            joinerActivity.abbr
+              .toLowerCase()
+              .includes(searchString.toLowerCase())
         )
 
     const filterCategories = (categories: any[]) =>
@@ -122,7 +124,8 @@ const JoinerCalendarTable = () => {
           joinerActivities: filterJoinerActivities(category.joinerActivities),
         }))
         .filter(
-          (category: { joinerActivities: string | any[] }) => category.joinerActivities.length > 0
+          (category: { joinerActivities: string | any[] }) =>
+            category.joinerActivities.length > 0
         )
 
     const newFilteredData = {
@@ -140,7 +143,7 @@ const JoinerCalendarTable = () => {
   const toggleCollapse = (category: string) => {
     setCollapsed((prev) => ({ ...prev, [category]: !prev[category] }))
   }
-  
+
   const generateCalendarHeader = () => {
     const headers = []
     const today = new Date() // Get today's date
@@ -309,283 +312,301 @@ const JoinerCalendarTable = () => {
 
   return (
     <>
-    {isLoading ? (
-      <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
-        <Spinner variant={"primary"} />
-      </div>
-    ) : (
-      <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
-        <div>
-          <div className="overflow-auto">
-            <table className="min-w-max w-full rounded-xl">
-              <thead className="">
-                <tr className="uppercase text-sm leading-normal">
-                  <td colSpan={1} rowSpan={2} className="">
-                    <Sidebar
-                      nextPrevFunction={moveStartDateByOneDay}
-                      //@ts-ignore
-                      openAddReservationModal={handleOpenAddReservationModal}
-                      filterCalendarDate={filterCalendarDate}
-                      setFilterCalendarDate={setFilterCalendarDate}
-                      resetToToday={resetToToday}
-                      searchString={searchString}
-                      setSearchString={setSearchString}
-                    />
-                  </td>
-                  {generateMonthHeader()}
-                </tr>
-                <tr className="uppercase text-sm leading-normal">
-                  {generateCalendarHeader()}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData?.items?.map((category, index) => (
-                  <React.Fragment key={category.name}>
-                    <tr
-                      className="hover:bg-gray-100 cursor-pointer"
-                      onClick={() => toggleCollapse(category.name)}
-                    >
-                      <td
-                        className={`border p-4 text-left font-bold border-l-0`}
-                      >
-                        <span className="flex gap-2 items-center">
-                          {collapsed[category.name] ? (
-                            <ChevronRight />
-                          ) : (
-                            <ChevronDown />
-                          )}
-                          {category.name}
-                        </span>
-                      </td>
-                      {[...Array(daysPerPage)].map((_, i) => {
-                        const today = new Date()
-                        const date = format(
-                          addDays(startDate, i),
-                          "yyyy-MM-dd"
-                        )
-                        const isToday =
-                          format(date, "yyyy-MM-dd") ===
-                          format(today, "yyyy-MM-dd")
-                        const noReservationCount = category?.joinerActivities?.reduce(
-                          (count, joinerActivity) => {
-                            const hasReservation = joinerActivity.reservations.some(
-                              (reservation) => {
-                                const reservationStart = format(
-                                  new Date(reservation.startDate),
-                                  "yyyy-MM-dd"
-                                )
-                                const reservationEnd = format(
-                                  new Date(reservation.endDate),
-                                  "yyyy-MM-dd"
-                                )
-                                return (
-                                  date >= reservationStart &&
-                                  date <= reservationEnd
-                                )
-                              }
-                            )
-                            return count + (hasReservation ? 0 : 1)
-                          },
-                          0
-                        )
-                        return (
-                          <td
-                            key={i}
-                            className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
-                          >
-                            <div
-                              onClick={(e) => {
-                                handleOpenActivityEditPricePerDatesModal(
-                                  date,
-                                  category.id
-                                )
-                                e.stopPropagation()
-                              }}
-                              className="flex flex-col"
-                            >
-                              <div>{noReservationCount}</div>
-                              <div>
-                                &#8369;
-                                {category.pricePerDates?.length === 0
-                                  ? !parseFloat(`${category.price}`).toFixed(2) ? parseFloat(`${category.price}`).toFixed(2) : 0
-                                  : category.pricePerDates?.find((item) => {
-                                        const itemFromDate = formatDateTZ(
-                                          startOfDay(item.fromDate)
-                                        )
-                                        const itemToDate = formatDateTZ(
-                                          endOfDay(item.toDate)
-                                        )
-                                        const currentDate = formatDateTZ(
-                                          startOfDay(date)
-                                        )
-                                        return isWithinInterval(currentDate, {
-                                          start: itemFromDate,
-                                          end: itemToDate,
-                                        })
-                                      })?.price
-                                    ? parseFloat(
-                                        category.pricePerDates.find(
-                                          (item: any) => {
-                                            const itemFromDate = formatDateTZ(
-                                              startOfDay(item.fromDate)
-                                            )
-                                            const itemToDate = formatDateTZ(
-                                              endOfDay(item.toDate)
-                                            )
-                                            const currentDate = formatDateTZ(
-                                              startOfDay(date)
-                                            )
-                                            return isWithinInterval(
-                                              currentDate,
-                                              {
-                                                start: itemFromDate,
-                                                end: itemToDate,
-                                              }
-                                            )
-                                          }
-                                        ).price.dayRate
-                                      ).toFixed(2)
-                                    : parseFloat(`${category.price}`).toFixed(
-                                        2
-                                      )}
-                              </div>
-                            </div>
-                          </td>
-                        )
-                      })}
-                    </tr>
-                    {!collapsed[category.name] &&
-                      category?.joinerActivities?.map((joinerActivity, joinerActivityIndex) => (
-                        <tr
-                          key={joinerActivity.abbr}
-                          className="hover:bg-gray-100 relative"
-                        >
-                          <td className="border py-4 pr-4 pl-12 text-left border-l-0">
-                            <div className="flex justify-between items-center">
-                              {editingRoom === joinerActivity.abbr ? (
-                                <Input
-                                  type="text"
-                                  value={tempJoinerAbbr}
-                                  onChange={(e) =>
-                                    setTempJoinerAbbr(e.target.value)
-                                  }
-                                  autoFocus
-                                  className="mr-2"
-                                  label={""}
-                                />
-                              ) : (
-                                <span>{joinerActivity.abbr}</span>
-                              )}
-                              {editingRoom === joinerActivity.abbr ? (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() =>
-                                    handleSaveRoom(category.name, joinerActivityIndex)
-                                  }
-                                >
-                                  <Save className="text-gray-500 w-5" />
-                                </Button>
-                              ) : (
-                                <Button
-                                  size={"icon"}
-                                  variant={"link"}
-                                  onClick={() => handleEditRoom(joinerActivity.abbr)}
-                                >
-                                  <Edit3 className="text-gray-500 w-5" />
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                          <td
-                            colSpan={daysPerPage}
-                            className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
-                          >
-                            {joinerActivity.reservations.map((booking: Reservation) => {
-                              const style = getBookingStyle(
-                                startDate,
-                                daysPerPage,
-                                booking
-                              )
-                              if (!style) return null
-
-                              const { startCol, colSpan } = style
-                              const { colorClass, hoverColorClass } =
-                                getColorClasses(booking.status)
-
-                              return (
-                                <div
-                                  key={booking.id}
-                                  style={{
-                                    left: `${(startCol * 100) / daysPerPage + 0.5}%`,
-                                    width: `${(colSpan * 100) / daysPerPage - 1}%`,
-                                  }}
-                                  onClick={() => {
-                                    setIsReservationModalOpen(true)
-                                    setSelectedReservation({
-                                      activities: joinerActivity.abbr,
-                                      reservation: booking,
-                                    })
-                                  }}
-                                  className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                                >
-                                  <span className="text-white text-sm truncate px-2">
-                                    {booking.status === "Out-of-Service-Dates"
-                                      ? "Out of service"
-                                      : booking.name}
-                                  </span>
-                                </div>
-                              )
-                            })}
-                            <div className="absolute inset-0 z-10 flex h-full">
-                              {generateCalendarRowBorder()}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <FormProvider {...form}>
-            <form>
-              {selectedReservation && (
-                <RentalCalendarModal
-                  isModalOpen={isReservationModalOpen}
-                  onClose={closeReservationModal}
-                  selectedReservation={selectedReservation}
-                  isEditReservation={isEditReservation}
-                  isCancelReservation={isCancelReservation}
-                  setIsCancelReservation={setIsCancelReservation}
-                  setIsEditReservation={setIsEditReservation}
-                />
-              )}
-            </form>
-          </FormProvider>
-
-          <RentalsEditPricePerDatesModal
-            isModalOpen={isEditPricePerDatesModalOpen}
-            onClose={() => setIsEditPricePerDatesModalOpen(false)}
-            selectedDate={selectedDate}
-            rentalId={selectedRentalId}
-          />
-          <FormProvider {...form}>
-            <form>
-              <AddRentalReservationModal
-                isModalOpen={isAddReservationModalOpen}
-                onClose={closeAddReservationModal}
-                selectedLegendType={selectedLegendType}
-                setSelectedLegendType={setSelectedLegendType}
-                setIsLegendTypeSelected={setIsLegendTypeSelected}
-                isLegendTypeSelected={isLegendTypeSelected}
-              />
-            </form>
-          </FormProvider>
+      {isLoading ? (
+        <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
+          <Spinner variant={"primary"} />
         </div>
-      </div>
-    )}
-  </>
+      ) : (
+        <div className="w-full mt-4 overflow-hidden rounded-xl border border-b-0">
+          <div>
+            <div className="overflow-auto">
+              <table className="min-w-max w-full rounded-xl">
+                <thead className="">
+                  <tr className="uppercase text-sm leading-normal">
+                    <td colSpan={1} rowSpan={2} className="">
+                      <Sidebar
+                        nextPrevFunction={moveStartDateByOneDay}
+                        //@ts-ignore
+                        openAddReservationModal={handleOpenAddReservationModal}
+                        filterCalendarDate={filterCalendarDate}
+                        setFilterCalendarDate={setFilterCalendarDate}
+                        resetToToday={resetToToday}
+                        searchString={searchString}
+                        setSearchString={setSearchString}
+                      />
+                    </td>
+                    {generateMonthHeader()}
+                  </tr>
+                  <tr className="uppercase text-sm leading-normal">
+                    {generateCalendarHeader()}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData?.items?.map((category, index) => (
+                    <React.Fragment key={category.name}>
+                      <tr
+                        className="hover:bg-gray-100 cursor-pointer"
+                        onClick={() => toggleCollapse(category.name)}
+                      >
+                        <td
+                          className={`border p-4 text-left font-bold border-l-0`}
+                        >
+                          <span className="flex gap-2 items-center">
+                            {collapsed[category.name] ? (
+                              <ChevronRight />
+                            ) : (
+                              <ChevronDown />
+                            )}
+                            {category.name}
+                          </span>
+                        </td>
+                        {[...Array(daysPerPage)].map((_, i) => {
+                          const today = new Date()
+                          const date = format(
+                            addDays(startDate, i),
+                            "yyyy-MM-dd"
+                          )
+                          const isToday =
+                            format(date, "yyyy-MM-dd") ===
+                            format(today, "yyyy-MM-dd")
+                          const noReservationCount =
+                            category?.joinerActivities?.reduce(
+                              (count, joinerActivity) => {
+                                const hasReservation =
+                                  joinerActivity.reservations.some(
+                                    (reservation) => {
+                                      const reservationStart = format(
+                                        new Date(reservation.startDate),
+                                        "yyyy-MM-dd"
+                                      )
+                                      const reservationEnd = format(
+                                        new Date(reservation.endDate),
+                                        "yyyy-MM-dd"
+                                      )
+                                      return (
+                                        date >= reservationStart &&
+                                        date <= reservationEnd
+                                      )
+                                    }
+                                  )
+                                return count + (hasReservation ? 0 : 1)
+                              },
+                              0
+                            )
+                          return (
+                            <td
+                              key={i}
+                              className={`border gap-1 hover:bg-gray-200 text-sm p-2 h-max text-center text-gray-500 font-semibold max-w-24 ${i + 1 === daysPerPage && "border-r-0"} ${isToday && "bg-primary-100"}`}
+                            >
+                              <div
+                                onClick={(e) => {
+                                  handleOpenActivityEditPricePerDatesModal(
+                                    date,
+                                    category.id
+                                  )
+                                  e.stopPropagation()
+                                }}
+                                className="flex flex-col"
+                              >
+                                <div>{noReservationCount}</div>
+                                <div>
+                                  &#8369;
+                                  {category.pricePerDates?.length === 0
+                                    ? !parseFloat(`${category.price}`).toFixed(
+                                        2
+                                      )
+                                      ? parseFloat(`${category.price}`).toFixed(
+                                          2
+                                        )
+                                      : 0
+                                    : category.pricePerDates?.find((item) => {
+                                          const itemFromDate = formatDateTZ(
+                                            startOfDay(item.fromDate)
+                                          )
+                                          const itemToDate = formatDateTZ(
+                                            endOfDay(item.toDate)
+                                          )
+                                          const currentDate = formatDateTZ(
+                                            startOfDay(date)
+                                          )
+                                          return isWithinInterval(currentDate, {
+                                            start: itemFromDate,
+                                            end: itemToDate,
+                                          })
+                                        })?.price
+                                      ? parseFloat(
+                                          category.pricePerDates.find(
+                                            (item: any) => {
+                                              const itemFromDate = formatDateTZ(
+                                                startOfDay(item.fromDate)
+                                              )
+                                              const itemToDate = formatDateTZ(
+                                                endOfDay(item.toDate)
+                                              )
+                                              const currentDate = formatDateTZ(
+                                                startOfDay(date)
+                                              )
+                                              return isWithinInterval(
+                                                currentDate,
+                                                {
+                                                  start: itemFromDate,
+                                                  end: itemToDate,
+                                                }
+                                              )
+                                            }
+                                          ).price.dayRate
+                                        ).toFixed(2)
+                                      : parseFloat(`${category.price}`).toFixed(
+                                          2
+                                        )}
+                                </div>
+                              </div>
+                            </td>
+                          )
+                        })}
+                      </tr>
+                      {!collapsed[category.name] &&
+                        category?.joinerActivities?.map(
+                          (joinerActivity, joinerActivityIndex) => (
+                            <tr
+                              key={joinerActivity.abbr}
+                              className="hover:bg-gray-100 relative"
+                            >
+                              <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+                                <div className="flex justify-between items-center">
+                                  {editingRoom === joinerActivity.abbr ? (
+                                    <Input
+                                      type="text"
+                                      value={tempJoinerAbbr}
+                                      onChange={(e) =>
+                                        setTempJoinerAbbr(e.target.value)
+                                      }
+                                      autoFocus
+                                      className="mr-2"
+                                      label={""}
+                                    />
+                                  ) : (
+                                    <span>{joinerActivity.abbr}</span>
+                                  )}
+                                  {editingRoom === joinerActivity.abbr ? (
+                                    <Button
+                                      size={"icon"}
+                                      variant={"link"}
+                                      onClick={() =>
+                                        handleSaveRoom(
+                                          category.name,
+                                          joinerActivityIndex
+                                        )
+                                      }
+                                    >
+                                      <Save className="text-gray-500 w-5" />
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      size={"icon"}
+                                      variant={"link"}
+                                      onClick={() =>
+                                        handleEditRoom(joinerActivity.abbr)
+                                      }
+                                    >
+                                      <Edit3 className="text-gray-500 w-5" />
+                                    </Button>
+                                  )}
+                                </div>
+                              </td>
+                              <td
+                                colSpan={daysPerPage}
+                                className={`border text-center relative ${index + 1 !== daysPerPage && "border-r-0"}`}
+                              >
+                                {joinerActivity.reservations.map(
+                                  (booking: Reservation) => {
+                                    const style = getBookingStyle(
+                                      startDate,
+                                      daysPerPage,
+                                      booking
+                                    )
+                                    if (!style) return null
+
+                                    const { startCol, colSpan } = style
+                                    const { colorClass, hoverColorClass } =
+                                      getColorClasses(booking.status)
+
+                                    return (
+                                      <div
+                                        key={booking.id}
+                                        style={{
+                                          left: `${(startCol * 100) / daysPerPage + 0.5}%`,
+                                          width: `${(colSpan * 100) / daysPerPage - 1}%`,
+                                        }}
+                                        onClick={() => {
+                                          setIsReservationModalOpen(true)
+                                          setSelectedReservation({
+                                            activities: joinerActivity.abbr,
+                                            reservation: booking,
+                                          })
+                                        }}
+                                        className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                                      >
+                                        <span className="text-white text-sm truncate px-2">
+                                          {booking.status ===
+                                          "Out-of-Service-Dates"
+                                            ? "Out of service"
+                                            : booking.name}
+                                        </span>
+                                      </div>
+                                    )
+                                  }
+                                )}
+                                <div className="absolute inset-0 z-10 flex h-full">
+                                  {generateCalendarRowBorder()}
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        )}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <FormProvider {...form}>
+              <form>
+                {selectedReservation && (
+                  <RentalCalendarModal
+                    isModalOpen={isReservationModalOpen}
+                    onClose={closeReservationModal}
+                    selectedReservation={selectedReservation}
+                    isEditReservation={isEditReservation}
+                    isCancelReservation={isCancelReservation}
+                    setIsCancelReservation={setIsCancelReservation}
+                    setIsEditReservation={setIsEditReservation}
+                  />
+                )}
+              </form>
+            </FormProvider>
+
+            <RentalsEditPricePerDatesModal
+              isModalOpen={isEditPricePerDatesModalOpen}
+              onClose={() => setIsEditPricePerDatesModalOpen(false)}
+              selectedDate={selectedDate}
+              rentalId={selectedRentalId}
+            />
+            <FormProvider {...form}>
+              <form>
+                <AddRentalReservationModal
+                  isModalOpen={isAddReservationModalOpen}
+                  onClose={closeAddReservationModal}
+                  selectedLegendType={selectedLegendType}
+                  setSelectedLegendType={setSelectedLegendType}
+                  setIsLegendTypeSelected={setIsLegendTypeSelected}
+                  isLegendTypeSelected={isLegendTypeSelected}
+                />
+              </form>
+            </FormProvider>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

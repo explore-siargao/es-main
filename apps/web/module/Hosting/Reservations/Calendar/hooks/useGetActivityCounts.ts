@@ -1,4 +1,7 @@
-import { API_URL_ACTIVITIES, API_URL_RENTALS } from "@/common/constants/api-routes"
+import {
+  API_URL_ACTIVITIES,
+  API_URL_RENTALS,
+} from "@/common/constants/api-routes"
 import { ApiService } from "@/common/service/api"
 import { useQuery } from "@tanstack/react-query"
 

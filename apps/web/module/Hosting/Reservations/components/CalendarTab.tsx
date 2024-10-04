@@ -37,9 +37,9 @@ const CalendarTab = () => {
         link: "/hosting/reservations/calendar/rentals/bicycles",
       })
     }
-  } 
-  
-  if(activityCountsData && !activityCountsPending) {
+  }
+
+  if (activityCountsData && !activityCountsPending) {
     if (activityCountsData?.item?.private > 0) {
       activityTabs.push({
         name: "Private",
@@ -53,7 +53,7 @@ const CalendarTab = () => {
       })
     }
   }
-  
+
   return (
     <>
       {pathType === "rentals" ? (
