@@ -24,11 +24,10 @@ function ActivityReservationForm({
   const [selectedActivityId, setSelectedActivityId] = useState("")
   const { data: activities, isLoading: isActivitiesLoading } =
     useGetActivityByHost()
-    const { data: activity, isLoading: isActivityLoading } =
+  const { data: activity, isLoading: isActivityLoading } =
     useGetActivityById(selectedActivityId)
-    const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState("")
 
- 
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
       <div className="flex flex-col gap-4 pb-4">
@@ -52,11 +51,9 @@ function ActivityReservationForm({
               ))}
             </Select>
           </div>
-         
-          
         </div>
         <div className="flex gap-4">
-        <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full">
             <Input
               type="date"
               id="Date"
@@ -66,26 +63,38 @@ function ActivityReservationForm({
               })}
               required
               onChange={(e) => {
-                setSelectedDate(e.target.value)}}
+                setSelectedDate(e.target.value)
+              }}
             />
           </div>
-        <div className="flex flex-col w-full">
-            
-            <Select label="Slot" id="slot" 
-            {...register("slotId", { required: "This field is required" })} 
-            required >
+          <div className="flex flex-col w-full">
+            <Select
+              label="Slot"
+              id="slot"
+              {...register("slotId", { required: "This field is required" })}
+              required
+            >
               <Option value="">Select</Option>
-              {activity && activity.item && activity.item.schedule && selectedDate ? 
-            (() => {
-              const dayOfWeek = new Date(selectedDate).toLocaleString('en-US', { weekday: 'long' });
-              const slots = activity?.item?.schedule[dayOfWeek.toLowerCase()];
-              return Array.isArray(slots) ? slots.map((property: any) => (
-                <Option key={property._id} value={property._id}>
-                  {`${property.startTime} - ${property.endTime}`}
-                </Option>
-              )) : null;
-            })()
-          : null}
+              {activity &&
+              activity.item &&
+              activity.item.schedule &&
+              selectedDate
+                ? (() => {
+                    const dayOfWeek = new Date(selectedDate).toLocaleString(
+                      "en-US",
+                      { weekday: "long" }
+                    )
+                    const slots =
+                      activity?.item?.schedule[dayOfWeek.toLowerCase()]
+                    return Array.isArray(slots)
+                      ? slots.map((property: any) => (
+                          <Option key={property._id} value={property._id}>
+                            {`${property.startTime} - ${property.endTime}`}
+                          </Option>
+                        ))
+                      : null
+                  })()
+                : null}
             </Select>
           </div>
         </div>
@@ -114,8 +123,6 @@ function ActivityReservationForm({
             </div>
           </div>
         )}
-
- 
 
         <div className="flex gap-4">
           <div className="flex flex-col w-full">
