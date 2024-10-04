@@ -30,7 +30,11 @@ import {
   updatePhoto,
 } from './services/photos'
 import { getSlotPrice, updatePriceAndSlots } from './services/price-slots'
-import { addActivityPricePerDates } from './services/calendar'
+import {
+  getJoinerActivityCalendar,
+  getPrivateActivityCalendar,
+  addActivityPricePerDates,
+} from './services/calendar'
 
 const router = express.Router()
 
@@ -187,7 +191,23 @@ router.get(
   getFinishedSections
 )
 
-//calendars
+//calendar
+router.get(
+  '/calendar/private',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getPrivateActivityCalendar
+)
+
+router.get(
+  '/calendar/joiner',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getJoinerActivityCalendar
+)
+
 router.patch(
   '/:activityId/price-per-dates',
   isOriginValid,
