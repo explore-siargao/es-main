@@ -25,6 +25,7 @@ export interface SelectedReservation {
   motorcycles?: string
   bicyles?: string
   cars?: string
+  activities?: string
   wholePlace?: string
   reservation?: Reservation
   booking?: Booking
@@ -72,6 +73,7 @@ export interface Category {
   motorcycles?: Rental[]
   bicycles?: Rental[]
   cars?: Rental[]
+  privateActivities?: Rental[]
   bookableUnitTypes: BookableUnitType[]
 }
 

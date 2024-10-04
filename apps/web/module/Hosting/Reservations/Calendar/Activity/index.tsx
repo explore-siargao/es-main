@@ -4,6 +4,7 @@ import ActivitiesCalendarTable from "./CalendarTable"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import ActivityCalendarLegend from "../../components/ActivityCalendarLegend"
 import sampleData from "../Rental/SampleData.json"
+import PrivateCalendarTable from "./PrivateCalendarTable"
 
 const ActivitiesReservationCalendar = () => {
   const hasData =
@@ -41,7 +42,7 @@ const ActivitiesReservationCalendar = () => {
         {hasData ? (
           <>
             <div className="flex mt-2">
-              <ActivitiesCalendarTable />
+              <PrivateCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
               <ActivityCalendarLegend />
