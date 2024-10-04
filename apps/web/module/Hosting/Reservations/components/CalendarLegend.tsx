@@ -10,7 +10,7 @@ const CalendarLegend = () => {
   const date = new Date()
 
   return (
-    <div className="flex items-center bg-white p-1">
+    <div className="flex items-center bg-white p-1 rounded-lg">
       <Button
         variant="link"
         className="text-base text-blue-600 hover:text-blue-600"

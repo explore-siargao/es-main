@@ -1,4 +1,4 @@
-export const rentallegends = [
+export const rentalLegends = [
   {
     legend: "Confirmed",
     color: "bg-primary-500",
@@ -29,7 +29,7 @@ export const rentallegends = [
 export const getColorClasses = (
   status: string
 ): { colorClass: string; hoverColorClass: string } => {
-  const legend = rentallegends.find((legend) => legend.legend === status)
+  const legend = rentalLegends.find((legend) => legend.legend === status)
   if (legend) {
     return {
       colorClass: legend.color,

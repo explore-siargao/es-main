@@ -74,8 +74,3 @@ export interface Category {
   cars?: Rental[]
   bookableUnitTypes: BookableUnitType[]
 }
-
-export interface SampleData {
-  items?: Category[]
-  categories?: Category[]
-}

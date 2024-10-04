@@ -1,4 +1,4 @@
-export const activitylegends = [
+export const activityLegends = [
   {
     legend: "Confirmed",
     color: "bg-primary-500",
@@ -29,7 +29,7 @@ export const activitylegends = [
 export const getColorClasses = (
   status: string
 ): { colorClass: string; hoverColorClass: string } => {
-  const legend = activitylegends.find((legend) => legend.legend === status)
+  const legend = activityLegends.find((legend) => legend.legend === status)
   if (legend) {
     return {
       colorClass: legend.color,

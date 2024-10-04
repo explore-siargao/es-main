@@ -8,32 +8,43 @@ import {
   X,
 } from "lucide-react"
 import { useState } from "react"
-import CalendarTab from "../components/CalendarTab"
-import MonthYearSelectorModal from "./SidebarActionModals/MonthYearSelectorModal"
-import PropertySearchCalendarModal from "./SidebarActionModals/SideBarSearchModals/PropertySearchCalendar"
+import CalendarTab from "../../components/CalendarTab"
+import MonthYearSelectorModal from "../SidebarActionModals/MonthYearSelectorModal"
+import PropertySearchCalendarModal from "../SidebarActionModals/SideBarSearchModals/PropertySearchCalendar"
+import { useCalendarStore } from "./store/useCalendarStore"
+import { addDays, parse } from "date-fns"
+import { useQueryClient } from "@tanstack/react-query"
 
-type SideBarProps = {
-  nextPrevFunction: Function
-  openAddReservationModal: Function
-  resetToToday?: Function
-  filterCalendarDate?: string
-  setFilterCalendarDate?: (filter: string) => void
-  setStartDate?: (date: Date) => void
-  searchString?: string
-  setSearchString?: (searchSring: string) => void
-}
-
-const Sidebar = ({
-  nextPrevFunction,
-  openAddReservationModal,
-  filterCalendarDate,
-  setFilterCalendarDate,
-  resetToToday,
-  searchString,
-  setSearchString,
-}: SideBarProps) => {
+const Controls = () => {
+  const queryClient = useQueryClient()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+
+  const {
+    startDate,
+    filterCalendarDate,
+    searchString,
+    setStartDate,
+    setFilterCalendarDate,
+    setSearchString,
+    setIsAddReservationModalOpen,
+  } = useCalendarStore(state => state);
+
+  const resetToToday = () => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }
+
+  const adjustStartDate = (direction: number) => {
+    setStartDate(addDays(startDate, direction))
+    queryClient.invalidateQueries({
+      queryKey: ["calendar-property"],
+    })
+  }
 
   return (
     <div className="flex flex-col p-4">
@@ -80,7 +91,7 @@ const Sidebar = ({
           size={"sm"}
           variant={"secondary"}
           className="rounded-full w-full"
-          onClick={() => openAddReservationModal()}
+          onClick={() => setIsAddReservationModalOpen(true)}
         >
           <Plus className="w-5" />
         </Button>
@@ -88,7 +99,7 @@ const Sidebar = ({
       <div className="flex gap-2 mt-4">
         <Button
           variant={"outline"}
-          onClick={() => nextPrevFunction(-1)}
+          onClick={() => adjustStartDate(-1)}
           className="py-2 px-4 rounded w-max rounded-l-full"
         >
           <ChevronLeft />
@@ -105,7 +116,7 @@ const Sidebar = ({
         </Button>
         <Button
           variant={"outline"}
-          onClick={() => nextPrevFunction(1)}
+          onClick={() => adjustStartDate(1)}
           className="py-2 px-4 rounded w-max rounded-r-full"
         >
           <ChevronRight />
@@ -131,4 +142,4 @@ const Sidebar = ({
   )
 }
 
-export default Sidebar
+export default Controls

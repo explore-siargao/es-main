@@ -2,7 +2,7 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import { rentallegends } from "../helpers/rentallegends"
+import { rentalLegends } from "../helpers/rentalLegends"
 
 type T_Props = {
   isOpen: boolean
@@ -22,7 +22,7 @@ const LegendModal = ({ isOpen, onClose, date }: T_Props) => {
       title="Legend"
     >
       <div className="p-5 grid grid grid-cols-3 gap-y-3">
-        {rentallegends.map((item) => (
+        {rentalLegends.map((item) => (
           <div className="flex items-center space-x-1.5" key={item.legend}>
             <div className={`${item.color} h-4 w-4`}></div>
             <Typography>{item.legend}</Typography>

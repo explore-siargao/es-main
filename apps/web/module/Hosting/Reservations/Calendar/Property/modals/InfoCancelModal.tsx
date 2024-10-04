@@ -2,39 +2,41 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
-import { SelectedReservation } from "../../types/CalendarTable"
 import { Input } from "@/common/components/ui/Input"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
-import { useFormContext } from "react-hook-form"
-import useUpdateUnitReservation from "../hooks/useUpdateUnitReservation"
+import { useForm } from "react-hook-form"
+import useUpdateUnitReservation from "../../hooks/useUpdateUnitReservation"
+import { useCalendarStore } from "../store/useCalendarStore"
 
-interface IRentalCalendarModalProps {
-  isModalOpen: boolean
-  onClose: () => void
-  selectedReservation: SelectedReservation
-  isEditReservation: boolean
-  isCancelReservation: boolean
-  setIsEditReservation: (data: boolean) => void
-  setIsCancelReservation: (data: boolean) => void
-}
-
-const PropertyCalendarModal = ({
-  isModalOpen,
-  onClose,
-  selectedReservation,
-  isEditReservation,
-  isCancelReservation,
-  setIsEditReservation,
-  setIsCancelReservation,
-}: IRentalCalendarModalProps) => {
+const InfoCancelModal = () => {
   const queryClient = useQueryClient()
+  const {
+    selectedReservation,
+    isReservationModalOpen,
+    isEditReservation,
+    isCancelReservation,
+    setSelectedLegendType,
+    setIsReservationModalOpen,
+    setIsEditReservation,
+    setIsCancelReservation,
+  } = useCalendarStore(state => state);
 
-  const { register, handleSubmit, getValues } = useFormContext()
+  const { register, handleSubmit, getValues, reset } = useForm()
   const { mutate } = useUpdateUnitReservation(
-    String(selectedReservation.reservation?.id)
+    String(selectedReservation?.reservation?.id)
   )
+
+  const closeReservationModal = () => {
+    setSelectedLegendType("")
+    setTimeout(() => {
+      setIsReservationModalOpen(false)
+      setIsEditReservation(false)
+      setIsCancelReservation(false)
+      reset()
+    }, 200)
+  }
 
   const onSubmit = (data: any) => {
     mutate(data, {
@@ -44,7 +46,7 @@ const PropertyCalendarModal = ({
             queryKey: ["calendar-property"],
           })
           toast.success(data.message)
-          onClose()
+          closeReservationModal()
         } else {
           toast.error(String(data.message))
         }
@@ -57,8 +59,8 @@ const PropertyCalendarModal = ({
 
   return (
     <ModalContainer
-      onClose={onClose}
-      isOpen={isModalOpen}
+      onClose={closeReservationModal}
+      isOpen={isReservationModalOpen}
       size="sm"
       title={isCancelReservation ? "Cancel Reservation" : "Reservation"}
     >
@@ -88,7 +90,7 @@ const PropertyCalendarModal = ({
                       Unit
                     </Typography>
                     <Typography variant="h3" className="text-gray-500">
-                      {selectedReservation.unit && selectedReservation.unit}
+                      {selectedReservation?.unit ? selectedReservation.unit : ""}
                     </Typography>
                   </div>
                 </div>
@@ -149,11 +151,10 @@ const PropertyCalendarModal = ({
                             </div>
                           ) : (
                             <div>
-                              {format(
-                                selectedReservation?.reservation
-                                  ?.startDate as string,
+                              {selectedReservation ? format(
+                                selectedReservation?.reservation?.startDate as string,
                                 "PPPP"
-                              )}
+                              ) : ""}
                             </div>
                           )}
                         </Typography>
@@ -193,11 +194,11 @@ const PropertyCalendarModal = ({
                             </div>
                           ) : (
                             <div>
-                              {format(
+                              {selectedReservation ? format(
                                 selectedReservation?.reservation
                                   ?.endDate as string,
                                 "PPPP"
-                              )}
+                              ) : ""}
                             </div>
                           )}
                         </Typography>
@@ -279,4 +280,4 @@ const PropertyCalendarModal = ({
   )
 }
 
-export default PropertyCalendarModal
+export default InfoCancelModal

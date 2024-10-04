@@ -4,29 +4,24 @@ import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
 import { T_Property } from "@repo/contract"
 import { useForm } from "react-hook-form"
-import useUpdateUnitPricePerDate from "../hooks/useUpdaateUnitPricePerDate"
+import useUpdateUnitPricePerDate from "../../hooks/useUpdaateUnitPricePerDate"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
+import { useCalendarStore } from "../store/useCalendarStore"
 
-interface IEditPricePerDateProps {
-  isModalOpen: boolean
-  onClose: () => void
-  selectedDate: string
-  unitId?: string
-}
-
-const PropertyEditPricePerDatesModal = ({
-  isModalOpen,
-  onClose,
-  selectedDate,
-  unitId,
-}: IEditPricePerDateProps) => {
+const EditPricePerDatesModal = () => {
+  const {
+    selectedDate,
+    selectedUnitId,
+    isEditPricePerDatesModalOpen,
+    setIsEditPricePerDatesModalOpen,
+  } = useCalendarStore(state => state);
   const [toDate, setToDate] = useState("")
   const [baseRate, setBaseRate] = useState("")
   const [dateFrom, setDateFrom] = useState(selectedDate || "")
   const queryClient = useQueryClient()
   const { handleSubmit } = useForm<T_Property>({})
-  const { mutate, isPending } = useUpdateUnitPricePerDate(unitId as string)
+  const { mutate, isPending } = useUpdateUnitPricePerDate(selectedUnitId as string)
 
   const clearInputs = () => {
     setToDate("")
@@ -35,7 +30,7 @@ const PropertyEditPricePerDatesModal = ({
 
   const handleClose = () => {
     clearInputs()
-    onClose()
+    setIsEditPricePerDatesModalOpen(false)
   }
 
   const handleSave = () => {
@@ -51,7 +46,7 @@ const PropertyEditPricePerDatesModal = ({
             queryKey: ["calendar-property"],
           })
           toast.success(data.message)
-          onClose()
+          setIsEditPricePerDatesModalOpen(false)
         } else {
           toast.error(String(data.message))
         }
@@ -74,7 +69,7 @@ const PropertyEditPricePerDatesModal = ({
   return (
     <ModalContainer
       onClose={handleClose}
-      isOpen={isModalOpen}
+      isOpen={isEditPricePerDatesModalOpen}
       size="sm"
       title="Edit Price Per Dates"
     >
@@ -143,4 +138,4 @@ const PropertyEditPricePerDatesModal = ({
   )
 }
 
-export default PropertyEditPricePerDatesModal
+export default EditPricePerDatesModal

@@ -2,7 +2,7 @@ import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
 import PropertyReservationForm from "./ActivityReservationForm"
-import SelectLegendTypeForm from "../SelectLegendForm"
+import SelectLegendTypeForm from "../../components/SelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
