@@ -2,6 +2,7 @@ import Tabs from "@/common/components/Tabs"
 import { usePathname } from "next/navigation"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 import { LINK_HOME } from "@/common/constants"
+import useGetActivityCounts from "../Calendar/hooks/useGetActivityCounts"
 
 const CalendarTab = () => {
   const pathName = usePathname()
@@ -11,7 +12,11 @@ const CalendarTab = () => {
   const { data: rentalCountsData, isPending: rentalCountsPending } =
     useGetRentalCounts()
 
+  const { data: activityCountsData, isPending: activityCountsPending } =
+    useGetActivityCounts()
+
   const rentalTabs = []
+  const activityTabs = []
 
   if (rentalCountsData && !rentalCountsPending) {
     if (rentalCountsData?.item?.cars > 0) {
@@ -32,6 +37,19 @@ const CalendarTab = () => {
         link: "/hosting/reservations/calendar/rentals/bicycles",
       })
     }
+  } else if(activityCountsData && !activityCountsPending) {
+    if (activityCountsData?.item?.private > 0) {
+      activityTabs.push({
+        name: "Private",
+        link: "/hosting/reservations/calendar/activities/private",
+      })
+    }
+    if (activityCountsData?.item?.joiners > 0) {
+      activityTabs.push({
+        name: "Joiners",
+        link: "/hosting/reservations/calendar/activities/joiners",
+      })
+    }
   }
 
   return (
@@ -39,6 +57,13 @@ const CalendarTab = () => {
       {pathType === "rentals" ? (
         // @ts-ignore
         tabs?.length > 0 && <Tabs tabs={rentalTabs} hoverColor="dark-gray" />
+      ) : (
+        <></>
+      )}
+
+      {pathType === "activities" ? (
+        // @ts-ignore
+        tabs?.length > 0 && <Tabs tabs={activityTabs} hoverColor="dark-gray" />
       ) : (
         <></>
       )}
