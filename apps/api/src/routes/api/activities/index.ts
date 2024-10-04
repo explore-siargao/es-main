@@ -33,9 +33,8 @@ import { getSlotPrice, updatePriceAndSlots } from './services/price-slots'
 import {
   getJoinerActivityCalendar,
   getPrivateActivityCalendar,
-  addActivityPricePerDates
+  addActivityPricePerDates,
 } from './services/calendar'
-
 
 const router = express.Router()
 

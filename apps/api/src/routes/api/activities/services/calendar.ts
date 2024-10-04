@@ -363,7 +363,7 @@ export const getJoinerActivityCalendar = async (
           message: 'Joiner activities calendar fetched successfully.',
         })
       )
- }
+    }
   } catch (err: any) {
     res.json(
       response.error({
@@ -427,7 +427,6 @@ export const addActivityPricePerDates = async (req: Request, res: Response) => {
           )
         }
       }
-
     }
   } catch (err: any) {
     res.json(
