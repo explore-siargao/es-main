@@ -246,3 +246,34 @@ export const updateItinerary = async (req: Request, res: Response) => {
     }
   }
 }
+
+export const getActivityCounts = async (req: Request, res: Response) => {
+  try {
+    const hostId = res.locals.user?.id
+
+    const privateActivityCounts = await dbActivities.countDocuments({
+      experienceType: 'private',
+      host: hostId,
+    })
+
+    const joinerActivityCounts = await dbActivities.countDocuments({
+      experienceType: 'joiner',
+      host: hostId,
+    })
+
+    res.json(
+      response.success({
+        item: {
+          private: privateActivityCounts,
+          joiner: joinerActivityCounts,
+        },
+      })
+    )
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
