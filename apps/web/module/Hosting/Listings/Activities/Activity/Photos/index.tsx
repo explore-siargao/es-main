@@ -104,7 +104,7 @@ const ActivityPhotos = ({ pageType }: Prop) => {
                   queryKey: ["activity", listingId],
                 })
                 router.push(
-                  `/hosting/listings/activities/setup/${listingId}/summary`
+                  `/hosting/listings/activities/setup/${listingId}/pricing`
                 )
               }
             },
@@ -119,7 +119,7 @@ const ActivityPhotos = ({ pageType }: Prop) => {
           })
           if (pageType === "setup") {
             router.push(
-              `/hosting/listings/activities/setup/${listingId}/summary`
+              `/hosting/listings/activities/setup/${listingId}/pricing`
             )
           }
         }
