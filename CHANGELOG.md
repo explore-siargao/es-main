@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.1](https://github.com/explore-siargao/es-main/compare/v0.26.0...v0.26.1) (2024-10-05)
+
+### 🧰 Maintenance
+
+- Added condition for saving activity pricing ([52b5e34](https://github.com/explore-siargao/es-main/commit/52b5e345eca9518b20de3e611137a2e66f4212b9))
+- Cleanup for activity pricing to have consistent UI ([354b95a](https://github.com/explore-siargao/es-main/commit/354b95ac4c81046f926f031df6475dfb81c12005))
+
 ## [0.26.0](https://github.com/explore-siargao/es-main/compare/v0.25.0...v0.26.0) (2024-10-04)
 
 ### 🚀 Features
