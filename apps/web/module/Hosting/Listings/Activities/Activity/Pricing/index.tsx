@@ -50,7 +50,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const experienceType: "private" | "joiner" = data?.item?.experienceType
 
   const onSubmit = async () => {
-    const allEmpty = Object.values(schedule).every(arr => arr.length === 0);
+    const allEmpty = Object.values(schedule).every((arr) => arr.length === 0)
     if (allEmpty) {
       toast.error("Please add at least one time slot for any day.")
     } else if (minCapacity > maxCapacity) {
@@ -124,7 +124,9 @@ const ActivityPricing = ({ pageType }: Prop) => {
 
         await mutateAsync(pricingData, callBackReq)
       } catch (error) {
-        toast.error("Failed to update activity pricing slots. Please try again.")
+        toast.error(
+          "Failed to update activity pricing slots. Please try again."
+        )
       }
     }
   }
@@ -429,7 +431,10 @@ const ActivityPricing = ({ pageType }: Prop) => {
                   onClick={() => addTimeSlot(day)}
                 >
                   <LucidePlus color="black" className="rounded-sm w-4 h-4" />
-                  <Typography className="text-sm"> Add time slot for {day}</Typography>
+                  <Typography className="text-sm">
+                    {" "}
+                    Add time slot for {day}
+                  </Typography>
                 </button>
               </div>
             ))}
