@@ -47,7 +47,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const [maxCapacity, setMaxCapacity] = useState("10")
   const [price, setPrice] = useState("10.00")
 
-  const experienceType: 'private' | 'joiner' = data?.item?.experienceType
+  const experienceType: "private" | "joiner" = data?.item?.experienceType
 
   const onSubmit = async () => {
     if (maxCapacity < minCapacity) {
@@ -322,8 +322,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
   }
 
   const priceInputDescMap = {
-    "joiner": `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
-    "private": `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
+    joiner: `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
+    private: `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
   }
 
   return (
@@ -353,7 +353,9 @@ const ActivityPricing = ({ pageType }: Prop) => {
               </Button>
             </div>
             <Typography className="text-xs text-gray-500 italic mb-2">
-              This lets you set multiple time slots for an activity by day. Add or remove time slots, and use "Copy to remaining days" to quickly apply settings across the week.
+              This lets you set multiple time slots for an activity by day. Add
+              or remove time slots, and use "Copy to remaining days" to quickly
+              apply settings across the week.
             </Typography>
             {Object.entries(schedule).map(([day, slots]) => (
               <div key={day} className="mb-4">
@@ -371,8 +373,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       disabled={isPending}
                     >
                       {Array.from({ length: 24 * 2 }, (_, i) => {
-                        const hour = Math.floor(i / 2);
-                        const minutes = i % 2 === 0 ? "00" : "30";
+                        const hour = Math.floor(i / 2)
+                        const minutes = i % 2 === 0 ? "00" : "30"
                         return (
                           <Option
                             key={i}
@@ -380,7 +382,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                           >
                             {`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
                           </Option>
-                        );
+                        )
                       })}
                     </Select>
                     to
@@ -393,8 +395,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       disabled={isPending}
                     >
                       {Array.from({ length: 24 * 2 }, (_, i) => {
-                        const hour = Math.floor(i / 2);
-                        const minutes = i % 2 === 0 ? "00" : "30";
+                        const hour = Math.floor(i / 2)
+                        const minutes = i % 2 === 0 ? "00" : "30"
                         return (
                           <Option
                             key={i}
@@ -402,7 +404,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                           >
                             {`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
                           </Option>
-                        );
+                        )
                       })}
                     </Select>
                     <button
@@ -421,10 +423,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                   className="flex hover:cursor-pointer mt-4 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
                   onClick={() => addTimeSlot(day)}
                 >
-                  <LucidePlus
-                    color="black"
-                    className="rounded-sm w-4 h-4"
-                  />
+                  <LucidePlus color="black" className="rounded-sm w-4 h-4" />
                   <Typography className="text-sm"> Add time slot</Typography>
                 </button>
               </div>
@@ -436,7 +435,10 @@ const ActivityPricing = ({ pageType }: Prop) => {
               Slot Capacity
             </Typography>
             <Typography className="text-xs text-gray-500 italic mb-2">
-              This corresponds to time slots you put above, this is the minimum and maximum person each can accommodate. Example for this is "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of 10 people"
+              This corresponds to time slots you put above, this is the minimum
+              and maximum person each can accommodate. Example for this is
+              "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of
+              10 people"
             </Typography>
             <div className="flex gap-4">
               <div>
