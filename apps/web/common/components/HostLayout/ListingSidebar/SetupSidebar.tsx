@@ -57,7 +57,7 @@ const SetupSidebar = ({
 
     const Icon = (
       <div
-        className={`h-10 w-10 flex items-center justify-center rounded-full mb-4 ${
+        className={`h-10 w-10 flex items-center justify-center rounded-full ${
           isSectionFinished
             ? "bg-primary-100 text-primary-600"
             : "bg-gray-100 text-text-300"
@@ -68,7 +68,7 @@ const SetupSidebar = ({
     )
 
     return (
-      <li key={item.title} className="relative mb-4">
+      <li key={item.title} className="relative mb-11">
         {isLinkEnabled ? (
           <Link
             href={item.link}
