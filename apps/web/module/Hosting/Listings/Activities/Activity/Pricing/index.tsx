@@ -7,10 +7,10 @@ import { Button } from "@/common/components/ui/Button"
 import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import useGetActivityById from "../../hooks/useGetActivityById"
-import { Input } from "@/common/components/ui/Input"
 import { Option, Select } from "@/common/components/ui/Select"
-import { Plus, X } from "lucide-react"
+import { LucidePlus, LucideX, Plus, X } from "lucide-react"
 import useUpdateActivityPricingSlots from "../../hooks/useUpdateActivityPricingSlots"
+import { Input2 } from "@/common/components/ui/Input2"
 
 type TimeSlot = {
   startTime: string
@@ -33,13 +33,29 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const { data, isLoading } = useGetActivityById(activityId)
   const { mutateAsync, isPending } = useUpdateActivityPricingSlots(activityId)
 
+  const [schedule, setSchedule] = useState<DaySchedule>({
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: [],
+  })
+
+  const [minCapacity, setMinCapacity] = useState("1")
+  const [maxCapacity, setMaxCapacity] = useState("10")
+  const [price, setPrice] = useState("10.00")
+
+  const experienceType: 'private' | 'joiner' = data?.item?.experienceType
+
   const onSubmit = async () => {
     if (maxCapacity < minCapacity) {
       toast.error("Minimum capacity must be less than Max capacity")
       return
     }
     const pricingData = {
-      experienceType: scheduleType.toLowerCase() as "private" | "joiner",
+      experienceType: experienceType,
       schedule: {
         monday: schedule.monday?.map((slot) => ({
           startTime: slot.startTime,
@@ -111,10 +127,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   useEffect(() => {
     if (data) {
       const pricingData = data.item
-      const scheduleType = pricingData?.experienceType
-      setScheduleType(
-        scheduleType.charAt(0).toUpperCase() + scheduleType.slice(1)
-      )
+      const experienceType = pricingData?.experienceType
       if (pricingData?.schedule) {
         delete pricingData.schedule._id
       }
@@ -122,27 +135,12 @@ const ActivityPricing = ({ pageType }: Prop) => {
       setMaxCapacity(pricingData?.slotCapacity?.maximum)
       setSchedule(pricingData?.schedule)
       setPrice(
-        scheduleType === "private"
+        experienceType === "private"
           ? pricingData?.pricePerSlot || 0
           : pricingData?.pricePerPerson || 0
       )
     }
   }, [data])
-
-  const [scheduleType, setScheduleType] = useState("Private")
-  const [schedule, setSchedule] = useState<DaySchedule>({
-    monday: [],
-    tuesday: [],
-    wednesday: [],
-    thursday: [],
-    friday: [],
-    saturday: [],
-    sunday: [],
-  })
-
-  const [minCapacity, setMinCapacity] = useState("1")
-  const [maxCapacity, setMaxCapacity] = useState("10")
-  const [price, setPrice] = useState("10.00")
 
   const addOneHour = (time: string): string => {
     const parts = time.split(":")
@@ -322,8 +320,14 @@ const ActivityPricing = ({ pageType }: Prop) => {
       return newSchedule
     })
   }
+
+  const priceInputDescMap = {
+    "joiner": `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
+    "private": `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
+  }
+
   return (
-    <div className={cn("mt-20 mb-14", isPending && "opacity-70")}>
+    <div className={cn("mt-20 mb-36", isPending && "opacity-70")}>
       <div className="mb-3">
         <Typography
           variant="h1"
@@ -333,36 +337,29 @@ const ActivityPricing = ({ pageType }: Prop) => {
           Pricing
         </Typography>
 
-        <div className="container p-4 max-w-3xl my-4">
+        <div className="container max-w-3xl mt-4">
           <div className="mb-4">
-            <Select
-              id="scheduleType"
-              label="Schedule Type"
-              value={scheduleType}
-              onChange={(e) => setScheduleType(e.target.value)}
-              disabled={isPending}
-            >
-              <Option value="Private">Private</Option>
-              <Option value="Joiner">Joiner</Option>
-            </Select>
-          </div>
-
-          <div className="mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-semibold">Time Slots</h2>
+            <div className="flex gap-6 items-center mb-2">
+              <Typography variant="h4" fontWeight="semibold">
+                Time Slots
+              </Typography>
               <Button
-                variant="outline"
+                variant="primary"
+                size="sm"
                 disabled={isPending}
                 onClick={copyToRemainingDays}
               >
                 Copy to remaining days
               </Button>
             </div>
+            <Typography className="text-xs text-gray-500 italic mb-2">
+              This lets you set multiple time slots for an activity by day. Add or remove time slots, and use "Copy to remaining days" to quickly apply settings across the week.
+            </Typography>
             {Object.entries(schedule).map(([day, slots]) => (
               <div key={day} className="mb-4">
-                <h3 className="font-semibold mb-2">
+                <Typography variant="h4" className="mb-2">
                   {day.charAt(0).toUpperCase() + day.slice(1)}
-                </h3>
+                </Typography>
                 {slots.map((slot, index) => (
                   <div key={index} className="flex items-center gap-2 mb-2">
                     <Select
@@ -373,14 +370,18 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       label="Start time"
                       disabled={isPending}
                     >
-                      {Array.from({ length: 24 }, (_, i) => i).map((hour) => (
-                        <Option
-                          key={hour}
-                          value={`${hour % 12 === 0 ? 12 : hour % 12}:00 ${hour < 12 ? "AM" : "PM"}`}
-                        >
-                          {`${hour % 12 === 0 ? 12 : hour % 12}:00 ${hour < 12 ? "AM" : "PM"}`}
-                        </Option>
-                      ))}
+                      {Array.from({ length: 24 * 2 }, (_, i) => {
+                        const hour = Math.floor(i / 2);
+                        const minutes = i % 2 === 0 ? "00" : "30";
+                        return (
+                          <Option
+                            key={i}
+                            value={`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
+                          >
+                            {`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
+                          </Option>
+                        );
+                      })}
                     </Select>
                     to
                     <Select
@@ -391,53 +392,67 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       label="End time"
                       disabled={isPending}
                     >
-                      {Array.from({ length: 24 }, (_, i) => i).map((hour) => (
-                        <Option
-                          key={hour}
-                          value={`${hour % 12 === 0 ? 12 : hour % 12}:00 ${hour < 12 ? "AM" : "PM"}`}
-                        >
-                          {`${hour % 12 === 0 ? 12 : hour % 12}:00 ${hour < 12 ? "AM" : "PM"}`}
-                        </Option>
-                      ))}
+                      {Array.from({ length: 24 * 2 }, (_, i) => {
+                        const hour = Math.floor(i / 2);
+                        const minutes = i % 2 === 0 ? "00" : "30";
+                        return (
+                          <Option
+                            key={i}
+                            value={`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
+                          >
+                            {`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
+                          </Option>
+                        );
+                      })}
                     </Select>
-                    <Button
-                      variant="ghost"
-                      size="icon"
+                    <button
+                      className="hover:cursor-pointer"
                       onClick={() => removeTimeSlot(day, index)}
                       disabled={isPending}
+                      aria-label="Remove Item"
                     >
-                      <X className="h-4 w-4" />
-                    </Button>
+                      <LucideX className="w-5 h-5 hover:text-error-500 transition" />
+                    </button>
                   </div>
                 ))}
-                <Button
-                  variant="ghost"
-                  className="text-center"
+
+                <button
+                  type="button"
+                  className="flex hover:cursor-pointer mt-4 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
                   onClick={() => addTimeSlot(day)}
-                  disabled={isPending}
                 >
-                  <Plus className="w-4 h-4 " />{" "}
-                  <span className="ml-2">Add time slot</span>
-                </Button>
+                  <LucidePlus
+                    color="black"
+                    className="rounded-sm w-4 h-4"
+                  />
+                  <Typography className="text-sm"> Add time slot</Typography>
+                </button>
               </div>
             ))}
           </div>
 
           <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-2">Capacity</h2>
+            <Typography variant="h4" fontWeight="semibold">
+              Slot Capacity
+            </Typography>
+            <Typography className="text-xs text-gray-500 italic mb-2">
+              This corresponds to time slots you put above, this is the minimum and maximum person each can accommodate. Example for this is "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of 10 people"
+            </Typography>
             <div className="flex gap-4">
-              <div className="flex-1">
-                <Input
+              <div>
+                <Input2
                   id="minCapacity"
                   disabled={isPending}
                   type="number"
                   value={minCapacity}
+                  required
                   onChange={(e) => setMinCapacity(e.target.value)}
                   onKeyPress={(e) => {
                     if (!/[0-9]/.test(e.key)) {
                       e.preventDefault()
                     }
                   }}
+                  className="lg:max-w-72"
                   onPaste={(e) => {
                     e.preventDefault()
                     const pastedData = e.clipboardData.getData("Text")
@@ -445,22 +460,24 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       setMinCapacity(pastedData)
                     }
                   }}
-                  label={"Slot Minimum Capacity"}
+                  label={"Minimum"}
                 />
               </div>
-              <div className="flex-1">
-                <Input
+              <div>
+                <Input2
                   id="maxCapacity"
                   type="number"
                   disabled={isPending}
                   value={maxCapacity}
+                  required
                   onChange={(e) => setMaxCapacity(e.target.value)}
-                  label={"Slot Maximum Capacity"}
+                  label={"Maximum"}
                   onKeyPress={(e) => {
                     if (!/[0-9]/.test(e.key)) {
                       e.preventDefault()
                     }
                   }}
+                  className="lg:max-w-72"
                   onPaste={(e) => {
                     e.preventDefault()
                     const pastedData = e.clipboardData.getData("Text")
@@ -474,38 +491,20 @@ const ActivityPricing = ({ pageType }: Prop) => {
           </div>
 
           <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-2">Pricing</h2>
-
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                ₱
-              </span>
-              <Input
-                disabled={isPending}
-                id="pricePerSlot"
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="pl-8"
-                label={
-                  scheduleType === "Private"
-                    ? "Price per Slot"
-                    : "Price per Person"
-                }
-                onKeyPress={(e) => {
-                  if (!/[0-9]/.test(e.key)) {
-                    e.preventDefault()
-                  }
-                }}
-                onPaste={(e) => {
-                  e.preventDefault()
-                  const pastedData = e.clipboardData.getData("Text")
-                  if (/^[0-9]*$/.test(pastedData)) {
-                    setMinCapacity(pastedData)
-                  }
-                }}
-              />
-            </div>
+            <Input2
+              disabled={isPending}
+              id="pricePerSlot"
+              type="number"
+              value={price}
+              label="Price per Person"
+              description={priceInputDescMap[experienceType]}
+              step=".01"
+              required
+              onChange={(e) => setPrice(e.target.value)}
+              defaultValue={data?.item?.requiredDeposit}
+              className="lg:max-w-72"
+              leftIcon={<span className="text-text-300">₱</span>}
+            />
           </div>
         </div>
       </div>

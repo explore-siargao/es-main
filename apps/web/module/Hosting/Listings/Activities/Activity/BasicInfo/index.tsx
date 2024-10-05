@@ -280,7 +280,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                   Experience type
                 </Typography>
                 <Typography className="text-xs text-gray-500 italic mb-2">
-                  Choose whether the experience is Shared, where participants
+                  Choose whether the experience is Joiner, where participants
                   may interact with others, or Private, offering a more
                   exclusive and personal setting.
                 </Typography>
@@ -305,7 +305,7 @@ const BasicInfo = ({ pageType }: Prop) => {
                     htmlFor="haveDriverLicense-yes"
                     className="mr-2 ml-6 text-md leading-6 text-gray-900"
                   >
-                    Shared
+                    Joiner
                   </label>
                   <input
                     id="shared"
@@ -313,9 +313,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                     disabled={isPending || isLoading}
                     {...register("experienceType", { required: true })}
                     className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
-                    value="shared"
+                    value="joiner"
                     required
-                    checked={experienceType === "shared"}
+                    checked={experienceType === "joiner"}
                   />
                 </div>
               </div>
