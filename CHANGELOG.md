@@ -20,8 +20,6 @@
 
 - fixed bug after saving property policies sidebar changing layout ([8914b2e](https://github.com/explore-siargao/es-main/commit/8914b2e74fde5c70b8ab0f606d6296a3e67d3ff9), [b73fc3c](https://github.com/explore-siargao/es-main/commit/b73fc3c7733b7a561f4e6f7036862836e99c7b18))
 - **web:** Activity setup summary error on image UI ([37b42ce](https://github.com/explore-siargao/es-main/commit/37b42ce89ed580ca2cb38cb45e29f574ddff5581))
-- Cleanup for activity pricing to have consistent UI ([354b95](https://github.com/explore-siargao/es-main/commit/354b95ac4c81046f926f031df6475dfb81c12005))
-- Added condition for saving activity pricing([52b5e3](https://github.com/explore-siargao/es-main/commit/52b5e345eca9518b20de3e611137a2e66f4212b9))
 
 ### 🧰 Maintenance
 
