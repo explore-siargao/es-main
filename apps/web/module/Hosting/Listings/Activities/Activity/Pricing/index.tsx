@@ -8,7 +8,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import useGetActivityById from "../../hooks/useGetActivityById"
 import { Option, Select } from "@/common/components/ui/Select"
-import { LucidePlus, LucideX, Plus, X } from "lucide-react"
+import { LucidePlus, LucideX } from "lucide-react"
 import useUpdateActivityPricingSlots from "../../hooks/useUpdateActivityPricingSlots"
 import { Input2 } from "@/common/components/ui/Input2"
 
@@ -43,84 +43,91 @@ const ActivityPricing = ({ pageType }: Prop) => {
     sunday: [],
   })
 
-  const [minCapacity, setMinCapacity] = useState("1")
-  const [maxCapacity, setMaxCapacity] = useState("10")
-  const [price, setPrice] = useState("10.00")
+  const [minCapacity, setMinCapacity] = useState(0)
+  const [maxCapacity, setMaxCapacity] = useState(0)
+  const [price, setPrice] = useState(0)
 
-  const experienceType: 'private' | 'joiner' = data?.item?.experienceType
+  const experienceType: "private" | "joiner" = data?.item?.experienceType
 
   const onSubmit = async () => {
-    if (maxCapacity < minCapacity) {
-      toast.error("Minimum capacity must be less than Max capacity")
-      return
-    }
-    const pricingData = {
-      experienceType: experienceType,
-      schedule: {
-        monday: schedule.monday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-        tuesday: schedule.tuesday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-        wednesday: schedule.wednesday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-        thursday: schedule.thursday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-        friday: schedule.friday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-        saturday: schedule.saturday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-        sunday: schedule.sunday?.map((slot) => ({
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        })),
-      },
-      slotCapacity: {
-        minimum: parseInt(minCapacity),
-        maximum: parseInt(maxCapacity),
-      },
-      price: parseFloat(price),
-    }
-
-    try {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            toast.success(data.message)
-            queryClient.invalidateQueries({
-              queryKey: ["activity", activityId],
-            })
-            if (pageType === "setup") {
-              queryClient.invalidateQueries({
-                queryKey: ["activity-finished-sections", activityId],
-              })
-              router.push(
-                `/hosting/listings/activities/setup/${activityId}/summary`
-              )
-            }
-          } else {
-            toast.error(String(data.message))
-          }
+    const allEmpty = Object.values(schedule).every((arr) => arr.length === 0)
+    if (allEmpty) {
+      toast.error("Please add at least one time slot for any day.")
+    } else if (minCapacity > maxCapacity) {
+      toast.error("Minimum capacity must be less than or equal to Max capacity")
+    } else if (price < 1) {
+      toast.error("Price must be greater than 0")
+    } else {
+      const pricingData = {
+        experienceType: experienceType,
+        schedule: {
+          monday: schedule.monday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          tuesday: schedule.tuesday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          wednesday: schedule.wednesday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          thursday: schedule.thursday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          friday: schedule.friday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          saturday: schedule.saturday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
+          sunday: schedule.sunday?.map((slot) => ({
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+          })),
         },
-        onError: (err: any) => {
-          toast.error(String(err))
+        slotCapacity: {
+          minimum: minCapacity,
+          maximum: maxCapacity,
         },
+        price: price,
       }
 
-      await mutateAsync(pricingData, callBackReq)
-    } catch (error) {
-      toast.error("Failed to update activity pricing slots. Please try again.")
+      try {
+        const callBackReq = {
+          onSuccess: (data: any) => {
+            if (!data.error) {
+              toast.success(data.message)
+              queryClient.invalidateQueries({
+                queryKey: ["activity", activityId],
+              })
+              if (pageType === "setup") {
+                queryClient.invalidateQueries({
+                  queryKey: ["activity-finished-sections", activityId],
+                })
+                router.push(
+                  `/hosting/listings/activities/setup/${activityId}/summary`
+                )
+              }
+            } else {
+              toast.error(String(data.message))
+            }
+          },
+          onError: (err: any) => {
+            toast.error(String(err))
+          },
+        }
+
+        await mutateAsync(pricingData, callBackReq)
+      } catch (error) {
+        toast.error(
+          "Failed to update activity pricing slots. Please try again."
+        )
+      }
     }
   }
 
@@ -322,8 +329,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
   }
 
   const priceInputDescMap = {
-    "joiner": `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
-    "private": `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
+    joiner: `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
+    private: `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
   }
 
   return (
@@ -353,7 +360,9 @@ const ActivityPricing = ({ pageType }: Prop) => {
               </Button>
             </div>
             <Typography className="text-xs text-gray-500 italic mb-2">
-              This lets you set multiple time slots for an activity by day. Add or remove time slots, and use "Copy to remaining days" to quickly apply settings across the week.
+              This lets you set multiple time slots for an activity by day. Add
+              or remove time slots, and use "Copy to remaining days" to quickly
+              apply settings across the week.
             </Typography>
             {Object.entries(schedule).map(([day, slots]) => (
               <div key={day} className="mb-4">
@@ -371,8 +380,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       disabled={isPending}
                     >
                       {Array.from({ length: 24 * 2 }, (_, i) => {
-                        const hour = Math.floor(i / 2);
-                        const minutes = i % 2 === 0 ? "00" : "30";
+                        const hour = Math.floor(i / 2)
+                        const minutes = i % 2 === 0 ? "00" : "30"
                         return (
                           <Option
                             key={i}
@@ -380,7 +389,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                           >
                             {`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
                           </Option>
-                        );
+                        )
                       })}
                     </Select>
                     to
@@ -393,8 +402,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
                       disabled={isPending}
                     >
                       {Array.from({ length: 24 * 2 }, (_, i) => {
-                        const hour = Math.floor(i / 2);
-                        const minutes = i % 2 === 0 ? "00" : "30";
+                        const hour = Math.floor(i / 2)
+                        const minutes = i % 2 === 0 ? "00" : "30"
                         return (
                           <Option
                             key={i}
@@ -402,7 +411,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                           >
                             {`${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`}
                           </Option>
-                        );
+                        )
                       })}
                     </Select>
                     <button
@@ -421,11 +430,11 @@ const ActivityPricing = ({ pageType }: Prop) => {
                   className="flex hover:cursor-pointer mt-4 gap-1 items-center bg-gray-50 hover:bg-gray-200 rounded-md pl-1 pr-2 transition"
                   onClick={() => addTimeSlot(day)}
                 >
-                  <LucidePlus
-                    color="black"
-                    className="rounded-sm w-4 h-4"
-                  />
-                  <Typography className="text-sm"> Add time slot</Typography>
+                  <LucidePlus color="black" className="rounded-sm w-4 h-4" />
+                  <Typography className="text-sm">
+                    {" "}
+                    Add time slot for {day}
+                  </Typography>
                 </button>
               </div>
             ))}
@@ -436,7 +445,10 @@ const ActivityPricing = ({ pageType }: Prop) => {
               Slot Capacity
             </Typography>
             <Typography className="text-xs text-gray-500 italic mb-2">
-              This corresponds to time slots you put above, this is the minimum and maximum person each can accommodate. Example for this is "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of 10 people"
+              This corresponds to time slots you put above, this is the minimum
+              and maximum person each can accommodate. Example for this is
+              "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of
+              10 people"
             </Typography>
             <div className="flex gap-4">
               <div>
@@ -446,7 +458,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                   type="number"
                   value={minCapacity}
                   required
-                  onChange={(e) => setMinCapacity(e.target.value)}
+                  onChange={(e) => setMinCapacity(Number(e.target.value))}
                   onKeyPress={(e) => {
                     if (!/[0-9]/.test(e.key)) {
                       e.preventDefault()
@@ -457,7 +469,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                     e.preventDefault()
                     const pastedData = e.clipboardData.getData("Text")
                     if (/^[0-9]*$/.test(pastedData)) {
-                      setMinCapacity(pastedData)
+                      setMinCapacity(Number(pastedData))
                     }
                   }}
                   label={"Minimum"}
@@ -470,7 +482,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                   disabled={isPending}
                   value={maxCapacity}
                   required
-                  onChange={(e) => setMaxCapacity(e.target.value)}
+                  onChange={(e) => setMaxCapacity(Number(e.target.value))}
                   label={"Maximum"}
                   onKeyPress={(e) => {
                     if (!/[0-9]/.test(e.key)) {
@@ -482,7 +494,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                     e.preventDefault()
                     const pastedData = e.clipboardData.getData("Text")
                     if (/^[0-9]*$/.test(pastedData)) {
-                      setMinCapacity(pastedData)
+                      setMinCapacity(Number(pastedData))
                     }
                   }}
                 />
@@ -500,7 +512,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
               description={priceInputDescMap[experienceType]}
               step=".01"
               required
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => setPrice(Number(e.target.value))}
               defaultValue={data?.item?.requiredDeposit}
               className="lg:max-w-72"
               leftIcon={<span className="text-text-300">₱</span>}
