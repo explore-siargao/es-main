@@ -4,32 +4,29 @@
 
 ### 🚀 Features
 
-- after updating property locations sidebar location not turn to green ([28b0565](https://github.com/explore-siargao/es-main/commit/28b05657e0a854039794639ddbd1c3d7eafd994e))
-- **api:** Activity add price per dates endpoint ([95b8bb6](https://github.com/explore-siargao/es-main/commit/95b8bb682c2d9d43db85f0a7ef12c15297c71f79))
-- **api:** Added endpoint for cancelling rental reservation and getting activity counts ([dbe285a](https://github.com/explore-siargao/es-main/commit/dbe285a580d53d55fce9a543527e3a2a33e7b952))
-- **api:** Added endpoint for edit and get slots price ([75ea753](https://github.com/explore-siargao/es-main/commit/75ea753dfd9aa863a72f5a91785d27db23968273))
-- **api:** Added endpoint for get private and joiner activities ([ef0e7de](https://github.com/explore-siargao/es-main/commit/ef0e7def7a4d535d49dcb3da184d5779afc02adf))
-- **api:** Create add activity calendar reservation ([dc764e9](https://github.com/explore-siargao/es-main/commit/dc764e95d08c5a06c4912dedeae6ff0211f548c2))
-- **api:** Modified activity model schema added schedule and time slots ([515fee3](https://github.com/explore-siargao/es-main/commit/515fee3e20c6da89214f8d965a32acbbff41eea1))
-- **api:** Modified activity model schema added schedule and time slots ([fa87e57](https://github.com/explore-siargao/es-main/commit/fa87e57d0cec29a5f159dcb029a3fd928dcfd828))
-- **api:** Modified affected endpoint functions due to modifying activity model ([42e2619](https://github.com/explore-siargao/es-main/commit/42e261967541fa66a3cbe435122aa82bf16aa650))
-- Connect calendar activity reservation backend to frontend ([25d4164](https://github.com/explore-siargao/es-main/commit/25d4164b8981a80618fe04b51f7fad15a52db355))
-- Connect calendar activity reservation backend to frontend ([1df4287](https://github.com/explore-siargao/es-main/commit/1df4287d7059cf5ea8d1b7270cbc143e44d15fef))
-- Connect calendar activity reservation backend to frontend ([2d7e2ec](https://github.com/explore-siargao/es-main/commit/2d7e2ec22cbc8df3adcc945d01aeb6ec86f4c355))
-- Connect calendar activity reservation backend to frontend ([2582dc6](https://github.com/explore-siargao/es-main/commit/2582dc6ac8174e721b86df18276bf7820b8e3583))
-- Create pricing ui for activity setup ([5960846](https://github.com/explore-siargao/es-main/commit/59608462ef8429f8b923878d61a6081ab59c390d))
-- **web:** Added cancel rental reservation function ([47be292](https://github.com/explore-siargao/es-main/commit/47be29232e258cc8de23d7fee0492a01b65e6fb8))
+* after updating property locations sidebar location not turn to green ([28b0565](https://github.com/explore-siargao/es-main/commit/28b05657e0a854039794639ddbd1c3d7eafd994e))
+* **api:** Activity add price per dates endpoint ([95b8bb6](https://github.com/explore-siargao/es-main/commit/95b8bb682c2d9d43db85f0a7ef12c15297c71f79))
+* **api:** Added endpoint for cancelling rental reservation and getting activity counts ([dbe285a](https://github.com/explore-siargao/es-main/commit/dbe285a580d53d55fce9a543527e3a2a33e7b952))
+* **api:** Added endpoint for edit and get slots price ([75ea753](https://github.com/explore-siargao/es-main/commit/75ea753dfd9aa863a72f5a91785d27db23968273))
+* **api:** Added endpoint for get private and joiner activities ([ef0e7de](https://github.com/explore-siargao/es-main/commit/ef0e7def7a4d535d49dcb3da184d5779afc02adf))
+* **api:** Create add activity calendar reservation ([dc764e9](https://github.com/explore-siargao/es-main/commit/dc764e95d08c5a06c4912dedeae6ff0211f548c2))
+* **api:** Modified activity model schema added schedule and time slots ([515fee3](https://github.com/explore-siargao/es-main/commit/515fee3e20c6da89214f8d965a32acbbff41eea1), [fa87e57](https://github.com/explore-siargao/es-main/commit/fa87e57d0cec29a5f159dcb029a3fd928dcfd828))
+* **api:** Modified affected endpoint functions due to modifying activity model ([42e2619](https://github.com/explore-siargao/es-main/commit/42e261967541fa66a3cbe435122aa82bf16aa650))
+* Connect calendar activity reservation backend to frontend ([25d4164](https://github.com/explore-siargao/es-main/commit/25d4164b8981a80618fe04b51f7fad15a52db355), [1df4287](https://github.com/explore-siargao/es-main/commit/1df4287d7059cf5ea8d1b7270cbc143e44d15fef), [2d7e2ec](https://github.com/explore-siargao/es-main/commit/2d7e2ec22cbc8df3adcc945d01aeb6ec86f4c355), [2582dc6](https://github.com/explore-siargao/es-main/commit/2582dc6ac8174e721b86df18276bf7820b8e3583))
+* Create pricing UI for activity setup ([5960846](https://github.com/explore-siargao/es-main/commit/59608462ef8429f8b923878d61a6081ab59c390d))
+* **web:** Added cancel rental reservation function ([47be292](https://github.com/explore-siargao/es-main/commit/47be29232e258cc8de23d7fee0492a01b65e6fb8))
 
 ### 🛠 Bug Fixes
 
-- fixed bug after saving property policies sidebar changing layout ([8914b2e](https://github.com/explore-siargao/es-main/commit/8914b2e74fde5c70b8ab0f606d6296a3e67d3ff9))
-- fixed bug after saving property policies sidebar changing layout ([b73fc3c](https://github.com/explore-siargao/es-main/commit/b73fc3c7733b7a561f4e6f7036862836e99c7b18))
-- **web:** Activity setup summary error on image UI ([37b42ce](https://github.com/explore-siargao/es-main/commit/37b42ce89ed580ca2cb38cb45e29f574ddff5581))
+* fixed bug after saving property policies sidebar changing layout ([8914b2e](https://github.com/explore-siargao/es-main/commit/8914b2e74fde5c70b8ab0f606d6296a3e67d3ff9), [b73fc3c](https://github.com/explore-siargao/es-main/commit/b73fc3c7733b7a561f4e6f7036862836e99c7b18))
+* **web:** Activity setup summary error on image UI ([37b42ce](https://github.com/explore-siargao/es-main/commit/37b42ce89ed580ca2cb38cb45e29f574ddff5581))
+* Cleanup for activity pricing to have consistent UI ([354b95](https://github.com/explore-siargao/es-main/commit/354b95ac4c81046f926f031df6475dfb81c12005))
+* Added condition for saving activity pricing([52b5e3](https://github.com/explore-siargao/es-main/commit/52b5e345eca9518b20de3e611137a2e66f4212b9))
 
 ### 🧰 Maintenance
 
-- Import not imported constants ([9557680](https://github.com/explore-siargao/es-main/commit/955768056f241da80aed7d75d5a0e08b83d6bbca))
-- Updated read me setup of project ([5960707](https://github.com/explore-siargao/es-main/commit/5960707946513b975c92c9180245c899c51a98d0))
+* Import not imported constants ([9557680](https://github.com/explore-siargao/es-main/commit/955768056f241da80aed7d75d5a0e08b83d6bbca))
+* Updated read me setup of project ([5960707](https://github.com/explore-siargao/es-main/commit/5960707946513b975c92c9180245c899c51a98d0))
 
 ## [0.25.0](https://github.com/explore-siargao/es-main/compare/v0.24.0...v0.25.0) (2024-10-01)
 
@@ -51,130 +48,103 @@
 
 ### 🚀 Features
 
-- Added reusable date format for timezone and included general Global Wrappers ([abb022d](https://github.com/explore-siargao/es-main/commit/abb022d0be9fd1d23ea99dd048ed680ba87dc0b5))
-- **api:** Adjusted database model reservation units and rental ([e0a90e0](https://github.com/explore-siargao/es-main/commit/e0a90e00df12206cf2d144bcb754565fea5062dc))
-- **api:** Modified activities model for activity type field ([5f2b44b](https://github.com/explore-siargao/es-main/commit/5f2b44bbc158f26bc68fa3076adb0c2a10c69330))
-- Connect PricePerdates add modal of rental to backend ([7909f7c](https://github.com/explore-siargao/es-main/commit/7909f7c305b6a145e8cb6b710b8dbb130c695888))
-- Rental Calendar search button function ([d3d9022](https://github.com/explore-siargao/es-main/commit/d3d9022dcafe3990fa28630584b541429ea1d559))
-- Rental Calendar search button function ([ead95fb](https://github.com/explore-siargao/es-main/commit/ead95fb4defca7fd27a9c1700854f38892ad4174))
-- **web:** Added displays of price per dates on property calendar ([0b4b42a](https://github.com/explore-siargao/es-main/commit/0b4b42a940a87953ccf06a0aae129fce7ba4098c))
-- **web:** Added displays of price per dates on property calendar ([0dd3fac](https://github.com/explore-siargao/es-main/commit/0dd3fac821afc636636393751e4f0ec8ff41c88d))
-- **web:** Added more height for image box in public listing page ([d9c5b36](https://github.com/explore-siargao/es-main/commit/d9c5b36aba2b4ba575e8b2dfc834bd04feae874c))
-- **web:** Correct the alignment on left of blocksbars on calendar ([2e575d2](https://github.com/explore-siargao/es-main/commit/2e575d276bfce6a079b36b1965507683a4788bc1))
-- **web:** Created text descriptions for no bookableunits in calendar ([8b5dcd9](https://github.com/explore-siargao/es-main/commit/8b5dcd91cb8e85e1eb8c03067a985d0b758095ab))
-- **web:** Created text descriptions for no bookableunits in calendar ([317e2d9](https://github.com/explore-siargao/es-main/commit/317e2d991d55ddb58f49a6ef5ccdb22ea01f571f))
-- **web:** Display dynamic price on rental calendar ([31f725b](https://github.com/explore-siargao/es-main/commit/31f725b4399aca2795ce56ef885b9afee2907e14))
-- **web:** Hide search button on calendar ([514b975](https://github.com/explore-siargao/es-main/commit/514b975db79e2454432a6f33717a1d5f4f939a33))
-- **web:** Modified activity setup basic info ui ([deef355](https://github.com/explore-siargao/es-main/commit/deef35594af47eeabfd9303c24b6cc20dc782fc9))
-- **web:** Modified activity setup basic info ui ([339b4a4](https://github.com/explore-siargao/es-main/commit/339b4a4e71d71e67da00f2e082b1ec8884c92d13))
-- **web:** Modified activity setup basic info ui ([08c5609](https://github.com/explore-siargao/es-main/commit/08c560956f132e5ccbf0b89e86794fc1f97d0d21))
-- **web:** Modify calendar side items property ui ([4c5ecde](https://github.com/explore-siargao/es-main/commit/4c5ecdef42094b861066372a9b70ef1660f7db00))
+* Added reusable date format for timezone and included general Global Wrappers ([abb022d](https://github.com/explore-siargao/es-main/commit/abb022d0be9fd1d23ea99dd048ed680ba87dc0b5))
+* **api:** Adjusted database model reservation units and rental ([e0a90e0](https://github.com/explore-siargao/es-main/commit/e0a90e00df12206cf2d144bcb754565fea5062dc))
+* **api:** Modified activities model for activity type field ([5f2b44b](https://github.com/explore-siargao/es-main/commit/5f2b44bbc158f26bc68fa3076adb0c2a10c69330))
+* Connect PricePerdates add modal of rental to backend ([7909f7c](https://github.com/explore-siargao/es-main/commit/7909f7c305b6a145e8cb6b710b8dbb130c695888))
+* Rental Calendar search button function ([d3d9022](https://github.com/explore-siargao/es-main/commit/d3d9022dcafe3990fa28630584b541429ea1d559), [ead95fb](https://github.com/explore-siargao/es-main/commit/ead95fb4defca7fd27a9c1700854f38892ad4174))
+* **web:** Added displays of price per dates on property calendar ([0b4b42a](https://github.com/explore-siargao/es-main/commit/0b4b42a940a87953ccf06a0aae129fce7ba4098c), [0dd3fac](https://github.com/explore-siargao/es-main/commit/0dd3fac821afc636636393751e4f0ec8ff41c88d))
+* **web:** Added more height for image box in public listing page ([d9c5b36](https://github.com/explore-siargao/es-main/commit/d9c5b36aba2b4ba575e8b2dfc834bd04feae874c))
+* **web:** Correct the alignment on left of blocksbars on calendar ([2e575d2](https://github.com/explore-siargao/es-main/commit/2e575d276bfce6a079b36b1965507683a4788bc1))
+* **web:** Created text descriptions for no bookableunits in calendar ([8b5dcd9](https://github.com/explore-siargao/es-main/commit/8b5dcd91cb8e85e1eb8c03067a985d0b758095ab), [317e2d9](https://github.com/explore-siargao/es-main/commit/317e2d991d55ddb58f49a6ef5ccdb22ea01f571f))
+* **web:** Display dynamic price on rental calendar ([31f725b](https://github.com/explore-siargao/es-main/commit/31f725b4399aca2795ce56ef885b9afee2907e14))
+* **web:** Hide search button on calendar ([514b975](https://github.com/explore-siargao/es-main/commit/514b975db79e2454432a6f33717a1d5f4f939a33))
+* **web:** Modified activity setup basic info ui ([deef355](https://github.com/explore-siargao/es-main/commit/deef35594af47eeabfd9303c24b6cc20dc782fc9), [339b4a4](https://github.com/explore-siargao/es-main/commit/339b4a4e71d71e67da00f2e082b1ec8884c92d13), [08c5609](https://github.com/explore-siargao/es-main/commit/08c560956f132e5ccbf0b89e86794fc1f97d0d21))
+* **web:** Modify calendar side items property ui ([4c5ecde](https://github.com/explore-siargao/es-main/commit/4c5ecdef42094b861066372a9b70ef1660f7db00))
 
 ### 🛠 Bug Fixes
 
-- **api:** Bug on adding reservation on property multiple display ([190dd42](https://github.com/explore-siargao/es-main/commit/190dd4267fa55176b9f0fbb9ed8e6572686c4982))
-- **api:** Bug on adding reservation on property multiple display ([0d8917e](https://github.com/explore-siargao/es-main/commit/0d8917efff4e70166b3a0a836ed266656dc18681))
-- **api:** Bug on adding reservation on property multiple display ([1498150](https://github.com/explore-siargao/es-main/commit/1498150d4ef48a20b05c771d1656c546a19dfeb1))
-- **api:** Error on dates on pricePerDates ([4891d42](https://github.com/explore-siargao/es-main/commit/4891d4206e7830ede494ae2259d8204f1d40fac2))
-- Bug on adding reservation on property multiple display ([cb38070](https://github.com/explore-siargao/es-main/commit/cb38070157eb26a3cac166c194995a97ba674099))
-- Fix the not match dates of reservation blocks on the calendar dates ([79bb635](https://github.com/explore-siargao/es-main/commit/79bb635de8163f4922b8acb253832cdd81e029ee))
+* **api:** Bug on adding reservation on property multiple display ([190dd42](https://github.com/explore-siargao/es-main/commit/190dd4267fa55176b9f0fbb9ed8e6572686c4982), [0d8917e](https://github.com/explore-siargao/es-main/commit/0d8917efff4e70166b3a0a836ed266656dc18681), [1498150](https://github.com/explore-siargao/es-main/commit/1498150d4ef48a20b05c771d1656c546a19dfeb1), [cb38070](https://github.com/explore-siargao/es-main/commit/cb38070157eb26a3cac166c194995a97ba674099))
+* **api:** Error on dates on pricePerDates ([4891d42](https://github.com/explore-siargao/es-main/commit/4891d4206e7830ede494ae2259d8204f1d40fac2))
+* Fix the not match dates of reservation blocks on the calendar dates ([79bb635](https://github.com/explore-siargao/es-main/commit/79bb635de8163f4922b8acb253832cdd81e029ee))
 
 ## [0.23.0](https://github.com/explore-siargao/es-main/compare/v0.22.0...v0.23.0) (2024-09-24)
 
 ### 🚀 Features
 
-- **api:** Added endpoint for adding price per dates on units ([56ccc2f](https://github.com/explore-siargao/es-main/commit/56ccc2f4a182202d0dd5775c377f8fc6ce31a772))
-- **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([a8dd71f](https://github.com/explore-siargao/es-main/commit/a8dd71fefa1c832068ffa0b3455a2023e0563b24))
-- **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([489b829](https://github.com/explore-siargao/es-main/commit/489b82989b2f3ed5ded024eff89020f4a887935d))
-- **api:** Modified activity model added experienceType field ([69b4d41](https://github.com/explore-siargao/es-main/commit/69b4d41798d510bbae7c5ab88f4a21d3f299b4a8))
-- Change backgound color for hovering checkout, drop off and completed bar ([67f7536](https://github.com/explore-siargao/es-main/commit/67f7536f2c0a4a480922f8e1fbd7600711cc6b96))
-- Rental cancelling calendar button not displaying the reservation blocks ([9bfa7ca](https://github.com/explore-siargao/es-main/commit/9bfa7ca1154a7dffaf51f94aa57927e6c262e792))
-- **web:** Added today function on property calendar and add highlight for today date ([73e0c5b](https://github.com/explore-siargao/es-main/commit/73e0c5bfbc9109836dd49fc801b156ece95c5519))
-- **web:** Added today function to activity calendar and add highlights to current day ([984f742](https://github.com/explore-siargao/es-main/commit/984f742b6f7203c1a256f68387130904f87d8c91))
-- **web:** Added today functions to Rental car, motor and bike and add highlight for today ([6e6b0d0](https://github.com/explore-siargao/es-main/commit/6e6b0d0f6822be27e17e68a701798ba84617887f))
-- **web:** Created calendar search modal ([c080996](https://github.com/explore-siargao/es-main/commit/c080996694505816e3befef2f373628c6c217003))
-- **web:** Created edit price per days modal ([895f73b](https://github.com/explore-siargao/es-main/commit/895f73ba9801a12487e844deab2cbf7dad1651d2))
-- **web:** Created edit price per days modal ([113e30e](https://github.com/explore-siargao/es-main/commit/113e30ecae55353f47ddae3c57072330a5f8ecfb))
-- **web:** Created edit price per days modal ([3620b19](https://github.com/explore-siargao/es-main/commit/3620b191116c89c5f568b2558a72bd2e6385ca65))
-- **web:** Created edit price per days modal ([8f0623a](https://github.com/explore-siargao/es-main/commit/8f0623a8a25b79c4c6059ee5d912b998dd378d0e))
-- **web:** Created edit price per days modal ([d3d4b88](https://github.com/explore-siargao/es-main/commit/d3d4b88a7f50dd4fc5b3ae6bea4a01db575ce840))
-- **web:** Created edit price per days modal ([7d52ab2](https://github.com/explore-siargao/es-main/commit/7d52ab270854b6dbf4c666e3f302f66b1444d184))
-- **web:** Modified clandar legends colors ([adbb3fb](https://github.com/explore-siargao/es-main/commit/adbb3fbc224180a9c0e5bddfc9a65d0785ee3dc0))
-- **web:** Removed the whole place modal in the process ([c69e228](https://github.com/explore-siargao/es-main/commit/c69e228d3ae4c8cfa0f3af912718c126a62e1727))
-- **web:** Removed the whole place modal in the process ([b29c858](https://github.com/explore-siargao/es-main/commit/b29c85820fd16443f2721dc01685ae82c860c46d))
+* **api:** Added endpoint for adding price per dates on units ([56ccc2f](https://github.com/explore-siargao/es-main/commit/56ccc2f4a182202d0dd5775c377f8fc6ce31a772))
+* **api:** Added endpoint for adding rental price per date range and modified all get rental calendar categories ([a8dd71f](https://github.com/explore-siargao/es-main/commit/a8dd71fefa1c832068ffa0b3455a2023e0563b24), [489b829](https://github.com/explore-siargao/es-main/commit/489b82989b2f3ed5ded024eff89020f4a887935d))
+* **api:** Modified activity model added experienceType field ([69b4d41](https://github.com/explore-siargao/es-main/commit/69b4d41798d510bbae7c5ab88f4a21d3f299b4a8))
+* Change backgound color for hovering checkout, drop off and completed bar ([67f7536](https://github.com/explore-siargao/es-main/commit/67f7536f2c0a4a480922f8e1fbd7600711cc6b96))
+* Rental cancelling calendar button not displaying the reservation blocks ([9bfa7ca](https://github.com/explore-siargao/es-main/commit/9bfa7ca1154a7dffaf51f94aa57927e6c262e792))
+* **web:** Added today function on property calendar and add highlight for today date ([73e0c5b](https://github.com/explore-siargao/es-main/commit/73e0c5bfbc9109836dd49fc801b156ece95c5519))
+* **web:** Added today function to activity calendar and add highlights to current day ([984f742](https://github.com/explore-siargao/es-main/commit/984f742b6f7203c1a256f68387130904f87d8c91))
+* **web:** Added today functions to Rental car, motor and bike and add highlight for today ([6e6b0d0](https://github.com/explore-siargao/es-main/commit/6e6b0d0f6822be27e17e68a701798ba84617887f))
+* **web:** Created calendar search modal ([c080996](https://github.com/explore-siargao/es-main/commit/c080996694505816e3befef2f373628c6c217003))
+* **web:** Created edit price per days modal ([895f73b](https://github.com/explore-siargao/es-main/commit/895f73ba9801a12487e844deab2cbf7dad1651d2), [113e30e](https://github.com/explore-siargao/es-main/commit/113e30ecae55353f47ddae3c57072330a5f8ecfb), [3620b19](https://github.com/explore-siargao/es-main/commit/3620b191116c89c5f568b2558a72bd2e6385ca65), [8f0623a](https://github.com/explore-siargao/es-main/commit/8f0623a8a25b79c4c6059ee5d912b998dd378d0e), [d3d4b88](https://github.com/explore-siargao/es-main/commit/d3d4b88a7f50dd4fc5b3ae6bea4a01db575ce840), [7d52ab2](https://github.com/explore-siargao/es-main/commit/7d52ab270854b6dbf4c666e3f302f66b1444d184))
+* **web:** Modified calandar legends colors ([adbb3fb](https://github.com/explore-siargao/es-main/commit/adbb3fbc224180a9c0e5bddfc9a65d0785ee3dc0))
+* **web:** Removed the whole place modal in the process ([c69e228](https://github.com/explore-siargao/es-main/commit/c69e228d3ae4c8cfa0f3af912718c126a62e1727), [b29c858](https://github.com/explore-siargao/es-main/commit/b29c85820fd16443f2721dc01685ae82c860c46d))
 
 ### 🧰 Maintenance
 
-- Modify pnpm lock yaml ([652851b](https://github.com/explore-siargao/es-main/commit/652851bddf628143f797911d7f17634a1ca9f50e))
+* Modify pnpm lock yaml ([652851b](https://github.com/explore-siargao/es-main/commit/652851bddf628143f797911d7f17634a1ca9f50e))
 
 ## [0.22.0](https://github.com/explore-siargao/es-main/compare/v0.21.0...v0.22.0) (2024-09-20)
 
 ### 🚀 Features
 
-- Add Activity Type input in activity basic info setup ([0478cd7](https://github.com/explore-siargao/es-main/commit/0478cd7571c66f31c19275dca5db06c9e8a68050))
-- **api:** Added activityType field on actvitiy model ([1466bb8](https://github.com/explore-siargao/es-main/commit/1466bb8d6cceac943b8e5bca1f6ddc7e8f796dde))
-- **api:** Modified activities bookable units and rental models added pricePerDates ([8c8538a](https://github.com/explore-siargao/es-main/commit/8c8538a4a31a6dc32ba4dfc47ff0bf8cf4abcfe0))
-- Calendar UI correction ([b210e0a](https://github.com/explore-siargao/es-main/commit/b210e0aad76d67222e407928d80d06b4bd312d72))
-- Modify the process of setup for property whole place ([40073f0](https://github.com/explore-siargao/es-main/commit/40073f0925dedbaf49ef15ac5eead693ef2b7fa1))
-- **web:** Applied calendar current day and search date function to motor and bike ([53fb6c6](https://github.com/explore-siargao/es-main/commit/53fb6c638e5fcd9c38c8d02e4206f22271c54eed))
-- **web:** calendar counts available units automatic change depends on available units ([cf0345f](https://github.com/explore-siargao/es-main/commit/cf0345f30e44ce67af340acb8ccbe4ca1de9525c))
-- **web:** Calendar counts available units automatic change depends on available units ([604a641](https://github.com/explore-siargao/es-main/commit/604a641c17697a1cb173c2a365c292628f29de86))
-- **web:** Modified calendar legends ([f08b497](https://github.com/explore-siargao/es-main/commit/f08b497385453da04c27abb9a8a138cbea37cf21))
-- **web:** Modified calendar legends ([7c49837](https://github.com/explore-siargao/es-main/commit/7c49837ed5359c08f1f819ad0adb7dde364698a1))
-- **web:** Modified calendar legends ([3b1fedf](https://github.com/explore-siargao/es-main/commit/3b1fedf5cc45232678f17a11f243d53a47a059dd))
-- **web:** Modified calendar legends ([f4cab98](https://github.com/explore-siargao/es-main/commit/f4cab985108d23e464db43934102754dcfd646eb))
+* Add Activity Type input in activity basic info setup ([0478cd7](https://github.com/explore-siargao/es-main/commit/0478cd7571c66f31c19275dca5db06c9e8a68050))
+* **api:** Added activityType field on activity model ([1466bb8](https://github.com/explore-siargao/es-main/commit/1466bb8d6cceac943b8e5bca1f6ddc7e8f796dde))
+* **api:** Modified activities bookable units and rental models, added pricePerDates ([8c8538a](https://github.com/explore-siargao/es-main/commit/8c8538a4a31a6dc32ba4dfc47ff0bf8cf4abcfe0))
+* Calendar UI correction ([b210e0a](https://github.com/explore-siargao/es-main/commit/b210e0aad76d67222e407928d80d06b4bd312d72))
+* Modify the process of setup for property whole place ([40073f0](https://github.com/explore-siargao/es-main/commit/40073f0925dedbaf49ef15ac5eead693ef2b7fa1))
+* **web:** Applied calendar current day and search date function to motor and bike ([53fb6c6](https://github.com/explore-siargao/es-main/commit/53fb6c638e5fcd9c38c8d02e4206f22271c54eed))
+* **web:** Calendar counts available units automatic change depends on available units ([cf0345f](https://github.com/explore-siargao/es-main/commit/cf0345f30e44ce67af340acb8ccbe4ca1de9525c), [604a641](https://github.com/explore-siargao/es-main/commit/604a641c17697a1cb173c2a365c292628f29de86))
+* **web:** Modified calendar legends ([f08b497](https://github.com/explore-siargao/es-main/commit/f08b497385453da04c27abb9a8a138cbea37cf21), [7c49837](https://github.com/explore-siargao/es-main/commit/7c49837ed5359c08f1f819ad0adb7dde364698a1), [3b1fedf](https://github.com/explore-siargao/es-main/commit/3b1fedf5cc45232678f17a11f243d53a47a059dd), [f4cab98](https://github.com/explore-siargao/es-main/commit/f4cab985108d23e464db43934102754dcfd646eb))
 
 ## [0.21.0](https://github.com/explore-siargao/es-main/compare/v0.20.1...v0.21.0) (2024-09-19)
 
 ### 🚀 Features
 
-- Activity Calendar calendar button function ([ecc3e60](https://github.com/explore-siargao/es-main/commit/ecc3e60ec500ee773ecd1ce43c3dde3fcf456aff))
-- **api:** Added automatic change of reservation status base by current date on property reservation and fixed some founded bug ([132dd55](https://github.com/explore-siargao/es-main/commit/132dd559bc872a0ddb355b00dd416c2c07f58329))
-- **api:** Added endpoint for editing unit reservation ([72722c0](https://github.com/explore-siargao/es-main/commit/72722c05ae1a41a765d49e986169a91b1ff131a3))
-- **api:** Added endpoint for updating whole place type ([8331087](https://github.com/explore-siargao/es-main/commit/8331087cd5d9a120e85ec5ab2910646e10b55dd7))
-- **api:** Automatic changing of reservation status base from current dates on rental reservation ([3b0bdcd](https://github.com/explore-siargao/es-main/commit/3b0bdcdef839eb286c8629be8ef02a7dde10d9c7))
-- Property Calendar calendar button function ([4ad22e0](https://github.com/explore-siargao/es-main/commit/4ad22e049d97557630590bbdffbd9f42339a154b))
-- Property Calendar calendar button function ([efbdc5e](https://github.com/explore-siargao/es-main/commit/efbdc5edd3bb8845f98f5d70d656a4874a695927))
-- Property Calendar calendar button function ([8ec1d02](https://github.com/explore-siargao/es-main/commit/8ec1d0294f6e7ae29a5bc6919f8a3cf6f31c7b3d))
-- Rental Calendar calendar button function ([54007d3](https://github.com/explore-siargao/es-main/commit/54007d35fcaffc5bde0113529c917da465a1ebce))
-- **web:** Added Add and Edit Bike reservation modal ([d175f29](https://github.com/explore-siargao/es-main/commit/d175f29fa49d8d937306b68280a516171e74d3cf))
-- **web:** Added Edit and Add Motorcycle reservation modal ([f7493a7](https://github.com/explore-siargao/es-main/commit/f7493a71f707997dae7f36de7995f7f779530830))
-- **web:** Added optional label for notes and fix some bugs on notes ([8779d30](https://github.com/explore-siargao/es-main/commit/8779d302251342bba055627963098bb79c68a2bc))
-- **web:** Added proper example place holder in each input ([a08dbee](https://github.com/explore-siargao/es-main/commit/a08dbee10cbf0d615ae80c2e20a463fc99dba113))
-- **web:** Added proper example place holder in each input ([c49c8f6](https://github.com/explore-siargao/es-main/commit/c49c8f6e93c2d8a17e7be81ef0604308a617c5a3))
-- **web:** Added proper example place holder in each input ([2b29fb2](https://github.com/explore-siargao/es-main/commit/2b29fb23de8e740465ada5bf56521a93968a5f8c))
-- **web:** Adjusted the height of public property page images ([1e7bf58](https://github.com/explore-siargao/es-main/commit/1e7bf58362246a8fa7a4d930fdaa643ce1cac512))
-- **web:** Adjusted the height of public property page images ([fae10d1](https://github.com/explore-siargao/es-main/commit/fae10d119e39be5a53585f7474ca14106ea9eb41))
-- **web:** Changed no description to add description in unit photo and change tags ([c233c28](https://github.com/explore-siargao/es-main/commit/c233c28977e8661fd151384aad9db8c20f22c39b))
-- **web:** Maked the edit unit reservation function work ([46a9836](https://github.com/explore-siargao/es-main/commit/46a98364f86c334553ae1496e5ce09ae27bb5257))
-- **web:** Mandatory property pricing ([d466a6b](https://github.com/explore-siargao/es-main/commit/d466a6b444b1a28214306744bcc08ab8267b9f97))
-- **web:** Removed collapse button on all bookable category on calendar ([2aec0a6](https://github.com/explore-siargao/es-main/commit/2aec0a63c2746c15dabf04601c3f711df7bc67f2))
-- **web:** Removed collapse button on all bookable category on calendar ([82c81fd](https://github.com/explore-siargao/es-main/commit/82c81fda3e029d4aaafce47cf916713f6d0f8cbb))
-- **web:** Removed Table view button ([a03f2e6](https://github.com/explore-siargao/es-main/commit/a03f2e626b8e5c769d8a999247d7274c717299ff))
-- **web:** Removed Table view button ([746444c](https://github.com/explore-siargao/es-main/commit/746444c4f5337d6c62ec8c04544a0b3cad0d10a4))
-- **web:** Removed Table view button ([74e0371](https://github.com/explore-siargao/es-main/commit/74e0371712821e6a227c996d796027e3d8edc112))
+* Activity Calendar calendar button function ([ecc3e60](https://github.com/explore-siargao/es-main/commit/ecc3e60ec500ee773ecd1ce43c3dde3fcf456aff))
+* **api:** Added automatic change of reservation status base by current date on property reservation and fixed some founded bug ([132dd55](https://github.com/explore-siargao/es-main/commit/132dd559bc872a0ddb355b00dd416c2c07f58329), [3b0bdcd](https://github.com/explore-siargao/es-main/commit/3b0bdcdef839eb286c8629be8ef02a7dde10d9c7))
+* **api:** Added endpoint for editing unit reservation ([72722c0](https://github.com/explore-siargao/es-main/commit/72722c05ae1a41a765d49e986169a91b1ff131a3))
+* **api:** Added endpoint for updating whole place type ([8331087](https://github.com/explore-siargao/es-main/commit/8331087cd5d9a120e85ec5ab2910646e10b55dd7))
+* Property Calendar calendar button function ([4ad22e0](https://github.com/explore-siargao/es-main/commit/4ad22e049d97557630590bbdffbd9f42339a154b), [efbdc5e](https://github.com/explore-siargao/es-main/commit/efbdc5edd3bb8845f98f5d70d656a4874a695927), [8ec1d02](https://github.com/explore-siargao/es-main/commit/8ec1d0294f6e7ae29a5bc6919f8a3cf6f31c7b3d))
+* Rental Calendar calendar button function ([54007d3](https://github.com/explore-siargao/es-main/commit/54007d35fcaffc5bde0113529c917da465a1ebce))
+* **web:** Added Add and Edit Bike reservation modal ([d175f29](https://github.com/explore-siargao/es-main/commit/d175f29fa49d8d937306b68280a516171e74d3cf))
+* **web:** Added Edit and Add Motorcycle reservation modal ([f7493a7](https://github.com/explore-siargao/es-main/commit/f7493a71f707997dae7f36de7995f7f779530830))
+* **web:** Added optional label for notes and fix some bugs on notes ([8779d30](https://github.com/explore-siargao/es-main/commit/8779d302251342bba055627963098bb79c68a2bc))
+* **web:** Added proper example place holder in each input ([a08dbee](https://github.com/explore-siargao/es-main/commit/a08dbee10cbf0d615ae80c2e20a463fc99dba113), [c49c8f6](https://github.com/explore-siargao/es-main/commit/c49c8f6e93c2d8a17e7be81ef0604308a617c5a3), [2b29fb2](https://github.com/explore-siargao/es-main/commit/2b29fb23de8e740465ada5bf56521a93968a5f8c))
+* **web:** Adjusted the height of public property page images ([1e7bf58](https://github.com/explore-siargao/es-main/commit/1e7bf58362246a8fa7a4d930fdaa643ce1cac512), [fae10d1](https://github.com/explore-siargao/es-main/commit/fae10d119e39be5a53585f7474ca14106ea9eb41))
+* **web:** Changed no description to add description in unit photo and change tags ([c233c28](https://github.com/explore-siargao/es-main/commit/c233c28977e8661fd151384aad9db8c20f22c39b))
+* **web:** Maked the edit unit reservation function work ([46a9836](https://github.com/explore-siargao/es-main/commit/46a98364f86c334553ae1496e5ce09ae27bb5257))
+* **web:** Mandatory property pricing ([d466a6b](https://github.com/explore-siargao/es-main/commit/d466a6b444b1a28214306744bcc08ab8267b9f97))
+* **web:** Removed collapse button on all bookable category on calendar ([2aec0a6](https://github.com/explore-siargao/es-main/commit/2aec0a63c2746c15dabf04601c3f711df7bc67f2), [82c81fd](https://github.com/explore-siargao/es-main/commit/82c81fda3e029d4aaafce47cf916713f6d0f8cbb))
+* **web:** Removed Table view button ([a03f2e6](https://github.com/explore-siargao/es-main/commit/a03f2e626b8e5c769d8a999247d7274c717299ff), [746444c](https://github.com/explore-siargao/es-main/commit/746444c4f5337d6c62ec8c04544a0b3cad0d10a4), [74e0371](https://github.com/explore-siargao/es-main/commit/74e0371712821e6a227c996d796027e3d8edc112))
+
 
 ### 🛠 Bug Fixes
 
-- unit saving even if no photos or no amenities checked ([7683d6b](https://github.com/explore-siargao/es-main/commit/7683d6b3dd2892f7c653afe40c97f9763bd54181))
+* **bug:** unit saving even if no photos or no amenities checked ([7683d6b](https://github.com/explore-siargao/es-main/commit/7683d6b3dd2892f7c653afe40c97f9763bd54181))
+
 
 ### 🧰 Maintenance
 
-- deleted deploy-home.yml and add deletion of docker containers and images ([650560f](https://github.com/explore-siargao/es-main/commit/650560f0bef8495eb09a9754c12695eaec9f4b62))
-- revert docker compose ([87fab47](https://github.com/explore-siargao/es-main/commit/87fab475812bae886a526ccc7a83f1edf803f875))
-- update docker command for es-sit environment ([5531d44](https://github.com/explore-siargao/es-main/commit/5531d444682c188e8a4ce44040b3ca611119942e))
-- update docker command for es-sit environment ([58efa13](https://github.com/explore-siargao/es-main/commit/58efa13d150f6db3ec15764c022c9becf24da24f))
+* deleted deploy-home.yml and add deletion of docker containers and images ([650560f](https://github.com/explore-siargao/es-main/commit/650560f0bef8495eb09a9754c12695eaec9f4b62))
+* revert docker compose ([87fab47](https://github.com/explore-siargao/es-main/commit/87fab475812bae886a526ccc7a83f1edf803f875))
+* update docker command for es-sit environment ([5531d44](https://github.com/explore-siargao/es-main/commit/5531d444682c188e8a4ce44040b3ca611119942e), [58efa13](https://github.com/explore-siargao/es-main/commit/58efa13d150f6db3ec15764c022c9becf24da24f))
+
 
 ## [0.20.1](https://github.com/explore-siargao/es-main/compare/v0.20.0...v0.20.1) (2024-09-16)
 
 ### 🛠 Bug Fixes
 
-- guides menu links to include "siargao" in the URL paths ([46b0df7](https://github.com/explore-siargao/es-main/commit/46b0df7a9b5f543079794b490a6099cf906c8756))
+* guides menu links to include "siargao" in the URL paths ([46b0df7](https://github.com/explore-siargao/es-main/commit/46b0df7a9b5f543079794b490a6099cf906c8756))
 
 ### 🧰 Maintenance
 
-- update release-please.yml with changelog types ([264fbfd](https://github.com/explore-siargao/es-main/commit/264fbfd7ad900a1393ca62845f42af382a7a4d35))
-- Update release-please.yml with changelog types ([eaebb65](https://github.com/explore-siargao/es-main/commit/eaebb65f80dd8753af65345209897119c1f9341d))
+* update release-please.yml with changelog types ([264fbfd](https://github.com/explore-siargao/es-main/commit/264fbfd7ad900a1393ca62845f42af382a7a4d35), [eaebb65](https://github.com/explore-siargao/es-main/commit/eaebb65f80dd8753af65345209897119c1f9341d))
 
 ## [0.20.0](https://github.com/explore-siargao/es-main/compare/v0.19.0...v0.20.0) (2024-09-15)
 
@@ -197,80 +167,69 @@
 
 ### Features
 
-- Add Guest name to blocked dates on add reservation modal in rental calendar ([df332eb](https://github.com/explore-siargao/es-main/commit/df332eba8fc00ce7e1866e3d1db2e4b54d8dd64d))
-- Add notes field for add reservation modal in rental calendar ([d7fb471](https://github.com/explore-siargao/es-main/commit/d7fb47146562cdea0ee715452ee6c63d9f187c32))
-- **api:** Added add unit reservation endpoint ([094b018](https://github.com/explore-siargao/es-main/commit/094b018d3b0fee36c453f58ce03d0d2998164e0c))
-- **api:** Added endpoint for modifying rental reservation ([de46e26](https://github.com/explore-siargao/es-main/commit/de46e2600f9b92b11f063bb6cf1fe2e4aea66239))
-- Connect Edit rental reservation modal to backend ([e230161](https://github.com/explore-siargao/es-main/commit/e2301618849a228444f6408d011f5763dab3dad6))
-- Connect Edit rental reservation modal to backend ([cb8b297](https://github.com/explore-siargao/es-main/commit/cb8b297e0d0d9c2d8bfe419e6ad346374939735d))
-- Create Add Property reservation modal ([a184519](https://github.com/explore-siargao/es-main/commit/a184519024e03906b3eceab6514ba7929d1ab653))
-- Remove Guest counts on add Reservation modal in rental reservation calendar ([4faa165](https://github.com/explore-siargao/es-main/commit/4faa165800da332584b06cce1f96b6839c9da57a))
-- Remove Guest counts on add Reservation modal in rental reservation calendar ([5b67769](https://github.com/explore-siargao/es-main/commit/5b677695c82cc5220e1c57d785d8e8c4bb1c8792))
-- Show all datas on reservation modal in rental reservation calendar ([ef91b0f](https://github.com/explore-siargao/es-main/commit/ef91b0fa3ea190d6d1937870f13a1a9c727a2a60))
-- **web:** Added descriptive text to Property Facilities ([d7b4f62](https://github.com/explore-siargao/es-main/commit/d7b4f621a3d19f70309999f00c8f108b993352f9))
-- **web:** Descriptions and tags for photos made mandatory ([f6415ab](https://github.com/explore-siargao/es-main/commit/f6415ab68d7486ede76b3faafeeec2f963e36a3f))
-- **web:** Modified Locations setup for all categories ([08d8287](https://github.com/explore-siargao/es-main/commit/08d8287ad58f271bdf8b24492e27e37a0a8c0f26))
-- **web:** Modified logic of whole place unit ([89dee78](https://github.com/explore-siargao/es-main/commit/89dee78946d8b6de83811172ee06da020d55a781))
-- **web:** Modified logic of whole place unit ([cdaf548](https://github.com/explore-siargao/es-main/commit/cdaf5482124c334dbb8db4ff5bc421e365ec8783))
-- **web:** Modified logic of whole place unit ([b2b4fbb](https://github.com/explore-siargao/es-main/commit/b2b4fbbeaca3f0eca0077d115d0cfe29b25a1dbe))
-- **web:** Modified unit bed setup UI ([effb869](https://github.com/explore-siargao/es-main/commit/effb869339ac9d5b0f5b4909522cee7bd894b1f6))
-- **web:** Modified visibility of preview listing button based on status ([51c7e9f](https://github.com/explore-siargao/es-main/commit/51c7e9fa121b97c98858cc04beac1ae37cd1bbb1))
+* Add Guest name to blocked dates on add reservation modal in rental calendar ([df332eb](https://github.com/explore-siargao/es-main/commit/df332eba8fc00ce7e1866e3d1db2e4b54d8dd64d))
+* Add notes field for add reservation modal in rental calendar ([d7fb471](https://github.com/explore-siargao/es-main/commit/d7fb47146562cdea0ee715452ee6c63d9f187c32))
+* **api:** Added endpoint for modifying rental reservation ([de46e26](https://github.com/explore-siargao/es-main/commit/de46e2600f9b92b11f063bb6cf1fe2e4aea66239))
+* Connect Edit rental reservation modal to backend ([e230161](https://github.com/explore-siargao/es-main/commit/e2301618849a228444f6408d011f5763dab3dad6), [cb8b297](https://github.com/explore-siargao/es-main/commit/cb8b297e0d0d9c2d8bfe419e6ad346374939735d))
+* Created Add Property reservation modal ([a184519](https://github.com/explore-siargao/es-main/commit/a184519024e03906b3eceab6514ba7929d1ab653))
+* Removed Guest counts on add Reservation modal in rental reservation calendar ([4faa165](https://github.com/explore-siargao/es-main/commit/4faa165800da332584b06cce1f96b6839c9da57a), [5b67769](https://github.com/explore-siargao/es-main/commit/5b677695c82cc5220e1c57d785d8e8c4bb1c8792))
+* Show all datas on reservation modal in rental reservation calendar ([ef91b0f](https://github.com/explore-siargao/es-main/commit/ef91b0fa3ea190d6d1937870f13a1a9c727a2a60))
+* **web:** Added descriptive text to Property Facilities ([d7b4f62](https://github.com/explore-siargao/es-main/commit/d7b4f621a3d19f70309999f00c8f108b993352f9))
+* **web:** Descriptions and tags for photos made mandatory ([f6415ab](https://github.com/explore-siargao/es-main/commit/f6415ab68d7486ede76b3faafeeec2f963e36a3f))
+* **web:** Modified Locations setup for all categories ([08d8287](https://github.com/explore-siargao/es-main/commit/08d8287ad58f271bdf8b24492e27e37a0a8c0f26))
+* **web:** Modified logic of whole place unit ([89dee78](https://github.com/explore-siargao/es-main/commit/89dee78946d8b6de83811172ee06da020d55a781), [cdaf548](https://github.com/explore-siargao/es-main/commit/cdaf5482124c334dbb8db4ff5bc421e365ec8783), [b2b4fbb](https://github.com/explore-siargao/es-main/commit/b2b4fbbeaca3f0eca0077d115d0cfe29b25a1dbe))
+* **web:** Modified unit bed setup UI ([effb869](https://github.com/explore-siargao/es-main/commit/effb869339ac9d5b0f5b4909522cee7bd894b1f6))
+* **web:** Modified visibility of preview listing button based on status ([51c7e9f](https://github.com/explore-siargao/es-main/commit/51c7e9fa121b97c98858cc04beac1ae37cd1bbb1))
+
 
 ### Bug Fixes
 
-- Fix listing header setup and edit name ([c5564b5](https://github.com/explore-siargao/es-main/commit/c5564b5f2b9a843f6a04acd2a4b193b2ab313f99))
-- Fix url setup and edit for property units ([c0f3ba9](https://github.com/explore-siargao/es-main/commit/c0f3ba9b0923fd2692624155a121457582f74aaf))
+* Fix listing header setup and edit name ([c5564b5](https://github.com/explore-siargao/es-main/commit/c5564b5f2b9a843f6a04acd2a4b193b2ab313f99))
+* Fix url setup and edit for property units ([c0f3ba9](https://github.com/explore-siargao/es-main/commit/c0f3ba9b0923fd2692624155a121457582f74aaf))
 
 ## [0.18.0](https://github.com/explore-siargao/es-main/compare/v0.17.0...v0.18.0) (2024-09-06)
 
 ### Features
 
-- Add free text to all units basic info ([75a642e](https://github.com/explore-siargao/es-main/commit/75a642ebe3c481c0bb36967e408bf088e7656f6b))
-- Add logic for displaying calendar bar colors base from reservation status ([4df6852](https://github.com/explore-siargao/es-main/commit/4df6852468bf42d8ca297324944314dd63dda05a))
-- Add Modal for adding rental calendar reservation ([891aa08](https://github.com/explore-siargao/es-main/commit/891aa089d260c0eaf400c095a7cff79f237f7824))
-- **api:** Added endpoint for adding rental reservations ([835b7a0](https://github.com/explore-siargao/es-main/commit/835b7a01e05618c9a42085c78d3d6d611deaad28))
-- Connect Add Rental Reservation Modal frontend to backend ([b66c254](https://github.com/explore-siargao/es-main/commit/b66c2540c62fae0a9d1ac6bbcbb394fcfbf7ceee))
-- Connect Add Rental Reservation Modal frontend to backend ([78f1922](https://github.com/explore-siargao/es-main/commit/78f19224ac496972148a29c009ffd32da868995a))
-- **web:** Added custom hook for adding new rental reservation ([d5f880e](https://github.com/explore-siargao/es-main/commit/d5f880e8f3d8dda97a28f5047b3e6466bbb9691a))
-- **web:** Changed url slugs ([e9867ca](https://github.com/explore-siargao/es-main/commit/e9867ca4805173d1601e5d125a600b6db95ed292))
-- **web:** made adjustments for the unit types to be specific to the property ([b593e09](https://github.com/explore-siargao/es-main/commit/b593e09c805f061da0614d0b634113508ed7f41a))
-- **web:** made adjustments for the unit types to be specific to the property ([c8a8b43](https://github.com/explore-siargao/es-main/commit/c8a8b430caf0577738d6bb940fa82fb1616da283))
-- **web:** made adjustments for the unit types to be specific to the property ([a38f998](https://github.com/explore-siargao/es-main/commit/a38f998b33cdb75cb7053d8d5f470693127549ca))
-- **web:** made adjustments for the unit types to be specific to the property ([b356bb8](https://github.com/explore-siargao/es-main/commit/b356bb81d270cf91f49950388af74e7cf8f194a4))
-- WIP add rental reservation ([c81378d](https://github.com/explore-siargao/es-main/commit/c81378d8ccb46a6e52deea961adfe6ff62c92def))
-- WIP rental reservation form inputs ([21b1c42](https://github.com/explore-siargao/es-main/commit/21b1c42b3e023ae0330cad7e011d6b6c72fdf9f1))
+* **web:** Added free text to all units basic info ([75a642e](https://github.com/explore-siargao/es-main/commit/75a642ebe3c481c0bb36967e408bf088e7656f6b))
+* **web:** Added logic for displaying calendar bar colors base from reservation status ([4df6852](https://github.com/explore-siargao/es-main/commit/4df6852468bf42d8ca297324944314dd63dda05a))
+* **web:** Added Modal for adding rental calendar reservation ([891aa08](https://github.com/explore-siargao/es-main/commit/891aa089d260c0eaf400c095a7cff79f237f7824))
+* **api:** Added endpoint for adding rental reservations ([835b7a0](https://github.com/explore-siargao/es-main/commit/835b7a01e05618c9a42085c78d3d6d611deaad28))
+* **web:** Connect Add Rental Reservation Modal frontend to backend ([b66c254](https://github.com/explore-siargao/es-main/commit/b66c2540c62fae0a9d1ac6bbcbb394fcfbf7ceee), [78f1922](https://github.com/explore-siargao/es-main/commit/78f19224ac496972148a29c009ffd32da868995a))
+* **web:** Added custom hook for adding new rental reservation ([d5f880e](https://github.com/explore-siargao/es-main/commit/d5f880e8f3d8dda97a28f5047b3e6466bbb9691a))
+* **web:** Changed url slugs ([e9867ca](https://github.com/explore-siargao/es-main/commit/e9867ca4805173d1601e5d125a600b6db95ed292))
+* **web:** made adjustments for the unit types to be  specific to the property ([b593e09](https://github.com/explore-siargao/es-main/commit/b593e09c805f061da0614d0b634113508ed7f41a), [b356bb8](https://github.com/explore-siargao/es-main/commit/b356bb81d270cf91f49950388af74e7cf8f194a4),  [a38f998](https://github.com/explore-siargao/es-main/commit/a38f998b33cdb75cb7053d8d5f470693127549ca), [c8a8b43](https://github.com/explore-siargao/es-main/commit/c8a8b430caf0577738d6bb940fa82fb1616da283))
+* **web:** Added add rental reservation function ([c81378d](https://github.com/explore-siargao/es-main/commit/c81378d8ccb46a6e52deea961adfe6ff62c92def), [21b1c42](https://github.com/explore-siargao/es-main/commit/21b1c42b3e023ae0330cad7e011d6b6c72fdf9f1))
+
 
 ### Bug Fixes
 
-- **api:** Fixed allowing adding overlap dates in same rental reservation ([ce7599e](https://github.com/explore-siargao/es-main/commit/ce7599e73cde5a29b097b97278e2156c06f30d73))
-- Saving of property unit price not displaying on UI ([dc8baa7](https://github.com/explore-siargao/es-main/commit/dc8baa7c53f837740cab467a67a76de1aece6ced))
-- **web:** After login login button still showing ([6b01c2c](https://github.com/explore-siargao/es-main/commit/6b01c2c760319d8dbf40689a2add16d03c6a1bbd))
-- **web:** After login login button still showing ([7ef5f53](https://github.com/explore-siargao/es-main/commit/7ef5f535193eb571fd3dfcb05ac3cd41906b2150))
-- **web:** After login login button still showing ([a173bbd](https://github.com/explore-siargao/es-main/commit/a173bbd34357008b35dedf4067db9ccf71cf780e))
-- **web:** Bug fix error not showing bar on previous dates ([2e47ddc](https://github.com/explore-siargao/es-main/commit/2e47ddc312eaa4de3c315e62ca8a178d87bc5c3b))
+* **api:** Fixed allowing adding  overlap dates in same rental reservation ([ce7599e](https://github.com/explore-siargao/es-main/commit/ce7599e73cde5a29b097b97278e2156c06f30d73))
+* Saving of property unit price not displaying on UI ([dc8baa7](https://github.com/explore-siargao/es-main/commit/dc8baa7c53f837740cab467a67a76de1aece6ced))
+* **web:** After login login button still showing ([6b01c2c](https://github.com/explore-siargao/es-main/commit/6b01c2c760319d8dbf40689a2add16d03c6a1bbd), [a173bbd](https://github.com/explore-siargao/es-main/commit/a173bbd34357008b35dedf4067db9ccf71cf780e), [7ef5f53](https://github.com/explore-siargao/es-main/commit/7ef5f535193eb571fd3dfcb05ac3cd41906b2150))
+* **web:** Bug fix error not showing bar on previous dates ([2e47ddc](https://github.com/explore-siargao/es-main/commit/2e47ddc312eaa4de3c315e62ca8a178d87bc5c3b))
 
 ## [0.17.0](https://github.com/explore-siargao/es-main/compare/v0.16.0...v0.17.0) (2024-09-04)
 
 ### Features
 
-- **api:** Added endpoint for getting all ids in rental ([4086102](https://github.com/explore-siargao/es-main/commit/4086102c798ef86a94cc50f59d607c59d305713f))
-- **api:** Added endpoint for getting rentals names by host and category ([5e3725b](https://github.com/explore-siargao/es-main/commit/5e3725b2979c33eacd33b8332382c44f997eaed4))
-- **api:** Added endpoint for getting rentals names by host and category ([eef20fe](https://github.com/explore-siargao/es-main/commit/eef20fe3d22f2141ad3e4c22604c60d22ddd0e16))
-- **api:** Modified reservation db model ([8c9376a](https://github.com/explore-siargao/es-main/commit/8c9376a1e75134131a03edd8d7b7c66a86c58fe3))
-- **web:** Added custom hooks for getting rentals by categories and vehicles by rental id ([b7245ea](https://github.com/explore-siargao/es-main/commit/b7245ea239d3a2ceb388916bbbcf24659a510347))
-- **web:** Added expand legends text and dynamic hover in rental tabs ([e38c988](https://github.com/explore-siargao/es-main/commit/e38c988994a9cb5a04fedc27cbda2901011d78a1))
-- **web:** Added new version of header with search bar ([fac80cc](https://github.com/explore-siargao/es-main/commit/fac80cca2ec0bd026f583aa9f78559dd7e08206f))
-- **web:** Changed villa to whole place in property type selections ([13294c9](https://github.com/explore-siargao/es-main/commit/13294c9ba83de45dbebc8bf48f242958926ef1c1))
-- **web:** Converted CMS pages fetch to server-side ([d8a17d9](https://github.com/explore-siargao/es-main/commit/d8a17d96d353c789f1c69406b5a0190524fd9340))
-- **web:** Listing main public page UI cleanup (universal margin, photos rounded, lightbox display, not found error) ([ea8a968](https://github.com/explore-siargao/es-main/commit/ea8a968204eee3e207ffd66890bfbd9ac79414ee))
-- **web:** Modified favicons colors of map ([6c20c47](https://github.com/explore-siargao/es-main/commit/6c20c47c0d047199b682af9c419df4bd7891b495))
-- **web:** modify listing setup locations ([8f309ce](https://github.com/explore-siargao/es-main/commit/8f309ce27047788be965bbf218b2e93544c47289))
+* **api:** Added endpoint for getting all ids in rental ([4086102](https://github.com/explore-siargao/es-main/commit/4086102c798ef86a94cc50f59d607c59d305713f))
+* **api:** Added endpoint for getting rentals names by host and category ([5e3725b](https://github.com/explore-siargao/es-main/commit/5e3725b2979c33eacd33b8332382c44f997eaed4), [eef20fe](https://github.com/explore-siargao/es-main/commit/eef20fe3d22f2141ad3e4c22604c60d22ddd0e16))
+* **api:** Modified reservation db model ([8c9376a](https://github.com/explore-siargao/es-main/commit/8c9376a1e75134131a03edd8d7b7c66a86c58fe3))
+* **web:** Added custom hooks for getting rentals by categories and vehicles by rental id ([b7245ea](https://github.com/explore-siargao/es-main/commit/b7245ea239d3a2ceb388916bbbcf24659a510347))
+* **web:** Added expand legends text and dynamic hover in rental tabs ([e38c988](https://github.com/explore-siargao/es-main/commit/e38c988994a9cb5a04fedc27cbda2901011d78a1))
+* **web:** Added new version of header with search bar ([fac80cc](https://github.com/explore-siargao/es-main/commit/fac80cca2ec0bd026f583aa9f78559dd7e08206f))
+* **web:** Changed villa to whole place in property type selections ([13294c9](https://github.com/explore-siargao/es-main/commit/13294c9ba83de45dbebc8bf48f242958926ef1c1))
+* **web:** Converted CMS pages fetch to server-side ([d8a17d9](https://github.com/explore-siargao/es-main/commit/d8a17d96d353c789f1c69406b5a0190524fd9340))
+* **web:** Listing main public page UI cleanup (universal margin, photos rounded, lightbox display, not found error) ([ea8a968](https://github.com/explore-siargao/es-main/commit/ea8a968204eee3e207ffd66890bfbd9ac79414ee))
+* **web:** Modified favicons colors of map ([6c20c47](https://github.com/explore-siargao/es-main/commit/6c20c47c0d047199b682af9c419df4bd7891b495))
+* **web:** Modified listing setup locations ([8f309ce](https://github.com/explore-siargao/es-main/commit/8f309ce27047788be965bbf218b2e93544c47289))
+
 
 ### Bug Fixes
 
-- **web:** Changed inputs border radius from md to xl ([8e69b2e](https://github.com/explore-siargao/es-main/commit/8e69b2e1ea89e1b18c7ba6f6e231174fe1737908))
-- **web:** if no units do not show parent property in the list ([e22a828](https://github.com/explore-siargao/es-main/commit/e22a828f66b187862c98ea948ce4a5ff83abfed3))
-- **web:** if no units do not show parent property in the list ([6abae30](https://github.com/explore-siargao/es-main/commit/6abae304c3f21d2be51c1c0302a2791e9faf1aa5))
+* **web:** Changed inputs border radius from md to xl ([8e69b2e](https://github.com/explore-siargao/es-main/commit/8e69b2e1ea89e1b18c7ba6f6e231174fe1737908))
+* **web:** if no units do not show parent property in the list ([e22a828](https://github.com/explore-siargao/es-main/commit/e22a828f66b187862c98ea948ce4a5ff83abfed3), [6abae30](https://github.com/explore-siargao/es-main/commit/6abae304c3f21d2be51c1c0302a2791e9faf1aa5))
 
 ## [0.16.0](https://github.com/explore-siargao/es-main/compare/v0.15.0...v0.16.0) (2024-09-01)
 
@@ -337,29 +296,24 @@
 
 ### Features
 
-- **api:** Added endpoint for get calendar reservations for beds ([4966e0a](https://github.com/explore-siargao/es-main/commit/4966e0a63b80944129afe82b22a663faf7c68e73))
-- **api:** create endpoint for calendar unit whole place reservations ([86fee15](https://github.com/explore-siargao/es-main/commit/86fee15ea167e229b0e6724d6288f1ebdc4c0198))
-- Update local database setup instructions and remove test message ([8eb9125](https://github.com/explore-siargao/es-main/commit/8eb91256b1e02459069fe209c8d72c83b971924a))
-- **web:** Added calendar reservation room view connected to backend ([e72024c](https://github.com/explore-siargao/es-main/commit/e72024c61f06536a5540e5313b895e6382d098dd))
-- **web:** Added custom hook for get calendar bed reservations ([73e1988](https://github.com/explore-siargao/es-main/commit/73e1988dfbd34ba7213429bacdda66b8c2b372b9))
-- **web:** Added search bar for guide pages ([be9ed89](https://github.com/explore-siargao/es-main/commit/be9ed898727aca6793b06c0ed251ab06d348a991))
-- **web:** Added search bar for surf guide ([f619220](https://github.com/explore-siargao/es-main/commit/f619220b7eb143f2b21c880b7569c62bce819690))
-- **web:** Added search bar for surf guide ([e15ea97](https://github.com/explore-siargao/es-main/commit/e15ea97ff2799730054505748bee6307e429cc32))
-- **web:** Added search bar for surf guide ([527df47](https://github.com/explore-siargao/es-main/commit/527df479e6a96631e091780b8a65d6542e89e271))
-- **web:** connect calendar unit whole place reservation backend to frontend ([cb44a5a](https://github.com/explore-siargao/es-main/commit/cb44a5a284988f2a016a6554016176063be780a3))
-- **web:** Connected calendar reservation beds frontend to backend ([edde414](https://github.com/explore-siargao/es-main/commit/edde414391fd630bfdd8cee5098755a1c684cd6d))
-- **web:** Connected calendar whole place reservation backend to frontend ([a6b83d2](https://github.com/explore-siargao/es-main/commit/a6b83d2d0befb2991795ed1dbf4d88811f9e837a))
-- **web:** create custom hooks for get calendar unit whole place reservations ([54c3fba](https://github.com/explore-siargao/es-main/commit/54c3fbae41e54a08284284133af483fc4e2634a7))
-- **web:** Created calendar tabs for each category of the page ([203c34a](https://github.com/explore-siargao/es-main/commit/203c34a12add6278920953d0d08856d5536be512))
-- **web:** Created calendar tabs for each category of the page ([2bfc6b1](https://github.com/explore-siargao/es-main/commit/2bfc6b1d078ea6bdffceb100f8721ec8258efcdc))
-- **web:** Improved whole place units ([46569f1](https://github.com/explore-siargao/es-main/commit/46569f1bb90bba24641c57e330c70aef03896e60))
-- **web:** Improved whole place units ([f564b1c](https://github.com/explore-siargao/es-main/commit/f564b1c6016372df0093219bc6adac49577df866))
-- **web:** make the listbox square shape ([f7ac6e9](https://github.com/explore-siargao/es-main/commit/f7ac6e97525aeb70ae7c28f264e8bbcac25f6ccc))
+* **api:** Added endpoint for get calendar reservations for beds ([4966e0a](https://github.com/explore-siargao/es-main/commit/4966e0a63b80944129afe82b22a663faf7c68e73))
+* **api:** create endpoint for calendar unit whole place reservations ([86fee15](https://github.com/explore-siargao/es-main/commit/86fee15ea167e229b0e6724d6288f1ebdc4c0198))
+* Update local database setup instructions and remove test message ([8eb9125](https://github.com/explore-siargao/es-main/commit/8eb91256b1e02459069fe209c8d72c83b971924a))
+* **web:** Added calendar reservation room view connected to backend ([e72024c](https://github.com/explore-siargao/es-main/commit/e72024c61f06536a5540e5313b895e6382d098dd))
+* **web:** Added custom hook for get calendar bed reservations ([73e1988](https://github.com/explore-siargao/es-main/commit/73e1988dfbd34ba7213429bacdda66b8c2b372b9))
+* **web:** Added search bar for guide pages ([be9ed89](https://github.com/explore-siargao/es-main/commit/be9ed898727aca6793b06c0ed251ab06d348a991), [f619220](https://github.com/explore-siargao/es-main/commit/f619220b7eb143f2b21c880b7569c62bce819690), [e15ea97](https://github.com/explore-siargao/es-main/commit/e15ea97ff2799730054505748bee6307e429cc32), [527df47](https://github.com/explore-siargao/es-main/commit/527df479e6a96631e091780b8a65d6542e89e271))
+* **web:** Connected calendar unit whole place reservation backend to frontend ([cb44a5a](https://github.com/explore-siargao/es-main/commit/cb44a5a284988f2a016a6554016176063be780a3))
+* **web:** Connected calendar reservation beds  frontend to backend ([edde414](https://github.com/explore-siargao/es-main/commit/edde414391fd630bfdd8cee5098755a1c684cd6d))
+* **web:** Connected calendar whole place reservation backend to frontend ([a6b83d2](https://github.com/explore-siargao/es-main/commit/a6b83d2d0befb2991795ed1dbf4d88811f9e837a))
+* **web:** Created custom hooks for get calendar unit whole place reservations ([54c3fba](https://github.com/explore-siargao/es-main/commit/54c3fbae41e54a08284284133af483fc4e2634a7))
+* **web:** Created calendar tabs for each category of the page ([203c34a](https://github.com/explore-siargao/es-main/commit/203c34a12add6278920953d0d08856d5536be512), [2bfc6b1](https://github.com/explore-siargao/es-main/commit/2bfc6b1d078ea6bdffceb100f8721ec8258efcdc))
+* **web:** Improved whole place units ([46569f1](https://github.com/explore-siargao/es-main/commit/46569f1bb90bba24641c57e330c70aef03896e60), [f564b1c](https://github.com/explore-siargao/es-main/commit/f564b1c6016372df0093219bc6adac49577df866))
+* **web:** make the listbox square shape ([f7ac6e9](https://github.com/explore-siargao/es-main/commit/f7ac6e97525aeb70ae7c28f264e8bbcac25f6ccc))
+
 
 ### Bug Fixes
 
-- **api:** savings of emergencycontact not working ([78deff6](https://github.com/explore-siargao/es-main/commit/78deff6f799c161943db42975af38c8b78db0d87))
-- **api:** savings of emergencycontact not working ([c90c231](https://github.com/explore-siargao/es-main/commit/c90c231b1f90f276aeb5e5c20597630bea7c2093))
+* **api:** savings of emergency contact not working ([78deff6](https://github.com/explore-siargao/es-main/commit/78deff6f799c161943db42975af38c8b78db0d87), [c90c231](https://github.com/explore-siargao/es-main/commit/c90c231b1f90f276aeb5e5c20597630bea7c2093))
 
 ## [0.11.0](https://github.com/explore-siargao/es-main/compare/v0.10.0...v0.11.0) (2024-08-21)
 
