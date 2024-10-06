@@ -53,7 +53,6 @@ const ActivityEditPricePerDatesModal = ({
     setDateFrom(selectedDate)
   }, [selectedDate])
 
-  console.log(activityId)
   return (
     <ModalContainer
       onClose={handleClose}

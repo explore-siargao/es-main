@@ -476,14 +476,22 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
               longitude: longitude,
               latitude: latitude,
               howToGetThere: howToGetThere,
-              finishedSections: [
-                'type',
-                'wholePlaceType',
-                'basicInfo',
-                'location',
-              ],
             },
           })
+          await dbProperties.findByIdAndUpdate(
+            propertyId,
+            {
+              $set: {
+                finishedSections: [
+                  'type',
+                  'wholePlaceType',
+                  'basicInfo',
+                  'location',
+                ],
+              },
+            },
+            { new: true }
+          )
         }
 
         // property.finishedSections = ['type', 'basicInfo', 'location']

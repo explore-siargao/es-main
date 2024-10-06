@@ -33,7 +33,7 @@ export const addActivity = async (req: Request, res: Response) => {
       otherInclusion: [],
       notIncluded: [],
       whatToBrings: [],
-      cancellationDays: null,
+      daysCanCancel: 0,
       notAllowed: [],
       policies: [],
       cancellationPolicies: [],
@@ -41,11 +41,21 @@ export const addActivity = async (req: Request, res: Response) => {
       isSegmentBuilderEnabled: false,
       segments: [],
       meetingPoint: location._id,
-      price: {
-        basePrice: 0,
-        exceedPersonPrice: 0,
+      pricePerSlot: 0,
+      pricePerPerson: 0,
+      slotCapacity: {
+        minimum: 0,
+        maximum: 0,
       },
-      slots: [],
+      schedule: {
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: [],
+        saturday: [],
+        sunday: [],
+      },
       status: 'Incomplete',
     }
 
@@ -234,5 +244,36 @@ export const updateItinerary = async (req: Request, res: Response) => {
         })
       )
     }
+  }
+}
+
+export const getActivityCounts = async (req: Request, res: Response) => {
+  try {
+    const hostId = res.locals.user?.id
+
+    const privateActivityCounts = await dbActivities.countDocuments({
+      experienceType: 'private',
+      host: hostId,
+    })
+
+    const joinerActivityCounts = await dbActivities.countDocuments({
+      experienceType: 'joiner',
+      host: hostId,
+    })
+
+    res.json(
+      response.success({
+        item: {
+          private: privateActivityCounts,
+          joiner: joinerActivityCounts,
+        },
+      })
+    )
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
   }
 }

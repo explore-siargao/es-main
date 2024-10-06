@@ -123,6 +123,12 @@ export const getActivityLinks = (listingId: string) => [
     link: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/photos`,
     basePath: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/photos`,
   },
+  {
+    title: "Pricing",
+    icon: <LucideCoins className="h-5 w-5" />,
+    link: `${ACTIVITY_EDIT_BASE_PATH}/${listingId}/pricing`,
+    basePath: "/pricing",
+  },
 ]
 
 export const getRentalLinks = (listingId: string) => [

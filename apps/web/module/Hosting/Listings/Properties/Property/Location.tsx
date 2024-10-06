@@ -130,30 +130,12 @@ const ListingLocation = ({ pageType }: Prop) => {
       onSuccess: (data: any) => {
         if (!data.error) {
           toast.success(data.message)
-          if (
-            pageType === "setup" &&
-            !data?.item?.finishedSections?.includes("location")
-          ) {
-            const callBack2 = {
-              onSuccess: (data: any) => {
-                if (!data.error) {
-                  queryClient.invalidateQueries({
-                    queryKey: ["property-finished-sections", listingId],
-                  })
-                } else {
-                  toast.error(String(data.message))
-                }
-              },
-              onError: (err: any) => {
-                toast.error(String(err))
-              },
-            }
-            updateFinishedSection({ newFinishedSection: "location" }, callBack2)
-          } else {
-            queryClient.invalidateQueries({
-              queryKey: ["property", listingId],
-            })
-          }
+          queryClient.invalidateQueries({
+            queryKey: ["property-finished-sections", listingId],
+          })
+          queryClient.invalidateQueries({
+            queryKey: ["property", listingId],
+          })
           if (pageType === "setup") {
             router.push(
               `/hosting/listings/properties/setup/${listingId}/facilities`

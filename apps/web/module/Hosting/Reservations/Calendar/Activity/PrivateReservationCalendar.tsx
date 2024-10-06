@@ -1,12 +1,11 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ActivitiesCalendarTable from "./CalendarTable"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import ActivityCalendarLegend from "../../components/ActivityCalendarLegend"
 import sampleData from "../Rental/SampleData.json"
 import PrivateCalendarTable from "./PrivateCalendarTable"
 
-const ActivitiesReservationCalendar = () => {
+const PrivateReservationCalendar = () => {
   const hasData =
     sampleData &&
     Array.isArray(sampleData.categories) &&
@@ -61,4 +60,4 @@ const ActivitiesReservationCalendar = () => {
   )
 }
 
-export default ActivitiesReservationCalendar
+export default PrivateReservationCalendar

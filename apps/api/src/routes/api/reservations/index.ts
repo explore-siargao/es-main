@@ -4,12 +4,14 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import express from 'express'
 import {
   addRentalReservation,
+  cancelRentalReservationByHost,
   editRentalReservation,
 } from './services/rentalReservation'
 import {
   addUnitReservation,
   editUnitReservation,
 } from './services/unitsReservation'
+import { addActivityReservation } from './services/activityReservation'
 
 const router = express.Router()
 
@@ -30,6 +32,14 @@ router.post(
   addUnitReservation
 )
 
+router.post(
+  '/activity',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addActivityReservation
+)
+
 //edit reservations
 router.patch(
   '/:reservationId/rental',
@@ -47,4 +57,11 @@ router.patch(
   editUnitReservation
 )
 
+router.patch(
+  '/rental/:reservationId/cancel-reservation',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cancelRentalReservationByHost
+)
 export default router

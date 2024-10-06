@@ -63,7 +63,7 @@ export const Z_Update_Activity_Additional_Info = z.object({
   whatToBring: z.array(z.string()).optional(),
   notAllowed: z.array(z.string()).optional(),
   policies: z.array(z.string()).optional(),
-  cancellationDays: z.string().nullable().optional(),
+  cancellationDays: z.number().nullable().optional(),
 })
 
 export const Z_Update_Activity_Inclusions = z.object({
@@ -88,8 +88,35 @@ export const Z_Update_Activity_Basic_Info = z.object({
 })
 
 export const Z_Update_Activity_Pice_Slots = z.object({
-  price: Z_Activity_Price.optional(),
-  slots: z.array(Z_Activity_Slots).optional(),
+  experienceType: z.enum(["private", "joiner"]),
+  schedule: z.object({
+    monday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+    tuesday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+    wednesday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+    thursday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+    friday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+    saturday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+    sunday: z
+      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .optional(),
+  }),
+  slotCapacity: z.object({
+    minimum: z.number(),
+    maximum: z.number(),
+  }),
+  price: z.number().optional(),
 })
 
 export const Z_Activity_Status = z.object({

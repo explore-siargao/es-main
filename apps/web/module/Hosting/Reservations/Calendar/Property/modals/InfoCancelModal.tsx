@@ -261,7 +261,7 @@ const InfoCancelModal = () => {
                     variant="danger"
                     onClick={() => setIsCancelReservation(true)}
                   >
-                    Request to Cancel
+                    Cancel Reservation
                   </Button>
                   <Button
                     type="button"

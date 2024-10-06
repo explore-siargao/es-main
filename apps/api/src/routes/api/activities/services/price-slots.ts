@@ -10,7 +10,12 @@ import { Request, Response } from 'express'
 const response = new ResponseService()
 
 export const updatePriceAndSlots = async (req: Request, res: Response) => {
-  const { price, slots }: T_Update_Activity_Price_Slots = req.body
+  const {
+    experienceType,
+    schedule,
+    slotCapacity,
+    price,
+  }: T_Update_Activity_Price_Slots = req.body
   const isHost = res.locals.user?.isHost
   const activityId = req.params.activityId
   const isValidInput = Z_Update_Activity_Pice_Slots.safeParse(req.body)
@@ -38,12 +43,24 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
             activity?._id,
             {
               $set: {
-                price: price,
-                slots: slots,
+                finishedSections: [
+                  'basicInfo',
+                  'itinerary',
+                  'inclusions',
+                  'additionalInfo',
+                  'photos',
+                  'pricing',
+                ],
+                experienceType: experienceType,
+                schedule: schedule,
+                slotCapacity: slotCapacity,
                 updatedAt: Date.now(),
+                ...(experienceType === 'private'
+                  ? { pricePerSlot: price, pricePerPerson: null }
+                  : { pricePerPerson: price, pricePerSlot: null }),
               },
             },
-            { new: true }
+            { new: true, runValidators: true }
           )
           res.json(
             response.success({
@@ -66,5 +83,33 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
         message: JSON.parse(isValidInput.error.message),
       })
     )
+  }
+}
+
+export const getSlotPrice = async (req: Request, res: Response) => {
+  const activityId = req.params.activityId
+  const getActivity = await dbActivities.findOne({
+    _id: activityId,
+    deletedAt: null,
+  })
+  if (!getActivity) {
+    res.json(response.error({ message: 'Activity not found' }))
+  } else {
+    try {
+      const slotsDetail = {
+        experienceType: getActivity.experienceType,
+        schedule: getActivity.schedule,
+        slotCapacity: getActivity.slotCapacity,
+        pricePerSlot: getActivity.pricePerSlot,
+        pricePerPerson: getActivity.pricePerPerson,
+      }
+      res.json(response.success({ item: slotsDetail }))
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
   }
 }

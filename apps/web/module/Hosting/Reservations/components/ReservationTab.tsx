@@ -39,7 +39,7 @@ const ReservationTab = () => {
     {
       name: "Activities",
       icon: <LucidePalmtree className="w-5" />,
-      link: "/hosting/reservations/calendar/activities",
+      link: "/hosting/reservations/calendar/activities/private",
     },
   ]
 

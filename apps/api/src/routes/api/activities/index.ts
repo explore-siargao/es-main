@@ -6,6 +6,7 @@ import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import {
   addActivity,
   getActivity,
+  getActivityCounts,
   getAllActivitiesByHostId,
   updateItinerary,
 } from './services/default'
@@ -29,7 +30,12 @@ import {
   getPhotosByActivityId,
   updatePhoto,
 } from './services/photos'
-import { updatePriceAndSlots } from './services/price-slots'
+import { getSlotPrice, updatePriceAndSlots } from './services/price-slots'
+import {
+  getJoinerActivityCalendar,
+  getPrivateActivityCalendar,
+  addActivityPricePerDates,
+} from './services/calendar'
 
 const router = express.Router()
 
@@ -150,6 +156,14 @@ router.patch(
   updatePriceAndSlots
 )
 
+router.get(
+  '/:activityId/price-slots',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  getSlotPrice
+)
+
 //status
 router.patch(
   '/:activityId/status',
@@ -176,6 +190,40 @@ router.get(
   isUserLoggedIn,
   isHostActivityOwner,
   getFinishedSections
+)
+
+//calendar
+router.get(
+  '/calendar/private',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getPrivateActivityCalendar
+)
+
+router.get(
+  '/calendar/joiner',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getJoinerActivityCalendar
+)
+
+router.patch(
+  '/:activityId/price-per-dates',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  isHostActivityOwner,
+  addActivityPricePerDates
+)
+
+router.get(
+  '/counts/all',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getActivityCounts
 )
 
 export default router
