@@ -1,8 +1,11 @@
 import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
-import PropertyReservationForm from "./ActivityReservationForm"
 import SelectLegendTypeForm from "../SelectLegendForm"
+import ActivityReservationForm from "./ActivityReservationForm"
+import useAddActivityReservation from "./hooks/useAddActivityReservation"
+import { useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean
@@ -26,9 +29,24 @@ const AddActivityReservationModal = ({
       setIsLegendTypeSelected(false)
     }, 200)
   }
-
+  const { mutate } = useAddActivityReservation()
+  const queryClient = useQueryClient()
   const handleSave = (data: any) => {
-    console.log(data)
+    mutate(data, {
+      onSuccess: (data) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-activity"],
+          })
+          toast.success(data.message as string)
+          setIsLegendTypeSelected(false)
+          onClose()
+          form.reset()
+        } else {
+          toast.error(data.message as string)
+        }
+      },
+    })
   }
 
   const form = useForm()
@@ -43,7 +61,7 @@ const AddActivityReservationModal = ({
       <form onSubmit={form.handleSubmit(handleSave)}>
         <FormProvider {...form}>
           {isLegendTypeSelected ? (
-            <PropertyReservationForm
+            <ActivityReservationForm
               handleSave={handleSave}
               handleRentalCancel={handleRentalCancel}
               setIsLegendTypeSelected={setIsLegendTypeSelected}
