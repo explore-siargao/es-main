@@ -33,7 +33,7 @@ export interface SelectedReservation {
 
 export interface Room {
   id: string
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
   bookings: Booking[]
@@ -41,7 +41,7 @@ export interface Room {
 
 export interface WholePlace {
   id: string
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
   bookings: Booking[]
@@ -49,7 +49,7 @@ export interface WholePlace {
 
 export interface Bed {
   id: string
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
   bookings: Booking[]
@@ -57,7 +57,7 @@ export interface Bed {
 
 export interface Rental {
   id: string
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
 }

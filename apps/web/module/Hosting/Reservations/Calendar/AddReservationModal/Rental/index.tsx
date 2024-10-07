@@ -4,7 +4,7 @@ import RentalReservationForm from "./RentalReservationForm"
 import useAddRentalReservation from "../../hooks/useAddRentalReservation"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
-import SelectLegendTypeForm from "../SelectLegendForm"
+import SelectLegendTypeForm from "../../components/SelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean

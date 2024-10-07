@@ -1,20 +1,12 @@
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
-import { useForm, useFormContext } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
-import {
-  Category,
-  Rental,
-  SelectedReservation,
-} from "../../../../types/CalendarTable"
-import useGetRentalNamesByCategory from "../../../hooks/useGetRentalNamesByCategory"
 import { useState } from "react"
-import useGetVehiclesByRentalId from "../../../hooks/useGetVehiclesByRentalId"
 import { Textarea } from "@/common/components/ui/Textarea"
 import useGetPropertyByHost from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyByHost"
-import { T_Property } from "@repo/contract"
-import useGetPropertyById from "@/module/Admin/Listings/hooks/useGetPropertyById"
-import useGetUnitById from "../hooks/useGetUnitById"
+import useGetUnitById from "./hooks/use-get-unit-by-id"
+import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
 
 interface IPropertyReservationFormProps {
   handleRentalCancel: () => void

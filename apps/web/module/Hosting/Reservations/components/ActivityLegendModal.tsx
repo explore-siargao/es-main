@@ -2,7 +2,7 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import { activitylegends } from "../helpers/activitylegends"
+import { activityLegends } from "../helpers/activity-legends"
 
 type T_Props = {
   isOpen: boolean
@@ -21,8 +21,8 @@ const ActivityLegendModal = ({ isOpen, onClose, date }: T_Props) => {
       size="auto"
       title="Legend"
     >
-      <div className="p-5 grid grid grid-cols-3 gap-y-3">
-        {activitylegends.map((item) => (
+      <div className="p-5 grid grid-cols-3 gap-y-3">
+        {activityLegends.map((item) => (
           <div className="flex items-center space-x-1.5" key={item.legend}>
             <div className={`${item.color} h-4 w-4`}></div>
             <Typography>{item.legend}</Typography>

@@ -29,7 +29,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import RentalCalendarModal from "../RentalCalendarModal"
 import RentalsEditPricePerDatesModal from "../Rental/RentalsEditPricePerDatesModal"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
-import { getColorClasses } from "../../helpers/legends"
+import { getColorClasses } from "../../helpers/property-legends"
 import useGetJoinerActivityCalendar from "../hooks/useGetCalendarJoinersActivities"
 
 const JoinerCalendarTable = () => {
@@ -105,14 +105,14 @@ const JoinerCalendarTable = () => {
 
     const filterJoinerActivities = (activities: any[]) =>
       activities
-        .map((joinerActivities: { reservations: any; abbr: string }) => ({
+        .map((joinerActivities: { reservations: any; name: string }) => ({
           ...joinerActivities,
           reservations: filterReservations(joinerActivities.reservations),
         }))
         .filter(
-          (joinerActivity: { abbr: string }) =>
+          (joinerActivity: { name: string }) =>
             !searchString ||
-            joinerActivity.abbr
+            joinerActivity.name
               .toLowerCase()
               .includes(searchString.toLowerCase())
         )
@@ -282,9 +282,9 @@ const JoinerCalendarTable = () => {
     return { startCol, colSpan }
   }
 
-  const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+  const handleEditRoom = (name: string) => {
+    setEditingRoom(name)
+    setTempRoomAbbr(name)
   }
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
@@ -297,7 +297,7 @@ const JoinerCalendarTable = () => {
       //@ts-ignore
       const room = category?.rooms[roomIndex]
       if (room) {
-        room.abbr = tempRoomAbbr
+        room.name = tempRoomAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed activity name")
       } else {
@@ -469,12 +469,12 @@ const JoinerCalendarTable = () => {
                         category?.joinerActivities?.map(
                           (joinerActivity, joinerActivityIndex) => (
                             <tr
-                              key={joinerActivity.abbr}
+                              key={joinerActivity.name}
                               className="hover:bg-gray-100 relative"
                             >
                               <td className="border py-4 pr-4 pl-12 text-left border-l-0">
                                 <div className="flex justify-between items-center">
-                                  {editingRoom === joinerActivity.abbr ? (
+                                  {editingRoom === joinerActivity.name ? (
                                     <Input
                                       type="text"
                                       value={tempJoinerAbbr}
@@ -486,9 +486,9 @@ const JoinerCalendarTable = () => {
                                       label={""}
                                     />
                                   ) : (
-                                    <span>{joinerActivity.abbr}</span>
+                                    <span>{joinerActivity.name}</span>
                                   )}
-                                  {editingRoom === joinerActivity.abbr ? (
+                                  {editingRoom === joinerActivity.name ? (
                                     <Button
                                       size={"icon"}
                                       variant={"link"}
@@ -506,7 +506,7 @@ const JoinerCalendarTable = () => {
                                       size={"icon"}
                                       variant={"link"}
                                       onClick={() =>
-                                        handleEditRoom(joinerActivity.abbr)
+                                        handleEditRoom(joinerActivity.name)
                                       }
                                     >
                                       <Edit3 className="text-gray-500 w-5" />
@@ -541,7 +541,7 @@ const JoinerCalendarTable = () => {
                                         onClick={() => {
                                           setIsReservationModalOpen(true)
                                           setSelectedReservation({
-                                            activities: joinerActivity.abbr,
+                                            activities: joinerActivity.name,
                                             reservation: booking,
                                           })
                                         }}

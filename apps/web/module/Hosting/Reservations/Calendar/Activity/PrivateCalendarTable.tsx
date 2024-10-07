@@ -30,7 +30,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import RentalCalendarModal from "../RentalCalendarModal"
 import RentalsEditPricePerDatesModal from "../Rental/RentalsEditPricePerDatesModal"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
-import { getColorClasses } from "../../helpers/legends"
+import { getColorClasses } from "../../helpers/property-legends"
 
 const PrivateCalendarTable = () => {
   const form = useForm()
@@ -105,14 +105,14 @@ const PrivateCalendarTable = () => {
 
     const filterPrivateActivities = (activities: any[]) =>
       activities
-        .map((privateActivities: { reservations: any; abbr: string }) => ({
+        .map((privateActivities: { reservations: any; name: string }) => ({
           ...privateActivities,
           reservations: filterReservations(privateActivities.reservations),
         }))
         .filter(
-          (privateActivity: { abbr: string }) =>
+          (privateActivity: { name: string }) =>
             !searchString ||
-            privateActivity.abbr
+            privateActivity.name
               .toLowerCase()
               .includes(searchString.toLowerCase())
         )
@@ -284,9 +284,9 @@ const PrivateCalendarTable = () => {
     return { startCol, colSpan }
   }
 
-  const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+  const handleEditRoom = (name: string) => {
+    setEditingRoom(name)
+    setTempRoomAbbr(name)
   }
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
@@ -299,7 +299,7 @@ const PrivateCalendarTable = () => {
       //@ts-ignore
       const room = category?.rooms[roomIndex]
       if (room) {
-        room.abbr = tempRoomAbbr
+        room.name = tempRoomAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed activity name")
       } else {
@@ -471,12 +471,12 @@ const PrivateCalendarTable = () => {
                         category?.privateActivities?.map(
                           (privateActivity, privateActivityIndex) => (
                             <tr
-                              key={privateActivity.abbr}
+                              key={privateActivity.name}
                               className="hover:bg-gray-100 relative"
                             >
                               <td className="border py-4 pr-4 pl-12 text-left border-l-0">
                                 <div className="flex justify-between items-center">
-                                  {editingRoom === privateActivity.abbr ? (
+                                  {editingRoom === privateActivity.name ? (
                                     <Input
                                       type="text"
                                       value={tempPrivateAbbr}
@@ -488,9 +488,9 @@ const PrivateCalendarTable = () => {
                                       label={""}
                                     />
                                   ) : (
-                                    <span>{privateActivity.abbr}</span>
+                                    <span>{privateActivity.name}</span>
                                   )}
-                                  {editingRoom === privateActivity.abbr ? (
+                                  {editingRoom === privateActivity.name ? (
                                     <Button
                                       size={"icon"}
                                       variant={"link"}
@@ -508,7 +508,7 @@ const PrivateCalendarTable = () => {
                                       size={"icon"}
                                       variant={"link"}
                                       onClick={() =>
-                                        handleEditRoom(privateActivity.abbr)
+                                        handleEditRoom(privateActivity.name)
                                       }
                                     >
                                       <Edit3 className="text-gray-500 w-5" />
@@ -543,7 +543,7 @@ const PrivateCalendarTable = () => {
                                         onClick={() => {
                                           setIsReservationModalOpen(true)
                                           setSelectedReservation({
-                                            activities: privateActivity.abbr,
+                                            activities: privateActivity.name,
                                             reservation: booking,
                                           })
                                         }}

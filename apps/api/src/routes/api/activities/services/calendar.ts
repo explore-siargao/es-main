@@ -147,7 +147,7 @@ export const getPrivateActivityCalendar = async (
       })
       const items = activities.map((activity) => {
         const privateActivities: {
-          abbr: string
+          name: string
           startTime?: string
           endTime?: string
           status: string
@@ -166,7 +166,7 @@ export const getPrivateActivityCalendar = async (
                 const isOccupied = activityReservations.length > 0
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  abbr: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   status: isOccupied ? 'occupied' : 'available',
                   reservations: activityReservations,
                 }
@@ -317,7 +317,7 @@ export const getJoinerActivityCalendar = async (
       })
       const items = activities.map((activity) => {
         const joinerActivities: {
-          abbr: string
+          name: string
           startTime?: string
           endTime?: string
           status: string
@@ -336,7 +336,7 @@ export const getJoinerActivityCalendar = async (
                 const isOccupied = activityReservations.length > 0
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  abbr: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   status: isOccupied ? 'occupied' : 'available',
                   reservations: activityReservations,
                 }

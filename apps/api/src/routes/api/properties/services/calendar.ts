@@ -38,19 +38,19 @@ type Reservation = {
 }
 
 export type Room = {
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
 }
 
 export type WholePlace = {
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
 }
 
 export type Bed = {
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
 }
@@ -158,7 +158,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       const formattedItems = unit.ids.map(
         (idObj: { _id: string; name: string }) => ({
           id: idObj._id,
-          abbr: idObj.name,
+          name: idObj.name,
           status: 'available',
           reservations: [],
         })

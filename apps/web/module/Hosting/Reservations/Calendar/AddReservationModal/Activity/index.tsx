@@ -1,11 +1,11 @@
 import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
-import SelectLegendTypeForm from "../SelectLegendForm"
 import ActivityReservationForm from "./ActivityReservationForm"
 import useAddActivityReservation from "./hooks/useAddActivityReservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
+import SelectLegendTypeForm from "../../components/SelectLegendForm"
 
 interface IReservationCalendarModalProps {
   isModalOpen: boolean

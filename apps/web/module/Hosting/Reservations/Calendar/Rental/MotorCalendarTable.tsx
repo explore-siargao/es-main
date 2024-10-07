@@ -22,7 +22,7 @@ import {
 import useGetCalendarMotor from "../hooks/useGetCalendarMotor"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
-import { getColorClasses } from "../../helpers/legends"
+import { getColorClasses } from "../../helpers/property-legends"
 import { useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
@@ -153,14 +153,14 @@ const MotorCalendarTable = () => {
 
     const filterMotorcycles = (motorcycles: any[]) =>
       motorcycles
-        .map((motorcycles: { reservations: any; abbr: string }) => ({
+        .map((motorcycles: { reservations: any; name: string }) => ({
           ...motorcycles,
           reservations: filterReservations(motorcycles.reservations),
         }))
         .filter(
-          (car: { abbr: string }) =>
+          (car: { name: string }) =>
             !searchString ||
-            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+            car.name.toLowerCase().includes(searchString.toLowerCase())
         )
 
     const filterCategories = (categories: any[]) =>
@@ -314,9 +314,9 @@ const MotorCalendarTable = () => {
     return { startCol, colSpan }
   }
 
-  const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setMotorAbbr(abbr)
+  const handleEditRoom = (name: string) => {
+    setEditingRoom(name)
+    setMotorAbbr(name)
   }
 
   const handleSaveRoom = (categoryName: string, motorIndex: number) => {
@@ -330,7 +330,7 @@ const MotorCalendarTable = () => {
       const motorcycle = category?.motorcycles[motorIndex]
       if (motorcycle) {
         mutate({ id: motorcycle.id, name: tempMotorAbbr })
-        motorcycle.abbr = tempMotorAbbr
+        motorcycle.name = tempMotorAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -509,12 +509,12 @@ const MotorCalendarTable = () => {
                       {!collapsed[category.name] &&
                         category?.motorcycles?.map((motorcycle, motorIndex) => (
                           <tr
-                            key={motorcycle.abbr}
+                            key={motorcycle.name}
                             className="hover:bg-gray-100 relative"
                           >
                             <td className="border py-4 pr-4 pl-12 text-left border-l-0">
                               <div className="flex justify-between items-center">
-                                {editingRoom === motorcycle.abbr ? (
+                                {editingRoom === motorcycle.name ? (
                                   <Input
                                     type="text"
                                     value={tempMotorAbbr}
@@ -526,9 +526,9 @@ const MotorCalendarTable = () => {
                                     label={""}
                                   />
                                 ) : (
-                                  <span>{motorcycle.abbr}</span>
+                                  <span>{motorcycle.name}</span>
                                 )}
-                                {editingRoom === motorcycle.abbr ? (
+                                {editingRoom === motorcycle.name ? (
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
@@ -543,7 +543,7 @@ const MotorCalendarTable = () => {
                                     size={"icon"}
                                     variant={"link"}
                                     onClick={() =>
-                                      handleEditRoom(motorcycle.abbr)
+                                      handleEditRoom(motorcycle.name)
                                     }
                                   >
                                     <Edit3 className="text-gray-500 w-5" />
@@ -578,7 +578,7 @@ const MotorCalendarTable = () => {
                                       onClick={() => {
                                         setIsReservationModalOpen(true)
                                         setSelectedReservation({
-                                          motorcycles: motorcycle.abbr,
+                                          motorcycles: motorcycle.name,
                                           reservation: booking,
                                         })
                                       }}

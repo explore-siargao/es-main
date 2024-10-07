@@ -100,8 +100,8 @@ const AddReservationModal = ({
                 >
                   <Option value="">Select</Option>
                   {filteredRooms.map((room: Rental) => (
-                    <Option key={room.abbr} value={room.abbr}>
-                      {room.abbr}
+                    <Option key={room.name} value={room.name}>
+                      {room.name}
                     </Option>
                   ))}
                 </Select>
