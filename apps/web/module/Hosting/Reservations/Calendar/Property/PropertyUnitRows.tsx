@@ -1,5 +1,5 @@
 import React from "react"
-import { Edit3, Save } from "lucide-react"
+import { Edit3, LucideEdit3, LucideSave, LucideX, Save } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import {
@@ -53,9 +53,9 @@ const PropertyUnitRows = ({
     mutate({ id: id, name: name }, callBackReq)
     setEditingRoom(null)
   }
-  const handleEditRoom = (abbr: string) => {
+  const handleEditRoom = (abbr: string | null) => {
     setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+    setTempRoomAbbr(abbr ?? "")
   }
   return (
     <>
@@ -67,7 +67,7 @@ const PropertyUnitRows = ({
               key={bed.abbr}
               className="hover:bg-gray-100 relative"
             >
-              <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+              <td className="border py-2 pr-4 pl-12 text-left border-l-0">
                 <div className="flex justify-between items-center">
                   {editingRoom === bed.abbr ? (
                     <Input
@@ -84,18 +84,31 @@ const PropertyUnitRows = ({
                     <span>{bed.abbr}</span>
                   )}
                   {editingRoom === bed.abbr ? (
-                    <Button
-                      size={"icon"}
-                      variant={"link"}
-                      onClick={(e) =>
-                        handleSaveUnitName(
-                          bed.id,
-                          tempRoomAbbr
-                        )
-                      }
-                    >
-                      <Save className="text-gray-500 w-5" />
-                    </Button>
+                    <div className="flex">
+                      <Button
+                        size={"icon"}
+                        variant={"link"}
+                        className="group"
+                        onClick={() =>
+                          handleSaveUnitName(
+                            bed.id,
+                            tempRoomAbbr
+                          )
+                        }
+                      >
+                        <LucideSave className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
+                      </Button>
+                      <Button
+                        size={"icon"}
+                        variant={"link"}
+                        className="group"
+                        onClick={() =>
+                          handleEditRoom(null)
+                        }
+                      >
+                        <LucideX className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
+                      </Button>
+                    </div>
                   ) : (
                     <Button
                       size={"icon"}
@@ -104,7 +117,7 @@ const PropertyUnitRows = ({
                         handleEditRoom(bed.abbr)
                       }
                     >
-                      <Edit3 className="text-gray-500 w-5" />
+                      <LucideEdit3 className="text-gray-500 w-5" />
                     </Button>
                   )}
                 </div>

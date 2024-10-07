@@ -50,7 +50,7 @@ export const generateMonth = ({
           colSpan={colspan}
           className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center"
         >
-          {format(addDays(startDate, i - colspan), "MMMM yyyy")}
+          {format(addDays(startDate, i - colspan), "MMM yyyy")}
         </td>
       )
       currentMonth = month
@@ -63,7 +63,7 @@ export const generateMonth = ({
       colSpan={colspan}
       className="border border-t-0 border-r-0 text-lg py-2 font-bold text-center"
     >
-      {format(addDays(startDate, daysPerPage - colspan), "MMMM yyyy")}
+      {format(addDays(startDate, daysPerPage - colspan), "MMM yyyy")}
     </td>
   )
 

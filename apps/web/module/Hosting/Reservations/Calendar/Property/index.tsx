@@ -39,7 +39,7 @@ const PropertyCalendar = () => {
         {/* Main content */}
         {data && !isLoading && data?.items && data?.items?.length > 0 ? (
           <>
-            <div className="flex mt-2">
+            <div className="flex mb-20">
               <CalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
