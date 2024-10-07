@@ -18,7 +18,7 @@ const AddReservationModal = () => {
     setIsLegendTypeSelected,
     setIsAddReservationModalOpen,
     setFilteredData,
-  } = useCalendarStore(state => state);
+  } = useCalendarStore((state) => state)
 
   const { mutate } = useAddPropertyReservation()
 

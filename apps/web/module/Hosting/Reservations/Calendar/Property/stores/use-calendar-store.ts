@@ -14,7 +14,7 @@ type T_Calendar_Store = {
   isAddReservationModalOpen: boolean
   selectedDate: string
   selectedUnitId: string
-  filteredData: {items?: Category[]} | null
+  filteredData: { items?: Category[] } | null
   unitData: { items: [] }
   editingUnitQtyId: string | null
   tempUnitQtyName: string
@@ -34,7 +34,7 @@ type T_Calendar_Store = {
   setIsAddReservationModalOpen: (value: boolean) => void
   setSelectedDate: (value: string) => void
   setSelectedUnitId: (value: string) => void
-  setFilteredData: (value: {items?: Category[]} | null) => void
+  setFilteredData: (value: { items?: Category[] } | null) => void
   setUnitData: (value: any) => void
   setEditingUnitQtyId: (value: string | null) => void
   setTempUnitQtyName: (value: string) => void
@@ -69,19 +69,28 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
   setStartDate: (value: Date) => set({ startDate: value }),
   setFilterCalendarDate: (value: string) => set({ filterCalendarDate: value }),
   setSelectedLegendType: (value: string) => set({ selectedLegendType: value }),
-  setIsLegendTypeSelected: (value: boolean) => set({ isLegendTypeSelected: value }),
-  setCollapsed: (value: { [key: string]: boolean }) => set({ collapsed: value }),
-  setSelectedReservation: (value: SelectedReservation | null) => set({ selectedReservation: value }),
-  setIsReservationModalOpen: (value: boolean) => set({ isReservationModalOpen: value }),
-  setIsAddReservationModalOpen: (value: boolean) => set({ isAddReservationModalOpen: value }),
+  setIsLegendTypeSelected: (value: boolean) =>
+    set({ isLegendTypeSelected: value }),
+  setCollapsed: (value: { [key: string]: boolean }) =>
+    set({ collapsed: value }),
+  setSelectedReservation: (value: SelectedReservation | null) =>
+    set({ selectedReservation: value }),
+  setIsReservationModalOpen: (value: boolean) =>
+    set({ isReservationModalOpen: value }),
+  setIsAddReservationModalOpen: (value: boolean) =>
+    set({ isAddReservationModalOpen: value }),
   setSelectedDate: (value: string) => set({ selectedDate: value }),
   setSelectedUnitId: (value: string) => set({ selectedUnitId: value }),
-  setFilteredData: (value: {items?: Category[]} | null) => set({ filteredData: value }),
+  setFilteredData: (value: { items?: Category[] } | null) =>
+    set({ filteredData: value }),
   setUnitData: (value: any) => set({ unitData: value }),
-  setEditingUnitQtyId: (value: string | null) => set({ editingUnitQtyId: value }),
+  setEditingUnitQtyId: (value: string | null) =>
+    set({ editingUnitQtyId: value }),
   setTempUnitQtyName: (value: string) => set({ tempUnitQtyName: value }),
   setIsEditReservation: (value: boolean) => set({ isEditReservation: value }),
-  setIsCancelReservation: (value: boolean) => set({ isCancelReservation: value }),
+  setIsCancelReservation: (value: boolean) =>
+    set({ isCancelReservation: value }),
   setSearchString: (value: string) => set({ searchString: value }),
-  setIsEditPricePerDatesModalOpen: (value: boolean) => set({ isEditPricePerDatesModalOpen: value }),
+  setIsEditPricePerDatesModalOpen: (value: boolean) =>
+    set({ isEditPricePerDatesModalOpen: value }),
 }))

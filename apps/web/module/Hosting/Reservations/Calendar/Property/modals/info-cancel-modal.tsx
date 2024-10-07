@@ -21,7 +21,7 @@ const InfoCancelModal = () => {
     setIsReservationModalOpen,
     setIsEditReservation,
     setIsCancelReservation,
-  } = useCalendarStore(state => state);
+  } = useCalendarStore((state) => state)
 
   const { register, handleSubmit, getValues, reset } = useForm()
   const { mutate } = useUpdateUnitReservation(
@@ -90,7 +90,9 @@ const InfoCancelModal = () => {
                       Unit
                     </Typography>
                     <Typography variant="h3" className="text-gray-500">
-                      {selectedReservation?.unit ? selectedReservation.unit : ""}
+                      {selectedReservation?.unit
+                        ? selectedReservation.unit
+                        : ""}
                     </Typography>
                   </div>
                 </div>
@@ -151,10 +153,13 @@ const InfoCancelModal = () => {
                             </div>
                           ) : (
                             <div>
-                              {selectedReservation ? format(
-                                selectedReservation?.reservation?.startDate as string,
-                                "PPPP"
-                              ) : ""}
+                              {selectedReservation
+                                ? format(
+                                    selectedReservation?.reservation
+                                      ?.startDate as string,
+                                    "PPPP"
+                                  )
+                                : ""}
                             </div>
                           )}
                         </Typography>
@@ -194,11 +199,13 @@ const InfoCancelModal = () => {
                             </div>
                           ) : (
                             <div>
-                              {selectedReservation ? format(
-                                selectedReservation?.reservation
-                                  ?.endDate as string,
-                                "PPPP"
-                              ) : ""}
+                              {selectedReservation
+                                ? format(
+                                    selectedReservation?.reservation
+                                      ?.endDate as string,
+                                    "PPPP"
+                                  )
+                                : ""}
                             </div>
                           )}
                         </Typography>

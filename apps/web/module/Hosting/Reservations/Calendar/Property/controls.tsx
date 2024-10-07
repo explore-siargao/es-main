@@ -28,7 +28,7 @@ const Controls = () => {
     setFilterCalendarDate,
     setSearchString,
     setIsAddReservationModalOpen,
-  } = useCalendarStore(state => state);
+  } = useCalendarStore((state) => state)
 
   const resetToToday = () => {
     if (filterCalendarDate !== "") {

@@ -28,7 +28,7 @@ const PropertyCalendar = () => {
           </div>
           <ReservationTab />
         </div>
-        
+
         {/* Loading indicator */}
         {isLoading ? (
           <div className="flex w-full h-[75vh] overflow-hidden justify-center items-center overflow-y-hidden">
@@ -49,15 +49,14 @@ const PropertyCalendar = () => {
         ) : null}
 
         {/* No data content */}
-        {!isLoading && (!data || data?.items && data?.items?.length === 0) ? (
+        {!isLoading && (!data || (data?.items && data?.items?.length === 0)) ? (
           <div className="flex w-full h-[75vh] overflow-hidden pt-2 overflow-y-hidden">
             <Typography className="text-text-400 italic">
-              Property units have not been created yet. Please create a
-              property unit to display on the calendar.
+              Property units have not been created yet. Please create a property
+              unit to display on the calendar.
             </Typography>
           </div>
         ) : null}
-
       </div>
     </div>
   )

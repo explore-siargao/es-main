@@ -17,8 +17,9 @@ export const generateDays = ({
     headers.push(
       <th
         key={i}
-        className={`border p-2 w-24 ${isToday && "bg-primary-100"} ${i + 1 === daysPerPage && "border-r-0"
-          }`}
+        className={`border p-2 w-24 ${isToday && "bg-primary-100"} ${
+          i + 1 === daysPerPage && "border-r-0"
+        }`}
       >
         {format(date, "EEE dd")}
       </th>

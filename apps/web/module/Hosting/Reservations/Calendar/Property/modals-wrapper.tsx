@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react"
 import EditPricePerDatesModal from "./modals/edit-price-per-dates-modal"
 import InfoCancelModal from "./modals/info-cancel-modal"
 import AddReservationModal from "./modals/add-reservation-modal"
 import toast from "react-hot-toast"
-import { useCalendarStore } from './stores/use-calendar-store'
+import { useCalendarStore } from "./stores/use-calendar-store"
 
 const ModalsWrapper = () => {
   const {
@@ -11,7 +11,7 @@ const ModalsWrapper = () => {
     tempUnitQtyName,
     setFilteredData,
     setEditingUnitQtyId,
-  } = useCalendarStore(state => state);
+  } = useCalendarStore((state) => state)
 
   const handleSaveRoom = (categoryName: string, bedIndex: number) => {
     const newFilteredData = { ...filteredData }
@@ -37,9 +37,9 @@ const ModalsWrapper = () => {
 
   return (
     <>
-      <InfoCancelModal/>
+      <InfoCancelModal />
       <EditPricePerDatesModal />
-      <AddReservationModal/>
+      <AddReservationModal />
     </>
   )
 }

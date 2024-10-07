@@ -15,13 +15,15 @@ const EditPricePerDatesModal = () => {
     selectedUnitId,
     isEditPricePerDatesModalOpen,
     setIsEditPricePerDatesModalOpen,
-  } = useCalendarStore(state => state);
+  } = useCalendarStore((state) => state)
   const [toDate, setToDate] = useState("")
   const [baseRate, setBaseRate] = useState("")
   const [dateFrom, setDateFrom] = useState(selectedDate || "")
   const queryClient = useQueryClient()
   const { handleSubmit } = useForm<T_Property>({})
-  const { mutate, isPending } = useUpdateUnitPricePerDate(selectedUnitId as string)
+  const { mutate, isPending } = useUpdateUnitPricePerDate(
+    selectedUnitId as string
+  )
 
   const clearInputs = () => {
     setToDate("")

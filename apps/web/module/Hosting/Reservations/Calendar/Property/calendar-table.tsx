@@ -1,15 +1,7 @@
 import React, { useEffect } from "react"
-import {
-  addDays,
-  isAfter,
-  isBefore,
-} from "date-fns"
+import { addDays, isAfter, isBefore } from "date-fns"
 import toast from "react-hot-toast"
-import {
-  Room,
-  Bed,
-  WholePlace,
-} from "../../types/CalendarTable"
+import { Room, Bed, WholePlace } from "../../types/CalendarTable"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 import { useQueryClient } from "@tanstack/react-query"
 import PropertyRows from "./property-rows"
@@ -20,13 +12,8 @@ import ModalsWrapper from "./modals-wrapper"
 
 const CalendarTable = () => {
   const queryClient = useQueryClient()
-  const {
-    daysPerPage,
-    startDate,
-    searchString,
-    setUnitData,
-    setSearchString,
-  } = useCalendarStore(state => state);
+  const { daysPerPage, startDate, searchString, setUnitData, setSearchString } =
+    useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -174,7 +161,13 @@ const CalendarTable = () => {
       toast.error(`No matched results for "${searchString}"`)
       setSearchString("")
     }
-  }, [startDate, daysPerPage, calendarProperties?.items, searchString, setUnitData])
+  }, [
+    startDate,
+    daysPerPage,
+    calendarProperties?.items,
+    searchString,
+    setUnitData,
+  ])
 
   useEffect(() => {
     if (startDate) {
@@ -205,11 +198,11 @@ const CalendarTable = () => {
                 </tr>
               </thead>
               <tbody>
-                <PropertyRows/>
+                <PropertyRows />
               </tbody>
             </table>
           </div>
-          <ModalsWrapper/>
+          <ModalsWrapper />
         </div>
       </div>
     </>
