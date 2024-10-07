@@ -8,7 +8,7 @@ import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { useForm } from "react-hook-form"
 import useUpdateUnitReservation from "../../hooks/useUpdateUnitReservation"
-import { useCalendarStore } from "../store/useCalendarStore"
+import { useCalendarStore } from "../stores/use-calendar-store"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()
@@ -97,7 +97,7 @@ const InfoCancelModal = () => {
 
                 {selectedReservation?.reservation?.status !==
                   "Out-of-Service-Dates" && (
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 mt-2">
                     <div className="flex flex-col w-full">
                       <Typography variant="h4" className="font-semibold">
                         Guest
@@ -117,7 +117,7 @@ const InfoCancelModal = () => {
                   </div>
                 )}
 
-                <div className="flex gap-4">
+                <div className="flex gap-4 mt-2">
                   <div className="flex flex-col w-full">
                     <Typography variant="h4" className="font-semibold">
                       Start date
@@ -207,7 +207,7 @@ const InfoCancelModal = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col mt-2">
                   <Typography variant="h4" className="font-semibold">
                     Notes (Optional)
                   </Typography>

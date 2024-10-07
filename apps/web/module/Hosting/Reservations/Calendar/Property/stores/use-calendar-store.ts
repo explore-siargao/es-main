@@ -16,8 +16,8 @@ type T_Calendar_Store = {
   selectedUnitId: string
   filteredData: {items?: Category[]} | null
   unitData: { items: [] }
-  editingRoom: string | null
-  tempRoomAbbr: string
+  editingUnitQtyId: string | null
+  tempUnitQtyName: string
   isEditReservation: boolean
   isCancelReservation: boolean
   searchString: string
@@ -36,8 +36,8 @@ type T_Calendar_Store = {
   setSelectedUnitId: (value: string) => void
   setFilteredData: (value: {items?: Category[]} | null) => void
   setUnitData: (value: any) => void
-  setEditingRoom: (value: string | null) => void
-  setTempRoomAbbr: (value: string) => void
+  setEditingUnitQtyId: (value: string | null) => void
+  setTempUnitQtyName: (value: string) => void
   setIsEditReservation: (value: boolean) => void
   setIsCancelReservation: (value: boolean) => void
   setSearchString: (value: string) => void
@@ -58,8 +58,8 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
   selectedUnitId: "",
   filteredData: null,
   unitData: { items: [] },
-  editingRoom: null,
-  tempRoomAbbr: "",
+  editingUnitQtyId: null,
+  tempUnitQtyName: "",
   isEditReservation: false,
   isCancelReservation: false,
   searchString: "",
@@ -78,8 +78,8 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
   setSelectedUnitId: (value: string) => set({ selectedUnitId: value }),
   setFilteredData: (value: {items?: Category[]} | null) => set({ filteredData: value }),
   setUnitData: (value: any) => set({ unitData: value }),
-  setEditingRoom: (value: string | null) => set({ editingRoom: value }),
-  setTempRoomAbbr: (value: string) => set({ tempRoomAbbr: value }),
+  setEditingUnitQtyId: (value: string | null) => set({ editingUnitQtyId: value }),
+  setTempUnitQtyName: (value: string) => set({ tempUnitQtyName: value }),
   setIsEditReservation: (value: boolean) => set({ isEditReservation: value }),
   setIsCancelReservation: (value: boolean) => set({ isCancelReservation: value }),
   setSearchString: (value: string) => set({ searchString: value }),

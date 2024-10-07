@@ -1,16 +1,16 @@
 import React from 'react'
-import EditPricePerDatesModal from "./modals/EditPricePerDatesModal"
-import InfoCancelModal from "./modals/InfoCancelModal"
-import AddReservationModal from "./modals/AddReservationModal"
+import EditPricePerDatesModal from "./modals/edit-price-per-dates-modal"
+import InfoCancelModal from "./modals/info-cancel-modal"
+import AddReservationModal from "./modals/add-reservation-modal"
 import toast from "react-hot-toast"
-import { useCalendarStore } from './store/useCalendarStore'
+import { useCalendarStore } from './stores/use-calendar-store'
 
 const ModalsWrapper = () => {
   const {
     filteredData,
-    tempRoomAbbr,
+    tempUnitQtyName,
     setFilteredData,
-    setEditingRoom,
+    setEditingUnitQtyId,
   } = useCalendarStore(state => state);
 
   const handleSaveRoom = (categoryName: string, bedIndex: number) => {
@@ -22,7 +22,7 @@ const ModalsWrapper = () => {
       //@ts-ignore
       const bed = category?.beds[bedIndex]
       if (bed) {
-        bed.abbr = tempRoomAbbr
+        bed.name = tempUnitQtyName
         setFilteredData(newFilteredData)
         toast.success("Successfully changed room property name")
       } else {
@@ -32,7 +32,7 @@ const ModalsWrapper = () => {
       toast.error("Category not found")
     }
 
-    setEditingRoom(null)
+    setEditingUnitQtyId(null)
   }
 
   return (

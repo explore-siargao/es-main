@@ -1,11 +1,11 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
 import SelectLegendTypeForm from "../../../components/SelectLegendForm"
-import useAddPropertyReservation from "./hooks/useAddPropertyReservation"
+import useAddPropertyReservation from "./hooks/use-add-property-reservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { useCalendarStore } from "../../store/useCalendarStore"
-import PropertyReservationForm from "./PropertyReservationForm"
+import { useCalendarStore } from "../../stores/use-calendar-store"
+import PropertyReservationForm from "./property-reservation-form"
 
 const AddReservationModal = () => {
   const queryClient = useQueryClient()
@@ -60,7 +60,7 @@ const AddReservationModal = () => {
       const selectedCategory = category[0]
       if (selectedCategory) {
         const bed = selectedCategory?.beds?.find(
-          (rm) => rm.abbr === newReservation.bed
+          (rm) => rm.name === newReservation.bed
         )
         if (bed) {
           bed.reservations.push(newReservation)

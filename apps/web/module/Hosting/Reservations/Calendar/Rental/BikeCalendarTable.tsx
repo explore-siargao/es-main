@@ -22,7 +22,7 @@ import {
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCalendarBike from "../hooks/useGetCalendarBike"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
-import { getColorClasses } from "../../helpers/legends"
+import { getColorClasses } from "../../helpers/property-legends"
 import { useQueryClient } from "@tanstack/react-query"
 import { FormProvider, useForm } from "react-hook-form"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
@@ -150,14 +150,14 @@ const BikeCalendarTable = () => {
 
     const filterBicycles = (bicycles: any[]) =>
       bicycles
-        .map((bicycles: { reservations: any; abbr: string }) => ({
+        .map((bicycles: { reservations: any; name: string }) => ({
           ...bicycles,
           reservations: filterReservations(bicycles.reservations),
         }))
         .filter(
-          (car: { abbr: string }) =>
+          (car: { name: string }) =>
             !searchString ||
-            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+            car.name.toLowerCase().includes(searchString.toLowerCase())
         )
 
     const filterCategories = (categories: any[]) =>
@@ -310,9 +310,9 @@ const BikeCalendarTable = () => {
     return { startCol, colSpan }
   }
 
-  const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setTempBikeAbbr(abbr)
+  const handleEditRoom = (name: string) => {
+    setEditingRoom(name)
+    setTempBikeAbbr(name)
   }
 
   const handleSaveRoom = (categoryName: string, bikeIndex: number) => {
@@ -325,7 +325,7 @@ const BikeCalendarTable = () => {
       //@ts-ignore
       const bicycle = category?.bicycles[bikeIndex]
       if (bicycle) {
-        bicycle.abbr = tempBikeAbbr
+        bicycle.name = tempBikeAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -350,7 +350,7 @@ const BikeCalendarTable = () => {
       console.log(bicycle)
       if (bicycle) {
         mutate({ id: bicycle.id, name: tempBikeAbbr })
-        bicycle.abbr = tempBikeAbbr
+        bicycle.name = tempBikeAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -526,12 +526,12 @@ const BikeCalendarTable = () => {
                       {!collapsed[category.name] &&
                         category?.bicycles?.map((bicycle, bikeIndex) => (
                           <tr
-                            key={bicycle.abbr}
+                            key={bicycle.name}
                             className="hover:bg-gray-100 relative"
                           >
                             <td className="border py-4 pr-4 pl-12 text-left border-l-0">
                               <div className="flex justify-between items-center">
-                                {editingRoom === bicycle.abbr ? (
+                                {editingRoom === bicycle.name ? (
                                   <Input
                                     type="text"
                                     value={tempBikeAbbr}
@@ -543,9 +543,9 @@ const BikeCalendarTable = () => {
                                     label={""}
                                   />
                                 ) : (
-                                  <span>{bicycle.abbr}</span>
+                                  <span>{bicycle.name}</span>
                                 )}
-                                {editingRoom === bicycle.abbr ? (
+                                {editingRoom === bicycle.name ? (
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
@@ -565,7 +565,7 @@ const BikeCalendarTable = () => {
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
-                                    onClick={() => handleEditRoom(bicycle.abbr)}
+                                    onClick={() => handleEditRoom(bicycle.name)}
                                   >
                                     <Edit3 className="text-gray-500 w-5" />
                                   </Button>
@@ -598,7 +598,7 @@ const BikeCalendarTable = () => {
                                       onClick={() => {
                                         setIsReservationModalOpen(true)
                                         setSelectedReservation({
-                                          bicyles: bicycle.abbr,
+                                          bicyles: bicycle.name,
                                           reservation: booking,
                                         })
                                       }}

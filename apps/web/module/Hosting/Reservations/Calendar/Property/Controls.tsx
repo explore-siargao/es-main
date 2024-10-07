@@ -11,7 +11,7 @@ import { useState } from "react"
 import CalendarTab from "../../components/CalendarTab"
 import MonthYearSelectorModal from "../SidebarActionModals/MonthYearSelectorModal"
 import PropertySearchCalendarModal from "../SidebarActionModals/SideBarSearchModals/PropertySearchCalendar"
-import { useCalendarStore } from "./store/useCalendarStore"
+import { useCalendarStore } from "./stores/use-calendar-store"
 import { addDays, parse } from "date-fns"
 import { useQueryClient } from "@tanstack/react-query"
 

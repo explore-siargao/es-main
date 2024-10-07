@@ -9,8 +9,8 @@ import {
 } from "date-fns"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import { TZDate } from "@date-fns/tz"
-import PropertyUnitRows from "./PropertyUnitRows"
-import { useCalendarStore } from "./store/useCalendarStore"
+import PropertyUnitRows from "./property-unit-rows"
+import { useCalendarStore } from "./stores/use-calendar-store"
 
 const PropertyRows = () => {
   const {

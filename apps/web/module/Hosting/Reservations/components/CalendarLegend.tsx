@@ -1,6 +1,6 @@
 import { Typography } from "@/common/components/ui/Typography"
 import LegendModal from "./LegendModal"
-import { legends } from "../helpers/legends"
+import { legends } from "../helpers/property-legends"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
 

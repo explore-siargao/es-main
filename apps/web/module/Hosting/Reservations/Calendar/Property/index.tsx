@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import CalendarTable from "./CalendarTable"
+import CalendarTable from "./calendar-table"
 import ReservationTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"

@@ -1,15 +1,15 @@
 import React from "react"
-import { Edit3, LucideEdit3, LucideSave, LucideX, Save } from "lucide-react"
+import { LucideEdit3, LucideSave, LucideX } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import {
   Reservation,
   Room,
 } from "../../types/CalendarTable"
-import { getColorClasses } from "../../helpers/legends"
-import getBookingStyle from "./helpers/getBookingStyle"
-import { generateRowBorder } from "./helpers/calendarTable"
-import { useCalendarStore } from "./store/useCalendarStore"
+import { getColorClasses } from "../../helpers/property-legends"
+import getBookingStyle from "./helpers/get-booking-style"
+import { generateRowBorder } from "./helpers/calendar-table"
+import { useCalendarStore } from "./stores/use-calendar-store"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
@@ -27,14 +27,14 @@ const PropertyUnitRows = ({
     startDate,
     daysPerPage,
     collapsed,
-    editingRoom,
-    tempRoomAbbr,
-    setEditingRoom,
-    setTempRoomAbbr,
+    editingUnitQtyId,
+    tempUnitQtyName,
+    setEditingUnitQtyId,
+    setTempUnitQtyName,
     setIsReservationModalOpen,
     setSelectedReservation,
   } = useCalendarStore(state => state);
-  const handleSaveUnitName = (id: string, name: string) => {
+  const handleSaveUnitQtyName = (id: string, name: string) => {
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -51,48 +51,48 @@ const PropertyUnitRows = ({
       },
     }
     mutate({ id: id, name: name }, callBackReq)
-    setEditingRoom(null)
+    setEditingUnitQtyId(null)
   }
-  const handleEditRoom = (abbr: string | null) => {
-    setEditingRoom(abbr)
-    setTempRoomAbbr(abbr ?? "")
+  const handleEditingUnitQtyName = ({id, name}: { id?: string, name?: string }) => {
+    setEditingUnitQtyId(id ?? "")
+    setTempUnitQtyName(name ?? "")
   }
   return (
     <>
       {/* Sub Category (Units) */}
       {!collapsed[unitType.unitType] &&
         unitType.units.map(
-          (bed: Room, bedIndex: number) => (
+          (bed: Room) => (
             <tr
-              key={bed.abbr}
+              key={bed.name}
               className="hover:bg-gray-100 relative"
             >
               <td className="border py-2 pr-4 pl-12 text-left border-l-0">
                 <div className="flex justify-between items-center">
-                  {editingRoom === bed.abbr ? (
+                  {editingUnitQtyId === bed.id ? (
                     <Input
                       type="text"
-                      value={tempRoomAbbr}
+                      value={tempUnitQtyName}
                       onChange={(e) =>
-                        setTempRoomAbbr(e.target.value)
+                        setTempUnitQtyName(e.target.value)
                       }
                       autoFocus
                       className="mr-2"
                       label={""}
                     />
                   ) : (
-                    <span>{bed.abbr}</span>
+                    <span>{bed.name}</span>
                   )}
-                  {editingRoom === bed.abbr ? (
+                  {editingUnitQtyId === bed.id ? (
                     <div className="flex">
                       <Button
                         size={"icon"}
                         variant={"link"}
                         className="group"
                         onClick={() =>
-                          handleSaveUnitName(
-                            bed.id,
-                            tempRoomAbbr
+                          handleSaveUnitQtyName(
+                            editingUnitQtyId,
+                            tempUnitQtyName
                           )
                         }
                       >
@@ -103,7 +103,7 @@ const PropertyUnitRows = ({
                         variant={"link"}
                         className="group"
                         onClick={() =>
-                          handleEditRoom(null)
+                          handleEditingUnitQtyName({})
                         }
                       >
                         <LucideX className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
@@ -114,7 +114,7 @@ const PropertyUnitRows = ({
                       size={"icon"}
                       variant={"link"}
                       onClick={() =>
-                        handleEditRoom(bed.abbr)
+                        handleEditingUnitQtyName({ id: bed.id, name: bed.name })
                       }
                     >
                       <LucideEdit3 className="text-gray-500 w-5" />
@@ -153,7 +153,7 @@ const PropertyUnitRows = ({
                             true
                           )
                           setSelectedReservation({
-                            unit: bed.abbr,
+                            unit: bed.name,
                             reservation: booking,
                           })
                         }}

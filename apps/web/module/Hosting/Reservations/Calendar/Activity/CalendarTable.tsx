@@ -69,7 +69,7 @@ const ActivitiesCalendarTable = () => {
       const selectedCategory = category[0]
       if (selectedCategory) {
         const room = selectedCategory?.rooms?.find(
-          (rm) => rm.abbr === newReservation.room
+          (rm) => rm.name === newReservation.room
         )
         if (room) {
           room?.bookings?.push(newReservation)
@@ -248,9 +248,9 @@ const ActivitiesCalendarTable = () => {
     return { startCol, colSpan }
   }
 
-  const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setTempRoomAbbr(abbr)
+  const handleEditRoom = (name: string) => {
+    setEditingRoom(name)
+    setTempRoomAbbr(name)
   }
 
   const handleSaveRoom = (categoryName: string, roomIndex: number) => {
@@ -263,7 +263,7 @@ const ActivitiesCalendarTable = () => {
       //@ts-ignore
       const room = category?.rooms[roomIndex]
       if (room) {
-        room.abbr = tempRoomAbbr
+        room.name = tempRoomAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed activity name")
       } else {
@@ -344,10 +344,10 @@ const ActivitiesCalendarTable = () => {
                 </tr>
                 {!collapsed[category.name] &&
                   category?.rooms?.map((room, roomIndex) => (
-                    <tr key={room.abbr} className="hover:bg-gray-100 relative">
+                    <tr key={room.name} className="hover:bg-gray-100 relative">
                       <td className="border p-4 text-left border-l-0">
                         <div className="flex justify-between items-center">
-                          {editingRoom === room.abbr ? (
+                          {editingRoom === room.name ? (
                             <Input
                               type="text"
                               value={tempRoomAbbr}
@@ -357,9 +357,9 @@ const ActivitiesCalendarTable = () => {
                               label={""}
                             />
                           ) : (
-                            <span>{room.abbr}</span>
+                            <span>{room.name}</span>
                           )}
-                          {editingRoom === room.abbr ? (
+                          {editingRoom === room.name ? (
                             <Button
                               size={"icon"}
                               variant={"link"}
@@ -373,7 +373,7 @@ const ActivitiesCalendarTable = () => {
                             <Button
                               size={"icon"}
                               variant={"link"}
-                              onClick={() => handleEditRoom(room.abbr)}
+                              onClick={() => handleEditRoom(room.name)}
                             >
                               <Edit3 className="text-gray-500 w-5" />
                             </Button>
@@ -404,7 +404,7 @@ const ActivitiesCalendarTable = () => {
                               onClick={() => {
                                 setIsReservationModalOpen(true)
                                 setSelectedReservation({
-                                  room: room.abbr,
+                                  room: room.name,
                                   booking: booking,
                                 })
                               }}

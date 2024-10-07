@@ -27,13 +27,13 @@ type Reservation = {
 }
 
 type Bicycle = {
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
 }
 
 type Car = {
-  abbr: string
+  name: string
   status: string
   reservations: Reservation[]
 }
@@ -151,7 +151,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
 
           return {
             id: idObj._id,
-            abbr: idObj.name ? idObj.name : 'Unknown',
+            name: idObj.name ? idObj.name : 'Unknown',
             status: isOccupied ? 'occupied' : 'available',
             reservations: carReservations,
           }
@@ -167,7 +167,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
             toDate: priceDate.toDate,
             price: priceDate?.price,
           })),
-          cars: cars.filter((car) => car.abbr !== 'Unknown'),
+          cars: cars.filter((car) => car.name !== 'Unknown'),
         }
       })
 
@@ -278,7 +278,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
 
           return {
             id: idObj._id,
-            abbr: idObj.name ? idObj.name : 'Unknown',
+            name: idObj.name ? idObj.name : 'Unknown',
             status: isOccupied ? 'occupied' : 'available',
             reservations: bicycleReservations,
           }
@@ -290,7 +290,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           //@ts-ignore
           price: rental?.pricing?.dayRate ?? 0,
           pricePerDates: rental?.pricePerDates,
-          bicycles: bicycles.filter((bike) => bike.abbr !== 'Unknown'),
+          bicycles: bicycles.filter((bike) => bike.name !== 'Unknown'),
         }
       })
 
@@ -401,7 +401,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
 
           return {
             id: idObj._id,
-            abbr: idObj.name ? idObj.name : 'Unknown',
+            name: idObj.name ? idObj.name : 'Unknown',
             status: isOccupied ? 'occupied' : 'available',
             reservations: motorcycleReservations,
           }
@@ -415,7 +415,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           //@ts-ignore
           price: rental?.pricing?.dayRate ?? 0,
           pricePerDates: rental?.pricePerDates,
-          motorcycles: motorcycles.filter((motor) => motor.abbr !== 'Unknown'),
+          motorcycles: motorcycles.filter((motor) => motor.name !== 'Unknown'),
         }
       })
 

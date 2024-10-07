@@ -5,7 +5,7 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { useState } from "react"
 import { Textarea } from "@/common/components/ui/Textarea"
 import useGetPropertyByHost from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyByHost"
-import useGetUnitById from "../hooks/useGetUnitById"
+import useGetUnitById from "./hooks/use-get-unit-by-id"
 import useGetPropertyById from "@/module/Hosting/Listings/Properties/hooks/useGetPropertyById"
 
 interface IPropertyReservationFormProps {

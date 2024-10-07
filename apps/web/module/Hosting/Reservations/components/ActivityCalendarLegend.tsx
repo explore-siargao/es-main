@@ -2,7 +2,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
 import ActivityLegendModal from "./ActivityLegendModal"
-import { activityLegends } from "../helpers/activityLegends"
+import { activityLegends } from "../helpers/activity-legends"
 
 const ActivityCalendarLegend = () => {
   const [legendModalOpen, setLegendModalOpen] = useState(false)

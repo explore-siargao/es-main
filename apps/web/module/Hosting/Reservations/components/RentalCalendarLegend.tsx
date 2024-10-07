@@ -1,7 +1,7 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
-import { rentalLegends } from "../helpers/rentalLegends"
+import { rentalLegends } from "../helpers/rental-legends"
 import RentalLegendModal from "./RentalLegendModal"
 
 const RentalCalendarLegend = () => {

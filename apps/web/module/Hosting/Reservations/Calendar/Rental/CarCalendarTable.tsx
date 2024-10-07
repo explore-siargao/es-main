@@ -24,7 +24,7 @@ import {
 import useGetCalendarCar from "../hooks/useGetCalendarCar"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
-import { getColorClasses } from "../../helpers/legends"
+import { getColorClasses } from "../../helpers/property-legends"
 import { useQueryClient } from "@tanstack/react-query"
 import RentalCalendarModal from "../RentalCalendarModal"
 import { FormProvider, useForm } from "react-hook-form"
@@ -124,14 +124,14 @@ const CarCalendarTable = () => {
 
     const filterCars = (cars: any[]) =>
       cars
-        .map((car: { reservations: any; abbr: string }) => ({
+        .map((car: { reservations: any; name: string }) => ({
           ...car,
           reservations: filterReservations(car.reservations),
         }))
         .filter(
-          (car: { abbr: string }) =>
+          (car: { name: string }) =>
             !searchString ||
-            car.abbr.toLowerCase().includes(searchString.toLowerCase())
+            car.name.toLowerCase().includes(searchString.toLowerCase())
         )
 
     const filterCategories = (categories: any[]) =>
@@ -298,9 +298,9 @@ const CarCalendarTable = () => {
     return { startCol, colSpan }
   }
 
-  const handleEditRoom = (abbr: string) => {
-    setEditingRoom(abbr)
-    setTempCarAbbr(abbr)
+  const handleEditRoom = (name: string) => {
+    setEditingRoom(name)
+    setTempCarAbbr(name)
   }
 
   const handleSaveRoom = (categoryName: string, carIndex: number) => {
@@ -314,7 +314,7 @@ const CarCalendarTable = () => {
       const car = category?.cars[carIndex]
       if (car) {
         mutate({ id: car.id, name: tempCarAbbr })
-        car.abbr = tempCarAbbr
+        car.name = tempCarAbbr
         setFilteredData(newFilteredData)
         toast.success("Successfully changed rental vehicle name")
       } else {
@@ -476,12 +476,12 @@ const CarCalendarTable = () => {
                       {!collapsed[category.name] &&
                         category?.cars?.map((car, carIndex) => (
                           <tr
-                            key={car.abbr}
+                            key={car.name}
                             className="hover:bg-gray-100 relative"
                           >
                             <td className="border py-4 pr-4 pl-12 text-left border-l-0">
                               <div className="flex justify-between items-center">
-                                {editingRoom === car.abbr ? (
+                                {editingRoom === car.name ? (
                                   <Input
                                     type="text"
                                     value={tempCarAbbr}
@@ -493,9 +493,9 @@ const CarCalendarTable = () => {
                                     label={""}
                                   />
                                 ) : (
-                                  <span>{car.abbr}</span>
+                                  <span>{car.name}</span>
                                 )}
-                                {editingRoom === car.abbr ? (
+                                {editingRoom === car.name ? (
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
@@ -509,7 +509,7 @@ const CarCalendarTable = () => {
                                   <Button
                                     size={"icon"}
                                     variant={"link"}
-                                    onClick={() => handleEditRoom(car.abbr)}
+                                    onClick={() => handleEditRoom(car.name)}
                                   >
                                     <Edit3 className="text-gray-500 w-5" />
                                   </Button>
@@ -542,7 +542,7 @@ const CarCalendarTable = () => {
                                     onClick={() => {
                                       setIsReservationModalOpen(true)
                                       setSelectedReservation({
-                                        cars: car.abbr,
+                                        cars: car.name,
                                         reservation: booking,
                                       })
                                     }}

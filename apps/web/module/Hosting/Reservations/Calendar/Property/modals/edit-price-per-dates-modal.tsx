@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import useUpdateUnitPricePerDate from "../../hooks/useUpdaateUnitPricePerDate"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { useCalendarStore } from "../store/useCalendarStore"
+import { useCalendarStore } from "../stores/use-calendar-store"
 
 const EditPricePerDatesModal = () => {
   const {

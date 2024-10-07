@@ -12,11 +12,11 @@ import {
 } from "../../types/CalendarTable"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 import { useQueryClient } from "@tanstack/react-query"
-import PropertyRows from "./PropertyRows"
-import { generateDays, generateMonth } from "./helpers/calendarTable"
-import { useCalendarStore } from "./store/useCalendarStore"
-import Controls from "./Controls"
-import ModalsWrapper from "./ModalsWrapper"
+import PropertyRows from "./property-rows"
+import { generateDays, generateMonth } from "./helpers/calendar-table"
+import { useCalendarStore } from "./stores/use-calendar-store"
+import Controls from "./controls"
+import ModalsWrapper from "./modals-wrapper"
 
 const CalendarTable = () => {
   const queryClient = useQueryClient()
@@ -69,7 +69,7 @@ const CalendarTable = () => {
 
         bookableUnits.push({
           id: unit.id,
-          abbr: unit.abbr,
+          name: unit.name,
           status: unit.status,
           reservations: filteredReservations,
           bookings: [],
@@ -136,8 +136,8 @@ const CalendarTable = () => {
             .map((unitType: any) => ({
               ...unitType,
               units: unitType.units.filter(
-                (unit: { abbr: string; reservations: any[] }) => {
-                  const trimmedAbbr = unit.abbr.toLowerCase().trim()
+                (unit: { name: string; reservations: any[] }) => {
+                  const trimmedAbbr = unit.name.toLowerCase().trim()
                   return (
                     trimmedAbbr.includes(trimmedSearchString) ||
                     unit.reservations.some((reservation: { name: string }) => {

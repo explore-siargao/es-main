@@ -2,7 +2,7 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Separator } from "@/common/components/ui/Separator"
 import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import { activityLegends } from "../helpers/activityLegends"
+import { activityLegends } from "../helpers/activity-legends"
 
 type T_Props = {
   isOpen: boolean
