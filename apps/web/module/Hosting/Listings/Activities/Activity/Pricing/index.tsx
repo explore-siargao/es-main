@@ -15,10 +15,13 @@ import { Input2 } from "@/common/components/ui/Input2"
 type TimeSlot = {
   startTime: string
   endTime: string
+  ids?: [{ _id: string; name: string }]
 }
 
 type DaySchedule = {
-  [key: string]: TimeSlot[]
+  [key: string]: {
+    slots: TimeSlot[]
+  }
 }
 
 type Prop = {
@@ -34,13 +37,13 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const { mutateAsync, isPending } = useUpdateActivityPricingSlots(activityId)
 
   const [schedule, setSchedule] = useState<DaySchedule>({
-    monday: [],
-    tuesday: [],
-    wednesday: [],
-    thursday: [],
-    friday: [],
-    saturday: [],
-    sunday: [],
+    monday: { slots: [] },
+    tuesday: { slots: [] },
+    wednesday: { slots: [] },
+    thursday: { slots: [] },
+    friday: { slots: [] },
+    saturday: { slots: [] },
+    sunday: { slots: [] },
   })
 
   const [minCapacity, setMinCapacity] = useState(0)
@@ -50,7 +53,9 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const experienceType: "private" | "joiner" = data?.item?.experienceType
 
   const onSubmit = async () => {
-    const allEmpty = Object.values(schedule).every((arr) => arr.length === 0)
+    const allEmpty = Object.values(schedule).every(
+      (arr) => arr.slots.length === 0
+    )
     if (allEmpty) {
       toast.error("Please add at least one time slot for any day.")
     } else if (minCapacity > maxCapacity) {
@@ -61,34 +66,48 @@ const ActivityPricing = ({ pageType }: Prop) => {
       const pricingData = {
         experienceType: experienceType,
         schedule: {
-          monday: schedule.monday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
-          tuesday: schedule.tuesday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
-          wednesday: schedule.wednesday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
-          thursday: schedule.thursday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
-          friday: schedule.friday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
-          saturday: schedule.saturday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
-          sunday: schedule.sunday?.map((slot) => ({
-            startTime: slot.startTime,
-            endTime: slot.endTime,
-          })),
+          monday: {
+            slots: schedule.monday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
+          tuesday: {
+            slots: schedule.tuesday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
+          wednesday: {
+            slots: schedule.wednesday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
+          thursday: {
+            slots: schedule.thursday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
+          friday: {
+            slots: schedule.friday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
+          saturday: {
+            slots: schedule.saturday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
+          sunday: {
+            slots: schedule.sunday?.slots.map((slot) => ({
+              startTime: slot.startTime,
+              endTime: slot.endTime,
+            })),
+          },
         },
         slotCapacity: {
           minimum: minCapacity,
@@ -182,7 +201,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   }
 
   const addTimeSlot = (day: string) => {
-    const existingSlots = schedule[day] || []
+    const existingSlots = schedule[day]?.slots || []
     const highestEndTime = existingSlots.reduce((max, slot) => {
       return slot.endTime > max ? slot.endTime : max
     }, "12:00 AM")
@@ -202,7 +221,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
     if (!hasConflict) {
       setSchedule((prev) => ({
         ...prev,
-        [day]: [...existingSlots, newSlot],
+        [day]: { slots: [...existingSlots, newSlot] },
       }))
     } else {
       toast.error(`Time slot conflicts with existing slots on ${day}.`)
@@ -212,7 +231,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const removeTimeSlot = (day: string, index: number) => {
     setSchedule((prev) => ({
       ...prev,
-      [day]: (prev[day] || []).filter((_, i) => i !== index),
+      [day]: { slots: (prev[day]?.slots || []).filter((_, i) => i !== index) },
     }))
   }
 
@@ -250,7 +269,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
       return
     }
 
-    const currentSlot = schedule[day][index]
+    const currentSlot = schedule[day].slots[index]
 
     if (!currentSlot) {
       toast.error(`No time slot found at index ${index} for ${day}.`)
@@ -277,7 +296,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
       return
     }
 
-    const hasConflict = schedule[day].some(
+    const hasConflict = schedule[day].slots.some(
       (slot, i) =>
         i !== index &&
         timeToMinutes(slot.startTime) < endTimeInMinutes &&
@@ -286,12 +305,14 @@ const ActivityPricing = ({ pageType }: Prop) => {
 
     if (!hasConflict) {
       setSchedule((prev) => {
-        const existingSlots = prev[day] || []
+        const existingSlots = prev[day]?.slots || []
         return {
           ...prev,
-          [day]: existingSlots.map((slot, i) =>
-            i === index ? updatedSlot : slot
-          ),
+          [day]: {
+            slots: existingSlots.map((slot, i) =>
+              i === index ? updatedSlot : slot
+            ),
+          },
         }
       })
     } else {
@@ -309,19 +330,25 @@ const ActivityPricing = ({ pageType }: Prop) => {
       "saturday",
       "sunday",
     ]
+
     const firstDayWithSlots =
       days.find(
-        (day) => Array.isArray(schedule[day]) && schedule[day].length > 0
+        (day) =>
+          Array.isArray(schedule[day]?.slots) && schedule[day].slots.length > 0
       ) || "monday"
-    const slotsToApply = Array.isArray(schedule[firstDayWithSlots])
-      ? schedule[firstDayWithSlots]
-      : []
+
+    const slotsToApply = schedule[firstDayWithSlots]?.slots || []
 
     setSchedule((prev) => {
-      const newSchedule = { ...prev }
+      const newSchedule: { [x: string]: { slots: TimeSlot[] } } = { ...prev }
+
       days.forEach((day) => {
         if (day !== firstDayWithSlots) {
-          newSchedule[day] = [...slotsToApply]
+          // Ensure newSchedule[day] exists and has the correct structure
+          if (!newSchedule[day]) {
+            newSchedule[day] = { slots: [] }
+          }
+          newSchedule[day].slots = [...slotsToApply]
         }
       })
       return newSchedule
@@ -369,7 +396,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                 <Typography variant="h4" className="mb-2">
                   {day.charAt(0).toUpperCase() + day.slice(1)}
                 </Typography>
-                {slots.map((slot, index) => (
+                {slots.slots.map((slot, index) => (
                   <div key={index} className="flex items-center gap-2 mb-2">
                     <Select
                       value={slot.startTime}

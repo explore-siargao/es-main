@@ -39,6 +39,8 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
             })
           )
         } else {
+          let newSchedule =
+            activity.experienceType === 'private' ? schedule : schedule
           const updatedPriceAndSlots = await dbActivities.findByIdAndUpdate(
             activity?._id,
             {
@@ -52,7 +54,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                   'pricing',
                 ],
                 experienceType: experienceType,
-                schedule: schedule,
+                schedule: newSchedule,
                 slotCapacity: slotCapacity,
                 updatedAt: Date.now(),
                 ...(experienceType === 'private'
