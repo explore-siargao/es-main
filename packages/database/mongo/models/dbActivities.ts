@@ -36,36 +36,108 @@ const segments = new Schema({
 const timeSlots = new Schema({
   startTime: String,
   endTime: String,
+  ids: {
+    type: [
+      {
+        _id: {
+          type: mongoose.Schema.ObjectId,
+          default: () => new mongoose.Types.ObjectId(),
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    default: [],
+    required: false,
+  },
 })
 
 const schedule = new Schema({
   monday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
   tuesday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
   wednesday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
   thursday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
   friday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
   saturday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
   sunday: {
-    type: [timeSlots],
-    default: [],
+    type: {
+      _id: {
+        type: mongoose.Schema.ObjectId,
+        default: () => new mongoose.Types.ObjectId(),
+      },
+      slots: [timeSlots],
+    },
+    default: {
+      slots: [],
+    },
   },
 })
 
@@ -165,7 +237,29 @@ const activities = new Schema({
   },
   schedule: {
     type: schedule,
-    default: null,
+    default: {
+      monday: {
+        slots: [],
+      },
+      tuesday: {
+        slots: [],
+      },
+      wednesday: {
+        slots: [],
+      },
+      thursday: {
+        slots: [],
+      },
+      friday: {
+        slots: [],
+      },
+      saturday: {
+        slots: [],
+      },
+      sunday: {
+        slots: [],
+      },
+    },
   },
   pricePerPerson: {
     type: Number,

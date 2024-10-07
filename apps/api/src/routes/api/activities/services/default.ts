@@ -47,15 +47,6 @@ export const addActivity = async (req: Request, res: Response) => {
         minimum: 0,
         maximum: 0,
       },
-      schedule: {
-        monday: [],
-        tuesday: [],
-        wednesday: [],
-        thursday: [],
-        friday: [],
-        saturday: [],
-        sunday: [],
-      },
       status: 'Incomplete',
     }
 

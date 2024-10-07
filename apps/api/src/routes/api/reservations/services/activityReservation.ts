@@ -7,8 +7,13 @@ import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
-export const addActivityReservation = async (req: Request, res: Response) => {
-  const { start_date, end_date, status, unit, name, notes } = req.body
+export const addPrivateActivityReservation = async (
+  req: Request,
+  res: Response
+) => {
+  const { date, status, name, slotId, activityId, dayId, notes, guestNumber } =
+    req.body
+  console.log(req.body)
   try {
     const validStatuses = [
       'Confirmed',
@@ -21,18 +26,18 @@ export const addActivityReservation = async (req: Request, res: Response) => {
     if (!validStatuses.includes(status)) {
       res.json(response.error({ message: 'Invalid status' }))
     } else {
-      if (!start_date || !end_date || !status || !unit) {
+      if (!date || !status || !slotId) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         const overlappingReservation = await dbReservations.findOne({
-          activityId: unit,
+          'activityIds.timeSlotId': slotId,
           $or: [
             {
-              startDate: { $lt: end_date },
-              endDate: { $gt: start_date },
+              startDate: { $lt: date },
+              endDate: { $gt: date },
             },
             {
-              startDate: { $lte: end_date, $gte: start_date },
+              startDate: { $lte: date, $gte: date },
             },
           ],
         })
@@ -45,12 +50,16 @@ export const addActivityReservation = async (req: Request, res: Response) => {
             })
           )
         } else {
-          // Create a new reservation
           const newActivityReservation = new dbReservations({
-            startDate: start_date,
-            endDate: end_date,
+            startDate: date,
+            endDate: date,
             status: status,
-            activityId: unit,
+            activityIds: {
+              activityId: activityId,
+              dayId: dayId,
+              timeSlotId: slotId,
+            },
+            guestCount: guestNumber,
             guestName: name || null,
             notes: notes || null,
             createdAt: Date.now(),

@@ -19,19 +19,29 @@ type Reservation = {
 }
 
 interface Session {
-  _id: string
-  startTime?: string | null
-  endTime?: string | null
+  _id: string // Assuming _id can be either type
+  startTime: string
+  endTime: string
+  ids?: { _id?: string; name: string }[]
+}
+
+interface DaySchedule {
+  slots?: Session[]
+  _id: mongoose.Types.ObjectId
 }
 
 interface Schedule {
-  monday: Session[]
-  tuesday: Session[]
-  wednesday: Session[]
-  thursday: Session[]
-  friday: Session[]
-  saturday: Session[]
-  sunday: Session[]
+  monday: DaySchedule
+  tuesday: DaySchedule
+  wednesday: DaySchedule
+  thursday: DaySchedule
+  friday: DaySchedule
+  saturday: DaySchedule
+  sunday: DaySchedule
+}
+
+interface ParentSchedule {
+  schedule: Record<string, DaySchedule> // Object with keys as day names and values as DaySchedule
 }
 
 const STATUS_DISPLAY = ['Out of service', 'Blocked dates']
@@ -60,43 +70,34 @@ export const getPrivateActivityCalendar = async (
         })
       )
     } else {
-      // Flatten all activity schedule sessions and get their _id values
+      const getAllSlotIds = (dataArray: any[]) => {
+        const allSlotsIds: any[] = [] // Declare the array to hold all slot IDs
 
-      const getAllIdsFromParent = (parentSchedule: any[]) => {
-        const allIds: mongoose.Types.ObjectId[] = [] // Explicitly type as ObjectId array
+        dataArray.forEach((data) => {
+          // Check if the current item has a schedule property
+          const schedule = data.schedule
 
-        // Loop through each parent object
-        parentSchedule.forEach((parent) => {
-          const { schedule } = parent // Extract the schedule from the parent item
-
-          // Loop through each day in the schedule
-          for (const day in schedule) {
-            const daySchedule = schedule[day]
-            // Check if the day's schedule is an array before calling forEach
-            if (Array.isArray(daySchedule)) {
-              daySchedule.forEach(
-                (session: { _id: string | mongoose.Types.ObjectId }) => {
-                  // Check if _id is already an ObjectId or a string
-                  const id =
-                    typeof session._id === 'string'
-                      ? new mongoose.Types.ObjectId(session._id) // Convert string to ObjectId
-                      : session._id // Already an ObjectId, use it directly
-
-                  allIds.push(id) // Collect the ObjectId
-                }
-              )
+          // Ensure the schedule exists before trying to access it
+          if (schedule) {
+            for (const day in schedule) {
+              // Check if the day has slots and the slots array has elements
+              if (schedule[day]?.slots?.length > 0) {
+                schedule[day].slots.forEach((slot: any) => {
+                  allSlotsIds.push(slot._id) // Push to the array
+                })
+              }
             }
           }
         })
 
-        return allIds
+        return allSlotsIds // Return the collected IDs
       }
-      const ids = getAllIdsFromParent(activities)
-      // Fetch reservations for sessions that fall within the specified date range
 
+      const ids = getAllSlotIds(activities)
+      // Fetch reservations for sessions that fall within the specified date range
       const reservations = await dbReservations
         .find({
-          activityId: { $in: ids },
+          'activityIds.timeSlotId': { $in: ids },
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate('guest')
@@ -155,10 +156,10 @@ export const getPrivateActivityCalendar = async (
 
         for (const day in activity.schedule) {
           const daySchedule = activity.schedule[day as keyof Schedule]
-          if (Array.isArray(daySchedule)) {
+          if (Array.isArray(daySchedule.slots)) {
             // Flatten and provide default values
             privateActivities.push(
-              ...daySchedule.map((session) => {
+              ...daySchedule.slots.map((session) => {
                 const activityReservations =
                   reservationMap[session._id.toString()] || []
 
