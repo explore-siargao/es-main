@@ -18,9 +18,16 @@ const reservations = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Rentals",
   },
-  activityId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Activities",
+  activityIds: {
+    type: {
+      activityId: mongoose.Schema.ObjectId,
+      dayId: mongoose.Schema.ObjectId,
+      timeSlotId: mongoose.Schema.ObjectId,
+      slotIdsId: {
+        type: mongoose.Schema.ObjectId,
+        required: false,
+      },
+    },
   },
   startDate: Date,
   endDate: Date,
@@ -92,7 +99,7 @@ const reservations = new Schema({
 })
 
 reservations.pre("validate", function (next) {
-  if (!this.unitId && !this.rentalId && !this.activityId) {
+  if (!this.unitId && !this.rentalId && !this.activityIds) {
     this.invalidate(
       "unitId",
       "At least one of unitId, rentalId, or activityId is required."

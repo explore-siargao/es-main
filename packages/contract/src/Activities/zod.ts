@@ -91,25 +91,53 @@ export const Z_Update_Activity_Pice_Slots = z.object({
   experienceType: z.enum(["private", "joiner"]),
   schedule: z.object({
     monday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
     tuesday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
     wednesday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
     thursday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
     friday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
     saturday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
     sunday: z
-      .array(z.object({ startTime: z.string(), endTime: z.string() }))
+      .object({
+        slots: z
+          .array(z.object({ startTime: z.string(), endTime: z.string() }))
+          .optional(),
+      })
       .optional(),
   }),
   slotCapacity: z.object({
