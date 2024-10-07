@@ -45,7 +45,7 @@ type T_Calendar_Store = {
 }
 
 export const useCalendarStore = create<T_Calendar_Store>((set) => ({
-  daysPerPage: 13,
+  daysPerPage: 12,
   startDate: addDays(new Date(), -4),
   filterCalendarDate: "",
   selectedLegendType: "",
