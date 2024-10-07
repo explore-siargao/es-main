@@ -39,8 +39,91 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
             })
           )
         } else {
+          let ids = []
+          if (slotCapacity.maximum > 0) {
+            let i = 0
+            while (i < slotCapacity.maximum) {
+              ids.push({ name: `Slot ${i + 1}` })
+              i++
+            }
+          }
           let newSchedule =
-            activity.experienceType === 'private' ? schedule : schedule
+            activity.experienceType === 'private'
+              ? schedule
+              : {
+                  ...schedule,
+                  monday: {
+                    ...schedule.monday,
+                    slots: schedule.monday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                  tuesday: {
+                    ...schedule.tuesday,
+                    slots: schedule.tuesday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                  wednesday: {
+                    ...schedule.wednesday,
+                    slots: schedule.wednesday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                  thursday: {
+                    ...schedule.thursday,
+                    slots: schedule.thursday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                  friday: {
+                    ...schedule.friday,
+                    slots: schedule.friday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                  saturday: {
+                    ...schedule.saturday,
+                    slots: schedule.saturday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                  sunday: {
+                    ...schedule.sunday,
+                    slots: schedule.sunday?.slots?.map((slot, index) => {
+                      return {
+                        ...slot,
+                        //@ts-ignore
+                        ids: ids,
+                      }
+                    }),
+                  },
+                }
+
           const updatedPriceAndSlots = await dbActivities.findByIdAndUpdate(
             activity?._id,
             {
@@ -53,7 +136,6 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                   'photos',
                   'pricing',
                 ],
-                experienceType: experienceType,
                 schedule: newSchedule,
                 slotCapacity: slotCapacity,
                 updatedAt: Date.now(),

@@ -7,8 +7,12 @@ import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
-export const addActivityReservation = async (req: Request, res: Response) => {
-  const { date, status, name, slotId, notes, guestNumber } = req.body
+export const addPrivateActivityReservation = async (
+  req: Request,
+  res: Response
+) => {
+  const { date, status, name, slotId, activityId, dayId, notes, guestNumber } =
+    req.body
   console.log(req.body)
   try {
     const validStatuses = [
@@ -26,7 +30,7 @@ export const addActivityReservation = async (req: Request, res: Response) => {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         const overlappingReservation = await dbReservations.findOne({
-          activityId: slotId,
+          'activityIds.timeSlotId': slotId,
           $or: [
             {
               startDate: { $lt: date },
@@ -50,7 +54,11 @@ export const addActivityReservation = async (req: Request, res: Response) => {
             startDate: date,
             endDate: date,
             status: status,
-            activityId: slotId,
+            activityIds: {
+              activityId: activityId,
+              dayId: dayId,
+              timeSlotId: slotId,
+            },
             guestCount: guestNumber,
             guestName: name || null,
             notes: notes || null,
