@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import PropertyRows from "./property-rows"
 import { generateDays, generateMonth } from "./helpers/calendar-table"
 import { useCalendarStore } from "./stores/use-calendar-store"
-import Controls from "./controls2"
+import Controls from "./controls"
 import ModalsWrapper from "./modals-wrapper"
 
 const CalendarTable = () => {
