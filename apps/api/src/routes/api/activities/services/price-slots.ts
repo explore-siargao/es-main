@@ -48,7 +48,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
             }
           }
           let newSchedule =
-            activity.experienceType === 'private'
+            activity.experienceType === 'Private'
               ? schedule
               : {
                   ...schedule,
@@ -139,7 +139,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                 schedule: newSchedule,
                 slotCapacity: slotCapacity,
                 updatedAt: Date.now(),
-                ...(experienceType === 'private'
+                ...(experienceType === 'Private'
                   ? { pricePerSlot: price, pricePerPerson: null }
                   : { pricePerPerson: price, pricePerSlot: null }),
               },
