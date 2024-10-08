@@ -302,7 +302,7 @@ export const value = {
       slots: [
         { id: "1", bookType: "", time: "09:00 AM", maxCapacity: 8 },
         { id: "2", bookType: "", time: "10:00 AM", maxCapacity: 12 },
-        { id: "3", bookType: "private", time: "3:00 PM", maxCapacity: 15 },
+        { id: "3", bookType: "Private", time: "3:00 PM", maxCapacity: 15 },
         {
           id: "4",
           bookType: "joiners",
@@ -316,7 +316,7 @@ export const value = {
     {
       date: "Tue Jul 20 2024 GMT+0800 (Philippine Standard Time)",
       slots: [
-        { id: "1", bookType: "private", time: "11:00 AM", maxCapacity: 20 },
+        { id: "1", bookType: "Private", time: "11:00 AM", maxCapacity: 20 },
         {
           id: "2",
           bookType: "joiners",

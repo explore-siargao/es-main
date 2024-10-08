@@ -297,9 +297,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                     disabled={isPending || isLoading}
                     {...register("experienceType", { required: true })}
                     className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
-                    value="private"
+                    value="Private"
                     required
-                    checked={experienceType === "private"}
+                    checked={experienceType === "Private"}
                   />
                   <label
                     htmlFor="haveDriverLicense-yes"
@@ -313,9 +313,9 @@ const BasicInfo = ({ pageType }: Prop) => {
                     disabled={isPending || isLoading}
                     {...register("experienceType", { required: true })}
                     className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-600"
-                    value="joiner"
+                    value="Joiner"
                     required
-                    checked={experienceType === "joiner"}
+                    checked={experienceType === "Joiner"}
                   />
                 </div>
               </div>

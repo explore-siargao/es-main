@@ -32,7 +32,7 @@ export const Z_Activity = z.object({
   host: Z_User.optional(),
   finishedSections: z.array(z.string()).optional(),
   title: z.string().optional(),
-  activityType: z.enum(["private", "joiner", ""]),
+  activityType: z.enum(["Private", "Joiner", ""]),
   description: z.string().optional(),
   highLights: z.string().optional(),
   durationHour: z.number().optional(),
@@ -78,7 +78,7 @@ export const Z_Update_Activity_Inclusions = z.object({
 
 export const Z_Update_Activity_Basic_Info = z.object({
   title: z.string().optional(),
-  experienceType: z.string(z.enum(["private", "shared", ""])).optional(),
+  experienceType: z.string(z.enum(["Private", "Joiner", ""])).optional(),
   activityType: z.array(z.string()),
   description: z.string().optional(),
   highLights: z.array(z.string()).optional(),
@@ -88,7 +88,7 @@ export const Z_Update_Activity_Basic_Info = z.object({
 })
 
 export const Z_Update_Activity_Pice_Slots = z.object({
-  experienceType: z.enum(["private", "joiner"]),
+  experienceType: z.enum(["Private", "Joiner"]),
   schedule: z.object({
     monday: z
       .object({
