@@ -159,8 +159,8 @@ const activities = new Schema({
   },
   experienceType: {
     type: String,
-    enum: ["private", "joiner"],
-    default: "private",
+    enum: ["Private", "Joiner"],
+    default: "Private",
   },
   description: String,
   highLights: {

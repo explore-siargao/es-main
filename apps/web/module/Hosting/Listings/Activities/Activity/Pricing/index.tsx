@@ -50,7 +50,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const [maxCapacity, setMaxCapacity] = useState(0)
   const [price, setPrice] = useState(0)
 
-  const experienceType: "private" | "joiner" = data?.item?.experienceType
+  const experienceType: "Private" | "Joiner" = data?.item?.experienceType
 
   const onSubmit = async () => {
     const allEmpty = Object.values(schedule).every(
@@ -161,7 +161,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
       setMaxCapacity(pricingData?.slotCapacity?.maximum)
       setSchedule(pricingData?.schedule)
       setPrice(
-        experienceType === "private"
+        experienceType === "Private"
           ? pricingData?.pricePerSlot || 0
           : pricingData?.pricePerPerson || 0
       )
@@ -356,8 +356,8 @@ const ActivityPricing = ({ pageType }: Prop) => {
   }
 
   const priceInputDescMap = {
-    joiner: `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
-    private: `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
+    Joiner: `This activity was tag as "Joiner" experience type in the Basic Info page and that is the reason why this is priced per person.`,
+    Private: `This activity was tag as "Private" experience type in the Basic Info page and that is the reason why this is priced per slot.`,
   }
 
   return (

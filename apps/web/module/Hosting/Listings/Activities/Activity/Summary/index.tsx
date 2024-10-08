@@ -13,6 +13,26 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import { E_Activity_Status } from "@repo/contract/build/Activities/enum"
 import useUpdateActivityStatus from "../../hooks/useUpdateActivityStatus"
 import useGetActivityById from "../../hooks/useGetActivityById"
+import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
+import formatCurrency from "@/common/helpers/formatCurrency"
+interface Slot {
+  startTime: string;
+  endTime: string;
+  ids: {
+    name: string;
+    _id: string;
+  }[];
+  _id: string;
+}
+
+interface DayData {
+  slots: Slot[];
+  _id: string;
+}
+
+interface ScheduleData {
+  [key: string]: DayData;
+}
 
 const ActivitySummary = () => {
   const router = useRouter()
@@ -39,6 +59,22 @@ const ActivitySummary = () => {
     }
     await mutate(newStatus, callBackReq)
   }
+
+  const renderSchedule = () => {
+    let scheduleText = '';
+
+    for (const [day, data] of Object.entries(activity?.schedule) as [string, DayData][]) {
+      if (data.slots) {
+        data.slots.forEach((slot: Slot) => {
+          const timeSlotText = `${capitalizeFirstLetter(day)} ${slot.startTime} - ${slot.endTime}`;
+          scheduleText += timeSlotText + ', ';
+        });
+      }
+    }
+    // Remove the last comma and space
+    return scheduleText.slice(0, -2);
+  };
+
 
   return (
     <div className="mt-20 mb-28">
@@ -71,6 +107,22 @@ const ActivitySummary = () => {
                 <span className="font-semibold">Description:</span>{" "}
                 <div className="flex break-all whitespace-normal">
                   {data?.item?.description}
+                </div>
+              </Typography>
+
+              <Typography variant="h5" className="mt-2">
+                <span className="font-semibold">Categories:</span>
+                <div className="flex flex-col">
+                <p className="mt-2">{activity?.activityType.join(", ")}</p>
+                </div>
+              </Typography>
+
+              <Typography variant="h5" className="mt-2">
+                <span className="font-semibold">Experience Type:</span>
+                <div className="flex flex-col">
+                  <p className="mt-2">
+                    {activity?.experienceType}
+                  </p>
                 </div>
               </Typography>
 
@@ -284,7 +336,7 @@ const ActivitySummary = () => {
                 {data?.item?.cancellationDays}
               </Typography>
             </div>
-            <div className="mt-3 pb-3">
+            <div className="mt-3 pb-3 border-b border-gray-200">
               <Typography
                 variant="h4"
                 fontWeight="semibold"
@@ -325,6 +377,47 @@ const ActivitySummary = () => {
                   </div>
                 ))}
               </div>
+            </div>
+            <div className="mt-3 pb-3">
+              <Typography
+                variant="h4"
+                fontWeight="semibold"
+                className="leading-6"
+              >
+                Pricing
+              </Typography>
+              <Typography variant="h5" className="mt-2">
+                <span className="font-semibold">Time slots:</span>
+                <div className="flex flex-col">
+                  <p className="mt-2">{renderSchedule()}</p>
+                </div>
+              </Typography>
+              <Typography variant="h5" className="mt-2">
+                <span className="font-semibold">Slot capacity:</span>
+                <div className="flex flex-col">
+                  <p className="mt-2">{activity?.slotCapacity?.minimum} - {activity?.slotCapacity?.maximum}</p>
+                </div>
+              </Typography>
+              {activity?.pricePerPerson && (
+                <Typography variant="h5" className="mt-2">
+                  <span className="font-semibold">Price per person:</span>
+                  <div className="flex flex-col">
+                    <p className="mt-2">
+                      {formatCurrency(activity?.pricePerPerson)}
+                    </p>
+                  </div>
+                </Typography>
+              )}
+              {activity?.pricePerSlot && (
+                <Typography variant="h5" className="mt-2">
+                  <span className="font-semibold">Price per slot:</span>
+                  <div className="flex flex-col">
+                    <p className="mt-2">
+                      {formatCurrency(activity?.pricePerSlot)}
+                    </p>
+                  </div>
+                </Typography>
+              )}
             </div>
           </div>
           <div className="fixed bottom-0 z-10 bg-text-50 w-full p-4 bg-opacity-60">

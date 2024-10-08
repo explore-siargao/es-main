@@ -65,11 +65,11 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
             maxCapacity: number
             availableSlotPerson: number
           }) => {
-            if (bookType === "private") {
-              return slot.bookType !== "private" && slot.bookType !== "joiners"
-            } else if (bookType === "joiners") {
+            if (bookType === "Private") {
+              return slot.bookType !== "Private" && slot.bookType !== "Joiner"
+            } else if (bookType === "Joiner") {
               return (
-                slot.bookType !== "private" &&
+                slot.bookType !== "Private" &&
                 (slot.availableSlotPerson > 0 || !slot.availableSlotPerson)
               )
             } else {
@@ -103,16 +103,16 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
           <RadioInput
             id="bookType"
             value="joiners"
-            label="Joiners"
-            checked={bookType === "joiners"}
-            onChange={() => setBookType("joiners")}
+            label="Joiner"
+            checked={bookType === "Joiner"}
+            onChange={() => setBookType("Joiner")}
           />
           <RadioInput
             id="bookType"
             value="private"
             label="Private"
-            checked={bookType === "private"}
-            onChange={() => setBookType("private")}
+            checked={bookType === "Private"}
+            onChange={() => setBookType("Private")}
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
