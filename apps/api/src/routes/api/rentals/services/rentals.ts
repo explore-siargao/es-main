@@ -68,7 +68,7 @@ export const getRentalIds = async (req: Request, res: Response) => {
           })
         )
       } else {
-        const ids = rental?.ids
+        const ids = rental?.qtyIds
 
         res.json(response.success({ items: ids, allItemCount: ids?.length }))
       }

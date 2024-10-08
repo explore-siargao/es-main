@@ -36,7 +36,7 @@ const segments = new Schema({
 const timeSlots = new Schema({
   startTime: String,
   endTime: String,
-  ids: {
+  slotIdsId: {
     type: [
       {
         _id: {

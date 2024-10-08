@@ -88,7 +88,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       )
     } else {
       const allRentalIds = carRentals.flatMap((rental) =>
-        rental?.ids.map((idObj) => idObj._id)
+        rental?.qtyIds.map((idObj) => idObj._id)
       )
 
       const reservations = await dbReservations
@@ -144,7 +144,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
       })
 
       const items = carRentals.map((rental) => {
-        const cars = rental?.ids.map((idObj) => {
+        const cars = rental?.qtyIds.map((idObj) => {
           const carReservations = reservationMap[idObj._id.toString()] || []
 
           const isOccupied = carReservations.length > 0
@@ -213,12 +213,12 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
       )
     } else {
       const allRentalIds = bicycleRentals.flatMap((rental) =>
-        rental?.ids.map((idObj) => idObj._id)
+        rental?.qtyIds.map((idObj) => idObj._id)
       )
 
       const reservations = await dbReservations
         .find({
-          rentalId: { $in: allRentalIds },
+          'rentalIds.qtyIdsId': { $in: allRentalIds },
           $or: [
             {
               startDate: { $lte: endDate },
@@ -264,14 +264,16 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           notes: reservation.note,
         }
 
-        if (!reservationMap[reservation.rentalId.toString()]) {
-          reservationMap[reservation.rentalId.toString()] = []
+        if (!reservationMap[reservation.rentalIds.qtyIdsId.toString()]) {
+          reservationMap[reservation.rentalIds.qtyIdsId.toString()] = []
         }
-        reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
+        reservationMap[reservation.rentalIds.qtyIdsId.toString()]?.push(
+          reservationItem
+        )
       })
 
       const items = bicycleRentals.map((rental) => {
-        const bicycles = rental?.ids.map((idObj) => {
+        const bicycles = rental?.qtyIds.map((idObj) => {
           const bicycleReservations = reservationMap[idObj._id.toString()] || []
 
           const isOccupied = bicycleReservations.length > 0
@@ -336,7 +338,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       )
     } else {
       const allRentalIds = motorcycleRentals.flatMap((rental) =>
-        rental?.ids.map((idObj) => idObj._id)
+        rental?.qtyIds.map((idObj) => idObj._id)
       )
 
       const reservations = await dbReservations
@@ -394,7 +396,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
       })
 
       const items = motorcycleRentals.map((rental) => {
-        const motorcycles = rental?.ids.map((idObj) => {
+        const motorcycles = rental?.qtyIds.map((idObj) => {
           const motorcycleReservations =
             reservationMap[idObj._id.toString()] || []
           const isOccupied = motorcycleReservations.length > 0
@@ -440,8 +442,8 @@ export const editChildName = async (req: Request, res: Response) => {
   const { id, name } = req.body
   try {
     const updateVehicle = await dbRentals.findOneAndUpdate(
-      { 'ids._id': id },
-      { $set: { 'ids.$.name': name } },
+      { 'qtyIds._id': id },
+      { $set: { 'qtyIds.$.name': name } },
       { new: true }
     )
     if (!updateVehicle) {

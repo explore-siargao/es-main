@@ -96,7 +96,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           rental.fuel = fuel || rental.fuel
           rental.transmission = transmission || rental.transmission
           ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
-          rental.ids = rental.ids
+          rental.qtyIds = rental.qtyIds
           rental.daysCanCancel = daysCanCancel || rental.daysCanCancel
 
           // Generate the name based on year, make, modelBadge, and transmission
@@ -104,8 +104,8 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           const nameBase = `${year} ${make} ${modelBadge} ${transShort}`
           if (rental.qty) {
             for (let i = 0; i < rental?.qty; i++) {
-              if (!rental.ids[i]) {
-                rental?.ids.push({
+              if (!rental.qtyIds[i]) {
+                rental?.qtyIds.push({
                   _id: new mongoose.Types.ObjectId(),
                   name: `${nameBase} ${i + 1}`,
                 })
@@ -132,7 +132,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
               : null
           rental.year = category === 'Motorbike' ? year || rental.year : null
           rental.qty = qty || rental.qty
-          rental.ids = rental.ids
+          rental.qtyIds = rental.qtyIds
           rental.daysCanCancel = daysCanCancel || rental.daysCanCancel
           // Generate the name based on year, make, modelBadge, and transmission
           const transShort = transmission === 'Manual' ? 'MT' : 'AT'
@@ -143,8 +143,8 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
 
           if (rental.qty) {
             for (let i = 0; i < rental?.qty; i++) {
-              if (!rental.ids[i]) {
-                rental?.ids.push({
+              if (!rental.qtyIds[i]) {
+                rental?.qtyIds.push({
                   _id: new mongoose.Types.ObjectId(),
                   name: `${nameBase} ${i + 1}`,
                 })

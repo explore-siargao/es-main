@@ -8,7 +8,8 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const addRentalReservation = async (req: Request, res: Response) => {
-  const { start_date, end_date, status, unit, name, notes } = req.body
+  const { start_date, end_date, status, rentalId, qtyIdsId, name, notes } =
+    req.body
   try {
     const validStatuses = [
       'Confirmed',
@@ -22,12 +23,12 @@ export const addRentalReservation = async (req: Request, res: Response) => {
       res.json(response.error({ message: 'Invalid status' }))
     } else {
       // Check if required fields are provided
-      if (!start_date || !end_date || !status || !unit) {
+      if (!start_date || !end_date || !status || !rentalId || !qtyIdsId) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         // Check for overlapping reservations on the same rentalId
         const overlappingReservation = await dbReservations.findOne({
-          rentalId: unit,
+          'rentalIds.qtyIdsId': qtyIdsId,
           $or: [
             {
               startDate: { $lt: end_date },
@@ -52,7 +53,10 @@ export const addRentalReservation = async (req: Request, res: Response) => {
             startDate: start_date,
             endDate: end_date,
             status: status,
-            rentalId: unit,
+            rentalIds: {
+              rentalId: rentalId,
+              qtyIdsId: qtyIdsId,
+            },
             guestName: name || null,
             notes: notes || null,
             createdAt: Date.now(),
@@ -95,7 +99,7 @@ export const editRentalReservation = async (req: Request, res: Response) => {
       })
 
       const overlappingReservation = await dbReservations.findOne({
-        rentalId: reservation?.rentalId,
+        'rentalIds.qtyIdsId': reservation?.rentalIds?.qtyIdsId,
         _id: { $ne: reservation?._id },
         $or: [
           {
@@ -159,7 +163,7 @@ export const cancelRentalReservationByHost = async (
 
     if (reservation) {
       const rental = await dbRentals.findOne({
-        'ids._id': reservation.rentalId,
+        'qtyIds._id': reservation.rentalIds?.qtyIdsId,
       })
       if (rental) {
         const allowedDaysToCancel = rental?.daysCanCancel
