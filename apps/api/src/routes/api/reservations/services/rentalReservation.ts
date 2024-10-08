@@ -3,7 +3,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { dbReservations } from '@repo/database'
+import { dbRentals, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -156,22 +156,58 @@ export const cancelRentalReservationByHost = async (
       deletedAt: null,
       status: { $ne: 'Cancelled' },
     })
+
     if (reservation) {
-      const cancelReservation = await dbReservations.findByIdAndUpdate(
-        reservation._id,
-        {
-          status: 'Cancelled',
-          cancelledBy: 'host',
-          cancellationDate: Date.now(),
-          updatedAt: Date.now(),
+      const rental = await dbRentals.findOne({
+        'ids._id': reservation.rentalId,
+      })
+      if (rental) {
+        const allowedDaysToCancel = rental?.daysCanCancel
+        const currentDate = new Date()
+        const reservationDate = reservation.startDate
+        reservationDate?.setDate(
+          reservationDate.getDate() - allowedDaysToCancel
+        )
+        const allowedDate = reservationDate
+        if (allowedDate != null && currentDate <= allowedDate) {
+          const cancelReservation = await dbReservations.findByIdAndUpdate(
+            reservation._id,
+            {
+              status: 'Cancelled',
+              cancelledBy: 'host',
+              cancellationDate: Date.now(),
+              hostHavePenalty: false,
+              updatedAt: Date.now(),
+            }
+          )
+          res.json(
+            response.success({
+              item: cancelReservation,
+              message:
+                'Rental reservation successfully cancelled without penalty',
+            })
+          )
+        } else {
+          const cancelReservation = await dbReservations.findByIdAndUpdate(
+            reservation._id,
+            {
+              status: 'Cancelled',
+              cancelledBy: 'host',
+              cancellationDate: Date.now(),
+              hostHavePenalty: true,
+              updatedAt: Date.now(),
+            }
+          )
+          res.json(
+            response.success({
+              item: cancelReservation,
+              message: 'Rental reservation successfully cancelled with penalty',
+            })
+          )
         }
-      )
-      res.json(
-        response.success({
-          item: cancelReservation,
-          message: 'Rental reservation successfully cancelled',
-        })
-      )
+      } else {
+        res.json(response.error({ message: 'Rental not exists' }))
+      }
     } else {
       res.json(
         response.error({
