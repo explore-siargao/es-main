@@ -107,7 +107,7 @@ const bookableUnitTypes = new Schema({
     },
   ],
   qty: Number,
-  ids: {
+  qtyIds: {
     type: [
       {
         _id: {

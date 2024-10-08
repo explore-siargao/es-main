@@ -87,7 +87,7 @@ const rentals = new Schema({
     type: [String],
     default: [],
   },
-  ids: [
+  qtyIds: [
     {
       _id: {
         type: mongoose.Schema.ObjectId,

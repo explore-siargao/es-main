@@ -34,7 +34,10 @@ type Reservation = {
   guestCount: number
   notes?: string
   status: string
-  unitId?: string
+  propertyIds?: {
+    propertyId: string
+    unitId: string
+  }
 }
 
 export type Room = {
@@ -111,11 +114,11 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
     bedProperties.forEach((property: any) => {
       property.bookableUnits.forEach((unit: any) => {
         if (unit.category === 'Room') {
-          roomIds.push(...unit.ids)
+          roomIds.push(...unit.qtyIds)
         } else if (unit.category === 'Whole-Place') {
-          wholePlaceIds.push(...unit.ids)
+          wholePlaceIds.push(...unit.qtyIds)
         } else if (unit.category === 'Bed') {
-          bedIds.push(...unit.ids)
+          bedIds.push(...unit.qtyIds)
         }
       })
     })
@@ -124,7 +127,9 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       await Promise.all([
         dbReservations
           .find({
-            unitId: { $in: roomIds.map((room: any) => room?._id) },
+            'propertyIds.unitId': {
+              $in: roomIds.map((room: any) => room?._id),
+            },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -132,7 +137,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           .populate('guest'),
         dbReservations
           .find({
-            unitId: {
+            'propertyIds.unitId': {
               $in: wholePlaceIds.map((wholePlace: any) => wholePlace?._id),
             },
             $or: [
@@ -142,7 +147,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
           .populate('guest'),
         dbReservations
           .find({
-            unitId: { $in: bedIds.map((bed: any) => bed?._id) },
+            'propertyIds.unitId': { $in: bedIds.map((bed: any) => bed?._id) },
             $or: [
               { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
             ],
@@ -155,7 +160,7 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       reservations: any[],
       propertyName: string
     ) => {
-      const formattedItems = unit.ids.map(
+      const formattedItems = unit.qtyIds.map(
         (idObj: { _id: string; name: string }) => ({
           id: idObj._id,
           name: idObj.name,
@@ -187,7 +192,10 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
               reservations: Reservation[]
               status: string
             }) => {
-              if (item.id.toString() === reservation?.unitId?.toString()) {
+              if (
+                item.id.toString() ===
+                reservation.propertyIds?.unitId.toString()
+              ) {
                 if (!hasDateConflict(item.reservations, reservationItem)) {
                   item.reservations.push(reservationItem)
                   item.status = 'occupied'
@@ -321,8 +329,8 @@ export const editUnitChildName = async (req: Request, res: Response) => {
   const { id, name } = req.body
   try {
     const updateUnitName = await dbBookableUnitTypes.findOneAndUpdate(
-      { 'ids._id': id },
-      { $set: { 'ids.$.name': name } },
+      { 'qtyIds._id': id },
+      { $set: { 'qtyIds.$.name': name } },
       { new: true }
     )
     if (!updateUnitName) {

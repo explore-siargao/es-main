@@ -41,6 +41,9 @@ function PropertyReservationForm({
               id="property"
               required
               disabled={isPropertiesLoading}
+              {...register("propertyId", {
+                required: "This field is required",
+              })}
               onChange={(e) => setSelectedPropertyId(e.target.value)}
             >
               <Option value="">Select</Option>

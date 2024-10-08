@@ -8,8 +8,9 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const addUnitReservation = async (req: Request, res: Response) => {
-  const { unitId, name, startDate, endDate, notes, status } = req.body
-  if (!unitId || !startDate || !endDate) {
+  const { propertyId, unitId, name, startDate, endDate, notes, status } =
+    req.body
+  if (!propertyId || !unitId || !startDate || !endDate) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   } else {
     try {
@@ -25,7 +26,7 @@ export const addUnitReservation = async (req: Request, res: Response) => {
       } else {
         // Check for overlapping reservations on the same rentalId
         const overlappingReservation = await dbReservations.findOne({
-          unitId: unitId,
+          'propertyIds.unitId': unitId,
           $or: [
             {
               startDate: { $lte: endDate },
@@ -45,7 +46,10 @@ export const addUnitReservation = async (req: Request, res: Response) => {
             startDate: startDate,
             endDate: endDate,
             status: status,
-            unitId: unitId,
+            propertyIds: {
+              propertyId: propertyId,
+              unitId: unitId,
+            },
             guestName: name || null,
             notes: notes || null,
             createdAt: Date.now(),
@@ -87,7 +91,7 @@ export const editUnitReservation = async (req: Request, res: Response) => {
       })
 
       const overlappingReservation = await dbReservations.findOne({
-        unitId: reservation?.unitId,
+        'propertyIds.unitId': reservation?.propertyIds?.unitId,
         _id: { $ne: reservation?._id },
         $or: [
           {
