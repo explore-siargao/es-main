@@ -16,22 +16,22 @@ import useGetActivityById from "../../hooks/useGetActivityById"
 import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
 import formatCurrency from "@/common/helpers/formatCurrency"
 interface Slot {
-  startTime: string;
-  endTime: string;
+  startTime: string
+  endTime: string
   ids: {
-    name: string;
-    _id: string;
-  }[];
-  _id: string;
+    name: string
+    _id: string
+  }[]
+  _id: string
 }
 
 interface DayData {
-  slots: Slot[];
-  _id: string;
+  slots: Slot[]
+  _id: string
 }
 
 interface ScheduleData {
-  [key: string]: DayData;
+  [key: string]: DayData
 }
 
 const ActivitySummary = () => {
@@ -61,20 +61,22 @@ const ActivitySummary = () => {
   }
 
   const renderSchedule = () => {
-    let scheduleText = '';
+    let scheduleText = ""
 
-    for (const [day, data] of Object.entries(activity?.schedule) as [string, DayData][]) {
+    for (const [day, data] of Object.entries(activity?.schedule) as [
+      string,
+      DayData,
+    ][]) {
       if (data.slots) {
         data.slots.forEach((slot: Slot) => {
-          const timeSlotText = `${capitalizeFirstLetter(day)} ${slot.startTime} - ${slot.endTime}`;
-          scheduleText += timeSlotText + ', ';
-        });
+          const timeSlotText = `${capitalizeFirstLetter(day)} ${slot.startTime} - ${slot.endTime}`
+          scheduleText += timeSlotText + ", "
+        })
       }
     }
     // Remove the last comma and space
-    return scheduleText.slice(0, -2);
-  };
-
+    return scheduleText.slice(0, -2)
+  }
 
   return (
     <div className="mt-20 mb-28">
@@ -113,16 +115,14 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Categories:</span>
                 <div className="flex flex-col">
-                <p className="mt-2">{activity?.activityType.join(", ")}</p>
+                  <p className="mt-2">{activity?.activityType.join(", ")}</p>
                 </div>
               </Typography>
 
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Experience Type:</span>
                 <div className="flex flex-col">
-                  <p className="mt-2">
-                    {activity?.experienceType}
-                  </p>
+                  <p className="mt-2">{activity?.experienceType}</p>
                 </div>
               </Typography>
 
@@ -395,7 +395,10 @@ const ActivitySummary = () => {
               <Typography variant="h5" className="mt-2">
                 <span className="font-semibold">Slot capacity:</span>
                 <div className="flex flex-col">
-                  <p className="mt-2">{activity?.slotCapacity?.minimum} - {activity?.slotCapacity?.maximum}</p>
+                  <p className="mt-2">
+                    {activity?.slotCapacity?.minimum} -{" "}
+                    {activity?.slotCapacity?.maximum}
+                  </p>
                 </div>
               </Typography>
               {activity?.pricePerPerson && (
