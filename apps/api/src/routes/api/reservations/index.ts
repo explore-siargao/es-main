@@ -11,7 +11,10 @@ import {
   addUnitReservation,
   editUnitReservation,
 } from './services/unitsReservation'
-import { addPrivateActivityReservation } from './services/activityReservation'
+import {
+  addJoinerActivityReservation,
+  addPrivateActivityReservation,
+} from './services/activityReservation'
 
 const router = express.Router()
 
@@ -38,6 +41,14 @@ router.post(
   isUserLoggedIn,
   isCsrfTokenValid,
   addPrivateActivityReservation
+)
+
+router.post(
+  '/activity/joiner',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addJoinerActivityReservation
 )
 
 //edit reservations
