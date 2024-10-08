@@ -2,8 +2,7 @@ import { HOST } from "@/common/constants"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import AuthGuard from "@/common/components/AuthGuard"
-import CalendarActivity from "@/module/Hosting/Reservations/Calendar/Activity"
-import PrivateReservationCalendar from "@/module/Hosting/Reservations/Calendar/Activity/PrivateReservationCalendar"
+import PrivateReservationCalendar from "@/module/Hosting/Reservations/Calendar/activity/PrivateReservationCalendar"
 
 export const metadata: Metadata = {
   title: `${HOST} - ${APP_NAME}`,
