@@ -231,43 +231,36 @@ export const getJoinerActivityCalendar = async (
         })
       )
     } else {
-      // Flatten all activity schedule sessions and get their _id values
+      const getAllSlotIds = (dataArray: any[]) => {
+        const allSlotsIds: any[] = [] // Declare the array to hold all slot IDs
 
-      const getAllIdsFromParent = (parentSchedule: any[]) => {
-        const allIds: mongoose.Types.ObjectId[] = [] // Explicitly type as ObjectId array
+        dataArray.forEach((data) => {
+          // Check if the current item has a schedule property
+          const schedule = data.schedule
 
-        // Loop through each parent object
-        parentSchedule.forEach((parent) => {
-          const { schedule } = parent // Extract the schedule from the parent item
-
-          // Loop through each day in the schedule
-          for (const day in schedule) {
-            const daySchedule = schedule[day]
-            // Check if the day's schedule is an array before calling forEach
-            if (Array.isArray(daySchedule)) {
-              daySchedule.forEach(
-                (session: { _id: string | mongoose.Types.ObjectId }) => {
-                  // Check if _id is already an ObjectId or a string
-                  const id =
-                    typeof session._id === 'string'
-                      ? new mongoose.Types.ObjectId(session._id) // Convert string to ObjectId
-                      : session._id // Already an ObjectId, use it directly
-
-                  allIds.push(id) // Collect the ObjectId
-                }
-              )
+          // Ensure the schedule exists before trying to access it
+          if (schedule) {
+            for (const day in schedule) {
+              // Check if the day has slots and the slots array has elements
+              if (schedule[day]?.slots?.length > 0) {
+                schedule[day].slots.forEach((slot: any) => {
+                  slot.slotIdsId.forEach((idObj: any) => {
+                    allSlotsIds.push(idObj._id) // Push to the array
+                  })
+                })
+              }
             }
           }
         })
 
-        return allIds
+        return allSlotsIds // Return the collected IDs
       }
-      const ids = getAllIdsFromParent(activities)
-      // Fetch reservations for sessions that fall within the specified date range
 
+      const ids = getAllSlotIds(activities)
+      // Fetch reservations for sessions that fall within the specified date range
       const reservations = await dbReservations
         .find({
-          activityId: { $in: ids },
+          'activityIds.slotIdsId': { $in: ids },
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate('guest')
@@ -309,36 +302,50 @@ export const getJoinerActivityCalendar = async (
           notes: reservation.notes,
         }
 
-        if (!reservationMap[reservation.activityId.toString()]) {
-          reservationMap[reservation.activityId.toString()] = []
+        if (!reservationMap[reservation.activityIds.slotIdsId.toString()]) {
+          reservationMap[reservation.activityIds.slotIdsId.toString()] = []
         }
         //@ts-ignore
-        reservationMap[reservation.activityId.toString()].push(reservationItem)
+        reservationMap[reservation.activityIds.slotIdsId.toString()].push(
+          reservationItem
+        )
       })
       const items = activities.map((activity) => {
         const joinerActivities: {
           name: string
           startTime?: string
           endTime?: string
-          status: string
           id: string
+          slots: any[]
         }[] = []
 
         for (const day in activity.schedule) {
           const daySchedule = activity.schedule[day as keyof Schedule]
-          if (Array.isArray(daySchedule)) {
+          if (Array.isArray(daySchedule.slots)) {
             // Flatten and provide default values
             joinerActivities.push(
-              ...daySchedule.map((session) => {
-                const activityReservations =
-                  reservationMap[session._id.toString()] || []
-
-                const isOccupied = activityReservations.length > 0
+              ...daySchedule.slots.map((session) => {
+                const slotsItems = session.slotIdsId?.map((idObj) => {
+                  const slotReservations =
+                    reservationMap[idObj._id.toString()] || []
+                  const isOccupied = slotReservations.length > 0
+                  return {
+                    id: idObj._id,
+                    name: idObj.name ? idObj.name : 'Unknown',
+                    status: isOccupied ? 'occupied' : 'available',
+                    reservations: slotReservations,
+                  }
+                })
                 return {
                   id: session._id.toString(), // Ensure _id is a string
                   name: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
-                  status: isOccupied ? 'occupied' : 'available',
-                  reservations: activityReservations,
+                  price: activity.pricePerPerson,
+                  pricePerDates: activity?.pricePerDates.map((priceDate) => ({
+                    fromDate: priceDate.fromDate,
+                    toDate: priceDate.toDate,
+                    price: priceDate?.price,
+                  })),
+                  slots: Array.isArray(slotsItems) ? slotsItems : [],
                 }
               })
             )
@@ -348,12 +355,6 @@ export const getJoinerActivityCalendar = async (
         return {
           id: activity._id,
           name: activity.title || 'Unknown name',
-          price: activity.pricePerSlot,
-          pricePerDates: activity?.pricePerDates.map((priceDate) => ({
-            fromDate: priceDate.fromDate,
-            toDate: priceDate.toDate,
-            price: priceDate?.price,
-          })),
           joinerActivities: joinerActivities,
         }
       })
@@ -362,9 +363,9 @@ export const getJoinerActivityCalendar = async (
       res.json(
         response.success({
           //@ts-ignore
-          items,
+          items: items.filter((item) => item.joinerActivities.length > 0),
           allItemCount: items.length,
-          message: 'Joiner activities calendar fetched successfully.',
+          message: 'Private activities calendar fetched successfully.',
         })
       )
     }
