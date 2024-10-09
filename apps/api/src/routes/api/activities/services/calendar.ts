@@ -487,6 +487,75 @@ export const editPrivateActivitySlotNote = async (
             message: 'Slot note successfully updated',
           })
         )
+      } else {
+        res.json(response.error({ message: 'No slots found' }))
+      }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const editJoinerActivitySlotName = async (
+  req: Request,
+  res: Response
+) => {
+  const { id, name } = req.body
+
+  try {
+    if (!id || !name) {
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    } else {
+      const daysOfWeek = [
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]
+      const activity = await dbActivities.findOne({
+        $or: daysOfWeek.map((day) => ({
+          [`schedule.${day}.slots.slotIdsId._id`]: id,
+        })),
+      })
+      if (activity) {
+        // Loop through the days to find and update the slot
+        daysOfWeek.forEach((day) => {
+          //@ts-ignore
+          const slots = activity?.schedule[day]?.slots
+          if (slots) {
+            // Find the slot that matches the given ID and update its name
+            const slotToUpdate = slots.find((slot: any) =>
+              slot.slotIdsId.some(
+                (slotIdObj: any) => slotIdObj._id.toString() === id
+              )
+            )
+
+            if (slotToUpdate) {
+              // Update the slot's name
+              slotToUpdate.slotIdsId.forEach((slotIdObj: any) => {
+                if (slotIdObj._id.toString() === id) {
+                  slotIdObj.name = name // Update the name
+                }
+              })
+            }
+          }
+        })
+        const updatedActivity = await activity.save()
+        res.json(
+          response.success({
+            item: updatedActivity,
+            message: 'Slot note successfully updated',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'No slots found' }))
       }
     }
   } catch (err: any) {
