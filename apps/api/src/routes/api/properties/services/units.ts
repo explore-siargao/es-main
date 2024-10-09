@@ -194,7 +194,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
           // Step 1: Retrieve the current document
           const currentBed = await dbBookableUnitTypes.findOne(
             { _id: bookableUnitId, category: 'Bed', deletedAt: null },
-            { ids: 1 } // Only retrieve the ids field
+            { qtyIds: 1 } // Only retrieve the ids field
           )
 
           if (!currentBed) {
@@ -202,7 +202,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
             res.json(response.error({ message: 'Bad Request' }))
           } else {
             // Step 2: Calculate the number of new ObjectIds needed
-            const currentIdsCount = currentBed?.ids.length || 0
+            const currentIdsCount = currentBed?.qtyIds.length || 0
             const newIdsNeeded = qty - currentIdsCount
 
             let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
@@ -229,7 +229,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
                   },
                   ...(newIdsNeeded > 0 && {
                     $push: {
-                      ids: { $each: newIds },
+                      qtyIds: { $each: newIds },
                     },
                   }),
                 },
@@ -299,7 +299,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
           // Step 1: Retrieve the current document
           const currentRoom = await dbBookableUnitTypes.findOne(
             { _id: bookableUnitId, category: 'Room', deletedAt: null },
-            { ids: 1 } // Only retrieve the ids field
+            { qtyIds: 1 } // Only retrieve the ids field
           )
 
           if (!currentRoom) {
@@ -307,7 +307,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
             res.status(404).json({ error: 'Room not found' })
           } else {
             // Step 2: Calculate the number of new ObjectIds needed
-            const currentIdsCount = currentRoom?.ids.length || 0
+            const currentIdsCount = currentRoom?.qtyIds.length || 0
             const newIdsNeeded = qty - currentIdsCount
 
             let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
@@ -335,7 +335,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
                   },
                   ...(newIdsNeeded > 0 && {
                     $push: {
-                      ids: { $each: newIds },
+                      qtyIds: { $each: newIds },
                     },
                   }),
                 },
@@ -406,7 +406,7 @@ export const updateWholePlaceUnitBasicInfo = async (
           // Step 1: Retrieve the current document
           const currentWholePlace = await dbBookableUnitTypes.findOne(
             { _id: bookableUnitId, category: 'Whole-Place', deletedAt: null },
-            { ids: 1 } // Only retrieve the ids field
+            { qtyIds: 1 } // Only retrieve the ids field
           )
 
           if (!currentWholePlace) {
@@ -414,7 +414,7 @@ export const updateWholePlaceUnitBasicInfo = async (
             res.json(response.error({ message: 'Whole place not found' }))
           } else {
             // Step 2: Calculate the number of new ObjectIds needed
-            const currentIdsCount = currentWholePlace?.ids.length || 0
+            const currentIdsCount = currentWholePlace?.qtyIds.length || 0
             const newIdsNeeded = qty - currentIdsCount
 
             let newIds: { _id: mongoose.Types.ObjectId; name: string }[] = []
@@ -451,7 +451,7 @@ export const updateWholePlaceUnitBasicInfo = async (
                   },
                   ...(newIdsNeeded > 0 && {
                     $push: {
-                      ids: { $each: newIds },
+                      qtyIds: { $each: newIds },
                     },
                   }),
                 },
@@ -552,7 +552,7 @@ export const getUnitIds = async (req: Request, res: Response) => {
     if (!bookableUnit) {
       res.json(response.error({ message: 'No bookable units found' }))
     } else {
-      const units = bookableUnit?.ids
+      const units = bookableUnit?.qtyIds
       res.json(response.success({ items: units, allItemCount: units?.length }))
     }
   } catch (err: any) {

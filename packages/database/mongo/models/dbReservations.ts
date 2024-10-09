@@ -10,13 +10,23 @@ const statusEnum = [
   "Out-of-Service-Dates",
 ]
 const reservations = new Schema({
-  unitId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "BookableUnitTypes",
+  propertyIds: {
+    type: {
+      unitId: {
+        type: mongoose.Schema.ObjectId,
+        ref: "BookableUnitTypes",
+      },
+      propertyId: mongoose.Schema.ObjectId,
+    },
   },
-  rentalId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Rentals",
+  rentalIds: {
+    type: {
+      rentalId: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Rentals",
+      },
+      qtyIdsId: mongoose.Schema.ObjectId,
+    },
   },
   activityIds: {
     type: {
@@ -99,7 +109,7 @@ const reservations = new Schema({
 })
 
 reservations.pre("validate", function (next) {
-  if (!this.unitId && !this.rentalId && !this.activityIds) {
+  if (!this.propertyIds && !this.rentalIds && !this.activityIds) {
     this.invalidate(
       "unitId",
       "At least one of unitId, rentalId, or activityId is required."

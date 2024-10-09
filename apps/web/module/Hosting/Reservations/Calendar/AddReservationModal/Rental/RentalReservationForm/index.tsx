@@ -71,6 +71,9 @@ function RentalReservationForm({
                     isRentalNamesByCategoryLoading ||
                     rentalNamesByCategory?.items?.length! === 0
               }
+              {...register("rentalId", {
+                required: "This field is required",
+              })}
               onChange={(e) => setSelectedRentalId(e.target.value)}
             >
               <Option value="">Select</Option>
@@ -96,7 +99,7 @@ function RentalReservationForm({
                     isVehiclesByRentalIdLoading ||
                     vehiclesByRentalId?.items?.length! === 0
               }
-              {...register("unit", {
+              {...register("qtyIdsId", {
                 required: "This field is required",
               })}
             >

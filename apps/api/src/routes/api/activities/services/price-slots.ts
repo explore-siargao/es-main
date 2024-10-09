@@ -58,7 +58,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },
@@ -68,7 +68,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },
@@ -78,7 +78,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },
@@ -88,7 +88,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },
@@ -98,7 +98,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },
@@ -108,7 +108,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },
@@ -118,7 +118,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                       return {
                         ...slot,
                         //@ts-ignore
-                        ids: ids,
+                        slotIdsId: ids,
                       }
                     }),
                   },

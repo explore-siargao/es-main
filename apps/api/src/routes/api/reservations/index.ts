@@ -9,6 +9,7 @@ import {
 } from './services/rentalReservation'
 import {
   addUnitReservation,
+  cancelUnitReservationByHost,
   editUnitReservation,
 } from './services/unitsReservation'
 import {
@@ -68,11 +69,20 @@ router.patch(
   editUnitReservation
 )
 
+//reservation cancellations
 router.patch(
   '/rental/:reservationId/cancel-reservation',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
   cancelRentalReservationByHost
+)
+
+router.patch(
+  '/property/:reservationId/cancel-reservation',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cancelUnitReservationByHost
 )
 export default router
