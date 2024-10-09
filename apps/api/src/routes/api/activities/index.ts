@@ -36,6 +36,7 @@ import {
   getPrivateActivityCalendar,
   addActivityPricePerDates,
   editPrivateActivitySlotNote,
+  editJoinerActivitySlotName,
 } from './services/calendar'
 
 const router = express.Router()
@@ -233,6 +234,14 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editPrivateActivitySlotNote
+)
+
+router.patch(
+  '/joiner/update-slot-name',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editJoinerActivitySlotName
 )
 
 export default router
