@@ -36,6 +36,11 @@ const segments = new Schema({
 const timeSlots = new Schema({
   startTime: String,
   endTime: String,
+  note: {
+    type: String,
+    default: "",
+    required: false,
+  },
   slotIdsId: {
     type: [
       {
