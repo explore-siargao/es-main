@@ -58,8 +58,8 @@ export const getPrivateActivityCalendar = async (
   try {
     // Fetch private activities where the experienceType is 'private' and host matches the current user
     const activities = await dbActivities.find({
-      experienceType: 'private',
       host: res.locals.user.id,
+      $or: [{ experienceType: 'private' }, { experienceType: 'Private' }],
     })
 
     if (!activities.length) {
@@ -166,7 +166,8 @@ export const getPrivateActivityCalendar = async (
                 const isOccupied = activityReservations.length > 0
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  name: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${day.toUpperCase().slice(0, 3)} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  note: session.note ? session.note : '',
                   status: isOccupied ? 'occupied' : 'available',
                   reservations: activityReservations,
                 }
@@ -219,8 +220,8 @@ export const getJoinerActivityCalendar = async (
   try {
     // Fetch private activities where the experienceType is 'private' and host matches the current user
     const activities = await dbActivities.find({
-      experienceType: 'joiner',
       host: res.locals.user.id,
+      $or: [{ experienceType: 'joiner' }, { experienceType: 'Joiner' }],
     })
 
     if (!activities.length) {
@@ -338,7 +339,7 @@ export const getJoinerActivityCalendar = async (
                 })
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  name: `${day} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${day.toUpperCase().slice(0, 3)} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   price: activity.pricePerPerson,
                   pricePerDates: activity?.pricePerDates.map((priceDate) => ({
                     fromDate: priceDate.fromDate,
@@ -431,6 +432,61 @@ export const addActivityPricePerDates = async (req: Request, res: Response) => {
             })
           )
         }
+      }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const editPrivateActivitySlotNote = async (
+  req: Request,
+  res: Response
+) => {
+  const { id, note } = req.body
+
+  try {
+    if (!id || !note) {
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    } else {
+      const daysOfWeek = [
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
+      ]
+      const activity = await dbActivities.findOne({
+        $or: daysOfWeek.map((day) => ({
+          [`schedule.${day}.slots._id`]: id,
+        })),
+      })
+
+      if (activity) {
+        // Loop through the days to find and update the slot
+        daysOfWeek.forEach((day) => {
+          //@ts-ignore
+          const slots = activity?.schedule[day]?.slots
+          const slotToUpdate = slots.find(
+            (slot: { _id: string; note: string }) => slot._id.toString() === id
+          )
+          if (slotToUpdate) {
+            slotToUpdate.note = note // Update the note
+          }
+        })
+        const updatedActivity = await activity.save()
+        res.json(
+          response.success({
+            item: updatedActivity,
+            message: 'Slot note successfully updated',
+          })
+        )
       }
     }
   } catch (err: any) {
