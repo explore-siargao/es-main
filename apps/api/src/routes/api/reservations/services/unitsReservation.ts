@@ -3,7 +3,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { dbReservations } from '@repo/database'
+import { dbBookableUnitTypes, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -131,6 +131,85 @@ export const editUnitReservation = async (req: Request, res: Response) => {
           res.json(response.error({ message: 'Reservation not found' }))
         }
       }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const cancelUnitReservationByHost = async (
+  req: Request,
+  res: Response
+) => {
+  const reservationId = req.params.reservationId
+  try {
+    const reservation = await dbReservations.findOne({
+      _id: reservationId,
+      deletedAt: null,
+      status: { $ne: 'Cancelled' },
+    })
+
+    if (reservation) {
+      const unit = await dbBookableUnitTypes.findOne({
+        'qtyIds._id': reservation.propertyIds?.unitId,
+      })
+      if (unit) {
+        const allowedDaysToCancel = unit?.daysCanCancel
+        const currentDate = new Date()
+        const reservationDate = reservation.startDate
+        reservationDate?.setDate(
+          reservationDate.getDate() - allowedDaysToCancel
+        )
+        const allowedDate = reservationDate
+        if (allowedDate != null && currentDate <= allowedDate) {
+          const cancelReservation = await dbReservations.findByIdAndUpdate(
+            reservation._id,
+            {
+              status: 'Cancelled',
+              cancelledBy: 'host',
+              cancellationDate: Date.now(),
+              hostHavePenalty: false,
+              updatedAt: Date.now(),
+            }
+          )
+          res.json(
+            response.success({
+              item: cancelReservation,
+              message:
+                'Unit reservation successfully cancelled without penalty',
+            })
+          )
+        } else {
+          const cancelReservation = await dbReservations.findByIdAndUpdate(
+            reservation._id,
+            {
+              status: 'Cancelled',
+              cancelledBy: 'host',
+              cancellationDate: Date.now(),
+              hostHavePenalty: true,
+              updatedAt: Date.now(),
+            }
+          )
+          res.json(
+            response.success({
+              item: cancelReservation,
+              message: 'Unit reservation successfully cancelled with penalty',
+            })
+          )
+        }
+      } else {
+        res.json(response.error({ message: 'Unit not exists' }))
+      }
+    } else {
+      res.json(
+        response.error({
+          message: 'Reservation not exist or already cancelled',
+        })
+      )
     }
   } catch (err: any) {
     res.json(

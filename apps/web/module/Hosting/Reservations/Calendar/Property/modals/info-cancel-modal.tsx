@@ -9,6 +9,7 @@ import { Textarea } from "@/common/components/ui/Textarea"
 import { useForm } from "react-hook-form"
 import useUpdateUnitReservation from "../../hooks/useUpdateUnitReservation"
 import { useCalendarStore } from "../stores/use-calendar-store"
+import useCancelPropertyReservation from "../../hooks/useCancelPropertyReservation"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()
@@ -27,6 +28,9 @@ const InfoCancelModal = () => {
   const { mutate } = useUpdateUnitReservation(
     String(selectedReservation?.reservation?.id)
   )
+
+  const { mutate: cancelReservation, isPending: isLoading } =
+    useCancelPropertyReservation(String(selectedReservation?.reservation?.id))
 
   const closeReservationModal = () => {
     setSelectedLegendType("")
@@ -55,6 +59,23 @@ const InfoCancelModal = () => {
         toast.error(String(data.message))
       },
     })
+  }
+
+  const callBackReq = {
+    onSuccess: (data: any) => {
+      if (!data.error) {
+        queryClient.invalidateQueries({
+          queryKey: ["calendar-property"],
+        })
+        toast.success(data.message)
+        closeReservationModal()
+      } else {
+        toast.error(String(data.message))
+      }
+    },
+    onError: (err: any) => {
+      toast.error(String(err))
+    },
   }
 
   return (
@@ -244,13 +265,19 @@ const InfoCancelModal = () => {
             <div className="flex justify-end gap-2 w-full">
               {isCancelReservation ? (
                 <div className="flex gap-2">
-                  <Button type="button" variant="danger">
+                  <Button
+                    type="button"
+                    variant="danger"
+                    disabled={isLoading}
+                    onClick={() => cancelReservation(null, callBackReq)}
+                  >
                     Confirm Cancellation
                   </Button>
                   <Button
                     type="button"
                     variant="secondary"
                     onClick={() => setIsCancelReservation(false)}
+                    disabled={isLoading}
                   >
                     Go Back
                   </Button>
