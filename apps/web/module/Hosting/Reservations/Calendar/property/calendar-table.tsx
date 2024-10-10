@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { addDays, isAfter, isBefore } from "date-fns"
+import { addDays, isAfter, isBefore, parse } from "date-fns"
 import toast from "react-hot-toast"
 import { Room, Bed, WholePlace } from "../../types/CalendarTable"
 import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
@@ -12,8 +12,16 @@ import ModalsWrapper from "./modals-wrapper"
 
 const CalendarTable = () => {
   const queryClient = useQueryClient()
-  const { daysPerPage, startDate, searchString, setUnitData, setSearchString } =
-    useCalendarStore((state) => state)
+  const {
+    daysPerPage,
+    filterCalendarDate,
+    startDate,
+    searchString,
+    setUnitData,
+    setStartDate,
+    setSearchString,
+    setFilterCalendarDate,
+  } = useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -168,6 +176,15 @@ const CalendarTable = () => {
     searchString,
     setUnitData,
   ])
+
+  const resetToToday = () => {
+    if (filterCalendarDate !== "") {
+      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
+      setStartDate(addDays(parsedDate, -4))
+    } else {
+      setStartDate(addDays(new Date(), -4))
+    }
+  }
 
   useEffect(() => {
     if (startDate) {

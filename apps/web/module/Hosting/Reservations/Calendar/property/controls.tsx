@@ -63,7 +63,10 @@ const Controls = () => {
             size={"sm"}
             variant={"default"}
             className="rounded-full w-full"
-            onClick={() => setFilterCalendarDate && setFilterCalendarDate("")}
+            onClick={() => {
+              setFilterCalendarDate && setFilterCalendarDate("")
+              setStartDate(addDays(new Date(), -4))
+            }}
           >
             <X className="w-5" />
           </Button>
@@ -129,8 +132,8 @@ const Controls = () => {
       <MonthYearSelectorModal
         isModalOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        filterCalendarDate={filterCalendarDate}
-        setFilterCalendarDate={setFilterCalendarDate}
+        filterCalendarDate={filterCalendarDate!}
+        setFilterCalendarDate={setFilterCalendarDate!}
       />
       <PropertySearchCalendarModal
         isModalOpen={isSearchModalOpen}
