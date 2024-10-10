@@ -93,7 +93,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
 
       const reservations = await dbReservations
         .find({
-          rentalId: { $in: allRentalIds },
+          'rentalIds.qtyIdsId': { $in: allRentalIds },
           $or: [
             {
               startDate: { $lte: endDate },
@@ -137,10 +137,12 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           notes: reservation.notes,
         }
 
-        if (!reservationMap[reservation.rentalId.toString()]) {
-          reservationMap[reservation.rentalId.toString()] = []
+        if (!reservationMap[reservation.rentalIds.qtyIdsId.toString()]) {
+          reservationMap[reservation.rentalIds.qtyIdsId.toString()] = []
         }
-        reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
+        reservationMap[reservation.rentalIds.qtyIdsId.toString()]?.push(
+          reservationItem
+        )
       })
 
       const items = carRentals.map((rental) => {
@@ -343,7 +345,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
 
       const reservations = await dbReservations
         .find({
-          rentalId: { $in: allRentalIds },
+          'rentalIds.qtyIdsId': { $in: allRentalIds },
           $or: [
             {
               startDate: { $lte: endDate },
@@ -389,10 +391,12 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           notes: reservation.notes,
         }
 
-        if (!reservationMap[reservation.rentalId.toString()]) {
-          reservationMap[reservation.rentalId.toString()] = []
+        if (!reservationMap[reservation.rentalIds.qtyIdsId.toString()]) {
+          reservationMap[reservation.rentalIds.qtyIdsId.toString()] = []
         }
-        reservationMap[reservation.rentalId.toString()]?.push(reservationItem)
+        reservationMap[reservation.rentalIds.qtyIdsId.toString()]?.push(
+          reservationItem
+        )
       })
 
       const items = motorcycleRentals.map((rental) => {
