@@ -3,7 +3,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { dbReservations } from '@repo/database'
+import { dbActivities, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -159,6 +159,146 @@ export const addJoinerActivityReservation = async (
           )
         }
       }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const cancelActivityReservation = async (
+  req: Request,
+  res: Response
+) => {
+  const reservationId = req.params.reservationId
+  try {
+    const daysOfWeek = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ]
+    const reservation = await dbReservations.findOne({
+      _id: reservationId,
+      deletedAt: null,
+      status: { $ne: 'Cancelled' },
+    })
+    if (reservation) {
+      const joinerActivity = await dbActivities.findOne({
+        $or: daysOfWeek.map((day) => ({
+          [`schedule.${day}.slots.slotIdsId._id`]:
+            reservation.activityIds?.slotIdsId,
+        })),
+      })
+      if (joinerActivity) {
+        const allowedDaysToCancel = joinerActivity.daysCanCancel
+        const currentDate = new Date()
+        const reservationDate = reservation.startDate
+        reservationDate?.setDate(
+          reservationDate.getDate() - allowedDaysToCancel
+        )
+        const allowedDate = reservationDate
+        if (allowedDate != null && currentDate <= allowedDate) {
+          const cancelReservation = await dbReservations.findByIdAndUpdate(
+            reservationId,
+            {
+              status: 'Canceeled',
+              cancellationDate: Date.now(),
+              cancelledBy: 'host',
+              hostHavePenalty: false,
+            }
+          )
+          res.json(
+            response.success({
+              item: cancelReservation,
+              message:
+                'Activity reservation successfully cancelled without penalty',
+            })
+          )
+        } else {
+          const cancelReservation = await dbReservations.findByIdAndUpdate(
+            reservationId,
+            {
+              status: 'Cancelled',
+              cancelledBy: 'host',
+              cancellationDate: Date.now(),
+              hostHavePenalty: true,
+              updatedAt: Date.now(),
+            }
+          )
+          res.json(
+            response.success({
+              item: cancelReservation,
+              message: 'Rental reservation successfully cancelled with penalty',
+            })
+          )
+        }
+      } else {
+        const privateActivity = await dbActivities.findOne({
+          $or: daysOfWeek.map((day) => ({
+            [`schedule.${day}.slots._id`]: reservation.activityIds?.timeSlotId,
+          })),
+        })
+        if (privateActivity) {
+          const allowedDaysToCancel = privateActivity.daysCanCancel
+          const currentDate = new Date()
+          const reservationDate = reservation.startDate
+          reservationDate?.setDate(
+            reservationDate.getDate() - allowedDaysToCancel
+          )
+          const allowedDate = reservationDate
+          if (allowedDate != null && currentDate <= allowedDate) {
+            const cancelReservation = await dbReservations.findByIdAndUpdate(
+              reservationId,
+              {
+                status: 'Canceeled',
+                cancellationDate: Date.now(),
+                cancelledBy: 'host',
+                hostHavePenalty: false,
+              }
+            )
+            res.json(
+              response.success({
+                item: cancelReservation,
+                message:
+                  'Activity reservation successfully cancelled without penalty',
+              })
+            )
+          } else {
+            const cancelReservation = await dbReservations.findByIdAndUpdate(
+              reservationId,
+              {
+                status: 'Cancelled',
+                cancelledBy: 'host',
+                cancellationDate: Date.now(),
+                hostHavePenalty: true,
+                updatedAt: Date.now(),
+              }
+            )
+            res.json(
+              response.success({
+                item: cancelReservation,
+                message:
+                  'Activity reservation successfully cancelled with penalty',
+              })
+            )
+          }
+        } else {
+          res.json(response.error({ message: 'Activity not found' }))
+        }
+      }
+    } else {
+      res.json(
+        response.error({
+          message: 'Reservation not found or already cancelled',
+        })
+      )
     }
   } catch (err: any) {
     res.json(

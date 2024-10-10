@@ -15,6 +15,7 @@ import {
 import {
   addJoinerActivityReservation,
   addPrivateActivityReservation,
+  cancelActivityReservation,
 } from './services/activityReservation'
 
 const router = express.Router()
@@ -84,5 +85,13 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   cancelUnitReservationByHost
+)
+
+router.patch(
+  '/activity/:reservationId/cancel-reservation',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cancelActivityReservation
 )
 export default router
