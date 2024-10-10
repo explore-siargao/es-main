@@ -139,11 +139,13 @@ export const getPrivateActivityCalendar = async (
           notes: reservation.notes,
         }
 
-        if (!reservationMap[reservation.activityId.toString()]) {
-          reservationMap[reservation.activityId.toString()] = []
+        if (!reservationMap[reservation.activityIds.timeSlotId.toString()]) {
+          reservationMap[reservation.activityIds.timeSlotId.toString()] = []
         }
         //@ts-ignore
-        reservationMap[reservation.activityId.toString()].push(reservationItem)
+        reservationMap[reservation.activityIds.timeSlotId.toString()].push(
+          reservationItem
+        )
       })
       const items = activities.map((activity) => {
         const privateActivities: {
