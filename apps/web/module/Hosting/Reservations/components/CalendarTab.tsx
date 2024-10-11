@@ -2,7 +2,7 @@ import Tabs from "@/common/components/Tabs"
 import { usePathname } from "next/navigation"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 import { LINK_HOME } from "@/common/constants"
-import useGetActivityCounts from "../Calendar/hooks/useGetActivityCounts"
+import useGetActivityCounts from "../Calendar/activity/hooks/use-get-activity-counts"
 
 const CalendarTab = () => {
   const pathName = usePathname()

@@ -1,14 +1,14 @@
 import React, { useEffect } from "react"
 import { addDays, isAfter, isBefore, parse } from "date-fns"
 import toast from "react-hot-toast"
-import { Room, Bed, WholePlace } from "../../types/CalendarTable"
-import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
+import { Room, Bed, WholePlace } from "@/module/Hosting/Reservations/types/CalendarTable"
+import useGetCalendarProperty from "@/module/Hosting/Reservations/Calendar/hooks/useGetCalendarProperty"
 import { useQueryClient } from "@tanstack/react-query"
-import PropertyRows from "./property-rows"
+import PropertyRows from "@/module/Hosting/Reservations/Calendar/property/property-rows"
 import { generateDays, generateMonth } from "./helpers/calendar-table"
-import { useCalendarStore } from "./stores/use-calendar-store"
-import Controls from "./controls"
-import ModalsWrapper from "./modals-wrapper"
+import { useCalendarStore } from "@/module/Hosting/Reservations/Calendar/property/stores/use-calendar-store"
+import Controls from "@/module/Hosting/Reservations/Calendar/property/controls"
+import ModalsWrapper from "@/module/Hosting/Reservations/Calendar/property/modals-wrapper"
 
 const CalendarTable = () => {
   const queryClient = useQueryClient()
@@ -155,7 +155,6 @@ const CalendarTable = () => {
         items: filteredItems,
       }
     }
-
     // Create the newFilteredData based on the original filter logic
     const newFilteredData = {
       items: filterItems(calendarProperties?.items ?? []),

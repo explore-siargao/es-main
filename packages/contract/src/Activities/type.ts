@@ -7,6 +7,10 @@ import {
   Z_Update_Activity_Inclusions,
   Z_Activity_Status,
   Z_Update_Activity_Pice_Slots,
+  Z_Calendar_Private_Activity,
+  Z_Calendar_Activity,
+  Z_Calendar_Date_Price,
+  Z_Calendar_Reservation,
 } from "./zod"
 
 export type T_Activity_Segment = z.infer<typeof Z_Activity_Segment>
@@ -25,4 +29,20 @@ export type T_Activity_Status = z.infer<typeof Z_Activity_Status>
 
 export type T_Update_Activity_Price_Slots = z.infer<
   typeof Z_Update_Activity_Pice_Slots
+>
+
+export type T_Calendar_Private_Activity = z.infer<
+  typeof Z_Calendar_Private_Activity
+>
+
+export type T_Calendar_Activity = z.infer<
+  typeof Z_Calendar_Activity
+>
+
+export type T_Calendar_Date_Price = z.infer<
+  typeof Z_Calendar_Date_Price
+>
+
+export type T_Calendar_Reservation = z.infer<
+  typeof Z_Calendar_Reservation
 >

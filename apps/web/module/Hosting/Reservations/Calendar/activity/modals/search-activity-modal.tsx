@@ -1,33 +1,26 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
-import { Input } from "@/common/components/ui/Input"
-import { useCalendarStore } from "../../property/stores/use-calendar-store"
-import { addDays, parse } from "date-fns"
+import { Input2 } from "@/common/components/ui/Input2"
 
-interface IMonthYearSelectorModalProps {
+interface SearchActivityModalProps {
   isModalOpen: boolean
   onClose: () => void
-  filterCalendarDate?: string
-  setFilterCalendarDate?: (filter: string) => void
+  setSearchString: (searchString: string) => void
 }
 
-const MonthYearSelectorModal = ({
+const SearchActivityModal = ({
   isModalOpen,
   onClose,
-  filterCalendarDate,
-  setFilterCalendarDate,
-}: IMonthYearSelectorModalProps) => {
-  const [selectedDate, setSelectedDate] = useState("")
-  const setStartDate = useCalendarStore((state) => state.setStartDate)
+  setSearchString,
+}: SearchActivityModalProps) => {
+  const [value, setValue] = useState("")
 
   const handleConfirm = () => {
-    setFilterCalendarDate && setFilterCalendarDate(selectedDate)
-    const parsedDate = parse(selectedDate, "yyyy-MM-dd", new Date())
-    setStartDate(addDays(parsedDate, -4))
+    setSearchString(value)
     onClose()
     setTimeout(() => {
-      setSelectedDate("")
+      setValue("")
     }, 300)
   }
 
@@ -36,17 +29,19 @@ const MonthYearSelectorModal = ({
       onClose={onClose}
       isOpen={isModalOpen}
       size="sm"
-      title="Filter calendar"
+      title="Search for activity"
     >
       <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
         <div className="flex flex-col gap-4 pb-4">
           <div className="flex gap-4">
             <div className="flex flex-col w-full">
-              <Input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                label={"Select date"}
+              <Input2
+                type="text"
+                label={"Enter activity name or keyword"}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                description="Enter activity name you want to search"
+                placeholder="e.g., Mon 12:00 AM - 1:00 AM"
               />
             </div>
           </div>
@@ -59,11 +54,15 @@ const MonthYearSelectorModal = ({
             <Button
               type="button"
               variant="default"
-              onClick={() => setSelectedDate("")}
+              onClick={() => setValue("")}
             >
               Clear
             </Button>
-            <Button type="button" variant="primary" onClick={handleConfirm}>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => handleConfirm()}
+            >
               Confirm
             </Button>
           </div>
@@ -73,4 +72,4 @@ const MonthYearSelectorModal = ({
   )
 }
 
-export default MonthYearSelectorModal
+export default SearchActivityModal

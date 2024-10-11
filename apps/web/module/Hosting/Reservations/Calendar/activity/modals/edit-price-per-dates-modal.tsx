@@ -2,46 +2,61 @@ import { useEffect, useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
+import { T_Property } from "@repo/contract"
 import { useForm } from "react-hook-form"
-import { T_Activity } from "@repo/contract"
+import useUpdateUnitPricePerDate from "../../hooks/useUpdaateUnitPricePerDate"
+import { useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
+import { useCalendarStore } from "../stores/use-calendar-store"
 
-interface IEditPricePerDateProps {
-  isModalOpen: boolean
-  onClose: () => void
-  selectedDate: string
-  activityId: string | undefined
-}
-
-const ActivityEditPricePerDatesModal = ({
-  isModalOpen,
-  onClose,
-  selectedDate,
-  activityId,
-}: IEditPricePerDateProps) => {
+const EditPricePerDatesModal = () => {
+  const {
+    selectedDate,
+    selectedUnitId,
+    isEditPricePerDatesModalOpen,
+    setIsEditPricePerDatesModalOpen,
+  } = useCalendarStore((state) => state)
   const [toDate, setToDate] = useState("")
-  const [basePrice, setBasePrice] = useState("")
+  const [baseRate, setBaseRate] = useState("")
   const [dateFrom, setDateFrom] = useState(selectedDate || "")
-  const [exceededPersonPrice, setExceededPersonPrice] = useState("")
-  const { handleSubmit } = useForm<T_Activity>({})
+  const queryClient = useQueryClient()
+  const { handleSubmit } = useForm<T_Property>({})
+  const { mutate, isPending } = useUpdateUnitPricePerDate(
+    selectedUnitId as string
+  )
+
   const clearInputs = () => {
     setToDate("")
-    setBasePrice("")
-    setExceededPersonPrice("")
+    setBaseRate("")
   }
 
   const handleClose = () => {
     clearInputs()
-    onClose()
+    setIsEditPricePerDatesModalOpen(false)
   }
 
   const handleSave = () => {
     const payload = {
       fromDate: dateFrom,
       toDate: toDate,
-      basePrice: Number(basePrice),
-      exceededPersonPrice: Number(exceededPersonPrice),
+      baseRate: Number(baseRate),
     }
-    console.log(payload)
+    mutate(payload, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["calendar-property"],
+          })
+          toast.success(data.message)
+          setIsEditPricePerDatesModalOpen(false)
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    })
     clearInputs()
   }
 
@@ -56,7 +71,7 @@ const ActivityEditPricePerDatesModal = ({
   return (
     <ModalContainer
       onClose={handleClose}
-      isOpen={isModalOpen}
+      isOpen={isEditPricePerDatesModalOpen}
       size="sm"
       title="Edit Price Per Dates"
     >
@@ -69,6 +84,7 @@ const ActivityEditPricePerDatesModal = ({
                 label={"From Date"}
                 value={dateFrom}
                 onChange={(e) => setDateFrom(e.target.value)}
+                description="Enter the start date"
                 placeholder="e.g., 2024-09-23"
                 className="w-full"
                 required
@@ -81,6 +97,7 @@ const ActivityEditPricePerDatesModal = ({
                 label={"To Date"}
                 value={toDate}
                 onChange={(e) => setToDate(e.target.value)}
+                description="Enter the end date"
                 placeholder="e.g., 2024-09-30"
                 className="w-full"
                 required
@@ -92,22 +109,27 @@ const ActivityEditPricePerDatesModal = ({
             <div className="flex flex-col w-full">
               <Input2
                 type="number"
-                label={"Base Price"}
-                value={basePrice}
-                onChange={(e) => setBasePrice(e.target.value)}
-                description="Enter the base price for each day within the specified date range"
-                placeholder="e.g., 1000"
+                label={"Price"}
+                value={baseRate}
+                onChange={(e) => setBaseRate(e.target.value)}
+                description="Enter the price for a single day within the selected date range"
+                placeholder="e.g., 10000"
                 className="w-full"
                 required
               />
             </div>
           </div>
+
           <div className="flex items-center pt-4 border-t border-gray-200">
             <div className="flex justify-end gap-2 w-full">
-              <Button type="button" variant="danger" onClick={handleCancel}>
+              <Button
+                type="button"
+                variant="danger"
+                onClick={() => handleCancel()}
+              >
                 Cancel
               </Button>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={isPending}>
                 Save
               </Button>
             </div>
@@ -118,4 +140,4 @@ const ActivityEditPricePerDatesModal = ({
   )
 }
 
-export default ActivityEditPricePerDatesModal
+export default EditPricePerDatesModal

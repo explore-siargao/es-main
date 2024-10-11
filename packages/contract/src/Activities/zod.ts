@@ -1,7 +1,7 @@
 import z from "zod"
 import { Z_Photo } from "../Photo"
 import { Z_User } from "../User"
-import { E_Activity_Status } from "./enum"
+import { E_Activity_Experience_Type, E_Activity_Status, E_Calendar_Activity_Status } from "./enum"
 import { Z_Location } from "../Location"
 
 export const Z_Activity_Segment = z.object({
@@ -32,7 +32,7 @@ export const Z_Activity = z.object({
   host: Z_User.optional(),
   finishedSections: z.array(z.string()).optional(),
   title: z.string().optional(),
-  activityType: z.enum(["Private", "Joiner", ""]),
+  experienceType: z.nativeEnum(E_Activity_Experience_Type),
   description: z.string().optional(),
   highLights: z.string().optional(),
   durationHour: z.number().optional(),
@@ -59,6 +59,38 @@ export const Z_Activity = z.object({
   deletedAt: z.date().nullable().optional(),
 })
 
+export const Z_Calendar_Reservation = z.object({
+  id: z.string(),
+  name: z.string(),
+  notes: z.string().optional(),
+  startDate: z.string(),
+  endDate: z.string(),
+  guestCount: z.number(),
+  status: z.string(),
+})
+
+export const Z_Calendar_Activity = z.object({
+  id: z.string(),
+  name: z.string(),
+  note: z.string(),
+  status: z.nativeEnum(E_Calendar_Activity_Status),
+  reservations: z.array(Z_Calendar_Reservation),
+})
+
+export const Z_Calendar_Date_Price = z.object({
+  fromDate: z.string(),
+  toDate: z.string(),
+  price: z.number(),
+})
+
+export const Z_Calendar_Private_Activity = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+  pricePerDates: z.array(Z_Calendar_Date_Price),
+  privateActivities: z.array(Z_Calendar_Activity)
+})
+
 export const Z_Update_Activity_Additional_Info = z.object({
   whatToBring: z.array(z.string()).optional(),
   notAllowed: z.array(z.string()).optional(),
@@ -78,7 +110,7 @@ export const Z_Update_Activity_Inclusions = z.object({
 
 export const Z_Update_Activity_Basic_Info = z.object({
   title: z.string().optional(),
-  experienceType: z.string(z.enum(["Private", "Joiner", ""])).optional(),
+  experienceType: z.nativeEnum(E_Activity_Experience_Type).optional(),
   activityType: z.array(z.string()),
   description: z.string().optional(),
   highLights: z.array(z.string()).optional(),
@@ -88,7 +120,7 @@ export const Z_Update_Activity_Basic_Info = z.object({
 })
 
 export const Z_Update_Activity_Pice_Slots = z.object({
-  experienceType: z.enum(["Private", "Joiner"]),
+  experienceType: z.nativeEnum(E_Activity_Experience_Type),
   schedule: z.object({
     monday: z
       .object({

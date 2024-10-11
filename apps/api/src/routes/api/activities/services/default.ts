@@ -243,12 +243,12 @@ export const getActivityCounts = async (req: Request, res: Response) => {
     const hostId = res.locals.user?.id
 
     const privateActivityCounts = await dbActivities.countDocuments({
-      experienceType: 'private',
+      experienceType: 'Private',
       host: hostId,
     })
 
     const joinerActivityCounts = await dbActivities.countDocuments({
-      experienceType: 'joiner',
+      experienceType: 'Joiner',
       host: hostId,
     })
 

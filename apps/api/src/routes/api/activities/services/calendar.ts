@@ -5,6 +5,7 @@ import {
 import { ResponseService } from '@/common/service/response'
 import { dbActivities, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
+import { capitalize } from 'lodash'
 import mongoose from 'mongoose'
 const response = new ResponseService()
 
@@ -59,7 +60,7 @@ export const getPrivateActivityCalendar = async (
     // Fetch private activities where the experienceType is 'private' and host matches the current user
     const activities = await dbActivities.find({
       host: res.locals.user.id,
-      $or: [{ experienceType: 'private' }, { experienceType: 'Private' }],
+      experienceType: 'Private',
     })
 
     if (!activities.length) {
@@ -168,7 +169,7 @@ export const getPrivateActivityCalendar = async (
                 const isOccupied = activityReservations.length > 0
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  name: `${day.toUpperCase().slice(0, 3)} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${capitalize(day.slice(0, 3))} ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   note: session.note ? session.note : '',
                   status: isOccupied ? 'occupied' : 'available',
                   reservations: activityReservations,

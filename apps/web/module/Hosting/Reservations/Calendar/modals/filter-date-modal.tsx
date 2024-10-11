@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
-import { useCalendarStore } from "../../property/stores/use-calendar-store"
 import { addDays, parse } from "date-fns"
 
-interface IMonthYearSelectorModalProps {
+interface FilterDateModalProps {
   isModalOpen: boolean
   onClose: () => void
-  filterCalendarDate?: string
-  setFilterCalendarDate?: (filter: string) => void
+  setFilterCalendarDate: (filter: string) => void
+  setStartDate: (filter: Date) => void
 }
 
-const MonthYearSelectorModal = ({
+const FilterDateModal = ({
   isModalOpen,
   onClose,
-  filterCalendarDate,
   setFilterCalendarDate,
-}: IMonthYearSelectorModalProps) => {
+  setStartDate,
+}: FilterDateModalProps) => {
   const [selectedDate, setSelectedDate] = useState("")
-  const setStartDate = useCalendarStore((state) => state.setStartDate)
-
   const handleConfirm = () => {
-    setFilterCalendarDate && setFilterCalendarDate(selectedDate)
+    setFilterCalendarDate(selectedDate)
     const parsedDate = parse(selectedDate, "yyyy-MM-dd", new Date())
     setStartDate(addDays(parsedDate, -4))
     onClose()
@@ -73,4 +70,4 @@ const MonthYearSelectorModal = ({
   )
 }
 
-export default MonthYearSelectorModal
+export default FilterDateModal

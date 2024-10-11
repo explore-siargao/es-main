@@ -5,11 +5,11 @@ import { Button } from "@/common/components/ui/Button"
 import { Reservation, Room } from "../../types/CalendarTable"
 import { getColorClasses } from "../../helpers/property-legends"
 import getBookingStyle from "./helpers/get-booking-style"
-import { generateRowBorder } from "./helpers/calendar-table"
 import { useCalendarStore } from "./stores/use-calendar-store"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
+import { generateRowBorder } from "./helpers/calendar-table"
 
 const PropertyUnitRows = ({
   unitType,

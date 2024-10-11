@@ -1,18 +1,17 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ReservationTab from "../../components/ReservationTab"
-import CalendarLegend from "../../components/CalendarLegend"
-import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
+import ReservationCalendarTab from "../../components/ReservationTab"
+import CalendarLegend from "../../components/ActivityCalendarLegend"
+import PrivateCalendarTable from "./private-calendar-table"
 import { Spinner } from "@/common/components/ui/Spinner"
-import CalendarTable from "@/module/Hosting/Reservations/Calendar/property/calendar-table"
+import useGetPrivateActivities from "./hooks/use-get-private-activities"
 
-const PropertyCalendar = () => {
+const PrivateActivity = () => {
   const currentDate = new Date()
-  const { data, isLoading } = useGetCalendarProperty(
+  const { data, isLoading } = useGetPrivateActivities(
     currentDate.toLocaleDateString(),
     currentDate.toLocaleDateString()
   )
-
   return (
     <div className="mt-20">
       <div className="mb-4">
@@ -26,7 +25,7 @@ const PropertyCalendar = () => {
               Reservations
             </Typography>
           </div>
-          <ReservationTab />
+          <ReservationCalendarTab />
         </div>
 
         {/* Loading indicator */}
@@ -40,7 +39,7 @@ const PropertyCalendar = () => {
         {data && !isLoading && data?.items && data?.items?.length > 0 ? (
           <>
             <div className="flex mb-20">
-              <CalendarTable />
+              <PrivateCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
               <CalendarLegend />
@@ -52,8 +51,8 @@ const PropertyCalendar = () => {
         {!isLoading && (!data || (data?.items && data?.items?.length === 0)) ? (
           <div className="flex w-full h-[75vh] overflow-hidden pt-2 overflow-y-hidden">
             <Typography className="text-text-400 italic">
-              Property units have not been created yet. Please create a property
-              unit to display on the calendar.
+              Activity have not been created yet. Please create a activity to
+              display on the calendar.
             </Typography>
           </div>
         ) : null}
@@ -62,4 +61,4 @@ const PropertyCalendar = () => {
   )
 }
 
-export default PropertyCalendar
+export default PrivateActivity

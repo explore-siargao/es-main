@@ -1,0 +1,1 @@
+export const QK_CALENDAR_PRIVATE_ACTIVITIES = "calendar-private-activities";
