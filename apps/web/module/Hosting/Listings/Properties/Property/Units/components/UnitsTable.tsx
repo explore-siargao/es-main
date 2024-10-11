@@ -60,29 +60,31 @@ const UnitsTable: React.FC<UnitsTableProps> = ({
       cell: (context) => {
         const numBedrooms = context.row.original.bedRooms
           ? context.row.original.bedRooms.length
-          : 0
-        const title = context.row.original.title
-        const value = context.getValue() || ""
+          : 0;
+        const title = context.row.original.title || ""; 
+        const subtitle = context.row.original.subtitle || ""; 
+        const value = context.getValue() || "";
         const cleanValue = value.startsWith("Custom: ")
           ? value.slice("Custom: ".length)
-          : value
+          : value;
+    
+          const displayTitle = title || subtitle || cleanValue;
+
+    
         return (
           <Link
             href={`/hosting/listings/properties${pageType === "setup" ? "/setup" : ""}/${listingId}/units/${context.row.original.category.toLowerCase() + "s"}/${context.row.original?._id}/edit`}
           >
             <Typography variant="p">
-              {title
-                ? title
-                : category === E_Property_Category.WholePlace
-                  ? `${capitalizeFirstLetter(numWords(numBedrooms))}-bedroom ${cleanValue}`
-                  : cleanValue}
-              {}
+              {category === E_Property_Category.WholePlace
+                ? `${capitalizeFirstLetter(numWords(numBedrooms))}-bedroom ${displayTitle}`
+                : displayTitle}
             </Typography>
           </Link>
-        )
+        );
       },
     }),
-
+    
     columnHelper.accessor("category", {
       header: "Type",
       size: 400,
