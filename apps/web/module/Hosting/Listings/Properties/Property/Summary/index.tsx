@@ -223,7 +223,10 @@ const Summary = () => {
               {data?.item?.bookableUnits?.length > 0 ? (
                 <ol className="list-decimal text-sm space-y-2 mt-2 ml-3.5">
                   {data?.item?.bookableUnits
-                    .filter((unit: T_BookableUnitType) => unit.title || unit.subtitle !== "")
+                    .filter(
+                      (unit: T_BookableUnitType) =>
+                        unit.title || unit.subtitle !== ""
+                    )
                     .sort((a: T_BookableUnitType, b: T_BookableUnitType) => {
                       if (a.category < b.category) {
                         return -1
