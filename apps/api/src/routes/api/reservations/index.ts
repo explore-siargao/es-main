@@ -16,6 +16,7 @@ import {
   addJoinerActivityReservation,
   addPrivateActivityReservation,
   cancelActivityReservation,
+  editPrivateActivityReservation,
 } from './services/activityReservation'
 
 const router = express.Router()
@@ -68,6 +69,14 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editUnitReservation
+)
+
+router.patch(
+  '/:reservationId/private-activity',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editPrivateActivityReservation
 )
 
 //reservation cancellations

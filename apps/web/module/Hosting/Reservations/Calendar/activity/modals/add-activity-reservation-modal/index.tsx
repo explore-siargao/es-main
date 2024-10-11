@@ -6,6 +6,7 @@ import useAddActivityReservation from "../../hooks/use-add-activity-reservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import SelectStatusForm from "./select-status-form"
+import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../constants"
 
 interface AddActivityReservationModalProps {
   isModalOpen: boolean
@@ -36,7 +37,7 @@ const AddActivityReservationModal = ({
       onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-activity"],
+            queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
           })
           toast.success(data.message as string)
           setIsLegendTypeSelected(false)

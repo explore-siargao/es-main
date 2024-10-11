@@ -1,11 +1,13 @@
+"use client"
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
 import { useFormContext } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Textarea } from "@/common/components/ui/Textarea"
 import useGetActivityByHost from "../../hooks/use-get-activity-by-host"
-import useGetActivityById from "../../hooks/use-get-activity-by-id"
+import { usePathname } from "next/navigation"
+import useGetPrivateActivitySlots from "../../hooks/use-get-private-activity-slots"
 
 interface IActivityReservationFormProps {
   handleRentalCancel: () => void
@@ -20,13 +22,29 @@ function ReservationForm({
   setIsLegendTypeSelected,
   selectedLegendType,
 }: IActivityReservationFormProps) {
-  const { register, reset } = useFormContext()
+  const pathName = usePathname()
+  const lastSegment = pathName.split("/").filter(Boolean).pop()
+  const { register, reset, setValue } = useFormContext()
   const [selectedActivityId, setSelectedActivityId] = useState("")
-  const { data: activities, isLoading: isActivitiesLoading } =
-    useGetActivityByHost()
-  const { data: activity, isLoading: isActivityLoading } =
-    useGetActivityById(selectedActivityId)
   const [selectedDate, setSelectedDate] = useState("")
+
+  const { data: activities, isLoading: isActivitiesLoading } =
+    useGetActivityByHost(lastSegment)
+
+  // Only call the hook when both selectedActivityId and selectedDate are valid
+  const { data: slots, refetch } = useGetPrivateActivitySlots(
+    selectedActivityId && selectedDate ? selectedActivityId : null,
+    selectedDate ? selectedDate : null
+  )
+
+  useEffect(() => {
+    if (selectedActivityId && selectedDate) {
+      refetch() // Only refetch when both are selected
+      if (slots && slots.items) {
+        setValue("dayId", slots.message)
+      }
+    }
+  }, [selectedActivityId, selectedDate])
 
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
@@ -35,13 +53,15 @@ function ReservationForm({
           <div className="flex flex-col w-full">
             <Select
               label="Activity"
-              id="activity"
+              id="activityId"
               required
               disabled={isActivitiesLoading}
-              {...register("activity", {
+              {...register("activityId", {
                 required: "This field is required",
               })}
-              onChange={(e) => setSelectedActivityId(e.target.value)}
+              onChange={(e) => {
+                setSelectedActivityId(e.target.value)
+              }}
             >
               <Option value="">Select</Option>
               {activities?.items?.map((property: any) => (
@@ -52,6 +72,7 @@ function ReservationForm({
             </Select>
           </div>
         </div>
+
         <div className="flex gap-4">
           <div className="flex flex-col w-full">
             <Input
@@ -73,31 +94,20 @@ function ReservationForm({
               id="slot"
               {...register("slotId", { required: "This field is required" })}
               required
+              disabled={!selectedActivityId || !selectedDate} // Disable until both are selected
             >
               <Option value="">Select</Option>
-              {activity &&
-              activity.item &&
-              activity.item.schedule &&
-              selectedDate
-                ? (() => {
-                    const dayOfWeek = new Date(selectedDate).toLocaleString(
-                      "en-US",
-                      { weekday: "long" }
-                    )
-                    const slots =
-                      activity?.item?.schedule[dayOfWeek.toLowerCase()]
-                    return Array.isArray(slots)
-                      ? slots.map((property: any) => (
-                          <Option key={property._id} value={property._id}>
-                            {`${property.startTime} - ${property.endTime}`}
-                          </Option>
-                        ))
-                      : null
-                  })()
+              {slots && slots.items
+                ? slots.items.map((property: any) => (
+                    <Option key={property._id} value={property._id}>
+                      {`${property.startTime} - ${property.endTime}`}
+                    </Option>
+                  ))
                 : null}
             </Select>
           </div>
         </div>
+
         {selectedLegendType !== "Out-of-Service-Dates" && (
           <div className="flex gap-4 w-full">
             <div className="flex flex-col w-full">
@@ -135,6 +145,7 @@ function ReservationForm({
           </div>
         </div>
       </div>
+
       <div className="flex items-center md:pt-4 bottom-0 border-t border-gray-200 rounded-b dark:border-gray-600">
         <div>
           <Button
