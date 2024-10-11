@@ -1,13 +1,11 @@
-import {
-  API_URL_ACTIVITIES,
-} from "@/common/constants/api-routes"
+import { API_URL_ACTIVITIES } from "@/common/constants/api-routes"
 import { ApiService } from "@/common/service/api"
 import { T_BackendResponse } from "@repo/contract"
 import { useQuery } from "@tanstack/react-query"
 
 type T_DBReturn = Omit<T_BackendResponse, "items"> & {
   item: {
-    joiner: number,
+    joiner: number
     private: number
   }
 }

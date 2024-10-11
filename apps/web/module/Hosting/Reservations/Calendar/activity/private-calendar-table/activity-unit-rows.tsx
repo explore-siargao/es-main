@@ -8,7 +8,11 @@ import { generateRowBorder } from "../helpers/calendar-table"
 import { useCalendarStore } from "../stores/use-calendar-store"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { T_BackendResponse, T_Calendar_Private_Activity, T_Calendar_Reservation } from "@repo/contract"
+import {
+  T_BackendResponse,
+  T_Calendar_Private_Activity,
+  T_Calendar_Reservation,
+} from "@repo/contract"
 import useUpdateActivitySlotNote from "../hooks/use-update-activity-slot-note"
 import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
 
@@ -65,111 +69,117 @@ const ActivityUnitRows = ({
     <>
       {/* Sub Category (Units) */}
       {!collapsed[activity.name] &&
-        activity.privateActivities.map(
-          (privateActivity) => (
-            <tr
-              key={privateActivity.name}
-              className="hover:bg-gray-100 relative"
-            >
-              <td className="border py-4 pr-4 pl-12 text-left border-l-0">
-                <div className="flex justify-between items-center">
-                  <span>{privateActivity.name}{privateActivity.note && editingSlotNoteId !== privateActivity.id ? ` (${privateActivity.note})` : null}</span>
-                  {editingSlotNoteId === privateActivity.id ? (
-                    <Input
-                      type="text"
-                      value={tempActivitySlotNote}
-                      onChange={(e) =>
-                        setTempActivitySlotNote(e.target.value)
-                      }
-                      autoFocus
-                      className="mx-1"
-                      label={""}
-                    />
-                  ) : null}
-                  {editingSlotNoteId === privateActivity.id ? (
-                    <div className="flex">
-                      <Button
-                        size={"icon"}
-                        variant={"link"}
-                        className="group"
-                        onClick={() =>
-                          handleSaveSlotNoteName(
-                            privateActivity.id,
-                            tempActivitySlotNote,
-                          )
-                        }
-                      >
-                        <LucideSave className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
-                      </Button>
-                      <Button
-                        size={"icon"}
-                        variant={"link"}
-                        className="group"
-                        onClick={() => handleEditingSlotNote({})}
-                      >
-                        <LucideX className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
-                      </Button>
-                    </div>
-                  ) : (
+        activity.privateActivities.map((privateActivity) => (
+          <tr key={privateActivity.name} className="hover:bg-gray-100 relative">
+            <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+              <div className="flex justify-between items-center">
+                <span>
+                  {privateActivity.name}
+                  {privateActivity.note &&
+                  editingSlotNoteId !== privateActivity.id
+                    ? ` (${privateActivity.note})`
+                    : null}
+                </span>
+                {editingSlotNoteId === privateActivity.id ? (
+                  <Input
+                    type="text"
+                    value={tempActivitySlotNote}
+                    onChange={(e) => setTempActivitySlotNote(e.target.value)}
+                    autoFocus
+                    className="mx-1"
+                    label={""}
+                  />
+                ) : null}
+                {editingSlotNoteId === privateActivity.id ? (
+                  <div className="flex">
                     <Button
                       size={"icon"}
                       variant={"link"}
+                      className="group"
                       onClick={() =>
-                        handleEditingSlotNote({ note: privateActivity.note, id: privateActivity.id })
+                        handleSaveSlotNoteName(
+                          privateActivity.id,
+                          tempActivitySlotNote
+                        )
                       }
                     >
-                      <LucideEdit3 className="text-gray-500 w-5" />
+                      <LucideSave className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
                     </Button>
-                  )}
-                </div>
-              </td>
-              <td
-                colSpan={daysPerPage}
-                className={`border text-center relative ${activityIndex + 1 !== daysPerPage && "border-r-0"}`}
-              >
-                {privateActivity.reservations.map(
-                  (reservation: T_Calendar_Reservation) => {
-                    const style = getBookingStyle(
-                      startDate,
-                      daysPerPage,
-                      reservation
-                    )
-                    if (!style) return null
-
-                    const { startCol, colSpan } = style
-                    const { colorClass, hoverColorClass } =
-                      getColorClasses(reservation.status)
-
-                    return (
-                      <div
-                        key={reservation.id}
-                        style={{
-                          left: `${(startCol * 100) / daysPerPage + 0.5}%`,
-                          width: `${(colSpan * 100) / daysPerPage - 1}%`,
-                        }}
-                        onClick={() => {
-                          setIsReservationModalOpen(true)
-                          setSelectedReservation({ ...reservation, activityName: activity.name, slotName: privateActivity.name })
-                        }}
-                        className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                      >
-                        <span className="text-white text-sm truncate px-2">
-                          {reservation.status ===
-                            "Out-of-Service-Dates"
-                            ? "Out of service"
-                            : reservation.name}
-                        </span>
-                      </div>
-                    )
-                  }
+                    <Button
+                      size={"icon"}
+                      variant={"link"}
+                      className="group"
+                      onClick={() => handleEditingSlotNote({})}
+                    >
+                      <LucideX className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    size={"icon"}
+                    variant={"link"}
+                    onClick={() =>
+                      handleEditingSlotNote({
+                        note: privateActivity.note,
+                        id: privateActivity.id,
+                      })
+                    }
+                  >
+                    <LucideEdit3 className="text-gray-500 w-5" />
+                  </Button>
                 )}
-                <div className="absolute inset-0 z-10 flex h-full">
-                  {generateRowBorder({ daysPerPage, startDate })}
-                </div>
-              </td>
-            </tr>
-          )
-        )}
+              </div>
+            </td>
+            <td
+              colSpan={daysPerPage}
+              className={`border text-center relative ${activityIndex + 1 !== daysPerPage && "border-r-0"}`}
+            >
+              {privateActivity.reservations.map(
+                (reservation: T_Calendar_Reservation) => {
+                  const style = getBookingStyle(
+                    startDate,
+                    daysPerPage,
+                    reservation
+                  )
+                  if (!style) return null
+
+                  const { startCol, colSpan } = style
+                  const { colorClass, hoverColorClass } = getColorClasses(
+                    reservation.status
+                  )
+
+                  return (
+                    <div
+                      key={reservation.id}
+                      style={{
+                        left: `${(startCol * 100) / daysPerPage + 0.5}%`,
+                        width: `${(colSpan * 100) / daysPerPage - 1}%`,
+                      }}
+                      onClick={() => {
+                        setIsReservationModalOpen(true)
+                        setSelectedReservation({
+                          ...reservation,
+                          activityName: activity.name,
+                          slotName: privateActivity.name,
+                        })
+                      }}
+                      className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                    >
+                      <span className="text-white text-sm truncate px-2">
+                        {reservation.status === "Out-of-Service-Dates"
+                          ? "Out of service"
+                          : reservation.name}
+                      </span>
+                    </div>
+                  )
+                }
+              )}
+              <div className="absolute inset-0 z-10 flex h-full">
+                {generateRowBorder({ daysPerPage, startDate })}
+              </div>
+            </td>
+          </tr>
+        ))}
     </>
   )
 }

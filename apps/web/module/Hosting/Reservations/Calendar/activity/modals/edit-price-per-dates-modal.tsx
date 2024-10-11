@@ -4,10 +4,11 @@ import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
 import { T_Property } from "@repo/contract"
 import { useForm } from "react-hook-form"
-import useUpdateUnitPricePerDate from "../../hooks/useUpdaateUnitPricePerDate"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useCalendarStore } from "../stores/use-calendar-store"
+import useUpdateActivityPricePerDate from "../hooks/use-update-activity-price-per-date"
+import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
 
 const EditPricePerDatesModal = () => {
   const {
@@ -21,7 +22,7 @@ const EditPricePerDatesModal = () => {
   const [dateFrom, setDateFrom] = useState(selectedDate || "")
   const queryClient = useQueryClient()
   const { handleSubmit } = useForm<T_Property>({})
-  const { mutate, isPending } = useUpdateUnitPricePerDate(
+  const { mutate, isPending } = useUpdateActivityPricePerDate(
     selectedUnitId as string
   )
 
@@ -39,13 +40,13 @@ const EditPricePerDatesModal = () => {
     const payload = {
       fromDate: dateFrom,
       toDate: toDate,
-      baseRate: Number(baseRate),
+      price: Number(baseRate),
     }
     mutate(payload, {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-property"],
+            queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
           })
           toast.success(data.message)
           setIsEditPricePerDatesModalOpen(false)

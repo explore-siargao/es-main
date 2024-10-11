@@ -1,7 +1,11 @@
 import z from "zod"
 import { Z_Photo } from "../Photo"
 import { Z_User } from "../User"
-import { E_Activity_Experience_Type, E_Activity_Status, E_Calendar_Activity_Status } from "./enum"
+import {
+  E_Activity_Experience_Type,
+  E_Activity_Status,
+  E_Calendar_Activity_Status,
+} from "./enum"
 import { Z_Location } from "../Location"
 
 export const Z_Activity_Segment = z.object({
@@ -88,7 +92,7 @@ export const Z_Calendar_Private_Activity = z.object({
   name: z.string(),
   price: z.number(),
   pricePerDates: z.array(Z_Calendar_Date_Price),
-  privateActivities: z.array(Z_Calendar_Activity)
+  privateActivities: z.array(Z_Calendar_Activity),
 })
 
 export const Z_Update_Activity_Additional_Info = z.object({

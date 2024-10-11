@@ -1,8 +1,5 @@
 import { Button } from "@/common/components/ui/Button"
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { addDays, parse } from "date-fns"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/common/helpers/cn"
@@ -15,7 +12,7 @@ const Move = ({
   setFilterCalendarDate,
   queryKey,
 }: {
-  className?: string,
+  className?: string
   filterCalendarDate: string
   setStartDate: (value: Date) => void
   startDate: Date

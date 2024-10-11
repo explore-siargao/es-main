@@ -1,10 +1,12 @@
-import React from 'react'
+import React from "react"
 import { Button } from "@/common/components/ui/Button"
-import { LucidePlus } from 'lucide-react'
+import { LucidePlus } from "lucide-react"
 
 const AddReservation = ({
-  setIsAddReservationModalOpen
-}: { setIsAddReservationModalOpen: (value: boolean) => void}) => {
+  setIsAddReservationModalOpen,
+}: {
+  setIsAddReservationModalOpen: (value: boolean) => void
+}) => {
   return (
     <Button
       size={"sm"}

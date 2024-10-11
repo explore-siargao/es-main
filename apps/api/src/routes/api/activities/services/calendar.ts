@@ -99,6 +99,7 @@ export const getPrivateActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.timeSlotId': { $in: ids },
+          status: { $ne: 'Cancelled' },
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate('guest')
@@ -265,6 +266,7 @@ export const getJoinerActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.slotIdsId': { $in: ids },
+          status: { $ne: 'Cancelled' },
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate('guest')
@@ -493,6 +495,41 @@ export const editPrivateActivitySlotNote = async (
       } else {
         res.json(response.error({ message: 'No slots found' }))
       }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const getSlotsByDate = async (req: Request, res: Response) => {
+  const { activityId, date } = req.params
+  try {
+    if (!date || !activityId || activityId === '') {
+      res.json(response.error({ message: 'Id and date not set' }))
+    } else {
+      const selectedDate = new Date(date as string)
+      const dayOfWeek = selectedDate
+        .toLocaleString('en-US', { weekday: 'long' })
+        .toLowerCase()
+      const getActivity = await dbActivities.findOne({
+        _id: activityId,
+        deletedAt: null,
+      })
+      const getSlotsOnDay =
+        getActivity?.schedule?.[dayOfWeek as keyof Schedule]?.slots
+
+      res.json(
+        response.success({
+          items: getSlotsOnDay,
+          message: String(
+            getActivity?.schedule?.[dayOfWeek as keyof Schedule]._id
+          ),
+        })
+      )
     }
   } catch (err: any) {
     res.json(

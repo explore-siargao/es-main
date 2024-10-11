@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query"
 type T_UnitPrice = {
   fromDate: string
   toDate: string
-  baseRate: number
+  price: number
 }
 
 export async function updateUnitPricePerDate(props: T_UnitPrice, id: string) {
