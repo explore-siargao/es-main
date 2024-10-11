@@ -9,7 +9,10 @@ type T_Slot = {
 
 export async function updateActivitySlotNote(props: T_Slot) {
   const apiService = new ApiService()
-  return await apiService.patch(`${API_URL_ACTIVITIES}/private/update-slot-note`, props)
+  return await apiService.patch(
+    `${API_URL_ACTIVITIES}/private/update-slot-note`,
+    props
+  )
 }
 
 function useUpdateActivitySlotNote() {

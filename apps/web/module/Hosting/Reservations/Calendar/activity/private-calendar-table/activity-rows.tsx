@@ -1,8 +1,5 @@
 import React from "react"
-import {
-  format,
-  addDays,
-} from "date-fns"
+import { format, addDays } from "date-fns"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import { useCalendarStore } from "../stores/use-calendar-store"
 import ActivityUnitRows from "./activity-unit-rows"
@@ -37,51 +34,36 @@ const ActivityRows = () => {
             className="hover:bg-gray-100 cursor-pointer"
             onClick={() => toggleCollapse(activity.name)}
           >
-            <td
-              className={`border p-4 text-left font-bold border-l-0`}
-            >
+            <td className={`border p-4 text-left font-bold border-l-0`}>
               <span className="flex gap-2 items-center">
-                {collapsed[activity.name] ? (
-                  <ChevronRight />
-                ) : (
-                  <ChevronDown />
-                )}
+                {collapsed[activity.name] ? <ChevronRight /> : <ChevronDown />}
                 {activity.name}
               </span>
             </td>
             {[...Array(daysPerPage)].map((_, i) => {
               const today = new Date()
-              const date = format(
-                addDays(startDate, i),
-                "yyyy-MM-dd"
-              )
+              const date = format(addDays(startDate, i), "yyyy-MM-dd")
               const isToday =
-                format(date, "yyyy-MM-dd") ===
-                format(today, "yyyy-MM-dd")
-              const noReservationCount =
-                activity.privateActivities.reduce(
-                  (count: any, privateActivity: any) => {
-                    const hasReservation =
-                      privateActivity.reservations.some(
-                        (reservation: any) => {
-                          const reservationStart = format(
-                            new Date(reservation.startDate),
-                            "yyyy-MM-dd"
-                          )
-                          const reservationEnd = format(
-                            new Date(reservation.endDate),
-                            "yyyy-MM-dd"
-                          )
-                          return (
-                            date >= reservationStart &&
-                            date <= reservationEnd
-                          )
-                        }
+                format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
+              const noReservationCount = activity.privateActivities.reduce(
+                (count: any, privateActivity: any) => {
+                  const hasReservation = privateActivity.reservations.some(
+                    (reservation: any) => {
+                      const reservationStart = format(
+                        new Date(reservation.startDate),
+                        "yyyy-MM-dd"
                       )
-                    return count + (hasReservation ? 0 : 1)
-                  },
-                  0
-                )
+                      const reservationEnd = format(
+                        new Date(reservation.endDate),
+                        "yyyy-MM-dd"
+                      )
+                      return date >= reservationStart && date <= reservationEnd
+                    }
+                  )
+                  return count + (hasReservation ? 0 : 1)
+                },
+                0
+              )
               return (
                 <td
                   key={i}
@@ -89,10 +71,7 @@ const ActivityRows = () => {
                 >
                   <div
                     onClick={(e) => {
-                      handleOpenPricePerDatesModal(
-                        date,
-                        activity.id
-                      )
+                      handleOpenPricePerDatesModal(date, activity.id)
                       e.stopPropagation()
                     }}
                     className="flex flex-col"
@@ -100,17 +79,14 @@ const ActivityRows = () => {
                     <div>{noReservationCount}</div>
                     <div>
                       &#8369;
-                      {pricePerDates({activity, date})}
+                      {pricePerDates({ activity, date })}
                     </div>
                   </div>
                 </td>
               )
             })}
           </tr>
-          <ActivityUnitRows
-            activity={activity}
-            activityIndex={index}
-          />
+          <ActivityUnitRows activity={activity} activityIndex={index} />
         </React.Fragment>
       ))}
     </>

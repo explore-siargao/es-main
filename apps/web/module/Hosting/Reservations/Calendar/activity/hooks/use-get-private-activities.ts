@@ -8,7 +8,10 @@ type T_DBReturn = Omit<T_BackendResponse, "items"> & {
   items: T_Calendar_Private_Activity[]
 }
 
-export async function getCalendarPrivateActivities(startDate: string, endDate: string) {
+export async function getCalendarPrivateActivities(
+  startDate: string,
+  endDate: string
+) {
   const apiService = new ApiService()
   return await apiService.get<T_DBReturn>(
     `${API_URL_ACTIVITIES}/calendar/private?startDate=${startDate}&endDate=${endDate}`

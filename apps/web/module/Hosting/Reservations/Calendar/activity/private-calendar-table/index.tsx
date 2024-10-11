@@ -9,12 +9,21 @@ import Controls from "@/module/Hosting/Reservations/Calendar/activity/controls"
 import ModalsWrapper from "@/module/Hosting/Reservations/Calendar/activity/modals-wrapper"
 import useGetPrivateActivities from "../hooks/use-get-private-activities"
 import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
-import { T_Calendar_Activity, T_Calendar_Private_Activity, T_Calendar_Reservation } from "@repo/contract"
+import {
+  T_Calendar_Activity,
+  T_Calendar_Private_Activity,
+  T_Calendar_Reservation,
+} from "@repo/contract"
 
 const PrivateCalendarTable = () => {
   const queryClient = useQueryClient()
-  const { daysPerPage, startDate, searchString, setSearchString, setActivityData } =
-    useCalendarStore((state) => state)
+  const {
+    daysPerPage,
+    startDate,
+    searchString,
+    setSearchString,
+    setActivityData,
+  } = useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -37,7 +46,9 @@ const PrivateCalendarTable = () => {
     const filterReservations = (reservations: T_Calendar_Reservation[]) =>
       reservations.filter(isReservationWithinRange)
 
-    const filterPrivateActivities = (privateActivities: T_Calendar_Activity[]) =>
+    const filterPrivateActivities = (
+      privateActivities: T_Calendar_Activity[]
+    ) =>
       privateActivities
         .map((privateActivity) => ({
           ...privateActivity,

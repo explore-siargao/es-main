@@ -35,14 +35,8 @@ export type T_Calendar_Private_Activity = z.infer<
   typeof Z_Calendar_Private_Activity
 >
 
-export type T_Calendar_Activity = z.infer<
-  typeof Z_Calendar_Activity
->
+export type T_Calendar_Activity = z.infer<typeof Z_Calendar_Activity>
 
-export type T_Calendar_Date_Price = z.infer<
-  typeof Z_Calendar_Date_Price
->
+export type T_Calendar_Date_Price = z.infer<typeof Z_Calendar_Date_Price>
 
-export type T_Calendar_Reservation = z.infer<
-  typeof Z_Calendar_Reservation
->
+export type T_Calendar_Reservation = z.infer<typeof Z_Calendar_Reservation>

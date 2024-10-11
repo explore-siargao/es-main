@@ -18,7 +18,8 @@ export async function updateActivityReservation(
 
 function useUpdateActivityReservation(id: string) {
   const query = useMutation({
-    mutationFn: (props: T_UnitReservation) => updateActivityReservation(props, id),
+    mutationFn: (props: T_UnitReservation) =>
+      updateActivityReservation(props, id),
   })
   return query
 }

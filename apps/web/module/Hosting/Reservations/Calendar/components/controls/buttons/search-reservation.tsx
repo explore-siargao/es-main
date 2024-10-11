@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react"
 import { Button } from "@/common/components/ui/Button"
-import { LucideSearch, LucideX } from 'lucide-react'
+import { LucideSearch, LucideX } from "lucide-react"
 
 const SearchReservation = ({
   setIsSearchModalOpen,
   searchString,
   setSearchString,
-}: { 
+}: {
   setIsSearchModalOpen: (value: boolean) => void
   searchString: string
   setSearchString: (value: string) => void

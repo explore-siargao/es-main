@@ -1,7 +1,11 @@
 import React, { useEffect } from "react"
 import { addDays, isAfter, isBefore, parse } from "date-fns"
 import toast from "react-hot-toast"
-import { Room, Bed, WholePlace } from "@/module/Hosting/Reservations/types/CalendarTable"
+import {
+  Room,
+  Bed,
+  WholePlace,
+} from "@/module/Hosting/Reservations/types/CalendarTable"
 import useGetCalendarProperty from "@/module/Hosting/Reservations/Calendar/hooks/useGetCalendarProperty"
 import { useQueryClient } from "@tanstack/react-query"
 import PropertyRows from "@/module/Hosting/Reservations/Calendar/property/property-rows"

@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react"
 import { Button } from "@/common/components/ui/Button"
-import { LucideCalendar, LucideX } from 'lucide-react'
-import { addDays } from 'date-fns'
+import { LucideCalendar, LucideX } from "lucide-react"
+import { addDays } from "date-fns"
 
 const FilterDate = ({
   setIsModalOpen,
   filterCalendarDate,
   setFilterCalendarDate,
-  setStartDate
-}: { 
+  setStartDate,
+}: {
   setIsModalOpen: (value: boolean) => void
   filterCalendarDate: string
   setFilterCalendarDate: (value: string) => void
