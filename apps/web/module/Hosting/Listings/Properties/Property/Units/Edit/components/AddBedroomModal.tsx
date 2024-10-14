@@ -62,7 +62,7 @@ const AddBedroomModal = ({
       updatedBedrooms.push(deepCopyBedroom(fields))
     }
 
-    if (unitType === "Studio") {
+    if (unitType === "STUDIO") {
       let updatedBedroomsStudio = [...bedroomsStudio]
       if (mode === "edit" && selectedIndex !== undefined) {
         updatedBedroomsStudio[selectedIndex] = deepCopyBedroomStudio(fields)
@@ -125,7 +125,7 @@ const AddBedroomModal = ({
 
   let unitName
 
-  if (unitType === "Studio") {
+  if (unitType === "STUDIO") {
     unitName = "Living Room"
   } else if (category === "Room") {
     unitName = "Bed"

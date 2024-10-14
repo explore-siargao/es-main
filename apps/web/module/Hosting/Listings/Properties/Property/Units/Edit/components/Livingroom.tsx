@@ -39,8 +39,8 @@ const Livingroom = ({ unitType, onLivingroomUpdate }: T_Prop) => {
   const buttonText =
     unitType !== "Studio"
       ? isSingleBedroom
-        ? "Edit Living Room"
-        : "Add Living Room"
+        ? "Edit Beds in Living Room"
+        : "Add Beds in Living Room"
       : "Add Bedroom"
 
   return (

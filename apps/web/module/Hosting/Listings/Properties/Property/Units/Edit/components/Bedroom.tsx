@@ -24,7 +24,7 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
 
   const isSingleBedroom = bedrooms.length >= 1
   const displayBedrooms =
-    unitType === "Studio" ? bedrooms.slice(0, 1) : bedrooms
+    unitType === "STUDIO" ? bedrooms.slice(0, 1) : bedrooms
   return (
     <div>
       <div>
@@ -35,9 +35,9 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
               <React.Fragment key={bedroomArray.roomName}>
                 <div className=" rounded-xl px-3 py-2 border w-full border-text-200">
                   <Typography variant="h4" fontWeight="semibold">
-                    {category === "Room" && unitType !== "Studio"
+                    {category === "Room" && unitType !== "STUDIO"
                       ? `Bed ${index + 1}`
-                      : unitType === "Studio"
+                      : unitType === "STUDIO"
                         ? "Living Room"
                         : `Bedroom ${index + 1}`}{" "}
                   </Typography>
@@ -51,7 +51,7 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
                       </span>
                     ))}
                 </div>
-                {unitType !== "Studio" && (
+                {unitType !== "STUDIO" && (
                   <div className="flex items-center ml-6">
                     <Button
                       type="button"
@@ -73,17 +73,17 @@ const Bedroom = ({ unitType, category }: T_Prop) => {
           className="text-text-400 text-sm flex items-center gap-2 p-2 mt-2 hover:font-semibold transition"
         >
           <LucidePlus className="h-4 w-4" />
-          {unitType === "Studio"
+          {unitType === "STUDIO"
             ? isSingleBedroom
               ? "Edit Living Room"
-              : "Add beds"
-            : "Add beds in living room"}
+              : "Add beds in living room"
+            : "Add beds"}
         </button>
       </div>
       <AddBedroomModal
         isOpen={isAddBedroomModalOpen}
         onClose={() => setIsAddBedroomModalOpen(false)}
-        mode={unitType === "Studio" && isSingleBedroom ? "edit" : "add"}
+        mode={unitType === "STUDIO" && isSingleBedroom ? "edit" : "add"}
         selectedIndex={0}
         unitType={unitType}
         category={category}

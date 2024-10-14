@@ -129,7 +129,7 @@ const WholePlace = ({ pageType }: Prop) => {
   useEffect(() => {
     if (data?.item?.bedRooms || data?.item?.livingRooms) {
       updateBedrooms(
-        data?.item?.title === "Studio"
+        data?.item?.title === "Studio" || data?.item?.title === "STUDIO"
           ? data.item.livingRooms
           : data.item.bedRooms
       )
@@ -265,7 +265,7 @@ const WholePlace = ({ pageType }: Prop) => {
       }
 
       const unitSpecificProps: Omit<IWholePlaceBasicInfo, "_id"> =
-        unitType === "Studio"
+        unitType === "STUDIO"
           ? {
               bedRooms: [],
               bedroomStudio: [],
@@ -361,7 +361,10 @@ const WholePlace = ({ pageType }: Prop) => {
   useEffect(() => {
     if (data) {
       setUnitType(data?.item?.subtitle || "villa")
-      if (data?.item?.subtitle === "Studio") {
+      if (
+        data?.item?.subtitle === "Studio" ||
+        data?.item?.subtitle === "STUDIO"
+      ) {
         setSingleRoomBed(data?.item?.singleLivingRoom?.name || "Single Bed")
         setSingleRoomBedCount(data?.item?.singleLivingRoom?.qty || 0)
       } else {
@@ -376,18 +379,18 @@ const WholePlace = ({ pageType }: Prop) => {
 
   useEffect(() => {
     if (
-      (unitType === "Studio" && !data?.item?.singleLivingRoom?.name) ||
-      (unitType !== "Studio" && !data?.item?.singleBedRoom?.name)
+      (unitType === "STUDIO" && !data?.item?.singleLivingRoom?.name) ||
+      (unitType !== "STUDIO" && !data?.item?.singleBedRoom?.name)
     ) {
       resetBedroom()
       resetLivingroom()
     }
 
-    if (unitType === "Studio" && data?.item?.singleLivingRoom?.name) {
+    if (unitType === "STUDIO" && data?.item?.singleLivingRoom?.name) {
       updateBedrooms(data.item.livingRooms)
     }
 
-    if (unitType !== "Studio" && data?.item?.singleBedRoom?.name) {
+    if (unitType !== "STUDIO" && data?.item?.singleBedRoom?.name) {
       updateBedrooms(data.item.bedRooms)
     }
   }, [unitType])
@@ -470,7 +473,7 @@ const WholePlace = ({ pageType }: Prop) => {
           <Select2
             label="Unit Type"
             description="Which unit type best represents your space?"
-            disabled={isPending || isFetching}
+            disabled={false}
             {...register("subtitle", {
               required: "This field is required",
             })}
@@ -526,7 +529,7 @@ const WholePlace = ({ pageType }: Prop) => {
             </div>
 
             <div>
-              {unitType !== "Studio" && (
+              {unitType !== "" && (
                 <>
                   <Typography
                     variant="h4"
@@ -540,69 +543,15 @@ const WholePlace = ({ pageType }: Prop) => {
                     fontWeight="normal"
                     className="mb-2 text-xs text-gray-500 italic"
                   >
-                    {unitType !== "Studio"
+                    {unitType !== "STUDIO"
                       ? "How many comfortable living spaces does this unit have? Click to add bed type."
                       : `What type does this unit have?`}
                   </Typography>
                   <div className="grid grid-cols-2">
-                    {unitType === "Studio" ? (
+                    {unitType === "STUDIO" ? (
                       <div className="flex items-center space-x-7">
-                        <Select2
-                          label="Unit Type"
-                          description="Which unit type best represents your space?"
-                          onChange={(e) =>
-                            setSingleRoomBed(e.currentTarget.value)
-                          }
-                          value={singleRoomBed}
-                        >
-                          <Option value="Single Bed">Single Bed</Option>
-                          <Option value="Double Bed">Double Bed</Option>
-                          <Option value="Queen Bed">Queen Bed</Option>
-                          <Option value="Queen XL Bed">Queen XL Bed</Option>
-                          <Option value="King Bed">King Bed</Option>
-                          <Option value="King XL Bed">King XL Bed</Option>
-                          <Option value="Sofa Bed">Sofa Bed</Option>
-                          <Option value="Bunk Bed">Bunk Bed</Option>
-                          <Option value="Lot (Baby Bed)">Lot (Baby Bed)</Option>
-                        </Select2>
                         <div className="flex rounded-md">
-                          <button
-                            disabled={isPending || isFetching}
-                            className="inline-flex items-center rounded-l-md border border-r-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                            type="button"
-                            onClick={() => {
-                              singleRoomBedCount > 0 &&
-                                setSingleRoomBedCount(
-                                  (prevCount) => prevCount - 1
-                                )
-                            }}
-                          >
-                            <MinusIcon className="h-3 w-3" />
-                          </button>
-                          <input
-                            disabled={isPending || isFetching}
-                            type="number"
-                            id="bathrooms"
-                            className="block w-10 min-w-0 rounded-none border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6"
-                            value={singleRoomBedCount}
-                            min={0}
-                            onChange={(e) => {
-                              const val = Number(e.target.value)
-                              setSingleRoomBedCount(val)
-                            }}
-                          />
-                          <button
-                            disabled={isPending || isFetching}
-                            className="inline-flex items-center rounded-r-md border border-l-0 text-gray-900 border-gray-300 px-3 sm:text-sm"
-                            type="button"
-                            onClick={() =>
-                              setSingleRoomBedCount(
-                                (prevCount) => prevCount + 1
-                              )
-                            }
-                          >
-                            <PlusIcon className="h-3 w-3" />
-                          </button>
+                          <Bedroom unitType={unitType} />
                         </div>
                       </div>
                     ) : (
@@ -630,7 +579,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
               {unitType != "" && (
                 <div className="mt-4">
-                  {unitType !== "Studio" && (
+                  {unitType !== "STUDIO" && (
                     <div className="flex flex-col space-y-1">
                       <Typography variant="h4" fontWeight="semibold">
                         Do you have any sleeping spaces on your living room? Yes
@@ -657,7 +606,7 @@ const WholePlace = ({ pageType }: Prop) => {
 
                   {isLivingRoomVisible && (
                     <>
-                      {unitType === "Studio" ? (
+                      {unitType === "STUDIO" ? (
                         <>
                           <Typography variant="h4" fontWeight="semibold">
                             Living room
