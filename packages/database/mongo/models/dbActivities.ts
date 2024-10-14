@@ -162,6 +162,10 @@ const activities = new Schema({
     type: [String],
     default: "",
   },
+  activityNote: {
+    type: String,
+    default: "",
+  },
   experienceType: {
     type: String,
     enum: ["Private", "Joiner"],

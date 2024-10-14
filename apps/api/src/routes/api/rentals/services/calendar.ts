@@ -548,3 +548,38 @@ export const addRentalPricePerDates = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const editRentalNote = async (req: Request, res: Response) => {
+  const { rentalId, note } = req.body
+  if (!rentalId || !note) {
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  } else {
+    try {
+      const updateRentalNote = await dbRentals.findByIdAndUpdate(
+        rentalId,
+        {
+          $set: {
+            rentalNote: note,
+          },
+        },
+        { new: true }
+      )
+      if (updateRentalNote) {
+        res.json(
+          response.success({
+            item: updateRentalNote,
+            message: 'Rental note successfully updated',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'Rental not found' }))
+      }
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  }
+}
