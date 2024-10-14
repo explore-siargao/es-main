@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.27.0](https://github.com/explore-siargao/es-main/compare/v0.26.1...v0.27.0) (2024-10-14)
+
+
+### 🚀 Features
+
+* Added cancel for property unit name edit ([423003d](https://github.com/explore-siargao/es-main/commit/423003d26f4d413325182325d2f5659bc0ae8c89))
+* Added Pricing, Experience Type and Categories in activity summary ([afb0bcb](https://github.com/explore-siargao/es-main/commit/afb0bcb165f3842162f234d36ef10058adc80067))
+* Added Property cancellation function ([1450f83](https://github.com/explore-siargao/es-main/commit/1450f83d1a47629e6c38ba93f2f77f15199c4abe))
+* **api:** Added endpoint for adding joiner activity reservation ([9dabdf9](https://github.com/explore-siargao/es-main/commit/9dabdf90d9a992a17c8e5f3296fb727d6663e6fc))
+* **api:** Added endpoint for cancellation of activity reservations ([a0d4241](https://github.com/explore-siargao/es-main/commit/a0d424177d543e7f0bdb6978a4548dfd53255dac))
+* **api:** Added endpoint for editing private activity slot note ([820c59b](https://github.com/explore-siargao/es-main/commit/820c59b81ea3efad1d00dba04400ceca6da3b759))
+* **api:** Added endpoint for editing slot name in joiner activities ([2635395](https://github.com/explore-siargao/es-main/commit/26353954accbd68cc52be77a9053b9880aecf2c7))
+* **api:** Added logic allowed days to cancel  to rental cancel reservation endpoint ([8545947](https://github.com/explore-siargao/es-main/commit/854594788d510c3f212c226a903d2e454c9b295e))
+* **api:** Modified keys on property, renntal, activity and reservation model from ids to qtyIds ([4a87946](https://github.com/explore-siargao/es-main/commit/4a87946f6e538ec4da90f0e53631425465d8cb82))
+* **api:** Modified return of get joiner activities calendar ([02138e8](https://github.com/explore-siargao/es-main/commit/02138e8cf5f786fef24dd9442aa33456d704590c))
+* Modified model activity and reservation ([52d606c](https://github.com/explore-siargao/es-main/commit/52d606c6e00638acf6f23a878a7bde09e3b40c28))
+* Modified model activity and reservation ([1109577](https://github.com/explore-siargao/es-main/commit/11095776bf1d72243554f7174a3f7cbed5f1ef4f))
+* **web:** Corrected label on bed room and living rooms when adding beds ([8badc78](https://github.com/explore-siargao/es-main/commit/8badc7860c1929d66cdc17f555c85d96385661ca))
+* **web:** Fixed bed units not showing and undefined values on summary ([ecda560](https://github.com/explore-siargao/es-main/commit/ecda5605cbe2bc6a1b024904492b2664e09efb14))
+
+
+### 🛠 Bug Fixes
+
+* **api:** Fixed error on getting private activities with reservation ([c8504c7](https://github.com/explore-siargao/es-main/commit/c8504c729747e278633cf23a5a45b3065edf48b9))
+* **api:** Fixed issue on not getting reservations on rental car and motorbike calendar ([4329ae6](https://github.com/explore-siargao/es-main/commit/4329ae6e2d4301e405641bf131f7de88fef3fb67))
+* Type error for Private and Joiner ([bd6f607](https://github.com/explore-siargao/es-main/commit/bd6f6076b9532315025339e069ac926c40465412))
+* **web:** Fixed error on filter date function not working ([0059d74](https://github.com/explore-siargao/es-main/commit/0059d742509469e063616db249d847fc2f39b50c))
+
+
+### 🧰 Maintenance
+
+* Minus 1 to daysPerPage for properties calendar ([30d44a7](https://github.com/explore-siargao/es-main/commit/30d44a7170637a7f01760a61644a542dfa92fd80))
+* Rename abbr to name and change file name convention to kebab casing ([ea8a412](https://github.com/explore-siargao/es-main/commit/ea8a412ae053451baff1e3fae75fba486cc82895))
+
 ## [0.26.1](https://github.com/explore-siargao/es-main/compare/v0.26.0...v0.26.1) (2024-10-05)
 
 ### 🧰 Maintenance
