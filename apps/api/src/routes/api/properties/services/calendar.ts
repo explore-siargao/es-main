@@ -431,3 +431,38 @@ export const addUnitPricePerDates = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const editUnitNote = async (req: Request, res: Response) => {
+  const { unitId, note } = req.body
+  if (!unitId || !note) {
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  } else {
+    try {
+      const updateUnitNote = await dbBookableUnitTypes.findByIdAndUpdate(
+        unitId,
+        {
+          $set: {
+            unitNote: note,
+          },
+        },
+        { new: true }
+      )
+      if (updateUnitNote) {
+        res.json(
+          response.success({
+            item: updateUnitNote,
+            message: 'Bookable unit note successfully updated',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'Bookable  unit not found' }))
+      }
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  }
+}

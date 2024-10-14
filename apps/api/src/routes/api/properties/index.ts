@@ -59,6 +59,7 @@ import { getUnitPrice, updateUnitPrice } from './services/unitPrice'
 import {
   addUnitPricePerDates,
   editUnitChildName,
+  editUnitNote,
   getPropertyCalendar,
 } from './services/calendar'
 
@@ -389,6 +390,14 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   addUnitPricePerDates
+)
+
+router.patch(
+  '/unit/update-note',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editUnitNote
 )
 
 export default router

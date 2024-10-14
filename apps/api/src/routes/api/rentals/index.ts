@@ -32,6 +32,7 @@ import isHostRentalOwner from '@/routes/mock/rentals/middleware/isHostRentalOwne
 import {
   addRentalPricePerDates,
   editChildName,
+  editRentalNote,
   getBikeCalendar,
   getCarCalendar,
   getMotorcycleCalendar,
@@ -287,6 +288,14 @@ router.get(
   isUserLoggedIn,
   isCsrfTokenValid,
   getRentalIds
+)
+
+router.patch(
+  '/update-note',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  editRentalNote
 )
 
 export default router

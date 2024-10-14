@@ -606,3 +606,38 @@ export const editJoinerActivitySlotName = async (
     )
   }
 }
+
+export const editActivityNote = async (req: Request, res: Response) => {
+  const { activityId, note } = req.body
+  if (!activityId || !note) {
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  } else {
+    try {
+      const updateActivityNote = await dbActivities.findByIdAndUpdate(
+        activityId,
+        {
+          $set: {
+            activityNote: note,
+          },
+        },
+        { new: true }
+      )
+      if (updateActivityNote) {
+        res.json(
+          response.success({
+            item: updateActivityNote,
+            message: 'Activity note successfully updated',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'No activity found' }))
+      }
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
+  }
+}
