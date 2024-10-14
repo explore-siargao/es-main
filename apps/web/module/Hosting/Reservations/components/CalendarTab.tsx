@@ -49,7 +49,7 @@ const CalendarTab = () => {
     if (activityCountsData?.item?.joiner > 0) {
       activityTabs.push({
         name: "Joiners",
-        link: "/hosting/reservations/calendar/activities/joiners",
+        link: "/hosting/reservations/calendar/activities/joiner",
       })
     }
   }

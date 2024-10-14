@@ -1,15 +1,15 @@
 import { useState } from "react"
 import Tabs from "@/common/components/Tabs"
-import { useCalendarStore } from "./stores/use-calendar-store"
-import Move from "../components/controls/move"
-import FilterDate from "../components/controls/buttons/filter-date"
-import SearchReservation from "../components/controls/buttons/search-reservation"
-import AddReservation from "../components/controls/buttons/add-reservation"
-import FilterDateModal from "../modals/filter-date-modal"
-import SearchActivityModal from "./modals/search-activity-modal"
-import AddActivityReservationModal from "./modals/add-activity-reservation-modal"
-import useGetActivityCounts from "./hooks/use-get-activity-counts"
-import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "./constants"
+import { useCalendarStore } from "../stores/use-private-store"
+import Move from "../../components/controls/move"
+import FilterDate from "../../components/controls/buttons/filter-date"
+import SearchReservation from "../../components/controls/buttons/search-reservation"
+import AddReservation from "../../components/controls/buttons/add-reservation"
+import FilterDateModal from "../../modals/filter-date-modal"
+import SearchActivityModal from "../../modals/search-activity-modal"
+import AddReservationModal from "./modals/add-reservation-modal"
+import useGetActivityCounts from "../hooks/use-get-activity-counts"
+import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
 
 const Controls = () => {
@@ -42,7 +42,7 @@ const Controls = () => {
     if (activityCountsData?.item?.joiner > 0) {
       activityTabs.push({
         name: E_Activity_Experience_Type.Joiner,
-        link: "/hosting/reservations/calendar/activities/joiners",
+        link: "/hosting/reservations/calendar/activities/joiner",
       })
     }
   }
@@ -87,7 +87,7 @@ const Controls = () => {
         onClose={() => setIsSearchModalOpen(false)}
         setSearchString={setSearchString}
       />
-      <AddActivityReservationModal
+      <AddReservationModal
         isModalOpen={isAddReservationModalOpen}
         onClose={() => setIsAddReservationModalOpen(false)}
       />

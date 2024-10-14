@@ -11,6 +11,9 @@ import {
   Z_Calendar_Activity,
   Z_Calendar_Date_Price,
   Z_Calendar_Reservation,
+  Z_Calendar_Joiner_Activity,
+  Z_Joiner_Activity,
+  Z_Joiner_Slot,
 } from "./zod"
 
 export type T_Activity_Segment = z.infer<typeof Z_Activity_Segment>
@@ -39,4 +42,18 @@ export type T_Calendar_Activity = z.infer<typeof Z_Calendar_Activity>
 
 export type T_Calendar_Date_Price = z.infer<typeof Z_Calendar_Date_Price>
 
-export type T_Calendar_Reservation = z.infer<typeof Z_Calendar_Reservation>
+export type T_Calendar_Reservation = z.infer<
+  typeof Z_Calendar_Reservation
+>
+
+export type T_Calendar_Joiner_Activity = z.infer<
+  typeof Z_Calendar_Joiner_Activity
+>
+
+export type T_Joiner_Activity = z.infer<
+  typeof Z_Joiner_Activity
+>
+
+export type T_Joiner_Slot = z.infer<
+  typeof Z_Joiner_Slot
+>

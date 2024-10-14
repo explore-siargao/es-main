@@ -5,11 +5,10 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { useForm } from "react-hook-form"
-import { useCalendarStore } from "../stores/use-calendar-store"
-import useCancelActivityReservation from "../hooks/use-cancel-activity-reservation"
+import { useCalendarStore } from "../../stores/use-joiner-store"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
-import useUpdatePrivateActivityReservation from "../../hooks/useUpdatePrivateActivityReservation"
-import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
+import useUpdateUnitReservation from "../../../hooks/useUpdateUnitReservation"
+import useCancelActivityReservation from "../../hooks/use-cancel-activity-reservation"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()
@@ -25,7 +24,7 @@ const InfoCancelModal = () => {
   } = useCalendarStore((state) => state)
 
   const { register, handleSubmit, getValues, reset } = useForm()
-  const { mutate } = useUpdatePrivateActivityReservation(
+  const { mutate } = useUpdateUnitReservation(
     String(selectedReservation?.id)
   )
 
@@ -47,7 +46,7 @@ const InfoCancelModal = () => {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
+            queryKey: ["calendar-property"],
           })
           toast.success(data.message)
           closeReservationModal()
@@ -65,7 +64,7 @@ const InfoCancelModal = () => {
     onSuccess: (data: any) => {
       if (!data.error) {
         queryClient.invalidateQueries({
-          queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
+          queryKey: ["calendar-property"],
         })
         toast.success(data.message)
         closeReservationModal()
@@ -145,7 +144,9 @@ const InfoCancelModal = () => {
                       <Textarea
                         id="notes"
                         className="p-3 h-28"
-                        defaultValue={String(selectedReservation?.notes || "")}
+                        defaultValue={String(
+                          selectedReservation?.notes || ""
+                        )}
                         {...register("notes")}
                       />
                     </div>

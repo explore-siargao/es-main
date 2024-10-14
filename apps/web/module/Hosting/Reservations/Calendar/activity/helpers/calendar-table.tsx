@@ -1,4 +1,5 @@
 import { addDays, format, getMonth, isSameDay } from "date-fns"
+import { ReactNode } from "react"
 
 export const generateDays = ({
   daysPerPage,
@@ -88,6 +89,32 @@ export const generateRowBorder = ({
         key={i}
         className={`${i + 1 !== daysPerPage && "border-r"} p-2 w-full max-w-24 ${isToday && "bg-primary-100"}`}
       ></th>
+    )
+  }
+  return borders
+}
+
+export const generateTimeSlotRowBorder = ({
+  daysPerPage,
+  startDate,
+  content,
+}: {
+  daysPerPage: number
+  startDate: Date
+  content: ReactNode
+}) => {
+  const borders = []
+  const today = new Date()
+  for (let i = 0; i < daysPerPage; i++) {
+    const date = addDays(startDate, i)
+    const isToday = isSameDay(date, today)
+    borders.push(
+      <th
+        key={i}
+        className={`${i + 1 !== daysPerPage && "border-r"} w-full max-w-24 ${isToday && "bg-primary-100"} hover:bg-gray-200 transition`}
+      >
+        {content}
+      </th>
     )
   }
   return borders

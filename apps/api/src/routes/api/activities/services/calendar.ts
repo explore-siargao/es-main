@@ -344,7 +344,7 @@ export const getJoinerActivityCalendar = async (
                 })
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  name: `${day.toUpperCase().slice(0, 3)} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${capitalize(day.slice(0, 3))} ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   price: activity.pricePerPerson,
                   pricePerDates: activity?.pricePerDates.map((priceDate) => ({
                     fromDate: priceDate.fromDate,

@@ -6,9 +6,9 @@ import { T_Property } from "@repo/contract"
 import { useForm } from "react-hook-form"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { useCalendarStore } from "../stores/use-calendar-store"
-import useUpdateActivityPricePerDate from "../hooks/use-update-activity-price-per-date"
-import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
+import { useCalendarStore } from "../../stores/use-private-store"
+import useUpdateActivityPricePerDate from "../../hooks/use-update-activity-price-per-date"
+import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../constants"
 
 const EditPricePerDatesModal = () => {
   const {

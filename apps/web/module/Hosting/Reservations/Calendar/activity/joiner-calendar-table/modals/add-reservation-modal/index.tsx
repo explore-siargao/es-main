@@ -1,22 +1,22 @@
 import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
-import ReservationForm from "../../modals/add-activity-reservation-modal/reservation-form"
-import useAddActivityReservation from "../../hooks/use-add-activity-reservation"
+import ReservationForm from "./reservation-form"
+import useAddActivityReservation from "../../../hooks/use-add-activity-reservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import SelectStatusForm from "./select-status-form"
-import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../constants"
+import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../../constants"
 
-interface AddActivityReservationModalProps {
+interface AddReservationModalProps {
   isModalOpen: boolean
   onClose: () => void
 }
 
-const AddActivityReservationModal = ({
+const AddReservationModal = ({
   isModalOpen,
   onClose,
-}: AddActivityReservationModalProps) => {
+}: AddReservationModalProps) => {
   const [selectedLegendType, setSelectedLegendType] = useState<string>("")
   const [isLegendTypeSelected, setIsLegendTypeSelected] =
     useState<boolean>(false)
@@ -82,4 +82,4 @@ const AddActivityReservationModal = ({
   )
 }
 
-export default AddActivityReservationModal
+export default AddReservationModal

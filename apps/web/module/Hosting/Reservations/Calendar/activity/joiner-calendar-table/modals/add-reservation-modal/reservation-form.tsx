@@ -5,9 +5,9 @@ import { useFormContext } from "react-hook-form"
 import { Option, Select } from "@/common/components/ui/Select"
 import { useEffect, useState } from "react"
 import { Textarea } from "@/common/components/ui/Textarea"
-import useGetActivityByHost from "../../hooks/use-get-activity-by-host"
+import useGetActivityByHost from "../../../hooks/use-get-activity-by-host"
 import { usePathname } from "next/navigation"
-import useGetPrivateActivitySlots from "../../hooks/use-get-private-activity-slots"
+import useGetPrivateActivitySlots from "../../../hooks/use-get-private-activity-slots"
 
 interface IActivityReservationFormProps {
   handleRentalCancel: () => void

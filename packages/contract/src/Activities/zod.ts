@@ -95,6 +95,27 @@ export const Z_Calendar_Private_Activity = z.object({
   privateActivities: z.array(Z_Calendar_Activity),
 })
 
+export const Z_Joiner_Slot = z.object({
+  id: z.string(),
+  name: z.string(),
+  status: z.string(),
+  reservations: z.array(Z_Calendar_Reservation),
+});
+
+export const Z_Joiner_Activity = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+  pricePerDates: z.array(Z_Calendar_Date_Price).optional(),
+  slots: z.array(Z_Joiner_Slot),
+});
+
+export const Z_Calendar_Joiner_Activity = z.object({
+  id: z.string(),
+  name: z.string(),
+  joinerActivities: z.array(Z_Joiner_Activity),
+});
+
 export const Z_Update_Activity_Additional_Info = z.object({
   whatToBring: z.array(z.string()).optional(),
   notAllowed: z.array(z.string()).optional(),

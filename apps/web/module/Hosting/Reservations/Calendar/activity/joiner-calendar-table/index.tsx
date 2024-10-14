@@ -2,32 +2,23 @@ import React, { useEffect } from "react"
 import { addDays, isAfter, isBefore } from "date-fns"
 import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
-import ActivityRows from "@/module/Hosting/Reservations/Calendar/activity/private-calendar-table/activity-rows"
+import ActivityRows from "@/module/Hosting/Reservations/Calendar/activity/joiner-calendar-table/activity-rows"
 import { generateDays, generateMonth } from "../helpers/calendar-table"
-import { useCalendarStore } from "@/module/Hosting/Reservations/Calendar/activity/stores/use-private-store"
-import Controls from "@/module/Hosting/Reservations/Calendar/activity/private-calendar-table/controls"
-import ModalsWrapper from "./modals-wrapper"
-import useGetPrivateActivities from "../hooks/use-get-private-activities"
-import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
-import {
-  T_Calendar_Activity,
-  T_Calendar_Private_Activity,
-  T_Calendar_Reservation,
-} from "@repo/contract"
+import { useCalendarStore } from "@/module/Hosting/Reservations/Calendar/activity/stores/use-joiner-store"
+import Controls from "./controls"
+import ModalsWrapper from "@/module/Hosting/Reservations/Calendar/activity/joiner-calendar-table/modals-wrapper"
+import useGetJoinerActivities from "../hooks/use-get-joiner-activities"
+import { QK_CALENDAR_JOINER_ACTIVITIES } from "../constants"
+import { T_Calendar_Joiner_Activity, T_Calendar_Reservation, T_Joiner_Activity, T_Joiner_Slot } from "@repo/contract"
 
 const PrivateCalendarTable = () => {
   const queryClient = useQueryClient()
-  const {
-    daysPerPage,
-    startDate,
-    searchString,
-    setSearchString,
-    setActivityData,
-  } = useCalendarStore((state) => state)
+  const { daysPerPage, startDate, searchString, setSearchString, setActivityData } =
+    useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
-  const { data: calendarActivities } = useGetPrivateActivities(
+  const { data: calendarActivities } = useGetJoinerActivities(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -43,42 +34,43 @@ const PrivateCalendarTable = () => {
       )
     }
 
-    const filterReservations = (reservations: T_Calendar_Reservation[]) =>
-      reservations.filter(isReservationWithinRange)
+    const filterReservations = (slot: T_Joiner_Slot) =>
+      slot.reservations.filter(isReservationWithinRange)
 
-    const filterPrivateActivities = (
-      privateActivities: T_Calendar_Activity[]
-    ) =>
-      privateActivities
-        .map((privateActivity) => ({
-          ...privateActivity,
-          reservations: filterReservations(privateActivity.reservations),
+    const filterPrivateActivities = (joinerActivities: T_Joiner_Activity[]) =>
+      joinerActivities
+        .map((joinerActivity) => ({
+          ...joinerActivity,
+          slots: joinerActivity.slots.map((slot) => ({
+            ...slot,
+            reservations: filterReservations(slot)
+          })),
         }))
         .filter(
-          (privateActivity: T_Calendar_Activity) =>
+          (joinerActivity: T_Joiner_Activity) =>
             !searchString ||
-            privateActivity.name
+            joinerActivity.name
               .toLowerCase()
               .includes(searchString.toLowerCase())
         )
 
-    const filterActivities = (activities: T_Calendar_Private_Activity[]) =>
+    const filterActivities = (activities: T_Calendar_Joiner_Activity[]) =>
       activities
-        .map((activity: T_Calendar_Private_Activity) => ({
+        .map((activity: T_Calendar_Joiner_Activity) => ({
           ...activity,
-          privateActivities: filterPrivateActivities(
-            activity.privateActivities
+          joinerActivities: filterPrivateActivities(
+            activity.joinerActivities
           ),
         }))
         .filter(
-          (activity: T_Calendar_Private_Activity) =>
-            activity.privateActivities.length > 0
+          (activity: T_Calendar_Joiner_Activity) =>
+            activity.joinerActivities.length > 0
         )
 
     const newFilteredData = filterActivities(calendarActivities?.items ?? [])
 
     if (newFilteredData.length > 0) {
-      setActivityData(newFilteredData ?? [])
+      setActivityData(newFilteredData)
     } else if (searchString && newFilteredData.length == 0) {
       toast.error(`No matched results for "${searchString}"`)
       setSearchString("")
@@ -88,7 +80,7 @@ const PrivateCalendarTable = () => {
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
-        queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
+        queryKey: [QK_CALENDAR_JOINER_ACTIVITIES],
       })
     }
   }, [startDate])

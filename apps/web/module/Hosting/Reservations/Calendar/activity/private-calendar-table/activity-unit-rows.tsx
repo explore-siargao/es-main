@@ -5,7 +5,7 @@ import { Button } from "@/common/components/ui/Button"
 import { getColorClasses } from "../../../helpers/activity-legends"
 import getBookingStyle from "../helpers/get-booking-style"
 import { generateRowBorder } from "../helpers/calendar-table"
-import { useCalendarStore } from "../stores/use-calendar-store"
+import { useCalendarStore } from "../stores/use-private-store"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import {
@@ -71,7 +71,7 @@ const ActivityUnitRows = ({
       {!collapsed[activity.name] &&
         activity.privateActivities.map((privateActivity) => (
           <tr key={privateActivity.name} className="hover:bg-gray-100 relative">
-            <td className="border py-4 pr-4 pl-12 text-left border-l-0">
+            <td className="border py-2 pr-4 pl-12 text-left border-l-0">
               <div className="flex justify-between items-center">
                 <span>
                   {privateActivity.name}

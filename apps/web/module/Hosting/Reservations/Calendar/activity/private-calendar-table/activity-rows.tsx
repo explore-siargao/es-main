@@ -1,10 +1,10 @@
 import React from "react"
 import { format, addDays } from "date-fns"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import { useCalendarStore } from "../stores/use-calendar-store"
+import { useCalendarStore } from "../stores/use-private-store"
 import ActivityUnitRows from "./activity-unit-rows"
 import { T_Calendar_Private_Activity } from "@repo/contract"
-import { pricePerDates } from "../helpers/price-per-dates"
+import { pricePerDatesPrivate } from "../helpers/price-per-dates"
 
 const ActivityRows = () => {
   const {
@@ -79,7 +79,7 @@ const ActivityRows = () => {
                     <div>{noReservationCount}</div>
                     <div>
                       &#8369;
-                      {pricePerDates({ activity, date })}
+                      {pricePerDatesPrivate({ activity, date })}
                     </div>
                   </div>
                 </td>
