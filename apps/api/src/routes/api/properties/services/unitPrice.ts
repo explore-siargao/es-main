@@ -114,7 +114,9 @@ export const getUnitPrice = async (req: Request, res: Response) => {
 
         return {
           _id: item?._id,
-          unitName: item?.title,
+            unitName: item?.title,
+            unitNameForBed: item?.subtitle,
+            qty: item?.qty,
           unitPrice: {
             _id: unitPrice?._id,
             baseRate: unitPrice?.baseRate ?? 0,

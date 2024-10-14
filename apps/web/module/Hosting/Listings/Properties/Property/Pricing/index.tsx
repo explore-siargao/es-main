@@ -19,6 +19,8 @@ import useUpdatePropertyFinishedSection from "../../hooks/useUpdatePropertyFinis
 import useGetPropertyUnitPricesById from "../../hooks/useGetPropertyUnitPricesById"
 import useUpdatePropertyUnitPriceById from "../../hooks/useUpdatePropertyUnitPriceById"
 import { T_UnitPrice } from "@repo/contract"
+import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
+const numWords = require("num-words")
 
 interface PricingContentProps {
   onChange?: (id: string, value: number) => void
@@ -144,11 +146,13 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       data?.item &&
       unitPriceData?.items?.length
     ) {
-      const items = unitPriceData?.items?.map((item: any, index: number) => ({
+      const items = unitPriceData.items.map((item: any) => ({
         _id: item._id,
         unitName: item.unitName.startsWith("Custom: ")
           ? item.unitName.slice("Custom: ".length)
-          : item.unitName + " " + index,
+          : item.unitName,
+        unitNameForBed: item.unitNameForBed ? item.unitNameForBed : "",
+        unitQty: item.qty,
         unitPrice: {
           ...item.unitPrice,
         },
@@ -156,7 +160,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
 
       reset({ unitPrice: items })
     }
-  }, [data, isLoading, unitPriceData])
+  }, [data, isLoading, unitPriceData, reset])
 
   return (
     <div className="my-20">
@@ -177,8 +181,12 @@ const Pricing = ({ pageType }: PricingContentProps) => {
                 <AccordionItem key={index} value={`item-${index}`}>
                   <AccordionTrigger>
                     {
-                      // @ts-ignore
-                      field.unitName
+                      //@ts-ignore
+                      field.unitName && field.unitName
+                        ? //@ts-ignore
+                          field.unitName
+                        : //@ts-ignore
+                          `${capitalizeFirstLetter(numWords(field.unitQty))}-bedroom ${field.unitNameForBed}`
                     }
                   </AccordionTrigger>
                   <AccordionContent>
