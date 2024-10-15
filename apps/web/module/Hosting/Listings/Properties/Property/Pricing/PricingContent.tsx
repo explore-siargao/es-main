@@ -11,13 +11,12 @@ type Props = {
     unitPrice: T_UnitPrice
     unitNameForBed: string
     unitQty: number
-
   }
   update: (index: number, updatedField: any) => void
 }
 
 const PricingContent: React.FC<Props> = ({ index, field, update }) => {
-  const { _id, unitName, unitPrice, unitNameForBed, unitQty} = field
+  const { _id, unitName, unitPrice, unitNameForBed, unitQty } = field
   const cleanUnitName = unitName.startsWith("Custom: ")
     ? unitName.replace("Custom: ", "")
     : unitName
