@@ -26,7 +26,9 @@ const JoinerActivity = () => {
               Reservations
             </Typography>
           </div>
-          <ReservationCalendarTab activityTab={E_Activity_Experience_Type.Joiner} />
+          <ReservationCalendarTab
+            activityTab={E_Activity_Experience_Type.Joiner}
+          />
         </div>
 
         {/* Loading indicator */}

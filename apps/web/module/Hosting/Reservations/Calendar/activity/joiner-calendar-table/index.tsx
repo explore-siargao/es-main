@@ -9,12 +9,22 @@ import Controls from "./controls"
 import ModalsWrapper from "@/module/Hosting/Reservations/Calendar/activity/joiner-calendar-table/modals-wrapper"
 import useGetJoinerActivities from "../hooks/use-get-joiner-activities"
 import { QK_CALENDAR_JOINER_ACTIVITIES } from "../constants"
-import { T_Calendar_Joiner_Activity, T_Calendar_Reservation, T_Joiner_Activity, T_Joiner_Slot } from "@repo/contract"
+import {
+  T_Calendar_Joiner_Activity,
+  T_Calendar_Reservation,
+  T_Joiner_Activity,
+  T_Joiner_Slot,
+} from "@repo/contract"
 
 const PrivateCalendarTable = () => {
   const queryClient = useQueryClient()
-  const { daysPerPage, startDate, searchString, setSearchString, setActivityData } =
-    useCalendarStore((state) => state)
+  const {
+    daysPerPage,
+    startDate,
+    searchString,
+    setSearchString,
+    setActivityData,
+  } = useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
@@ -43,7 +53,7 @@ const PrivateCalendarTable = () => {
           ...joinerActivity,
           slots: joinerActivity.slots.map((slot) => ({
             ...slot,
-            reservations: filterReservations(slot)
+            reservations: filterReservations(slot),
           })),
         }))
         .filter(
@@ -58,9 +68,7 @@ const PrivateCalendarTable = () => {
       activities
         .map((activity: T_Calendar_Joiner_Activity) => ({
           ...activity,
-          joinerActivities: filterPrivateActivities(
-            activity.joinerActivities
-          ),
+          joinerActivities: filterPrivateActivities(activity.joinerActivities),
         }))
         .filter(
           (activity: T_Calendar_Joiner_Activity) =>

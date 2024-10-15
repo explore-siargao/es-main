@@ -42,18 +42,12 @@ export type T_Calendar_Activity = z.infer<typeof Z_Calendar_Activity>
 
 export type T_Calendar_Date_Price = z.infer<typeof Z_Calendar_Date_Price>
 
-export type T_Calendar_Reservation = z.infer<
-  typeof Z_Calendar_Reservation
->
+export type T_Calendar_Reservation = z.infer<typeof Z_Calendar_Reservation>
 
 export type T_Calendar_Joiner_Activity = z.infer<
   typeof Z_Calendar_Joiner_Activity
 >
 
-export type T_Joiner_Activity = z.infer<
-  typeof Z_Joiner_Activity
->
+export type T_Joiner_Activity = z.infer<typeof Z_Joiner_Activity>
 
-export type T_Joiner_Slot = z.infer<
-  typeof Z_Joiner_Slot
->
+export type T_Joiner_Slot = z.infer<typeof Z_Joiner_Slot>

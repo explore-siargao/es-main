@@ -1,6 +1,9 @@
 import { addDays } from "date-fns"
 import { create } from "zustand"
-import { T_Calendar_Joiner_Activity, T_Calendar_Reservation } from "@repo/contract"
+import {
+  T_Calendar_Joiner_Activity,
+  T_Calendar_Reservation,
+} from "@repo/contract"
 
 type T_Activity_Reservation = {
   activityName: string
@@ -14,7 +17,7 @@ type T_Calendar_Store = {
   selectedLegendType: string
   isLegendTypeSelected: boolean
   collapsed: { [key: string]: boolean }
-  selectedReservation: T_Calendar_Reservation & T_Activity_Reservation | null
+  selectedReservation: (T_Calendar_Reservation & T_Activity_Reservation) | null
   isReservationModalOpen: boolean
   isAddReservationModalOpen: boolean
   selectedDate: string
@@ -33,7 +36,9 @@ type T_Calendar_Store = {
   setSelectedLegendType: (value: string) => void
   setIsLegendTypeSelected: (value: boolean) => void
   setCollapsed: (value: { [key: string]: boolean }) => void
-  setSelectedReservation: (value: T_Calendar_Reservation & T_Activity_Reservation | null) => void
+  setSelectedReservation: (
+    value: (T_Calendar_Reservation & T_Activity_Reservation) | null
+  ) => void
   setIsReservationModalOpen: (value: boolean) => void
   setIsAddReservationModalOpen: (value: boolean) => void
   setSelectedDate: (value: string) => void
@@ -75,8 +80,9 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
     set({ isLegendTypeSelected: value }),
   setCollapsed: (value: { [key: string]: boolean }) =>
     set({ collapsed: value }),
-  setSelectedReservation: (value: T_Calendar_Reservation & T_Activity_Reservation | null) =>
-    set({ selectedReservation: value }),
+  setSelectedReservation: (
+    value: (T_Calendar_Reservation & T_Activity_Reservation) | null
+  ) => set({ selectedReservation: value }),
   setIsReservationModalOpen: (value: boolean) =>
     set({ isReservationModalOpen: value }),
   setIsAddReservationModalOpen: (value: boolean) =>
@@ -86,7 +92,8 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
   setActivityData: (value: any) => set({ activityData: value }),
   setEditingSlotNoteId: (value: string | null) =>
     set({ editingSlotNoteId: value }),
-  setTempActivitySlotNote: (value: string) => set({ tempActivitySlotNote: value }),
+  setTempActivitySlotNote: (value: string) =>
+    set({ tempActivitySlotNote: value }),
   setIsEditReservation: (value: boolean) => set({ isEditReservation: value }),
   setIsCancelReservation: (value: boolean) =>
     set({ isCancelReservation: value }),

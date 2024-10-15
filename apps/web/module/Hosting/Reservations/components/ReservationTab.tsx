@@ -3,7 +3,11 @@ import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 import Tabs from "@/common/components/Tabs"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
 
-const ReservationTab = ({ activityTab = E_Activity_Experience_Type.Private }: { activityTab?: E_Activity_Experience_Type }) => {
+const ReservationTab = ({
+  activityTab = E_Activity_Experience_Type.Private,
+}: {
+  activityTab?: E_Activity_Experience_Type
+}) => {
   const { data: rentalCountsData, isPending: rentalCountsPending } =
     useGetRentalCounts()
 
