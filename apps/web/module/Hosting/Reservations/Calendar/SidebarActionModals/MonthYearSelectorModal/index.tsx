@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
-import { useCalendarStore } from "../../Property/stores/use-calendar-store"
+import { useCalendarStore } from "../../property/stores/use-calendar-store"
 import { addDays, parse } from "date-fns"
 
 interface IMonthYearSelectorModalProps {

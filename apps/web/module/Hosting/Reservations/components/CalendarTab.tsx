@@ -2,7 +2,7 @@ import Tabs from "@/common/components/Tabs"
 import { usePathname } from "next/navigation"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 import { LINK_HOME } from "@/common/constants"
-import useGetActivityCounts from "../Calendar/hooks/useGetActivityCounts"
+import useGetActivityCounts from "../Calendar/activity/hooks/use-get-activity-counts"
 
 const CalendarTab = () => {
   const pathName = usePathname()
@@ -49,7 +49,7 @@ const CalendarTab = () => {
     if (activityCountsData?.item?.joiner > 0) {
       activityTabs.push({
         name: "Joiners",
-        link: "/hosting/reservations/calendar/activities/joiners",
+        link: "/hosting/reservations/calendar/activities/joiner",
       })
     }
   }

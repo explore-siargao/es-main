@@ -61,6 +61,10 @@ const rentals = new Schema({
     type: String,
     required: false,
   },
+  rentalNote: {
+    type: String,
+    default: "",
+  },
   qty: Number,
   addOns: {
     type: mongoose.Schema.ObjectId,

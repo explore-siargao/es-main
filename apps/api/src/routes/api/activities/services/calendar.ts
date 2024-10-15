@@ -4,7 +4,9 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { dbActivities, dbReservations } from '@repo/database'
+import { populate } from 'dotenv'
 import { Request, Response } from 'express'
+import { capitalize } from 'lodash'
 import mongoose from 'mongoose'
 const response = new ResponseService()
 
@@ -59,7 +61,7 @@ export const getPrivateActivityCalendar = async (
     // Fetch private activities where the experienceType is 'private' and host matches the current user
     const activities = await dbActivities.find({
       host: res.locals.user.id,
-      $or: [{ experienceType: 'private' }, { experienceType: 'Private' }],
+      experienceType: 'Private',
     })
 
     if (!activities.length) {
@@ -98,6 +100,7 @@ export const getPrivateActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.timeSlotId': { $in: ids },
+          status: { $ne: 'Cancelled' },
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate('guest')
@@ -168,7 +171,7 @@ export const getPrivateActivityCalendar = async (
                 const isOccupied = activityReservations.length > 0
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  name: `${day.toUpperCase().slice(0, 3)} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${capitalize(day.slice(0, 3))} ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   note: session.note ? session.note : '',
                   status: isOccupied ? 'occupied' : 'available',
                   reservations: activityReservations,
@@ -264,6 +267,7 @@ export const getJoinerActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.slotIdsId': { $in: ids },
+          status: { $ne: 'Cancelled' },
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate('guest')
@@ -341,7 +345,7 @@ export const getJoinerActivityCalendar = async (
                 })
                 return {
                   id: session._id.toString(), // Ensure _id is a string
-                  name: `${day.toUpperCase().slice(0, 3)} : ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
+                  name: `${capitalize(day.slice(0, 3))} ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
                   price: activity.pricePerPerson,
                   pricePerDates: activity?.pricePerDates.map((priceDate) => ({
                     fromDate: priceDate.fromDate,
@@ -502,6 +506,52 @@ export const editPrivateActivitySlotNote = async (
   }
 }
 
+export const getSlotsByDate = async (req: Request, res: Response) => {
+  const { activityId, slotId, date } = req.params
+  try {
+    if (!date || !activityId || activityId === '') {
+      res.json(response.error({ message: 'Id and date not set' }))
+    } else {
+      const selectedDate = new Date(date as string)
+      const dayOfWeek = selectedDate
+        .toLocaleString('en-US', { weekday: 'long' })
+        .toLowerCase()
+
+      // Log dayOfWeek
+      console.log('Selected dayOfWeek:', dayOfWeek)
+
+      const getActivity = await dbActivities.findOne({
+        _id: activityId,
+        deletedAt: null,
+      })
+
+      const getSlotsOnDay =
+        getActivity?.schedule?.[dayOfWeek as keyof Schedule]?.slots
+
+      const getSlotsOnTimeSlot = getSlotsOnDay?.find(
+        (item) => String(item._id) === String(slotId)
+      )?.slotIdsId
+      res.json(
+        response.success({
+          item: {
+            timeSlots: getSlotsOnDay,
+            slots: getSlotsOnTimeSlot || null,
+          },
+          message: String(
+            getActivity?.schedule?.[dayOfWeek as keyof Schedule]._id
+          ),
+        })
+      )
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : 'UNKNOWN_ERROR_OCCURRED',
+      })
+    )
+  }
+}
+
 export const editJoinerActivitySlotName = async (
   req: Request,
   res: Response
@@ -566,5 +616,40 @@ export const editJoinerActivitySlotName = async (
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
+  }
+}
+
+export const editActivityNote = async (req: Request, res: Response) => {
+  const { activityId, note } = req.body
+  if (!activityId || !note) {
+    res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  } else {
+    try {
+      const updateActivityNote = await dbActivities.findByIdAndUpdate(
+        activityId,
+        {
+          $set: {
+            activityNote: note,
+          },
+        },
+        { new: true }
+      )
+      if (updateActivityNote) {
+        res.json(
+          response.success({
+            item: updateActivityNote,
+            message: 'Activity note successfully updated',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'No activity found' }))
+      }
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
+    }
   }
 }

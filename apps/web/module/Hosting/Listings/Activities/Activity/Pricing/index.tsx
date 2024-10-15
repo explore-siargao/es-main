@@ -11,6 +11,7 @@ import { Option, Select } from "@/common/components/ui/Select"
 import { LucidePlus, LucideX } from "lucide-react"
 import useUpdateActivityPricingSlots from "../../hooks/useUpdateActivityPricingSlots"
 import { Input2 } from "@/common/components/ui/Input2"
+import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
 
 type TimeSlot = {
   startTime: string
@@ -50,7 +51,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
   const [maxCapacity, setMaxCapacity] = useState(0)
   const [price, setPrice] = useState(0)
 
-  const experienceType: "Private" | "Joiner" = data?.item?.experienceType
+  const experienceType: E_Activity_Experience_Type = data?.item?.experienceType
 
   const onSubmit = async () => {
     const allEmpty = Object.values(schedule).every(

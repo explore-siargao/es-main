@@ -1,8 +1,13 @@
 import { LucideBuilding2, LucideCarFront, LucidePalmtree } from "lucide-react"
 import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
 import Tabs from "@/common/components/Tabs"
+import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
 
-const ReservationTab = () => {
+const ReservationTab = ({
+  activityTab = E_Activity_Experience_Type.Private,
+}: {
+  activityTab?: E_Activity_Experience_Type
+}) => {
   const { data: rentalCountsData, isPending: rentalCountsPending } =
     useGetRentalCounts()
 
@@ -39,7 +44,7 @@ const ReservationTab = () => {
     {
       name: "Activities",
       icon: <LucidePalmtree className="w-5" />,
-      link: "/hosting/reservations/calendar/activities/private",
+      link: `/hosting/reservations/calendar/activities/${activityTab.toLocaleLowerCase()}`,
     },
   ]
 

@@ -37,6 +37,8 @@ import {
   addActivityPricePerDates,
   editPrivateActivitySlotNote,
   editJoinerActivitySlotName,
+  getSlotsByDate,
+  editActivityNote,
 } from './services/calendar'
 
 const router = express.Router()
@@ -45,6 +47,14 @@ const router = express.Router()
 router.get('/host', isOriginValid, isUserLoggedIn, getAllActivitiesByHostId)
 
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
+
+router.get(
+  '/:activityId/:slotId/:date',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  getSlotsByDate
+)
 
 router.get(
   '/:activityId',
@@ -132,6 +142,7 @@ router.patch(
   isUserLoggedIn,
   updatePhoto
 )
+
 router.post(
   '/:activityId/photo',
   isOriginValid,
@@ -242,6 +253,14 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editJoinerActivitySlotName
+)
+
+router.patch(
+  '/update-note',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editActivityNote
 )
 
 export default router

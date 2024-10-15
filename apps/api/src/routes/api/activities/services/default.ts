@@ -95,6 +95,8 @@ export const getActivity = async (req: Request, res: Response) => {
 export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
   const hostId = res.locals.user?.id
   const isHost = res.locals.user?.isHost
+  const type = req.query.type
+
   if (!isHost) {
     res.json(
       response.error({
@@ -103,17 +105,43 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
     )
   } else {
     try {
-      const filteredActivities = await dbActivities
-        .find({ host: hostId })
-        .populate('host', 'email isHost')
-        .populate('meetingPoint')
-        .populate('photos')
-        .select('title description status')
-      res.json(
-        response.success({
-          items: filteredActivities,
-        })
-      )
+      if (type === 'undefined') {
+        const filteredActivities = await dbActivities
+          .find({ host: hostId })
+          .populate('host', 'email isHost')
+          .populate('meetingPoint')
+          .populate('photos')
+          .select('title description status')
+        res.json(
+          response.success({
+            items: filteredActivities,
+          })
+        )
+      } else if (type === 'Private' || type === 'private') {
+        const filteredActivities = await dbActivities
+          .find({ host: hostId, experienceType: 'Private' })
+          .populate('host', 'email isHost')
+          .populate('meetingPoint')
+          .populate('photos')
+          .select('title description status')
+        res.json(
+          response.success({
+            items: filteredActivities,
+          })
+        )
+      } else if (type === 'Joiner' || type === 'joiner') {
+        const filteredActivities = await dbActivities
+          .find({ host: hostId, experienceType: 'Joiner' })
+          .populate('host', 'email isHost')
+          .populate('meetingPoint')
+          .populate('photos')
+          .select('title description status')
+        res.json(
+          response.success({
+            items: filteredActivities,
+          })
+        )
+      }
     } catch (err: any) {
       res.json(
         response.error({
@@ -243,12 +271,12 @@ export const getActivityCounts = async (req: Request, res: Response) => {
     const hostId = res.locals.user?.id
 
     const privateActivityCounts = await dbActivities.countDocuments({
-      experienceType: 'private',
+      experienceType: 'Private',
       host: hostId,
     })
 
     const joinerActivityCounts = await dbActivities.countDocuments({
-      experienceType: 'joiner',
+      experienceType: 'Joiner',
       host: hostId,
     })
 
