@@ -48,8 +48,10 @@ const Pricing = ({ pageType }: PricingContentProps) => {
     control,
     name: "unitPrice",
     keyName: "key",
-  })
 
+
+  })
+ 
   const onSubmit = async (data: any) => {
     const unitPriceDataList = data.unitPrice
 
@@ -157,11 +159,11 @@ const Pricing = ({ pageType }: PricingContentProps) => {
           ...item.unitPrice,
         },
       }))
-
+      
       reset({ unitPrice: items })
     }
   }, [data, isLoading, unitPriceData, reset])
-
+ 
   return (
     <div className="my-20">
       {isLoading ? (
