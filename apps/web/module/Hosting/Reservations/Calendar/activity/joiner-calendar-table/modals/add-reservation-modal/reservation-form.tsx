@@ -8,6 +8,7 @@ import { Textarea } from "@/common/components/ui/Textarea"
 import useGetActivityByHost from "../../../hooks/use-get-activity-by-host"
 import { usePathname } from "next/navigation"
 import useGetPrivateActivitySlots from "../../../hooks/use-get-private-activity-slots"
+import useGetJoinerActivitySlots from "../../../hooks/use-get-joiner-activity-slots"
 
 interface IActivityReservationFormProps {
   handleRentalCancel: () => void
@@ -27,24 +28,28 @@ function ReservationForm({
   const { register, reset, setValue } = useFormContext()
   const [selectedActivityId, setSelectedActivityId] = useState("")
   const [selectedDate, setSelectedDate] = useState("")
-
+  const [selectedSlotId, setSelectedSlotId] = useState("")
   const { data: activities, isLoading: isActivitiesLoading } =
     useGetActivityByHost(lastSegment)
 
   // Only call the hook when both selectedActivityId and selectedDate are valid
-  const { data: slots, refetch } = useGetPrivateActivitySlots(
+  const { data: slots, refetch } = useGetJoinerActivitySlots(
     selectedActivityId && selectedDate ? selectedActivityId : null,
+    selectedSlotId ? selectedSlotId : null,
     selectedDate ? selectedDate : null
   )
 
   useEffect(() => {
     if (selectedActivityId && selectedDate) {
       refetch() // Only refetch when both are selected
-      if (slots && slots.items) {
+      if (slots && slots.item) {
         setValue("dayId", slots.message)
       }
     }
-  }, [selectedActivityId, selectedDate])
+    if (selectedSlotId) {
+      refetch()
+    }
+  }, [selectedActivityId, selectedDate, selectedSlotId])
 
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
@@ -90,17 +95,42 @@ function ReservationForm({
           </div>
           <div className="flex flex-col w-full">
             <Select
-              label="Slot"
+              label="Time Slots"
               id="slot"
               {...register("slotId", { required: "This field is required" })}
               required
-              disabled={!selectedActivityId || !selectedDate} // Disable until both are selected
+              onChange={(e) => {
+                setSelectedSlotId(e.target.value)
+              }}
             >
               <Option value="">Select</Option>
-              {slots && slots.items
-                ? slots.items.map((property: any) => (
+              {slots && slots.item?.timeSlots
+                ? slots.item?.timeSlots.map((property: any) => (
                     <Option key={property._id} value={property._id}>
                       {`${property.startTime} - ${property.endTime}`}
+                    </Option>
+                  ))
+                : null}
+            </Select>
+          </div>
+        </div>
+
+        <div className="flex gap-4">
+          <div className="flex flex-col w-full">
+            <Select
+              label="Slot"
+              id="idsId"
+              required
+              disabled={isActivitiesLoading}
+              {...register("idsId", {
+                required: "This field is required",
+              })}
+            >
+              <Option value="">Select</Option>
+              {slots && slots.item?.slots
+                ? slots.item.slots.map((property: any) => (
+                    <Option key={property._id} value={property._id}>
+                      {`${property.name}`}
                     </Option>
                   ))
                 : null}

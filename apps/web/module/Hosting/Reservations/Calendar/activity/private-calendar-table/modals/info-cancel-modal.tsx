@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form"
 import { useCalendarStore } from "../../stores/use-private-store"
 import useCancelActivityReservation from "../../hooks/use-cancel-activity-reservation"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
-import useUpdatePrivateActivityReservation from "../../../hooks/useUpdatePrivateActivityReservation"
 import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../constants"
+import useUpdatePrivateActivityReservation from "../../hooks/use-update-private-activity-reservation"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()

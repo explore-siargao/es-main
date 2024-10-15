@@ -4,6 +4,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { dbActivities, dbReservations } from '@repo/database'
+import { populate } from 'dotenv'
 import { Request, Response } from 'express'
 import { capitalize } from 'lodash'
 import mongoose from 'mongoose'
@@ -506,7 +507,7 @@ export const editPrivateActivitySlotNote = async (
 }
 
 export const getSlotsByDate = async (req: Request, res: Response) => {
-  const { activityId, date } = req.params
+  const { activityId, slotId, date } = req.params
   try {
     if (!date || !activityId || activityId === '') {
       res.json(response.error({ message: 'Id and date not set' }))
@@ -515,16 +516,27 @@ export const getSlotsByDate = async (req: Request, res: Response) => {
       const dayOfWeek = selectedDate
         .toLocaleString('en-US', { weekday: 'long' })
         .toLowerCase()
+
+      // Log dayOfWeek
+      console.log('Selected dayOfWeek:', dayOfWeek)
+
       const getActivity = await dbActivities.findOne({
         _id: activityId,
         deletedAt: null,
       })
+
       const getSlotsOnDay =
         getActivity?.schedule?.[dayOfWeek as keyof Schedule]?.slots
 
+      const getSlotsOnTimeSlot = getSlotsOnDay?.find(
+        (item) => String(item._id) === String(slotId)
+      )?.slotIdsId
       res.json(
         response.success({
-          items: getSlotsOnDay,
+          item: {
+            timeSlots: getSlotsOnDay,
+            slots: getSlotsOnTimeSlot || null,
+          },
           message: String(
             getActivity?.schedule?.[dayOfWeek as keyof Schedule]._id
           ),
@@ -534,7 +546,7 @@ export const getSlotsByDate = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        message: err.message ? err.message : 'UNKNOWN_ERROR_OCCURRED',
       })
     )
   }

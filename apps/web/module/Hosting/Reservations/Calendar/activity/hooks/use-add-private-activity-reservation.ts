@@ -10,14 +10,20 @@ type T_PropertyReservation = {
   slotId: string
   notes: string
 }
-export async function addActivityReservation(props: T_PropertyReservation) {
+export async function addPrivateActivityReservation(
+  props: T_PropertyReservation
+) {
   const apiService = new ApiService()
-  return await apiService.post(`${API_URL_RESERVATIONS}/activity`, props)
+  return await apiService.post(
+    `${API_URL_RESERVATIONS}/activity/private`,
+    props
+  )
 }
-function useAddActivityReservation() {
+function useAddPrivateActivityReservation() {
   const query = useMutation({
-    mutationFn: (props: T_PropertyReservation) => addActivityReservation(props),
+    mutationFn: (props: T_PropertyReservation) =>
+      addPrivateActivityReservation(props),
   })
   return query
 }
-export default useAddActivityReservation
+export default useAddPrivateActivityReservation

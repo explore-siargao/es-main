@@ -7,8 +7,9 @@ import { Textarea } from "@/common/components/ui/Textarea"
 import { useForm } from "react-hook-form"
 import { useCalendarStore } from "../../stores/use-joiner-store"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
-import useUpdateUnitReservation from "../../../hooks/useUpdateUnitReservation"
 import useCancelActivityReservation from "../../hooks/use-cancel-activity-reservation"
+import { QK_CALENDAR_JOINER_ACTIVITIES } from "../../constants"
+import useUpdateJoinerActivityReservation from "../../hooks/use-update-joiner-activity-reservation"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()
@@ -24,7 +25,7 @@ const InfoCancelModal = () => {
   } = useCalendarStore((state) => state)
 
   const { register, handleSubmit, getValues, reset } = useForm()
-  const { mutate } = useUpdateUnitReservation(
+  const { mutate } = useUpdateJoinerActivityReservation(
     String(selectedReservation?.id)
   )
 
@@ -46,7 +47,7 @@ const InfoCancelModal = () => {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-property"],
+            queryKey: [QK_CALENDAR_JOINER_ACTIVITIES],
           })
           toast.success(data.message)
           closeReservationModal()
@@ -64,7 +65,7 @@ const InfoCancelModal = () => {
     onSuccess: (data: any) => {
       if (!data.error) {
         queryClient.invalidateQueries({
-          queryKey: ["calendar-property"],
+          queryKey: [QK_CALENDAR_JOINER_ACTIVITIES],
         })
         toast.success(data.message)
         closeReservationModal()
@@ -76,7 +77,7 @@ const InfoCancelModal = () => {
       toast.error(String(err))
     },
   }
-
+  console.log(selectedReservation)
   return (
     <ModalContainer
       onClose={closeReservationModal}
@@ -101,7 +102,7 @@ const InfoCancelModal = () => {
                       Type
                     </Typography>
                     <Typography variant="h3" className="text-gray-500">
-                      {E_Activity_Experience_Type.Private}
+                      {E_Activity_Experience_Type.Joiner}
                     </Typography>
                   </div>
                   <div className="flex flex-col w-full">
@@ -144,9 +145,7 @@ const InfoCancelModal = () => {
                       <Textarea
                         id="notes"
                         className="p-3 h-28"
-                        defaultValue={String(
-                          selectedReservation?.notes || ""
-                        )}
+                        defaultValue={String(selectedReservation?.notes || "")}
                         {...register("notes")}
                       />
                     </div>

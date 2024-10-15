@@ -16,6 +16,7 @@ import {
   addJoinerActivityReservation,
   addPrivateActivityReservation,
   cancelActivityReservation,
+  editJoinerActivityReservation,
   editPrivateActivityReservation,
 } from './services/activityReservation'
 
@@ -39,7 +40,7 @@ router.post(
 )
 
 router.post(
-  '/activity',
+  '/activity/private',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
@@ -77,6 +78,14 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editPrivateActivityReservation
+)
+
+router.patch(
+  '/:reservationId/joiner-activity',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  editJoinerActivityReservation
 )
 
 //reservation cancellations

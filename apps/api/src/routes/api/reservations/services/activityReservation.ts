@@ -119,9 +119,11 @@ export const addJoinerActivityReservation = async (
             {
               startDate: { $lt: date },
               endDate: { $gt: date },
+              status: { $ne: 'Cancelled' },
             },
             {
               startDate: { $lte: date, $gte: date },
+              status: { $ne: 'Cancelled' },
             },
           ],
         })
@@ -184,6 +186,63 @@ export const editPrivateActivityReservation = async (
 
     const overlappingReservation = await dbReservations.findOne({
       'activityIds.timeSlotId': reservation?.activityIds?.timeSlotId,
+      'activityIds.slotIdsId': null,
+      _id: { $ne: reservation?._id },
+    })
+
+    if (overlappingReservation) {
+      res.json(
+        response.error({
+          message: 'Reservation dates overlap with an existing reservation.',
+        })
+      )
+    } else {
+      if (reservation) {
+        const updateReservation = await dbReservations.findByIdAndUpdate(
+          reservationId,
+          {
+            $set: {
+              notes: notes,
+              updatedAt: Date.now(),
+            },
+          },
+          { new: true }
+        )
+        res.json(
+          response.success({
+            item: updateReservation,
+            message: 'Reservation successfully updated',
+          })
+        )
+      } else {
+        res.json(response.error({ message: 'Reservation not found' }))
+      }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const editJoinerActivityReservation = async (
+  req: Request,
+  res: Response
+) => {
+  const reservationId = req.params.reservationId
+  const { notes } = req.body
+
+  try {
+    const reservation = await dbReservations.findOne({
+      _id: reservationId,
+      deletedAt: null,
+    })
+
+    const overlappingReservation = await dbReservations.findOne({
+      'activityIds.timeSlotId': reservation?.activityIds?.timeSlotId,
+      'activityIds.slotIdsId': { $ne: null },
       _id: { $ne: reservation?._id },
     })
 

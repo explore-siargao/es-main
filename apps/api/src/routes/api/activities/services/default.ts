@@ -131,7 +131,7 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
         )
       } else if (type === 'Joiner' || type === 'joiner') {
         const filteredActivities = await dbActivities
-          .find({ host: hostId, experienceType: 'Private' })
+          .find({ host: hostId, experienceType: 'Joiner' })
           .populate('host', 'email isHost')
           .populate('meetingPoint')
           .populate('photos')

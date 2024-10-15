@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export async function getActivitySlots(id: string, date: string) {
   const apiService = new ApiService()
-  return await apiService.get(`${API_URL_ACTIVITIES}/${id}/slots/${date}`)
+  return await apiService.get(`${API_URL_ACTIVITIES}/${id}/null/${date}`)
 }
 
 function useGetPrivateActivitySlots(id: any, date: any) {

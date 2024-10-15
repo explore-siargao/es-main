@@ -40,7 +40,8 @@ function ReservationForm({
   useEffect(() => {
     if (selectedActivityId && selectedDate) {
       refetch() // Only refetch when both are selected
-      if (slots && slots.items) {
+      if (slots) {
+        console.log(slots.message)
         setValue("dayId", slots.message)
       }
     }
@@ -97,8 +98,8 @@ function ReservationForm({
               disabled={!selectedActivityId || !selectedDate} // Disable until both are selected
             >
               <Option value="">Select</Option>
-              {slots && slots.items
-                ? slots.items.map((property: any) => (
+              {slots && slots.item?.timeSlots
+                ? slots.item?.timeSlots.map((property: any) => (
                     <Option key={property._id} value={property._id}>
                       {`${property.startTime} - ${property.endTime}`}
                     </Option>
