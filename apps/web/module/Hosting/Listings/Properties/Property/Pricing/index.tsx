@@ -182,7 +182,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
                   <AccordionTrigger>
                     {
                       //@ts-ignore
-                      field.unitName && field.unitName
+                      field.unitName
                         ? //@ts-ignore
                           field.unitName
                         : //@ts-ignore
