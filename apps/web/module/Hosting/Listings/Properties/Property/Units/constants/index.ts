@@ -513,7 +513,7 @@ export const defaultBedroom = {
 export const SQM_TO_FT_CONVERSION_FACTOR = 10.7639
 
 export enum E_Property_Category {
-  WholePlace = "WholePlace",
+  WholePlace = "Whole-Place",
   Bed = "Bed",
   Room = "Room",
 }
