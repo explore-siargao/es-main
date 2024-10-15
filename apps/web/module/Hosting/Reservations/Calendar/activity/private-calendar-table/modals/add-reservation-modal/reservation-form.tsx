@@ -40,12 +40,12 @@ function ReservationForm({
   useEffect(() => {
     if (selectedActivityId && selectedDate) {
       refetch() // Only refetch when both are selected
-      if (slots) {
+      if (slots && slots.item && slots.item.timeSlots) {
         console.log(slots.message)
         setValue("dayId", slots.message)
       }
     }
-  }, [selectedActivityId, selectedDate])
+  }, [selectedActivityId, selectedDate, slots])
 
   return (
     <div className="py-4 px-6 flex flex-col divide-text-100 overflow-y-auto">
