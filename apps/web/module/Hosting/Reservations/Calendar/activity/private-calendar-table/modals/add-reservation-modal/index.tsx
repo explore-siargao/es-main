@@ -2,11 +2,11 @@ import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
 import ReservationForm from "./reservation-form"
-import useAddActivityReservation from "../../../hooks/use-add-activity-reservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import SelectStatusForm from "./select-status-form"
 import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../../constants"
+import useAddPrivateActivityReservation from "../../../hooks/use-add-private-activity-reservation"
 
 interface AddReservationModalProps {
   isModalOpen: boolean
@@ -30,7 +30,7 @@ const AddReservationModal = ({
       setIsLegendTypeSelected(false)
     }, 200)
   }
-  const { mutate } = useAddActivityReservation()
+  const { mutate } = useAddPrivateActivityReservation()
   const queryClient = useQueryClient()
   const handleSave = (data: any) => {
     mutate(data, {

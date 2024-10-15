@@ -2,11 +2,15 @@ import { useState } from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { FormProvider, useForm } from "react-hook-form"
 import ReservationForm from "./reservation-form"
-import useAddActivityReservation from "../../../hooks/use-add-activity-reservation"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import SelectStatusForm from "./select-status-form"
-import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../../../constants"
+import {
+  QK_CALENDAR_JOINER_ACTIVITIES,
+  QK_CALENDAR_PRIVATE_ACTIVITIES,
+} from "../../../constants"
+import useAddPrivateActivityReservation from "../../../hooks/use-add-private-activity-reservation"
+import useAddJoinerActivityReservation from "../../../hooks/use-add-joiner-activity-reservation"
 
 interface AddReservationModalProps {
   isModalOpen: boolean
@@ -30,14 +34,14 @@ const AddReservationModal = ({
       setIsLegendTypeSelected(false)
     }, 200)
   }
-  const { mutate } = useAddActivityReservation()
+  const { mutate } = useAddJoinerActivityReservation()
   const queryClient = useQueryClient()
   const handleSave = (data: any) => {
     mutate(data, {
       onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
+            queryKey: [QK_CALENDAR_JOINER_ACTIVITIES],
           })
           toast.success(data.message as string)
           setIsLegendTypeSelected(false)

@@ -49,7 +49,7 @@ router.get('/host', isOriginValid, isUserLoggedIn, getAllActivitiesByHostId)
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
 
 router.get(
-  '/:activityId/slots/:date',
+  '/:activityId/:slotId/:date',
   isOriginValid,
   isCsrfTokenValid,
   isUserLoggedIn,

@@ -38,31 +38,37 @@ export const pricePerDatesPrivate = ({
   return result
 }
 
-export const pricePerDatesJoiner = ({ joinerActivity, date }: { joinerActivity: T_Joiner_Activity, date: string}) => {
-  let result;
+export const pricePerDatesJoiner = ({
+  joinerActivity,
+  date,
+}: {
+  joinerActivity: T_Joiner_Activity
+  date: string
+}) => {
+  let result
 
   if (joinerActivity.pricePerDates?.length === 0) {
     if (!parseFloat(`${joinerActivity.price}`).toFixed(2)) {
-      result = parseFloat(`${joinerActivity.price}`).toFixed(2);
+      result = parseFloat(`${joinerActivity.price}`).toFixed(2)
     } else {
-      result = 0;
+      result = 0
     }
   } else {
     const matchedItem = joinerActivity?.pricePerDates?.find((item) => {
-      const itemFromDate = formatDateTZ(startOfDay(item.fromDate));
-      const itemToDate = formatDateTZ(endOfDay(item.toDate));
-      const currentDate = formatDateTZ(startOfDay(date));
-      
+      const itemFromDate = formatDateTZ(startOfDay(item.fromDate))
+      const itemToDate = formatDateTZ(endOfDay(item.toDate))
+      const currentDate = formatDateTZ(startOfDay(date))
+
       return isWithinInterval(currentDate, {
         start: itemFromDate,
         end: itemToDate,
-      });
-    });
-  
+      })
+    })
+
     if (matchedItem?.price) {
-      result = parseFloat(String(matchedItem.price)).toFixed(2);
+      result = parseFloat(String(matchedItem.price)).toFixed(2)
     } else {
-      result = parseFloat(`${joinerActivity.price}`).toFixed(2);
+      result = parseFloat(`${joinerActivity.price}`).toFixed(2)
     }
   }
   return result
