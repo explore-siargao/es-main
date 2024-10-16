@@ -1,5 +1,5 @@
 import { Button } from "@/common/components/ui/Button"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Grip } from "lucide-react"
 import { T_ImagesProps } from "../types/SectionInfo"
 import { Dialog } from "@headlessui/react"

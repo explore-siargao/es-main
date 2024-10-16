@@ -1,5 +1,5 @@
 import ModalContainer from "@/common/components/ModalContainer"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import ShareSave from "../ShareSave"
 import { T_ImageGalleryModalProps } from "../../types/SectionInfo"
 

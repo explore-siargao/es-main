@@ -3,7 +3,7 @@ import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import React, { useState } from "react"
 import { APP_NAME } from "@repo/constants"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
 import { LucideStar } from "lucide-react"
 

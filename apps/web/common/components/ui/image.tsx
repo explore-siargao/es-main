@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import NextImage from 'next/image';
 import { GRAY_BASE64, IMAGE_FALLBACK } from '@/common/constants';

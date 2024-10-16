@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { Button } from "@/common/components/ui/Button"
 import { T_BookableUnitType } from "@repo/contract"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import ModalContainer from "@/common/components/ModalContainer"
 
 type UnitDetailsModalProps = {

@@ -2,7 +2,7 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { Typography } from "@/common/components/ui/Typography"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { FileWithPath, useDropzone } from "react-dropzone"
 import { cn } from "@/common/helpers/cn"
 import { E_Rental_Category } from "@repo/contract"

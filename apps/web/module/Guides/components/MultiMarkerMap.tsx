@@ -4,7 +4,7 @@ import { TileLayer, Marker, Popup, useMapEvent } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import Link from "next/link"
 import { WEB_URL } from "@/common/constants/ev"
 

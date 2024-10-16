@@ -4,7 +4,7 @@ import { cn } from "@/common/helpers/cn"
 import useProfileEditStore from "@/module/Profile/Setup/store/useProfileEditStore"
 import SetupProfileImageModal from "@/module/Profile/components/modals/SetupProfileImageModal"
 import { LucideUndo2 } from "lucide-react"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { useState } from "react"
 
 const SetupProfileImage = () => {

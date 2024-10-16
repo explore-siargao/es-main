@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { format } from "date-fns"
 import { Typography } from "@/common/components/ui/Typography"
 import { Input } from "@/common/components/ui/Input"

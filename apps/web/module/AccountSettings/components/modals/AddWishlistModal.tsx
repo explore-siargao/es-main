@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Input } from "@/common/components/ui/Input"
 import React, { useRef, useState } from "react"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
 import { Typography } from "@/common/components/ui/Typography"
 import { Button } from "@/common/components/ui/Button"

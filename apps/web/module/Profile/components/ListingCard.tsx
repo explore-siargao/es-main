@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import Link from "next/link"
 import { ASSET_ROOT } from "@/common/constants/index"
 import { ListingCardProps } from "../types/ListingCard"
