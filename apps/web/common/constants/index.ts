@@ -6,7 +6,8 @@ export * from "./links"
 export const LOGO_SINGLE_IMAGE = "/logo-single.png"
 export const SUBMIT = "Submit"
 export const CONTINUE = "Continue"
-export const GRAY_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN89R8AAtkB6zy+wn8AAAAASUVORK5CYII="
+export const GRAY_BASE64 =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN89R8AAtkB6zy+wn8AAAAASUVORK5CYII="
 
 export const ASSET_ROOT = "/assets"
 
