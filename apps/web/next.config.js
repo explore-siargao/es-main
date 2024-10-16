@@ -53,8 +53,8 @@ module.exports = {
         hostname: "localhost",
       },
       {
-        protocol: 'https',
-        hostname: 'placehold.co',
+        protocol: "https",
+        hostname: "placehold.co",
       },
     ],
   },
