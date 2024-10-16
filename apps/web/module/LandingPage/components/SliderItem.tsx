@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Typography } from "../../../common/components/ui/Typography"
 import Image, { StaticImageData } from "next/image"
+import { GRAY_BASE64 } from "@/common/constants"
 
 type T_Props = {
   imageKey: StaticImageData | string
@@ -14,7 +15,14 @@ const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
   return (
     <Link href={url ?? "#"} target={isGuide ? "_blank" : "_self"}>
       <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
-        <Image src={imageKey} alt={title} layout="fill" objectFit="cover" />
+        <Image
+          src={imageKey}
+          placeholder="blur"
+          blurDataURL={GRAY_BASE64}
+          alt={title}
+          layout="fill"
+          objectFit="cover"
+        />
       </div>
       <div className="mt-2 text-left">
         <Typography variant="h4" fontWeight="semibold">

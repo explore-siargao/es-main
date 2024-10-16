@@ -14,7 +14,7 @@ import { T_Photo } from "@repo/contract"
 import useGetHostActivities from "./hooks/useGetHostActivities"
 
 const HostListing = () => {
-  const { data, isPending } = useGetHostActivities()
+  const { data, isPending, isLoading } = useGetHostActivities()
   const columnHelper = createColumnHelper<any>()
   const columns = [
     columnHelper.accessor("photos", {
@@ -115,7 +115,7 @@ const HostListing = () => {
 
   return (
     <>
-      {isPending ? (
+      {isLoading ? (
         <Spinner>Loading...</Spinner>
       ) : (
         <div className="mt-20 mb-14">

@@ -105,43 +105,17 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
     )
   } else {
     try {
-      if (type === 'undefined') {
-        const filteredActivities = await dbActivities
-          .find({ host: hostId })
-          .populate('host', 'email isHost')
-          .populate('meetingPoint')
-          .populate('photos')
-          .select('title description status')
-        res.json(
-          response.success({
-            items: filteredActivities,
-          })
-        )
-      } else if (type === 'Private' || type === 'private') {
-        const filteredActivities = await dbActivities
-          .find({ host: hostId, experienceType: 'Private' })
-          .populate('host', 'email isHost')
-          .populate('meetingPoint')
-          .populate('photos')
-          .select('title description status')
-        res.json(
-          response.success({
-            items: filteredActivities,
-          })
-        )
-      } else if (type === 'Joiner' || type === 'joiner') {
-        const filteredActivities = await dbActivities
-          .find({ host: hostId, experienceType: 'Joiner' })
-          .populate('host', 'email isHost')
-          .populate('meetingPoint')
-          .populate('photos')
-          .select('title description status')
-        res.json(
-          response.success({
-            items: filteredActivities,
-          })
-        )
-      }
+      const filteredActivities = await dbActivities
+        .find({ host: hostId, ...(type && { experienceType: type }) })
+        .populate('host', 'email isHost')
+        .populate('meetingPoint')
+        .populate('photos')
+        .select('title description status')
+      res.json(
+        response.success({
+          items: filteredActivities,
+        })
+      )
     } catch (err: any) {
       res.json(
         response.error({
