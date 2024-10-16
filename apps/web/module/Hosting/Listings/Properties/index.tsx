@@ -1,5 +1,5 @@
 "use client"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { createColumnHelper } from "@tanstack/react-table"
 import Link from "next/link"

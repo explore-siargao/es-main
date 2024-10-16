@@ -1,7 +1,7 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import Table from "../../common/components/Table"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucidePlus, LucideTable } from "lucide-react"
 import { PaymentStatus } from "./SingleView/components/PaymentStatus"

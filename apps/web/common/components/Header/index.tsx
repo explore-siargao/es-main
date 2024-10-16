@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import Logo from "@/common/assets/logo.png"
 import { Button } from "@/common/components/ui/Button"
 import LoggedInUserDropdown from "./LoggedInUserDropdown"

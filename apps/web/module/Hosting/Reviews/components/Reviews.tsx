@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { Button } from "@/common/components/ui/Button"
 import { cn } from "@/common/helpers/cn"

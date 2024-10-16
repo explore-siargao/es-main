@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { governmentIdMap } from "@/common/helpers/governmentIdMap"
 import { T_GovernmentId } from "@repo/contract"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 interface GovernmentIdModalProps {
   isOpen: boolean
   onClose: () => void

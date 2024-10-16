@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { Typography } from "../../../common/components/ui/Typography"
-import Image, { StaticImageData } from "next/image"
+import { StaticImageData } from "next/image"
 import { GRAY_BASE64 } from "@/common/constants"
+import Image from "@/common/components/ui/image"
 
 type T_Props = {
   imageKey: StaticImageData | string

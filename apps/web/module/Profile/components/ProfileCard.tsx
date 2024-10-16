@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { ASSET_ROOT } from "@/common/constants/index"
 import { ProfileCardProps } from "../types/ProfileCard"

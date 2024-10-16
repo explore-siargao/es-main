@@ -1,8 +1,9 @@
 import React from "react"
-import Image, { StaticImageData } from "next/image"
+import { StaticImageData } from "next/image"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideArrowRight } from "lucide-react"
 import Link from "next/link"
+import Image from "@/common/components/ui/image"
 
 interface ICardItems {
   imageKey: StaticImageData

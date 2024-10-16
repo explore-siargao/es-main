@@ -14,7 +14,7 @@ import { Spinner } from "./ui/Spinner"
 import { divIcon, Icon, LatLngTuple } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { WEB_URL } from "../constants/ev"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Button } from "./ui/Button"
 import formatCurrency from "../helpers/formatCurrency"
 

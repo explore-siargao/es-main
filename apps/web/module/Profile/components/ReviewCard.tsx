@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { ASSET_ROOT } from "@/common/constants/index"
 import { ReviewsCardProps } from "../types/ReviewCard"
 

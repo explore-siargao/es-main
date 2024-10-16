@@ -1,6 +1,6 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import usePhotoStore from "../../store/usePhotoStore"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"

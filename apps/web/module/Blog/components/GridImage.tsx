@@ -1,5 +1,5 @@
 import React from "react"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 
 type T_GridImageProps = {
   src: any

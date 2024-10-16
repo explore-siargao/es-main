@@ -3,7 +3,7 @@ import formatCurrency from "@/common/helpers/formatCurrency"
 import { createColumnHelper } from "@tanstack/react-table"
 import { PaymentHistoryBookingsData } from "@/common/components/Table/Type"
 import { StatusDot } from "../components/StatusDot"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import Link from "next/link"
 
 const statusEnum = {

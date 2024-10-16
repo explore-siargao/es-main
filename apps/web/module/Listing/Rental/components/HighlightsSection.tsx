@@ -1,5 +1,5 @@
 import IconTitleDescription from "./IconTitleDescription"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 
 interface IconTitleDescription {
   id: number

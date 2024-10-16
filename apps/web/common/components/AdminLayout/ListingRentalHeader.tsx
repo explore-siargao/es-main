@@ -1,6 +1,6 @@
 "use client"
 import React, { Fragment, useState } from "react"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import Logo from "@/common/assets/es-logo.png"
 import { APP_NAME } from "@repo/constants"
 import {

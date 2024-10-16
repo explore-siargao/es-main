@@ -1,5 +1,5 @@
 import { Popup } from "react-leaflet"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper/modules"
 import "swiper/swiper-bundle.css"

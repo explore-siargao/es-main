@@ -5,7 +5,7 @@ import { LucideUndo2 } from "lucide-react"
 import React, { useState } from "react"
 import { FileWithPath, useDropzone } from "react-dropzone"
 import toast from "react-hot-toast"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { cn } from "@/common/helpers/cn"
 import useProfileEditStore from "../../Setup/store/useProfileEditStore"
 

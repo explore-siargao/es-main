@@ -6,7 +6,7 @@ import Table from "@/common/components/Table"
 import { useState } from "react"
 import Link from "next/link"
 import { createColumnHelper } from "@tanstack/react-table"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import {
   Calendar,
   ChevronLeft,

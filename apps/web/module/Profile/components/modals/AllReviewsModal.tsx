@@ -3,7 +3,7 @@ import { AllReviewsModalProps } from "../../types/AllReviewsModal"
 import { Typography } from "@/common/components/ui/Typography"
 import { cn } from "@/common/helpers/cn"
 import ReviewCard from "../ReviewCard"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { ASSET_ROOT } from "@/common/constants"
 import { Button } from "@/common/components/ui/Button"
 

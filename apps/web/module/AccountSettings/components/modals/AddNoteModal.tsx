@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
 import { Typography } from "@/common/components/ui/Typography"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import React, { useEffect, useRef, useState } from "react"
 import PriceBreakdownModal from "./PriceBreakdownModal"
 import { IPrice, IWishGroup } from "@/common/types/global"

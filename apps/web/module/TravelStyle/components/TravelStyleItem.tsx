@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation"
 import { Typography } from "@/common/components/ui/Typography"
-import Image, { StaticImageData } from "next/image"
+import { StaticImageData } from "next/image"
+import Image from "@/common/components/ui/image"
 
 type T_Props = {
   imageKey: StaticImageData | string

@@ -15,7 +15,7 @@ import {
   T_Property_Facility,
   T_Property_Policy,
 } from "@repo/contract"
-import Image from "next/image"
+import Image from "@/common/components/ui/image"
 import { cn } from "@/common/helpers/cn"
 
 const Summary = () => {
