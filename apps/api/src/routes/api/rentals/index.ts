@@ -38,6 +38,8 @@ import {
   getMotorcycleCalendar,
 } from './services/calendar'
 import { getRentalIds, getRentalsByHostAndCategory } from './services/rentals'
+import { getRentalsByLocationAndType } from './services/filtered'
+import paginate from '@/common/middleware/paginations/paginate'
 
 const router = express.Router()
 
@@ -296,6 +298,15 @@ router.patch(
   isCsrfTokenValid,
   isUserLoggedIn,
   editRentalNote
+)
+
+//filtered data
+router.get(
+  '/:location/:type',
+  isOriginValid,
+  isCsrfTokenValid,
+  paginate(15),
+  getRentalsByLocationAndType
 )
 
 export default router
