@@ -11,7 +11,7 @@ export const getRentalsByLocationAndType = async (
   res: Response
 ) => {
   const { location, type } = req.params
-  const { page, limit } = req.pagination || { page: 1, limit: 10 } // Default values if pagination is not set
+  const { page, limit } = req.pagination || { page: 1, limit: 15 } // Default values if pagination is not set
 
   if (!location || !type) {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
