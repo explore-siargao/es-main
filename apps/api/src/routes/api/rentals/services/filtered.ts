@@ -22,7 +22,18 @@ export const getRentalsByLocationAndType = async (
         const rentals = await dbRentals
           .find(query)
           .populate('details')
-          .populate('host')
+          .populate({
+            path: 'host',
+            select: '_id email role guest',
+            populate: {
+              path: 'guest',
+              select:
+                '_id firstName middleName lastName language currency address',
+              populate: {
+                path: 'address',
+              },
+            },
+          })
           .populate('addOns')
           .populate('pricing')
           .populate('photos')
@@ -51,7 +62,18 @@ export const getRentalsByLocationAndType = async (
         const rentals = await dbRentals
           .find(query)
           .populate('details')
-          .populate('host')
+          .populate({
+            path: 'host',
+            select: '_id email role guest',
+            populate: {
+              path: 'guest',
+              select:
+                '_id firstName middleName lastName language currency address',
+              populate: {
+                path: 'address',
+              },
+            },
+          })
           .populate('addOns')
           .populate('pricing')
           .populate('photos')
@@ -81,7 +103,18 @@ export const getRentalsByLocationAndType = async (
         const rentals = await dbRentals
           .find(query)
           .populate('details')
-          .populate('host')
+          .populate({
+            path: 'host',
+            select: '_id email role guest',
+            populate: {
+              path: 'guest',
+              select:
+                '_id firstName middleName lastName language currency address',
+              populate: {
+                path: 'address',
+              },
+            },
+          })
           .populate('addOns')
           .populate('pricing')
           .populate('photos')
@@ -104,7 +137,18 @@ export const getRentalsByLocationAndType = async (
         const rentals = await dbRentals
           .find(query)
           .populate('details')
-          .populate('host')
+          .populate({
+            path: 'host',
+            select: '_id email role guest',
+            populate: {
+              path: 'guest',
+              select:
+                '_id firstName middleName lastName language currency address',
+              populate: {
+                path: 'address',
+              },
+            },
+          })
           .populate('addOns')
           .populate('pricing')
           .populate('photos')
