@@ -5,6 +5,13 @@ export enum E_Rental_Condition {
   Poor = "Poor",
 }
 
+export enum E_Calendar_Rental_Status {
+  Available = "Available",
+  Unavailable = "Unavailable",
+  Booked = "Booked",
+}
+
+
 export enum E_Rental_Car_Body {
   Hatchback = "Hatchback",
   Sedan = "Sedan",

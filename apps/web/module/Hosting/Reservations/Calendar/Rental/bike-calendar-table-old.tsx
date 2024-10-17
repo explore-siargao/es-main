@@ -20,7 +20,6 @@ import {
   Reservation,
 } from "../../types/CalendarTable"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useGetCalendarBike from "../hooks/useGetCalendarBike"
 import useUpdateVehicleName from "../hooks/useUpdateVehicleName"
 import { getColorClasses } from "../../helpers/property-legends"
 import { useQueryClient } from "@tanstack/react-query"
@@ -28,6 +27,7 @@ import { FormProvider, useForm } from "react-hook-form"
 import AddRentalReservationModal from "../AddReservationModal/Rental"
 import RentalCalendarModal from "../RentalCalendarModal"
 import RentalsEditPricePerDatesModal from "./RentalsEditPricePerDatesModal"
+import useGetBikeRentals from "./hooks/use-get-bike-rentals"
 
 const BikeCalendarTable = () => {
   const form = useForm()
@@ -37,7 +37,7 @@ const BikeCalendarTable = () => {
   const [startDate, setStartDate] = useState<Date>(startOfMonth(new Date()))
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 13)
-  const { data: sampleData, isLoading } = useGetCalendarBike(
+  const { data: sampleData, isLoading } = useGetBikeRentals(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )

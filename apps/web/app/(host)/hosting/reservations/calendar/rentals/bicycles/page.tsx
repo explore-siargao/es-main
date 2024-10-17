@@ -2,7 +2,8 @@ import { HOST } from "@/common/constants"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import AuthGuard from "@/common/components/AuthGuard"
-import CalendarRental from "@/module/Hosting/Reservations/Calendar/Rental/BikeReservationCalendar"
+import BikeReservationCalendar from "@/module/Hosting/Reservations/Calendar/rental/bike-rental"
+
 
 export const metadata: Metadata = {
   title: `${HOST} - ${APP_NAME}`,
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 const ReservationCalendarPage = () => {
   return (
     <AuthGuard>
-      <CalendarRental />
+      <BikeReservationCalendar />
     </AuthGuard>
   )
 }

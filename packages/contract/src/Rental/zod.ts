@@ -2,6 +2,7 @@ import z from "zod"
 import { Z_User } from "../User"
 import { Z_Photo } from "../Photo"
 import {
+  E_Calendar_Rental_Status,
   E_Rental_Condition,
   E_Rental_Status,
   E_Rental_Vehicle_Fuel,
@@ -70,6 +71,40 @@ export const Z_Rental = z.object({
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),
+})
+
+export const Z_Calendar_Reservation = z.object({
+  id: z.string(),
+  name: z.string(),
+  notes: z.string().optional(),
+  startDate: z.string(),
+  endDate: z.string(),
+  guestCount: z.number(),
+  status: z.string(),
+})
+
+
+export const Z_Calendar_Rental = z.object({
+  id: z.string(),
+  name: z.string(),
+  note: z.string(),
+  status: z.nativeEnum(E_Calendar_Rental_Status),
+  reservations: z.array(Z_Calendar_Reservation),
+})
+
+export const Z_Calendar_Date_Price = z.object({
+  fromDate: z.string(),
+  toDate: z.string(),
+  price: z.number(),
+})
+
+
+export const Z_Calendar_Bike_Rental = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+  pricePerDates: z.array(Z_Calendar_Date_Price),
+  bicycles: z.array(Z_Calendar_Rental),
 })
 
 export const Z_Rental_Basic_Info = z.object({
