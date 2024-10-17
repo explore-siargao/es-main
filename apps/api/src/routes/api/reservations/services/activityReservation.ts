@@ -5,8 +5,32 @@ import {
 import { ResponseService } from '@/common/service/response'
 import { dbActivities, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
+import mongoose from 'mongoose'
+
+interface Session {
+  _id: string // Assuming _id can be either type
+  startTime: string
+  endTime: string
+  ids?: { _id?: string; name: string }[]
+}
+
+interface DaySchedule {
+  slots?: Session[]
+  _id: mongoose.Types.ObjectId
+}
+
+interface Schedule {
+  monday: DaySchedule
+  tuesday: DaySchedule
+  wednesday: DaySchedule
+  thursday: DaySchedule
+  friday: DaySchedule
+  saturday: DaySchedule
+  sunday: DaySchedule
+}
 
 const response = new ResponseService()
+
 export const addPrivateActivityReservation = async (
   req: Request,
   res: Response
@@ -87,17 +111,8 @@ export const addJoinerActivityReservation = async (
   req: Request,
   res: Response
 ) => {
-  const {
-    date,
-    status,
-    name,
-    activityId,
-    dayId,
-    slotId,
-    idsId,
-    notes,
-    guestNumber,
-  } = req.body
+  const { date, status, name, activityId, dayId, slotId, notes, guestNumber } =
+    req.body
   try {
     const validStatuses = [
       'Confirmed',
@@ -113,53 +128,82 @@ export const addJoinerActivityReservation = async (
       if (!date || !status || !slotId) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
-        const overlappingReservation = await dbReservations.findOne({
-          'activityIds.slotIdsId': idsId,
-          $or: [
-            {
-              startDate: { $lt: date },
-              endDate: { $gt: date },
-              status: { $ne: 'Cancelled' },
+        let nextGuestNumber = guestNumber
+        const startDateTime = new Date(date)
+        startDateTime.setHours(0, 0, 0, 0)
+        const endDateTime = new Date(date)
+        endDateTime.setHours(23, 59, 59, 999)
+        for (let i = 0; i < guestNumber; i++) {
+          const getJoinerActivityReservation = await dbReservations.find({
+            startDate: {
+              $gte: startDateTime.toISOString(),
+              $lte: endDateTime.toISOString(),
             },
-            {
-              startDate: { $lte: date, $gte: date },
-              status: { $ne: 'Cancelled' },
-            },
-          ],
-        })
-
-        if (overlappingReservation) {
-          res.json(
-            response.error({
-              message:
-                'Reservation dates overlap with an existing reservation.',
-            })
+            'activityIds.slotIdsId': { $exists: true },
+            deletedAt: null,
+            status: { $ne: 'Cancelled' },
+          })
+          const takenSlotsIds = getJoinerActivityReservation.map((item) =>
+            String(item.activityIds?.slotIdsId)
           )
-        } else {
-          const newActivityReservation = new dbReservations({
-            startDate: date,
-            endDate: date,
-            status: status,
-            activityIds: {
-              activityId: activityId,
-              dayId: dayId,
-              timeSlotId: slotId,
-              slotIdsId: idsId,
-            },
-            guestCount: guestNumber,
-            guestName: name || null,
-            notes: notes || null,
-            createdAt: Date.now(),
+
+          const dayOfWeek = startDateTime
+            .toLocaleString('en-US', { weekday: 'long' })
+            .toLowerCase()
+
+          const getActivity = await dbActivities.findOne({
+            _id: activityId,
+            deletedAt: null,
           })
 
-          await newActivityReservation.save()
-          res.json(
-            response.success({
-              item: newActivityReservation,
-              message: 'Activity reservation added successfully',
-            })
+          const getSlotsOnDay =
+            getActivity?.schedule?.[dayOfWeek as keyof Schedule]?.slots
+
+          // Find the specific slot object
+          const getSlotsOnTimeSlot = getSlotsOnDay?.find(
+            (item) => String(item._id) === String(slotId)
+          )?.slotIdsId // Ensure you're accessing the correct property
+
+          const slotIds = getSlotsOnTimeSlot?.map((item) => String(item._id))
+
+          const updatedSlotIds = slotIds?.filter(
+            (item) => !takenSlotsIds.includes(item)
           )
+          if ((updatedSlotIds?.length ?? 0) < nextGuestNumber) {
+            res.json(
+              response.error({
+                message:
+                  'There are either no available slots for this schedule or not enough.',
+              })
+            )
+            return
+          } else {
+            const newActivityReservation = new dbReservations({
+              startDate: date,
+              endDate: date,
+              status: status,
+              activityIds: {
+                activityId: activityId,
+                dayId: dayId,
+                timeSlotId: slotId,
+                //@ts-ignore
+                slotIdsId: updatedSlotIds[0],
+              },
+              guestCount: guestNumber,
+              guestName: name || null,
+              notes: notes || null,
+              createdAt: Date.now(),
+            })
+            await newActivityReservation.save()
+            nextGuestNumber--
+          }
         }
+        res.json(
+          response.success({
+            item: req.body,
+            message: 'Activity reservation added successfully',
+          })
+        )
       }
     }
   } catch (err: any) {
