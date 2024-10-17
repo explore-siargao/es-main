@@ -40,6 +40,8 @@ import {
   getSlotsByDate,
   editActivityNote,
 } from './services/calendar'
+import { getActivitiesByLocationAndType } from './services/filtered'
+import paginate from '@/common/middleware/paginations/paginate'
 
 const router = express.Router()
 
@@ -261,6 +263,15 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editActivityNote
+)
+
+//filted data
+router.get(
+  '/:location/:type',
+  isOriginValid,
+  isCsrfTokenValid,
+  paginate(15),
+  getActivitiesByLocationAndType
 )
 
 export default router
