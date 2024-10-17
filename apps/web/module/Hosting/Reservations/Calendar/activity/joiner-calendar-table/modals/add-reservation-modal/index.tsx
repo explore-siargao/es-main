@@ -34,7 +34,7 @@ const AddReservationModal = ({
       setIsLegendTypeSelected(false)
     }, 200)
   }
-  const { mutate } = useAddJoinerActivityReservation()
+  const { mutate, isPending } = useAddJoinerActivityReservation()
   const queryClient = useQueryClient()
   const handleSave = (data: any) => {
     mutate(data, {
@@ -71,6 +71,7 @@ const AddReservationModal = ({
               handleRentalCancel={handleRentalCancel}
               setIsLegendTypeSelected={setIsLegendTypeSelected}
               selectedLegendType={selectedLegendType}
+              isPending={isPending}
             />
           ) : (
             <SelectStatusForm
