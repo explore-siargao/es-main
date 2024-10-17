@@ -4,12 +4,22 @@ import { ChevronDown, ChevronRight } from "lucide-react"
 import { useCalendarStore } from "../stores/use-joiner-store"
 import ActivityTimeSlotRows from "./activity-time-slot-rows"
 import { T_Calendar_Joiner_Activity, T_Joiner_Activity } from "@repo/contract"
-import { pricePerDatesJoiner, pricePerDatesPrivate } from "../helpers/price-per-dates"
+import {
+  pricePerDatesJoiner,
+  pricePerDatesPrivate,
+} from "../helpers/price-per-dates"
 
 const ActivityRows = () => {
-  const { startDate, daysPerPage, collapsed, activityData, setCollapsed, setIsEditPricePerDatesModalOpen,  setSelectedDate,
-    setSelectedUnitId } =
-    useCalendarStore((state) => state)
+  const {
+    startDate,
+    daysPerPage,
+    collapsed,
+    activityData,
+    setCollapsed,
+    setIsEditPricePerDatesModalOpen,
+    setSelectedDate,
+    setSelectedUnitId,
+  } = useCalendarStore((state) => state)
   const toggleCollapse = (category: string) => {
     setCollapsed({ ...collapsed, [category]: !collapsed[category] })
   }
@@ -19,7 +29,7 @@ const ActivityRows = () => {
     setSelectedDate(date)
     setSelectedUnitId(category)
   }
- 
+
   return (
     <>
       {activityData.map((activity: T_Calendar_Joiner_Activity, index) => (
@@ -41,8 +51,7 @@ const ActivityRows = () => {
                 format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
               const noReservationCount = activity.joinerActivities.reduce(
                 (count: any, joinerActivity: any) => {
-             
-                  const reservations = joinerActivity.reservations || [];
+                  const reservations = joinerActivity.reservations || []
                   const hasReservation = reservations.some(
                     (reservation: any) => {
                       const reservationStart = format(
@@ -60,7 +69,7 @@ const ActivityRows = () => {
                 },
                 0
               )
-              
+
               return (
                 <td
                   key={i}
@@ -74,12 +83,14 @@ const ActivityRows = () => {
                     className="flex flex-col"
                   >
                     <div>{noReservationCount}</div>
-                
-                      <div>
-                        &#8369;{pricePerDatesJoiner({ joinerActivity: activity.joinerActivities[0]!, date })}
-                      </div>
-                    
-                   
+
+                    <div>
+                      &#8369;
+                      {pricePerDatesJoiner({
+                        joinerActivity: activity.joinerActivities[0]!,
+                        date,
+                      })}
+                    </div>
                   </div>
                 </td>
               )

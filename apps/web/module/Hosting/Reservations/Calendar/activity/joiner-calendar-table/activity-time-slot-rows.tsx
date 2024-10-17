@@ -36,7 +36,6 @@ const ActivityTimeSlotRows = ({
       {/* Sub Category (Units) */}
       {!collapsed[activity.name] &&
         activity.joinerActivities.map((joinerActivity, index) => {
-       
           return (
             <>
               <tr
