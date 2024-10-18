@@ -1,16 +1,16 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import CarCalendarTable from "./CarCalendarTable"
+// import CarCalendarTable from "./CarCalendarTable"
 import ReservationTab from "../../components/ReservationTab"
-import RentalCalendarLegend from "../../components/RentalCalendarLegend"
-import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
+// import RentalCalendarLegend from "../../components/RentalCalendarLegend"
+// import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 
 const CarReservationCalendar = () => {
   const currentDate = new Date()
-  const { data: sampleData } = useGetCalendarProperty(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
-  )
+  // const { data: sampleData } = useGetCalendarProperty(
+  //   currentDate.toLocaleDateString(),
+  //   currentDate.toLocaleDateString()
+  // )
 
   return (
     <div className="mt-20">
@@ -36,7 +36,7 @@ const CarReservationCalendar = () => {
           <ReservationTab />
         </div>
         <div>
-          {sampleData?.items?.length === 0 ? (
+          {/* {sampleData?.items?.length === 0 ? (
             <Typography fontWeight="semibold" className="pt-4">
               Rental units have not been created yet. Please create a rental
               unit to display on the calendar.
@@ -50,7 +50,7 @@ const CarReservationCalendar = () => {
                 <RentalCalendarLegend />
               </div>
             </>
-          )}
+          )} */}
         </div>
       </div>
     </div>
