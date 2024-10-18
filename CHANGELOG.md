@@ -5,21 +5,18 @@
 
 ### 🚀 Features
 
-* Added custom image component with placeholder ([6ef76b9](https://github.com/explore-siargao/es-main/commit/6ef76b9785785eb27d7d668804c1fe3b0fc2a399))
+* Added custom image component with placeholder ([6ef76b9](https://github.com/explore-siargao/es-main/commit/6ef76b9785785eb27d7d668804c1fe3b0fc2a399)) ([9f318f5](https://github.com/explore-siargao/es-main/commit/9f318f5965eb44e0831195ac2776c9e83e85cc26))
 * Added loading bg color for Image ([fff7125](https://github.com/explore-siargao/es-main/commit/fff71252e4e576df77811360b48c0774d14a6349))
-* **api:** Added endpoint for get activities by location and type with pagination ([8835736](https://github.com/explore-siargao/es-main/commit/8835736b09af2ca54cdbc704bb6bdf23a7336566))
-* **api:** Added endpoint for get activities by location and type with pagination ([63af136](https://github.com/explore-siargao/es-main/commit/63af13600996dcde2d0070816462a2d421f90c66))
+* **api:** Added endpoint for get activities by location and type with pagination ([8835736](https://github.com/explore-siargao/es-main/commit/8835736b09af2ca54cdbc704bb6bdf23a7336566)) ([63af136](https://github.com/explore-siargao/es-main/commit/63af13600996dcde2d0070816462a2d421f90c66))
 * **api:** Added endpoint for getting properties by location and type ([e164f72](https://github.com/explore-siargao/es-main/commit/e164f725c780fd6f09ba56d798780dc348c2efba))
 * **api:** Added get rentals by location and type with pagination that contain 15 items every page ([1690b8e](https://github.com/explore-siargao/es-main/commit/1690b8e46370637ca9c8ebcd016aeda6bf912550))
-* Change next/image to the custom image component ([9f318f5](https://github.com/explore-siargao/es-main/commit/9f318f5965eb44e0831195ac2776c9e83e85cc26))
 * Changed logic for adding joiner activities ([422aebe](https://github.com/explore-siargao/es-main/commit/422aebe1e661608a10f65d1771690334faa9ae28))
 * **web:** Move the price per dates to header row on joiner activity calendar ([7b545c4](https://github.com/explore-siargao/es-main/commit/7b545c40e119335e37af9a90a5c7e59d7366931a))
-
 
 ### 🛠 Bug Fixes
 
 * **api:** Fix error on not showing activity list when type of is exist on query ([df8a172](https://github.com/explore-siargao/es-main/commit/df8a172a3ab10407de9a9bc68e1e083861f8ac63))
-* **api:** Fixed activity reservation blocked color not changeing ([f9a5faa](https://github.com/explore-siargao/es-main/commit/f9a5faa9c3933945edbff9e90e87d97fff14efd9))
+* **api:** Fixed activity reservation blocked color not changing ([f9a5faa](https://github.com/explore-siargao/es-main/commit/f9a5faa9c3933945edbff9e90e87d97fff14efd9))
 * Bed unit not displaying correct name in listing process ([e5dd5e2](https://github.com/explore-siargao/es-main/commit/e5dd5e208e3b8b6f5681bcdcb6d02ac66e1054b8))
 * **web:** Fixed bug on adding private activity reservation ([6f7f959](https://github.com/explore-siargao/es-main/commit/6f7f95920152f01f176a4e20daaa5ef3c06c93c6))
 
