@@ -8,7 +8,7 @@ const getBookingStyle = (
 ) => {
   const bookingStart = new Date(reservation.startDate)
   const bookingEnd = new Date(reservation.endDate)
-  const calendarEnd = addDays(startDate, daysPerPage - 1)
+  const calendarEnd = addDays(startDate, daysPerPage)
 
   if (
     isAfter(bookingStart, calendarEnd) ||

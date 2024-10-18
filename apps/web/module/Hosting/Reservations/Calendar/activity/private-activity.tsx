@@ -5,11 +5,12 @@ import CalendarLegend from "../../components/ActivityCalendarLegend"
 import PrivateCalendarTable from "./private-calendar-table"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetPrivateActivities from "./hooks/use-get-private-activities"
+import { addDays } from "date-fns"
 
 const PrivateActivity = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetPrivateActivities(
-    currentDate.toLocaleDateString(),
+    addDays(currentDate, +1).toLocaleDateString(),
     currentDate.toLocaleDateString()
   )
   return (

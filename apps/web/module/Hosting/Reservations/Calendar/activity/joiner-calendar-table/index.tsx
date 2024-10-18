@@ -15,6 +15,7 @@ import {
   T_Joiner_Activity,
   T_Joiner_Slot,
 } from "@repo/contract"
+import normalizeDate from "../helpers/normalize-date"
 
 const PrivateCalendarTable = () => {
   const queryClient = useQueryClient()
@@ -27,20 +28,21 @@ const PrivateCalendarTable = () => {
   } = useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
-  endDate.setDate(startDate.getDate() + 11)
+  endDate.setDate(startDate.getDate() + 12)
   const { data: calendarActivities } = useGetJoinerActivities(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
 
   useEffect(() => {
-    const calendarEnd = addDays(startDate, daysPerPage - 1)
+    const calendarEnd = addDays(startDate, daysPerPage)
 
     const isReservationWithinRange = (reservation: T_Calendar_Reservation) => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
-        isAfter(bookingStart, calendarEnd) || isBefore(bookingEnd, startDate)
+        isAfter(bookingStart, calendarEnd) ||
+        isBefore(bookingEnd, normalizeDate(startDate))
       )
     }
 
