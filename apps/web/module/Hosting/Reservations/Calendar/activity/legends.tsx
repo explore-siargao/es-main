@@ -1,10 +1,9 @@
 import { Typography } from "@/common/components/ui/Typography"
-import LegendModal from "./LegendModal"
-import { legends } from "../helpers/property-legends"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
+import LegendModal, { legends } from "./modals/legend-modal"
 
-const CalendarLegend = () => {
+const Legends = () => {
   const [legendModalOpen, setLegendModalOpen] = useState(false)
 
   const date = new Date()
@@ -18,7 +17,7 @@ const CalendarLegend = () => {
       >
         Expand Legends
       </Button>
-      <div
+      <button
         className="flex items-center justify-end space-x-4 cursor-pointer"
         onClick={() => setLegendModalOpen(true)}
       >
@@ -28,7 +27,8 @@ const CalendarLegend = () => {
             <Typography>{item.legend}</Typography>
           </div>
         ))}
-      </div>
+      </button>
+
       <LegendModal
         isOpen={legendModalOpen}
         onClose={() => setLegendModalOpen(false)}
@@ -38,4 +38,4 @@ const CalendarLegend = () => {
   )
 }
 
-export default CalendarLegend
+export default Legends

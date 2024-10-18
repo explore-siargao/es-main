@@ -1,7 +1,7 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ReservationCalendarTab from "../../components/ReservationTab"
-import CalendarLegend from "../../components/ActivityCalendarLegend"
+import ReservationCalendarTab from "../../components/reservation-tab"
+import Legends from "./legends"
 import JoinerCalendarTable from "./joiner-calendar-table"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetJoinerActivities from "./hooks/use-get-joiner-activities"
@@ -45,7 +45,7 @@ const JoinerActivity = () => {
               <JoinerCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
-              <CalendarLegend />
+              <Legends />
             </div>
           </>
         ) : null}

@@ -1,14 +1,14 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ReservationCalendarTab from "../../components/ReservationTab"
+import ReservationCalendarTab from "../../components/reservation-tab"
 import RentalCalendarLegend from "../../components/RentalCalendarLegend"
+import useGetBikeRentals from "./hooks/use-get-bike-rentals"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useGetCarRentals from "./hooks/use-get-car-rentals"
-import CarCalendarTable from "./car-calendar-table"
+import BikeCalendarTable from "./bike-calendar-table"
 
-const CarReservationCalendar = () => {
+const BikeReservationCalendar = () => {
   const currentDate = new Date()
-  const { data, isLoading } = useGetCarRentals(
+  const { data, isLoading } = useGetBikeRentals(
     currentDate.toLocaleDateString(),
     currentDate.toLocaleDateString()
   )
@@ -40,7 +40,7 @@ const CarReservationCalendar = () => {
         {data && !isLoading && data?.items && data?.items?.length > 0 ? (
           <>
             <div className="flex mb-20">
-              <CarCalendarTable />
+              <BikeCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
               <RentalCalendarLegend />
@@ -62,4 +62,4 @@ const CarReservationCalendar = () => {
   )
 }
 
-export default CarReservationCalendar
+export default BikeReservationCalendar

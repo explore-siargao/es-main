@@ -1,5 +1,6 @@
 "use client"
 import ErrorContent from "@/common/components/ErrorContent"
+import "@/app/globals.css"
 
 export default function GlobalError() {
   return (

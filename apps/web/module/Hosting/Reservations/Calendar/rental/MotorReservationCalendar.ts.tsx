@@ -1,7 +1,7 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import MotorCalendarTable from "./MotorCalendarTable"
-import ReservationTab from "../../components/ReservationTab"
+import ReservationTab from "../../components/reservation-tab"
 import RentalCalendarLegend from "../../components/RentalCalendarLegend"
 
 const MotorReservationCalendar = () => {

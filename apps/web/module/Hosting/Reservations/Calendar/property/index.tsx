@@ -1,7 +1,7 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ReservationTab from "../../components/ReservationTab"
-import CalendarLegend from "../../components/CalendarLegend"
+import ReservationTab from "../../components/reservation-tab"
+import Legends from "./legends"
 import { Spinner } from "@/common/components/ui/Spinner"
 import CalendarTable from "@/module/Hosting/Reservations/Calendar/property/calendar-table"
 import useGetProperties from "./hooks/use-get-properties"
@@ -43,7 +43,7 @@ const PropertyCalendar = () => {
               <CalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
-              <CalendarLegend />
+              <Legends />
             </div>
           </>
         ) : null}

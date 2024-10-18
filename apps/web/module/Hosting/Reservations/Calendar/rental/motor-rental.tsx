@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ReservationCalendarTab from "../../components/ReservationTab"
+import ReservationCalendarTab from "../../components/reservation-tab"
 import RentalCalendarLegend from "../../components/RentalCalendarLegend"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCarRentals from "./hooks/use-get-car-rentals"
