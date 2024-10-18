@@ -7,9 +7,7 @@ import toast from "react-hot-toast"
 import SelectStatusForm from "./select-status-form"
 import {
   QK_CALENDAR_JOINER_ACTIVITIES,
-  QK_CALENDAR_PRIVATE_ACTIVITIES,
 } from "../../../constants"
-import useAddPrivateActivityReservation from "../../../hooks/use-add-private-activity-reservation"
 import useAddJoinerActivityReservation from "../../../hooks/use-add-joiner-activity-reservation"
 
 interface AddReservationModalProps {

@@ -2,7 +2,6 @@ import React from "react"
 import { LucideEdit3, LucideSave, LucideX } from "lucide-react"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
-import { Reservation, Room } from "../../types/CalendarTable"
 import { getColorClasses } from "../../helpers/property-legends"
 import getBookingStyle from "./helpers/get-booking-style"
 import { useCalendarStore } from "./stores/use-calendar-store"
@@ -10,12 +9,14 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
 import { generateRowBorder } from "./helpers/calendar-table"
+import { T_Calendar_Property_Unit_Group, T_Calendar_Property_Unit, T_Calendar_Property_Reservation } from "@repo/contract"
+import { QK_CALENDAR_PROPERTIES } from "./constants"
 
 const PropertyUnitRows = ({
-  unitType,
+  unitGroup,
   unitIndex,
 }: {
-  unitType: any
+  unitGroup: T_Calendar_Property_Unit_Group
   unitIndex: number
 }) => {
   const queryClient = useQueryClient()
@@ -36,7 +37,7 @@ const PropertyUnitRows = ({
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-property"],
+            queryKey: [QK_CALENDAR_PROPERTIES],
           })
           toast.success(data.message)
         } else {
@@ -63,12 +64,12 @@ const PropertyUnitRows = ({
   return (
     <>
       {/* Sub Category (Units) */}
-      {!collapsed[unitType.unitType] &&
-        unitType.units.map((bed: Room) => (
-          <tr key={bed.name} className="hover:bg-gray-100 relative">
+      {!collapsed[unitGroup.id] &&
+        unitGroup.units?.map((unit: T_Calendar_Property_Unit) => (
+          <tr key={unit.name} className="hover:bg-gray-100 relative">
             <td className="border py-2 pr-4 pl-12 text-left border-l-0">
               <div className="flex justify-between items-center">
-                {editingUnitQtyId === bed.id ? (
+                {editingUnitQtyId === unit.id ? (
                   <Input
                     type="text"
                     value={tempUnitQtyName}
@@ -78,9 +79,9 @@ const PropertyUnitRows = ({
                     label={""}
                   />
                 ) : (
-                  <span>{bed.name}</span>
+                  <span>{unit.name}</span>
                 )}
-                {editingUnitQtyId === bed.id ? (
+                {editingUnitQtyId === unit.id ? (
                   <div className="flex">
                     <Button
                       size={"icon"}
@@ -106,7 +107,7 @@ const PropertyUnitRows = ({
                     size={"icon"}
                     variant={"link"}
                     onClick={() =>
-                      handleEditingUnitQtyName({ id: bed.id, name: bed.name })
+                      handleEditingUnitQtyName({ id: unit.id, name: unit.name })
                     }
                   >
                     <LucideEdit3 className="text-gray-500 w-5" />
@@ -118,18 +119,18 @@ const PropertyUnitRows = ({
               colSpan={daysPerPage}
               className={`border text-center relative ${unitIndex + 1 !== daysPerPage && "border-r-0"}`}
             >
-              {bed.reservations.map((booking: Reservation) => {
-                const style = getBookingStyle(startDate, daysPerPage, booking)
+              {unit.reservations.map((reservation: T_Calendar_Property_Reservation) => {
+                const style = getBookingStyle(startDate, daysPerPage, reservation)
                 if (!style) return null
 
                 const { startCol, colSpan } = style
                 const { colorClass, hoverColorClass } = getColorClasses(
-                  booking.status
+                  reservation.status
                 )
 
                 return (
                   <div
-                    key={booking.id}
+                    key={reservation.id}
                     style={{
                       left: `${(startCol * 100) / daysPerPage + 4}%`,
                       width: `${(colSpan * 100) / daysPerPage - 8}%`,
@@ -137,16 +138,16 @@ const PropertyUnitRows = ({
                     onClick={() => {
                       setIsReservationModalOpen(true)
                       setSelectedReservation({
-                        unit: bed.name,
-                        reservation: booking,
+                        unit: unit.name,
+                        reservation: reservation,
                       })
                     }}
                     className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
                   >
                     <span className="text-white text-sm truncate px-2">
-                      {booking.status === "Out-of-Service-Dates"
+                      {reservation.status === "Out-of-Service-Dates"
                         ? "Out of service"
-                        : booking.name}
+                        : reservation.name}
                     </span>
                   </div>
                 )

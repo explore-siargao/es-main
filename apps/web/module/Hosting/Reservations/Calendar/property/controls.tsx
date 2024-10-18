@@ -1,19 +1,20 @@
 import { Button } from "@/common/components/ui/Button"
 import {
-  Calendar,
   ChevronLeft,
   ChevronRight,
-  Plus,
-  Search,
-  X,
 } from "lucide-react"
 import { useState } from "react"
-import CalendarTab from "../../components/CalendarTab"
-import MonthYearSelectorModal from "../SidebarActionModals/MonthYearSelectorModal"
-import PropertySearchCalendarModal from "../SidebarActionModals/SideBarSearchModals/PropertySearchCalendar"
+import FilterDate from "../components/controls/buttons/filter-date"
+import FilterDateModal from "../modals/filter-date-modal"
+import AddReservationModal from "./modals/add-reservation-modal"
+import SearchActivityModal from "../modals/search-activity-modal"
 import { useCalendarStore } from "./stores/use-calendar-store"
 import { addDays, parse } from "date-fns"
 import { useQueryClient } from "@tanstack/react-query"
+import SearchReservation from "../components/controls/buttons/search-reservation"
+import AddReservation from "../components/controls/buttons/add-reservation"
+import Move from "../components/controls/move"
+import { QK_CALENDAR_PROPERTIES } from "./constants"
 
 const Controls = () => {
   const queryClient = useQueryClient()
@@ -49,98 +50,44 @@ const Controls = () => {
   return (
     <div className="flex flex-col p-4">
       <div className="flex gap-2 items-center w-1/2">
-        {!filterCalendarDate ? (
-          <Button
-            size={"sm"}
-            variant={"default"}
-            className="rounded-full w-full"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <Calendar className="w-5" />
-          </Button>
-        ) : (
-          <Button
-            size={"sm"}
-            variant={"default"}
-            className="rounded-full w-full"
-            onClick={() => {
-              setFilterCalendarDate && setFilterCalendarDate("")
-              setStartDate(addDays(new Date(), -4))
-            }}
-          >
-            <X className="w-5" />
-          </Button>
-        )}
-        {!searchString ? (
-          <Button
-            size={"sm"}
-            variant={"default"}
-            className="rounded-full w-full"
-            onClick={() => setIsSearchModalOpen(true)}
-          >
-            <Search className="w-5" />
-          </Button>
-        ) : (
-          <Button
-            size={"sm"}
-            variant={"default"}
-            className="rounded-full w-full"
-            onClick={() => setSearchString && setSearchString("")}
-          >
-            <X className="w-5" />
-          </Button>
-        )}
-        <Button
-          size={"sm"}
-          variant={"secondary"}
-          className="rounded-full w-full"
-          onClick={() => setIsAddReservationModalOpen(true)}
-        >
-          <Plus className="w-5" />
-        </Button>
+        <FilterDate
+          setIsModalOpen={setIsModalOpen}
+          filterCalendarDate={filterCalendarDate}
+          setFilterCalendarDate={setFilterCalendarDate}
+          setStartDate={setStartDate}
+        />
+        <SearchReservation
+          setIsSearchModalOpen={setIsSearchModalOpen}
+          searchString={searchString}
+          setSearchString={setSearchString}
+        />
+        <AddReservation
+          setIsAddReservationModalOpen={setIsAddReservationModalOpen}
+        />
       </div>
-      <div className="flex gap-2 mt-4">
-        <Button
-          variant={"outline"}
-          onClick={() => adjustStartDate(-1)}
-          className="py-2 px-4 rounded w-max rounded-l-full"
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant={"outline"}
-          className="py-2 px-4 rounded-none w-full"
-          onClick={() => {
-            setFilterCalendarDate?.("")
-            resetToToday?.()
-          }}
-        >
-          TODAY
-        </Button>
-        <Button
-          variant={"outline"}
-          onClick={() => adjustStartDate(1)}
-          className="py-2 px-4 rounded w-max rounded-r-full"
-        >
-          <ChevronRight />
-        </Button>
-      </div>
-
-      <div className="normal-case">
-        <CalendarTab />
-      </div>
-      <MonthYearSelectorModal
+      <Move
+        className="mt-4"
+        filterCalendarDate={filterCalendarDate}
+        setStartDate={setStartDate}
+        startDate={startDate}
+        setFilterCalendarDate={setFilterCalendarDate}
+        queryKey={QK_CALENDAR_PROPERTIES}
+      />
+      <FilterDateModal
         isModalOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        filterCalendarDate={filterCalendarDate!}
-        setFilterCalendarDate={setFilterCalendarDate!}
+        setFilterCalendarDate={setFilterCalendarDate}
+        setStartDate={setStartDate}
       />
-      <PropertySearchCalendarModal
+      <SearchActivityModal
         isModalOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
-        searchString={searchString!}
-        setSearchString={setSearchString!}
+        setSearchString={setSearchString}
+        inputDescription="Enter unit name you want to search"
+        inputLabel="Enter unit name or keyword"
+        inputPlaceholder="e.g., Liwana Siargao Suites"
       />
+      <AddReservationModal />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { addDays } from "date-fns"
 import { create } from "zustand"
-import { Category, SelectedReservation } from "../../../types/CalendarTable"
+import { T_Calendar_Property, T_Calendar_Property_Reservation } from "@repo/contract"
 
 type T_Calendar_Store = {
   daysPerPage: number
@@ -9,13 +9,12 @@ type T_Calendar_Store = {
   selectedLegendType: string
   isLegendTypeSelected: boolean
   collapsed: { [key: string]: boolean }
-  selectedReservation: SelectedReservation | null
+  selectedReservation:  { unit: string, reservation: T_Calendar_Property_Reservation } | null
   isReservationModalOpen: boolean
   isAddReservationModalOpen: boolean
   selectedDate: string
   selectedUnitId: string
-  filteredData: { items?: Category[] } | null
-  unitData: { items: [] }
+  propertyData: T_Calendar_Property[]
   editingUnitQtyId: string | null
   tempUnitQtyName: string
   isEditReservation: boolean
@@ -29,13 +28,12 @@ type T_Calendar_Store = {
   setSelectedLegendType: (value: string) => void
   setIsLegendTypeSelected: (value: boolean) => void
   setCollapsed: (value: { [key: string]: boolean }) => void
-  setSelectedReservation: (value: SelectedReservation | null) => void
+  setSelectedReservation: (value: { unit: string, reservation: T_Calendar_Property_Reservation } | null) => void
   setIsReservationModalOpen: (value: boolean) => void
   setIsAddReservationModalOpen: (value: boolean) => void
   setSelectedDate: (value: string) => void
   setSelectedUnitId: (value: string) => void
-  setFilteredData: (value: { items?: Category[] } | null) => void
-  setUnitData: (value: any) => void
+  setPropertyData: (value: T_Calendar_Property[]) => void
   setEditingUnitQtyId: (value: string | null) => void
   setTempUnitQtyName: (value: string) => void
   setIsEditReservation: (value: boolean) => void
@@ -56,8 +54,7 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
   isAddReservationModalOpen: false,
   selectedDate: "",
   selectedUnitId: "",
-  filteredData: null,
-  unitData: { items: [] },
+  propertyData: [],
   editingUnitQtyId: null,
   tempUnitQtyName: "",
   isEditReservation: false,
@@ -73,7 +70,7 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
     set({ isLegendTypeSelected: value }),
   setCollapsed: (value: { [key: string]: boolean }) =>
     set({ collapsed: value }),
-  setSelectedReservation: (value: SelectedReservation | null) =>
+  setSelectedReservation: (value: { unit: string, reservation: T_Calendar_Property_Reservation } | null) =>
     set({ selectedReservation: value }),
   setIsReservationModalOpen: (value: boolean) =>
     set({ isReservationModalOpen: value }),
@@ -81,9 +78,7 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
     set({ isAddReservationModalOpen: value }),
   setSelectedDate: (value: string) => set({ selectedDate: value }),
   setSelectedUnitId: (value: string) => set({ selectedUnitId: value }),
-  setFilteredData: (value: { items?: Category[] } | null) =>
-    set({ filteredData: value }),
-  setUnitData: (value: any) => set({ unitData: value }),
+  setPropertyData: (value: any) => set({ propertyData: value }),
   setEditingUnitQtyId: (value: string | null) =>
     set({ editingUnitQtyId: value }),
   setTempUnitQtyName: (value: string) => set({ tempUnitQtyName: value }),

@@ -86,6 +86,9 @@ const Controls = () => {
         isModalOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
         setSearchString={setSearchString}
+        inputDescription="Enter activity name you want to search"
+        inputLabel="Enter activity name or keyword"
+        inputPlaceholder="e.g., Mon 12:00 AM - 1:00 AM"
       />
       <AddActivityReservationModal
         isModalOpen={isAddReservationModalOpen}

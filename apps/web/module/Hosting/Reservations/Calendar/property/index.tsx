@@ -2,13 +2,13 @@
 import { Typography } from "@/common/components/ui/Typography"
 import ReservationTab from "../../components/ReservationTab"
 import CalendarLegend from "../../components/CalendarLegend"
-import useGetCalendarProperty from "../hooks/useGetCalendarProperty"
 import { Spinner } from "@/common/components/ui/Spinner"
 import CalendarTable from "@/module/Hosting/Reservations/Calendar/property/calendar-table"
+import useGetProperties from "./hooks/use-get-properties"
 
 const PropertyCalendar = () => {
   const currentDate = new Date()
-  const { data, isLoading } = useGetCalendarProperty(
+  const { data, isLoading } = useGetProperties(
     currentDate.toLocaleDateString(),
     currentDate.toLocaleDateString()
   )

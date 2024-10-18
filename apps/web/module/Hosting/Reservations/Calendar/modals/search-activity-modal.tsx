@@ -7,12 +7,18 @@ interface SearchActivityModalProps {
   isModalOpen: boolean
   onClose: () => void
   setSearchString: (searchString: string) => void
+  inputDescription?: string
+  inputPlaceholder?: string
+  inputLabel?: string
 }
 
 const SearchActivityModal = ({
   isModalOpen,
   onClose,
   setSearchString,
+  inputDescription,
+  inputPlaceholder,
+  inputLabel = "",
 }: SearchActivityModalProps) => {
   const [value, setValue] = useState("")
 
@@ -37,11 +43,11 @@ const SearchActivityModal = ({
             <div className="flex flex-col w-full">
               <Input2
                 type="text"
-                label={"Enter activity name or keyword"}
+                label={inputLabel}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                description="Enter activity name you want to search"
-                placeholder="e.g., Mon 12:00 AM - 1:00 AM"
+                description={inputDescription}
+                placeholder={inputPlaceholder}
               />
             </div>
           </div>

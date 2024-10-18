@@ -4,10 +4,10 @@ import { Button } from "@/common/components/ui/Button"
 import { Input2 } from "@/common/components/ui/Input2"
 import { T_Property } from "@repo/contract"
 import { useForm } from "react-hook-form"
-import useUpdateUnitPricePerDate from "../../hooks/useUpdaateUnitPricePerDate"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useCalendarStore } from "../stores/use-calendar-store"
+import useUpdateUnitPricePerDate from "../hooks/use-update-unit-price-per-date"
 
 const EditPricePerDatesModal = () => {
   const {

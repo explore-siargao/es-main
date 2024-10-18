@@ -7,9 +7,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { useForm } from "react-hook-form"
-import useUpdateUnitReservation from "../../hooks/useUpdateUnitReservation"
 import { useCalendarStore } from "../stores/use-calendar-store"
-import useCancelPropertyReservation from "../../hooks/useCancelPropertyReservation"
+import useCancelPropertyReservation from "../hooks/use-cancel-property-reservation"
+import useUpdateUnitReservation from "../hooks/use-update-unit-reservation"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()
@@ -102,8 +102,8 @@ const InfoCancelModal = () => {
                       Property Category
                     </Typography>
                     <Typography variant="h3" className="text-gray-500">
-                      {selectedReservation?.reservation?.category &&
-                        selectedReservation?.reservation?.category}
+                      {selectedReservation?.reservation?.name &&
+                        selectedReservation?.reservation?.name}
                     </Typography>
                   </div>
                   <div className="flex flex-col w-full">

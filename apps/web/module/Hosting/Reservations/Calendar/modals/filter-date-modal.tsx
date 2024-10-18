@@ -3,6 +3,7 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Input } from "@/common/components/ui/Input"
 import { addDays, parse } from "date-fns"
+import { Typography } from "@/common/components/ui/Typography"
 
 interface FilterDateModalProps {
   isModalOpen: boolean
@@ -39,11 +40,13 @@ const FilterDateModal = ({
         <div className="flex flex-col gap-4 pb-4">
           <div className="flex gap-4">
             <div className="flex flex-col w-full">
+              <Typography>Jump to specific date</Typography>
               <Input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 label={"Select date"}
+                className="mt-2"
               />
             </div>
           </div>

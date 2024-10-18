@@ -11,44 +11,45 @@ import { ChevronDown, ChevronRight } from "lucide-react"
 import { TZDate } from "@date-fns/tz"
 import PropertyUnitRows from "./property-unit-rows"
 import { useCalendarStore } from "./stores/use-calendar-store"
+import { T_Calendar_Property, T_Calendar_Property_Unit_Group, T_Calendar_Property_Date_Price, T_Calendar_Property_Reservation } from "@repo/contract"
 
 const PropertyRows = () => {
   const {
     startDate,
     daysPerPage,
     collapsed,
-    unitData,
+    propertyData,
     setCollapsed,
     setIsEditPricePerDatesModalOpen,
     setSelectedDate,
     setSelectedUnitId,
   } = useCalendarStore((state) => state)
-  const toggleCollapse = (category: string) => {
-    setCollapsed({ ...collapsed, [category]: !collapsed[category] })
+  const toggleCollapse = (unitGroupId: string) => {
+    setCollapsed({ ...collapsed, [unitGroupId]: !collapsed[unitGroupId] })
   }
-  const handleOpenPricePerDatesModal = (date: string, category: string) => {
+  const handleOpenPricePerDatesModal = (date: string, unitGroupId: string) => {
     setIsEditPricePerDatesModalOpen(true)
     setSelectedDate(date)
-    setSelectedUnitId(category)
+    setSelectedUnitId(unitGroupId)
   }
   return (
     <>
-      {unitData?.items?.map((category: any, index: number) => (
-        <React.Fragment key={category.name}>
-          {category.bookableUnitTypes.map((unitType: any) => (
-            <React.Fragment key={unitType.unitType}>
+      {propertyData?.map((property: T_Calendar_Property, index: number) => (
+        <React.Fragment key={property.propertyTitle}>
+          {property.bookableUnitTypes.map((unitGroup: T_Calendar_Property_Unit_Group) => (
+            <React.Fragment key={unitGroup.name}>
               <tr
                 className="hover:bg-gray-100 cursor-pointer"
-                onClick={() => toggleCollapse(unitType.unitType)}
+                onClick={() => toggleCollapse(unitGroup.id)}
               >
                 <td className={`border p-4 text-left font-bold border-l-0`}>
                   <span className="flex gap-2 items-center">
-                    {collapsed[unitType.unitType] ? (
+                    {collapsed[unitGroup.name] ? (
                       <ChevronRight />
                     ) : (
                       <ChevronDown />
                     )}
-                    {`${unitType.unitType} (${category.name})`}
+                    {`${unitGroup.name} (${property.propertyTitle})`}
                   </span>
                 </td>
                 {[...Array(daysPerPage)].map((_, i) => {
@@ -56,8 +57,8 @@ const PropertyRows = () => {
                   const date = format(addDays(startDate, i), "yyyy-MM-dd")
                   const isToday = isSameDay(date, today)
                   const noReservationCount =
-                    unitType?.units?.reduce(
-                      (count: number, unit: { reservations: any[] }) => {
+                    unitGroup.units?.reduce(
+                      (count: number, unit: { reservations: T_Calendar_Property_Reservation[] }) => {
                         const hasReservation = unit.reservations.some(
                           (reservation) => {
                             const reservationStart = format(
@@ -85,8 +86,7 @@ const PropertyRows = () => {
                     >
                       <div
                         onClick={(e) => {
-                          handleOpenPricePerDatesModal(date, unitType.id)
-                          console.log(category.bookableUnitTypes)
+                          handleOpenPricePerDatesModal(date, unitGroup.id)
                           e.stopPropagation()
                         }}
                         className="flex flex-col"
@@ -94,9 +94,9 @@ const PropertyRows = () => {
                         <div>{noReservationCount}</div>
                         <div>
                           &#8369;
-                          {unitType.pricePerDates?.length === 0
-                            ? parseFloat(`${unitType.price}`).toFixed(2)
-                            : unitType.pricePerDates?.find((item: any) => {
+                          {unitGroup.pricePerDates?.length === 0
+                            ? parseFloat(`${unitGroup.price}`).toFixed(2)
+                            : unitGroup.pricePerDates?.find((item: T_Calendar_Property_Date_Price) => {
                                   const itemFromDate = new TZDate(
                                     startOfDay(item.fromDate),
                                     "Asia/Manila"
@@ -114,27 +114,25 @@ const PropertyRows = () => {
                                     end: itemToDate,
                                   })
                                 })?.price
-                              ? parseFloat(
-                                  unitType.pricePerDates.find((item: any) => {
-                                    const itemFromDate = new TZDate(
-                                      startOfDay(item.fromDate),
-                                      "Asia/Manila"
-                                    )
-                                    const itemToDate = new TZDate(
-                                      endOfDay(item.toDate),
-                                      "Asia/Manila"
-                                    )
-                                    const currentDate = new TZDate(
-                                      startOfDay(date),
-                                      "Asia/Manila"
-                                    )
-                                    return isWithinInterval(currentDate, {
-                                      start: itemFromDate,
-                                      end: itemToDate,
-                                    })
-                                  }).price.baseRate
-                                ).toFixed(2)
-                              : parseFloat(`${unitType.price}`).toFixed(2)}
+                              ? unitGroup.pricePerDates?.find((item: T_Calendar_Property_Date_Price) => {
+                                  const itemFromDate = new TZDate(
+                                    startOfDay(item.fromDate),
+                                    "Asia/Manila"
+                                  )
+                                  const itemToDate = new TZDate(
+                                    endOfDay(item.toDate),
+                                    "Asia/Manila"
+                                  )
+                                  const currentDate = new TZDate(
+                                    startOfDay(date),
+                                    "Asia/Manila"
+                                  )
+                                  return isWithinInterval(currentDate, {
+                                    start: itemFromDate,
+                                    end: itemToDate,
+                                  })
+                                })?.price?.baseRate.toFixed(2)
+                              : parseFloat(`${unitGroup.price}`).toFixed(2)}
                         </div>
                       </div>
                     </td>
@@ -142,7 +140,7 @@ const PropertyRows = () => {
                 })}
               </tr>
               {/* Sub Category (Units) */}
-              <PropertyUnitRows unitType={unitType} unitIndex={index} />
+              <PropertyUnitRows unitGroup={unitGroup} unitIndex={index} />
             </React.Fragment>
           ))}
         </React.Fragment>

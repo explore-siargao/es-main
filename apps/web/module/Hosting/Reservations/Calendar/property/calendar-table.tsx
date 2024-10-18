@@ -1,35 +1,29 @@
 import React, { useEffect } from "react"
-import { addDays, isAfter, isBefore, parse } from "date-fns"
+import { addDays, isAfter, isBefore } from "date-fns"
 import toast from "react-hot-toast"
-import {
-  Room,
-  Bed,
-  WholePlace,
-} from "@/module/Hosting/Reservations/types/CalendarTable"
-import useGetCalendarProperty from "@/module/Hosting/Reservations/Calendar/hooks/useGetCalendarProperty"
 import { useQueryClient } from "@tanstack/react-query"
 import PropertyRows from "@/module/Hosting/Reservations/Calendar/property/property-rows"
 import { generateDays, generateMonth } from "./helpers/calendar-table"
 import { useCalendarStore } from "@/module/Hosting/Reservations/Calendar/property/stores/use-calendar-store"
 import Controls from "@/module/Hosting/Reservations/Calendar/property/controls"
 import ModalsWrapper from "@/module/Hosting/Reservations/Calendar/property/modals-wrapper"
+import useGetProperties from "./hooks/use-get-properties"
+import { QK_CALENDAR_PROPERTIES } from "./constants"
+import { T_Calendar_Property, T_Calendar_Property_Unit, T_Calendar_Property_Unit_Group } from "@repo/contract"
 
 const CalendarTable = () => {
   const queryClient = useQueryClient()
   const {
     daysPerPage,
-    filterCalendarDate,
     startDate,
     searchString,
-    setUnitData,
-    setStartDate,
+    setPropertyData,
     setSearchString,
-    setFilterCalendarDate,
   } = useCalendarStore((state) => state)
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
-  const { data: calendarProperties } = useGetCalendarProperty(
+  const { data: calendarProperties } = useGetProperties(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -48,12 +42,8 @@ const CalendarTable = () => {
       )
     }
 
-    const transformUnitType = (unitType: {
-      beds: Bed[]
-      rooms: Room[]
-      wholePlaces: WholePlace[]
-    }) => {
-      const bookableUnits: Bed[] = []
+    const transformUnitType = (unitType: T_Calendar_Property_Unit_Group) => {
+      const bookableUnits: T_Calendar_Property_Unit[] = []
 
       const units = [
         ...(unitType.beds || []),
@@ -71,42 +61,27 @@ const CalendarTable = () => {
           name: unit.name,
           status: unit.status,
           reservations: filteredReservations,
-          bookings: [],
         })
       })
 
       return bookableUnits
     }
 
-    const filterItems = (items: any[]) =>
+    const filterItems = (items: T_Calendar_Property[]) =>
       items
-        .map((item: { propertyTitle: string; bookableUnitTypes: any[] }) => ({
-          name: item.propertyTitle,
+        .map((item: T_Calendar_Property) => ({
+          propertyTitle: item.propertyTitle,
           bookableUnitTypes: item.bookableUnitTypes.reduce(
             (
-              acc: {
-                id: string
-                unitType: any
-                units: any[]
-                price: any
-                pricePerDates: any[]
-              }[],
-              unitType: {
-                beds: any
-                rooms: any
-                wholePlaces: any
-                name: any
-                price: any
-                pricePerDates: any[]
-              }
+              acc: T_Calendar_Property_Unit_Group[],
+              unitType: T_Calendar_Property_Unit_Group
             ) => {
               if (unitType.beds || unitType.rooms || unitType.wholePlaces) {
                 const transformedUnits = transformUnitType(unitType)
                 if (transformedUnits.length > 0) {
                   acc.push({
-                    //@ts-ignore
                     id: unitType.id,
-                    unitType: unitType.name,
+                    name: unitType.name,
                     price: unitType.price,
                     units: transformedUnits,
                     pricePerDates: unitType.pricePerDates,
@@ -123,19 +98,43 @@ const CalendarTable = () => {
             item.bookableUnitTypes.length > 0
         )
 
-    const applySearchFilter = (data: any) => {
+    const applySearchFilter = (data: T_Calendar_Property[]) => {
       if (!searchString) return data // No search string, return original data
 
       const trimmedSearchString = searchString.toLowerCase().trim()
 
-      const filteredItems = data.items
-        .map((category: { name: string; bookableUnitTypes: any[] }) => ({
-          ...category,
-          bookableUnitTypes: category.bookableUnitTypes
-            .map((unitType: any) => ({
+      const filteredItems = data
+        .map((property: T_Calendar_Property) => ({
+          ...property,
+          bookableUnitTypes: property.bookableUnitTypes
+            .map((unitType: T_Calendar_Property_Unit_Group) => ({
               ...unitType,
-              units: unitType.units.filter(
-                (unit: { name: string; reservations: any[] }) => {
+              beds: unitType.beds?.filter(
+                (unit: T_Calendar_Property_Unit) => {
+                  const trimmedAbbr = unit.name.toLowerCase().trim()
+                  return (
+                    trimmedAbbr.includes(trimmedSearchString) ||
+                    unit.reservations.some((reservation: { name: string }) => {
+                      const trimmedName = reservation.name.toLowerCase().trim()
+                      return trimmedName.includes(trimmedSearchString)
+                    })
+                  )
+                }
+              ),
+              rooms: unitType.rooms?.filter(
+                (unit: T_Calendar_Property_Unit) => {
+                  const trimmedAbbr = unit.name.toLowerCase().trim()
+                  return (
+                    trimmedAbbr.includes(trimmedSearchString) ||
+                    unit.reservations.some((reservation: { name: string }) => {
+                      const trimmedName = reservation.name.toLowerCase().trim()
+                      return trimmedName.includes(trimmedSearchString)
+                    })
+                  )
+                }
+              ),
+              wholePlaces: unitType.wholePlaces?.filter(
+                (unit: T_Calendar_Property_Unit) => {
                   const trimmedAbbr = unit.name.toLowerCase().trim()
                   return (
                     trimmedAbbr.includes(trimmedSearchString) ||
@@ -147,28 +146,24 @@ const CalendarTable = () => {
                 }
               ),
             }))
-            .filter((unitType: { units: any[] }) => unitType.units.length > 0), // Only keep unitTypes with matching units
+            .filter((unitType: T_Calendar_Property_Unit_Group) => (unitType.wholePlaces && unitType.wholePlaces?.length > 0) || (unitType.rooms && unitType.rooms?.length > 0) || (unitType.beds && unitType.beds?.length > 0)), // Only keep unitTypes with matching units
         }))
         .filter(
-          (category: { bookableUnitTypes: any[] }) =>
-            category.bookableUnitTypes.length > 0 // Only keep categories with matching bookableUnitTypes
+          (property: T_Calendar_Property) =>
+            property.bookableUnitTypes.length > 0 // Only keep categories with matching bookableUnitTypes
         )
 
-      return {
-        ...data,
-        items: filteredItems,
-      }
+      return filteredItems
     }
     // Create the newFilteredData based on the original filter logic
-    const newFilteredData = {
-      items: filterItems(calendarProperties?.items ?? []),
-    }
+    const newFilteredData = filterItems(calendarProperties?.items ?? [])
+    
     // Apply the search filter to newFilteredData
     const finalFilteredData = applySearchFilter(newFilteredData)
     // Update the state based on the final filtered data
-    if (finalFilteredData.items.length > 0) {
-      setUnitData(finalFilteredData)
-    } else if (searchString && finalFilteredData.items.length === 0) {
+    if (finalFilteredData.length > 0) {
+      setPropertyData(finalFilteredData)
+    } else if (searchString && finalFilteredData.length === 0) {
       toast.error(`No matched results for "${searchString}"`)
       setSearchString("")
     }
@@ -177,22 +172,13 @@ const CalendarTable = () => {
     daysPerPage,
     calendarProperties?.items,
     searchString,
-    setUnitData,
+    setPropertyData,
   ])
-
-  const resetToToday = () => {
-    if (filterCalendarDate !== "") {
-      const parsedDate = parse(filterCalendarDate, "yyyy-MM-dd", new Date())
-      setStartDate(addDays(parsedDate, -4))
-    } else {
-      setStartDate(addDays(new Date(), -4))
-    }
-  }
 
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
-        queryKey: ["calendar-property"],
+        queryKey: [QK_CALENDAR_PROPERTIES],
       })
     }
   }, [startDate])
