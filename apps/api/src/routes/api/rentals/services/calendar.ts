@@ -263,7 +263,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           endDate: reservation.endDate ?? new Date(),
           guestCount: reservation.guestCount ?? 0,
           status: reservationStatus,
-          notes: reservation.note,
+          notes: reservation.notes,
         }
 
         if (!reservationMap[reservation.rentalIds.qtyIdsId.toString()]) {
