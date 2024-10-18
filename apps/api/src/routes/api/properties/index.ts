@@ -62,6 +62,8 @@ import {
   editUnitNote,
   getPropertyCalendar,
 } from './services/calendar'
+import { getBookableUnitsByLocationAndTypes } from './services/filtered'
+import paginate from '@/common/middleware/paginations/paginate'
 
 const router = express.Router()
 
@@ -69,6 +71,15 @@ const router = express.Router()
 router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 router.get('/public/:propertyId', isOriginValid, getPropertyByIdPublic)
+
+router.get(
+  '/unit/:location/:type',
+  isOriginValid,
+  isCsrfTokenValid,
+  paginate(15),
+  getBookableUnitsByLocationAndTypes
+)
+
 router.get(
   '/:propertyId',
   isOriginValid,
