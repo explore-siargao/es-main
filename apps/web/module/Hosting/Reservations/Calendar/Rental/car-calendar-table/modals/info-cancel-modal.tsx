@@ -5,8 +5,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { Textarea } from "@/common/components/ui/Textarea"
 import { useForm } from "react-hook-form"
-import { useCalendarStore } from "../../stores/use-bike-store"
-import { QK_CALENDAR_BIKE_RENTALS } from "../../constants"
+import { useCalendarStore } from "../../stores/use-car-store"
+import { QK_CALENDAR_CAR_RENTALS } from "../../constants"
 import useCancelRentalReservation from "../../hooks/use-cancel-rental-reservation"
 import useUpdateRentalReservation from "../../hooks/use-update-rental-reservation"
 import { Input } from "@/common/components/ui/Input"
@@ -49,7 +49,7 @@ const InfoCancelModal = () => {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: [QK_CALENDAR_BIKE_RENTALS],
+            queryKey: [QK_CALENDAR_CAR_RENTALS],
           })
           toast.success(data.message)
           closeReservationModal()
@@ -67,7 +67,7 @@ const InfoCancelModal = () => {
     onSuccess: (data: any) => {
       if (!data.error) {
         queryClient.invalidateQueries({
-          queryKey: [QK_CALENDAR_BIKE_RENTALS],
+          queryKey: [QK_CALENDAR_CAR_RENTALS],
         })
         toast.success(data.message)
         closeReservationModal()

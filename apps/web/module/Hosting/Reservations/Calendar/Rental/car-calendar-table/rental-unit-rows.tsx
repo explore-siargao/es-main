@@ -8,19 +8,19 @@ import { generateRowBorder } from "../helpers/calendar-table"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import {
-  T_Calendar_Bike_Rental,
+  T_Calendar_Car_Rental,
   T_Calendar_Rental_Reservation,
 } from "@repo/contract"
 
-import { QK_CALENDAR_BIKE_RENTALS } from "../constants"
-import { useCalendarStore } from "../stores/use-bike-store"
+import { QK_CALENDAR_CAR_RENTALS } from "../constants"
+import { useCalendarStore } from "../stores/use-car-store"
 import useUpdateVehicleName from "../hooks/use-update-vehicle-name"
 
 const VehicleUnitRows = ({
   rental,
   activityIndex,
 }: {
-  rental: T_Calendar_Bike_Rental
+  rental: T_Calendar_Car_Rental
   activityIndex: number
 }) => {
   const queryClient = useQueryClient()
@@ -44,7 +44,7 @@ const VehicleUnitRows = ({
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: [QK_CALENDAR_BIKE_RENTALS],
+            queryKey: [QK_CALENDAR_CAR_RENTALS],
           })
           toast.success(data.message)
         } else {
@@ -74,11 +74,11 @@ const VehicleUnitRows = ({
     <>
       {/* Sub Category (Rentals) */}
       {!collapsed[rental.name] &&
-        rental.bicycles.map((bicycle) => (
-          <tr key={bicycle.name} className="hover:bg-gray-100 relative">
+        rental.cars.map((car) => (
+          <tr key={car.name} className="hover:bg-gray-100 relative">
             <td className="border py-2 pr-4 pl-12 text-left border-l-0">
             <div className="flex justify-between items-center">
-                {editingRentalQtyId === bicycle.id ? (
+                {editingRentalQtyId === car.id ? (
                   <Input
                     type="text"
                     value={tempRentalQtyName}
@@ -88,9 +88,9 @@ const VehicleUnitRows = ({
                     label={""}
                   />
                 ) : (
-                  <span>{bicycle.name}</span>
+                  <span>{car.name}</span>
                 )}
-                {editingRentalQtyId === bicycle.id ? (
+                {editingRentalQtyId === car.id ? (
                   <div className="flex">
                     <Button
                       size={"icon"}
@@ -116,7 +116,7 @@ const VehicleUnitRows = ({
                     size={"icon"}
                     variant={"link"}
                     onClick={() =>
-                      handleEditingRentalQtyName({ id: bicycle.id, name: bicycle.name })
+                      handleEditingRentalQtyName({ id: car.id, name: car.name })
                     }
                   >
                     <LucideEdit3 className="text-gray-500 w-5" />
@@ -128,7 +128,7 @@ const VehicleUnitRows = ({
               colSpan={daysPerPage}
               className={`border text-center relative ${activityIndex + 1 !== daysPerPage && "border-r-0"}`}
             >
-              {bicycle.reservations.map(
+              {car.reservations.map(
                 (reservation: T_Calendar_Rental_Reservation) => {
                   const style = getBookingStyle(
                     startDate,
@@ -151,11 +151,11 @@ const VehicleUnitRows = ({
                         width: `${(colSpan * 100) / daysPerPage - 8}%`,
                       }}
                       onClick={() => {
-                 
+                      
                         setIsReservationModalOpen(true)
                         setSelectedReservation({
                           ...reservation,
-                          bicycleName: bicycle.name
+                          carName: car.name
                         })
                       }}
                       className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}

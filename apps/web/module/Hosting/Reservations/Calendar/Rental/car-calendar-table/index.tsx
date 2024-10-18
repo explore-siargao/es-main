@@ -6,16 +6,16 @@ import { generateDays, generateMonth } from "../helpers/calendar-table"
 import ModalsWrapper from "./modals-wrapper"
 import { QK_CALENDAR_BIKE_RENTALS } from "../constants"
 import {
-  T_Calendar_Bike_Rental,
+  T_Calendar_Car_Rental,
   T_Calendar_Rental,
   T_Calendar_Rental_Reservation
 } from "@repo/contract"
-import useGetBikeRentals from "../hooks/use-get-bike-rentals"
 import Controls from "./controls"
 import RentalRows from "./rental-rows"
-import { useCalendarStore } from "../stores/use-bike-store"
+import { useCalendarStore } from "../stores/use-car-store"
+import useGetCarRentals from "../hooks/use-get-car-rentals"
 
-const BikeCalendarTable = () => {
+const CarCalendarTable = () => {
   const queryClient = useQueryClient()
   const {
     daysPerPage,
@@ -27,7 +27,7 @@ const BikeCalendarTable = () => {
 
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
-  const { data: calendarRentals } = useGetBikeRentals(
+  const { data: calendarRentals } = useGetCarRentals(
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
@@ -46,11 +46,11 @@ const BikeCalendarTable = () => {
     const filterReservations = (reservations: T_Calendar_Rental_Reservation[]) =>
       reservations.filter(isReservationWithinRange)
 
-    const filterBicycles = (bicycles: T_Calendar_Rental[]) =>
-      bicycles
-        .map((bicycles) => ({
-          ...bicycles,
-          reservations: filterReservations(bicycles.reservations),
+    const filterCars = (cars: T_Calendar_Rental[]) =>
+      cars
+        .map((cars) => ({
+          ...cars,
+          reservations: filterReservations(cars.reservations),
         }))
         .filter(
           (car) =>
@@ -58,13 +58,13 @@ const BikeCalendarTable = () => {
             car.name.toLowerCase().includes(searchString.toLowerCase())
         )
 
-        const filterCategories = (categories: T_Calendar_Bike_Rental[]) =>
+        const filterCategories = (categories: T_Calendar_Car_Rental[]) =>
           categories
-            .map((category: T_Calendar_Bike_Rental) => ({
+            .map((category: T_Calendar_Car_Rental) => ({
               ...category,
-              bicycles: filterBicycles(category.bicycles),
+              cars: filterCars(category.cars),
             }))
-            .filter((category: T_Calendar_Bike_Rental) => category.bicycles.length > 0);
+            .filter((category: T_Calendar_Car_Rental) => category.cars.length > 0);
         
         const newFilteredData = filterCategories(calendarRentals?.items ?? []);
            
@@ -117,4 +117,4 @@ const BikeCalendarTable = () => {
   )
 }
 
-export default BikeCalendarTable
+export default CarCalendarTable

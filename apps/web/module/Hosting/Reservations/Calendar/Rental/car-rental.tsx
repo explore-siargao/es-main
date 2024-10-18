@@ -2,14 +2,14 @@
 import { Typography } from "@/common/components/ui/Typography"
 import ReservationCalendarTab from "../../components/ReservationTab"
 import RentalCalendarLegend from "../../components/RentalCalendarLegend"
-import useGetBikeRentals from "./hooks/use-get-bike-rentals"
 import { Spinner } from "@/common/components/ui/Spinner"
-import BikeCalendarTable from "./bike-calendar-table"
+import useGetCarRentals from "./hooks/use-get-car-rentals"
+import CarCalendarTable from "./car-calendar-table"
 
 
-const BikeReservationCalendar = () => {
+const CarReservationCalendar = () => {
   const currentDate = new Date()
-  const { data, isLoading } = useGetBikeRentals(
+  const { data, isLoading } = useGetCarRentals(
     currentDate.toLocaleDateString(),
     currentDate.toLocaleDateString()
   )
@@ -41,7 +41,7 @@ const BikeReservationCalendar = () => {
         {data && !isLoading && data?.items && data?.items?.length > 0 ? (
           <>
             <div className="flex mb-20">
-            <BikeCalendarTable />
+            <CarCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
             <RentalCalendarLegend />
@@ -64,4 +64,4 @@ const BikeReservationCalendar = () => {
 
 }
 
-export default BikeReservationCalendar
+export default CarReservationCalendar

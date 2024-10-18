@@ -1,5 +1,5 @@
 import formatDateTZ from "@/common/helpers/formatDateTZ"
-import { T_Calendar_Bike_Rental, T_Calendar_Private_Activity, T_Joiner_Activity } from "@repo/contract"
+import { T_Calendar_Bike_Rental, T_Calendar_Car_Rental } from "@repo/contract"
 import { endOfDay, isWithinInterval, startOfDay } from "date-fns"
 
 export const pricePerDatesBicycle = ({
@@ -29,8 +29,8 @@ export const pricePerDatesBicycle = ({
       })
     })
 
-    if (matchedItem?.price) {
-      result = parseFloat(String(matchedItem.price)).toFixed(2)
+    if (matchedItem?.price.dayRate) {
+      result = parseFloat(String(matchedItem?.price?.dayRate)).toFixed(2)
     } else {
       result = parseFloat(`${rental.price}`).toFixed(2)
     }
@@ -38,23 +38,23 @@ export const pricePerDatesBicycle = ({
   return result
 }
 
-export const pricePerDatesJoiner = ({
-  joinerActivity,
+export const pricePerDatesCar = ({
+  rental,
   date,
 }: {
-  joinerActivity: T_Joiner_Activity
+  rental: T_Calendar_Car_Rental
   date: string
 }) => {
   let result
 
-  if (joinerActivity.pricePerDates?.length === 0) {
-    if (!parseFloat(`${joinerActivity.price}`).toFixed(2)) {
-      result = parseFloat(`${joinerActivity.price}`).toFixed(2)
+  if (rental.pricePerDates?.length === 0) {
+    if (!parseFloat(`${rental.price}`).toFixed(2)) {
+      result = parseFloat(`${rental.price}`).toFixed(2)
     } else {
       result = 0
     }
   } else {
-    const matchedItem = joinerActivity?.pricePerDates?.find((item) => {
+    const matchedItem = rental.pricePerDates?.find((item) => {
       const itemFromDate = formatDateTZ(startOfDay(item.fromDate))
       const itemToDate = formatDateTZ(endOfDay(item.toDate))
       const currentDate = formatDateTZ(startOfDay(date))
@@ -65,11 +65,12 @@ export const pricePerDatesJoiner = ({
       })
     })
 
-    if (matchedItem?.price) {
-      result = parseFloat(String(matchedItem.price)).toFixed(2)
+    if (matchedItem?.price.dayRate) {
+      result = parseFloat(String(matchedItem?.price?.dayRate)).toFixed(2)
     } else {
-      result = parseFloat(`${joinerActivity.price}`).toFixed(2)
+      result = parseFloat(`${rental.price}`).toFixed(2)
     }
   }
   return result
 }
+

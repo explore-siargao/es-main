@@ -73,7 +73,7 @@ export const Z_Rental = z.object({
   deletedAt: z.date().nullable().optional(),
 })
 
-export const Z_Calendar_Reservation = z.object({
+export const Z_Calendar_Rental_Reservation = z.object({
   id: z.string(),
   name: z.string(),
   notes: z.string().optional(),
@@ -87,15 +87,16 @@ export const Z_Calendar_Reservation = z.object({
 export const Z_Calendar_Rental = z.object({
   id: z.string(),
   name: z.string(),
-  note: z.string(),
+  notes: z.string(),
   status: z.nativeEnum(E_Calendar_Rental_Status),
-  reservations: z.array(Z_Calendar_Reservation),
+  reservations: z.array(Z_Calendar_Rental_Reservation),
 })
 
-export const Z_Calendar_Date_Price = z.object({
+
+export const Z_Calendar_Rental_Date_Price = z.object({
   fromDate: z.string(),
   toDate: z.string(),
-  price: z.number(),
+  price: Z_Rental_Pricing,
 })
 
 
@@ -103,8 +104,16 @@ export const Z_Calendar_Bike_Rental = z.object({
   id: z.string(),
   name: z.string(),
   price: z.number(),
-  pricePerDates: z.array(Z_Calendar_Date_Price),
+  pricePerDates: z.array(Z_Calendar_Rental_Date_Price),
   bicycles: z.array(Z_Calendar_Rental),
+})
+
+export const Z_Calendar_Car_Rental = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+  pricePerDates: z.array(Z_Calendar_Rental_Date_Price),
+  cars: z.array(Z_Calendar_Rental),
 })
 
 export const Z_Rental_Basic_Info = z.object({

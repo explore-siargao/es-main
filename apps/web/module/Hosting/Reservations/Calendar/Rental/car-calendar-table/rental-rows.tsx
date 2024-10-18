@@ -1,10 +1,10 @@
 import React from "react"
 import { format, addDays } from "date-fns"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import { T_Calendar_Bike_Rental } from "@repo/contract"
-import { pricePerDatesBicycle } from "../helpers/price-per-dates"
-import { useCalendarStore } from "../stores/use-bike-store"
+import {T_Calendar_Car_Rental } from "@repo/contract"
+import { pricePerDatesCar } from "../helpers/price-per-dates"
 import VehicleUnitRows from "./rental-unit-rows"
+import { useCalendarStore } from "../stores/use-car-store"
 
 const RentalRows = () => {
   const {
@@ -28,7 +28,7 @@ const RentalRows = () => {
 
   return (
     <>
-      {rentalData.map((rental: T_Calendar_Bike_Rental, index) => (
+      {rentalData.map((rental: T_Calendar_Car_Rental, index) => (
         <React.Fragment key={rental.name}>
           <tr
             className="hover:bg-gray-100 cursor-pointer"
@@ -45,7 +45,7 @@ const RentalRows = () => {
               const date = format(addDays(startDate, i), "yyyy-MM-dd")
               const isToday =
                 format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
-              const noReservationCount = rental.bicycles.reduce(
+              const noReservationCount = rental.cars.reduce(
                 (count: any, bicycleRental: any) => {
                   const hasReservation = bicycleRental.reservations.some(
                     (reservation: any) => {
@@ -79,7 +79,7 @@ const RentalRows = () => {
                     <div>{noReservationCount}</div>
                     <div>
                       &#8369;
-                      {pricePerDatesBicycle({ rental, date })}
+                      {pricePerDatesCar({ rental, date })}
                     </div>
                   </div>
                 </td>

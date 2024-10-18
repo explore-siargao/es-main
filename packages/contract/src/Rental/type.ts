@@ -9,8 +9,9 @@ import {
   Z_UpdateRentalLocation,
   Z_Calendar_Bike_Rental,
   Z_Calendar_Rental,
-  Z_Calendar_Date_Price,
-  Z_Calendar_Reservation,
+  Z_Calendar_Rental_Date_Price,
+  Z_Calendar_Rental_Reservation,
+  Z_Calendar_Car_Rental,
 } from "./zod"
 
 export type T_Rentals = z.infer<typeof Z_Rental>
@@ -25,8 +26,12 @@ export type T_Calendar_Bike_Rental = z.infer<
   typeof Z_Calendar_Bike_Rental
 >
 
+export type T_Calendar_Car_Rental = z.infer<
+  typeof Z_Calendar_Car_Rental
+>
+
 export type T_Calendar_Rental = z.infer<typeof Z_Calendar_Rental>
 
-export type T_Calendar_Date_Price = z.infer<typeof Z_Calendar_Date_Price>
+export type T_Calendar_Rental_Date_Price = z.infer<typeof Z_Calendar_Rental_Date_Price>
 
-export type T_Calendar_Reservation = z.infer<typeof Z_Calendar_Reservation>
+export type T_Calendar_Rental_Reservation = z.infer<typeof Z_Calendar_Rental_Reservation>
