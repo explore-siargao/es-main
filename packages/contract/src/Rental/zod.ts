@@ -116,6 +116,14 @@ export const Z_Calendar_Car_Rental = z.object({
   cars: z.array(Z_Calendar_Rental),
 })
 
+export const Z_Calendar_Motor_Rental = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number(),
+  pricePerDates: z.array(Z_Calendar_Rental_Date_Price),
+  motorcycles: z.array(Z_Calendar_Rental),
+})
+
 export const Z_Rental_Basic_Info = z.object({
   category: z.string(),
   make: z.string(),
