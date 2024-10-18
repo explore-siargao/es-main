@@ -30,54 +30,12 @@ const ActivityTimeSlotRows = ({
   const toggleCollapse = (category: string) => {
     setCollapsed({ ...collapsed, [category]: !collapsed[category] })
   }
-  const handleOpenPricePerDatesModal = (date: string, category: string) => {
-    setIsEditPricePerDatesModalOpen(true)
-    setSelectedDate(date)
-    setSelectedUnitId(category)
-  }
+
   return (
     <>
       {/* Sub Category (Units) */}
       {!collapsed[activity.name] &&
         activity.joinerActivities.map((joinerActivity, index) => {
-          const today = new Date()
-          const date = format(addDays(startDate, index), "yyyy-MM-dd")
-          const isToday =
-            format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
-          const noReservationCount = joinerActivity.slots.reduce(
-            (count: number, slot: T_Joiner_Slot) => {
-              const hasReservation = slot.reservations.some(
-                (reservation: T_Calendar_Reservation) => {
-                  const reservationStart = format(
-                    new Date(reservation.startDate),
-                    "yyyy-MM-dd"
-                  )
-                  const reservationEnd = format(
-                    new Date(reservation.endDate),
-                    "yyyy-MM-dd"
-                  )
-                  return date >= reservationStart && date <= reservationEnd
-                }
-              )
-              return count + (hasReservation ? 0 : 1)
-            },
-            0
-          )
-          const price = (
-            <button
-              onClick={(e) => {
-                handleOpenPricePerDatesModal(date, joinerActivity.id)
-                e.stopPropagation()
-              }}
-              className="flex flex-col w-full h-full items-center justify-center text-sm font-normal"
-            >
-              <div>{noReservationCount}</div>
-              <div>
-                &#8369;
-                {pricePerDatesJoiner({ joinerActivity, date })}
-              </div>
-            </button>
-          )
           return (
             <>
               <tr
@@ -107,7 +65,7 @@ const ActivityTimeSlotRows = ({
                     {generateTimeSlotRowBorder({
                       daysPerPage,
                       startDate,
-                      content: price,
+                      content: null,
                     })}
                   </div>
                 </td>

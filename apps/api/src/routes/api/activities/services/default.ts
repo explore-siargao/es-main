@@ -106,7 +106,14 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
   } else {
     try {
       const filteredActivities = await dbActivities
-        .find({ host: hostId, ...(type && { experienceType: type }) })
+        .find({
+          host: hostId,
+          ...(type && {
+            experienceType: String(type)
+              .toLowerCase()
+              .replace(/^\w/, (c) => c.toUpperCase()),
+          }),
+        })
         .populate('host', 'email isHost')
         .populate('meetingPoint')
         .populate('photos')

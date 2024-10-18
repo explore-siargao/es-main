@@ -15,6 +15,7 @@ interface IActivityReservationFormProps {
   handleSave: (data: any) => void
   setIsLegendTypeSelected: (data: boolean) => void
   selectedLegendType: string
+  isPending: boolean
 }
 
 function ReservationForm({
@@ -22,6 +23,7 @@ function ReservationForm({
   handleRentalCancel,
   setIsLegendTypeSelected,
   selectedLegendType,
+  isPending,
 }: IActivityReservationFormProps) {
   const pathName = usePathname()
   const lastSegment = pathName.split("/").filter(Boolean).pop()
@@ -115,29 +117,6 @@ function ReservationForm({
           </div>
         </div>
 
-        <div className="flex gap-4">
-          <div className="flex flex-col w-full">
-            <Select
-              label="Slot"
-              id="idsId"
-              required
-              disabled={isActivitiesLoading}
-              {...register("idsId", {
-                required: "This field is required",
-              })}
-            >
-              <Option value="">Select</Option>
-              {slots && slots.item?.slots
-                ? slots.item.slots.map((property: any) => (
-                    <Option key={property._id} value={property._id}>
-                      {`${property.name}`}
-                    </Option>
-                  ))
-                : null}
-            </Select>
-          </div>
-        </div>
-
         {selectedLegendType !== "Out-of-Service-Dates" && (
           <div className="flex gap-4 w-full">
             <div className="flex flex-col w-full">
@@ -197,7 +176,12 @@ function ReservationForm({
           >
             Cancel
           </Button>
-          <Button type="submit" variant="primary" onClick={handleSave}>
+          <Button
+            type="submit"
+            variant="primary"
+            onClick={handleSave}
+            disabled={isPending}
+          >
             Save
           </Button>
         </div>
