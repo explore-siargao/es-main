@@ -54,15 +54,9 @@ export const addPrivateActivityReservation = async (
       } else {
         const overlappingReservation = await dbReservations.findOne({
           'activityIds.timeSlotId': slotId,
-          $or: [
-            {
-              startDate: { $lt: date },
-              endDate: { $gt: date },
-            },
-            {
-              startDate: { $lte: date, $gte: date },
-            },
-          ],
+          'activityIds.slotIdsId': { $exists: false },
+          startDate: { $eq: date },
+          status: { $ne: 'Cancelled' },
         })
 
         if (overlappingReservation) {

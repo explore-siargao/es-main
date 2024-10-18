@@ -15,6 +15,7 @@ import {
 } from "@repo/contract"
 import useUpdateActivitySlotNote from "../hooks/use-update-activity-slot-note"
 import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
+import { addDays } from "date-fns"
 
 const ActivityUnitRows = ({
   activity,
