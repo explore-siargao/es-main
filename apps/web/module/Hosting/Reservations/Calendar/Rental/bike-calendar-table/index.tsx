@@ -8,7 +8,7 @@ import { QK_CALENDAR_BIKE_RENTALS } from "../constants"
 import {
   T_Calendar_Bike_Rental,
   T_Calendar_Rental,
-  T_Calendar_Rental_Reservation
+  T_Calendar_Rental_Reservation,
 } from "@repo/contract"
 import useGetBikeRentals from "../hooks/use-get-bike-rentals"
 import Controls from "./controls"
@@ -31,11 +31,13 @@ const BikeCalendarTable = () => {
     startDate.toLocaleDateString(),
     endDate.toLocaleDateString()
   )
- 
+
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
 
-    const isReservationWithinRange = (reservation: T_Calendar_Rental_Reservation) => {
+    const isReservationWithinRange = (
+      reservation: T_Calendar_Rental_Reservation
+    ) => {
       const bookingStart = new Date(reservation.startDate)
       const bookingEnd = new Date(reservation.endDate)
       return !(
@@ -43,8 +45,9 @@ const BikeCalendarTable = () => {
       )
     }
 
-    const filterReservations = (reservations: T_Calendar_Rental_Reservation[]) =>
-      reservations.filter(isReservationWithinRange)
+    const filterReservations = (
+      reservations: T_Calendar_Rental_Reservation[]
+    ) => reservations.filter(isReservationWithinRange)
 
     const filterBicycles = (bicycles: T_Calendar_Rental[]) =>
       bicycles
@@ -58,20 +61,21 @@ const BikeCalendarTable = () => {
             car.name.toLowerCase().includes(searchString.toLowerCase())
         )
 
-        const filterCategories = (categories: T_Calendar_Bike_Rental[]) =>
-          categories
-            .map((category: T_Calendar_Bike_Rental) => ({
-              ...category,
-              bicycles: filterBicycles(category.bicycles),
-            }))
-            .filter((category: T_Calendar_Bike_Rental) => category.bicycles.length > 0);
-        
-        const newFilteredData = filterCategories(calendarRentals?.items ?? []);
-           
-        if (newFilteredData.length > 0) {
-          setRentalData(newFilteredData);
-          
-        } else if (searchString && newFilteredData.length == 0) {
+    const filterCategories = (categories: T_Calendar_Bike_Rental[]) =>
+      categories
+        .map((category: T_Calendar_Bike_Rental) => ({
+          ...category,
+          bicycles: filterBicycles(category.bicycles),
+        }))
+        .filter(
+          (category: T_Calendar_Bike_Rental) => category.bicycles.length > 0
+        )
+
+    const newFilteredData = filterCategories(calendarRentals?.items ?? [])
+
+    if (newFilteredData.length > 0) {
+      setRentalData(newFilteredData)
+    } else if (searchString && newFilteredData.length == 0) {
       toast.error(`No matched results for "${searchString}"`)
       setSearchString("")
     }
@@ -95,7 +99,7 @@ const BikeCalendarTable = () => {
                 <tr className="uppercase text-sm leading-normal">
                   <td colSpan={1} rowSpan={2}>
                     {/* Header Top Left Controls */}
-                  <Controls /> 
+                    <Controls />
                   </td>
                   {/* Header Month */}
                   {generateMonth({ daysPerPage, startDate })}

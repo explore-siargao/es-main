@@ -12,7 +12,6 @@ import useGetRentalCounts from "../hooks/use-get-rental-counts"
 import { E_Rental_Category } from "@repo/contract"
 import { useCalendarStore } from "../stores/use-bike-store"
 
-
 const Controls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)

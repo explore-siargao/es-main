@@ -6,7 +6,6 @@ import useGetBikeRentals from "./hooks/use-get-bike-rentals"
 import { Spinner } from "@/common/components/ui/Spinner"
 import BikeCalendarTable from "./bike-calendar-table"
 
-
 const BikeReservationCalendar = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetBikeRentals(
@@ -41,10 +40,10 @@ const BikeReservationCalendar = () => {
         {data && !isLoading && data?.items && data?.items?.length > 0 ? (
           <>
             <div className="flex mb-20">
-            <BikeCalendarTable />
+              <BikeCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
-            <RentalCalendarLegend />
+              <RentalCalendarLegend />
             </div>
           </>
         ) : null}
@@ -61,7 +60,6 @@ const BikeReservationCalendar = () => {
       </div>
     </div>
   )
-
 }
 
 export default BikeReservationCalendar

@@ -11,7 +11,6 @@ export enum E_Calendar_Rental_Status {
   Booked = "Booked",
 }
 
-
 export enum E_Rental_Car_Body {
   Hatchback = "Hatchback",
   Sedan = "Sedan",

@@ -26,9 +26,7 @@ const InfoCancelModal = () => {
   } = useCalendarStore((state) => state)
 
   const { register, handleSubmit, getValues, reset } = useForm()
-  const { mutate } = useUpdateRentalReservation(
-    String(selectedReservation?.id)
-  )
+  const { mutate } = useUpdateRentalReservation(String(selectedReservation?.id))
 
   const { mutate: cancelReservation, isPending: isLoading } =
     useCancelRentalReservation(String(selectedReservation?.id))
@@ -44,7 +42,6 @@ const InfoCancelModal = () => {
   }
 
   const onSubmit = (data: any) => {
-   
     mutate(data, {
       onSuccess: (data: any) => {
         if (!data.error) {
@@ -80,8 +77,6 @@ const InfoCancelModal = () => {
     },
   }
 
-
-  
   return (
     <ModalContainer
       onClose={closeReservationModal}
@@ -106,7 +101,7 @@ const InfoCancelModal = () => {
                       Rental Category
                     </Typography>
                     <Typography variant="h3" className="text-gray-500">
-                    {selectedReservation?.carName && "Car"}
+                      {selectedReservation?.carName && "Car"}
                       {selectedReservation?.motorcycleName && "Motorcycle"}
                       {selectedReservation?.bicycleName && "Bicycle"}
                     </Typography>
@@ -116,16 +111,17 @@ const InfoCancelModal = () => {
                       Vehicle
                     </Typography>
                     <Typography variant="h3" className="text-gray-500">
-                    
-                    {selectedReservation?.carName && selectedReservation?.carName}
-                      {selectedReservation?.motorcycleName && selectedReservation?.motorcycleName}
-                      {selectedReservation?.bicycleName && selectedReservation?.bicycleName}
+                      {selectedReservation?.carName &&
+                        selectedReservation?.carName}
+                      {selectedReservation?.motorcycleName &&
+                        selectedReservation?.motorcycleName}
+                      {selectedReservation?.bicycleName &&
+                        selectedReservation?.bicycleName}
                     </Typography>
                   </div>
                 </div>
 
-                {selectedReservation?.status !==
-                  "Out-of-Service-Dates" && (
+                {selectedReservation?.status !== "Out-of-Service-Dates" && (
                   <div className="flex gap-4 mt-2">
                     <div className="flex flex-col w-full">
                       <Typography variant="h4" className="font-semibold">
@@ -135,7 +131,6 @@ const InfoCancelModal = () => {
                         {selectedReservation?.name}
                       </Typography>
                     </div>
-                
                   </div>
                 )}
 
@@ -152,10 +147,9 @@ const InfoCancelModal = () => {
                             id="startDate"
                             label="Start Date"
                             defaultValue={
-                              (
-                                selectedReservation
-                                  ?.startDate as string
-                              ).split("T")[0]
+                              (selectedReservation?.startDate as string).split(
+                                "T"
+                              )[0]
                             }
                             {...register("startDate", {
                               required: "This field is required",
@@ -175,8 +169,7 @@ const InfoCancelModal = () => {
                             <div>
                               {selectedReservation
                                 ? format(
-                                    selectedReservation
-                                      ?.startDate as string,
+                                    selectedReservation?.startDate as string,
                                     "PPPP"
                                   )
                                 : ""}
@@ -198,10 +191,9 @@ const InfoCancelModal = () => {
                             id="endDate"
                             label="End Date"
                             defaultValue={
-                              (
-                                selectedReservation
-                                  ?.endDate as string
-                              ).split("T")[0]
+                              (selectedReservation?.endDate as string).split(
+                                "T"
+                              )[0]
                             }
                             {...register("endDate", {
                               required: "This field is required",
@@ -221,8 +213,7 @@ const InfoCancelModal = () => {
                             <div>
                               {selectedReservation
                                 ? format(
-                                    selectedReservation
-                                      ?.endDate as string,
+                                    selectedReservation?.endDate as string,
                                     "PPPP"
                                   )
                                 : ""}
@@ -243,9 +234,7 @@ const InfoCancelModal = () => {
                       <Textarea
                         id="notes"
                         className="p-3 h-28"
-                        defaultValue={String(
-                          selectedReservation?.notes || ""
-                        )}
+                        defaultValue={String(selectedReservation?.notes || "")}
                         {...register("notes")}
                       />
                     </div>
@@ -311,7 +300,6 @@ const InfoCancelModal = () => {
       </form>
     </ModalContainer>
   )
-
 }
 
 export default InfoCancelModal

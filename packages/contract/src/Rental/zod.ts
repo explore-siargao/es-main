@@ -83,7 +83,6 @@ export const Z_Calendar_Rental_Reservation = z.object({
   status: z.string(),
 })
 
-
 export const Z_Calendar_Rental = z.object({
   id: z.string(),
   name: z.string(),
@@ -92,13 +91,11 @@ export const Z_Calendar_Rental = z.object({
   reservations: z.array(Z_Calendar_Rental_Reservation),
 })
 
-
 export const Z_Calendar_Rental_Date_Price = z.object({
   fromDate: z.string(),
   toDate: z.string(),
   price: Z_Rental_Pricing,
 })
-
 
 export const Z_Calendar_Bike_Rental = z.object({
   id: z.string(),

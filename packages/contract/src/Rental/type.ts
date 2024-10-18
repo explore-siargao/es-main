@@ -23,20 +23,18 @@ export type T_Rental_Basic_Info = z.infer<typeof Z_Rental_Basic_Info>
 export type T_Rental_Status = z.infer<typeof Z_Rental_Status>
 export type T_UpdateRentalLocation = z.infer<typeof Z_UpdateRentalLocation>
 
-export type T_Calendar_Bike_Rental = z.infer<
-  typeof Z_Calendar_Bike_Rental
->
+export type T_Calendar_Bike_Rental = z.infer<typeof Z_Calendar_Bike_Rental>
 
-export type T_Calendar_Car_Rental = z.infer<
-  typeof Z_Calendar_Car_Rental
->
+export type T_Calendar_Car_Rental = z.infer<typeof Z_Calendar_Car_Rental>
 
-export type T_Calendar_Motor_Rental = z.infer<
-  typeof Z_Calendar_Motor_Rental
->
+export type T_Calendar_Motor_Rental = z.infer<typeof Z_Calendar_Motor_Rental>
 
 export type T_Calendar_Rental = z.infer<typeof Z_Calendar_Rental>
 
-export type T_Calendar_Rental_Date_Price = z.infer<typeof Z_Calendar_Rental_Date_Price>
+export type T_Calendar_Rental_Date_Price = z.infer<
+  typeof Z_Calendar_Rental_Date_Price
+>
 
-export type T_Calendar_Rental_Reservation = z.infer<typeof Z_Calendar_Rental_Reservation>
+export type T_Calendar_Rental_Reservation = z.infer<
+  typeof Z_Calendar_Rental_Reservation
+>

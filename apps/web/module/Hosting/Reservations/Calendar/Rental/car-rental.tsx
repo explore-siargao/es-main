@@ -6,7 +6,6 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import useGetCarRentals from "./hooks/use-get-car-rentals"
 import CarCalendarTable from "./car-calendar-table"
 
-
 const CarReservationCalendar = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetCarRentals(
@@ -41,10 +40,10 @@ const CarReservationCalendar = () => {
         {data && !isLoading && data?.items && data?.items?.length > 0 ? (
           <>
             <div className="flex mb-20">
-            <CarCalendarTable />
+              <CarCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
-            <RentalCalendarLegend />
+              <RentalCalendarLegend />
             </div>
           </>
         ) : null}
@@ -61,7 +60,6 @@ const CarReservationCalendar = () => {
       </div>
     </div>
   )
-
 }
 
 export default CarReservationCalendar

@@ -3,7 +3,6 @@ import { ApiService } from "@/common/service/api"
 import { T_BackendResponse, T_Calendar_Motor_Rental } from "@repo/contract"
 import { useQuery } from "@tanstack/react-query"
 
-
 type T_DBReturn = Omit<T_BackendResponse, "items"> & {
   items: T_Calendar_Motor_Rental[]
 }

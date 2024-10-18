@@ -114,7 +114,7 @@ const EditPricePerDatesModal = () => {
                 label={"Day Rate (24-hour)"}
                 value={dayRate}
                 onChange={(e) => setDayRate(e.target.value)}
-               description="This rental price for a full 24-hour period, starting from the time of pick-up"
+                description="This rental price for a full 24-hour period, starting from the time of pick-up"
                 placeholder="e.g., 1000"
                 className="w-full"
                 required

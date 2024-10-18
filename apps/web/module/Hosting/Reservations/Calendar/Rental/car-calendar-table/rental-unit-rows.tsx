@@ -37,8 +37,6 @@ const VehicleUnitRows = ({
     setSelectedReservation,
   } = useCalendarStore((state) => state)
 
-
-
   const handleSaveRentalQtyName = (id: string, name: string) => {
     const callBackReq = {
       onSuccess: (data: any) => {
@@ -69,7 +67,6 @@ const VehicleUnitRows = ({
     setTempRentalQtyName(name ?? "")
   }
 
-
   return (
     <>
       {/* Sub Category (Rentals) */}
@@ -77,7 +74,7 @@ const VehicleUnitRows = ({
         rental.cars.map((car) => (
           <tr key={car.name} className="hover:bg-gray-100 relative">
             <td className="border py-2 pr-4 pl-12 text-left border-l-0">
-            <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center">
                 {editingRentalQtyId === car.id ? (
                   <Input
                     type="text"
@@ -97,7 +94,10 @@ const VehicleUnitRows = ({
                       variant={"link"}
                       className="group"
                       onClick={() =>
-                        handleSaveRentalQtyName(editingRentalQtyId, tempRentalQtyName)
+                        handleSaveRentalQtyName(
+                          editingRentalQtyId,
+                          tempRentalQtyName
+                        )
                       }
                     >
                       <LucideSave className="text-gray-500 w-5 group-hover:text-gray-700 transition" />
@@ -135,14 +135,14 @@ const VehicleUnitRows = ({
                     daysPerPage,
                     reservation
                   )
-            
+
                   if (!style) return null
 
                   const { startCol, colSpan } = style
                   const { colorClass, hoverColorClass } = getColorClasses(
                     reservation.status
                   )
-           
+
                   return (
                     <div
                       key={reservation.id}
@@ -151,11 +151,10 @@ const VehicleUnitRows = ({
                         width: `${(colSpan * 100) / daysPerPage - 8}%`,
                       }}
                       onClick={() => {
-                      
                         setIsReservationModalOpen(true)
                         setSelectedReservation({
                           ...reservation,
-                          carName: car.name
+                          carName: car.name,
                         })
                       }}
                       className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}

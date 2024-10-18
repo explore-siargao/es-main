@@ -1,5 +1,9 @@
 import formatDateTZ from "@/common/helpers/formatDateTZ"
-import { T_Calendar_Bike_Rental, T_Calendar_Car_Rental, T_Calendar_Motor_Rental } from "@repo/contract"
+import {
+  T_Calendar_Bike_Rental,
+  T_Calendar_Car_Rental,
+  T_Calendar_Motor_Rental,
+} from "@repo/contract"
 import { endOfDay, isWithinInterval, startOfDay } from "date-fns"
 
 export const pricePerDatesBicycle = ({

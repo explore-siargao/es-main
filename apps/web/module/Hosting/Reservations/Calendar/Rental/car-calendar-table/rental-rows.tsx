@@ -1,7 +1,7 @@
 import React from "react"
 import { format, addDays } from "date-fns"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import {T_Calendar_Car_Rental } from "@repo/contract"
+import { T_Calendar_Car_Rental } from "@repo/contract"
 import { pricePerDatesCar } from "../helpers/price-per-dates"
 import VehicleUnitRows from "./rental-unit-rows"
 import { useCalendarStore } from "../stores/use-car-store"

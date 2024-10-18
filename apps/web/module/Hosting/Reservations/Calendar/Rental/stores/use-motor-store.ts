@@ -2,9 +2,8 @@ import { addDays } from "date-fns"
 import { create } from "zustand"
 import {
   T_Calendar_Motor_Rental,
-  T_Calendar_Rental_Reservation
+  T_Calendar_Rental_Reservation,
 } from "@repo/contract"
-
 
 type T_Rental_Reservation = {
   bicycleName?: string
@@ -19,7 +18,9 @@ type T_Calendar_Store = {
   selectedLegendType: string
   isLegendTypeSelected: boolean
   collapsed: { [key: string]: boolean }
-  selectedReservation: (T_Calendar_Rental_Reservation & T_Rental_Reservation) | null
+  selectedReservation:
+    | (T_Calendar_Rental_Reservation & T_Rental_Reservation)
+    | null
   isReservationModalOpen: boolean
   isAddReservationModalOpen: boolean
   selectedDate: string
@@ -94,8 +95,7 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
   setRentalData: (value: any) => set({ rentalData: value }),
   setEditingRentalQtyId: (value: string | null) =>
     set({ editingRentalQtyId: value }),
-  setTempRentalQtyName: (value: string) =>
-    set({ tempRentalQtyName: value }),
+  setTempRentalQtyName: (value: string) => set({ tempRentalQtyName: value }),
   setIsEditReservation: (value: boolean) => set({ isEditReservation: value }),
   setIsCancelReservation: (value: boolean) =>
     set({ isCancelReservation: value }),
