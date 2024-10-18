@@ -118,14 +118,14 @@ export const getPrivateActivityCalendar = async (
           currentDate >= reservation.startDate &&
           currentDate <= reservation.endDate
         ) {
-          reservationStatus = 'Checked-In'
+          reservationStatus = 'Arrived'
         } else if (
           (reservationStatus === 'Confirmed' ||
             reservationStatus === 'Blocked-Dates' ||
             reservationStatus === 'Checked-In') &&
           currentDate > reservation.endDate
         ) {
-          reservationStatus = 'Checked-Out'
+          reservationStatus = 'Completed'
         }
 
         const reservationItem: Reservation = {
@@ -285,14 +285,14 @@ export const getJoinerActivityCalendar = async (
           currentDate >= reservation.startDate &&
           currentDate <= reservation.endDate
         ) {
-          reservationStatus = 'Checked-In'
+          reservationStatus = 'Arrived'
         } else if (
           (reservationStatus === 'Confirmed' ||
             reservationStatus === 'Blocked-Dates' ||
             reservationStatus === 'Checked-In') &&
           currentDate > reservation.endDate
         ) {
-          reservationStatus = 'Checked-Out'
+          reservationStatus = 'Completed'
         }
 
         const reservationItem: Reservation = {
