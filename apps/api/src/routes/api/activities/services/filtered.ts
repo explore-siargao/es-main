@@ -35,6 +35,8 @@ export const getActivitiesByLocationAndType = async (
           })
           .populate('meetingPoint')
           .populate('photos')
+          .skip((page - 1) * limit)
+          .limit(limit)
         const totalCount = await dbActivities.countDocuments(query)
 
         res.json(
@@ -46,7 +48,9 @@ export const getActivitiesByLocationAndType = async (
         )
       } else if (location !== 'all' && type === 'all') {
         const locations = await dbLocations.find({
-          city: location,
+          $expr: {
+            $eq: [{ $toUpper: '$city' }, location.toUpperCase()],
+          },
           deletedAt: null,
         })
         const locationIds = locations.map((loc) => loc._id)
@@ -67,6 +71,8 @@ export const getActivitiesByLocationAndType = async (
           })
           .populate('meetingPoint')
           .populate('photos')
+          .skip((page - 1) * limit)
+          .limit(limit)
         const totalCount = await dbActivities.countDocuments(query)
         res.json(
           response.success({
@@ -93,6 +99,8 @@ export const getActivitiesByLocationAndType = async (
           })
           .populate('meetingPoint')
           .populate('photos')
+          .skip((page - 1) * limit)
+          .limit(limit)
         const totalCount = await dbActivities.countDocuments(query)
         res.json(
           response.success({
@@ -103,7 +111,9 @@ export const getActivitiesByLocationAndType = async (
         )
       } else if (location !== 'all' && type !== 'all') {
         const locations = await dbLocations.find({
-          city: location,
+          $expr: {
+            $eq: [{ $toUpper: '$city' }, location.toUpperCase()],
+          },
           deletedAt: null,
         })
         const locationIds = locations.map((loc) => loc._id)
@@ -125,6 +135,8 @@ export const getActivitiesByLocationAndType = async (
           })
           .populate('meetingPoint')
           .populate('photos')
+          .skip((page - 1) * limit)
+          .limit(limit)
         const totalCount = await dbActivities.countDocuments(query)
         res.json(
           response.success({

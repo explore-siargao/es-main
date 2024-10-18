@@ -52,7 +52,9 @@ export const getRentalsByLocationAndType = async (
         )
       } else if (location !== 'all' && type === 'all') {
         const locations = await dbLocations.find({
-          city: location,
+          $expr: {
+            $eq: [{ $toUpper: '$city' }, location.toUpperCase()],
+          },
           deletedAt: null,
         })
 
@@ -93,7 +95,9 @@ export const getRentalsByLocationAndType = async (
         )
       } else if (location !== 'all' && type !== 'all') {
         const locations = await dbLocations.find({
-          city: location,
+          $expr: {
+            $eq: [{ $toUpper: '$city' }, location.toUpperCase()],
+          },
           deletedAt: null,
         })
         // Extract the _id of the locations
