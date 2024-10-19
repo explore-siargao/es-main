@@ -1,7 +1,7 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
 import ReservationCalendarTab from "../../components/reservation-tab"
-import RentalCalendarLegend from "../../components/RentalCalendarLegend"
+import Legends from "./legends"
 import useGetBikeRentals from "./hooks/use-get-bike-rentals"
 import { Spinner } from "@/common/components/ui/Spinner"
 import BikeCalendarTable from "./bike-calendar-table"
@@ -43,7 +43,7 @@ const BikeReservationCalendar = () => {
               <BikeCalendarTable />
             </div>
             <div className="fixed bottom-4 right-4 z-20">
-              <RentalCalendarLegend />
+              <Legends />
             </div>
           </>
         ) : null}

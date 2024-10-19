@@ -1,10 +1,10 @@
+import { T_Calendar_Property_Reservation } from "@repo/contract"
 import { addDays, differenceInDays, isAfter, isBefore } from "date-fns"
-import { Reservation } from "../../../types/CalendarTable"
 
 const getBookingStyle = (
   startDate: Date,
   daysPerPage: number,
-  booking: Reservation
+  booking: T_Calendar_Property_Reservation
 ) => {
   const bookingStart = new Date(booking.startDate)
   const bookingEnd = new Date(booking.endDate)
