@@ -3,7 +3,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import ReservationTab from "../../components/reservation-tab"
 import Legends from "./legends"
 import { Spinner } from "@/common/components/ui/Spinner"
-import CalendarTable from "@/module/Hosting/Reservations/calendar-2/property/calendar-table"
+import CalendarTable from "@/module/Hosting/Reservations/calendar/property/calendar-table"
 import useGetProperties from "./hooks/use-get-properties"
 
 const PropertyCalendar = () => {
