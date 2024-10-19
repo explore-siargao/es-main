@@ -1,5 +1,5 @@
 import { LucideBuilding2, LucideCarFront, LucidePalmtree } from "lucide-react"
-import useGetRentalCounts from "../Calendar/hooks/useGetRentalCounts"
+import useGetRentalCounts from "../calendar-2/hooks/useGetRentalCounts"
 import Tabs from "@/common/components/Tabs"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
 
