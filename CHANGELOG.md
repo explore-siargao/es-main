@@ -2,15 +2,14 @@
 
 ## [0.28.1](https://github.com/explore-siargao/es-main/compare/v0.28.0...v0.28.1) (2024-10-20)
 
-
 ### 🧰 Maintenance
 
-* Change import value for rental calendar ([0867693](https://github.com/explore-siargao/es-main/commit/08676937a496e1b2cd3deaf30104f3e3ef076ed7))
-* Change module reservation calendar folder name ([ccf29da](https://github.com/explore-siargao/es-main/commit/ccf29da4f495b92872708aa896d8b94d3a9feb6b))
-* Change module reservation calendar folder text case ([803ac45](https://github.com/explore-siargao/es-main/commit/803ac45c73e3ea288987ddb3503e5a8df435d3c7))
-* Delete old files and update rentals legend modal ([f8caacd](https://github.com/explore-siargao/es-main/commit/f8caacd15004ed4b544ed565363127b6b3f787cb))
-* Deleted old files and update module entry point for calendar rentals ([9499fd0](https://github.com/explore-siargao/es-main/commit/9499fd0dad35b5c7eee7e459110ccd1414ceff48))
-* Move legends to calendar activity and property and lowercase Rental folder ([d569c83](https://github.com/explore-siargao/es-main/commit/d569c8371b1fcbe9f4c17d0af44ce72aa45ff45f))
+- Change import value for rental calendar ([0867693](https://github.com/explore-siargao/es-main/commit/08676937a496e1b2cd3deaf30104f3e3ef076ed7))
+- Change module reservation calendar folder name ([ccf29da](https://github.com/explore-siargao/es-main/commit/ccf29da4f495b92872708aa896d8b94d3a9feb6b))
+- Change module reservation calendar folder text case ([803ac45](https://github.com/explore-siargao/es-main/commit/803ac45c73e3ea288987ddb3503e5a8df435d3c7))
+- Delete old files and update rentals legend modal ([f8caacd](https://github.com/explore-siargao/es-main/commit/f8caacd15004ed4b544ed565363127b6b3f787cb))
+- Deleted old files and update module entry point for calendar rentals ([9499fd0](https://github.com/explore-siargao/es-main/commit/9499fd0dad35b5c7eee7e459110ccd1414ceff48))
+- Move legends to calendar activity and property and lowercase Rental folder ([d569c83](https://github.com/explore-siargao/es-main/commit/d569c8371b1fcbe9f4c17d0af44ce72aa45ff45f))
 
 ## [0.28.0](https://github.com/explore-siargao/es-main/compare/v0.27.0...v0.28.0) (2024-10-18)
 
