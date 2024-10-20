@@ -5,9 +5,7 @@ import ReservationForm from "./reservation-form"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import SelectStatusForm from "./select-status-form"
-import {
-  QK_CALENDAR_JOINER_ACTIVITIES,
-} from "../../../constants"
+import { QK_CALENDAR_JOINER_ACTIVITIES } from "../../../constants"
 import useAddJoinerActivityReservation from "../../../hooks/use-add-joiner-activity-reservation"
 
 interface AddReservationModalProps {

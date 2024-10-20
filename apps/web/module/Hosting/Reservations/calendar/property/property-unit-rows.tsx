@@ -9,7 +9,11 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import useUpdateCalendarUnitName from "../hooks/useUpdateCalendarUnitName"
 import { generateRowBorder } from "./helpers/calendar-table"
-import { T_Calendar_Property_Unit_Group, T_Calendar_Property_Unit, T_Calendar_Property_Reservation } from "@repo/contract"
+import {
+  T_Calendar_Property_Unit_Group,
+  T_Calendar_Property_Unit,
+  T_Calendar_Property_Reservation,
+} from "@repo/contract"
 import { QK_CALENDAR_PROPERTIES } from "./constants"
 
 const PropertyUnitRows = ({
@@ -119,39 +123,45 @@ const PropertyUnitRows = ({
               colSpan={daysPerPage}
               className={`border text-center relative ${unitIndex + 1 !== daysPerPage && "border-r-0"}`}
             >
-              {unit.reservations.map((reservation: T_Calendar_Property_Reservation) => {
-                const style = getBookingStyle(startDate, daysPerPage, reservation)
-                if (!style) return null
+              {unit.reservations.map(
+                (reservation: T_Calendar_Property_Reservation) => {
+                  const style = getBookingStyle(
+                    startDate,
+                    daysPerPage,
+                    reservation
+                  )
+                  if (!style) return null
 
-                const { startCol, colSpan } = style
-                const { colorClass, hoverColorClass } = getColorClasses(
-                  reservation.status
-                )
+                  const { startCol, colSpan } = style
+                  const { colorClass, hoverColorClass } = getColorClasses(
+                    reservation.status
+                  )
 
-                return (
-                  <div
-                    key={reservation.id}
-                    style={{
-                      left: `${(startCol * 100) / daysPerPage + 4}%`,
-                      width: `${(colSpan * 100) / daysPerPage - 8}%`,
-                    }}
-                    onClick={() => {
-                      setIsReservationModalOpen(true)
-                      setSelectedReservation({
-                        unit: unit.name,
-                        reservation: reservation,
-                      })
-                    }}
-                    className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
-                  >
-                    <span className="text-white text-sm truncate px-2">
-                      {reservation.status === "Out-of-Service-Dates"
-                        ? "Out of service"
-                        : reservation.name}
-                    </span>
-                  </div>
-                )
-              })}
+                  return (
+                    <div
+                      key={reservation.id}
+                      style={{
+                        left: `${(startCol * 100) / daysPerPage + 4}%`,
+                        width: `${(colSpan * 100) / daysPerPage - 8}%`,
+                      }}
+                      onClick={() => {
+                        setIsReservationModalOpen(true)
+                        setSelectedReservation({
+                          unit: unit.name,
+                          reservation: reservation,
+                        })
+                      }}
+                      className={`booking-block hover:cursor-pointer flex z-20 ${colorClass} ${hoverColorClass} rounded-xl h-[80%] top-[10%] absolute items-center justify-center`}
+                    >
+                      <span className="text-white text-sm truncate px-2">
+                        {reservation.status === "Out-of-Service-Dates"
+                          ? "Out of service"
+                          : reservation.name}
+                      </span>
+                    </div>
+                  )
+                }
+              )}
               <div className="absolute inset-0 z-10 flex h-full">
                 {generateRowBorder({ daysPerPage, startDate })}
               </div>

@@ -9,7 +9,11 @@ import Controls from "@/module/Hosting/Reservations/calendar/property/controls"
 import ModalsWrapper from "@/module/Hosting/Reservations/calendar/property/modals-wrapper"
 import useGetProperties from "./hooks/use-get-properties"
 import { QK_CALENDAR_PROPERTIES } from "./constants"
-import { T_Calendar_Property, T_Calendar_Property_Unit, T_Calendar_Property_Unit_Group } from "@repo/contract"
+import {
+  T_Calendar_Property,
+  T_Calendar_Property_Unit,
+  T_Calendar_Property_Unit_Group,
+} from "@repo/contract"
 
 const CalendarTable = () => {
   const queryClient = useQueryClient()
@@ -109,18 +113,16 @@ const CalendarTable = () => {
           bookableUnitTypes: property.bookableUnitTypes
             .map((unitType: T_Calendar_Property_Unit_Group) => ({
               ...unitType,
-              beds: unitType.beds?.filter(
-                (unit: T_Calendar_Property_Unit) => {
-                  const trimmedAbbr = unit.name.toLowerCase().trim()
-                  return (
-                    trimmedAbbr.includes(trimmedSearchString) ||
-                    unit.reservations.some((reservation: { name: string }) => {
-                      const trimmedName = reservation.name.toLowerCase().trim()
-                      return trimmedName.includes(trimmedSearchString)
-                    })
-                  )
-                }
-              ),
+              beds: unitType.beds?.filter((unit: T_Calendar_Property_Unit) => {
+                const trimmedAbbr = unit.name.toLowerCase().trim()
+                return (
+                  trimmedAbbr.includes(trimmedSearchString) ||
+                  unit.reservations.some((reservation: { name: string }) => {
+                    const trimmedName = reservation.name.toLowerCase().trim()
+                    return trimmedName.includes(trimmedSearchString)
+                  })
+                )
+              }),
               rooms: unitType.rooms?.filter(
                 (unit: T_Calendar_Property_Unit) => {
                   const trimmedAbbr = unit.name.toLowerCase().trim()
@@ -146,7 +148,12 @@ const CalendarTable = () => {
                 }
               ),
             }))
-            .filter((unitType: T_Calendar_Property_Unit_Group) => (unitType.wholePlaces && unitType.wholePlaces?.length > 0) || (unitType.rooms && unitType.rooms?.length > 0) || (unitType.beds && unitType.beds?.length > 0)), // Only keep unitTypes with matching units
+            .filter(
+              (unitType: T_Calendar_Property_Unit_Group) =>
+                (unitType.wholePlaces && unitType.wholePlaces?.length > 0) ||
+                (unitType.rooms && unitType.rooms?.length > 0) ||
+                (unitType.beds && unitType.beds?.length > 0)
+            ), // Only keep unitTypes with matching units
         }))
         .filter(
           (property: T_Calendar_Property) =>
@@ -157,7 +164,7 @@ const CalendarTable = () => {
     }
     // Create the newFilteredData based on the original filter logic
     const newFilteredData = filterItems(calendarProperties?.items ?? [])
-    
+
     // Apply the search filter to newFilteredData
     const finalFilteredData = applySearchFilter(newFilteredData)
     // Update the state based on the final filtered data

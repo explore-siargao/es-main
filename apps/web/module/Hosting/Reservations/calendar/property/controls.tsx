@@ -1,8 +1,5 @@
 import { Button } from "@/common/components/ui/Button"
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
 import FilterDate from "../components/controls/buttons/filter-date"
 import FilterDateModal from "../modals/filter-date-modal"

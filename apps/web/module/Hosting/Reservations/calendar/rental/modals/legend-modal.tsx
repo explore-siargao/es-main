@@ -92,10 +92,7 @@ const LegendModal = ({ isOpen, onClose, date }: T_Props) => {
               >
                 WED 23
               </Typography>
-              <Typography
-                className="text-stone-500 mb-2"
-                fontWeight="bold"
-              >
+              <Typography className="text-stone-500 mb-2" fontWeight="bold">
                 15%
               </Typography>
               <Typography className="leading-none">20</Typography>

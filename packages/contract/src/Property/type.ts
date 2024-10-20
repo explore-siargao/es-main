@@ -21,10 +21,17 @@ export type T_Property_Facility = z.infer<typeof Z_Property_Facility>
 export type T_Property_Amenity = z.infer<typeof Z_Property_Amenity>
 export type T_Property_Status = z.infer<typeof Z_Property_Status>
 
-export type T_Calendar_Property_Price = z.infer<typeof Z_Calendar_Property_Price>
-export type T_Calendar_Property_Date_Price = z.infer<typeof Z_Calendar_Property_Date_Price>
-export type T_Calendar_Property_Reservation = z.infer<typeof Z_Calendar_Property_Reservation>
-export type T_Calendar_Property_Unit_Group = z.infer<typeof Z_Calendar_Property_Unit_Group>
+export type T_Calendar_Property_Price = z.infer<
+  typeof Z_Calendar_Property_Price
+>
+export type T_Calendar_Property_Date_Price = z.infer<
+  typeof Z_Calendar_Property_Date_Price
+>
+export type T_Calendar_Property_Reservation = z.infer<
+  typeof Z_Calendar_Property_Reservation
+>
+export type T_Calendar_Property_Unit_Group = z.infer<
+  typeof Z_Calendar_Property_Unit_Group
+>
 export type T_Calendar_Property_Unit = z.infer<typeof Z_Calendar_Property_Unit>
 export type T_Calendar_Property = z.infer<typeof Z_Calendar_Property>
-

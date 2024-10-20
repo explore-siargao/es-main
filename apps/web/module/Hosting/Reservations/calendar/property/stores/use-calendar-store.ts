@@ -1,6 +1,9 @@
 import { addDays } from "date-fns"
 import { create } from "zustand"
-import { T_Calendar_Property, T_Calendar_Property_Reservation } from "@repo/contract"
+import {
+  T_Calendar_Property,
+  T_Calendar_Property_Reservation,
+} from "@repo/contract"
 
 type T_Calendar_Store = {
   daysPerPage: number
@@ -9,7 +12,10 @@ type T_Calendar_Store = {
   selectedLegendType: string
   isLegendTypeSelected: boolean
   collapsed: { [key: string]: boolean }
-  selectedReservation:  { unit: string, reservation: T_Calendar_Property_Reservation } | null
+  selectedReservation: {
+    unit: string
+    reservation: T_Calendar_Property_Reservation
+  } | null
   isReservationModalOpen: boolean
   isAddReservationModalOpen: boolean
   selectedDate: string
@@ -28,7 +34,9 @@ type T_Calendar_Store = {
   setSelectedLegendType: (value: string) => void
   setIsLegendTypeSelected: (value: boolean) => void
   setCollapsed: (value: { [key: string]: boolean }) => void
-  setSelectedReservation: (value: { unit: string, reservation: T_Calendar_Property_Reservation } | null) => void
+  setSelectedReservation: (
+    value: { unit: string; reservation: T_Calendar_Property_Reservation } | null
+  ) => void
   setIsReservationModalOpen: (value: boolean) => void
   setIsAddReservationModalOpen: (value: boolean) => void
   setSelectedDate: (value: string) => void
@@ -70,8 +78,9 @@ export const useCalendarStore = create<T_Calendar_Store>((set) => ({
     set({ isLegendTypeSelected: value }),
   setCollapsed: (value: { [key: string]: boolean }) =>
     set({ collapsed: value }),
-  setSelectedReservation: (value: { unit: string, reservation: T_Calendar_Property_Reservation } | null) =>
-    set({ selectedReservation: value }),
+  setSelectedReservation: (
+    value: { unit: string; reservation: T_Calendar_Property_Reservation } | null
+  ) => set({ selectedReservation: value }),
   setIsReservationModalOpen: (value: boolean) =>
     set({ isReservationModalOpen: value }),
   setIsAddReservationModalOpen: (value: boolean) =>

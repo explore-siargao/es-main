@@ -89,14 +89,14 @@ export const Z_Calendar_Property_Price = z.object({
   maximumCapacity: z.number(),
   pricePerAdditionalPerson: z.number(),
   createdAt: z.string(),
-});
+})
 
 export const Z_Calendar_Property_Date_Price = z.object({
   fromDate: z.string(),
   toDate: z.string(),
   price: Z_Calendar_Property_Price,
   _id: z.string(),
-});
+})
 
 export const Z_Calendar_Property_Reservation = z.object({
   id: z.string(),
@@ -106,14 +106,14 @@ export const Z_Calendar_Property_Reservation = z.object({
   guestCount: z.number(),
   notes: z.string(),
   status: z.string(), // TODO: CREATE ENUM
-});
+})
 
 export const Z_Calendar_Property_Unit = z.object({
   id: z.string(),
   name: z.string(),
   status: z.string(), // TODO: CREATE ENUM
   reservations: z.array(Z_Calendar_Property_Reservation),
-});
+})
 
 export const Z_Calendar_Property_Unit_Group = z.object({
   id: z.string(),
@@ -124,9 +124,9 @@ export const Z_Calendar_Property_Unit_Group = z.object({
   rooms: z.array(Z_Calendar_Property_Unit).optional(),
   beds: z.array(Z_Calendar_Property_Unit).optional(),
   units: z.array(Z_Calendar_Property_Unit).optional(),
-});
+})
 
 export const Z_Calendar_Property = z.object({
   propertyTitle: z.string(),
   bookableUnitTypes: z.array(Z_Calendar_Property_Unit_Group),
-});
+})
