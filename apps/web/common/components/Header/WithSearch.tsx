@@ -47,7 +47,7 @@ function WithSearch({
     >
       <div className="min-w-full py-3 text-center bg-primary-50 sr-only md:not-sr-only">
         <Typography fontWeight={"light"} className="py-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. asds
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Typography>
       </div>
       <WidthWrapper width={contentWidth}>
