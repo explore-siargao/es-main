@@ -1,7 +1,7 @@
 import { LucideBuilding2, LucideCarFront, LucidePalmtree } from "lucide-react"
-import useGetRentalCounts from "../calendar-2/hooks/useGetRentalCounts"
 import Tabs from "@/common/components/Tabs"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
+import useGetRentalCounts from "../calendar/rental/hooks/use-get-rental-counts"
 
 const ReservationTab = ({
   activityTab = E_Activity_Experience_Type.Private,
