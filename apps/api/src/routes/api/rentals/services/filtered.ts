@@ -18,21 +18,21 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
     if (!priceTo || priceTo === 'any') {
       priceTo = '9999999'
     }
-    if ((!location || location === 'any') && (!type || type === 'any')) {
-      if (
-        transmission &&
-        typeof transmission === 'string' &&
-        transmission !== 'any'
-      ) {
-        const newTransmission = transmission.split(',')
-        const transmissionArray = newTransmission
-          .map((t: string) => t.trim())
-          .filter((t: string) => t !== '')
-          .map((t: string) => new RegExp(`^${t}$`, 'i'))
-        query.transmission = {
-          $in: transmissionArray,
-        }
+    if (
+      transmission &&
+      typeof transmission === 'string' &&
+      transmission !== 'any'
+    ) {
+      const newTransmission = transmission.split(',')
+      const transmissionArray = newTransmission
+        .map((t: string) => t.trim())
+        .filter((t: string) => t !== '')
+        .map((t: string) => new RegExp(`^${t}$`, 'i'))
+      query.transmission = {
+        $in: transmissionArray,
       }
+    }
+    if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
         {
           $match: query,
@@ -79,6 +79,20 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
         },
         {
           $unwind: '$host.guest',
+        },
+        {
+          $lookup: {
+            from: 'addresses',
+            localField: 'host.guest.address',
+            foreignField: '_id',
+            as: 'host.guest.address',
+          },
+        },
+        {
+          $unwind: {
+            path: '$host.guest.address',
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $lookup: {
@@ -185,6 +199,18 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results.category': 1,
+            'results.make': 1,
+            'results.modelBadge': 1,
+            'results.bodyType': 1,
+            'results.fuel': 1,
+            'results.transmission': 1,
+            'results.year': 1,
+            'results.qty': 1,
+            'results.finishedSections': 1,
+            'results.qtyIds': 1,
+            'results.rentalNote': 1,
+            'results.status': 1,
             'results.host._id': 1,
             'results.host.email': 1,
             'results.host.role': 1,
@@ -212,20 +238,6 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
         })
       )
     } else if (location && (!type || type === 'any')) {
-      if (
-        transmission &&
-        typeof transmission === 'string' &&
-        transmission !== 'any'
-      ) {
-        const newTransmission = transmission.split(',')
-        const transmissionArray = newTransmission
-          .map((t: string) => t.trim())
-          .filter((t: string) => t !== '')
-          .map((t: string) => new RegExp(`^${t}$`, 'i'))
-        query.transmission = {
-          $in: transmissionArray,
-        }
-      }
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         {
@@ -384,6 +396,18 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results.category': 1,
+            'results.make': 1,
+            'results.modelBadge': 1,
+            'results.bodyType': 1,
+            'results.fuel': 1,
+            'results.transmission': 1,
+            'results.year': 1,
+            'results.qty': 1,
+            'results.finishedSections': 1,
+            'results.qtyIds': 1,
+            'results.rentalNote': 1,
+            'results.status': 1,
             'results.host._id': 1,
             'results.host.email': 1,
             'results.host.role': 1,
@@ -413,20 +437,6 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       )
     } else if ((!location || location === 'any') && type) {
       query.category = new RegExp(`^${type}$`, 'i')
-      if (
-        transmission &&
-        typeof transmission === 'string' &&
-        transmission !== 'any'
-      ) {
-        const newTransmission = transmission.split(',')
-        const transmissionArray = newTransmission
-          .map((t: string) => t.trim())
-          .filter((t: string) => t !== '')
-          .map((t: string) => new RegExp(`^${t}$`, 'i'))
-        query.transmission = {
-          $in: transmissionArray,
-        }
-      }
       const pipeline = [
         {
           $match: query,
@@ -576,6 +586,18 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results.category': 1,
+            'results.make': 1,
+            'results.modelBadge': 1,
+            'results.bodyType': 1,
+            'results.fuel': 1,
+            'results.transmission': 1,
+            'results.year': 1,
+            'results.qty': 1,
+            'results.finishedSections': 1,
+            'results.qtyIds': 1,
+            'results.rentalNote': 1,
+            'results.status': 1,
             'results.host._id': 1,
             'results.host.email': 1,
             'results.host.role': 1,
@@ -605,21 +627,6 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       )
     } else if (location && type) {
       query.category = new RegExp(`^${type}$`, 'i')
-      if (
-        transmission &&
-        typeof transmission === 'string' &&
-        transmission !== 'any'
-      ) {
-        const newTransmission = transmission.split(',')
-        const transmissionArray = newTransmission
-          .map((t: string) => t.trim())
-          .filter((t: string) => t !== '')
-          .map((t: string) => new RegExp(`^${t}$`, 'i'))
-        query.transmission = {
-          $in: transmissionArray,
-        }
-      }
-
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         {
@@ -777,6 +784,18 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results.category': 1,
+            'results.make': 1,
+            'results.modelBadge': 1,
+            'results.bodyType': 1,
+            'results.fuel': 1,
+            'results.transmission': 1,
+            'results.year': 1,
+            'results.qty': 1,
+            'results.finishedSections': 1,
+            'results.qtyIds': 1,
+            'results.rentalNote': 1,
+            'results.status': 1,
             'results.host._id': 1,
             'results.host.email': 1,
             'results.host.role': 1,
