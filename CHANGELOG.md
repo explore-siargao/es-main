@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.29.0](https://github.com/explore-siargao/es-main/compare/v0.28.1...v0.29.0) (2024-10-23)
+
+
+### 🚀 Features
+
+* **api:** Converted params to query params and added more filter options in activities ([ca0b3ad](https://github.com/explore-siargao/es-main/commit/ca0b3adebb08370ae0ff541973b3d3e5e2f15057))
+* **api:** Converted params to search query params and added more query params for filtering rentals ([078b72e](https://github.com/explore-siargao/es-main/commit/078b72e4483b44260fa03f841246811a4de85ccb))
+
+
+### 🧰 Maintenance
+
+* Fix wording for property unit pricing ([de5d01d](https://github.com/explore-siargao/es-main/commit/de5d01d4916208c59d5197320ab51edbf597b568))
+
 ## [0.28.1](https://github.com/explore-siargao/es-main/compare/v0.28.0...v0.28.1) (2024-10-20)
 
 ### 🧰 Maintenance
