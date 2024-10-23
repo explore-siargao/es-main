@@ -114,11 +114,10 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         </button>
       </div>
       <Typography variant="h4" fontWeight="semibold" className="mb-1">
-        Maximum Capacity (Optional)
+        Additional guests
       </Typography>
       <Typography variant="h5" className="mb-2">
-        If this property/unit comfortably sleeps additional guests, what is the
-        maximum capacity?
+        How many additional guests can this property/unit comfortably sleep beyond the base rate maximum capacity? This will be an extra charge on top of your nightly rate.
       </Typography>
       <div className="flex rounded-md mb-8">
         <button
@@ -148,7 +147,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         </button>
       </div>
       <Typography variant="h4" fontWeight="semibold" className="mb-1">
-        Price Per Additional Person
+        Price Per Additional Guest
       </Typography>
       <Typography variant="h5" className="mb-2">
         How much is the traditional charge per extra guest?
