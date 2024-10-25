@@ -1,12 +1,6 @@
 "use client"
-import React, { useEffect } from "react"
+import React  from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { Button } from "@/common/components/ui/Button"
-import { useParams, useRouter } from "next/navigation"
-import { cn } from "@/common/helpers/cn"
-import { useQueryClient } from "@tanstack/react-query"
-import toast from "react-hot-toast"
-import FacilitiesCheckboxes from "./FacilitiesCheckboxes"
 import {
   LucideBike,
   LucideBookA,
@@ -25,16 +19,10 @@ import {
   LucideUtensilsCrossed,
   LucideWifi,
 } from "lucide-react"
-import useSelectFacilityStore from "../../../store/useSelectFacilityStore"
+import FacilitiesCheckboxes from "./facilities-checkboxes"
 
 
 const Facilities = () => {
-  const params = useParams<{ listingId: string }>()
-  const listingId = String(params.listingId)
-  const facilities = useSelectFacilityStore((state) => state.facilities)
-  const setDefaultFacilities = useSelectFacilityStore(
-    (state) => state.setDefaultFacilities
-  )
 
   return (
     <div>
@@ -46,7 +34,7 @@ const Facilities = () => {
         fontWeight="normal"
         className="text-gray-500 pt-1 italic"
       >
-        Checked Facilities will be filtered out 
+        Checked Facilities will be filtered
       </Typography>
       <div className="mt-6 mb-8 grid grid-cols-3 gap-6">
         <FacilitiesCheckboxes

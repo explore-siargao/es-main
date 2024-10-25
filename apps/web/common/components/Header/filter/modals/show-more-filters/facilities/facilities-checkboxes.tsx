@@ -1,13 +1,14 @@
 import React, { ReactNode } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import useSelectFacilityStore from "../../../store/useSelectFacilityStore"
+import useSelectFacilityStore from "../../../store/use-select-facility-store"
 
 type Props = {
   title: string
   icon: ReactNode
+  gridView?: boolean
 }
 
-const FacilitiesCheckboxes = ({ title, icon }: Props) => {
+const FacilitiesCheckboxes = ({ title, icon, gridView }: Props) => {
   const facilities = useSelectFacilityStore(
     (state) => state.facilities
   ).filter((facility) => facility.category === title)
@@ -22,8 +23,9 @@ const FacilitiesCheckboxes = ({ title, icon }: Props) => {
           {title}
         </Typography>
       </div>
+      <div className={gridView ? "grid grid-cols-3" : "mt-2"}>
       {facilities.map((facility) => (
-        <div key={facility.facility} className="mt-2 grid grid-cols-2">
+        <div key={facility.facility} className="mt-2">
           <fieldset>
             <input
               id={facility.facility}
@@ -40,6 +42,7 @@ const FacilitiesCheckboxes = ({ title, icon }: Props) => {
           </fieldset>
         </div>
       ))}
+      </div>
     </div>
   )
 }

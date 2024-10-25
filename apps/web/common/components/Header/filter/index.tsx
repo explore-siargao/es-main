@@ -9,6 +9,8 @@ import Link from "next/link"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { House, SlidersHorizontal } from "lucide-react"
 import FilterPropertyModal from "./modals/filter-property"
+import FilterRentalModal from "./modals/filter-rental"
+import FilterActivityModal from "./modals/filter-activity"
 
 function FilterHeader({
     contentWidth = "medium",
@@ -28,8 +30,10 @@ function FilterHeader({
                        
                     <SlidersHorizontal size={12} />      <div>Filters</div>
 
-                    <FilterPropertyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
-                                  </Button>
+                {/* <FilterPropertyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/> */}
+                {/* <FilterRentalModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/> */}
+                    <FilterActivityModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
+                    </Button>
                 </nav>
             </WidthWrapper>
         </header>

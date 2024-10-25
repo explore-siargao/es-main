@@ -6,6 +6,7 @@ type T_FacilityStoreState = {
   facilities: T_Property_Facility[]
   updateFacility: (value: T_Property_Facility) => void
   setDefaultFacilities: (value: T_Property_Facility[]) => void
+  resetFacilities: () => void;
 }
 
 const useSelectFacilityStore = create<T_FacilityStoreState>((set) => ({
@@ -29,6 +30,13 @@ const useSelectFacilityStore = create<T_FacilityStoreState>((set) => ({
       }
     })
   },
+  resetFacilities: () => set(() => {
+    const newFacilities = NEW_FACILITIES.map(amenity => ({
+      ...amenity,
+      isSelected: false
+    }));
+    return { facilities: newFacilities };
+  }),
 }))
 
 export default useSelectFacilityStore
