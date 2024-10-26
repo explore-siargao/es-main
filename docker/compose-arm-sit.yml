@@ -32,8 +32,6 @@ services:
       - 9000:9000
     networks:
       - es-network
-    env_file:
-      - ../.env 
 
   es-web:
     build:
@@ -60,8 +58,6 @@ services:
       - 3000:3000
     networks:
       - es-network
-    env_file:
-      - ../../.env 
 
   es-cms:
     build:
@@ -83,8 +79,6 @@ services:
       - 3001:3001
     networks:
       - es-network
-    env_file:
-      - ../../.env 
 
 networks:
   es-network:
