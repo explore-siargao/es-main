@@ -33,7 +33,7 @@ services:
     networks:
       - es-network
     env_file:
-      - ../.env 
+      - ../../.env
 
   es-web:
     build:
@@ -61,7 +61,7 @@ services:
     networks:
       - es-network
     env_file:
-      - ../.env 
+      - ../../.env
 
   es-cms:
     build:
@@ -84,7 +84,7 @@ services:
     networks:
       - es-network
     env_file:
-      - ../.env 
+      - ../../.env 
 
 networks:
   es-network:
