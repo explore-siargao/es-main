@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { data } from "@/dummy"
+import { data } from "../components/dummy"
 
 export async function getEarningsReport() {
   return data[0]?.earningsData

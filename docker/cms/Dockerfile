@@ -18,15 +18,17 @@ ENV PATH="${PATH}:${PNPM_HOME}"
 
 WORKDIR /usr/src/app
 
-RUN echo "PAYLOAD_PORT=$PAYLOAD_PORT" > .env && \
-    echo "PAYLOAD_DATABASE_URI=${PAYLOAD_DATABASE_URI}" >> .env && \
-    echo "PAYLOAD_SECRET=${PAYLOAD_SECRET}" >> .env && \
-    echo "PAYLOAD_URL=${PAYLOAD_URL}" >> .env && \
-    echo "AWS_ACCESS_KEY=${AWS_ACCESS_KEY}" >> .env && \
-    echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env && \
-    echo "AWS_REGION=${AWS_REGION}" >> .env && \
-    echo "AWS_S3_BUCKET=${AWS_S3_BUCKET}" >> .env && \
-    echo "WEB_URL=${WEB_URL}" >> .env
+# RUN echo "PAYLOAD_PORT=$PAYLOAD_PORT" > .env && \
+#     echo "PAYLOAD_DATABASE_URI=${PAYLOAD_DATABASE_URI}" >> .env && \
+#     echo "PAYLOAD_SECRET=${PAYLOAD_SECRET}" >> .env && \
+#     echo "PAYLOAD_URL=${PAYLOAD_URL}" >> .env && \
+#     echo "AWS_ACCESS_KEY=${AWS_ACCESS_KEY}" >> .env && \
+#     echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env && \
+#     echo "AWS_REGION=${AWS_REGION}" >> .env && \
+#     echo "AWS_S3_BUCKET=${AWS_S3_BUCKET}" >> .env && \
+#     echo "WEB_URL=${WEB_URL}" >> .env
+
+COPY ../.env ./
 
 # Copy root folders files
 COPY package.json ./

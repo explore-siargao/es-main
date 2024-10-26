@@ -20,20 +20,22 @@ ENV PATH="${PATH}:${PNPM_HOME}"
 
 WORKDIR /usr/src/app
 
-RUN echo "API_URL=${API_URL}" >> .env && \
-    echo "API_AUTH_URL=${API_AUTH_URL}" >> .env && \
-    echo "API_MOCK_URL=${API_MOCK_URL}" >> .env && \
-    echo "WEB_URL=${WEB_URL}" >> .env && \
-    echo "RECAPTCHA_KEY=${RECAPTCHA_KEY}" >> .env && \
-    echo "RECAPTCHA_KEY_SECRET=${RECAPTCHA_KEY_SECRET}" >> .env && \
-    echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> .env && \
-    echo "GOOGLE_SECRET_ID=${GOOGLE_SECRET_ID}" >> .env && \
-    echo "FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}" >> .env && \
-    echo "FACEBOOK_SECRET_ID=${FACEBOOK_SECRET_ID}" >> .env && \
-    echo "CARD_ENCRYPT_KEY=${CARD_ENCRYPT_KEY}" >> .env && \
-    echo "PASSWORD_ENCRYPT_KEY=${PASSWORD_ENCRYPT_KEY}" >> .env && \
-    echo "WINDY_KEY=${WINDY_KEY}" >> .env && \
-    echo "PAYLOAD_URL=${PAYLOAD_URL}" >> .env
+# RUN echo "API_URL=${API_URL}" >> .env && \
+#     echo "API_AUTH_URL=${API_AUTH_URL}" >> .env && \
+#     echo "API_MOCK_URL=${API_MOCK_URL}" >> .env && \
+#     echo "WEB_URL=${WEB_URL}" >> .env && \
+#     echo "RECAPTCHA_KEY=${RECAPTCHA_KEY}" >> .env && \
+#     echo "RECAPTCHA_KEY_SECRET=${RECAPTCHA_KEY_SECRET}" >> .env && \
+#     echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> .env && \
+#     echo "GOOGLE_SECRET_ID=${GOOGLE_SECRET_ID}" >> .env && \
+#     echo "FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}" >> .env && \
+#     echo "FACEBOOK_SECRET_ID=${FACEBOOK_SECRET_ID}" >> .env && \
+#     echo "CARD_ENCRYPT_KEY=${CARD_ENCRYPT_KEY}" >> .env && \
+#     echo "PASSWORD_ENCRYPT_KEY=${PASSWORD_ENCRYPT_KEY}" >> .env && \
+#     echo "WINDY_KEY=${WINDY_KEY}" >> .env && \
+#     echo "PAYLOAD_URL=${PAYLOAD_URL}" >> .env
+
+COPY ../.env ./
  
 # Copy root folders files
 COPY package.json ./
