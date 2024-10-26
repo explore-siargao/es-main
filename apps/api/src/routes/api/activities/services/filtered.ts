@@ -10,7 +10,7 @@ const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
   let { location, type, activityTpes, priceFrom, priceTo, duration } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
-  const query: any = { deletedAt: null }
+  const query: any = { deletedAt: null, status: 'Live' }
   try {
     if (!priceFrom || priceFrom === 'any') {
       priceFrom = '0'
