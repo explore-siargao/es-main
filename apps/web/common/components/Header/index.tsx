@@ -15,6 +15,7 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
 import GuidesMenu from "./GuidesMenu"
 import ApplyToHostModal from "@/module/LandingPage/components/ApplyToHostModal"
+import FilterHeader from "./filter"
 
 function Header({
   contentWidth = "medium",
@@ -36,11 +37,12 @@ function Header({
       setIsModalOpen(true)
     }
   }
+
   return (
     <header
       className={cn(
-        `w-full inset-x-0 top-0 z-50 bg-white border-y-gray-200/50 border flex flex-col items-center`,
-        isFixed && "fixed"
+        `w-full inset-x-0 top-0 z-50 bg-white border-y-gray-200/50 border flex flex-col`,
+        isFixed ? "fixed" : ""
       )}
     >
       <div className="min-w-full py-3 text-center bg-primary-50 sr-only md:not-sr-only">
@@ -94,6 +96,7 @@ function Header({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
+      <FilterHeader />
     </header>
   )
 }
