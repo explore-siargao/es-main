@@ -1,6 +1,6 @@
 import { ApiService } from "@/common/service/api"
-import { data } from "@/dummy"
 import { useQuery } from "@tanstack/react-query"
+import { data } from "../../components/dummy"
 
 const apiService = new ApiService("mock")
 export async function getInsights(
