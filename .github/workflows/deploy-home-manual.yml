@@ -7,6 +7,39 @@ jobs:
   deployment:
     runs-on: home-server
     environment: sit
+    env:
+      API_PORT: ${{ secrets.API_PORT }}
+      PASSWORD_ENCRYPT_KEY: ${{ secrets.PASSWORD_ENCRYPT_KEY }}
+      CARD_ENCRYPT_KEY: ${{ secrets.CARD_ENCRYPT_KEY }}
+      CSRF_SIGN_KEY: ${{ secrets.CSRF_SIGN_KEY }}
+      ALLOWED_CLIENTS: ${{ secrets.ALLOWED_CLIENTS }}
+      WEB_URL: ${{ secrets.WEB_URL }}
+      API_URL: ${{ secrets.API_URL }}
+      API_MOCK_URL: ${{ secrets.API_MOCK_URL }}
+      RECAPTCHA_KEY_SECRET: ${{ secrets.RECAPTCHA_KEY_SECRET }}
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      XENDIT_URL: ${{ secrets.XENDIT_URL }}
+      XENDIT_SECRET: ${{ secrets.XENDIT_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_SECRET_ID: ${{ secrets.GOOGLE_SECRET_ID }}
+      GOOGLE_APIS_URL: ${{ secrets.GOOGLE_APIS_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      WINDY_KEY: ${{ secrets.WINDY_KEY }}
+      MONGO_URL: ${{ secrets.MONGO_URL }}
+      API_AUTH_URL: ${{ secrets.API_AUTH_URL }}
+      RECAPTCHA_KEY: ${{ secrets.RECAPTCHA_KEY }}
+      FACEBOOK_CLIENT_ID: ${{ secrets.FACEBOOK_CLIENT_ID }}
+      FACEBOOK_SECRET_ID: ${{ secrets.FACEBOOK_SECRET_ID }}
+      CLIENT_ORIGINS: ${{ secrets.CLIENT_ORIGINS }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}
+      PAYLOAD_PORT: ${{ secrets.PAYLOAD_PORT }}
+      PAYLOAD_DATABASE_URI: ${{ secrets.PAYLOAD_DATABASE_URI }}
+      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+      PAYLOAD_URL: ${{ secrets.PAYLOAD_URL }}
 
     steps:
       - uses: actions/checkout@v3
