@@ -117,7 +117,9 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         Additional guests
       </Typography>
       <Typography variant="h5" className="mb-2">
-        How many additional guests can this property/unit comfortably sleep beyond the base rate maximum capacity? This will be an extra charge on top of your nightly rate.
+        How many additional guests can this property/unit comfortably sleep
+        beyond the base rate maximum capacity? This will be an extra charge on
+        top of your nightly rate.
       </Typography>
       <div className="flex rounded-md mb-8">
         <button

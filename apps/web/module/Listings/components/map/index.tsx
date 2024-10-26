@@ -5,17 +5,17 @@ const DynamicMultiMarkerMap = dynamic(() => import("./multi-marker-map"), {
 })
 
 export type T_Markers = {
-  _id: string,
-  city: string,
-  streetAddress: string,
-  barangay: string,
-  longitude: number,
-  latitude: number,
-  howToGetThere: string,
-  name: string,
-  currency: string,
-  price: number,
-  photos: { fileKey: string, alt: string }
+  _id: string
+  city: string
+  streetAddress: string
+  barangay: string
+  longitude: number
+  latitude: number
+  howToGetThere: string
+  name: string
+  currency: string
+  price: number
+  photos: { fileKey: string; alt: string }
 }
 
 type T_Props = {
@@ -23,10 +23,7 @@ type T_Props = {
   iconMarker?: "surf" | "restaurant" | "island"
 }
 
-const ListingsMap = ({
-  markers,
-  iconMarker,
-}: T_Props) => {
+const ListingsMap = ({ markers, iconMarker }: T_Props) => {
   const getMarkerFileName = (
     iconMarker: string | undefined,
     isCity: boolean | undefined
@@ -47,7 +44,7 @@ const ListingsMap = ({
 
     return markerIconToUse
   }
-  
+
   return (
     <div className="w-full">
       <div>
@@ -55,7 +52,10 @@ const ListingsMap = ({
           markerLocations={markers}
           center={[9.8813, 126.0702]}
           zoom={12}
-          markerFileName={getMarkerFileName(iconMarker, markers[0]?.city ? true : false)}
+          markerFileName={getMarkerFileName(
+            iconMarker,
+            markers[0]?.city ? true : false
+          )}
         />
       </div>
     </div>

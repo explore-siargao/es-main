@@ -31,32 +31,42 @@ const MultiMarkerMap = ({
   const markerRefs = useRef<Map<number, L.Marker>>(new Map())
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
 
-  const CustomMarker = ({ position, onClick, price, children }: { position: LatLngTuple, onClick: () => void, price: number, children: ReactNode }) => {
+  const CustomMarker = ({
+    position,
+    onClick,
+    price,
+    children,
+  }: {
+    position: LatLngTuple
+    onClick: () => void
+    price: number
+    children: ReactNode
+  }) => {
     const [isClicked, setIsClicked] = useState(false)
-  
+
     const handleMarkerClick = () => {
-      setIsClicked(prev => !prev)
+      setIsClicked((prev) => !prev)
       onClick()
     }
-  
+
     const customIcon = divIcon({
-      className: 'custom-marker',
+      className: "custom-marker",
       html: `<div style="
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background-color: ${isClicked ? '#4b5563' : 'white'};
+        background-color: ${isClicked ? "#4b5563" : "white"};
         border-radius: 15px;
         padding: 5px 10px;
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
         font-size: 14px;
         font-weight: bold;
-        color: ${isClicked ? 'white' : 'black'};
+        color: ${isClicked ? "white" : "black"};
         text-align: center;
       ">₱${price}</div>`,
       iconSize: [50, 30],
     })
-  
+
     return (
       <Marker
         position={position}
@@ -169,7 +179,11 @@ const MultiMarkerMap = ({
                     Skill level required: Intermediate
                   </span>
                 ) : null}
-                <Link href={`/listing/property/${location._id}`} target="_blank" className=" mt-2">
+                <Link
+                  href={`/listing/property/${location._id}`}
+                  target="_blank"
+                  className=" mt-2"
+                >
                   <span className="underline text-primary-600 hover:text-primary-700 text-start">
                     View property
                   </span>
