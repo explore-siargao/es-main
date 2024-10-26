@@ -1,40 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { MinusIcon, PlusIcon } from 'lucide-react';
+import React, { useEffect, useState } from "react"
+import { MinusIcon, PlusIcon } from "lucide-react"
 
 interface CountInputProps {
-  label: string;
-  count: number | null;
-  setCount: (count: number | null) => void;
+  label: string
+  count: number | null
+  setCount: (count: number | null) => void
 }
 
 const CountInput: React.FC<CountInputProps> = ({ label, count, setCount }) => {
-  const [inputValue, setInputValue] = useState<string | number>(count === null ? "Any" : count);
+  const [inputValue, setInputValue] = useState<string | number>(
+    count === null ? "Any" : count
+  )
 
   useEffect(() => {
-    setInputValue(count === null ? "Any" : count);
-  }, [count]);
+    setInputValue(count === null ? "Any" : count)
+  }, [count])
 
   const handleMinusClick = () => {
     if (count !== null && count > 1) {
-      setCount(count - 1);
+      setCount(count - 1)
     } else {
-      setCount(null);
+      setCount(null)
     }
-  };
+  }
 
   const handlePlusClick = () => {
-    setCount((count === null ? 0 : count) + 1);
-  };
+    setCount((count === null ? 0 : count) + 1)
+  }
 
   const handleChange = (value: string) => {
     if (value === "any") {
-      setCount(null);
+      setCount(null)
     } else {
-      const num = parseInt(value, 10);
-      setCount(isNaN(num) || num < 1 ? null : num);
+      const num = parseInt(value, 10)
+      setCount(isNaN(num) || num < 1 ? null : num)
     }
-    setInputValue(value);
-  };
+    setInputValue(value)
+  }
 
   return (
     <div className="flex items-center justify-between">
@@ -62,7 +64,7 @@ const CountInput: React.FC<CountInputProps> = ({ label, count, setCount }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CountInput;
+export default CountInput

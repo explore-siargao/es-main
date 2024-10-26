@@ -1,5 +1,5 @@
 "use client"
-import React  from "react"
+import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import {
   LucideBike,
@@ -21,9 +21,7 @@ import {
 } from "lucide-react"
 import FacilitiesCheckboxes from "./facilities-checkboxes"
 
-
 const Facilities = () => {
-
   return (
     <div>
       <Typography variant="h1" fontWeight="semibold">
@@ -102,7 +100,6 @@ const Facilities = () => {
           icon={<LucidePalmtree className="h-4 w-4" />}
         />
       </div>
-
     </div>
   )
 }

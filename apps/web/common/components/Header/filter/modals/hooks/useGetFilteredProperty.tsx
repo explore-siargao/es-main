@@ -3,7 +3,9 @@ import { API_URL_PROPERTIES } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
 import { TFilterProperty } from "../reducer/property-reducer"
 
-export async function getFilteredProperty(searchParams: TFilterProperty | undefined) {
+export async function getFilteredProperty(
+  searchParams: TFilterProperty | undefined
+) {
   const apiService = new ApiService()
   return await apiService.get(`${API_URL_PROPERTIES}?propertyType=${searchParams?.propertyType}
     &priceFrom=${searchParams?.priceRange[0]}&priceTo=${searchParams?.priceRange[1]}&bedroomCount=${searchParams?.bedroomCount}

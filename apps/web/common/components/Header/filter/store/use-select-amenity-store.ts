@@ -6,7 +6,7 @@ type T_AmenityStoreState = {
   amenities: T_Property_Amenity[]
   updateAmenity: (value: T_Property_Amenity) => void
   setDefaultAmenities: (value: T_Property_Amenity[]) => void
-  resetAmenities: () => void;
+  resetAmenities: () => void
 }
 
 const useSelectAmenityStore = create<T_AmenityStoreState>((set) => ({
@@ -28,16 +28,16 @@ const useSelectAmenityStore = create<T_AmenityStoreState>((set) => ({
       return {
         amenities: [...stateCopy],
       }
-      
     })
   },
-  resetAmenities: () => set(() => {
-    const newAmenities = AMENITIES.map(amenity => ({
-      ...amenity,
-      isSelected: false
-    }));
-    return { amenities: newAmenities };
-  }),
+  resetAmenities: () =>
+    set(() => {
+      const newAmenities = AMENITIES.map((amenity) => ({
+        ...amenity,
+        isSelected: false,
+      }))
+      return { amenities: newAmenities }
+    }),
 }))
 
 export default useSelectAmenityStore

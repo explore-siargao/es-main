@@ -13,7 +13,6 @@ import {
 import AmenitiesCheckboxes from "./amenities-checkboxes"
 
 const Amenities = () => {
-
   return (
     <div>
       <Typography variant="h1" fontWeight="semibold">
@@ -27,32 +26,31 @@ const Amenities = () => {
         Checked Amenities will be filtered
       </Typography>
       <div className="mt-6 mb-8 grid grid-cols-3 gap-6">
-              <AmenitiesCheckboxes
-                title="Most Popular"
-                icon={<LucideSparkles className="h-4 w-4" />}
-              />
-              <AmenitiesCheckboxes
-                title="Bathroom"
-                icon={<LucideBath className="h-4 w-4" />}
-              />
-              <AmenitiesCheckboxes
-                title="Living Area"
-                icon={<LucideArmchair className="h-4 w-4" />}
-              />
-              <AmenitiesCheckboxes
-                title="Kitchen"
-                icon={<LucideCookingPot className="h-4 w-4" />}
-              />
-              <AmenitiesCheckboxes
-                title="General"
-                icon={<LucideLayoutList className="h-4 w-4" />}
-              />
-              <AmenitiesCheckboxes
-                title="Outdoors"
-                icon={<LucidePalmtree className="h-4 w-4" />}
-              />
-            </div>
-
+        <AmenitiesCheckboxes
+          title="Most Popular"
+          icon={<LucideSparkles className="h-4 w-4" />}
+        />
+        <AmenitiesCheckboxes
+          title="Bathroom"
+          icon={<LucideBath className="h-4 w-4" />}
+        />
+        <AmenitiesCheckboxes
+          title="Living Area"
+          icon={<LucideArmchair className="h-4 w-4" />}
+        />
+        <AmenitiesCheckboxes
+          title="Kitchen"
+          icon={<LucideCookingPot className="h-4 w-4" />}
+        />
+        <AmenitiesCheckboxes
+          title="General"
+          icon={<LucideLayoutList className="h-4 w-4" />}
+        />
+        <AmenitiesCheckboxes
+          title="Outdoors"
+          icon={<LucidePalmtree className="h-4 w-4" />}
+        />
+      </div>
     </div>
   )
 }
