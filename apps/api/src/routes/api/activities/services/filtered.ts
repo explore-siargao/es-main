@@ -33,7 +33,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     if (duration && duration !== 'any') {
       query.durationHour = Number(duration)
     }
-    if ((!location || location === 'any') && type === 'any') {
+    if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
         { $match: query },
         {
@@ -180,7 +180,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && type === 'any') {
+    } else if (location && location !== 'any' && (!type || type === 'any')) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         { $match: query },
@@ -336,7 +336,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         })
       )
     } else if ((!location || location === 'any') && type && type !== 'any') {
-      query.experienceType = new RegExp(`^${type}$`, 'i')
+      const typeArray = String(type)
+        .split(',')
+        .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
+      query.experienceType = { $in: typeArray }
       const pipeline = [
         { $match: query },
         {
@@ -484,8 +487,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         })
       )
     } else if (location && location !== 'any' && type && type !== 'any') {
-      query.experienceType = new RegExp(`^${type}$`, 'i')
       const normalizedLocation = String(location).toLowerCase()
+      const typeArray = String(type)
+        .split(',')
+        .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
+      query.experienceType = { $in: typeArray }
       const pipeline = [
         { $match: query },
         {

@@ -64,13 +64,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   try {
     if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
-        // Match the query
         { $match: query },
-
-        // Lookup for the offerBy field and its nested guest field
         {
           $lookup: {
-            from: 'users', // Replace with the actual name of the users collection
+            from: 'users',
             localField: 'offerBy',
             foreignField: '_id',
             as: 'offerBy',
@@ -80,7 +77,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
 
         {
           $lookup: {
-            from: 'guests', // Replace with the actual name of the guests collection
+            from: 'guests',
             localField: 'offerBy.guest',
             foreignField: '_id',
             as: 'offerBy.guest',
@@ -91,7 +88,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'addresses', // Replace with the actual name of the guests collection
+            from: 'addresses',
             localField: 'offerBy.guest.address',
             foreignField: '_id',
             as: 'offerBy.guest.address',
@@ -105,7 +102,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'photos', // Replace with the actual name of the photos collection
+            from: 'photos',
             localField: 'photos',
             foreignField: '_id',
             as: 'photos',
@@ -113,7 +110,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'locations', // Replace with the actual name of the photos collection
+            from: 'locations',
             localField: 'location',
             foreignField: '_id',
             as: 'location',
@@ -127,7 +124,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'facilities', // Replace with the actual name of the photos collection
+            from: 'facilities',
             localField: 'facilities',
             foreignField: '_id',
             as: 'facilities',
@@ -145,7 +142,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
         },
         {
-          // New stage to match if any facility has the facility
           $match: {
             $or: [
               { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -164,7 +160,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'policies', // Replace with the actual name of the photos collection
+            from: 'policies',
             localField: 'policies',
             foreignField: '_id',
             as: 'policies',
@@ -176,14 +172,14 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               $filter: {
                 input: '$policies',
                 as: 'policy',
-                cond: { $eq: ['$$policy.isSelected', true] }, // Only include facilities where isSelected is true
+                cond: { $eq: ['$$policy.isSelected', true] },
               },
             },
           },
         },
         {
           $lookup: {
-            from: 'bookableunittypes', // Replace with the actual name of the photos collection
+            from: 'bookableunittypes',
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
@@ -191,7 +187,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'unitprices', // Replace with the actual name of the photos collection
+            from: 'unitprices',
             localField: 'bookableUnits.unitPrice',
             foreignField: '_id',
             as: 'unitPrice',
@@ -227,7 +223,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         $arrayElemAt: [
                           {
                             $filter: {
-                              input: '$unitPrice', // assuming this is the lookup result field for unit prices
+                              input: '$unitPrice',
                               as: 'price',
                               cond: {
                                 $eq: ['$$price._id', '$$unit.unitPrice'],
@@ -255,7 +251,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     {
                       photos: {
                         $filter: {
-                          input: '$photos', // This is the lookup result for amenities
+                          input: '$photos',
                           as: 'photo',
                           cond: { $in: ['$$photo._id', '$$unit.photos'] },
                         },
@@ -279,7 +275,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     cond: {
                       $gt: [
                         {
-                          // Check if any amenities match the amenitiesArray
                           $size: {
                             $filter: {
                               input: '$$unit.amenities',
@@ -295,12 +290,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                           },
                         },
-                        0, // Ensure at least one match
+                        0,
                       ],
                     },
                   },
                 },
-                else: '$bookableUnits', // If amenities is "any", retain all bookableUnits
+                else: '$bookableUnits',
               },
             },
           },
@@ -352,7 +347,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     {
                       $and: [
                         { $eq: [priceFrom, 'any'] }, // Ignore price filtering if priceFrom is "any"
-                        { $eq: [priceTo, 'any'] }, // Ignore price filtering if priceTo is "any"
+                        { $eq: [priceTo, 'any'] },
                       ],
                     },
                   ],
@@ -381,14 +376,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       $and: [
                         {
                           $or: [
-                            // Condition for "Room" category based on total bed quantity
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Room'] },
                                 {
                                   $gte: [
                                     {
-                                      // Sum the qty of all beds across all bedRooms
                                       $reduce: {
                                         input: '$$unit.bedRooms',
                                         initialValue: 0,
@@ -404,7 +397,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                                     '$$value',
                                                     '$$this.qty',
                                                   ],
-                                                }, // Sum bed quantities
+                                                },
                                               },
                                             },
                                           ],
@@ -416,7 +409,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 },
                               ],
                             },
-                            // Condition for "Whole-Place" category based on bedroom length
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Whole-Place'] },
@@ -425,12 +417,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                     { $size: '$$unit.bedRooms' },
                                     Number(bedrooms),
                                   ],
-                                }, // Compare to bedrooms parameter
+                                },
                               ],
                             },
                           ],
                         },
-                        // Condition for bathrooms, only if bathrooms is not "any"
                         {
                           $or: [
                             { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
@@ -553,13 +544,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       )
     } else if (location && location !== 'any' && (!type || type === 'any')) {
       const pipeline = [
-        // Match the query
         { $match: query },
-
-        // Lookup for the offerBy field and its nested guest field
         {
           $lookup: {
-            from: 'users', // Replace with the actual name of the users collection
+            from: 'users',
             localField: 'offerBy',
             foreignField: '_id',
             as: 'offerBy',
@@ -569,7 +557,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
 
         {
           $lookup: {
-            from: 'guests', // Replace with the actual name of the guests collection
+            from: 'guests',
             localField: 'offerBy.guest',
             foreignField: '_id',
             as: 'offerBy.guest',
@@ -580,7 +568,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'addresses', // Replace with the actual name of the guests collection
+            from: 'addresses',
             localField: 'offerBy.guest.address',
             foreignField: '_id',
             as: 'offerBy.guest.address',
@@ -594,7 +582,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'photos', // Replace with the actual name of the photos collection
+            from: 'photos',
             localField: 'photos',
             foreignField: '_id',
             as: 'photos',
@@ -602,7 +590,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'locations', // Replace with the actual name of the photos collection
+            from: 'locations',
             localField: 'location',
             foreignField: '_id',
             as: 'location',
@@ -616,7 +604,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'facilities', // Replace with the actual name of the photos collection
+            from: 'facilities',
             localField: 'facilities',
             foreignField: '_id',
             as: 'facilities',
@@ -634,7 +622,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
         },
         {
-          // New stage to match if any facility has the facility
           $match: {
             $or: [
               { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -653,7 +640,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'policies', // Replace with the actual name of the photos collection
+            from: 'policies',
             localField: 'policies',
             foreignField: '_id',
             as: 'policies',
@@ -672,7 +659,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'bookableunittypes', // Replace with the actual name of the photos collection
+            from: 'bookableunittypes',
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
@@ -680,7 +667,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'unitprices', // Replace with the actual name of the photos collection
+            from: 'unitprices',
             localField: 'bookableUnits.unitPrice',
             foreignField: '_id',
             as: 'unitPrice',
@@ -716,7 +703,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         $arrayElemAt: [
                           {
                             $filter: {
-                              input: '$unitPrice', // assuming this is the lookup result field for unit prices
+                              input: '$unitPrice',
                               as: 'price',
                               cond: {
                                 $eq: ['$$price._id', '$$unit.unitPrice'],
@@ -744,7 +731,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     {
                       photos: {
                         $filter: {
-                          input: '$photos', // This is the lookup result for amenities
+                          input: '$photos',
                           as: 'photo',
                           cond: { $in: ['$$photo._id', '$$unit.photos'] },
                         },
@@ -768,7 +755,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     cond: {
                       $gt: [
                         {
-                          // Check if any amenities match the amenitiesArray
                           $size: {
                             $filter: {
                               input: '$$unit.amenities',
@@ -784,7 +770,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                           },
                         },
-                        0, // Ensure at least one match
+                        0,
                       ],
                     },
                   },
@@ -870,20 +856,18 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       $and: [
                         {
                           $or: [
-                            // Condition for "Room" category based on total bed quantity
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Room'] },
                                 {
                                   $gte: [
                                     {
-                                      // Sum the qty of all beds across all bedRooms
                                       $reduce: {
                                         input: '$$unit.bedRooms',
                                         initialValue: 0,
                                         in: {
                                           $add: [
-                                            '$$value', // Accumulated value
+                                            '$$value',
                                             {
                                               $reduce: {
                                                 input: '$$this.beds', // Access beds array in each bedRoom
@@ -893,7 +877,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                                     '$$value',
                                                     '$$this.qty',
                                                   ],
-                                                }, // Sum bed quantities
+                                                },
                                               },
                                             },
                                           ],
@@ -905,7 +889,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 },
                               ],
                             },
-                            // Condition for "Whole-Place" category based on bedroom length
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Whole-Place'] },
@@ -914,12 +897,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                     { $size: '$$unit.bedRooms' },
                                     Number(bedrooms),
                                   ],
-                                }, // Compare to bedrooms parameter
+                                },
                               ],
                             },
                           ],
                         },
-                        // Condition for bathrooms, only if bathrooms is not "any"
                         {
                           $or: [
                             { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
@@ -1062,9 +1044,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       const otherTypes = upperCaseTypes.filter(
         (t: string) => !wholePlaceTypes.includes(t)
       )
-
       if (selectedWholePlaceTypes.length > 0 && otherTypes.length === 0) {
-        // If any whole place type is present, set `wholeplaceType` and `type` to WHOLE_PLACE
         query.wholeplaceType = {
           $in: selectedWholePlaceTypes,
         }
@@ -1073,12 +1053,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         otherTypes.length > 0 &&
         selectedWholePlaceTypes.length === 0
       ) {
-        // For non-whole place types, use $in and exclude WHOLE_PLACE
         query.type = {
           $in: otherTypes,
           $ne: 'WHOLE_PLACE',
         }
-        // wholeplaceType should only apply for whole place types, so keep it null for non-whole-place types
         query.wholeplaceType = query.wholeplaceType || null
       } else if (selectedWholePlaceTypes.length > 0 && otherTypes.length > 0) {
         query.$or = [
@@ -1090,13 +1068,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         ]
       }
       const pipeline = [
-        // Match the query
         { $match: query },
-
-        // Lookup for the offerBy field and its nested guest field
         {
           $lookup: {
-            from: 'users', // Replace with the actual name of the users collection
+            from: 'users',
             localField: 'offerBy',
             foreignField: '_id',
             as: 'offerBy',
@@ -1106,7 +1081,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
 
         {
           $lookup: {
-            from: 'guests', // Replace with the actual name of the guests collection
+            from: 'guests',
             localField: 'offerBy.guest',
             foreignField: '_id',
             as: 'offerBy.guest',
@@ -1117,7 +1092,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'addresses', // Replace with the actual name of the guests collection
+            from: 'addresses',
             localField: 'offerBy.guest.address',
             foreignField: '_id',
             as: 'offerBy.guest.address',
@@ -1131,7 +1106,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'photos', // Replace with the actual name of the photos collection
+            from: 'photos',
             localField: 'photos',
             foreignField: '_id',
             as: 'photos',
@@ -1139,7 +1114,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'locations', // Replace with the actual name of the photos collection
+            from: 'locations',
             localField: 'location',
             foreignField: '_id',
             as: 'location',
@@ -1153,7 +1128,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'facilities', // Replace with the actual name of the photos collection
+            from: 'facilities',
             localField: 'facilities',
             foreignField: '_id',
             as: 'facilities',
@@ -1171,7 +1146,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
         },
         {
-          // New stage to match if any facility has the facility
           $match: {
             $or: [
               { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -1190,7 +1164,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'policies', // Replace with the actual name of the photos collection
+            from: 'policies',
             localField: 'policies',
             foreignField: '_id',
             as: 'policies',
@@ -1202,14 +1176,14 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               $filter: {
                 input: '$policies',
                 as: 'policy',
-                cond: { $eq: ['$$policy.isSelected', true] }, // Only include facilities where isSelected is true
+                cond: { $eq: ['$$policy.isSelected', true] },
               },
             },
           },
         },
         {
           $lookup: {
-            from: 'bookableunittypes', // Replace with the actual name of the photos collection
+            from: 'bookableunittypes',
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
@@ -1217,7 +1191,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'unitprices', // Replace with the actual name of the photos collection
+            from: 'unitprices',
             localField: 'bookableUnits.unitPrice',
             foreignField: '_id',
             as: 'unitPrice',
@@ -1253,7 +1227,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         $arrayElemAt: [
                           {
                             $filter: {
-                              input: '$unitPrice', // assuming this is the lookup result field for unit prices
+                              input: '$unitPrice',
                               as: 'price',
                               cond: {
                                 $eq: ['$$price._id', '$$unit.unitPrice'],
@@ -1305,7 +1279,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     cond: {
                       $gt: [
                         {
-                          // Check if any amenities match the amenitiesArray
                           $size: {
                             $filter: {
                               input: '$$unit.amenities',
@@ -1321,7 +1294,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                           },
                         },
-                        0, // Ensure at least one match
+                        0,
                       ],
                     },
                   },
@@ -1407,14 +1380,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       $and: [
                         {
                           $or: [
-                            // Condition for "Room" category based on total bed quantity
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Room'] },
                                 {
                                   $gte: [
                                     {
-                                      // Sum the qty of all beds across all bedRooms
                                       $reduce: {
                                         input: '$$unit.bedRooms',
                                         initialValue: 0,
@@ -1430,19 +1401,18 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                                     '$$value',
                                                     '$$this.qty',
                                                   ],
-                                                }, // Sum bed quantities
+                                                },
                                               },
                                             },
                                           ],
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(beds),
                                   ],
                                 },
                               ],
                             },
-                            // Condition for "Whole-Place" category based on bedroom length
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Whole-Place'] },
@@ -1451,12 +1421,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                     { $size: '$$unit.bedRooms' },
                                     Number(bedrooms),
                                   ],
-                                }, // Compare to bedrooms parameter
+                                },
                               ],
                             },
                           ],
                         },
-                        // Condition for bathrooms, only if bathrooms is not "any"
                         {
                           $or: [
                             { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
@@ -1591,9 +1560,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       const otherTypes = upperCaseTypes.filter(
         (t: string) => !wholePlaceTypes.includes(t)
       )
-
       if (selectedWholePlaceTypes.length > 0 && otherTypes.length === 0) {
-        // If any whole place type is present, set `wholeplaceType` and `type` to WHOLE_PLACE
         query.wholeplaceType = {
           $in: selectedWholePlaceTypes,
         }
@@ -1602,12 +1569,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         otherTypes.length > 0 &&
         selectedWholePlaceTypes.length === 0
       ) {
-        // For non-whole place types, use $in and exclude WHOLE_PLACE
         query.type = {
           $in: otherTypes,
           $ne: 'WHOLE_PLACE',
         }
-        // wholeplaceType should only apply for whole place types, so keep it null for non-whole-place types
         query.wholeplaceType = query.wholeplaceType || null
       } else if (selectedWholePlaceTypes.length > 0 && otherTypes.length > 0) {
         query.$or = [
@@ -1619,13 +1584,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         ]
       }
       const pipeline = [
-        // Match the query
         { $match: query },
-
-        // Lookup for the offerBy field and its nested guest field
         {
           $lookup: {
-            from: 'users', // Replace with the actual name of the users collection
+            from: 'users',
             localField: 'offerBy',
             foreignField: '_id',
             as: 'offerBy',
@@ -1635,7 +1597,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
 
         {
           $lookup: {
-            from: 'guests', // Replace with the actual name of the guests collection
+            from: 'guests',
             localField: 'offerBy.guest',
             foreignField: '_id',
             as: 'offerBy.guest',
@@ -1646,7 +1608,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'addresses', // Replace with the actual name of the guests collection
+            from: 'addresses',
             localField: 'offerBy.guest.address',
             foreignField: '_id',
             as: 'offerBy.guest.address',
@@ -1660,7 +1622,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'photos', // Replace with the actual name of the photos collection
+            from: 'photos',
             localField: 'photos',
             foreignField: '_id',
             as: 'photos',
@@ -1668,7 +1630,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'locations', // Replace with the actual name of the photos collection
+            from: 'locations',
             localField: 'location',
             foreignField: '_id',
             as: 'location',
@@ -1682,7 +1644,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'facilities', // Replace with the actual name of the photos collection
+            from: 'facilities',
             localField: 'facilities',
             foreignField: '_id',
             as: 'facilities',
@@ -1700,7 +1662,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
         },
         {
-          // New stage to match if any facility has the facility
           $match: {
             $or: [
               { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -1719,7 +1680,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'policies', // Replace with the actual name of the photos collection
+            from: 'policies',
             localField: 'policies',
             foreignField: '_id',
             as: 'policies',
@@ -1731,14 +1692,14 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               $filter: {
                 input: '$policies',
                 as: 'policy',
-                cond: { $eq: ['$$policy.isSelected', true] }, // Only include facilities where isSelected is true
+                cond: { $eq: ['$$policy.isSelected', true] },
               },
             },
           },
         },
         {
           $lookup: {
-            from: 'bookableunittypes', // Replace with the actual name of the photos collection
+            from: 'bookableunittypes',
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
@@ -1746,7 +1707,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
         {
           $lookup: {
-            from: 'unitprices', // Replace with the actual name of the photos collection
+            from: 'unitprices',
             localField: 'bookableUnits.unitPrice',
             foreignField: '_id',
             as: 'unitPrice',
@@ -1782,7 +1743,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         $arrayElemAt: [
                           {
                             $filter: {
-                              input: '$unitPrice', // assuming this is the lookup result field for unit prices
+                              input: '$unitPrice',
                               as: 'price',
                               cond: {
                                 $eq: ['$$price._id', '$$unit.unitPrice'],
@@ -1810,7 +1771,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     {
                       photos: {
                         $filter: {
-                          input: '$photos', // This is the lookup result for amenities
+                          input: '$photos',
                           as: 'photo',
                           cond: { $in: ['$$photo._id', '$$unit.photos'] },
                         },
@@ -1834,7 +1795,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     cond: {
                       $gt: [
                         {
-                          // Check if any amenities match the amenitiesArray
                           $size: {
                             $filter: {
                               input: '$$unit.amenities',
@@ -1850,12 +1810,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                           },
                         },
-                        0, // Ensure at least one match
+                        0,
                       ],
                     },
                   },
                 },
-                else: '$bookableUnits', // If amenities is "any", retain all bookableUnits
+                else: '$bookableUnits',
               },
             },
           },
@@ -1936,14 +1896,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       $and: [
                         {
                           $or: [
-                            // Condition for "Room" category based on total bed quantity
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Room'] },
                                 {
                                   $gte: [
                                     {
-                                      // Sum the qty of all beds across all bedRooms
                                       $reduce: {
                                         input: '$$unit.bedRooms',
                                         initialValue: 0,
@@ -1959,7 +1917,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                                     '$$value',
                                                     '$$this.qty',
                                                   ],
-                                                }, // Sum bed quantities
+                                                },
                                               },
                                             },
                                           ],
@@ -1971,7 +1929,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 },
                               ],
                             },
-                            // Condition for "Whole-Place" category based on bedroom length
                             {
                               $and: [
                                 { $eq: ['$$unit.category', 'Whole-Place'] },
@@ -1980,12 +1937,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                     { $size: '$$unit.bedRooms' },
                                     Number(bedrooms),
                                   ],
-                                }, // Compare to bedrooms parameter
+                                },
                               ],
                             },
                           ],
                         },
-                        // Condition for bathrooms, only if bathrooms is not "any"
                         {
                           $or: [
                             { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
@@ -2016,7 +1972,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           $match: {
             'location.city': {
               $regex: location, // Use the location variable as a regular expression
-              $options: 'i', // 'i' makes it case-insensitive
+              $options: 'i',
             },
           },
         },
