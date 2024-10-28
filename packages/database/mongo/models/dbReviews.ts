@@ -4,7 +4,7 @@ const { Schema } = mongoose
 const reviews = new Schema({
   reviewerId: {
     type: Schema.Types.ObjectId,
-    ref: "Guests",
+    ref: "Users",
     required: true,
   },
   cleanlinessRates: {
@@ -30,6 +30,10 @@ const reviews = new Schema({
   comment: {
     type: String,
     required: false,
+  },
+  totalRates: {
+    type: Number,
+    required: true,
   },
   property: {
     type: {

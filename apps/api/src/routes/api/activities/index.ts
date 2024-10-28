@@ -42,6 +42,7 @@ import {
 } from './services/calendar'
 import { getFilteredActivities } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
+import { addActivityReview } from './services/review'
 
 const router = express.Router()
 
@@ -271,6 +272,15 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editActivityNote
+)
+
+//review
+router.post(
+  '/:activityId/review',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addActivityReview
 )
 
 export default router

@@ -40,6 +40,7 @@ import {
 import { getRentalIds, getRentalsByHostAndCategory } from './services/rentals'
 import { getFilteredRentals } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
+import { addRentalReview } from './services/review'
 
 const router = express.Router()
 
@@ -307,6 +308,15 @@ router.patch(
   isCsrfTokenValid,
   isUserLoggedIn,
   editRentalNote
+)
+
+//review
+router.post(
+  '/:rentalId/review',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  addRentalReview
 )
 
 export default router
