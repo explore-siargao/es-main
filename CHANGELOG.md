@@ -7,26 +7,20 @@
 
 * **api:** Added endpoint for filtering properties using different variables ([629afd9](https://github.com/explore-siargao/es-main/commit/629afd96235844ff1de46484cc77314cfca08965))
 * **api:** Changed logic for filtering rentals using rental category and activities using experience type ([cab3009](https://github.com/explore-siargao/es-main/commit/cab30099181c79d197909b147252a4e3c01317ba))
-* **api:** Converted params to query params and added more filter options in activities ([ca0b3ad](https://github.com/explore-siargao/es-main/commit/ca0b3adebb08370ae0ff541973b3d3e5e2f15057))
-* **api:** Converted params to search query params and added more query params for filtering rentals ([078b72e](https://github.com/explore-siargao/es-main/commit/078b72e4483b44260fa03f841246811a4de85ccb))
+* **api:** Converted params to query params and added more filter options in activities ([ca0b3ad](https://github.com/explore-siargao/es-main/commit/ca0b3adebb08370ae0ff541973b3d3e5e2f15057)), ([078b72e](https://github.com/explore-siargao/es-main/commit/078b72e4483b44260fa03f841246811a4de85ccb))
 * Search page listing cards and map ([b4de122](https://github.com/explore-siargao/es-main/commit/b4de12295699040c910bb4c5caabffd6bc2492e8))
-* **web:** create second level header for search page ([f1f43aa](https://github.com/explore-siargao/es-main/commit/f1f43aac06c38b39f7252085c23aa7bd85f40a3f))
-* **web:** Create second level header for search page ([4862646](https://github.com/explore-siargao/es-main/commit/48626468f5dc396c96ea237e583502cc252dd02b))
-
+* **web:** Create second level header for search page ([f1f43aa](https://github.com/explore-siargao/es-main/commit/f1f43aac06c38b39f7252085c23aa7bd85f40a3f)), ([4862646](https://github.com/explore-siargao/es-main/commit/48626468f5dc396c96ea237e583502cc252dd02b))
 
 ### 🧰 Maintenance
 
 * Added ai-code-reviewer ([1efe55d](https://github.com/explore-siargao/es-main/commit/1efe55da364b4536a2ba8c359d4dc767dae6ec92))
-* Change directory of .env in npm scripts ([9ff6a76](https://github.com/explore-siargao/es-main/commit/9ff6a7620d0363e5ccaa3280aeed25bccc65c014))
-* Change env_file path dir ([678e2d4](https://github.com/explore-siargao/es-main/commit/678e2d4bcc46cafc09499968b76100a8e41b79d7))
-* Change env_file path dir for sit ([c1ee536](https://github.com/explore-siargao/es-main/commit/c1ee536aec90fdd0157e3b118a9eb6a7d2ccab04))
+* Change directory of .env in npm scripts ([9ff6a76](https://github.com/explore-siargao/es-main/commit/9ff6a7620d0363e5ccaa3280aeed25bccc65c014)), Change env_file path dir ([678e2d4](https://github.com/explore-siargao/es-main/commit/678e2d4bcc46cafc09499968b76100a8e41b79d7)), ([c1ee536](https://github.com/explore-siargao/es-main/commit/c1ee536aec90fdd0157e3b118a9eb6a7d2ccab04))
 * Fix wording for property unit pricing ([de5d01d](https://github.com/explore-siargao/es-main/commit/de5d01d4916208c59d5197320ab51edbf597b568))
-* Remove env_file from yml and put it in the npm scripts ([d36ebeb](https://github.com/explore-siargao/es-main/commit/d36ebeb9ed793b341c2aae2a68d35c2947983794))
-* Remove github workflow env vars ([bbbd027](https://github.com/explore-siargao/es-main/commit/bbbd0275121b6d0cbc925cb18e614b74984ec45c))
-* Reverse comment of .env echo file ([5aa323b](https://github.com/explore-siargao/es-main/commit/5aa323b05fffa964c7c978eed21d0c93dba70f5b))
-* Reverse dummy.tsx and change env on Dockerfiles ([4f90e86](https://github.com/explore-siargao/es-main/commit/4f90e861da3faed2e7bb3963a892720ad150c09f))
+* Remove env_file from yml and put it in the npm scripts ([d36ebeb](https://github.com/explore-siargao/es-main/commit/d36ebeb9ed793b341c2aae2a68d35c2947983794)), Remove github workflow env vars ([bbbd027](https://github.com/explore-siargao/es-main/commit/bbbd0275121b6d0cbc925cb18e614b74984ec45c))
+* Reverse comment of .env echo file ([5aa323b](https://github.com/explore-siargao/es-main/commit/5aa323b05fffa964c7c978eed21d0c93dba70f5b)), Reverse dummy.tsx and change env on Dockerfiles ([4f90e86](https://github.com/explore-siargao/es-main/commit/4f90e861da3faed2e7bb3963a892720ad150c09f))
 * Revert deployment env keys and update key for ai code reviewer ([928da65](https://github.com/explore-siargao/es-main/commit/928da654889f622a36f2c7a76c2cf4793ca09afd))
 * Update sit deployment for test ([6ef9929](https://github.com/explore-siargao/es-main/commit/6ef99292bce266194159ed56339c972ddaaf4ca4))
+
 
 ## [0.28.1](https://github.com/explore-siargao/es-main/compare/v0.28.0...v0.28.1) (2024-10-20)
 
