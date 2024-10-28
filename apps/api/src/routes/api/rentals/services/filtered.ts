@@ -237,7 +237,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if (location && (!type || type === 'any')) {
+    } else if (location && location !== 'any' && (!type || type === 'any')) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         {
@@ -435,8 +435,11 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && type) {
-      query.category = new RegExp(`^${type}$`, 'i')
+    } else if ((!location || location === 'any') && (type || type !== 'any')) {
+      const typeArray = String(type)
+        .split(',')
+        .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
+      query.category = { $in: typeArray }
       const pipeline = [
         {
           $match: query,
@@ -625,8 +628,11 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if (location && type) {
-      query.category = new RegExp(`^${type}$`, 'i')
+    } else if (location && location !== 'any' && type && type !== 'any') {
+      const typeArray = String(type)
+        .split(',')
+        .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
+      query.category = { $in: typeArray }
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         {
