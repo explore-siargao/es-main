@@ -130,6 +130,12 @@ const bookableUnitTypes = new Schema({
     type: Number,
     required: true,
   },
+  reviews: {
+    type: [Schema.Types.ObjectId],
+    ref: "Reviews",
+    required: false,
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

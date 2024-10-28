@@ -296,6 +296,12 @@ const activities = new Schema({
     type: [String],
     default: [],
   },
+  reviews: {
+    type: [Schema.Types.ObjectId],
+    ref: "Reviews",
+    required: false,
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

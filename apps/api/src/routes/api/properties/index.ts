@@ -64,6 +64,7 @@ import {
 } from './services/calendar'
 import { getFilteredProperties } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
+import { addUnitReview } from './services/review'
 
 const router = express.Router()
 
@@ -409,6 +410,15 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   editUnitNote
+)
+
+//review
+router.post(
+  '/:propertyId/review',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addUnitReview
 )
 
 export default router

@@ -25,6 +25,7 @@ import dbBedConfigs from "./dbBedConfigs"
 import dbReservations from "./dbReservations"
 import dbLocations from "./dbLocations"
 import dbPolicies from "./dbPolicies"
+import dbReviews from "./dbReviews"
 export {
   dbAddresses,
   dbEmergencyContacts,
@@ -53,4 +54,5 @@ export {
   dbReservations,
   dbLocations,
   dbPolicies,
+  dbReviews,
 }
