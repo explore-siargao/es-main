@@ -517,9 +517,6 @@ export const getSlotsByDate = async (req: Request, res: Response) => {
         .toLocaleString('en-US', { weekday: 'long' })
         .toLowerCase()
 
-      // Log dayOfWeek
-      console.log('Selected dayOfWeek:', dayOfWeek)
-
       const getActivity = await dbActivities.findOne({
         _id: activityId,
         deletedAt: null,
