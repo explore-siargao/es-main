@@ -55,16 +55,16 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
       .map((amenity) => amenity.amenity)
       .join(",")
 
-    const queryString =
-      `?propertyType=${propertyType.map((type) => type.value).join(",")}` +
-      `&priceFrom=${priceRange ? priceRange[0] : ""}` +
-      `&priceTo=${priceRange ? priceRange[1] : ""}` +
-      `&bedroomCount=${bedroomCount ?? ""}` +
-      `&bedCount=${bedCount ?? ""}` +
-      `&bathroomCount=${bathroomCount ?? ""}` +
-      `&facilities=${selectedFacilities ?? ""}` +
-      `&amenities=${selectedAmenities ?? ""}` +
-      `&starRating=${starRating ?? ""}`
+      const queryString =
+      `?${propertyType.length ? `propertyType=${propertyType.map(type => type.value).join(",")}` : ""}` +
+      `${priceRange ? (priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : "") : ""}` +
+      `${priceRange ? (priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : "") : ""}` +
+      `${bedroomCount ? `&bedroomCount=${bedroomCount}` : ""}` +
+      `${bedCount ? `&bedCount=${bedCount}` : ""}` +
+      `${bathroomCount ? `&bathroomCount=${bathroomCount}` : ""}` +
+      `${selectedFacilities ? `&facilities=${selectedFacilities}` : ""}` +
+      `${selectedAmenities ? `&amenities=${selectedAmenities}` : ""}` +
+      `${starRating ? `&starRating=${starRating}` : ""}`;
 
     router.push(queryString)
   }
@@ -265,12 +265,13 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
               {Array.from({ length: 5 }, (_, index) => (
                 <button
                   key={index}
-                  onClick={() =>
+                  onClick={() => {
+                    const newRating = state.starRating === index + 1 ? 0 : index + 1;
                     dispatch({
                       type: EPropertyAction.SET_STAR_RATING,
-                      payload: index + 1,
-                    })
-                  }
+                      payload: newRating,
+                    });
+                  }}
                   className={`flex items-center justify-center cursor-pointer`}
                 >
                   <Star

@@ -8,7 +8,7 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
-  let { location, type, activityTpes, priceFrom, priceTo, duration, stars } =
+  let { location, type, activityTypes, priceFrom, priceTo, duration, stars } =
     req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
   const query: any = { deletedAt: null, status: 'Live' }
@@ -20,16 +20,16 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       priceTo = '999999999'
     }
     if (
-      activityTpes &&
-      typeof activityTpes === 'string' &&
-      activityTpes !== 'any'
+      activityTypes &&
+      typeof activityTypes === 'string' &&
+      activityTypes !== 'any'
     ) {
-      const activityTypesArray = activityTpes.split(',')
-      const newActivitTypesArray = activityTypesArray
+      const activityTypesArray = activityTypes.split(',')
+      const newActivityTypesArray = activityTypesArray
         .map((t: string) => t.trim())
         .filter((t: string) => t !== '')
         .map((t: string) => new RegExp(`^${t}$`, 'i'))
-      query.activityType = { $in: newActivitTypesArray }
+      query.activityType = { $in: newActivityTypesArray }
     }
     if (duration && duration !== 'any') {
       query.durationHour = Number(duration)

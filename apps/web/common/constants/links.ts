@@ -7,6 +7,7 @@ export const LINK_GIFT = "/gift"
 export const LINK_ACCOUNT = "/account-settings"
 export const LINK_HOSTING = "/hosting"
 export const LINK_LISTING = "/listing"
+export const LINK_SEARCH = "/search"
 
 export const LINK_ACCOUNT_PERSONAL_INFO = `${LINK_ACCOUNT}/personal-info`
 export const LINK_ACCOUNT_PAYMENT_PAYOUT = `${LINK_ACCOUNT}/payment-payout`
@@ -23,3 +24,7 @@ export const LINK_HOSTING_LISTINGS = `${LINK_HOSTING}/listings`
 export const LINK_LISTINGS_PROPERTY = `${LINK_LISTING}/property`
 export const LINK_LISTINGS_RENTAL = `${LINK_LISTING}/rental`
 export const LINK_LISTINGS_ACTIVITY = `${LINK_LISTING}/activity`
+
+export const LINK_SEARCH_PROPERTY = `${LINK_SEARCH}/properties`
+export const LINK_SEARCH_RENTAL = `${LINK_SEARCH}/rentals`
+export const LINK_SEARCH_ACTIVITIES = `${LINK_SEARCH}/activities`

@@ -15,7 +15,6 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
 import GuidesMenu from "./GuidesMenu"
 import ApplyToHostModal from "@/module/LandingPage/components/ApplyToHostModal"
-import FilterHeader from "./filter"
 
 function Header({
   contentWidth = "medium",
@@ -96,7 +95,6 @@ function Header({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
-      <FilterHeader />
     </header>
   )
 }

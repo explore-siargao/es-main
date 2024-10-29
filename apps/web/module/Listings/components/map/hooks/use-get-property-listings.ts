@@ -1,19 +1,67 @@
-import { ApiService } from "@/common/service/api"
-import { API_URL_PROPERTIES } from "@/common/constants"
-import { useQuery } from "@tanstack/react-query"
-//TODO: this is a placeholder hook, replace the  query with the actual one once its available
+import { ApiService } from "@/common/service/api";
+import { API_URL_PROPERTIES } from "@/common/constants";
+import { useQuery } from "@tanstack/react-query";
 
-export async function getPropertyListings(id: string | undefined) {
-  const apiService = new ApiService()
-  return await apiService.get(`${API_URL_PROPERTIES}/${id}`)
+const normalizeParam = (param: string | null): string => {
+  return param ? param : "any";
 }
 
-function useGetPropertyListings(id: string | undefined) {
+export async function getPropertyListings(
+  location: string | null,
+  type: string | null,
+  facilities: string | null,
+  amenities: string | null,
+  priceFrom: string | null,
+  priceTo: string | null,
+  beds: string | null,
+  bathrooms: string | null,
+  bedrooms: string | null,
+  starRating: string | null
+) {
+  const apiService = new ApiService();
+  return await apiService.get(`${API_URL_PROPERTIES}/filtered?` +
+    `location=${normalizeParam(location)}` +
+    `&type=${normalizeParam(type)}` +
+    `&facilities=${normalizeParam(facilities)}` +
+    `&amenities=${normalizeParam(amenities)}` +
+    `&priceFrom=${normalizeParam(priceFrom)}` +
+    `&priceTo=${normalizeParam(priceTo)}` +
+    `&beds=${normalizeParam(beds)}` +
+    `&bathrooms=${normalizeParam(bathrooms)}` +
+    `&bedrooms=${normalizeParam(bedrooms)}` +
+    `&starRating=${normalizeParam(starRating)}`
+  );
+}
+
+function useGetPropertyListings(
+  location: string | null,
+  type: string | null,
+  facilities: string | null,
+  amenities: string | null,
+  priceFrom: string | null,
+  priceTo: string | null,
+  beds: string | null,
+  bathrooms: string | null,
+  bedrooms: string | null,
+  starRating: string | null
+) {
   const query = useQuery({
-    queryKey: ["property", id],
-    queryFn: () => getPropertyListings(id),
-    enabled: !!id,
-  })
-  return query
+    queryKey: ["filter-properties"],
+    refetchOnWindowFocus: false,
+    queryFn: () => getPropertyListings(
+      location,
+      type,
+      facilities,
+      amenities,
+      priceFrom,
+      priceTo,
+      beds,
+      bathrooms,
+      bedrooms,
+      starRating
+    ),
+  });
+  return query;
 }
-export default useGetPropertyListings
+
+export default useGetPropertyListings;

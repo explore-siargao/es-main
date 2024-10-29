@@ -25,19 +25,19 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
 }) => {
   const router = useRouter()
   const [state, dispatch] = useReducer(activityReducer, activityInitialState)
-
   const handleSubmit = () => {
     const { activityType, experienceType, priceRange, duration, starRating } =
       state
-    const queryString =
-      `?activityType=${activityType.map((type) => type.value).join(",")}` +
-      `&experienceType=${experienceType.map((type) => type.value).join(",")}` +
-      `&priceFrom=${priceRange ? priceRange[0] : ""}` +
-      `&priceTo=${priceRange ? priceRange[1] : ""}` +
-      `&duration=${duration.map((type) => type.value).join(",")}` +
-      `&starRating=${starRating ?? ""}`
+      const queryString = 
+      `?${activityType.length ? `activityType=${activityType.map(type => type.value).join(",")}` : ""}` +
+      `${experienceType.length ? `&experienceType=${experienceType.map(type => type.value).join(",")}` : ""}` +
+      `${priceRange && priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : ""}` +
+      `${priceRange && priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : ""}` +
+      `${duration.length ? `&duration=${duration.map(type => type.value).join(",")}` : ""}` +
+      `${starRating ? `&starRating=${starRating}` : ""}`; 
 
     router.push(queryString)
+ 
   }
   return (
     <ModalContainer
@@ -257,12 +257,14 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
               {Array.from({ length: 5 }, (_, index) => (
                 <button
                   key={index}
-                  onClick={() =>
+             
+                  onClick={() => {
+                    const newRating = state.starRating === index + 1 ? 0 : index + 1;
                     dispatch({
                       type: EActivityAction.SET_STAR_RATING,
-                      payload: index + 1,
-                    })
-                  }
+                      payload: newRating,
+                    });
+                  }}
                   className={`flex items-center justify-center cursor-pointer`}
                 >
                   <Star

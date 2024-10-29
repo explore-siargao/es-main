@@ -4,17 +4,17 @@ interface IFilterType {
 }
 
 export const VehicleTypes: IFilterType[] = [
-  { value: "any_vehicle", label: "Any Type" },
+  { value: "any", label: "Any Type" },
   { value: "car", label: "Car" },
   { value: "motorbike", label: "Motorbike" },
   { value: "bicycle", label: "Bicycle" },
 ]
 
 export const TransmissionTypes: IFilterType[] = [
-  { value: "any_transmission", label: "Any Type" },
-  { value: "automatic", label: "Automatic" },
-  { value: "semi_automatic", label: "Semi-Automatic" },
-  { value: "manual", label: "Manual" },
+  { value: "any", label: "Any Type" },
+  { value: "Automatic", label: "Automatic" },
+  { value: "Semi-Automatic", label: "Semi-Automatic" },
+  { value: "Manual", label: "Manual" },
 ]
 
 export enum ERentalAction {

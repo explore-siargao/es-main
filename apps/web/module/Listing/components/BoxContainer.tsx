@@ -8,21 +8,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
 import CustomSquareSlider from "@/common/components/CustomSquareSlider"
 import { LucideHeart, LucideStar } from "lucide-react"
-
-type BoxContainerProps = {
-  listingId: number
-  imageKey: {
-    fileKey: string
-    alt: string
-  }[]
-  distance: string
-  location: string
-  date: string
-  price: number
-  dayTime: string
-  ratings: string
-  isHearted: boolean
-}
+import { BookingProps } from "@/module/Listings/components/ListingItems"
 
 const BoxContainer = ({
   listingId,
@@ -30,11 +16,11 @@ const BoxContainer = ({
   distance,
   location,
   price,
-  imageKey,
+  photos,
   dayTime,
   ratings,
   isHearted,
-}: BoxContainerProps) => {
+}: BookingProps) => {
   const [addWIshlistModal, setAddWIshlistModal] = useState(false)
   const userId = useSessionStore((state) => state).id
   const [isAdded, setIsAdded] = useState(false)
@@ -98,7 +84,7 @@ const BoxContainer = ({
                 }`}
               />
             </button>
-            <CustomSquareSlider images={imageKey} />
+            <CustomSquareSlider images={photos} />
           </div>
           <div className="pt-4">
             <div className="flex justify-between">
@@ -107,7 +93,7 @@ const BoxContainer = ({
                 fontWeight="semibold"
                 className="text-text-500"
               >
-                {location}
+                {location.city}
               </Typography>
               <div className="flex text-text-500 items-center gap-1">
                 <LucideStar className="h-4 w-auto" />

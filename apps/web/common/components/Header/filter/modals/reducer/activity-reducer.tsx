@@ -4,7 +4,7 @@ interface IFilterType {
 }
 
 export const ActivityTypes: IFilterType[] = [
-  { value: "any_activity", label: "Any Type" },
+  { value: "any", label: "Any Type" },
   { value: "island_hopping", label: "Island Hopping" },
   { value: "land_tour", label: "Land Tour" },
   { value: "surfing_lessons", label: "Surfing Lessons" },
@@ -17,13 +17,13 @@ export const ActivityTypes: IFilterType[] = [
 ]
 
 export const ExperienceTypes: IFilterType[] = [
-  { value: "any_experience", label: "Any Type" },
+  { value: "any", label: "Any Type" },
   { value: "joiner", label: "Joiner" },
   { value: "private", label: "Private" },
 ]
 
 export const DurationTypes: IFilterType[] = [
-  { value: "any_duration", label: "Any Duration" },
+  { value: "any", label: "Any Duration" },
   { value: "one_hour", label: "1 Hour" },
   { value: "two_hours", label: "2 Hours" },
   { value: "three_hours", label: "3 Hours" },

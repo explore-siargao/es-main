@@ -4,7 +4,7 @@ interface IFilterType {
 }
 
 export const PropertyTypes: IFilterType[] = [
-  { value: "any_property", label: "Any Type" },
+  { value: "any", label: "Any Type" },
   { value: "hostel", label: "Hostel" },
   { value: "apartment", label: "Apartment" },
   { value: "homestay", label: "Homestay" },

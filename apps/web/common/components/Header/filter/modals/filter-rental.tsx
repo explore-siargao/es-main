@@ -30,13 +30,13 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
   const handleSubmit = () => {
     const { vehicleType, transmissionType, priceRange, seatCount, starRating } =
       state
-    const queryString =
-      `?vehicleType=${vehicleType}` +
-      `&transmissionType=${transmissionType}` +
-      `&priceFrom=${priceRange ? priceRange[0] : ""}` +
-      `&priceTo=${priceRange ? priceRange[1] : ""}` +
-      `&seatCount=${seatCount ?? ""}` +
-      `&starRating=${starRating ?? ""}`
+      const queryString = 
+      `?${vehicleType ? `vehicleType=${vehicleType.map(type => type.value).join(",")}` : ""}` +
+      `${transmissionType ? `&transmissionType=${transmissionType.map(type => type.value).join(",")}` : ""}` +
+      `${priceRange && priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : ""}` +
+      `${priceRange && priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : ""}` +
+      `${seatCount ? `&seatCount=${seatCount}` : ""}` +
+      `${starRating ? `&starRating=${starRating}` : ""}`;
     router.push(queryString)
   }
 
@@ -243,12 +243,13 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
               {Array.from({ length: 5 }, (_, index) => (
                 <button
                   key={index}
-                  onClick={() =>
+                  onClick={() => {
+                    const newRating = state.starRating === index + 1 ? 0 : index + 1;
                     dispatch({
                       type: ERentalAction.SET_STAR_RATING,
-                      payload: index + 1,
-                    })
-                  }
+                      payload: newRating,
+                    });
+                  }}
                   className={`flex items-center justify-center cursor-pointer`}
                 >
                   <Star

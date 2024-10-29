@@ -5,6 +5,9 @@ import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { Typography } from "@/common/components/ui/Typography"
 import { useSearchParams } from "next/navigation"
 import ListingsMap from "./components/map/index"
+import useGetPropertyListings from "./components/map/hooks/use-get-property-listings"
+import useGetRentalListings from "./components/map/hooks/use-get-rental-listings"
+import PropertiesFilter from "./properties-filter"
 
 type T_Filter = {
   category: string
@@ -548,93 +551,14 @@ const sampleData = [
 ]
 
 const ListingsPage = () => {
-  const searchParams = useSearchParams()
-  const category = searchParams.get("category")
-  const type = searchParams.get("type")
-
-  const [filteredData, setFilterData] = useState<any>([])
-  const [filters, setFilters] = useState<T_Filter[]>([])
-  const [budget, setBudget] = useState<{ min: number; max: number }>({
-    min: 1000,
-    max: 9000,
-  })
-
-  const markers = sampleData.map((property) => {
-    const marker = {
-      ...property.location,
-      name: property.title,
-      _id: property._id,
-      currency: property.currency,
-      price: property.price,
-      photos: property.photos[0] as { fileKey: string; alt: string },
-    }
-    return marker
-  })
-
-  const handleFiltersChange = (newFilters: T_Filter[]) => {
-    setFilters(newFilters)
-  }
-
-  const handleBudgetChange = (minValue: number, maxValue: number) => {
-    setBudget({ min: minValue, max: maxValue })
-  }
-
-  useEffect(() => {
-    if (category && type) {
-      setFilters([
-        {
-          type: type,
-          filterCount: 0,
-          category:
-            category === "property"
-              ? "Properties"
-              : category === "activities"
-                ? "Activities"
-                : category === "rentals"
-                  ? "Rentals"
-                  : "",
-        },
-      ])
-    }
-  }, [category, type])
-
-  useEffect(() => {
-    setFilterData(filterDataByPayload(dummyData, filters, budget))
-  }, [filters])
 
   return (
     <WidthWrapper width="medium" className="-mt-4">
-      <div className="flex gap-12">
-        {/* Listings section */}
-        <div className="flex w-7/12">
+   
           <div>
-            {filteredData.length > 0 ? (
-              <div className="grid grid-cols-3 gap-6">
-                {filteredData.map((item: any) => (
-                  <div key={item.listingId}>
-                    <ListingItems {...item} />
-                  </div>
-                ))}
-                {filteredData.map((item: any) => (
-                  <div key={item.listingId}>
-                    <ListingItems {...item} />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <Typography variant="h4" className="text-center mt-20">
-                No Data Found
-              </Typography>
-            )}
+            <PropertiesFilter/>
           </div>
-        </div>
-
-        <div className="w-5/12 relative">
-          <div className="sticky top-[14rem]">
-            <ListingsMap markers={markers} iconMarker="island" />
-          </div>
-        </div>
-      </div>
+        
     </WidthWrapper>
   )
 }
