@@ -65,6 +65,7 @@ import {
 import { getFilteredProperties } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
 import { addUnitReview } from './services/review'
+import { unitHighestPrice } from './services/highest-price'
 
 const router = express.Router()
 
@@ -73,6 +74,8 @@ router.post('/', isOriginValid, isCsrfTokenValid, isUserLoggedIn, addProperty)
 router.get('/', isOriginValid, isUserLoggedIn, getPropertiesByHostId)
 router.get('/public/:propertyId', isOriginValid, getPropertyByIdPublic)
 
+//highest price
+router.get('/highest-price', isOriginValid, isCsrfTokenValid, unitHighestPrice)
 router.get(
   '/filtered',
   isOriginValid,
