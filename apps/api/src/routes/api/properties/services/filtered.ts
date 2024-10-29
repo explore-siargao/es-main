@@ -18,6 +18,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     beds,
     bathrooms,
     bedrooms,
+    stars,
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
   const query: any = {
@@ -183,6 +184,39 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
+            pipeline: [
+              {
+                $lookup: {
+                  from: 'reviews',
+                  localField: 'reviews',
+                  foreignField: '_id',
+                  as: 'reviews',
+                },
+              },
+              {
+                $addFields: {
+                  average: {
+                    $cond: {
+                      if: { $gt: [{ $size: '$reviews' }, 0] },
+                      then: { $avg: '$reviews.totalRates' },
+                      else: 0,
+                    },
+                  },
+                },
+              },
+              ...(Number(stars) > 0
+                ? [
+                    {
+                      $match: {
+                        average: {
+                          $gte: Number(stars),
+                          $lt: Number(stars) + 1,
+                        },
+                      },
+                    },
+                  ]
+                : []),
+            ],
           },
         },
         {
@@ -519,6 +553,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.isHaveSharedBathRoom': 1,
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
+            'results.bookableUnits.average': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
@@ -663,6 +698,39 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
+            pipeline: [
+              {
+                $lookup: {
+                  from: 'reviews',
+                  localField: 'reviews',
+                  foreignField: '_id',
+                  as: 'reviews',
+                },
+              },
+              {
+                $addFields: {
+                  average: {
+                    $cond: {
+                      if: { $gt: [{ $size: '$reviews' }, 0] },
+                      then: { $avg: '$reviews.totalRates' },
+                      else: 0,
+                    },
+                  },
+                },
+              },
+              ...(Number(stars) > 0
+                ? [
+                    {
+                      $match: {
+                        average: {
+                          $gte: Number(stars),
+                          $lt: Number(stars) + 1,
+                        },
+                      },
+                    },
+                  ]
+                : []),
+            ],
           },
         },
         {
@@ -1007,6 +1075,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.isHaveSharedBathRoom': 1,
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
+            'results.bookableUnits.average': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
@@ -1187,6 +1256,39 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
+            pipeline: [
+              {
+                $lookup: {
+                  from: 'reviews',
+                  localField: 'reviews',
+                  foreignField: '_id',
+                  as: 'reviews',
+                },
+              },
+              {
+                $addFields: {
+                  average: {
+                    $cond: {
+                      if: { $gt: [{ $size: '$reviews' }, 0] },
+                      then: { $avg: '$reviews.totalRates' },
+                      else: 0,
+                    },
+                  },
+                },
+              },
+              ...(Number(stars) > 0
+                ? [
+                    {
+                      $match: {
+                        average: {
+                          $gte: Number(stars),
+                          $lt: Number(stars) + 1,
+                        },
+                      },
+                    },
+                  ]
+                : []),
+            ],
           },
         },
         {
@@ -1523,6 +1625,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.isHaveSharedBathRoom': 1,
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
+            'results.bookableUnits.average': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
@@ -1703,6 +1806,39 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             localField: 'bookableUnits',
             foreignField: '_id',
             as: 'bookableUnits',
+            pipeline: [
+              {
+                $lookup: {
+                  from: 'reviews',
+                  localField: 'reviews',
+                  foreignField: '_id',
+                  as: 'reviews',
+                },
+              },
+              {
+                $addFields: {
+                  average: {
+                    $cond: {
+                      if: { $gt: [{ $size: '$reviews' }, 0] },
+                      then: { $avg: '$reviews.totalRates' },
+                      else: 0,
+                    },
+                  },
+                },
+              },
+              ...(Number(stars) > 0
+                ? [
+                    {
+                      $match: {
+                        average: {
+                          $gte: Number(stars),
+                          $lt: Number(stars) + 1,
+                        },
+                      },
+                    },
+                  ]
+                : []),
+            ],
           },
         },
         {
@@ -2047,6 +2183,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.isHaveSharedBathRoom': 1,
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
+            'results.bookableUnits.average': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,

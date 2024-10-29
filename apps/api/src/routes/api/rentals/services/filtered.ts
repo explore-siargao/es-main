@@ -8,7 +8,8 @@ import { Request, Response } from 'express'
 const response = new ResponseService()
 
 export const getFilteredRentals = async (req: Request, res: Response) => {
-  let { location, type, transmission, seats, priceFrom, priceTo } = req.query
+  let { location, type, transmission, seats, priceFrom, priceTo, stars } =
+    req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
   try {
     const query: any = { deletedAt: null, status: 'Live' }
@@ -31,6 +32,9 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       query.transmission = {
         $in: transmissionArray,
       }
+    }
+    if (!stars || stars === 'any') {
+      stars = '0'
     }
     if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
@@ -180,6 +184,37 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -199,6 +234,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results._id': 1,
             'results.category': 1,
             'results.make': 1,
             'results.modelBadge': 1,
@@ -226,6 +262,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.pricing': 1,
             'results.photos': 1,
             'results.location': 1,
+            'results.average': 1,
           },
         },
       ]
@@ -377,6 +414,37 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -423,6 +491,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.pricing': 1,
             'results.photos': 1,
             'results.location': 1,
+            'results.average': 1,
           },
         },
       ]
@@ -570,6 +639,37 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -616,6 +716,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.pricing': 1,
             'results.photos': 1,
             'results.location': 1,
+            'results.average': 1,
           },
         },
       ]
@@ -771,6 +872,37 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -790,6 +922,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results._id': 1,
             'results.category': 1,
             'results.make': 1,
             'results.modelBadge': 1,
@@ -817,6 +950,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.pricing': 1,
             'results.photos': 1,
             'results.location': 1,
+            'results.average': 1,
           },
         },
       ]
