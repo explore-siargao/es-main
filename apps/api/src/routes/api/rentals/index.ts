@@ -41,9 +41,17 @@ import { getRentalIds, getRentalsByHostAndCategory } from './services/rentals'
 import { getFilteredRentals } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
 import { addRentalReview } from './services/review'
+import { rentalHighestPrice } from './services/highest-price'
 
 const router = express.Router()
 
+//hifhest price
+router.get(
+  '/highest-price',
+  isOriginValid,
+  isCsrfTokenValid,
+  rentalHighestPrice
+)
 //filtered data
 router.get(
   '/filter',

@@ -43,10 +43,19 @@ import {
 import { getFilteredActivities } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
 import { addActivityReview } from './services/review'
+import { activityHighestPrice } from './services/highest-price'
 
 const router = express.Router()
 
 //activity
+//highest price
+router.get(
+  '/highest-price',
+  isOriginValid,
+  isCsrfTokenValid,
+  activityHighestPrice
+)
+
 //filted data
 router.get(
   '/filtered',
