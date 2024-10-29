@@ -8,7 +8,8 @@ import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
-  let { location, type, activityTpes, priceFrom, priceTo, duration } = req.query
+  let { location, type, activityTpes, priceFrom, priceTo, duration, stars } =
+    req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
   const query: any = { deletedAt: null, status: 'Live' }
   try {
@@ -32,6 +33,9 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     }
     if (duration && duration !== 'any') {
       query.durationHour = Number(duration)
+    }
+    if (!stars || stars === 'any') {
+      stars = '0'
     }
     if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
@@ -109,6 +113,37 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -128,6 +163,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results._id': 1,
             'results.title': 1,
             'results.activityType': 1,
             'results.activityNote': 1,
@@ -168,6 +204,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.host.guest.address': 1,
             'results.meetingPoint': 1,
             'results.photos': 1,
+            'results.average': 1,
           },
         },
       ]
@@ -264,6 +301,37 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -283,6 +351,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results._id': 1,
             'results.title': 1,
             'results.activityType': 1,
             'results.activityNote': 1,
@@ -323,6 +392,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.host.guest.address': 1,
             'results.meetingPoint': 1,
             'results.photos': 1,
+            'results.average': 1,
           },
         },
       ]
@@ -415,6 +485,37 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -434,6 +535,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results._id': 1,
             'results.title': 1,
             'results.activityType': 1,
             'results.activityNote': 1,
@@ -474,6 +576,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.host.guest.address': 1,
             'results.meetingPoint': 1,
             'results.photos': 1,
+            'results.average': 1,
           },
         },
       ]
@@ -574,6 +677,37 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'reviews',
+            localField: 'reviews',
+            foreignField: '_id',
+            as: 'reviews',
+          },
+        },
+        {
+          $addFields: {
+            average: {
+              $cond: {
+                if: { $gt: [{ $size: '$reviews' }, 0] },
+                then: { $avg: '$reviews.totalRates' },
+                else: 0,
+              },
+            },
+          },
+        },
+        ...(Number(stars) > 0
+          ? [
+              {
+                $match: {
+                  average: {
+                    $gte: Number(stars),
+                    $lt: Number(stars) + 1,
+                  },
+                },
+              },
+            ]
+          : []),
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -593,6 +727,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           $project: {
             allItemsCount: 1,
             pageItemCount: 1,
+            'results._id': 1,
             'results.title': 1,
             'results.activityType': 1,
             'results.activityNote': 1,
@@ -633,6 +768,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.host.guest.address': 1,
             'results.meetingPoint': 1,
             'results.photos': 1,
+            'results.average': 1,
           },
         },
       ]
