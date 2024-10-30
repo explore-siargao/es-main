@@ -13,10 +13,8 @@
 
 ### 🛠 Bug Fixes
 
-* **api:** Remove unnecessary console log for dayOfWeek variable in getSlotsByDate function fix(api): Add additional conditions to check for overlapping reservations with different statuses, startDate, and dayId ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
 * **web:** Rename bike-related constants, stores, and query keys to car-related counterparts in 'car-calendar-table' and 'motor-calendar-table' components ([c31a0a6](https://github.com/explore-siargao/es-main/commit/c31a0a6b2c881ea2a820a006e94f167236a0efe3))
-* **web:** Set refetchOnWindowFocus option to false in useGetJoinerActivities hook ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
-* **web:** Set refetchOnWindowFocus option to false in useGetPrivateActivities hook ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
+* **web:** Remove unnecessary console log for dayOfWeek variable in getSlotsByDate function fix(api): Add additional conditions to check for overlapping reservations with different statuses, startDate, and dayId, Set refetchOnWindowFocus option to false in useGetPrivateActivities hook, Set refetchOnWindowFocus option to false in useGetJoinerActivities hook ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
 
 ## [0.29.0](https://github.com/explore-siargao/es-main/compare/v0.28.1...v0.29.0) (2024-10-28)
 
