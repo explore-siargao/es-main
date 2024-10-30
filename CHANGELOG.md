@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.30.0](https://github.com/explore-siargao/es-main/compare/v0.29.0...v0.30.0) (2024-10-30)
+
+
+### 🚀 Features
+
+* **api:** Added collection schema for reviews ([01688fc](https://github.com/explore-siargao/es-main/commit/01688fc923560d398f16c2213f5dc52a61e659df))
+* **api:** Added endpoint for adding review on bookable unit, activity and rentals ([5d88341](https://github.com/explore-siargao/es-main/commit/5d88341482099420acdfc03b875b19000c28cbe2))
+* **api:** Added endpoint for getting highest price on bookable unit,rental and activities ([71f3ecf](https://github.com/explore-siargao/es-main/commit/71f3ecf975fdf3c1b0a8974548bc8d85c17377e9))
+* **api:** Added stars filtering in activities, rentals and units ([2345d4f](https://github.com/explore-siargao/es-main/commit/2345d4f982d97767648e5c842c4e1b0b073f214b))
+
+
+### 🛠 Bug Fixes
+
+* **api:** Remove unnecessary console log for dayOfWeek variable in getSlotsByDate function fix(api): Add additional conditions to check for overlapping reservations with different statuses, startDate, and dayId ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
+* **web:** Rename bike-related constants, stores, and query keys to car-related counterparts in 'car-calendar-table' and 'motor-calendar-table' components ([c31a0a6](https://github.com/explore-siargao/es-main/commit/c31a0a6b2c881ea2a820a006e94f167236a0efe3))
+* **web:** Set refetchOnWindowFocus option to false in useGetJoinerActivities hook ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
+* **web:** Set refetchOnWindowFocus option to false in useGetPrivateActivities hook ([10151eb](https://github.com/explore-siargao/es-main/commit/10151eb1bfa5af31eedf398452c02835a586f066))
+
 ## [0.29.0](https://github.com/explore-siargao/es-main/compare/v0.28.1...v0.29.0) (2024-10-28)
 
 ### 🚀 Features
