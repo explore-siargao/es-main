@@ -7,10 +7,10 @@ import AddReservation from "../../components/controls/buttons/add-reservation"
 import FilterDateModal from "../../modals/filter-date-modal"
 import SearchActivityModal from "../../modals/search-activity-modal"
 import AddReservationModal from "./modals/add-reservation-modal"
-import { QK_CALENDAR_BIKE_RENTALS } from "../constants"
+import { QK_CALENDAR_MOTOR_RENTALS } from "../constants"
 import useGetRentalCounts from "../hooks/use-get-rental-counts"
 import { E_Rental_Category } from "@repo/contract"
-import { useCalendarStore } from "../stores/use-bike-store"
+import { useCalendarStore } from "../stores/use-motor-store"
 
 const Controls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -78,7 +78,7 @@ const Controls = () => {
         setStartDate={setStartDate}
         startDate={startDate}
         setFilterCalendarDate={setFilterCalendarDate}
-        queryKey={QK_CALENDAR_BIKE_RENTALS}
+        queryKey={QK_CALENDAR_MOTOR_RENTALS}
       />
       <div className="normal-case">
         <Tabs tabs={rentalTabs} hoverColor="dark-gray" />

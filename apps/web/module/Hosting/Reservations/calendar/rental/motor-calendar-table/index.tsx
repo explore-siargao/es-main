@@ -4,7 +4,7 @@ import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
 import { generateDays, generateMonth } from "../helpers/calendar-table"
 import ModalsWrapper from "./modals-wrapper"
-import { QK_CALENDAR_BIKE_RENTALS } from "../constants"
+import { QK_CALENDAR_MOTOR_RENTALS } from "../constants"
 import {
   T_Calendar_Motor_Rental,
   T_Calendar_Rental,
@@ -84,7 +84,7 @@ const CarCalendarTable = () => {
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
-        queryKey: [QK_CALENDAR_BIKE_RENTALS],
+        queryKey: [QK_CALENDAR_MOTOR_RENTALS],
       })
     }
   }, [startDate])
