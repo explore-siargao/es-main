@@ -372,16 +372,19 @@ export const getRentalCounts = async (req: Request, res: Response) => {
     const motorbikeCount = await dbRentals.countDocuments({
       category: 'Motorbike',
       host: hostId,
+      $and: [{ qtyIds: { $exists: true } }, { qtyIds: { $ne: [] } }],
     })
 
     const bicycleCount = await dbRentals.countDocuments({
       category: 'Bicycle',
       host: hostId,
+      $and: [{ qtyIds: { $exists: true } }, { qtyIds: { $ne: [] } }],
     })
 
     const carCount = await dbRentals.countDocuments({
       category: 'Car',
       host: hostId,
+      $and: [{ qtyIds: { $exists: true } }, { qtyIds: { $ne: [] } }],
     })
 
     res.json(
