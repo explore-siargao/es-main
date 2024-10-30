@@ -19,6 +19,7 @@ function useGetProperties(startDate: string, endDate: string) {
   const query = useQuery({
     queryKey: [QK_CALENDAR_PROPERTIES],
     queryFn: () => getProperties(startDate, endDate),
+    refetchOnWindowFocus: false,
   })
   return query
 }

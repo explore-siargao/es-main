@@ -18,6 +18,7 @@ function useGetMotorRentals(startDate: string, endDate: string) {
   const query = useQuery({
     queryKey: ["calendar-motor"],
     queryFn: () => getMotorRentals(startDate, endDate),
+    refetchOnWindowFocus: false,
   })
   return query
 }

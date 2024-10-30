@@ -29,6 +29,7 @@ export const addRentalReservation = async (req: Request, res: Response) => {
         // Check for overlapping reservations on the same rentalId
         const overlappingReservation = await dbReservations.findOne({
           'rentalIds.qtyIdsId': qtyIdsId,
+          status: { $ne: 'Cancelled' },
           $or: [
             {
               startDate: { $lt: end_date },
@@ -101,6 +102,7 @@ export const editRentalReservation = async (req: Request, res: Response) => {
       const overlappingReservation = await dbReservations.findOne({
         'rentalIds.qtyIdsId': reservation?.rentalIds?.qtyIdsId,
         _id: { $ne: reservation?._id },
+        status: { $ne: 'Cancelled' },
         $or: [
           {
             startDate: { $lt: endDate },
