@@ -6,6 +6,7 @@ import toast from "react-hot-toast"
 import { useCalendarStore } from "../../stores/use-calendar-store"
 import ReservationForm from "./reservation-form"
 import SelectStatusForm from "./select-status-form"
+import { QK_CALENDAR_PROPERTIES } from "../../constants"
 
 const AddReservationModal = () => {
   const queryClient = useQueryClient()
@@ -37,7 +38,7 @@ const AddReservationModal = () => {
       onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-property"],
+            queryKey: [QK_CALENDAR_PROPERTIES],
           })
           toast.success(data.message as string)
           closeAddReservationModal()

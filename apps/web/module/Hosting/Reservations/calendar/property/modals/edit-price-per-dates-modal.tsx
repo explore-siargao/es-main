@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { useCalendarStore } from "../stores/use-calendar-store"
 import useUpdateUnitPricePerDate from "../hooks/use-update-unit-price-per-date"
+import { QK_CALENDAR_PROPERTIES } from "../constants"
 
 const EditPricePerDatesModal = () => {
   const {
@@ -45,7 +46,7 @@ const EditPricePerDatesModal = () => {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-property"],
+            queryKey: [QK_CALENDAR_PROPERTIES],
           })
           toast.success(data.message)
           setIsEditPricePerDatesModalOpen(false)

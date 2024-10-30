@@ -19,6 +19,7 @@ function useGetCarRentals(startDate: string, endDate: string) {
   const query = useQuery({
     queryKey: [QK_CALENDAR_CAR_RENTALS],
     queryFn: () => getCarRentals(startDate, endDate),
+    refetchOnWindowFocus: false,
   })
   return query
 }
