@@ -60,7 +60,7 @@ const SearchBarByState = ({
       data.numberOfGuest
     ) {
       router.push(
-        `/search?category=${category}&location=${data.location}&checkIn=${data.checkIn}&checkOut=${data.checkOut}&numberOfGuest=${Number(data.numberOfGuest)}`
+        `/search/properties?category=${category}&location=${data.location}&checkIn=${data.checkIn}&checkOut=${data.checkOut}&numberOfGuest=${Number(data.numberOfGuest)}`
       )
     } else if (
       category === E_Listing_Category.Activity &&
@@ -68,7 +68,7 @@ const SearchBarByState = ({
       data.numberOfGuest
     ) {
       router.push(
-        `/search?category=${category}&date=${data.date}&numberOfGuest=${Number(data.numberOfGuest)}`
+        `/search/activities?category=${category}&date=${data.date}&numberOfGuest=${Number(data.numberOfGuest)}`
       )
     } else if (
       category === E_Listing_Category.Rental &&
@@ -77,7 +77,7 @@ const SearchBarByState = ({
       data.dropOffDate
     ) {
       router.push(
-        `/search?category=${category}&rentalCategory=${data.rentalCategory}&pickUpDate=${data.pickUpDate}&dropOffDate=${data.dropOffDate}`
+        `/search/rentals?category=${category}&rentalCategory=${data.rentalCategory}&pickUpDate=${data.pickUpDate}&dropOffDate=${data.dropOffDate}`
       )
     }
   }
