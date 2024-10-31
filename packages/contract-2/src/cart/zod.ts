@@ -1,14 +1,36 @@
 import { z } from "zod"
 
-export const Z_Carts = z.object({
-  id: z.number().optional(),
-  userId: z.number().optional(),
-  listingId: z.number(),
-  guestCounts: z.number(),
-  totalFee: z.number(),
-  dateFrom: z.string(),
-  dateTo: z.string(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().nullable().optional(),
-  deletedAt: z.date().nullable().optional(),
-})
+export const Z_Cart = z
+  .object({
+    id: z.string().optional(),
+    userId: z.string().optional(),
+    propertyIds: z
+      .object({
+        propertyId: z.string(),
+        unitId: z.string(),
+      })
+      .optional(),
+    rentalIds: z
+      .object({
+        rentalId: z.string(),
+        qtyIdsId: z.string(),
+      })
+      .optional(),
+    activityIds: z
+      .object({
+        activityId: z.string(),
+        dayId: z.string(),
+        timeSlotId: z.string(),
+        slotIdsId: z.string().optional(),
+      })
+      .optional(),
+    price: z.number(),
+    createdAt: z.date().optional(),
+    updatedAt: z.date().nullable().optional(),
+    deletedAt: z.date().nullable().optional(),
+  })
+  .refine((data) => data.propertyIds || data.rentalIds || data.activityIds, {
+    message:
+      "At least one of propertyIds, rentalIds, or activityIds must be provided.",
+    path: ["propertyIds", "rentalIds", "activityIds"],
+  })
