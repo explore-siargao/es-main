@@ -1,4 +1,4 @@
 import z from "zod"
-import { Z_Carts } from "./zod"
+import { Z_Cart } from "./zod"
 
-export type T_Carts = z.infer<typeof Z_Carts>
+export type T_Cart = z.infer<typeof Z_Cart>
