@@ -2,7 +2,10 @@ import { WEB_URL, API_AUTH_URL } from "../constants/ev"
 import { API_ROOT, MOCK_ROOT } from "@repo/constants"
 import { T_Backend_Response } from "../../backend-response"
 
-type WithModifiedKeys<T, Modifications extends Partial<{ [K in keyof T]: unknown }>> = Omit<T, keyof Modifications> & Modifications;
+type WithModifiedKeys<
+  T,
+  Modifications extends Partial<{ [K in keyof T]: unknown }>,
+> = Omit<T, keyof Modifications> & Modifications
 
 export class ApiService {
   private BASE_URL: string | undefined
@@ -34,7 +37,9 @@ export class ApiService {
     return options
   }
 
-  async get<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
+  async get<
+    Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>,
+  >(
     endpoint: string,
     params?: Record<string, any>,
     signal?: AbortSignal
@@ -51,7 +56,9 @@ export class ApiService {
     return (await res).json()
   }
 
-  async post<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
+  async post<
+    Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>,
+  >(
     endpoint: string,
     body: any,
     raw?: boolean,
@@ -66,7 +73,9 @@ export class ApiService {
     return (await res).json()
   }
 
-  async patch<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
+  async patch<
+    Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>,
+  >(
     endpoint: string,
     body?: any,
     raw?: boolean,
@@ -81,7 +90,9 @@ export class ApiService {
     return (await res).json()
   }
 
-  async delete<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
+  async delete<
+    Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>,
+  >(
     endpoint: string,
     body?: any,
     raw?: boolean,

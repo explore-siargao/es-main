@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { CartService } from "@repo/contract-2/cart"
 
-const queryKeys = CartService.getQueryKeys();
+const queryKeys = CartService.getQueryKeys()
 
 export async function getItems() {
   const cart = new CartService()
