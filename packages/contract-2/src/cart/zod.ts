@@ -25,6 +25,8 @@ export const Z_Cart = z
       })
       .optional(),
     price: z.number(),
+    startDate: z.date(),
+    endDate: z.date(),
     createdAt: z.date().optional(),
     updatedAt: z.date().nullable().optional(),
     deletedAt: z.date().nullable().optional(),
