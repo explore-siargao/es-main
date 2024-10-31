@@ -22,6 +22,7 @@ function useGetJoinerActivities(startDate: string, endDate: string) {
   const query = useQuery({
     queryKey: [QK_CALENDAR_JOINER_ACTIVITIES],
     queryFn: () => getCalendarJoinerActivities(startDate, endDate),
+    refetchOnWindowFocus: false,
   })
   return query
 }

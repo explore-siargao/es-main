@@ -4,7 +4,7 @@ import toast from "react-hot-toast"
 import { useQueryClient } from "@tanstack/react-query"
 import { generateDays, generateMonth } from "../helpers/calendar-table"
 import ModalsWrapper from "./modals-wrapper"
-import { QK_CALENDAR_BIKE_RENTALS } from "../constants"
+import { QK_CALENDAR_BIKE_RENTALS, QK_CALENDAR_CAR_RENTALS } from "../constants"
 import {
   T_Calendar_Car_Rental,
   T_Calendar_Rental,
@@ -34,7 +34,6 @@ const CarCalendarTable = () => {
 
   useEffect(() => {
     const calendarEnd = addDays(startDate, daysPerPage - 1)
-
     const isReservationWithinRange = (
       reservation: T_Calendar_Rental_Reservation
     ) => {
@@ -82,8 +81,9 @@ const CarCalendarTable = () => {
   useEffect(() => {
     if (startDate) {
       queryClient.invalidateQueries({
-        queryKey: [QK_CALENDAR_BIKE_RENTALS],
+        queryKey: [QK_CALENDAR_CAR_RENTALS],
       })
+      console.log("hello")
     }
   }, [startDate])
 

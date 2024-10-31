@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form"
 import { useCalendarStore } from "../stores/use-calendar-store"
 import useCancelPropertyReservation from "../hooks/use-cancel-property-reservation"
 import useUpdateUnitReservation from "../hooks/use-update-unit-reservation"
+import { QK_CALENDAR_PROPERTIES } from "../constants"
 
 const InfoCancelModal = () => {
   const queryClient = useQueryClient()
@@ -47,7 +48,7 @@ const InfoCancelModal = () => {
       onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["calendar-property"],
+            queryKey: [QK_CALENDAR_PROPERTIES],
           })
           toast.success(data.message)
           closeReservationModal()
@@ -65,7 +66,7 @@ const InfoCancelModal = () => {
     onSuccess: (data: any) => {
       if (!data.error) {
         queryClient.invalidateQueries({
-          queryKey: ["calendar-property"],
+          queryKey: [QK_CALENDAR_PROPERTIES],
         })
         toast.success(data.message)
         closeReservationModal()

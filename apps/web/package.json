@@ -21,6 +21,7 @@
     "@repo/constants": "*",
     "@repo/contract": "*",
     "@repo/services": "*",
+    "@repo/contract-2": "*",
     "@tanstack/react-query": "^5.56.2",
     "@tanstack/react-query-devtools": "^5.58.0",
     "@tanstack/react-table": "^8.20.5",

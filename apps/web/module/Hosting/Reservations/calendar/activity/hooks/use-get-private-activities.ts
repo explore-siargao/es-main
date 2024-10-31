@@ -22,6 +22,7 @@ function useGetPrivateActivities(startDate: string, endDate: string) {
   const query = useQuery({
     queryKey: [QK_CALENDAR_PRIVATE_ACTIVITIES],
     queryFn: () => getCalendarPrivateActivities(startDate, endDate),
+    refetchOnWindowFocus: false,
   })
   return query
 }

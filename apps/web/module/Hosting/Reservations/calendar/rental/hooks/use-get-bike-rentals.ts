@@ -19,6 +19,7 @@ function useGetBikeRentals(startDate: string, endDate: string) {
   const query = useQuery({
     queryKey: [QK_CALENDAR_BIKE_RENTALS],
     queryFn: () => getBikeRentals(startDate, endDate),
+    refetchOnWindowFocus: false,
   })
   return query
 }

@@ -224,13 +224,17 @@ export const editPrivateActivityReservation = async (
 
     const overlappingReservation = await dbReservations.findOne({
       'activityIds.timeSlotId': reservation?.activityIds?.timeSlotId,
+      'activityIds.dayId': reservation?.activityIds?.dayId,
       'activityIds.slotIdsId': null,
       _id: { $ne: reservation?._id },
+      status: { $ne: 'Cancelled' },
+      startDate: reservation?.startDate,
     })
 
     if (overlappingReservation) {
       res.json(
         response.error({
+          item: overlappingReservation,
           message: 'Reservation dates overlap with an existing reservation.',
         })
       )
@@ -280,8 +284,11 @@ export const editJoinerActivityReservation = async (
 
     const overlappingReservation = await dbReservations.findOne({
       'activityIds.timeSlotId': reservation?.activityIds?.timeSlotId,
-      'activityIds.slotIdsId': { $ne: null },
+      'activityIds.dayId': reservation?.activityIds?.dayId,
+      'activityIds.slotIdsId': reservation?.activityIds?.slotIdsId,
       _id: { $ne: reservation?._id },
+      status: { $ne: 'Cancelled' },
+      startDate: reservation?.startDate,
     })
 
     if (overlappingReservation) {
