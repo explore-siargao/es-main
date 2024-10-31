@@ -247,6 +247,9 @@ importers:
       '@repo/contract':
         specifier: '*'
         version: link:../../packages/contract
+      '@repo/contract-2':
+        specifier: '*'
+        version: link:../../packages/contract-2
       '@repo/services':
         specifier: '*'
         version: link:../../packages/services
@@ -404,6 +407,27 @@ importers:
 
   packages/contract:
     devDependencies:
+      '@repo/constants':
+        specifier: '*'
+        version: link:../constants
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.4.5
+      typescript:
+        specifier: ^5.2.2
+        version: 5.6.2
+      zod:
+        specifier: ^3.22.4
+        version: 3.23.8
+
+  packages/contract-2:
+    devDependencies:
+      '@repo/constants':
+        specifier: '*'
+        version: link:../constants
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.4.5
       typescript:
         specifier: ^5.2.2
         version: 5.6.2

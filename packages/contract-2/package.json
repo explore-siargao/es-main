@@ -1,0 +1,27 @@
+{
+  "name": "@repo/contract-2",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    "./backend-response": {
+      "import": "./build/backend-response/index.js",
+      "require": "./build/backend-response/index.js",
+      "types": "./build/backend-response/index.d.ts"
+    },
+    "./cart": {
+      "import": "./build/cart/index.js",
+      "require": "./build/cart/index.js",
+      "types": "./build/cart/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "npx tsc --watch"
+  },
+  "devDependencies": {
+    "@repo/constants": "*",
+    "zod": "^3.22.4",
+    "typescript": "^5.2.2",
+    "dotenv": "^16.3.1"
+  }
+}
