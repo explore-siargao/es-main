@@ -15,8 +15,15 @@ export const addToCart = async (req: Request, res: Response) => {
       rentalIds = null,
       activityIds = null,
       price,
+      startDate,
+      endDate,
     } = req.body
-    if ((!propertyIds && !rentalIds && !activityIds) || !price) {
+    if (
+      (!propertyIds && !rentalIds && !activityIds) ||
+      !price ||
+      !startDate ||
+      !endDate
+    ) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else {
       const existingCart = await dbCarts.findOne({
@@ -78,6 +85,9 @@ export const addToCart = async (req: Request, res: Response) => {
       if (existingCart) {
         existingCart.price = price
         existingCart.updatedAt = new Date()
+        existingCart.startDate = new Date(startDate)
+        existingCart.endDate = new Date(endDate)
+
         await existingCart.save()
         res.json(
           response.success({
@@ -93,6 +103,8 @@ export const addToCart = async (req: Request, res: Response) => {
           rentalIds,
           activityIds,
           status: 'Active',
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
           createdAt: Date.now(),
           updatedAt: null,
           deletedAt: null,
@@ -102,6 +114,53 @@ export const addToCart = async (req: Request, res: Response) => {
           response.success({
             item: saveCart,
             message: 'Cart list  updated successfully',
+          })
+        )
+      }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const removeToCart = async (req: Request, res: Response) => {
+  try {
+    const cartId = req.params.cartId
+    const userId = res.locals.user?.id
+    const cart = await dbCarts.findOne({
+      _id: cartId,
+      userId: userId,
+      status: 'Active',
+    })
+    if (!cart) {
+      res.json(
+        response.error({
+          message: 'This item is not on your cart lists or its already deleted',
+        })
+      )
+    } else {
+      const deleteCart = await dbCarts.findByIdAndUpdate(
+        cartId,
+        {
+          $set: {
+            status: 'Removed',
+            updatedAt: Date.now(),
+            deletedAt: Date.now(),
+          },
+        },
+        { new: true }
+      )
+      if (!deleteCart) {
+        res.json(response.error({ message: 'Failed to remove item from cart' }))
+      } else {
+        res.json(
+          response.success({
+            item: deleteCart,
+            message: 'Item successfully removed from carts',
           })
         )
       }

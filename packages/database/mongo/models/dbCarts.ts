@@ -50,6 +50,14 @@ const carts = new Schema({
     type: String,
     enum: ["Active", "Completed", "Removed"],
   },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
