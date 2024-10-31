@@ -1,6 +1,6 @@
 import { WEB_URL, API_AUTH_URL } from "../constants/ev"
 import { API_ROOT, MOCK_ROOT } from "@repo/constants"
-import { T_BackendResponse } from "../../BackendResponse"
+import { T_Backend_Response } from "../../backend-response"
 
 type WithModifiedKeys<T, Modifications extends Partial<{ [K in keyof T]: unknown }>> = Omit<T, keyof Modifications> & Modifications;
 
@@ -34,11 +34,11 @@ export class ApiService {
     return options
   }
 
-  async get<Modifications extends Partial<{ [K in keyof T_BackendResponse]: unknown }>>(
+  async get<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
     endpoint: string,
     params?: Record<string, any>,
     signal?: AbortSignal
-  ): Promise<WithModifiedKeys<T_BackendResponse, Modifications>> {
+  ): Promise<WithModifiedKeys<T_Backend_Response, Modifications>> {
     const reqParams = new URLSearchParams(params).toString()
     const otherOptions = this.constructOptions()
     const res = fetch(
@@ -51,12 +51,12 @@ export class ApiService {
     return (await res).json()
   }
 
-  async post<Modifications extends Partial<{ [K in keyof T_BackendResponse]: unknown }>>(
+  async post<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
     endpoint: string,
     body: any,
     raw?: boolean,
     removeContentType?: boolean
-  ): Promise<WithModifiedKeys<T_BackendResponse, Modifications>> {
+  ): Promise<WithModifiedKeys<T_Backend_Response, Modifications>> {
     const otherOptions = this.constructOptions(removeContentType)
     const res = fetch(`${this.BASE_URL}${this.ROOT_PATH}${endpoint}`, {
       method: "POST",
@@ -66,12 +66,12 @@ export class ApiService {
     return (await res).json()
   }
 
-  async patch<Modifications extends Partial<{ [K in keyof T_BackendResponse]: unknown }>>(
+  async patch<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
     endpoint: string,
     body?: any,
     raw?: boolean,
     removeContentType?: boolean
-  ): Promise<WithModifiedKeys<T_BackendResponse, Modifications>> {
+  ): Promise<WithModifiedKeys<T_Backend_Response, Modifications>> {
     const otherOptions = this.constructOptions(removeContentType)
     const res = fetch(`${this.BASE_URL}${this.ROOT_PATH}${endpoint}`, {
       method: "PATCH",
@@ -81,12 +81,12 @@ export class ApiService {
     return (await res).json()
   }
 
-  async delete<Modifications extends Partial<{ [K in keyof T_BackendResponse]: unknown }>>(
+  async delete<Modifications extends Partial<{ [K in keyof T_Backend_Response]: unknown }>>(
     endpoint: string,
     body?: any,
     raw?: boolean,
     removeContentType?: boolean
-  ): Promise<WithModifiedKeys<T_BackendResponse, Modifications>> {
+  ): Promise<WithModifiedKeys<T_Backend_Response, Modifications>> {
     const otherOptions = this.constructOptions(removeContentType)
     const res = fetch(`${this.BASE_URL}${this.ROOT_PATH}${endpoint}`, {
       method: "DELETE",

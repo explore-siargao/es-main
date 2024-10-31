@@ -29,7 +29,7 @@ const BookingReviews = () => {
     locationRates: number
     valueRates: number
   }
-
+  
   function getAverageStars(ratings: ratingsSchema) {
     // Extract values from the ratings object
     const values = Object.values(ratings)

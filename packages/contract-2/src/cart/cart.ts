@@ -20,4 +20,9 @@ export class CartService {
   async getItems() {
     return this.api.get<{items: T_Carts[]}>(CART_BASE_URL);
   }
+  static getQueryKeys() {
+    return {
+      getItems: "get-cart-item"
+    }
+  }
 }
