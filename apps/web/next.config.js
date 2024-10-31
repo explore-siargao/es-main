@@ -54,7 +54,7 @@ module.exports = {
       },
       {
         protocol: "https",
-        hostname: "placehold.co",
+        hostname: "fakeimg.pl",
       },
     ],
   },

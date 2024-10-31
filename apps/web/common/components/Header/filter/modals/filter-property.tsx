@@ -12,6 +12,7 @@ import {
   propertyReducer,
   EPropertyAction,
   PropertyTypes,
+  Locations,
 } from "./reducer/property-reducer"
 import { useRouter } from "next/navigation"
 import FacilitiesCheckboxes from "./show-more-filters/facilities/facilities-checkboxes"
@@ -39,6 +40,7 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
 
   const handleSubmit = () => {
     const {
+      location,
       propertyType,
       priceRange,
       bedroomCount,
@@ -56,7 +58,8 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
       .join(",")
 
       const queryString =
-      `?${propertyType.length ? `propertyType=${propertyType.map(type => type.value).join(",")}` : ""}` +
+      `?${location.length ? `location=${location.map(type => type.value).join(",")}` : ""}` +
+      `${propertyType.length ? `&propertyType=${propertyType.map(type => type.value).join(",")}` : ""}` +
       `${priceRange ? (priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : "") : ""}` +
       `${priceRange ? (priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : "") : ""}` +
       `${bedroomCount ? `&bedroomCount=${bedroomCount}` : ""}` +
@@ -67,6 +70,7 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
       `${starRating ? `&starRating=${starRating}` : ""}`;
 
     router.push(queryString)
+    onClose()
   }
   return (
     <ModalContainer
@@ -77,6 +81,37 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
     >
       <div className="bg-white flex flex-col max-h-[80vh]">
         <div className="flex-grow p-6 space-y-6 overflow-y-auto">
+        <div>
+            <h3 className="text-lg font-semibold mb-2">Location</h3>
+            <div className="flex flex-wrap gap-2 mb-4">
+            {Locations.map((type) => (
+  <div key={type.value} className="flex items-center">
+    <Input
+      type="radio"
+      id={type.value}
+      name="location"
+      value={type.value}
+      checked={state.location.some((t) => t.value === type.value)}
+      onChange={() => {
+        dispatch({
+          type: EPropertyAction.SET_LOCATION,
+          payload: [type], 
+        });
+      }}
+      className="hidden peer"
+      label={""}
+    />
+    <label
+      htmlFor={type.value}
+      className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+    >
+      {type.label}
+    </label>
+  </div>
+))}
+
+            </div>
+          </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Property Type</h3>
             <div className="flex flex-wrap gap-2 mb-4">

@@ -1,5 +1,5 @@
 import { ApiService } from "@/common/service/api";
-import { API_URL_RENTALS } from "@/common/constants";
+import { API_URL_ACTIVITIES } from "@/common/constants";
 import { useQuery } from "@tanstack/react-query";
 
 const normalizeParam = (param: string | null): string => {
@@ -8,18 +8,18 @@ const normalizeParam = (param: string | null): string => {
 
 export async function getActivityListings(
   location: string | null,
-  type:  string | null, 
   activityTypes: string | null,
+  type:  string | null, 
   priceFrom:  string | null,
   priceTo:  string | null, 
   duration:  string | null, 
   stars:  string | null
 ) {
   const apiService = new ApiService();
-  return await apiService.get(`${API_URL_RENTALS}/filtered?` +
+  return await apiService.get(`${API_URL_ACTIVITIES}/filtered?` +
     `location=${normalizeParam(location)}` +
-    `&type=${normalizeParam(type)}` +
     `&activityTypes=${normalizeParam(activityTypes)}` +
+    `&type=${normalizeParam(type)}` +
     `&priceFrom=${normalizeParam(priceFrom)}` +
     `&priceTo=${normalizeParam(priceTo)}` +
     `&duration=${normalizeParam(duration)}` +
@@ -29,8 +29,8 @@ export async function getActivityListings(
 
 function useGetActivityListings(
   location: string | null,
-  type:  string | null, 
   activityTypes: string | null,
+  type:  string | null, 
   priceFrom:  string | null,
   priceTo:  string | null, 
   duration:  string | null, 
@@ -40,7 +40,7 @@ function useGetActivityListings(
     queryKey: ["filter-activities"],
     refetchOnWindowFocus: false,
     queryFn: () => getActivityListings(
-     location, type, activityTypes, priceFrom, priceTo, duration, stars
+     location,  activityTypes, type, priceFrom, priceTo, duration, stars
     ),
   });
   return query;

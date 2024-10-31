@@ -9,6 +9,7 @@ import useGetRentalListings from "./components/map/hooks/use-get-rental-listings
 
 const RentalsFilter = () => {
     const searchParams = useSearchParams()
+    const location = searchParams.get("location")
     const type = searchParams.get("vehicleType")
     const transmission = searchParams.get("transmissionType")
     const seats = searchParams.get("seatCount")
@@ -17,7 +18,7 @@ const RentalsFilter = () => {
     const stars = searchParams.get("starRating")
   
     const { data: rentalUnits, refetch: refetchRentalUnits } = useGetRentalListings(  
-        "any",
+        location,
         type, 
         transmission,
         seats, 
@@ -27,7 +28,7 @@ const RentalsFilter = () => {
 
       useEffect(() => {
         refetchRentalUnits();
-      }, [  type, transmission,seats, priceFrom,priceTo, stars]);
+      }, [ location, type, transmission,seats, priceFrom,priceTo, stars]);
       
 
       const bookableUnits = rentalUnits?.items?.map(item=> ({
@@ -40,6 +41,7 @@ const RentalsFilter = () => {
         photos: item.photos.map((photo: { key: string }) => ({
           fileKey: photo.key,
         })),
+        ratings: item.average
       }));
 
     const markers = bookableUnits?.map((rental) => {
@@ -56,11 +58,12 @@ const RentalsFilter = () => {
   
     return (
         <WidthWrapper width="medium" className="-mt-4">
+           {bookableUnits && bookableUnits?.length > 0 ? (
         <div className="flex gap-12 mt-16">
           {/* Listings section */}
           <div className="flex w-7/12">
             <div>
-              {bookableUnits && bookableUnits?.length > 0 ? (
+             
                 <div className="grid grid-cols-3 gap-6">
                   {bookableUnits?.map((item: any) => (
                     <div key={item._id}>
@@ -68,21 +71,24 @@ const RentalsFilter = () => {
                     </div>
                   ))}
                 </div>
-              ) : (
-                <Typography variant="h4" className="text-center mt-20">
-                  No Data Found
-                </Typography>
-              )}
+           
             </div>
           </div>
   
           <div className="w-5/12 relative">
             <div className="sticky top-[19rem]">
-              {markers ?   <ListingsMap markers={markers} iconMarker="island" /> : null}
+              {bookableUnits && markers ?   <ListingsMap markers={markers} iconMarker="island" /> : null}
              
             </div>
           </div>
         </div>
+          )  : (
+            <div className="h-screen">
+          <Typography variant="h4" className=" text-gray-500 pt-1 italic mt-16"> 
+            No Rentals Found
+          </Typography>
+          </div>
+        )}
         </WidthWrapper>
     )
   }

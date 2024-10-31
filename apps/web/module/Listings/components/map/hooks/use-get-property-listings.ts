@@ -29,7 +29,7 @@ export async function getPropertyListings(
     `&beds=${normalizeParam(beds)}` +
     `&bathrooms=${normalizeParam(bathrooms)}` +
     `&bedrooms=${normalizeParam(bedrooms)}` +
-    `&starRating=${normalizeParam(starRating)}`
+    `&stars=${normalizeParam(starRating)}`
   );
 }
 

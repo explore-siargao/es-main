@@ -12,6 +12,7 @@ import {
   ActivityTypes,
   DurationTypes,
   ExperienceTypes,
+  Locations,
 } from "./reducer/activity-reducer"
 
 interface FilterActivityModalProps {
@@ -26,17 +27,26 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
   const router = useRouter()
   const [state, dispatch] = useReducer(activityReducer, activityInitialState)
   const handleSubmit = () => {
-    const { activityType, experienceType, priceRange, duration, starRating } =
+    const { location, activityType, experienceType, priceRange, duration, starRating } =
       state
-      const queryString = 
-      `?${activityType.length ? `activityType=${activityType.map(type => type.value).join(",")}` : ""}` +
-      `${experienceType.length ? `&experienceType=${experienceType.map(type => type.value).join(",")}` : ""}` +
-      `${priceRange && priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : ""}` +
-      `${priceRange && priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : ""}` +
-      `${duration.length ? `&duration=${duration.map(type => type.value).join(",")}` : ""}` +
-      `${starRating ? `&starRating=${starRating}` : ""}`; 
+      const queryString = `?${
+        location.length ? `location=${location.includes(Locations[0]!) ? 'any' : location.map(type => type.value).join(",")}` : ""
+      }&${
+        activityType.length ? `activityType=${activityType.includes(ActivityTypes[0]!) ? 'any' : activityType.map(type => type.value).join(",")}` : ""
+      }&${
+        experienceType.length ? `experienceType=${experienceType.includes(ExperienceTypes[0]!) ? 'any' : experienceType.map(type => type.value).join(",")}` : ""
+      }&${
+        priceRange && priceRange[0] !== undefined ? `priceFrom=${priceRange[0]}` : ""
+      }&${
+        priceRange && priceRange[1] !== undefined ? `priceTo=${priceRange[1]}` : ""
+      }&${
+        duration.length ? `duration=${duration.includes(DurationTypes[0]!) ? 'any' : duration.map(type => type.value).join(",")}` : ""
+      }&${
+        starRating ? `starRating=${starRating}` : ""
+      }`
 
     router.push(queryString)
+    onClose()
  
   }
   return (
@@ -48,6 +58,37 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
     >
       <div className="bg-white flex flex-col max-h-[80vh]">
         <div className="flex-grow p-6 space-y-6 overflow-y-auto">
+        <div>
+            <h3 className="text-lg font-semibold mb-2">Location</h3>
+            <div className="flex flex-wrap gap-2 mb-4">
+            {Locations.map((type) => (
+  <div key={type.value} className="flex items-center">
+    <Input
+      type="radio"
+      id={type.value}
+      name="location"
+      value={type.value}
+      checked={state.location.some((t) => t.value === type.value)}
+      onChange={() => {
+        dispatch({
+          type: EActivityAction.SET_LOCATION,
+          payload: [type], 
+        });
+      }}
+      className="hidden peer"
+      label={""}
+    />
+    <label
+      htmlFor={type.value}
+      className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+    >
+      {type.label}
+    </label>
+  </div>
+))}
+
+            </div>
+          </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Activity Type</h3>
             <div className="flex flex-wrap gap-2 mb-4">

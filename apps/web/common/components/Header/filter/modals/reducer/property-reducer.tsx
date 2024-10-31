@@ -3,6 +3,19 @@ interface IFilterType {
   label: string
 }
 
+export const Locations: IFilterType[] = [
+  { value: "any_location", label: "Any Location" },
+  { value: "General Luna", label: "General Luna" },
+  { value: "Dapa", label: "Dapa" },
+  { value: "Del Carmen", label: "Del Carmen" },
+  { value: "San Isidro", label: "San Isidro" },
+  { value: "Pilar", label: "Pilar" },
+  { value: "San Benito", label: "San Benito" },
+  { value: "Burgos", label: "Burgos" },
+  { value: "Santa Monica", label: "Santa Monica" },
+  { value: "Socorro", label: "Socorro" },
+]
+
 export const PropertyTypes: IFilterType[] = [
   { value: "any", label: "Any Type" },
   { value: "hostel", label: "Hostel" },
@@ -17,6 +30,7 @@ export const PropertyTypes: IFilterType[] = [
 ]
 
 export enum EPropertyAction {
+  SET_LOCATION = "SET_LOCATION",
   SET_STAR_RATING = "SET_STAR_RATING",
   SET_PRICE_RANGE = "SET_PRICE_RANGE",
   SET_PROPERTY_TYPE = "SET_PROPERTY_TYPE",
@@ -29,6 +43,7 @@ export enum EPropertyAction {
 }
 
 export type TFilterProperty = {
+  location: IFilterType[]
   starRating: number
   priceRange: number[]
   propertyType: IFilterType[]
@@ -42,6 +57,7 @@ export type TFilterProperty = {
 }
 
 type Action =
+| { type: EPropertyAction.SET_LOCATION; payload: IFilterType[] }
   | { type: EPropertyAction.SET_STAR_RATING; payload: number }
   | { type: EPropertyAction.SET_PRICE_RANGE; payload: [number, number] }
   | { type: EPropertyAction.SET_PROPERTY_TYPE; payload: IFilterType[] }
@@ -53,6 +69,7 @@ type Action =
   | { type: EPropertyAction.RESET_FILTERS }
 
 export const propertyInitialState: TFilterProperty = {
+  location: [Locations[0]!],
   starRating: 0,
   priceRange: [0, 1000],
   propertyType: [PropertyTypes[0]!],
@@ -70,6 +87,8 @@ export function propertyReducer(
   action: Action
 ): TFilterProperty {
   switch (action.type) {
+    case EPropertyAction.SET_LOCATION:
+      return { ...state, location: action.payload }
     case EPropertyAction.SET_STAR_RATING:
       return { ...state, starRating: action.payload }
     case EPropertyAction.SET_PRICE_RANGE:
