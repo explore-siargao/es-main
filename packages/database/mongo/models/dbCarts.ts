@@ -7,21 +7,38 @@ const carts = new Schema({
     ref: "Users",
     required: true,
   },
-  bookableUnitId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "BookableUnitTypes",
+  propertyIds: {
+    type: {
+      unitId: {
+        type: mongoose.Schema.ObjectId,
+        ref: "BookableUnitTypes",
+      },
+      propertyId: mongoose.Schema.ObjectId,
+    },
     required: false,
     default: null,
   },
-  rentalId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Rentals",
+  rentalIds: {
+    type: {
+      rentalId: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Rentals",
+      },
+      qtyIdsId: mongoose.Schema.ObjectId,
+    },
     required: false,
     default: null,
   },
-  activityId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Activities",
+  activityIds: {
+    type: {
+      activityId: mongoose.Schema.ObjectId,
+      dayId: mongoose.Schema.ObjectId,
+      timeSlotId: mongoose.Schema.ObjectId,
+      slotIdsId: {
+        type: mongoose.Schema.ObjectId,
+        required: false,
+      },
+    },
     required: false,
     default: null,
   },
