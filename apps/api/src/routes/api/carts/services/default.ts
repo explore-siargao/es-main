@@ -173,3 +173,22 @@ export const removeToCart = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getAllReservationOrCarts = async (req: Request, res: Response) => {
+  try {
+    const type = ((req.query.type as string) || 'cart').toLowerCase()
+    if (type === 'cart') {
+      //do something here
+    } else if (type === 'reservation') {
+      //do something here
+    } else {
+      res.json(response.error({ message: 'Invalid type' }))
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
