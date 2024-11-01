@@ -35,7 +35,7 @@ const SearchBarByState = ({
   }, [])
   
   const form = useForm<T_Search>({
-    defaultValues: {
+    values: {
       location,
       checkIn,
       checkOut,
