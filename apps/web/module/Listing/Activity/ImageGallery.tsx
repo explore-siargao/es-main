@@ -19,8 +19,8 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
           <Image
             onClick={openModal}
             src={`/assets/${images[0]?.key}`}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             alt={String(images[0]?.description)}
             className="cursor-pointer
             2xl:rounded-tl-xl 2xl:rounded-bl-xl
@@ -39,8 +39,8 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
               <Image
                 onClick={openModal}
                 src={`/assets/${images[1]?.key}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 alt={String(images[1]?.description)}
                 className="cursor-pointer"
               />
@@ -50,8 +50,8 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
             <Image
               onClick={openModal}
               src={`/assets/${images[2]?.key}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               alt={String(images[2]?.description)}
               className="cursor-pointer
               lg-rounded-tr-xl 
@@ -68,8 +68,8 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
               <Image
                 onClick={openModal}
                 src={`/assets/${images[3]?.key}`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 alt={String(images[3]?.description)}
                 className="cursor-pointer
               md:rounded-tr-none md:rounded-bl-none
@@ -87,8 +87,8 @@ const ImageGallery = ({ images, openModal, isViewModal }: T_ImagesProps) => {
             <Image
               onClick={openModal}
               src={`/assets/${images[1]?.key}`}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               alt={String(images[1]?.description)}
               className="cursor-pointer 
               2xl:rounded-br-xl 

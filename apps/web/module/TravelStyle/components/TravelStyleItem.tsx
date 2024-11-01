@@ -14,13 +14,13 @@ const TravelStyleItem = ({ imageKey, title, description, type }: T_Props) => {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/search?category=Property&type=${type}`)
+    router.push(`/search/properties?type=${type}`)
   }
 
   return (
     <div onClick={handleClick} className="cursor-pointer">
       <div className="relative w-full h-56 rounded-xl overflow-hidden shadow-md">
-        <Image src={imageKey} alt={title} layout="fill" objectFit="cover" />
+        <Image src={imageKey} alt={title} fill style={{ objectFit: "cover" }} />
       </div>
       <div className="mt-2 text-left">
         <Typography variant="h4" fontWeight="semibold">

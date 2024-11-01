@@ -20,8 +20,8 @@ const ProfileCard = ({
             {profileImage && (
               <Image
                 src={`${ASSET_ROOT}/1.jpg`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 alt="Profile"
                 className="rounded-full"
               />

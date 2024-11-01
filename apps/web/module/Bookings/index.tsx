@@ -25,8 +25,8 @@ const Bookings = () => {
               <Image
                 src={`/assets/${listing.getValue()}`}
                 alt="Image"
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
               />
             </div>
             <span>

@@ -9,7 +9,7 @@ export const CONTINUE = "Continue"
 export const GRAY_BASE64 =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN89R8AAtkB6zy+wn8AAAAASUVORK5CYII="
 export const IMAGE_FALLBACK =
-  "https://fakeimg.pl/600x400/ffe0e0/ff7070?text=404&font=bebas"
+  "https://fakeimg.pl/600x400/fdecec/f7b5b6?text=404&font=bebas"
 
 export const ASSET_ROOT = "/assets"
 

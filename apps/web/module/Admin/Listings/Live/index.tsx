@@ -26,8 +26,8 @@ const HostListing = () => {
               <Image
                 src={`/assets/${context.getValue() ? context.getValue()[0]?.key : "1.jpg"}`}
                 alt="Image"
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
               />
             </div>
             <span>

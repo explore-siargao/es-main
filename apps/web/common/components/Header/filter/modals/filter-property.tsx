@@ -11,8 +11,8 @@ import {
   propertyInitialState,
   propertyReducer,
   EPropertyAction,
-  PropertyTypes,
-  Locations,
+  propertyTypes,
+  locations,
 } from "./reducer/property-reducer"
 import { useRouter } from "next/navigation"
 import FacilitiesCheckboxes from "./show-more-filters/facilities/facilities-checkboxes"
@@ -57,7 +57,7 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
       .map((amenity) => amenity.amenity)
       .join(",")
 
-      const queryString =
+    const queryString =
       `?${location.length ? `location=${location.map(type => type.value).join(",")}` : ""}` +
       `${propertyType.length ? `&propertyType=${propertyType.map(type => type.value).join(",")}` : ""}` +
       `${priceRange ? (priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : "") : ""}` +
@@ -81,41 +81,41 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
     >
       <div className="bg-white flex flex-col max-h-[80vh]">
         <div className="flex-grow p-6 space-y-6 overflow-y-auto">
-        <div>
+          <div>
             <h3 className="text-lg font-semibold mb-2">Location</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-            {Locations.map((type) => (
-  <div key={type.value} className="flex items-center">
-    <Input
-      type="radio"
-      id={type.value}
-      name="location"
-      value={type.value}
-      checked={state.location.some((t) => t.value === type.value)}
-      onChange={() => {
-        dispatch({
-          type: EPropertyAction.SET_LOCATION,
-          payload: [type], 
-        });
-      }}
-      className="hidden peer"
-      label={""}
-    />
-    <label
-      htmlFor={type.value}
-      className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
-    >
-      {type.label}
-    </label>
-  </div>
-))}
+              {locations.map((type) => (
+                <div key={type.value} className="flex items-center">
+                  <Input
+                    type="radio"
+                    id={type.value}
+                    name="location"
+                    value={type.value}
+                    checked={state.location.some((t) => t.value === type.value)}
+                    onChange={() => {
+                      dispatch({
+                        type: EPropertyAction.SET_LOCATION,
+                        payload: [type],
+                      });
+                    }}
+                    className="hidden peer"
+                    label={""}
+                  />
+                  <label
+                    htmlFor={type.value}
+                    className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+                  >
+                    {type.label}
+                  </label>
+                </div>
+              ))}
 
             </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Property Type</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-              {PropertyTypes.map((type) => (
+              {propertyTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
                   <Input
                     type="checkbox"
@@ -126,7 +126,7 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
                       (t) => t.value === type.value
                     )}
                     onChange={() => {
-                      if (type.value === PropertyTypes[0]?.value) {
+                      if (type.value === propertyTypes[0]?.value) {
                         dispatch({
                           type: EPropertyAction.SET_PROPERTY_TYPE,
                           payload: [type],
@@ -136,14 +136,14 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
                           (t) => t.value === type.value
                         )
                           ? state.propertyType.filter(
-                              (t) => t.value !== type.value
-                            )
+                            (t) => t.value !== type.value
+                          )
                           : [
-                              ...state.propertyType.filter(
-                                (t) => t.value !== PropertyTypes[0]?.value
-                              ),
-                              type,
-                            ]
+                            ...state.propertyType.filter(
+                              (t) => t.value !== propertyTypes[0]?.value
+                            ),
+                            type,
+                          ]
                         dispatch({
                           type: EPropertyAction.SET_PROPERTY_TYPE,
                           payload: newPropertyTypes,

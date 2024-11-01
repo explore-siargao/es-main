@@ -69,7 +69,7 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
           <Image
             src={imageSrc}
             alt="Bar graph image"
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
             className="h-full w-full"
           />
         </div>

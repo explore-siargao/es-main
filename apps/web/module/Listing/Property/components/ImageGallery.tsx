@@ -49,8 +49,8 @@ const ImageGallery = ({
       <Image
         onClick={() => setIsOpen(true)}
         src={images ? getImgSrc(index).src : ""}
-        layout="fill"
-        objectFit="cover"
+        fill
+        style={{ objectFit: "cover" }}
         alt={images ? getImgSrc(index).alt : ""}
         className={`${getRoundedEdgeClass(index, isRoundedEdge)} cursor-pointer`}
       />

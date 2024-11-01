@@ -78,7 +78,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
             <Image
               src={`/assets/${image.fileKey}`}
               alt={image.alt}
-              layout="fill"
+              fill
               className="object-cover"
             />
           </div>
@@ -88,7 +88,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
         <Image
           src={IMAGE_FALLBACK}
           alt={"images[0]?.alt"}
-          layout="fill"
+          fill
           className="object-cover"
         />
       </div>

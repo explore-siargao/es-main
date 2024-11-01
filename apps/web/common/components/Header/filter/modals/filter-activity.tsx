@@ -9,10 +9,10 @@ import {
   EActivityAction,
   activityInitialState,
   activityReducer,
-  ActivityTypes,
-  DurationTypes,
-  ExperienceTypes,
-  Locations,
+  activityTypes,
+  durationTypes,
+  experienceTypes,
+  locations,
 } from "./reducer/activity-reducer"
 
 interface FilterActivityModalProps {
@@ -29,25 +29,18 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
   const handleSubmit = () => {
     const { location, activityType, experienceType, priceRange, duration, starRating } =
       state
-      const queryString = `?${
-        location.length ? `location=${location.includes(Locations[0]!) ? 'any' : location.map(type => type.value).join(",")}` : ""
-      }&${
-        activityType.length ? `activityType=${activityType.includes(ActivityTypes[0]!) ? 'any' : activityType.map(type => type.value).join(",")}` : ""
-      }&${
-        experienceType.length ? `experienceType=${experienceType.includes(ExperienceTypes[0]!) ? 'any' : experienceType.map(type => type.value).join(",")}` : ""
-      }&${
-        priceRange && priceRange[0] !== undefined ? `priceFrom=${priceRange[0]}` : ""
-      }&${
-        priceRange && priceRange[1] !== undefined ? `priceTo=${priceRange[1]}` : ""
-      }&${
-        duration.length ? `duration=${duration.includes(DurationTypes[0]!) ? 'any' : duration.map(type => type.value).join(",")}` : ""
-      }&${
-        starRating ? `starRating=${starRating}` : ""
+    const queryString = `?${location.length ? `location=${location.includes(locations[0]!) ? 'any' : location.map(type => type.value).join(",")}` : ""
+      }&${activityType.length ? `activityType=${activityType.includes(activityTypes[0]!) ? 'any' : activityType.map(type => type.value).join(",")}` : ""
+      }&${experienceType.length ? `experienceType=${experienceType.includes(experienceTypes[0]!) ? 'any' : experienceType.map(type => type.value).join(",")}` : ""
+      }&${priceRange && priceRange[0] !== undefined ? `priceFrom=${priceRange[0]}` : ""
+      }&${priceRange && priceRange[1] !== undefined ? `priceTo=${priceRange[1]}` : ""
+      }&${duration.length ? `duration=${duration.includes(durationTypes[0]!) ? 'any' : duration.map(type => type.value).join(",")}` : ""
+      }&${starRating ? `starRating=${starRating}` : ""
       }`
 
     router.push(queryString)
     onClose()
- 
+
   }
   return (
     <ModalContainer
@@ -58,41 +51,41 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
     >
       <div className="bg-white flex flex-col max-h-[80vh]">
         <div className="flex-grow p-6 space-y-6 overflow-y-auto">
-        <div>
+          <div>
             <h3 className="text-lg font-semibold mb-2">Location</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-            {Locations.map((type) => (
-  <div key={type.value} className="flex items-center">
-    <Input
-      type="radio"
-      id={type.value}
-      name="location"
-      value={type.value}
-      checked={state.location.some((t) => t.value === type.value)}
-      onChange={() => {
-        dispatch({
-          type: EActivityAction.SET_LOCATION,
-          payload: [type], 
-        });
-      }}
-      className="hidden peer"
-      label={""}
-    />
-    <label
-      htmlFor={type.value}
-      className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
-    >
-      {type.label}
-    </label>
-  </div>
-))}
+              {locations.map((type) => (
+                <div key={type.value} className="flex items-center">
+                  <Input
+                    type="radio"
+                    id={type.value}
+                    name="location"
+                    value={type.value}
+                    checked={state.location.some((t) => t.value === type.value)}
+                    onChange={() => {
+                      dispatch({
+                        type: EActivityAction.SET_LOCATION,
+                        payload: [type],
+                      });
+                    }}
+                    className="hidden peer"
+                    label={""}
+                  />
+                  <label
+                    htmlFor={type.value}
+                    className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+                  >
+                    {type.label}
+                  </label>
+                </div>
+              ))}
 
             </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Activity Type</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-              {ActivityTypes.map((type) => (
+              {activityTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
                   <Input
                     type="checkbox"
@@ -103,7 +96,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                       (t) => t.value === type.value
                     )}
                     onChange={() => {
-                      if (type.value === ActivityTypes[0]?.value) {
+                      if (type.value === activityTypes[0]?.value) {
                         dispatch({
                           type: EActivityAction.SET_ACTIVITY_TYPE,
                           payload: [type],
@@ -113,14 +106,14 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                           (t) => t.value === type.value
                         )
                           ? state.activityType.filter(
-                              (t) => t.value !== type.value
-                            )
+                            (t) => t.value !== type.value
+                          )
                           : [
-                              ...state.activityType.filter(
-                                (t) => t.value !== ActivityTypes[0]?.value
-                              ),
-                              type,
-                            ]
+                            ...state.activityType.filter(
+                              (t) => t.value !== activityTypes[0]?.value
+                            ),
+                            type,
+                          ]
                         dispatch({
                           type: EActivityAction.SET_ACTIVITY_TYPE,
                           payload: newActivityTypes,
@@ -143,7 +136,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
           <div>
             <h3 className="text-lg font-semibold mb-2">Experience Type</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-              {ExperienceTypes.map((type) => (
+              {experienceTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
                   <Input
                     type="checkbox"
@@ -154,7 +147,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                       (t) => t.value === type.value
                     )}
                     onChange={() => {
-                      if (type.value === ExperienceTypes[0]?.value) {
+                      if (type.value === experienceTypes[0]?.value) {
                         dispatch({
                           type: EActivityAction.SET_EXPERIENCE_TYPE,
                           payload: [type],
@@ -164,14 +157,14 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                           (t) => t.value === type.value
                         )
                           ? state.experienceType.filter(
-                              (t) => t.value !== type.value
-                            )
+                            (t) => t.value !== type.value
+                          )
                           : [
-                              ...state.experienceType.filter(
-                                (t) => t.value !== ExperienceTypes[0]?.value
-                              ),
-                              type,
-                            ]
+                            ...state.experienceType.filter(
+                              (t) => t.value !== experienceTypes[0]?.value
+                            ),
+                            type,
+                          ]
                         dispatch({
                           type: EActivityAction.SET_EXPERIENCE_TYPE,
                           payload: newExperienceTypes,
@@ -247,7 +240,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
           <div>
             <h3 className="text-lg font-semibold mb-2">Duration</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-              {DurationTypes.map((type) => (
+              {durationTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
                   <Input
                     type="checkbox"
@@ -256,7 +249,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                     value={type.value}
                     checked={state.duration.some((t) => t.value === type.value)}
                     onChange={() => {
-                      if (type.value === DurationTypes[0]?.value) {
+                      if (type.value === durationTypes[0]?.value) {
                         dispatch({
                           type: EActivityAction.SET_DURATION,
                           payload: [type],
@@ -267,11 +260,11 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                         )
                           ? state.duration.filter((t) => t.value !== type.value)
                           : [
-                              ...state.duration.filter(
-                                (t) => t.value !== DurationTypes[0]?.value
-                              ),
-                              type,
-                            ]
+                            ...state.duration.filter(
+                              (t) => t.value !== durationTypes[0]?.value
+                            ),
+                            type,
+                          ]
                         dispatch({
                           type: EActivityAction.SET_DURATION,
                           payload: newDurationTypes,
@@ -298,7 +291,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
               {Array.from({ length: 5 }, (_, index) => (
                 <button
                   key={index}
-             
+
                   onClick={() => {
                     const newRating = state.starRating === index + 1 ? 0 : index + 1;
                     dispatch({

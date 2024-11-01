@@ -3,12 +3,14 @@ import BoxContainer from "@/module/Listing/components/BoxContainer"
 
 export type BookingProps = {
   listingId: number
-  imageKey: {
+  photos: {
     fileKey: string
     alt: string
   }[]
   distance: string
-  location: string
+  location: {
+    city: string,
+  }
   date: string
   price: number
   dayTime: string

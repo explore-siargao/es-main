@@ -33,8 +33,8 @@ const Completed = () => {
                 <Image
                   src={`/assets/${listing.photos ? listing.photos[0].key : "1.jpg"}`}
                   alt="Image"
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                 />
               ) : (
                 <div className="h-full w-full bg-primary-100"></div>

@@ -44,8 +44,8 @@ const UnitsTable: React.FC<UnitsTableProps> = ({
                 <Image
                   src={`/assets/${photo.key}`}
                   alt="Image"
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                 />
               ) : (
                 <div className="h-full w-full bg-primary-100"></div>

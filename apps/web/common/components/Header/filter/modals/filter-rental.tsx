@@ -5,14 +5,14 @@ import { Input } from "@/common/components/ui/Input"
 import { Star } from "lucide-react"
 import CountInput from "./components/count-input"
 import React, { useReducer } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import {
   ERentalAction,
-  Locations,
+  locations,
   rentalInitialState,
   rentalReducer,
-  TransmissionTypes,
-  VehicleTypes,
+  transmissionTypes,
+  vehicleTypes,
 } from "./reducer/rental-reducer"
 import { Typography } from "@/common/components/ui/Typography"
 
@@ -26,24 +26,27 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
   onClose,
 }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const pickUpDate = searchParams.get('pickUpDate')
+  const dropOffDate = searchParams.get('dropOffDate')
   const [state, dispatch] = useReducer(rentalReducer, rentalInitialState)
 
   const handleSubmit = () => {
     const { location, vehicleType, transmissionType, priceRange, seatCount, starRating } =
       state
 
-      const isOnlyBike = vehicleType.length === 1 && vehicleType[0]?.value === "bicycle";
-      const queryString = `?${location.length ? 
-        `location=${location.includes(Locations[0]!) ? 'any' : location.map(type => type.value).join(",")}` : ""}` +
-      `${vehicleType.length ? 
-        `&vehicleType=${vehicleType.includes(VehicleTypes[0]!) ? 'any' : vehicleType.map(type => type.value).join(",")}` : ""}` +
-        `${!isOnlyBike && transmissionType.length ? 
-          `&transmissionType=${transmissionType.includes(TransmissionTypes[0]!) ? 'any' : transmissionType.map(type => type.value).join(",")}` : ""}` +
-        `${priceRange && priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : ""}` +
-        `${priceRange && priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : ""}` +
-        `${seatCount ? `&seatCount=${seatCount}` : ""}` +
-        `${starRating ? `&starRating=${starRating}` : ""}`;
-    router.push(queryString)
+    const isOnlyBike = vehicleType.length === 1 && vehicleType[0]?.value === "bicycle";
+    const queryString = `?${location.length ?
+      `location=${location.includes(locations[0]!) ? 'any' : location.map(type => type.value).join(",")}` : ""}` +
+      `${vehicleType.length ?
+        `&vehicleType=${vehicleType.includes(vehicleTypes[0]!) ? 'any' : vehicleType.map(type => type.value).join(",")}` : ""}` +
+      `${!isOnlyBike && transmissionType.length ?
+        `&transmissionType=${transmissionType.includes(transmissionTypes[0]!) ? 'any' : transmissionType.map(type => type.value).join(",")}` : ""}` +
+      `${priceRange && priceRange[0] !== undefined ? `&priceFrom=${priceRange[0]}` : ""}` +
+      `${priceRange && priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : ""}` +
+      `${seatCount ? `&seatCount=${seatCount}` : ""}` +
+      `${starRating ? `&starRating=${starRating}` : ""}`;
+    router.push(`${queryString}&pickUpDate${pickUpDate ?? "any"}&dropOffDate${dropOffDate ?? "any"}`)
     onClose()
   }
 
@@ -56,41 +59,41 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
     >
       <div className="bg-white flex flex-col max-h-[80vh]">
         <div className="flex-grow p-6 space-y-6 overflow-y-auto">
-        <div>
+          <div>
             <h3 className="text-lg font-semibold mb-2">Location</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-            {Locations.map((type) => (
-  <div key={type.value} className="flex items-center">
-    <Input
-      type="radio"
-      id={type.value}
-      name="location"
-      value={type.value}
-      checked={state.location.some((t) => t.value === type.value)}
-      onChange={() => {
-        dispatch({
-          type: ERentalAction.SET_LOCATION,
-          payload: [type], 
-        });
-      }}
-      className="hidden peer"
-      label={""}
-    />
-    <label
-      htmlFor={type.value}
-      className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
-    >
-      {type.label}
-    </label>
-  </div>
-))}
+              {locations.map((type) => (
+                <div key={type.value} className="flex items-center">
+                  <Input
+                    type="radio"
+                    id={type.value}
+                    name="location"
+                    value={type.value}
+                    checked={state.location.some((t) => t.value === type.value)}
+                    onChange={() => {
+                      dispatch({
+                        type: ERentalAction.SET_LOCATION,
+                        payload: [type],
+                      });
+                    }}
+                    className="hidden peer"
+                    label={""}
+                  />
+                  <label
+                    htmlFor={type.value}
+                    className={`cursor-pointer border rounded-md px-3 py-1 ${state.location.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+                  >
+                    {type.label}
+                  </label>
+                </div>
+              ))}
 
             </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Vehicle Type</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-              {VehicleTypes.map((type) => (
+              {vehicleTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
                   <Input
                     type="checkbox"
@@ -101,7 +104,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                       (t) => t.value === type.value
                     )}
                     onChange={() => {
-                      if (type.value === VehicleTypes[0]?.value) {
+                      if (type.value === vehicleTypes[0]?.value) {
                         dispatch({
                           type: ERentalAction.SET_VEHICLE_TYPE,
                           payload: [type],
@@ -111,14 +114,14 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                           (t) => t.value === type.value
                         )
                           ? state.vehicleType.filter(
-                              (t) => t.value !== type.value
-                            )
+                            (t) => t.value !== type.value
+                          )
                           : [
-                              ...state.vehicleType.filter(
-                                (t) => t.value !== VehicleTypes[0]?.value
-                              ),
-                              type,
-                            ]
+                            ...state.vehicleType.filter(
+                              (t) => t.value !== vehicleTypes[0]?.value
+                            ),
+                            type,
+                          ]
                         dispatch({
                           type: ERentalAction.SET_VEHICLE_TYPE,
                           payload: newVehicleTypes,
@@ -143,12 +146,12 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             <div className="flex flex-wrap gap-2 mb-4"></div>
             <div className="flex flex-wrap gap-2 mb-4">
               {state.vehicleType.length === 1 &&
-              state.vehicleType[0]?.value === "bicycle" ? (
+                state.vehicleType[0]?.value === "bicycle" ? (
                 <Typography className="my-1 text-gray-500">
                   Not available
                 </Typography>
               ) : (
-                TransmissionTypes.map((type) => {
+                transmissionTypes.map((type) => {
                   const isBicycleOnly =
                     state.transmissionType.length === 1 &&
                     state.transmissionType[0]?.value === "bicycle"
@@ -164,7 +167,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                           (t) => t.value === type.value
                         )}
                         onChange={() => {
-                          if (type.value === TransmissionTypes[0]?.value) {
+                          if (type.value === transmissionTypes[0]?.value) {
                             dispatch({
                               type: ERentalAction.SET_TRANSMISSION_TYPE,
                               payload: [type],
@@ -175,15 +178,15 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                                 (t) => t.value === type.value
                               )
                                 ? state.transmissionType.filter(
-                                    (t) => t.value !== type.value
-                                  )
+                                  (t) => t.value !== type.value
+                                )
                                 : [
-                                    ...state.transmissionType.filter(
-                                      (t) =>
-                                        t.value !== TransmissionTypes[0]?.value
-                                    ),
-                                    type,
-                                  ]
+                                  ...state.transmissionType.filter(
+                                    (t) =>
+                                      t.value !== transmissionTypes[0]?.value
+                                  ),
+                                  type,
+                                ]
 
                             dispatch({
                               type: ERentalAction.SET_TRANSMISSION_TYPE,

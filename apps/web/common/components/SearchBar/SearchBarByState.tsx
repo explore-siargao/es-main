@@ -1,29 +1,14 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
-import { useSearchStore } from "../../store/useSearchStore"
+import { T_Search, useSearchStore } from "../../store/useSearchStore"
 import PropertySearchBar from "./PropertySearchBar"
 import ActivitiesSearchBar from "./ActivitiesSearchBar"
 import RentalsSearchBar from "./RentalsSearchBar"
-import { E_Listing_Category, E_Rental_Category } from "@repo/contract"
 import NavigationByState from "./NavigationByState"
 import { cn } from "@/common/helpers/cn"
-
-type T_Search_Form = {
-  location: string
-  checkIn: string
-  checkOut: string
-  date: string
-  numberOfGuest: number
-  rentalCategory: E_Rental_Category
-  pickUpDate: string
-  dropOffDate: string
-}
-
-const propertyEnum = E_Listing_Category.Property
-const activityEnum = E_Listing_Category.Activity
-const rentalEnum = E_Listing_Category.Rental
+import { LINK_SEARCH_ACTIVITIES, LINK_SEARCH_PROPERTY, LINK_SEARCH_RENTAL } from "@/common/constants"
 
 const SearchBarByState = ({
   isNavCenter = false,
@@ -34,50 +19,70 @@ const SearchBarByState = ({
 }) => {
   const router = useRouter()
   const path = usePathname()
-  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
-
-  const form = useForm<T_Search_Form>()
-  const { setSearchValues, clearSearchValues } = useSearchStore()
+  const searchParams = useSearchParams()
+  const location = searchParams.get('location')
+  const checkIn = searchParams.get('checkIn')
+  const checkOut = searchParams.get('checkOut')
+  const date = searchParams.get('date')
+  const numberOfGuest = searchParams.get('numberOfGuest')
+  const vehicleType = searchParams.get('vehicleType')
+  const pickUpDate = searchParams.get('pickUpDate')
+  const dropOffDate = searchParams.get('dropOffDate')
+  const { pathCategory, setPathCategory } = useSearchStore(state => state);
 
   useEffect(() => {
-    form.reset()
-    clearSearchValues()
-  }, [path])
+    setPathCategory(path === `/` ? LINK_SEARCH_PROPERTY : path)
+  }, [])
+  
+  const form = useForm<T_Search>({
+    defaultValues: {
+      location,
+      checkIn,
+      checkOut,
+      date,
+      numberOfGuest: Number(numberOfGuest ?? 0),
+      vehicleType,
+      pickUpDate,
+      dropOffDate
+    }
+  })
 
-  const onSubmit = (data: T_Search_Form) => {
-    setSearchValues(
-      data.location,
-      data.checkIn,
-      data.checkOut,
-      data.date,
-      Number(data.numberOfGuest)
-    )
+  const onSubmit = ({
+    location,
+    checkIn,
+    checkOut,
+    date,
+    numberOfGuest,
+    vehicleType,
+    pickUpDate,
+    dropOffDate
+  }: T_Search) => {
     if (
-      category === E_Listing_Category.Property &&
-      data.location &&
-      data.checkIn &&
-      data.checkOut &&
-      data.numberOfGuest
+      pathCategory === LINK_SEARCH_PROPERTY &&
+      location &&
+      checkIn &&
+      checkOut &&
+      numberOfGuest
     ) {
       router.push(
-        `/search/properties?category=${category}&location=${data.location}&checkIn=${data.checkIn}&checkOut=${data.checkOut}&numberOfGuest=${Number(data.numberOfGuest)}`
+        `/search/properties?location=${location}&checkIn=${checkIn}&checkOut=${checkOut}&numberOfGuest=${Number(numberOfGuest)}`
       )
     } else if (
-      category === E_Listing_Category.Activity &&
-      data.date &&
-      data.numberOfGuest
+      pathCategory === LINK_SEARCH_ACTIVITIES &&
+      date &&
+      numberOfGuest
     ) {
       router.push(
-        `/search/activities?category=${category}&date=${data.date}&numberOfGuest=${Number(data.numberOfGuest)}`
+        `/search/activities?location=${location}&date=${date}&numberOfGuest=${Number(numberOfGuest)}`
       )
     } else if (
-      category === E_Listing_Category.Rental &&
-      data.rentalCategory &&
-      data.pickUpDate &&
-      data.dropOffDate
+      pathCategory === LINK_SEARCH_RENTAL &&
+      vehicleType &&
+      pickUpDate &&
+      dropOffDate
     ) {
       router.push(
-        `/search/rentals?category=${category}&rentalCategory=${data.rentalCategory}&pickUpDate=${data.pickUpDate}&dropOffDate=${data.dropOffDate}`
+        `/search/rentals?location=${location}&vehicleType=${vehicleType}&pickUpDate=${pickUpDate}&dropOffDate=${dropOffDate}`
       )
     }
   }
@@ -91,19 +96,19 @@ const SearchBarByState = ({
         )}
       >
         <NavigationByState
-          category={category}
-          setCategory={setCategory}
+          pathCategory={pathCategory as string}
+          setPathCategory={setPathCategory}
           isDark={isDark}
         />
       </div>
       <div className="drop-shadow-lg w-[65rem]">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            {category !== activityEnum && category !== rentalEnum ? (
+            {pathCategory !== LINK_SEARCH_ACTIVITIES && pathCategory !== LINK_SEARCH_RENTAL ? (
               <PropertySearchBar />
             ) : null}
-            {category === activityEnum && <ActivitiesSearchBar />}
-            {category === rentalEnum && <RentalsSearchBar />}
+            {pathCategory === LINK_SEARCH_ACTIVITIES && <ActivitiesSearchBar />}
+            {pathCategory === LINK_SEARCH_RENTAL && <RentalsSearchBar />}
           </form>
         </FormProvider>
       </div>

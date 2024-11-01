@@ -1,10 +1,10 @@
-interface IFilterType {
+type T_FilterType = {
   value: string
   label: string
 }
 
-export const Locations: IFilterType[] = [
-  { value: "any_location", label: "Any Location" },
+export const locations: T_FilterType[] = [
+  { value: "any", label: "Any Location" },
   { value: "General Luna", label: "General Luna" },
   { value: "Dapa", label: "Dapa" },
   { value: "Del Carmen", label: "Del Carmen" },
@@ -16,8 +16,8 @@ export const Locations: IFilterType[] = [
   { value: "Socorro", label: "Socorro" },
 ]
 
-export const ActivityTypes: IFilterType[] = [
-  { value: "any_activity", label: "Any Type" },
+export const activityTypes: T_FilterType[] = [
+  { value: "any", label: "Any Type" },
   { value: "Island hopping", label: "Island Hopping" },
   { value: "Land tour", label: "Land Tour" },
   { value: "Surfing lessons", label: "Surfing Lessons" },
@@ -29,14 +29,14 @@ export const ActivityTypes: IFilterType[] = [
   { value: "ATV tour", label: "ATV Tour" },
 ]
 
-export const ExperienceTypes: IFilterType[] = [
-  { value: "any_experience", label: "Any Type" },
+export const experienceTypes: T_FilterType[] = [
+  { value: "any", label: "Any Type" },
   { value: "joiner", label: "Joiner" },
   { value: "private", label: "Private" },
 ]
 
-export const DurationTypes: IFilterType[] = [
-  { value: "any_duration", label: "Any Duration" },
+export const durationTypes: T_FilterType[] = [
+  { value: "any", label: "Any Duration" },
   { value: "1", label: "1 Hour" },
   { value: "2", label: "2 Hours" },
   { value: "3", label: "3 Hours" },
@@ -60,28 +60,28 @@ export enum EActivityAction {
 export type TFilterActivity = {
   starRating: number
   priceRange: number[]
-  location: IFilterType[]
-  activityType: IFilterType[]
-  experienceType: IFilterType[]
-  duration: IFilterType[]
+  location: T_FilterType[]
+  activityType: T_FilterType[]
+  experienceType: T_FilterType[]
+  duration: T_FilterType[]
 }
 
 type Action =
-  | { type: EActivityAction.SET_LOCATION; payload: IFilterType[] }
+  | { type: EActivityAction.SET_LOCATION; payload: T_FilterType[] }
   | { type: EActivityAction.SET_STAR_RATING; payload: number }
   | { type: EActivityAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: EActivityAction.SET_ACTIVITY_TYPE; payload: IFilterType[] }
-  | { type: EActivityAction.SET_EXPERIENCE_TYPE; payload: IFilterType[] }
-  | { type: EActivityAction.SET_DURATION; payload: IFilterType[] }
+  | { type: EActivityAction.SET_ACTIVITY_TYPE; payload: T_FilterType[] }
+  | { type: EActivityAction.SET_EXPERIENCE_TYPE; payload: T_FilterType[] }
+  | { type: EActivityAction.SET_DURATION; payload: T_FilterType[] }
   | { type: EActivityAction.RESET_FILTERS }
 
 export const activityInitialState: TFilterActivity = {
   starRating: 0,
   priceRange: [0, 1000],
-  location: [Locations[0]!],
-  activityType: [ActivityTypes[0]!],
-  experienceType: [ExperienceTypes[0]!],
-  duration: [DurationTypes[0]!],
+  location: [locations[0]!],
+  activityType: [activityTypes[0]!],
+  experienceType: [experienceTypes[0]!],
+  duration: [durationTypes[0]!],
 }
 
 export function activityReducer(

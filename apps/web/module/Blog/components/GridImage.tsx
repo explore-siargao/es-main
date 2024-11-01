@@ -12,7 +12,7 @@ function GridImage({ src, alt, text }: T_GridImageProps) {
       <div className="relative w-24 h-16 rounded-xl">
         <Image
           fill
-          objectFit="cover"
+          style={{ objectFit: "cover" }}
           src={`/assets/${src}`}
           alt={alt}
           className="cursor-pointer rounded-xl"

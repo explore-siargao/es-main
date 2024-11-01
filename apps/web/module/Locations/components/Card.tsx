@@ -20,8 +20,8 @@ const Card = ({ cards }: CardProps) => {
               className="cursor-pointer"
               src={card.imageKey}
               alt={card.title}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="mt-2 text-left">

@@ -114,8 +114,8 @@ const EditPhotoModal = ({ isOpen, onClose, passedCategory }: Props) => {
         <div className="relative h-80 w-full bg-primary-50">
           <Image
             src={currentPhoto?.file?.preview || `/assets/${currentPhoto?.key}`}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             objectPosition="center"
             alt="image-preview"
           />

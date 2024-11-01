@@ -5,25 +5,19 @@ import { Input } from "../../ui/Input"
 import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
 import { Separator } from "../../ui/Separator"
-import { format } from "date-fns"
+import { format, isAfter } from "date-fns"
+import { locations } from "../../Header/filter/modals/reducer/property-reducer"
 
 function PropertySearchBar() {
-  const { register, watch, setValue } = useFormContext()
+  const { register, watch, setValue, getValues } = useFormContext()
   const dateToday = format(new Date(), "yyyy-MM-dd")
-  const siargaoLocations = [
-    "General Luna",
-    "Dapa",
-    "Del Carmen",
-    "San Isidro",
-    "Pilar",
-    "San Benito",
-    "Burgos",
-    "Santa Monica",
-    "Socorro",
-  ]
 
   useEffect(() => {
-    setValue("checkOut", "")
+    const checkInDate = getValues("checkIn");
+    const checkOutDate = getValues("checkOut");
+    if(isAfter(new Date(checkInDate), new Date(checkOutDate))) {
+      setValue("checkOut", "")
+    }
   }, [watch("checkIn")])
 
   return (
@@ -35,9 +29,9 @@ function PropertySearchBar() {
         id="testable"
       >
         <Option value="">Select Location</Option>
-        {siargaoLocations.map((loc) => (
-          <Option key={loc} value={loc}>
-            {loc}
+        {locations.map((loc) => (
+          <Option key={loc.value} value={loc.value}>
+            {loc.label}
           </Option>
         ))}
       </Select>
@@ -67,7 +61,6 @@ function PropertySearchBar() {
         defaultValue={"1"}
         {...register("numberOfGuest")}
       />
-      <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Button
         variant={"primary"}
         className="h-full px-4 py-3 justify-center items-center rounded-full gap-x-2"
