@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
 import { Separator } from "../../ui/Separator"
 import { format, isAfter } from "date-fns"
-import { locations } from "../../Header/filter/modals/reducer/property-reducer"
+import { locations } from "../../Header/filter/constants"
 
 function PropertySearchBar() {
   const { register, watch, setValue, getValues } = useFormContext()
@@ -57,8 +57,7 @@ function PropertySearchBar() {
         type="number"
         className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Number of Guest/s"}
-        placeholder="1"
-        defaultValue={"1"}
+        placeholder="Add guests"
         {...register("numberOfGuest")}
       />
       <Button

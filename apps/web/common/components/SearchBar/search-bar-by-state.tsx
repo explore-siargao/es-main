@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
 import { T_Search, useSearchStore } from "../../store/useSearchStore"
@@ -25,7 +25,7 @@ const SearchBarByState = ({
   const checkOut = searchParams.get('checkOut')
   const date = searchParams.get('date')
   const numberOfGuest = searchParams.get('numberOfGuest')
-  const vehicleType = searchParams.get('vehicleType')
+  const vehicleType = (searchParams.get('vehicleType') ?? "")?.split(',')
   const pickUpDate = searchParams.get('pickUpDate')
   const dropOffDate = searchParams.get('dropOffDate')
   const { pathCategory, setPathCategory } = useSearchStore(state => state);
@@ -33,15 +33,15 @@ const SearchBarByState = ({
   useEffect(() => {
     setPathCategory(path === `/` ? LINK_SEARCH_PROPERTY : path)
   }, [])
-  
+
   const form = useForm<T_Search>({
     values: {
-      location,
+      location: location ? location : "any",
       checkIn,
       checkOut,
       date,
-      numberOfGuest: Number(numberOfGuest ?? 0),
-      vehicleType,
+      numberOfGuest: Number(numberOfGuest ?? 1),
+      vehicleType: vehicleType[0],
       pickUpDate,
       dropOffDate
     }

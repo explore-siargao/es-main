@@ -1,34 +1,4 @@
-type T_FilterType = {
-  value: string
-  label: string
-}
-
-export const locations: T_FilterType[] = [
-  { value: "any", label: "Any Location" },
-  { value: "General Luna", label: "General Luna" },
-  { value: "Dapa", label: "Dapa" },
-  { value: "Del Carmen", label: "Del Carmen" },
-  { value: "San Isidro", label: "San Isidro" },
-  { value: "Pilar", label: "Pilar" },
-  { value: "San Benito", label: "San Benito" },
-  { value: "Burgos", label: "Burgos" },
-  { value: "Santa Monica", label: "Santa Monica" },
-  { value: "Socorro", label: "Socorro" },
-]
-
-export const vehicleTypes: T_FilterType[] = [
-  { value: "any", label: "Any Type" },
-  { value: "car", label: "Car" },
-  { value: "motorbike", label: "Motorbike" },
-  { value: "bicycle", label: "Bicycle" },
-]
-
-export const transmissionTypes: T_FilterType[] = [
-  { value: "any_transmission", label: "Any Type" },
-  { value: "Automatic", label: "Automatic" },
-  { value: "Semi-Automatic", label: "Semi-Automatic" },
-  { value: "Manual", label: "Manual" },
-]
+import { locations, T_Filter_Type, transmissionTypes, vehicleTypes } from "../../constants"
 
 export enum ERentalAction {
   SET_LOCATION = "SET_LOCATION",
@@ -40,25 +10,25 @@ export enum ERentalAction {
   RESET_FILTERS = "RESET_FILTERS",
 }
 
-export type TFilterRental = {
-  location: T_FilterType[]
+export type T_Filter_Rental = {
+  location: T_Filter_Type[]
   starRating: number
   priceRange: number[]
-  vehicleType: T_FilterType[]
-  transmissionType: T_FilterType[]
+  vehicleType: T_Filter_Type[]
+  transmissionType: T_Filter_Type[]
   seatCount: number | null
 }
 
 type Action =
-| { type: ERentalAction.SET_LOCATION; payload: T_FilterType[] }
+| { type: ERentalAction.SET_LOCATION; payload: T_Filter_Type[] }
   | { type: ERentalAction.SET_STAR_RATING; payload: number }
   | { type: ERentalAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: ERentalAction.SET_VEHICLE_TYPE; payload: T_FilterType[] }
-  | { type: ERentalAction.SET_TRANSMISSION_TYPE; payload: T_FilterType[] }
+  | { type: ERentalAction.SET_VEHICLE_TYPE; payload: T_Filter_Type[] }
+  | { type: ERentalAction.SET_TRANSMISSION_TYPE; payload: T_Filter_Type[] }
   | { type: ERentalAction.SET_SEAT_COUNT; payload: number | null }
   | { type: ERentalAction.RESET_FILTERS }
 
-export const rentalInitialState: TFilterRental = {
+export const rentalInitialState: T_Filter_Rental = {
   location: [locations[0]!],
   starRating: 0,
   priceRange: [0, 1000],
@@ -68,9 +38,9 @@ export const rentalInitialState: TFilterRental = {
 }
 
 export function rentalReducer(
-  state: TFilterRental,
+  state: T_Filter_Rental,
   action: Action
-): TFilterRental {
+): T_Filter_Rental {
   switch (action.type) {
     case ERentalAction.SET_LOCATION:
       return { ...state, location: action.payload }

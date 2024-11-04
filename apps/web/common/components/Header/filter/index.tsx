@@ -34,7 +34,7 @@ function FilterHeader({
   };
 
   return (
-    <header className="w-full bg-white">
+    <header className="w-full bg-white border-t border-t-gray-200/50">
       <WidthWrapper width={contentWidth}>
         <nav className="flex items-center py-2 my-2 w-full gap-8 relative" aria-label="Global">
           {links.map(({ href, icon: Icon, category }) => {

@@ -1,17 +1,9 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ApplyToHostModal from "../../../module/LandingPage/components/ApplyToHostModal"
 import { Typography } from "../ui/Typography"
-import SearchBarByState from "./SearchBarByState"
-
-type T_Search_Form = {
-  search: string
-  checkIn: string
-  checkOut: string
-  date: string
-  numberOfGuest: number
-}
+import SearchBarByState from "./search-bar-by-state"
 
 function SearchBarByStateWithHero() {
 

@@ -17,7 +17,7 @@ interface SliderProps {
 const CustomSquareSlider = ({ images }: SliderProps) => {
   return (
     <Swiper
-      navigation
+      navigation={images.length > 0}
       pagination={{ type: "bullets", clickable: true }}
       modules={[Navigation, Pagination]}
       className="h-full w-full rounded-xl"
@@ -59,7 +59,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
         .image-wrapper {
           position: relative;
           width: 100%;
-          max-height: 300px; 
+          height: 250px; 
           padding-top: 80%; 
         }
         .image-wrapper img {
@@ -78,20 +78,23 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
             <Image
               src={`/assets/${image.fileKey}`}
               alt={image.alt}
-              fill
+              layout="fill"
               className="object-cover"
             />
           </div>
         </SwiperSlide>
-      )) :  
-      <div className="image-wrapper">
-        <Image
-          src={IMAGE_FALLBACK}
-          alt={"images[0]?.alt"}
-          fill
-          className="object-cover"
-        />
-      </div>
+      )) : (
+        <SwiperSlide key="error">
+          <div className="image-wrapper">
+            <Image
+              src={IMAGE_FALLBACK}
+              alt={"error"}
+              layout="fill"
+              className="object-cover"
+            />
+          </div>
+        </SwiperSlide>
+      )
     }
     </Swiper>
   )

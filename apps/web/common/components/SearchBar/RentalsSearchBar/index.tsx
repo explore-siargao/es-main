@@ -6,17 +6,10 @@ import { Input } from "../../ui/Input"
 import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
 import { format } from "date-fns"
-import { E_Rental_Category } from "@repo/contract"
-import { locations } from "../../Header/filter/modals/reducer/property-reducer"
+import { locations, vehicleTypes } from "../../Header/filter/constants"
 
 function RentalsSearchBar() {
   const { register, watch } = useFormContext()
-  const vehicleTypes = [
-    "Any Vehicle",
-    E_Rental_Category.Car,
-    E_Rental_Category.Bicycle,
-    E_Rental_Category.Motorbike,
-  ]
   const dateToday = format(new Date(), "yyyy-MM-dd")
   return (
     <div className="flex gap-2 w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
@@ -41,8 +34,8 @@ function RentalsSearchBar() {
       >
         <Option value="">Select Vehicle Type</Option>
         {vehicleTypes.map((vehicleType) => (
-          <Option key={vehicleType} value={vehicleType}>
-            {vehicleType}
+          <Option key={vehicleType.value} value={vehicleType.value}>
+            {vehicleType.label}
           </Option>
         ))}
       </Select>

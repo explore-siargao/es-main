@@ -8,13 +8,11 @@ import React, { useReducer } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import {
   ERentalAction,
-  locations,
-  rentalInitialState,
   rentalReducer,
-  transmissionTypes,
-  vehicleTypes,
+  T_Filter_Rental,
 } from "./reducer/rental-reducer"
 import { Typography } from "@/common/components/ui/Typography"
+import { locations, vehicleTypes, transmissionTypes } from "../constants"
 
 interface FilterRentalModalProps {
   isOpen: boolean
@@ -29,6 +27,18 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
   const searchParams = useSearchParams()
   const pickUpDate = searchParams.get('pickUpDate')
   const dropOffDate = searchParams.get('dropOffDate')
+  const location = searchParams.get('location')
+  const vehicleType = (searchParams.get('vehicleType') ?? "")?.split(',')
+
+  const rentalInitialState: T_Filter_Rental = {
+    location: [locations.find((loc => loc.value === location))!],
+    starRating: 0,
+    priceRange: [0, 1000],
+    vehicleType: vehicleTypes.filter((loc => loc.value === vehicleType[0])),
+    transmissionType: [transmissionTypes[0]!],
+    seatCount: null,
+  }
+
   const [state, dispatch] = useReducer(rentalReducer, rentalInitialState)
 
   const handleSubmit = () => {
@@ -46,7 +56,9 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
       `${priceRange && priceRange[1] !== undefined ? `&priceTo=${priceRange[1]}` : ""}` +
       `${seatCount ? `&seatCount=${seatCount}` : ""}` +
       `${starRating ? `&starRating=${starRating}` : ""}`;
-    router.push(`${queryString}&pickUpDate${pickUpDate ?? "any"}&dropOffDate${dropOffDate ?? "any"}`)
+      
+    // the pickUpDate and dropOffDate comes from the header search bar
+    router.push(`${queryString}&pickUpDate=${pickUpDate ?? "any"}&dropOffDate=${dropOffDate ?? "any"}`)
     onClose()
   }
 
@@ -91,7 +103,10 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Vehicle Type</h3>
+            <h3 className="text-lg font-semibold">Vehicle Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple vehicle type
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {vehicleTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
@@ -142,8 +157,10 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Transmission Type</h3>
-            <div className="flex flex-wrap gap-2 mb-4"></div>
+            <h3 className="text-lg font-semibold">Transmission Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple transmission type
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {state.vehicleType.length === 1 &&
                 state.vehicleType[0]?.value === "bicycle" ? (
@@ -279,7 +296,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-2">Star Rating</h3>
+            <h3 className="text-lg font-semibold mb-2">Guests star reviews</h3>
             <div className="flex space-x-2 mb-4">
               {Array.from({ length: 5 }, (_, index) => (
                 <button
@@ -297,7 +314,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                     size={28}
                     className={
                       state.starRating > index
-                        ? "text-yellow-500"
+                        ? "text-text-500 fill-text-500"
                         : "text-gray-300"
                     }
                   />

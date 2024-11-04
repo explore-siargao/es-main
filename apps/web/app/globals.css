@@ -14,3 +14,13 @@ body {
 ::-webkit-outer-spin-button {
   display: none;
 }
+
+/* Remove padding and margin */
+.leaflet-popup-content-wrapper {
+  padding: 0 !important; /* Remove inner padding */
+}
+
+.leaflet-popup-content {
+  margin: 0 !important; /* Remove content margin */
+  padding: 0 !important; /* Ensure no inner padding */
+}

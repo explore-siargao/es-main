@@ -1,5 +1,6 @@
 import React from "react"
 import BoxContainer from "@/module/Listing/components/BoxContainer"
+import { E_Listing_Category } from "@repo/contract"
 
 export type BookingProps = {
   listingId: number
@@ -16,6 +17,7 @@ export type BookingProps = {
   dayTime: string
   ratings: string
   isHearted: boolean
+  category: E_Listing_Category
 }
 
 const ListingItems = (props: BookingProps) => {

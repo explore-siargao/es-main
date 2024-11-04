@@ -11,14 +11,14 @@ import {
   propertyInitialState,
   propertyReducer,
   EPropertyAction,
-  propertyTypes,
-  locations,
 } from "./reducer/property-reducer"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import FacilitiesCheckboxes from "./show-more-filters/facilities/facilities-checkboxes"
 import AmenitiesCheckboxes from "./show-more-filters/amenities/amenities-checkboxes"
 import useSelectFacilityStore from "../store/use-select-facility-store"
 import useSelectAmenityStore from "../store/use-select-amenity-store"
+import { Typography } from "@/common/components/ui/Typography"
+import { locations, propertyTypes } from "../constants"
 
 interface FilterPropertyModalProps {
   isOpen: boolean
@@ -30,6 +30,10 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
   onClose,
 }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const checkIn = searchParams.get('checkIn')
+  const checkOut = searchParams.get('checkOut')
+  const numberOfGuest = searchParams.get('numberOfGuest')
   const [state, dispatch] = useReducer(propertyReducer, propertyInitialState)
   const facilities = useSelectFacilityStore((state) => state.facilities)
   const amenities = useSelectAmenityStore((state) => state.amenities)
@@ -69,7 +73,8 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
       `${selectedAmenities ? `&amenities=${selectedAmenities}` : ""}` +
       `${starRating ? `&starRating=${starRating}` : ""}`;
 
-    router.push(queryString)
+    // the checkIn, checkOut and numberOfGuest comes from the header search bar
+    router.push(`${queryString}&checkIn=${checkIn ?? "any"}&checkOut=${checkOut ?? "any"}&numberOfGuest=${numberOfGuest ?? "any"}`)
     onClose()
   }
   return (
@@ -113,7 +118,10 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Property Type</h3>
+            <h3 className="text-lg font-semibold">Property Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple property type
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {propertyTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
@@ -295,7 +303,7 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-2">Star Rating</h3>
+            <h3 className="text-lg font-semibold mb-2">Guests star reviews</h3>
             <div className="flex space-x-2 mb-4">
               {Array.from({ length: 5 }, (_, index) => (
                 <button
@@ -313,7 +321,7 @@ const FilterPropertyModal: React.FC<FilterPropertyModalProps> = ({
                     size={28}
                     className={
                       state.starRating > index
-                        ? "text-yellow-500"
+                        ? "text-text-500 fill-text-500"
                         : "text-gray-300"
                     }
                   />

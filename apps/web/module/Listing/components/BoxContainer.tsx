@@ -6,9 +6,11 @@ import toast from "react-hot-toast"
 import useRemoveFromWishGroup from "@/module/AccountSettings/hooks/useRemoveFromWishGroup"
 import { useQueryClient } from "@tanstack/react-query"
 import Link from "next/link"
-import CustomSquareSlider from "@/common/components/CustomSquareSlider"
+import CustomSquareSlider from "@/common/components/custom-square-slider"
 import { LucideHeart, LucideStar } from "lucide-react"
 import { BookingProps } from "@/module/Listings/components/ListingItems"
+import { E_Listing_Category } from "@repo/contract"
+import formatCurrency from "@/common/helpers/formatCurrency"
 
 const BoxContainer = ({
   listingId,
@@ -20,6 +22,7 @@ const BoxContainer = ({
   dayTime,
   ratings,
   isHearted,
+  category
 }: BookingProps) => {
   const [addWIshlistModal, setAddWIshlistModal] = useState(false)
   const userId = useSessionStore((state) => state).id
@@ -66,10 +69,16 @@ const BoxContainer = ({
     }
   }, [])
 
+  const categoryPlural = {
+    [E_Listing_Category.Activity]: "activity",
+    [E_Listing_Category.Property]: "property",
+    [E_Listing_Category.Rental]: "rental",
+  }
+
   return (
     <>
       <li className="relative rounded-xl overflow-hidden h-full list-none">
-        <Link href={`/accommodation/${listingId}`} target="_blank">
+        <Link href={`/listing/${categoryPlural[category]}/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             <button
               onClick={(e) => {
@@ -93,11 +102,11 @@ const BoxContainer = ({
                 fontWeight="semibold"
                 className="text-text-500"
               >
-                {location.city}
+                {location.city ? location.city : "Unknown"}
               </Typography>
               <div className="flex text-text-500 items-center gap-1">
-                <LucideStar className="h-4 w-auto" />
-                {ratings}
+                <LucideStar className="h-4 w-auto fill-secondary-500" />
+                {ratings} (0)
               </div>
             </div>
             <div className="text-text-300 text-sm">
@@ -108,7 +117,7 @@ const BoxContainer = ({
               fontWeight="semibold"
               className="text-text-700 underline"
             >
-              {price} <span className="font-normal">{dayTime}</span>
+              {formatCurrency(price)} <span className="font-normal">{dayTime}</span>
             </Typography>
           </div>
         </Link>

@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
 import { format } from "date-fns"
 import { Option, Select } from "@/common/components/ui/Select"
-import { locations } from "../../Header/filter/modals/reducer/property-reducer"
+import { locations } from "../../Header/filter/constants"
 
 function ActivitiesSearchBar() {
   const { register } = useFormContext()

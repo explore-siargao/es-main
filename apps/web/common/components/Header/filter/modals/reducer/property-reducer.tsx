@@ -1,33 +1,4 @@
-type T_FilterType = {
-  value: string
-  label: string
-}
-
-export const locations: T_FilterType[] = [
-  { value: "any", label: "Any Location" },
-  { value: "General Luna", label: "General Luna" },
-  { value: "Dapa", label: "Dapa" },
-  { value: "Del Carmen", label: "Del Carmen" },
-  { value: "San Isidro", label: "San Isidro" },
-  { value: "Pilar", label: "Pilar" },
-  { value: "San Benito", label: "San Benito" },
-  { value: "Burgos", label: "Burgos" },
-  { value: "Santa Monica", label: "Santa Monica" },
-  { value: "Socorro", label: "Socorro" },
-]
-
-export const propertyTypes: T_FilterType[] = [
-  { value: "any", label: "Any Type" },
-  { value: "hostel", label: "Hostel" },
-  { value: "apartment", label: "Apartment" },
-  { value: "homestay", label: "Homestay" },
-  { value: "hotel", label: "Hotel" },
-  { value: "resort", label: "Resort" },
-  { value: "villa", label: "Villa" },
-  { value: "house", label: "House" },
-  { value: "bungalow", label: "Bungalow" },
-  { value: "cottage", label: "Cottage" },
-]
+import { locations, propertyTypes, T_Filter_Type } from "../../constants"
 
 export enum EPropertyAction {
   SET_LOCATION = "SET_LOCATION",
@@ -43,10 +14,10 @@ export enum EPropertyAction {
 }
 
 export type TFilterProperty = {
-  location: T_FilterType[]
+  location: T_Filter_Type[]
   starRating: number
   priceRange: number[]
-  propertyType: T_FilterType[]
+  propertyType: T_Filter_Type[]
   bedroomCount: number | null
   bedCount: number | null
   bathroomCount: number | null
@@ -57,10 +28,10 @@ export type TFilterProperty = {
 }
 
 type Action =
-| { type: EPropertyAction.SET_LOCATION; payload: T_FilterType[] }
+| { type: EPropertyAction.SET_LOCATION; payload: T_Filter_Type[] }
   | { type: EPropertyAction.SET_STAR_RATING; payload: number }
   | { type: EPropertyAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: EPropertyAction.SET_PROPERTY_TYPE; payload: T_FilterType[] }
+  | { type: EPropertyAction.SET_PROPERTY_TYPE; payload: T_Filter_Type[] }
   | { type: EPropertyAction.SET_BEDROOM_COUNT; payload: number | null }
   | { type: EPropertyAction.SET_BED_COUNT; payload: number | null }
   | { type: EPropertyAction.SET_BATHROOM_COUNT; payload: number | null }

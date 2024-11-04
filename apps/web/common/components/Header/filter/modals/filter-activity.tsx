@@ -4,16 +4,14 @@ import { Slider } from "@/common/components/ui/slider"
 import { Input } from "@/common/components/ui/Input"
 import { Star } from "lucide-react"
 import React, { useReducer } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import {
   EActivityAction,
-  activityInitialState,
+  T_Filter_Activity,
   activityReducer,
-  activityTypes,
-  durationTypes,
-  experienceTypes,
-  locations,
 } from "./reducer/activity-reducer"
+import { Typography } from "@/common/components/ui/Typography"
+import { locations, activityTypes, experienceTypes, durationTypes } from "../constants"
 
 interface FilterActivityModalProps {
   isOpen: boolean
@@ -25,6 +23,20 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
   onClose,
 }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const location = searchParams.get('location')
+  const date = searchParams.get('date')
+  const numberOfGuest = searchParams.get('numberOfGuest')
+
+  const activityInitialState: T_Filter_Activity = {
+    starRating: 0,
+    priceRange: [0, 1000],
+    location: [locations.find((loc => loc.value === location))!],
+    activityType: [activityTypes[0]!],
+    experienceType: [experienceTypes[0]!],
+    duration: [durationTypes[0]!],
+  }
+
   const [state, dispatch] = useReducer(activityReducer, activityInitialState)
   const handleSubmit = () => {
     const { location, activityType, experienceType, priceRange, duration, starRating } =
@@ -37,11 +49,12 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
       }&${duration.length ? `duration=${duration.includes(durationTypes[0]!) ? 'any' : duration.map(type => type.value).join(",")}` : ""
       }&${starRating ? `starRating=${starRating}` : ""
       }`
-
-    router.push(queryString)
+    
+    // the date and numberOfGuest comes from the header search bar
+    router.push(`${queryString}&date=${date ?? "any"}&numberOfGuest=${numberOfGuest ?? "any"}`)
     onClose()
-
   }
+  
   return (
     <ModalContainer
       onClose={onClose}
@@ -83,7 +96,10 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Activity Type</h3>
+            <h3 className="text-lg font-semibold">Activity Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple activity type
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {activityTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
@@ -134,7 +150,10 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Experience Type</h3>
+            <h3 className="text-lg font-semibold">Experience Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple experience type
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {experienceTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
@@ -238,7 +257,10 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Duration</h3>
+            <h3 className="text-lg font-semibold">Duration</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple duration
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {durationTypes.map((type) => (
                 <div key={type.value} className="flex items-center">
@@ -286,7 +308,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-2">Star Rating</h3>
+            <h3 className="text-lg font-semibold mb-2">Guests star reviews</h3>
             <div className="flex space-x-2 mb-4">
               {Array.from({ length: 5 }, (_, index) => (
                 <button
@@ -305,7 +327,7 @@ const FilterActivityModal: React.FC<FilterActivityModalProps> = ({
                     size={28}
                     className={
                       state.starRating > index
-                        ? "text-yellow-500"
+                        ? "text-text-500 fill-text-500"
                         : "text-gray-300"
                     }
                   />

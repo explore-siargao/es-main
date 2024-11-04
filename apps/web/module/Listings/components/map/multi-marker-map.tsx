@@ -7,6 +7,7 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import Image from "@/common/components/ui/image"
 import Link from "next/link"
 import { T_Markers } from "."
+import formatCurrency from "@/common/helpers/formatCurrency"
 
 interface MultipleMarkerMapProps {
   center: [number, number]
@@ -55,15 +56,15 @@ const MultiMarkerMap = ({
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background-color: ${isClicked ? "#4b5563" : "white"};
+        background-color: ${isClicked ? "#828282" : "white"};
         border-radius: 15px;
         padding: 5px 10px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         font-size: 14px;
         font-weight: bold;
         color: ${isClicked ? "white" : "black"};
         text-align: center;
-      ">₱${price}</div>`,
+      ">${formatCurrency(price)}</div>`,
       iconSize: [50, 30],
     })
 
@@ -160,26 +161,31 @@ const MultiMarkerMap = ({
               position={[location.latitude, location.longitude] as LatLngTuple}
               offset={[0, -2]}
             >
-              <div className="w-32 grid ">
+              <Link  
+                href={`/listing/property/${location._id}`}
+                target="_blank"
+              >
                 {location.photos ? (
                   <Image
                     src={`/assets/${location.photos.fileKey}`}
-                    alt=""
+                    alt={location.name}
                     width={150}
                     height={100}
-                    className="bg-gray-200 rounded-md"
+                    className="w-full bg-gray-200 rounded-t-xl"
                   />
                 ) : null}
-                <span className="mt-2 font-semibold">{location.name}</span>
-                <span className="mt-2 ">
-                  {placeNames[index] || "Loading place name..."}
-                </span>
-                {isSurfGuide ? (
-                  <span className="mt-2">
-                    Skill level required: Intermediate
-                  </span>
-                ) : null}
-                <Link
+                <div className="px-4 py-1">
+                  <p className="font-semibold text-text-500">{location.name}</p>
+                  <p className="text-text-500 pt-0">
+                    {placeNames[index] || "Loading place name..."}
+                  </p>
+                  {isSurfGuide ? (
+                    <span className="mt-2">
+                      Skill level required: Intermediate
+                    </span>
+                  ) : null}
+                </div>
+                {/* <Link
                   href={`/listing/property/${location._id}`}
                   target="_blank"
                   className=" mt-2"
@@ -187,8 +193,8 @@ const MultiMarkerMap = ({
                   <span className="underline text-primary-600 hover:text-primary-700 text-start">
                     View property
                   </span>
-                </Link>
-              </div>
+                </Link> */}
+              </Link>
             </Popup>
           </CustomMarker>
         )
