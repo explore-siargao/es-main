@@ -7,6 +7,7 @@ import {
   getAllReservationOrCarts,
   removeToCart,
 } from './services/default'
+import paginate from '@/common/middleware/paginations/paginate'
 
 const router = express.Router()
 
@@ -14,6 +15,7 @@ router.get(
   '/',
   isOriginValid,
   isUserLoggedIn,
+  paginate(15),
   isCsrfTokenValid,
   getAllReservationOrCarts
 )
