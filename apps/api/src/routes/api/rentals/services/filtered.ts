@@ -53,8 +53,6 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
     const endDate =
       dropOffDate === 'any' ? 'any' : parseToUTCDate(dropOffDate as string)
 
-    console.log(startDate)
-
     const getReservations = await dbReservations.aggregate([
       {
         $match: {
@@ -270,6 +268,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -349,6 +348,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]
@@ -516,6 +516,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -594,6 +595,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
+            'results.reviewsCount': 0,
           },
         },
       ]
@@ -757,6 +759,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -835,6 +838,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]
@@ -1006,6 +1010,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -1085,6 +1090,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]

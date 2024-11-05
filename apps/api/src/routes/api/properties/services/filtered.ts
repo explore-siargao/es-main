@@ -202,6 +202,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       else: 0,
                     },
                   },
+                  reviewsCount: { $size: '$reviews' },
                 },
               },
               ...(Number(stars) > 0
@@ -554,6 +555,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
             'results.bookableUnits.average': 1,
+            'results.bookableUnits.reviewsCount': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
@@ -716,6 +718,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       else: 0,
                     },
                   },
+                  reviewsCount: { $size: '$reviews' },
                 },
               },
               ...(Number(stars) > 0
@@ -1076,6 +1079,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
             'results.bookableUnits.average': 1,
+            'results.bookableUnits.reviewsCount': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
@@ -1274,6 +1278,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       else: 0,
                     },
                   },
+                  reviewsCount: { $size: '$reviews' },
                 },
               },
               ...(Number(stars) > 0
@@ -1626,6 +1631,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
             'results.bookableUnits.average': 1,
+            'results.bookableUnits.reviewsCount': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
@@ -1824,6 +1830,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       else: 0,
                     },
                   },
+                  reviewsCount: { $size: '$reviews' },
                 },
               },
               ...(Number(stars) > 0
@@ -2184,6 +2191,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             'results.bookableUnits.pricePerDates': 1,
             'results.bookableUnits.qtyIds': 1,
             'results.bookableUnits.average': 1,
+            'results.bookableUnits.reviewsCount': 1,
             'results.offerBy._id': 1,
             'results.offerBy.email': 1,
             'results.offerBy.role': 1,
