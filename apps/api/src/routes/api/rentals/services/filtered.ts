@@ -2,14 +2,25 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
-import { dbLocations, dbRentals } from '@repo/database'
+import { dbLocations, dbRentals, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
 
 export const getFilteredRentals = async (req: Request, res: Response) => {
-  let { location, type, transmission, seats, priceFrom, priceTo, stars } =
-    req.query
+  let startDate, endDate
+  let {
+    location,
+    type,
+    transmission,
+    seats,
+    priceFrom,
+    priceTo,
+    stars,
+    pickUpDate = 'any',
+    dropOffDate = 'any',
+  } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
   try {
     const query: any = { deletedAt: null, status: 'Live' }
@@ -36,6 +47,65 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
     if (!stars || stars === 'any') {
       stars = '0'
     }
+    const startDate =
+      pickUpDate === 'any' ? 'any' : parseToUTCDate(pickUpDate as string)
+
+    const endDate =
+      dropOffDate === 'any' ? 'any' : parseToUTCDate(dropOffDate as string)
+
+    console.log(startDate)
+
+    const getReservations = await dbReservations.aggregate([
+      {
+        $match: {
+          deletedAt: null,
+          status: { $ne: 'Cancelled' },
+          rentalIds: { $ne: null },
+          $expr: {
+            $and: [
+              {
+                $or: [
+                  { $eq: [startDate, 'any'] }, // Ignore date condition if "any"
+                  { $lte: ['$startDate', endDate] }, // Reservation starts on or before query's endDate
+                ],
+              },
+              {
+                $or: [
+                  { $eq: [endDate, 'any'] }, // Ignore date condition if "any"
+                  { $gte: ['$endDate', startDate] }, // Reservation ends on or after query's startDate
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        $match: {
+          'rentalIds.qtyIdsId': { $exists: true }, // Only include documents with a `qtyIdsId`
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          qtyIdsArray: { $push: '$rentalIds.qtyIdsId' },
+        },
+      },
+      {
+        $unwind: {
+          path: '$qtyIdsArray',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          qtyIdsArray: 1,
+        },
+      },
+    ])
+    const qtyIdsArray =
+      getReservations.length > 0
+        ? getReservations.map((item: any) => item.qtyIdsArray)
+        : []
     if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
         {
@@ -214,6 +284,22 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            qtyIds: {
+              $filter: {
+                input: '$qtyIds',
+                as: 'item',
+                cond: { $not: { $in: ['$$item._id', qtyIdsArray] } },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            qtyIds: { $ne: [] },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
@@ -445,6 +531,22 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             ]
           : []),
         {
+          $addFields: {
+            qtyIds: {
+              $filter: {
+                input: '$qtyIds',
+                as: 'item',
+                cond: { $not: { $in: ['$$item._id', qtyIdsArray] } },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            qtyIds: { $ne: [] },
+          },
+        },
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -669,6 +771,22 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            qtyIds: {
+              $filter: {
+                input: '$qtyIds',
+                as: 'item',
+                cond: { $not: { $in: ['$$item._id', qtyIdsArray] } },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            qtyIds: { $ne: [] },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
@@ -902,6 +1020,22 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            qtyIds: {
+              $filter: {
+                input: '$qtyIds',
+                as: 'item',
+                cond: { $not: { $in: ['$$item._id', qtyIdsArray] } },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            qtyIds: { $ne: [] },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
