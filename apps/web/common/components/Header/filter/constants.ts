@@ -17,21 +17,21 @@ export const locations: T_Filter_Type[] = [
 ]
 
 export const vehicleTypes: T_Filter_Type[] = [
-  { value: "any", label: "Any Type" },
+  { value: "any", label: "Any type" },
   { value: "car", label: "Car" },
   { value: "motorbike", label: "Motorbike" },
   { value: "bicycle", label: "Bicycle" },
 ]
 
 export const transmissionTypes: T_Filter_Type[] = [
-  { value: "any_transmission", label: "Any Type" },
+  { value: "any", label: "Any Type" },
   { value: "Automatic", label: "Automatic" },
   { value: "Semi-Automatic", label: "Semi-Automatic" },
   { value: "Manual", label: "Manual" },
 ]
 
 export const propertyTypes: T_Filter_Type[] = [
-  { value: "any", label: "Any Type" },
+  { value: "any", label: "Any type" },
   { value: "hostel", label: "Hostel" },
   { value: "apartment", label: "Apartment" },
   { value: "homestay", label: "Homestay" },
@@ -44,31 +44,31 @@ export const propertyTypes: T_Filter_Type[] = [
 ]
 
 export const activityTypes: T_Filter_Type[] = [
-  { value: "any", label: "Any Type" },
-  { value: "Island hopping", label: "Island Hopping" },
-  { value: "Land tour", label: "Land Tour" },
-  { value: "Surfing lessons", label: "Surfing Lessons" },
+  { value: "any", label: "Any type" },
+  { value: "Island hopping", label: "Island hopping" },
+  { value: "Land tour", label: "Land tour" },
+  { value: "Surfing lessons", label: "Surfing lessons" },
   { value: "Wakeboarding", label: "Wakeboarding" },
-  { value: "Kite surfing", label: "Kite Surfing" },
-  { value: "Scuba diving", label: "Scuba Diving" },
+  { value: "Kite surfing", label: "Kite surfing" },
+  { value: "Scuba diving", label: "Scuba diving" },
   { value: "Freediving", label: "Freediving" },
   { value: "Fishing", label: "Fishing" },
-  { value: "ATV tour", label: "ATV Tour" },
+  { value: "ATV tour", label: "ATV tour" },
 ]
 
 export const experienceTypes: T_Filter_Type[] = [
-  { value: "any", label: "Any Type" },
+  { value: "any", label: "Any type" },
   { value: "joiner", label: "Joiner" },
   { value: "private", label: "Private" },
 ]
 
 export const durationTypes: T_Filter_Type[] = [
-  { value: "any", label: "Any Duration" },
-  { value: "1", label: "1 Hour" },
-  { value: "2", label: "2 Hours" },
-  { value: "3", label: "3 Hours" },
-  { value: "4", label: "4 Hours" },
-  { value: "5", label: "5 Hours" },
-  { value: "6", label: "6 Hours" },
-  { value: "7", label: "7 Hours" },
+  { value: "any", label: "Any duration" },
+  { value: "1", label: "1 hour" },
+  { value: "2", label: "2 hours" },
+  { value: "3", label: "3 hours" },
+  { value: "4", label: "4 hours" },
+  { value: "5", label: "5 hours" },
+  { value: "6", label: "6 hours" },
+  { value: "7", label: "7 hours" },
 ]

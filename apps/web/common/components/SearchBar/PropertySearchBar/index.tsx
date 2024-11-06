@@ -28,7 +28,7 @@ function PropertySearchBar() {
         {...register("location")}
         id="testable"
       >
-        <Option value="">Select Location</Option>
+        <Option value="">Select location</Option>
         {locations.map((loc) => (
           <Option key={loc.value} value={loc.value}>
             {loc.label}
@@ -56,7 +56,7 @@ function PropertySearchBar() {
       <Input
         type="number"
         className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Number of Guest/s"}
+        label={"Number of guest/s"}
         placeholder="Add guests"
         {...register("numberOfGuest")}
       />

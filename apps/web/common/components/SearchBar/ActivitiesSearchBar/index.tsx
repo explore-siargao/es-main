@@ -20,7 +20,7 @@ function ActivitiesSearchBar() {
         {...register("location")}
         id="testable"
       >
-        <Option value="">Select Location</Option>
+        <Option value="">Select location</Option>
         {locations.map((loc) => (
           <Option key={loc.value} value={loc.value}>
             {loc.label}
@@ -39,7 +39,7 @@ function ActivitiesSearchBar() {
       <Input
         type="number"
         className="w-[23rem] 4xl:w-[28rem] ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Number of Guest/s"}
+        label={"Number of guest/s"}
         placeholder="1"
         defaultValue={"1"}
         {...register("numberOfGuest")}

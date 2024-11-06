@@ -44,6 +44,9 @@ importers:
       '@repo/contract':
         specifier: '*'
         version: link:../../packages/contract
+      '@repo/contract-2':
+        specifier: '*'
+        version: link:../../packages/contract-2
       '@repo/database':
         specifier: '*'
         version: link:../../packages/database
@@ -295,6 +298,9 @@ importers:
       num-words:
         specifier: ^1.2.3
         version: 1.2.3
+      pluralize:
+        specifier: ^8.0.0
+        version: 8.0.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -425,9 +431,18 @@ importers:
       '@repo/constants':
         specifier: '*'
         version: link:../constants
+      '@repo/contract':
+        specifier: '*'
+        version: link:../contract
+      '@types/pluralize':
+        specifier: ^0.0.33
+        version: 0.0.33
       dotenv:
         specifier: ^16.3.1
         version: 16.4.5
+      pluralize:
+        specifier: ^8.0.0
+        version: 8.0.0
       typescript:
         specifier: ^5.2.2
         version: 5.6.2
@@ -4934,6 +4949,10 @@ packages:
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
     dev: false
+
+  /@types/pluralize@0.0.33:
+    resolution: {integrity: sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==}
+    dev: true
 
   /@types/prop-types@15.7.13:
     resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}

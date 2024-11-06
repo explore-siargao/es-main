@@ -105,7 +105,7 @@ const BoxContainer = ({
                 {location.city ? location.city : "Unknown"}
               </Typography>
               <div className="flex text-text-500 items-center gap-1">
-                <LucideStar className="h-4 w-auto fill-secondary-500" />
+                <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />
                 {ratings} (0)
               </div>
             </div>

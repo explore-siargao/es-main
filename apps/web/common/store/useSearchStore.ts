@@ -9,7 +9,7 @@ export type T_Search = {
   vehicleType?: string | null
   pickUpDate?: string | null
   dropOffDate?: string | null
-  numberOfGuest?: number | null
+  numberOfGuest?: string | null
   pathCategory?: string | null
 }
 

@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation"
 import { Separator } from "../../ui/Separator"
 import Tooltip from "./modals/components/tooltip"
 import { useSearchStore } from "@/common/store/useSearchStore"
+import { buildPropertySearchURL, buildActivitySearchURL, buildRentalSearchURL } from "../../SearchBar/helpers"
 
 function FilterHeader({
   contentWidth = "medium",
@@ -19,9 +20,9 @@ function FilterHeader({
   readonly contentWidth?: "medium" | "small" | "wide" | "full"
 }) {
   const links = [
-    { href: LINK_SEARCH_PROPERTY, icon: House, category: "Places to stay" },
-    { href: LINK_SEARCH_ACTIVITIES, icon: Palmtree, category: "Activities" },
-    { href: LINK_SEARCH_RENTAL, icon: CarFront, category: "Rentals" },
+    { href: buildPropertySearchURL({}), icon: House, category: "Places to stay" },
+    { href: buildActivitySearchURL({}), icon: Palmtree, category: "Activities" },
+    { href: buildRentalSearchURL({}), icon: CarFront, category: "Rentals" },
   ];
 
   const pathname = usePathname();
@@ -33,12 +34,15 @@ function FilterHeader({
     setActiveModal(filterType);
   };
 
+  // 1. add endpoint for geting maxPrice for all Category
+  // 2. move filter to module
+
   return (
     <header className="w-full bg-white border-t border-t-gray-200/50">
       <WidthWrapper width={contentWidth}>
         <nav className="flex items-center py-2 my-2 w-full gap-8 relative" aria-label="Global">
           {links.map(({ href, icon: Icon, category }) => {
-            const isSelected = pathname === href; 
+            const isSelected = href.includes(pathname); 
             return (
               <div className="flex gap-x-7 items-center relative" key={href}>
                 <Link href={href} onClick={() => setPathCategory(href)}>

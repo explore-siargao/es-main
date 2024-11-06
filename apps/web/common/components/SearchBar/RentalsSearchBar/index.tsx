@@ -19,7 +19,7 @@ function RentalsSearchBar() {
         {...register("location")}
         id="testable"
       >
-        <Option value="">Select Location</Option>
+        <Option value="">Select location</Option>
         {locations.map((loc) => (
           <Option key={loc.value} value={loc.value}>
             {loc.label}
@@ -29,10 +29,10 @@ function RentalsSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Select
         className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Vehicle Type"}
+        label={"Vehicle type"}
         {...register("vehicleType")}
       >
-        <Option value="">Select Vehicle Type</Option>
+        <Option value="">Select vehicle type</Option>
         {vehicleTypes.map((vehicleType) => (
           <Option key={vehicleType.value} value={vehicleType.value}>
             {vehicleType.label}
@@ -43,7 +43,7 @@ function RentalsSearchBar() {
       <Input
         type="date"
         className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Pick-up Date"}
+        label={"Pick-up date"}
         {...register("pickUpDate")}
         min={dateToday}
       />
@@ -51,7 +51,7 @@ function RentalsSearchBar() {
       <Input
         type="date"
         className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Drop-off Date"}
+        label={"Drop-off date"}
         {...register("dropOffDate")}
         disabled={!watch("pickUpDate")}
         min={watch("pickUpDate")}

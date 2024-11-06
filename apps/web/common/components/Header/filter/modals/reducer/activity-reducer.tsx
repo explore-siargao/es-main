@@ -1,42 +1,35 @@
-import { activityTypes, durationTypes, experienceTypes, locations, T_Filter_Type } from "../../constants"
+import { activityTypes, durationTypes, experienceTypes, T_Filter_Type } from "../../constants"
 
 export enum EActivityAction {
   SET_LOCATION = "SET_LOCATION",
   SET_STAR_RATING = "SET_STAR_RATING",
   SET_PRICE_RANGE = "SET_PRICE_RANGE",
-  SET_ACTIVITY_TYPE = "SET_ACTIVITY_TYPE",
-  SET_EXPERIENCE_TYPE = "SET_EXPERIENCE_TYPE",
-  SET_DURATION = "SET_DURATION",
+  SET_SELECTED_PRICE_RANGE = "SET_SELECTED_PRICE_RANGE",
+  SET_ACTIVITY_TYPES = "SET_ACTIVITY_TYPES",
+  SET_EXPERIENCE_TYPES = "SET_EXPERIENCE_TYPES",
+  SET_DURATIONS = "SET_DURATIONS",
   RESET_FILTERS = "RESET_FILTERS",
-  
 }
 
 export type T_Filter_Activity = {
-  starRating: number
+  starRating: number | "any"
   priceRange: number[]
-  location: T_Filter_Type[]
-  activityType: T_Filter_Type[]
-  experienceType: T_Filter_Type[]
-  duration: T_Filter_Type[]
+  selectedPriceRange: ("any" | number)[]
+  location: string
+  activityTypes: string[] | 'any'
+  experienceTypes: string[] | 'any'
+  durations: string[] | 'any'
 }
 
 type Action =
-  | { type: EActivityAction.SET_LOCATION; payload: T_Filter_Type[] }
+  | { type: EActivityAction.SET_LOCATION; payload: string }
   | { type: EActivityAction.SET_STAR_RATING; payload: number }
-  | { type: EActivityAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: EActivityAction.SET_ACTIVITY_TYPE; payload: T_Filter_Type[] }
-  | { type: EActivityAction.SET_EXPERIENCE_TYPE; payload: T_Filter_Type[] }
-  | { type: EActivityAction.SET_DURATION; payload: T_Filter_Type[] }
+  | { type: EActivityAction.SET_PRICE_RANGE; payload: number[] }
+  | { type: EActivityAction.SET_SELECTED_PRICE_RANGE; payload: number[] | 'any'[] }
+  | { type: EActivityAction.SET_ACTIVITY_TYPES; payload: string[] | 'any' }
+  | { type: EActivityAction.SET_EXPERIENCE_TYPES; payload: string[] | 'any' }
+  | { type: EActivityAction.SET_DURATIONS; payload: string[] | 'any' }
   | { type: EActivityAction.RESET_FILTERS }
-
-export const activityInitialState: T_Filter_Activity = {
-  starRating: 0,
-  priceRange: [0, 1000],
-  location: [locations[0]!],
-  activityType: [activityTypes[0]!],
-  experienceType: [experienceTypes[0]!],
-  duration: [durationTypes[0]!],
-}
 
 export function activityReducer(
   state: T_Filter_Activity,
@@ -47,16 +40,26 @@ export function activityReducer(
       return { ...state, starRating: action.payload }
     case EActivityAction.SET_PRICE_RANGE:
       return { ...state, priceRange: action.payload }
-    case EActivityAction.SET_ACTIVITY_TYPE:
-      return { ...state, activityType: action.payload }
+    case EActivityAction.SET_SELECTED_PRICE_RANGE:
+      return { ...state, selectedPriceRange: action.payload }
+    case EActivityAction.SET_ACTIVITY_TYPES:
+      return { ...state, activityTypes: action.payload }
      case EActivityAction.SET_LOCATION:
         return { ...state, location: action.payload }
-    case EActivityAction.SET_EXPERIENCE_TYPE:
-      return { ...state, experienceType: action.payload }
-    case EActivityAction.SET_DURATION:
-      return { ...state, duration: action.payload }
+    case EActivityAction.SET_EXPERIENCE_TYPES:
+      return { ...state, experienceTypes: action.payload }
+    case EActivityAction.SET_DURATIONS:
+      return { ...state, durations: action.payload }
     case EActivityAction.RESET_FILTERS:
-      return activityInitialState
+      return {
+        starRating: "any",
+        priceRange: [0, 1000],
+        selectedPriceRange: ["any", "any"],
+        location: "any",
+        activityTypes: "any",
+        experienceTypes: "any",
+        durations: "any",
+      }
     default:
       return state
   }

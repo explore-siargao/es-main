@@ -9,6 +9,8 @@ import RentalsSearchBar from "./RentalsSearchBar"
 import NavigationByState from "./NavigationByState"
 import { cn } from "@/common/helpers/cn"
 import { LINK_SEARCH_ACTIVITIES, LINK_SEARCH_PROPERTY, LINK_SEARCH_RENTAL } from "@/common/constants"
+import { Z_Properties_Search } from "@repo/contract-2/search-filters"
+import { buildActivitySearchURL, buildPropertySearchURL, buildRentalSearchURL } from "./helpers"
 
 const SearchBarByState = ({
   isNavCenter = false,
@@ -25,7 +27,7 @@ const SearchBarByState = ({
   const checkOut = searchParams.get('checkOut')
   const date = searchParams.get('date')
   const numberOfGuest = searchParams.get('numberOfGuest')
-  const vehicleType = (searchParams.get('vehicleType') ?? "")?.split(',')
+  const vehicleType = (searchParams.get('vehicleTypes') ?? "")?.split(',')
   const pickUpDate = searchParams.get('pickUpDate')
   const dropOffDate = searchParams.get('dropOffDate')
   const { pathCategory, setPathCategory } = useSearchStore(state => state);
@@ -37,13 +39,13 @@ const SearchBarByState = ({
   const form = useForm<T_Search>({
     values: {
       location: location ? location : "any",
-      checkIn,
-      checkOut,
-      date,
-      numberOfGuest: Number(numberOfGuest ?? 1),
+      checkIn: checkIn === "any" ? "" : checkIn,
+      checkOut: checkOut === "any" ? "" : checkOut,
+      date: date === "any" ? "" : date,
+      numberOfGuest: numberOfGuest === "any" ? "" : (numberOfGuest ?? "1"),
       vehicleType: vehicleType[0],
-      pickUpDate,
-      dropOffDate
+      pickUpDate: pickUpDate === "any" ? "" : pickUpDate,
+      dropOffDate: dropOffDate === "any" ? "" : dropOffDate,
     }
   })
 
@@ -64,26 +66,36 @@ const SearchBarByState = ({
       checkOut &&
       numberOfGuest
     ) {
-      router.push(
-        `/search/properties?location=${location}&checkIn=${checkIn}&checkOut=${checkOut}&numberOfGuest=${Number(numberOfGuest)}`
-      )
+      router.push(buildPropertySearchURL({
+        location,
+        checkIn,
+        checkOut,
+        numberOfGuest
+      }))
     } else if (
       pathCategory === LINK_SEARCH_ACTIVITIES &&
+      location &&
       date &&
       numberOfGuest
     ) {
-      router.push(
-        `/search/activities?location=${location}&date=${date}&numberOfGuest=${Number(numberOfGuest)}`
-      )
+      router.push(buildActivitySearchURL({
+        location,
+        date,
+        numberOfGuest
+      }))
     } else if (
       pathCategory === LINK_SEARCH_RENTAL &&
+      location &&
       vehicleType &&
       pickUpDate &&
       dropOffDate
     ) {
-      router.push(
-        `/search/rentals?location=${location}&vehicleType=${vehicleType}&pickUpDate=${pickUpDate}&dropOffDate=${dropOffDate}`
-      )
+      router.push(buildRentalSearchURL({
+        location,
+        vehicleType,
+        pickUpDate,
+        dropOffDate,
+      }))
     }
   }
 

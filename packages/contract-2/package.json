@@ -12,6 +12,11 @@
       "import": "./build/cart/index.js",
       "require": "./build/cart/index.js",
       "types": "./build/cart/index.d.ts"
+    },
+    "./search-filters": {
+      "import": "./build/search-filters/index.js",
+      "require": "./build/search-filters/index.js",
+      "types": "./build/search-filters/index.d.ts"
     }
   },
   "scripts": {
@@ -20,8 +25,11 @@
   },
   "devDependencies": {
     "@repo/constants": "*",
-    "zod": "^3.22.4",
+    "@repo/contract": "*",
+    "@types/pluralize": "^0.0.33",
+    "pluralize": "^8.0.0",
+    "dotenv": "^16.3.1",
     "typescript": "^5.2.2",
-    "dotenv": "^16.3.1"
+    "zod": "^3.22.4"
   }
 }

@@ -1,4 +1,4 @@
-import React, { Dispatch } from "react"
+import React from "react"
 import { Button } from "../ui/Button"
 import { cn } from "@/common/helpers/cn"
 import { LINK_SEARCH_ACTIVITIES, LINK_SEARCH_PROPERTY, LINK_SEARCH_RENTAL } from "@/common/constants"
@@ -27,7 +27,7 @@ const NavigationByState = ({
           size="sm"
           onClick={() => setPathCategory(path)}
           className={cn(
-            `${currCategory === path ? "font-bold underline underline-offset-4" : ""} ${isDark ? "text-white" : "text-text-950"} hover:text-secondary-500 transition px-0 text-md`
+            `${currCategory?.includes(path) ? "font-bold underline underline-offset-4" : ""} ${isDark ? "text-white" : "text-text-950"} hover:text-secondary-500 transition px-0 text-md`
           )}
         >
           {name}
