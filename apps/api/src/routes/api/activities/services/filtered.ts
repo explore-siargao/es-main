@@ -2,14 +2,24 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
-import { dbActivities, dbLocations } from '@repo/database'
+import { dbActivities, dbLocations, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
-  let { location, type, activityTpes, priceFrom, priceTo, duration, stars } =
-    req.query
+  let {
+    location,
+    type,
+    activityTpes,
+    priceFrom,
+    priceTo,
+    duration,
+    stars,
+    activityDate = 'any',
+    numberOfGuest = 'any',
+  } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
   const query: any = { deletedAt: null, status: 'Live' }
   try {
@@ -37,6 +47,107 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     if (!stars || stars === 'any') {
       stars = '0'
     }
+    const startDate =
+      activityDate === 'any' ? 'any' : parseToUTCDate(activityDate as string)
+
+    const getActivityPrivateReservations = await dbReservations.aggregate([
+      {
+        $match: {
+          deletedAt: null,
+          status: { $ne: 'Cancelled' },
+          activityIds: { $ne: null },
+          $expr: {
+            $or: [
+              { $eq: [startDate, 'any'] }, // Ignore date condition if "any"
+              { $eq: ['$startDate', startDate] }, // Reservation starts on or before query's endDate
+            ],
+          },
+        },
+      },
+      {
+        $match: {
+          $and: [
+            { 'activityIds.timeSlotId': { $exists: true } },
+            { 'activityIds.timeSlotId': { $ne: null } },
+            {
+              $or: [
+                { 'activityIds.slotIdsId': { $exists: false } },
+                { 'activityIds.slotIdsId': { $eq: null } },
+              ],
+            },
+          ],
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          timeSlotIds: { $push: '$activityIds.timeSlotId' },
+        },
+      },
+      {
+        $unwind: {
+          path: '$timeSlotIds',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          timeSlotIds: 1,
+        },
+      },
+    ])
+
+    const getActivityJoinerReservations = await dbReservations.aggregate([
+      {
+        $match: {
+          deletedAt: null,
+          status: { $ne: 'Cancelled' },
+          activityIds: { $ne: null },
+          $expr: {
+            $or: [
+              { $eq: [startDate, 'any'] }, // Ignore date condition if "any"
+              { $eq: ['$startDate', startDate] }, // Reservation starts on or before query's endDate
+            ],
+          },
+        },
+      },
+      {
+        $match: {
+          $and: [
+            { 'activityIds.slotIdsId': { $exists: true } },
+            { 'activityIds.slotIdsId': { $ne: null } },
+          ],
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          slotIdsId: { $push: '$activityIds.slotIdsId' },
+        },
+      },
+      {
+        $unwind: {
+          path: '$slotIdsId',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          slotIdsId: 1,
+        },
+      },
+    ])
+
+    const timeSlotIds =
+      getActivityPrivateReservations.length > 0
+        ? getActivityPrivateReservations.map((item: any) => item.timeSlotIds)
+        : []
+
+    const slotIdsId =
+      getActivityJoinerReservations.length > 0
+        ? getActivityJoinerReservations.map((item: any) => item.slotIdsId)
+        : []
+
     if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
         { $match: query },
@@ -129,6 +240,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -143,6 +255,388 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            'schedule.monday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.tuesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.wednesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.thursday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.friday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.saturday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.sunday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $cond: {
+                    if: { $ne: [numberOfGuest, 'any'] },
+                    then: {
+                      $and: [
+                        {
+                          $gte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.minimum',
+                          ],
+                        },
+                        {
+                          $lte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.maximum',
+                          ],
+                        },
+                      ],
+                    },
+                    else: true,
+                  },
+                },
+                {
+                  $cond: {
+                    if: { $eq: ['$experienceType', 'Private'] },
+                    then: {
+                      $and: [
+                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                      ],
+                    },
+                    else: {
+                      $and: [
+                        {
+                          $or: [
+                            {
+                              $ne: [
+                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                {
+                                  $size: '$schedule.wednesday.slots.slotIdsId',
+                                },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
@@ -185,6 +679,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.policies': 1,
             'results.isSegmentBuilderEnabled': 1,
             'results.segments': 1,
+            'results.slotCapacity': 1,
             'results.schedule': 1,
             'results.pricePerPerson': 1,
             'results.pricePerSlot': 1,
@@ -205,6 +700,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.meetingPoint': 1,
             'results.photos': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]
@@ -317,6 +813,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -331,6 +828,388 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            'schedule.monday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.tuesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.wednesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.thursday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.friday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.saturday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.sunday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $cond: {
+                    if: { $ne: [numberOfGuest, 'any'] },
+                    then: {
+                      $and: [
+                        {
+                          $gte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.minimum',
+                          ],
+                        },
+                        {
+                          $lte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.maximum',
+                          ],
+                        },
+                      ],
+                    },
+                    else: true,
+                  },
+                },
+                {
+                  $cond: {
+                    if: { $eq: ['$experienceType', 'Private'] },
+                    then: {
+                      $and: [
+                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                      ],
+                    },
+                    else: {
+                      $and: [
+                        {
+                          $or: [
+                            {
+                              $ne: [
+                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                {
+                                  $size: '$schedule.wednesday.slots.slotIdsId',
+                                },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
@@ -373,6 +1252,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.policies': 1,
             'results.isSegmentBuilderEnabled': 1,
             'results.segments': 1,
+            'results.slotCapacity': 1,
             'results.schedule': 1,
             'results.pricePerPerson': 1,
             'results.pricePerSlot': 1,
@@ -393,6 +1273,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.meetingPoint': 1,
             'results.photos': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]
@@ -501,6 +1382,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -515,6 +1397,388 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            'schedule.monday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.tuesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.wednesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.thursday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.friday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.saturday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.sunday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $cond: {
+                    if: { $ne: [numberOfGuest, 'any'] },
+                    then: {
+                      $and: [
+                        {
+                          $gte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.minimum',
+                          ],
+                        },
+                        {
+                          $lte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.maximum',
+                          ],
+                        },
+                      ],
+                    },
+                    else: true,
+                  },
+                },
+                {
+                  $cond: {
+                    if: { $eq: ['$experienceType', 'Private'] },
+                    then: {
+                      $and: [
+                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                      ],
+                    },
+                    else: {
+                      $and: [
+                        {
+                          $or: [
+                            {
+                              $ne: [
+                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                {
+                                  $size: '$schedule.wednesday.slots.slotIdsId',
+                                },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
@@ -557,6 +1821,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.policies': 1,
             'results.isSegmentBuilderEnabled': 1,
             'results.segments': 1,
+            'results.slotCapacity': 1,
             'results.schedule': 1,
             'results.pricePerPerson': 1,
             'results.pricePerSlot': 1,
@@ -577,6 +1842,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.meetingPoint': 1,
             'results.photos': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]
@@ -693,6 +1959,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                 else: 0,
               },
             },
+            reviewsCount: { $size: '$reviews' },
           },
         },
         ...(Number(stars) > 0
@@ -707,6 +1974,388 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               },
             ]
           : []),
+        {
+          $addFields: {
+            'schedule.monday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.monday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.tuesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.tuesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.wednesday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.wednesday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.thursday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.thursday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.friday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.friday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.saturday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.saturday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            'schedule.sunday.slots': {
+              $cond: {
+                if: { $eq: ['$experienceType', 'Private'] },
+                then: {
+                  $filter: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    cond: { $not: { $in: ['$$slot._id', timeSlotIds] } },
+                  },
+                },
+                else: {
+                  $map: {
+                    input: '$schedule.sunday.slots',
+                    as: 'slot',
+                    in: {
+                      $mergeObjects: [
+                        '$$slot',
+                        {
+                          slotIdsId: {
+                            $cond: {
+                              if: { $eq: ['$experienceType', 'Joiner'] },
+                              then: {
+                                $filter: {
+                                  input: '$$slot.slotIdsId',
+                                  as: 'slotId',
+                                  cond: {
+                                    $not: { $in: ['$$slotId._id', slotIdsId] },
+                                  },
+                                },
+                              },
+                              else: '$$slot.slotIdsId',
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $cond: {
+                    if: { $ne: [numberOfGuest, 'any'] },
+                    then: {
+                      $and: [
+                        {
+                          $gte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.minimum',
+                          ],
+                        },
+                        {
+                          $lte: [
+                            Number(numberOfGuest),
+                            '$slotCapacity.maximum',
+                          ],
+                        },
+                      ],
+                    },
+                    else: true,
+                  },
+                },
+                {
+                  $cond: {
+                    if: { $eq: ['$experienceType', 'Private'] },
+                    then: {
+                      $and: [
+                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
+                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                      ],
+                    },
+                    else: {
+                      $and: [
+                        {
+                          $or: [
+                            {
+                              $ne: [
+                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                {
+                                  $size: '$schedule.wednesday.slots.slotIdsId',
+                                },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                            {
+                              $ne: [
+                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                0,
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
@@ -749,6 +2398,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.policies': 1,
             'results.isSegmentBuilderEnabled': 1,
             'results.segments': 1,
+            'results.slotCapacity': 1,
             'results.schedule': 1,
             'results.pricePerPerson': 1,
             'results.pricePerSlot': 1,
@@ -769,6 +2419,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             'results.meetingPoint': 1,
             'results.photos': 1,
             'results.average': 1,
+            'results.reviewsCount': 1,
           },
         },
       ]
