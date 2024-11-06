@@ -156,6 +156,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
   const {
     title,
     subtitle,
+    maxGuest = 0,
     qty,
     isHaveSharedBathRoom,
     isSmokingAllowed,
@@ -225,6 +226,7 @@ export const updateBedUnitBasicInfo = async (req: Request, res: Response) => {
                     isSmokingAllowed: isSmokingAllowed,
                     totalSize: totalSize,
                     daysCanCancel: daysCanCancel,
+                    maxGuests: maxGuest,
                     updatedAt: Date.now(),
                   },
                   ...(newIdsNeeded > 0 && {
@@ -261,6 +263,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
   const {
     title,
     totalSize,
+    maxGuest = 0,
     qty,
     bedRooms,
     isHaveSharedBathRoom,
@@ -331,6 +334,7 @@ export const updateRoomUnitBasicInfo = async (req: Request, res: Response) => {
                     isHaveSharedBathRoom: isHaveSharedBathRoom,
                     isHaveSharedAmenities: isHaveSharedAmenities,
                     daysCanCancel: daysCanCancel,
+                    maxGuests: maxGuest,
                     updatedAt: Date.now(),
                   },
                   ...(newIdsNeeded > 0 && {
@@ -374,6 +378,7 @@ export const updateWholePlaceUnitBasicInfo = async (
     numBathRooms,
     bedRooms,
     bedroomStudio,
+    maxGuest = 0,
     qty,
     livingRooms,
     singleBedRoom,
@@ -447,6 +452,7 @@ export const updateWholePlaceUnitBasicInfo = async (
                     singleLivingRoom: singleLivingRoom,
                     qty: qty,
                     daysCanCancel: daysCanCancel,
+                    maxGuests: maxGuest,
                     updatedAt: Date.now(),
                   },
                   ...(newIdsNeeded > 0 && {
