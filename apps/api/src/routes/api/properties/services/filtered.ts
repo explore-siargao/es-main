@@ -2,8 +2,9 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
-import { dbLocations, dbProperties, dbUnitPrices } from '@repo/database'
+import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -19,6 +20,9 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     bathrooms,
     bedrooms,
     stars,
+    checkIn = 'any',
+    checkOut = 'any',
+    numberOfGuest = 'any',
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
   const query: any = {
@@ -63,6 +67,57 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     bathrooms = 'any'
   }
   try {
+    const startDate =
+      checkIn === 'any' ? 'any' : parseToUTCDate(checkIn as string)
+    const endDate =
+      checkOut === 'any' ? 'any' : parseToUTCDate(checkOut as string)
+    const guestNumber = numberOfGuest === 'any' ? 0 : Number(numberOfGuest)
+    const getUnitReservations = await dbReservations.aggregate([
+      {
+        $match: {
+          deletedAt: null,
+          propertyIds: { $ne: null },
+          status: { $ne: 'Cancelled' },
+          $expr: {
+            $and: [
+              {
+                $or: [
+                  { $eq: [startDate, 'any'] }, // Ignore date condition if "any"
+                  { $lte: ['$startDate', endDate] }, // Reservation starts on or before query's endDate
+                ],
+              },
+              {
+                $or: [
+                  { $eq: [endDate, 'any'] }, // Ignore date condition if "any"
+                  { $gte: ['$endDate', startDate] }, // Reservation ends on or after query's startDate
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          unitId: { $push: '$propertyIds.unitId' },
+        },
+      },
+      {
+        $unwind: {
+          path: '$unitId',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          unitId: 1,
+        },
+      },
+    ])
+    const unitIds =
+      getUnitReservations.length > 0
+        ? getUnitReservations.map((item: any) => item.unitId)
+        : []
     if ((!location || location === 'any') && (!type || type === 'any')) {
       const pipeline = [
         { $match: query },
@@ -217,6 +272,23 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     },
                   ]
                 : []),
+              {
+                $addFields: {
+                  qtyIds: {
+                    $filter: {
+                      input: '$qtyIds',
+                      as: 'qty',
+                      cond: { $not: { $in: ['$$qty._id', unitIds] } },
+                    },
+                  },
+                },
+              },
+              {
+                $match: {
+                  qtyIds: { $ne: [] },
+                  maxGuests: { $gte: guestNumber },
+                },
+              },
             ],
           },
         },
@@ -733,6 +805,23 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     },
                   ]
                 : []),
+              {
+                $addFields: {
+                  qtyIds: {
+                    $filter: {
+                      input: '$qtyIds',
+                      as: 'qty',
+                      cond: { $not: { $in: ['$$qty._id', unitIds] } },
+                    },
+                  },
+                },
+              },
+              {
+                $match: {
+                  qtyIds: { $ne: [] },
+                  maxGuests: { $gte: guestNumber },
+                },
+              },
             ],
           },
         },
@@ -1293,6 +1382,23 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     },
                   ]
                 : []),
+              {
+                $addFields: {
+                  qtyIds: {
+                    $filter: {
+                      input: '$qtyIds',
+                      as: 'qty',
+                      cond: { $not: { $in: ['$$qty._id', unitIds] } },
+                    },
+                  },
+                },
+              },
+              {
+                $match: {
+                  qtyIds: { $ne: [] },
+                  maxGuests: { $gte: guestNumber },
+                },
+              },
             ],
           },
         },
@@ -1845,6 +1951,23 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     },
                   ]
                 : []),
+              {
+                $addFields: {
+                  qtyIds: {
+                    $filter: {
+                      input: '$qtyIds',
+                      as: 'qty',
+                      cond: { $not: { $in: ['$$qty._id', unitIds] } },
+                    },
+                  },
+                },
+              },
+              {
+                $match: {
+                  qtyIds: { $ne: [] },
+                  maxGuests: { $gte: guestNumber },
+                },
+              },
             ],
           },
         },
