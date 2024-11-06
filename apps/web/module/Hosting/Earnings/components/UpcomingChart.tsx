@@ -37,12 +37,12 @@ const UpcomingChart = ({ data }: T_Prop) => {
         <XAxis dataKey="month" />
         <YAxis
           tickFormatter={(value: number) =>
-            formatCurrency(value, "Philippines")
+            formatCurrency(value)
           }
         />
         <Tooltip
           cursor={{ fill: "#F3F4F6" }}
-          formatter={(value: number) => formatCurrency(value, "Philippines")}
+          formatter={(value: number) => formatCurrency(value)}
         />
         <Bar dataKey="upcoming" fill="#C4E5E6" />
         <Bar dataKey="paid" fill="#8DBFC0" />

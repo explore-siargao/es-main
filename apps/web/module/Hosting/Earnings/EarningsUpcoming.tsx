@@ -84,7 +84,7 @@ const EarningsUpcoming = ({ data }: T_Prop) => {
             <Typography variant="h1" className="text-[30px]">
               Your upcoming earnings{" "}
               <span className="text-gray-400">
-                {formatCurrency(total, "Philippines")}
+                {formatCurrency(total)}
               </span>
             </Typography>
           </div>

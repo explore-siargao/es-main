@@ -30,7 +30,7 @@ const SubTotalBox = ({ subTotal }: CheckoutProcessProps) => {
         <LucideChevronDown />
       </div>
       <span className="text-xl font-semibold mb-4 mt-2">
-        {formatCurrency(subTotal.titlePrice, "Philippines")}{" "}
+        {formatCurrency(subTotal.titlePrice)}{" "}
         <small className="font-light">night</small>
       </span>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full"></div>
@@ -44,7 +44,7 @@ const SubTotalBox = ({ subTotal }: CheckoutProcessProps) => {
         <div className="border-b mt-5 mb-5"></div>
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
-          <div>{formatCurrency(subTotal.totalBeforeTaxes, "Philippines")}</div>
+          <div>{formatCurrency(subTotal.totalBeforeTaxes)}</div>
         </div>
       </div>
     </div>

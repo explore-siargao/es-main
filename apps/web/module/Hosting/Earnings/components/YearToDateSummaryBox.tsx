@@ -13,10 +13,10 @@ const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({ excelData }) => {
   const summaryData = [
     ["Gross earnings", "Adjustments", "Service fee", "12% VAT"],
     [
-      formatCurrency(94800, "Philippines"),
-      formatCurrency(2000, "Philippines"),
-      formatCurrency(2000, "Philippines"),
-      formatCurrency(2000, "Philippines"),
+      formatCurrency(94800),
+      formatCurrency(2000),
+      formatCurrency(2000),
+      formatCurrency(2000),
     ],
   ]
   return (
@@ -49,7 +49,7 @@ const YearToDateSummary: React.FC<YearToDateSummaryProps> = ({ excelData }) => {
           Total
         </Typography>
         <Typography className="pt-4 text-sm" variant="p" fontWeight="semibold">
-          {formatCurrency(97800, "Philippines")}
+          {formatCurrency(97800)}
         </Typography>
       </div>
       <div className="flex justify-center mt-4">

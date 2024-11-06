@@ -59,7 +59,7 @@ const earningsColumns = [
     cell: (earnings) => {
       return (
         <Typography variant="p">
-          {formatCurrency(earnings.getValue() as number, "Philippines")}
+          {formatCurrency(earnings.getValue() as number)}
         </Typography>
       )
     },

@@ -63,12 +63,12 @@ const SectionInfo = ({
         <Typography>
           {
             // @ts-ignore
-            formatCurrency(priceRangeLow, "Philippines")
+            formatCurrency(priceRangeLow)
           }{" "}
           -{" "}
           {
             // @ts-ignore
-            formatCurrency(priceRangeHigh, "Philippines")
+            formatCurrency(priceRangeHigh)
           }
         </Typography>
         <Typography variant="h6">&#8226;</Typography>

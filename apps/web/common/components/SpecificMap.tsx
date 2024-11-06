@@ -45,7 +45,7 @@ const priceMarkerIcon = (price?: number) =>
     html: `<div class="relative min-w-20 min-h-7 bg-white rounded-full shadow-lg">
   <div class="flex items-center justify-center p-1">
   <strong>
-  ${price ? formatCurrency(price, "Philippines") : "&#8369;0.00"}
+  ${price ? formatCurrency(price) : "&#8369;0.00"}
   </strong>
   </div>
   <div class="flex justify-center">

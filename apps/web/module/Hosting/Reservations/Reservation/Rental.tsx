@@ -27,7 +27,7 @@ const Rental = (props: any) => {
         </Typography>
         <Typography variant="h5" className="mt-2">
           <span className="font-semibold">Amount Paid:</span>{" "}
-          {formatCurrency(props?.listing?.transaction?.earnings, "Philippines")}
+          {formatCurrency(props?.listing?.transaction?.earnings)}
         </Typography>
         <Typography variant="h5" className="mt-2">
           <span className="font-semibold">Payment Method:</span>{" "}

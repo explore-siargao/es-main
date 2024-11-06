@@ -1,7 +1,9 @@
 import { E_Supported_Currencies } from "../types/global";
 
-function formatCurrency(amount: number, currencyCode: E_Supported_Currencies): string {
-  // Define locale based on currency, with default for currency-specific formatting
+function formatCurrency(amount: number, currencyCode?: E_Supported_Currencies): string {
+  const storedCurrency = localStorage.getItem("currency") as E_Supported_Currencies | null;
+  const finalCurrency = currencyCode || storedCurrency || E_Supported_Currencies.PHP;
+
   const locale = {
     PHP: 'en-PH',
     USD: 'en-US',
@@ -10,25 +12,22 @@ function formatCurrency(amount: number, currencyCode: E_Supported_Currencies): s
     AUD: 'en-AU',
     ILS: 'he-IL',
     GBP: 'en-GB',
-  }[currencyCode];
+  }[finalCurrency];
 
-  // Format the amount as currency
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: currencyCode,
-    minimumFractionDigits: currencyCode === 'KRW' ? 0 : 2,
-    maximumFractionDigits: currencyCode === 'KRW' ? 0 : 2,
+    currency: finalCurrency,
+    minimumFractionDigits: finalCurrency === 'KRW' ? 0 : 2,
+    maximumFractionDigits: finalCurrency === 'KRW' ? 0 : 2,
   });
 
-  // Format amount and handle Euro (€) symbol position
   let formattedAmount = formatter.format(amount);
 
-  if (currencyCode === 'EUR') {
-    // Ensure Euro symbol is in front for consistent formatting
+  if (finalCurrency === 'EUR') {
     formattedAmount = `€${formattedAmount.replace('€', '').trim()}`;
   }
 
   return formattedAmount;
 }
 
-export default formatCurrency
+export default formatCurrency;

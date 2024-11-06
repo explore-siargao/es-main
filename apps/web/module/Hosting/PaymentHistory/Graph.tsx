@@ -44,11 +44,11 @@ const Graph: React.FC<GraphProps> = ({ graphData, isFilterAll }) => {
           <XAxis dataKey="name" />
           <YAxis
             tickFormatter={(value: number) =>
-              formatCurrency(value, "Philippines")
+              formatCurrency(value)
             }
           />
           <Tooltip
-            formatter={(value: number) => formatCurrency(value, "Philippines")}
+            formatter={(value: number) => formatCurrency(value)}
           />
           {isFilterAll ? (
             <>

@@ -31,7 +31,7 @@ const EarningsThisMonth = ({ data }: T_Prop) => {
             <Typography variant="h1" className="text-[30px]">
               You&apos;ve made{" "}
               <span className="text-gray-400">
-                {formatCurrency(data.paid, "Philippines")}
+                {formatCurrency(data.paid)}
               </span>{" "}
               this month
             </Typography>

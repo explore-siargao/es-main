@@ -107,8 +107,8 @@ const CheckoutBox = ({
     >
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
         {unit
-          ? formatCurrency(unit.unitPrice.baseRate, "Philippines")
-          : formatCurrency(checkoutDesc.titlePrice, "Philippines")}
+          ? formatCurrency(unit.unitPrice.baseRate)
+          : formatCurrency(checkoutDesc.titlePrice)}
         <small className="font-light"> night</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
@@ -195,8 +195,7 @@ const CheckoutBox = ({
           <div>
             {formatCurrency(
               (unit ? unit.unitPrice.baseRate : checkoutDesc.titlePrice) *
-                totalGuest,
-              "Philippines"
+                totalGuest
             )}
           </div>
         </div>
@@ -209,7 +208,7 @@ const CheckoutBox = ({
           >
             {APP_NAME} service fee
           </Button>
-          <div>{formatCurrency(checkoutDesc.serviceFee, "Philippines")}</div>
+          <div>{formatCurrency(checkoutDesc.serviceFee)}</div>
         </div>
 
         <div className="border-b mt-5 mb-5"></div>
@@ -218,8 +217,7 @@ const CheckoutBox = ({
           <div>
             {totalBasePrice !== null
               ? formatCurrency(
-                  totalBasePrice + checkoutDesc.serviceFee,
-                  "Philippines"
+                  totalBasePrice + checkoutDesc.serviceFee
                 )
               : "Loading..."}
           </div>
