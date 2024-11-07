@@ -1,5 +1,5 @@
 import { ApiService } from "../common/services/api"
-import { T_Cart } from "./type"
+import { T_Cart, T_UpdateCart } from "./type"
 
 const CART_BASE_URL = `/api/v1/carts`
 
@@ -11,8 +11,8 @@ export class CartService {
   async addItem(item: T_Cart) {
     return this.api.post(CART_BASE_URL, item)
   }
-  async updateItem(itemId: string, quantity: number) {
-    return this.api.patch(`${CART_BASE_URL}/${itemId}`, { quantity })
+  async updateItem(itemId: string, item: T_UpdateCart) {
+    return this.api.patch(`${CART_BASE_URL}/${itemId}`, item)
   }
   async removeItem(itemId: string) {
     return this.api.delete(`${CART_BASE_URL}/${itemId}`)

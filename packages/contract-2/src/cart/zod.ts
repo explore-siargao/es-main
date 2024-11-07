@@ -36,3 +36,9 @@ export const Z_Cart = z
       "At least one of propertyIds, rentalIds, or activityIds must be provided.",
     path: ["propertyIds", "rentalIds", "activityIds"],
   })
+
+export const Z_UpdateCart = z.object({
+  startDate: z.string(),
+  endDate: z.string(),
+  price: z.number(),
+})
