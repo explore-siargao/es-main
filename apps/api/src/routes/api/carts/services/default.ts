@@ -2,11 +2,13 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { dbCarts, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
 import { pipeline } from 'stream'
+import { json } from 'stream/consumers'
 
 const response = new ResponseService()
 export const addToCart = async (req: Request, res: Response) => {
@@ -1154,6 +1156,88 @@ export const getAllReservationOrCarts = async (req: Request, res: Response) => {
       }
     } else {
       res.json(response.error({ message: 'Invalid type' }))
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const updateCartInfo = async (req: Request, res: Response) => {
+  const cartId = req.params.cartId
+  const userId = res.locals.user?.id
+  const { startDate, endDate, price } = req.body
+
+  try {
+    const getCart = await dbCarts.findOne({
+      _id: cartId,
+      userId: userId,
+      status: 'Active',
+      deletedAt: null,
+    })
+    if (!getCart) {
+      res.json(response.error({ message: 'Cart not found or already removed' }))
+    } else {
+      if (!startDate || !endDate || !price) {
+        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      } else {
+        const cartconflicts = await dbCarts.find({
+          $and: [
+            { status: 'Active' },
+            { deletedAt: null },
+            { _id: { $ne: cartId } },
+            {
+              $or: [
+                {
+                  'propertyIds.unitId': getCart.propertyIds?.unitId,
+                  'propertyIds.propertyId': getCart.propertyIds?.propertyId,
+                },
+                {
+                  'rentalIds.rentalId': getCart.rentalIds?.rentalId,
+                  'rentalIds.qtyIdsId': getCart.rentalIds?.qtyIdsId,
+                },
+                {
+                  'activityIds.activityId': getCart.activityIds?.activityId,
+                  'activityIds.dayId': getCart.activityIds?.dayId,
+                  'activityIds.timeSlotId': getCart.activityIds?.timeSlotId,
+                  ...(getCart.activityIds?.slotIdsId && {
+                    'activityIds.slotIdsId': getCart.activityIds?.slotIdsId,
+                  }),
+                },
+              ],
+            },
+            {
+              startDate: { $lte: parseToUTCDate(endDate) },
+              endDate: { $gte: parseToUTCDate(startDate) },
+            },
+          ],
+        })
+        if (cartconflicts.length > 0) {
+          res.json(
+            response.error({
+              message: 'Cart conflicts with existing item',
+            })
+          )
+        } else {
+          const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+            $set: {
+              startDate: parseToUTCDate(startDate),
+              endDate: parseToUTCDate(endDate),
+              price: price,
+              updatedAt: Date.now(),
+            },
+          })
+          res.json(
+            response.success({
+              item: updateCart,
+              message: 'Cart Item information successfully updated',
+            })
+          )
+        }
+      }
     }
   } catch (err: any) {
     res.json(

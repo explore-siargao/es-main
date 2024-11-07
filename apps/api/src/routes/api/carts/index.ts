@@ -6,6 +6,7 @@ import {
   addToCart,
   getAllReservationOrCarts,
   removeToCart,
+  updateCartInfo,
 } from './services/default'
 import paginate from '@/common/middleware/paginations/paginate'
 
@@ -26,6 +27,14 @@ router.delete(
   isUserLoggedIn,
   isCsrfTokenValid,
   removeToCart
+)
+
+router.patch(
+  '/:cartId',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  updateCartInfo
 )
 
 export default router
