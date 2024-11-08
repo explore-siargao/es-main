@@ -4,7 +4,7 @@ import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import {
   addToCart,
-  getAllReservationOrCarts,
+  getAllCarts,
   removeToCart,
   updateCartInfo,
 } from './services/default'
@@ -18,7 +18,7 @@ router.get(
   isUserLoggedIn,
   paginate(15),
   isCsrfTokenValid,
-  getAllReservationOrCarts
+  getAllCarts
 )
 router.post('/', isOriginValid, isUserLoggedIn, isCsrfTokenValid, addToCart)
 router.delete(
