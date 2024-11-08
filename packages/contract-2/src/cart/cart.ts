@@ -1,5 +1,5 @@
 import { ApiService } from "../common/services/api"
-import { T_Cart, T_UpdateCart } from "./type"
+import { T_AddCart, T_UpdateCart, T_CartItem } from "./type"
 
 const CART_BASE_URL = `/api/v1/carts`
 
@@ -8,7 +8,7 @@ export class CartService {
   constructor(source: "main" | "auth" | "mock" = "main") {
     this.api = new ApiService(source)
   }
-  async addItem(item: T_Cart) {
+  async addItem(item: T_AddCart) {
     return this.api.post(CART_BASE_URL, item)
   }
   async updateItem(itemId: string, item: T_UpdateCart) {
@@ -18,7 +18,7 @@ export class CartService {
     return this.api.delete(`${CART_BASE_URL}/${itemId}`)
   }
   async getItems() {
-    return this.api.get<{ items: T_Cart[] }>(CART_BASE_URL)
+    return this.api.get<{ items: T_CartItem[] }>(CART_BASE_URL)
   }
   static getQueryKeys() {
     return {
