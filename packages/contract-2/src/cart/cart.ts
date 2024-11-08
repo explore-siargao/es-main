@@ -17,6 +17,11 @@ export class CartService {
   async removeItem(itemId: string) {
     return this.api.delete(`${CART_BASE_URL}/${itemId}`)
   }
+
+  async removeMultipleItems(cartIds: string[]) {
+    return this.api.delete(`${CART_BASE_URL}/remove-multiple`, cartIds)
+  }
+
   async getItems() {
     return this.api.get<{ items: T_CartItem[] }>(CART_BASE_URL)
   }

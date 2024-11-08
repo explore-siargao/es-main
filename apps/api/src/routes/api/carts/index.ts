@@ -9,6 +9,7 @@ import {
   updateCartInfo,
 } from './services/default'
 import paginate from '@/common/middleware/paginations/paginate'
+import { removeMultipleItemsOnCarts } from './services/multiple-items'
 
 const router = express.Router()
 
@@ -21,6 +22,13 @@ router.get(
   getAllCarts
 )
 router.post('/', isOriginValid, isUserLoggedIn, isCsrfTokenValid, addToCart)
+router.delete(
+  '/remove-multiple',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  removeMultipleItemsOnCarts
+)
 router.delete(
   '/:cartId',
   isOriginValid,
