@@ -30,7 +30,8 @@ const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
   const path = usePathname()
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-  const { search, checkIn, checkOut, numberOfGuest, activityDate } = useSearchStore()
+  const { search, checkIn, checkOut, numberOfGuest, activityDate } =
+    useSearchStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {

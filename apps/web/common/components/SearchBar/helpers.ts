@@ -11,7 +11,7 @@ export function buildPropertySearchURL({
   starRating = "any",
   checkIn = "any",
   checkOut = "any",
-  numberOfGuest = "any"
+  numberOfGuest = "any",
 }) {
   const queryParts = [
     `location=${location}`,
@@ -26,10 +26,10 @@ export function buildPropertySearchURL({
     `starRating=${starRating}`,
     `checkIn=${checkIn}`,
     `checkOut=${checkOut}`,
-    `numberOfGuest=${numberOfGuest}`
-  ];
+    `numberOfGuest=${numberOfGuest}`,
+  ]
 
-  return `/search/properties?${queryParts.join("&")}`;
+  return `/search/properties?${queryParts.join("&")}`
 }
 
 export function buildActivitySearchURL({
@@ -41,7 +41,7 @@ export function buildActivitySearchURL({
   duration = "any",
   starRating = "any",
   activityDate = "any",
-  numberOfGuest = "any"
+  numberOfGuest = "any",
 }) {
   const queryParts = [
     `location=${location}`,
@@ -52,10 +52,10 @@ export function buildActivitySearchURL({
     `durations=${duration}`,
     `starRating=${starRating}`,
     `activityDate=${activityDate}`,
-    `numberOfGuest=${numberOfGuest}`
-  ];
+    `numberOfGuest=${numberOfGuest}`,
+  ]
 
-  return `/search/activities?${queryParts.join("&")}`;
+  return `/search/activities?${queryParts.join("&")}`
 }
 
 export function buildRentalSearchURL({
@@ -67,8 +67,8 @@ export function buildRentalSearchURL({
   seatCount = "any",
   starRating = "any",
   pickUpDate = "any",
-  dropOffDate = "any"
-})  {
+  dropOffDate = "any",
+}) {
   const queryParts = [
     `location=${location}`,
     `vehicleTypes=${vehicleType}`,
@@ -78,8 +78,8 @@ export function buildRentalSearchURL({
     `seatCount=${seatCount}`,
     `starRating=${starRating}`,
     `pickUpDate=${pickUpDate}`,
-    `dropOffDate=${dropOffDate}`
-  ];
+    `dropOffDate=${dropOffDate}`,
+  ]
 
-  return `/search/rentals?${queryParts.join("&")}`;
+  return `/search/rentals?${queryParts.join("&")}`
 }

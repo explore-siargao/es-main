@@ -13,9 +13,9 @@ function PropertySearchBar() {
   const dateToday = format(new Date(), "yyyy-MM-dd")
 
   useEffect(() => {
-    const checkInDate = getValues("checkIn");
-    const checkOutDate = getValues("checkOut");
-    if(isAfter(new Date(checkInDate), new Date(checkOutDate))) {
+    const checkInDate = getValues("checkIn")
+    const checkOutDate = getValues("checkOut")
+    if (isAfter(new Date(checkInDate), new Date(checkOutDate))) {
       setValue("checkOut", "")
     }
   }, [watch("checkIn")])

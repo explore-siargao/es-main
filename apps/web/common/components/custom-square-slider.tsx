@@ -1,4 +1,3 @@
-
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper/modules"
 import "swiper/swiper-bundle.css"
@@ -72,18 +71,20 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
         }
       `}</style>
 
-      {images.length > 0 ? images.map((image) => (
-        <SwiperSlide key={image.key}>
-          <div className="image-wrapper">
-            <Image
-              src={`/assets/${image.key}`}
-              alt={image.alt}
-              layout="fill"
-              className="object-cover"
-            />
-          </div>
-        </SwiperSlide>
-      )) : (
+      {images.length > 0 ? (
+        images.map((image) => (
+          <SwiperSlide key={image.key}>
+            <div className="image-wrapper">
+              <Image
+                src={`/assets/${image.key}`}
+                alt={image.alt}
+                layout="fill"
+                className="object-cover"
+              />
+            </div>
+          </SwiperSlide>
+        ))
+      ) : (
         <SwiperSlide key="error">
           <div className="image-wrapper">
             <Image
@@ -94,8 +95,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
             />
           </div>
         </SwiperSlide>
-      )
-    }
+      )}
     </Swiper>
   )
 }

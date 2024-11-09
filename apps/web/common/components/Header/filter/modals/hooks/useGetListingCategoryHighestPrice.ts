@@ -7,7 +7,7 @@ const queryKeys = FilterService.getQueryKeys()
 
 export async function getHighestPrice(category: E_Listing_Category) {
   const filter = new FilterService()
-  return await filter.getCategoryHighestPrice({category})
+  return await filter.getCategoryHighestPrice({ category })
 }
 
 function useGetListingCategoryHighestPrice(category: E_Listing_Category) {
@@ -15,7 +15,7 @@ function useGetListingCategoryHighestPrice(category: E_Listing_Category) {
     [E_Listing_Category.Activity]: queryKeys.activitiesHighestPrice,
     [E_Listing_Category.Property]: queryKeys.propertiesHighestPrice,
     [E_Listing_Category.Rental]: queryKeys.rentalsHighestPrice,
-  };
+  }
   const query = useQuery({
     queryKey: [mapQueryKey[category]],
     queryFn: () => getHighestPrice(category),

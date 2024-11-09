@@ -15,7 +15,7 @@ export enum EPropertyAction {
 }
 
 export type T_Filter_Property = {
-  location: string,
+  location: string
   starRating: number | "any"
   priceRange: number[]
   selectedPriceRange: ("any" | number)[]
@@ -28,14 +28,17 @@ export type T_Filter_Property = {
 }
 
 type Action =
-| { type: EPropertyAction.SET_LOCATION; payload: string }
-  | { type: EPropertyAction.SET_STAR_RATING; payload: number | 'any' }
+  | { type: EPropertyAction.SET_LOCATION; payload: string }
+  | { type: EPropertyAction.SET_STAR_RATING; payload: number | "any" }
   | { type: EPropertyAction.SET_PRICE_RANGE; payload: number[] }
-  | { type: EPropertyAction.SET_SELECTED_PRICE_RANGE; payload: number[] | 'any'[] }
+  | {
+      type: EPropertyAction.SET_SELECTED_PRICE_RANGE
+      payload: number[] | "any"[]
+    }
   | { type: EPropertyAction.SET_PROPERTY_TYPES; payload: string[] | "any" }
-  | { type: EPropertyAction.SET_BEDROOM_COUNT; payload: number | 'any' }
-  | { type: EPropertyAction.SET_BED_COUNT; payload: number | 'any' }
-  | { type: EPropertyAction.SET_BATHROOM_COUNT; payload: number | 'any' }
+  | { type: EPropertyAction.SET_BEDROOM_COUNT; payload: number | "any" }
+  | { type: EPropertyAction.SET_BED_COUNT; payload: number | "any" }
+  | { type: EPropertyAction.SET_BATHROOM_COUNT; payload: number | "any" }
   | { type: EPropertyAction.TOGGLE_FACILITIES_MODAL; payload: boolean }
   | { type: EPropertyAction.TOGGLE_AMENITIES_MODAL; payload: boolean }
   | { type: EPropertyAction.RESET_FILTERS }
@@ -66,7 +69,7 @@ export function propertyReducer(
     case EPropertyAction.TOGGLE_AMENITIES_MODAL:
       return { ...state, amenitiesModal: action.payload }
     case EPropertyAction.RESET_FILTERS:
-      return { 
+      return {
         location: "any",
         starRating: "any",
         priceRange: [0, 1000],
@@ -76,7 +79,7 @@ export function propertyReducer(
         bedCount: "any",
         bathroomCount: "any",
         facilitiesModal: false,
-        amenitiesModal: false
+        amenitiesModal: false,
       }
     default:
       return state

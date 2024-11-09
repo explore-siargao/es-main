@@ -1,7 +1,11 @@
 import React from "react"
 import { Button } from "../ui/Button"
 import { cn } from "@/common/helpers/cn"
-import { LINK_SEARCH_ACTIVITIES, LINK_SEARCH_PROPERTY, LINK_SEARCH_RENTAL } from "@/common/constants"
+import {
+  LINK_SEARCH_ACTIVITIES,
+  LINK_SEARCH_PROPERTY,
+  LINK_SEARCH_RENTAL,
+} from "@/common/constants"
 
 const CATEGORIES_BUTTONS = [
   { name: "Places to stay", path: LINK_SEARCH_PROPERTY },

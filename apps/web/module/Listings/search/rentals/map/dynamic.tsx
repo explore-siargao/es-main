@@ -33,12 +33,7 @@ type T_Props = {
 //   }
 // };
 
-const Dynamic = ({
-  center,
-  rentals,
-  zoom,
-  scrollWheelZoom,
-}: T_Props) => {
+const Dynamic = ({ center, rentals, zoom, scrollWheelZoom }: T_Props) => {
   const { setCoordinates } = useCoordinatesStore()
   const markerRefs = useRef<Map<number, L.Marker>>(new Map())
 
@@ -76,15 +71,17 @@ const Dynamic = ({
         }
         return (
           <Marker
-            position={[rental.location?.latitude, rental.location?.longitude] as LatLngTuple}
+            position={
+              [
+                rental.location?.latitude,
+                rental.location?.longitude,
+              ] as LatLngTuple
+            }
             key={index}
             onClick={() => handleMarkerMouseOver(index)}
             price={rental.price}
           >
-            <Popup
-              index={index}
-              {...rental}
-            />
+            <Popup index={index} {...rental} />
           </Marker>
         )
       })}

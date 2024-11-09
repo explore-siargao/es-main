@@ -1,15 +1,19 @@
-import { E_Supported_Currencies } from '@/common/types/global';
-import React from 'react';
+import { E_Supported_Currencies } from "@/common/types/global"
+import React from "react"
 
 type CurrencyIconProps = {
-  currency?: E_Supported_Currencies;
-} & React.HTMLAttributes<HTMLSpanElement>;
+  currency?: E_Supported_Currencies
+} & React.HTMLAttributes<HTMLSpanElement>
 
 const CurrencyIcon: React.FC<CurrencyIconProps> = ({ currency, ...props }) => {
-  const storedCurrency = localStorage.getItem("currency") as E_Supported_Currencies | null;
-  const current = storedCurrency && Object.values(E_Supported_Currencies).includes(storedCurrency)
-    ? storedCurrency
-    : E_Supported_Currencies.PHP;
+  const storedCurrency = localStorage.getItem(
+    "currency"
+  ) as E_Supported_Currencies | null
+  const current =
+    storedCurrency &&
+    Object.values(E_Supported_Currencies).includes(storedCurrency)
+      ? storedCurrency
+      : E_Supported_Currencies.PHP
 
   const icons: { [key in E_Supported_Currencies]: JSX.Element } = {
     PHP: <span {...props}>₱</span>,
@@ -19,9 +23,9 @@ const CurrencyIcon: React.FC<CurrencyIconProps> = ({ currency, ...props }) => {
     AUD: <span {...props}>A$</span>,
     ILS: <span {...props}>₪</span>,
     GBP: <span {...props}>£</span>,
-  };
+  }
 
-  return icons[currency || current];
-};
+  return icons[currency || current]
+}
 
-export default CurrencyIcon;
+export default CurrencyIcon

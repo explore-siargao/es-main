@@ -26,9 +26,7 @@ const ThisMonthChart = ({ data }: T_Prop) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           type="number"
-          tickFormatter={(value: number) =>
-            formatCurrency(value)
-          }
+          tickFormatter={(value: number) => formatCurrency(value)}
         />
         <YAxis type="category" dataKey="month" />
         <Tooltip

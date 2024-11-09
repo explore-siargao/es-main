@@ -7,12 +7,12 @@ export enum E_Property_Type {
   VILLA = "VILLA",
   HOUSE = "HOUSE",
   BUNGALOW = "BUNGALOW",
-  COTTAGE = "COTTAGE"
+  COTTAGE = "COTTAGE",
 }
 
 export enum E_Whole_Place_Property_Type {
   VILLA = "VILLA",
   HOUSE = "HOUSE",
   BUNGALOW = "BUNGALOW",
-  COTTAGE = "COTTAGE"
+  COTTAGE = "COTTAGE",
 }

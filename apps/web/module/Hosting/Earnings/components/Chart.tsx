@@ -114,9 +114,7 @@ const Chart = ({
         />
         <YAxis
           dataKey={"earning"}
-          tickFormatter={(value: number) =>
-            formatCurrency(value)
-          }
+          tickFormatter={(value: number) => formatCurrency(value)}
         />
         <Tooltip
           formatter={(value: number) => formatCurrency(value)}

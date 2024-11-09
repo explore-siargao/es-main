@@ -19,27 +19,33 @@ const RentalsFilter = () => {
   const priceTo = searchParams.get("priceTo")
   const stars = searchParams.get("starRating")
 
-  const { data: rentalUnits, isLoading, isRefetching, refetch: refetchRentalUnits } = useGetRentalListings(
+  const {
+    data: rentalUnits,
+    isLoading,
+    isRefetching,
+    refetch: refetchRentalUnits,
+  } = useGetRentalListings(
     location,
     type,
     transmission,
     seats,
     priceFrom,
     priceTo,
-    stars)
+    stars
+  )
 
   useEffect(() => {
-    refetchRentalUnits();
-  }, [location, type, transmission, seats, priceFrom, priceTo, stars]);
+    refetchRentalUnits()
+  }, [location, type, transmission, seats, priceFrom, priceTo, stars])
 
-  const rentals = rentalUnits?.items?.map(item => {
-    const category: E_Rental_Category = item.category;
+  const rentals = rentalUnits?.items?.map((item) => {
+    const category: E_Rental_Category = item.category
     const titleMap = {
       [E_Rental_Category.Motorbike]: `${item.make} ${item.modelBadge}`,
       [E_Rental_Category.Car]: `${item.year} ${item.make} ${item.modelBadge}`,
       [E_Rental_Category.Bicycle]: item.make,
     }
-    return ({
+    return {
       title: titleMap[category],
       location: item.location,
       listingId: item._id,
@@ -52,9 +58,9 @@ const RentalsFilter = () => {
       reviewsCount: item.reviewsCount,
       city: item.location.city,
       transmission: item.transmission,
-      fuel: item.fuel
-    })
-  });
+      fuel: item.fuel,
+    }
+  })
 
   const markers = rentals?.map((rental) => {
     const marker = {
@@ -67,7 +73,7 @@ const RentalsFilter = () => {
     return marker
   })
 
-  if(isLoading) {
+  if (isLoading) {
     return (
       <WidthWrapper width="medium">
         <div className="h-screen mt-16 flex justify-center">
@@ -83,9 +89,7 @@ const RentalsFilter = () => {
         {/* Listings section */}
         <div className="flex w-full">
           <div>
-            {isRefetching ? (
-              <Spinner variant="primary" />
-            ): null}
+            {isRefetching ? <Spinner variant="primary" /> : null}
 
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
@@ -110,7 +114,7 @@ const RentalsFilter = () => {
 
             {!isLoading && !isRefetching && rentals && rentals?.length === 0 ? (
               <Typography variant="h4" className="text-gray-500 italic">
-                 No rentals found for the search and filters values
+                No rentals found for the search and filters values
               </Typography>
             ) : null}
           </div>
@@ -118,7 +122,9 @@ const RentalsFilter = () => {
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {rentals && markers ? <ListingsMap markers={markers} iconMarker="island" /> : null}
+            {rentals && markers ? (
+              <ListingsMap markers={markers} iconMarker="island" />
+            ) : null}
           </div>
         </div>
       </div>

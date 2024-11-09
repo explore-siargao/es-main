@@ -10,7 +10,7 @@ export type BookingProps = {
   }[]
   distance: string
   location: {
-    city: string,
+    city: string
   }
   date: string
   price: number

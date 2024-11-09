@@ -18,20 +18,26 @@ const ActivitiesFilter = () => {
   const priceTo = searchParams.get("priceTo")
   const stars = searchParams.get("starRating")
 
-  const { data: activityUnits, isLoading, isRefetching, refetch: refetchActivityUnits } = useGetActivityListings(
+  const {
+    data: activityUnits,
+    isLoading,
+    isRefetching,
+    refetch: refetchActivityUnits,
+  } = useGetActivityListings(
     location,
     activityType,
     type,
     priceFrom,
     priceTo,
     duration,
-    stars)
+    stars
+  )
 
   useEffect(() => {
-    refetchActivityUnits();
-  }, [location, type, activityType, priceFrom, priceTo, duration, stars]);
+    refetchActivityUnits()
+  }, [location, type, activityType, priceFrom, priceTo, duration, stars])
 
-  const activities = activityUnits?.items?.map(item => ({
+  const activities = activityUnits?.items?.map((item) => ({
     title: item.title,
     location: item.meetingPoint,
     listingId: item._id,
@@ -42,9 +48,9 @@ const ActivitiesFilter = () => {
     average: item.average,
     type: item.activityType[1] ?? "Unknown type",
     reviewsCount: item.reviewsCount,
-  }));
+  }))
 
-  if(isLoading) {
+  if (isLoading) {
     return (
       <WidthWrapper width="medium">
         <div className="h-screen mt-16 flex justify-center">
@@ -60,12 +66,12 @@ const ActivitiesFilter = () => {
         {/* Listings section */}
         <div className="flex w-full">
           <div>
-            {isRefetching ? (
-              <Spinner variant="primary" />
-            ): null}
+            {isRefetching ? <Spinner variant="primary" /> : null}
 
-            {!isLoading && !isRefetching && activities && activities?.length > 0 ? (
-
+            {!isLoading &&
+            !isRefetching &&
+            activities &&
+            activities?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
                 {activities?.map((item) => (
                   <div key={item.listingId}>
@@ -73,12 +79,14 @@ const ActivitiesFilter = () => {
                   </div>
                 ))}
               </div>
-
             ) : null}
 
-            {!isLoading && !isRefetching && activities && activities?.length === 0 ? (
+            {!isLoading &&
+            !isRefetching &&
+            activities &&
+            activities?.length === 0 ? (
               <Typography variant="h4" className="text-gray-500 italic">
-                 No activities found for the search and filters values
+                No activities found for the search and filters values
               </Typography>
             ) : null}
           </div>
@@ -86,7 +94,9 @@ const ActivitiesFilter = () => {
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {activities ? <Map activities={activities} location={location as E_Location} /> : null}
+            {activities ? (
+              <Map activities={activities} location={location as E_Location} />
+            ) : null}
           </div>
         </div>
       </div>

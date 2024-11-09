@@ -137,11 +137,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
             <PesoSign />
             {checkoutDesc.titlePrice} x {durationDays} days
           </Button>
-          <div>
-            {formatCurrency(
-              checkoutDesc.titlePrice * durationDays
-            )}
-          </div>
+          <div>{formatCurrency(checkoutDesc.titlePrice * durationDays)}</div>
         </div>
 
         <div className="flex justify-between items-center">

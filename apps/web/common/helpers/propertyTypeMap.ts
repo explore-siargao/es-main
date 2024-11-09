@@ -7,7 +7,7 @@ const propertyTypeMap = {
   VILLA: "Villa",
   HOUSE: "House",
   BUNGALOW: "Bungalow",
-  COTTAGE: "Cottage"
+  COTTAGE: "Cottage",
 }
 
 export default propertyTypeMap

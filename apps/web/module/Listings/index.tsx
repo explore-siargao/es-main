@@ -551,14 +551,11 @@ const sampleData = [
 ]
 
 const ListingsPage = () => {
-
   return (
     <WidthWrapper width="medium" className="-mt-4">
-   
-          <div>
-            <PropertiesFilter/>
-          </div>
-        
+      <div>
+        <PropertiesFilter />
+      </div>
     </WidthWrapper>
   )
 }

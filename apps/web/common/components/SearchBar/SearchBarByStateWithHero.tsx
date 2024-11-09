@@ -6,7 +6,6 @@ import { Typography } from "../ui/Typography"
 import SearchBarByState from "./search-bar-by-state"
 
 function SearchBarByStateWithHero() {
-
   const [isModalOpen, setIsModalOpen] = useState(false)
   const closeModal = () => setIsModalOpen(false)
 

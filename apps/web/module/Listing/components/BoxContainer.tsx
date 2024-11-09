@@ -22,7 +22,7 @@ const BoxContainer = ({
   dayTime,
   ratings,
   isHearted,
-  category
+  category,
 }: BookingProps) => {
   const [addWIshlistModal, setAddWIshlistModal] = useState(false)
   const userId = useSessionStore((state) => state).id
@@ -78,7 +78,10 @@ const BoxContainer = ({
   return (
     <>
       <li className="relative rounded-xl overflow-hidden h-full list-none">
-        <Link href={`/listing/${categoryPlural[category]}/${listingId}`} target="_blank">
+        <Link
+          href={`/listing/${categoryPlural[category]}/${listingId}`}
+          target="_blank"
+        >
           <div className="h-auto w-full relative">
             <button
               onClick={(e) => {
@@ -117,7 +120,8 @@ const BoxContainer = ({
               fontWeight="semibold"
               className="text-text-700 underline"
             >
-              {formatCurrency(price)} <span className="font-normal">{dayTime}</span>
+              {formatCurrency(price)}{" "}
+              <span className="font-normal">{dayTime}</span>
             </Typography>
           </div>
         </Link>

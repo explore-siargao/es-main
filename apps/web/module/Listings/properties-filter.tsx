@@ -10,16 +10,16 @@ import PropertyCard from "./components/property-card"
 import { E_Property_Type } from "@repo/contract-2/property"
 
 type T_Photo = {
-  key: string;
-};
+  key: string
+}
 
 type T_Bookable_Unit_Type = {
-  _id: string;
-  photos: T_Photo[];
-  unitPrice: { baseRate: number };
-  average: number;
-  reviewsCount: number;
-};
+  _id: string
+  photos: T_Photo[]
+  unitPrice: { baseRate: number }
+  average: number
+  reviewsCount: number
+}
 
 const PropertiesFilter = () => {
   const searchParams = useSearchParams()
@@ -34,7 +34,12 @@ const PropertiesFilter = () => {
   const amenities = searchParams.get("amenities")
   const starRating = searchParams.get("starRating")
 
-  const { data: propertyUnits, isLoading, isRefetching, refetch: refetchPropertyUnits } = useGetPropertyListings(
+  const {
+    data: propertyUnits,
+    isLoading,
+    isRefetching,
+    refetch: refetchPropertyUnits,
+  } = useGetPropertyListings(
     location,
     type,
     facilities,
@@ -44,30 +49,41 @@ const PropertiesFilter = () => {
     beds,
     bathrooms,
     bedrooms,
-    starRating)
+    starRating
+  )
 
   useEffect(() => {
-    refetchPropertyUnits();
-  }, [location, type, facilities, amenities, priceFrom, priceTo, beds, bathrooms, bedrooms, starRating]);
+    refetchPropertyUnits()
+  }, [
+    location,
+    type,
+    facilities,
+    amenities,
+    priceFrom,
+    priceTo,
+    beds,
+    bathrooms,
+    bedrooms,
+    starRating,
+  ])
 
-  const bookableUnits = propertyUnits?.items
-    ?.flatMap(item =>
-      item.bookableUnits.map((unit: T_Bookable_Unit_Type) => ({
-        listingId: unit._id,
-        photos: unit.photos.map((photo) => ({
-          key: photo.key,
-        })),
-        title: item.title,
-        subtitle: item.subtitle,
-        type: item.type,
-        wholePlaceType: item.wholePlaceType,
-        price: unit.unitPrice.baseRate,
-        city: item.location.city,
-        average: unit.average,
-        reviewsCount: unit.reviewsCount,
-        location: item.location
-      }))
-    );
+  const bookableUnits = propertyUnits?.items?.flatMap((item) =>
+    item.bookableUnits.map((unit: T_Bookable_Unit_Type) => ({
+      listingId: unit._id,
+      photos: unit.photos.map((photo) => ({
+        key: photo.key,
+      })),
+      title: item.title,
+      subtitle: item.subtitle,
+      type: item.type,
+      wholePlaceType: item.wholePlaceType,
+      price: unit.unitPrice.baseRate,
+      city: item.location.city,
+      average: unit.average,
+      reviewsCount: unit.reviewsCount,
+      location: item.location,
+    }))
+  )
 
   const markers = bookableUnits?.map((property) => {
     const marker = {
@@ -81,7 +97,7 @@ const PropertiesFilter = () => {
     return marker
   })
 
-  if(isLoading) {
+  if (isLoading) {
     return (
       <WidthWrapper width="medium">
         <div className="h-screen mt-16 flex justify-center">
@@ -97,11 +113,12 @@ const PropertiesFilter = () => {
         {/* Listings section */}
         <div className="flex w-full">
           <div>
-            {isRefetching ? (
-              <Spinner variant="primary" />
-            ): null}
+            {isRefetching ? <Spinner variant="primary" /> : null}
 
-            {!isLoading && !isRefetching && bookableUnits && bookableUnits?.length > 0 ? (
+            {!isLoading &&
+            !isRefetching &&
+            bookableUnits &&
+            bookableUnits?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
                 {bookableUnits?.map((item) => (
                   <div key={item._id}>
@@ -122,18 +139,22 @@ const PropertiesFilter = () => {
               </div>
             ) : null}
 
-            {!isLoading && !isRefetching && bookableUnits && bookableUnits?.length === 0 ? (
+            {!isLoading &&
+            !isRefetching &&
+            bookableUnits &&
+            bookableUnits?.length === 0 ? (
               <Typography variant="h4" className="text-gray-500 italic">
                 No properties found for the search and filters values
               </Typography>
             ) : null}
-
           </div>
         </div>
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {bookableUnits && markers ? <ListingsMap markers={markers} iconMarker="island" /> : null}
+            {bookableUnits && markers ? (
+              <ListingsMap markers={markers} iconMarker="island" />
+            ) : null}
           </div>
         </div>
       </div>

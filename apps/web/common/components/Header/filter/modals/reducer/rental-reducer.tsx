@@ -1,4 +1,9 @@
-import { locations, T_Filter_Type, transmissionTypes, vehicleTypes } from "../../constants"
+import {
+  locations,
+  T_Filter_Type,
+  transmissionTypes,
+  vehicleTypes,
+} from "../../constants"
 
 export enum ERentalAction {
   SET_LOCATION = "SET_LOCATION",
@@ -16,18 +21,21 @@ export type T_Filter_Rental = {
   starRating: number | "any"
   priceRange: number[]
   selectedPriceRange: ("any" | number)[]
-  vehicleTypes: string[] | 'any'
-  transmissionTypes: string[] | 'any'
+  vehicleTypes: string[] | "any"
+  transmissionTypes: string[] | "any"
   seatCount: number | "any"
 }
 
 type Action =
-| { type: ERentalAction.SET_LOCATION; payload: string }
+  | { type: ERentalAction.SET_LOCATION; payload: string }
   | { type: ERentalAction.SET_STAR_RATING; payload: number }
   | { type: ERentalAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: ERentalAction.SET_SELECTED_PRICE_RANGE; payload: number[] | 'any'[] }
-  | { type: ERentalAction.SET_VEHICLE_TYPES; payload: string[] | 'any' }
-  | { type: ERentalAction.SET_TRANSMISSION_TYPES; payload: string[] | 'any' }
+  | {
+      type: ERentalAction.SET_SELECTED_PRICE_RANGE
+      payload: number[] | "any"[]
+    }
+  | { type: ERentalAction.SET_VEHICLE_TYPES; payload: string[] | "any" }
+  | { type: ERentalAction.SET_TRANSMISSION_TYPES; payload: string[] | "any" }
   | { type: ERentalAction.SET_SEAT_COUNT; payload: number | "any" }
   | { type: ERentalAction.RESET_FILTERS }
 

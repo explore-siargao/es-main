@@ -42,14 +42,8 @@ const Graph: React.FC<GraphProps> = ({ graphData, isFilterAll }) => {
         >
           <CartesianGrid />
           <XAxis dataKey="name" />
-          <YAxis
-            tickFormatter={(value: number) =>
-              formatCurrency(value)
-            }
-          />
-          <Tooltip
-            formatter={(value: number) => formatCurrency(value)}
-          />
+          <YAxis tickFormatter={(value: number) => formatCurrency(value)} />
+          <Tooltip formatter={(value: number) => formatCurrency(value)} />
           {isFilterAll ? (
             <>
               <Bar dataKey="cancelled" stackId="a" fill="#f06b6d" />

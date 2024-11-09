@@ -60,7 +60,7 @@ const SavedWishlists = ({
       <Listing
         key={itemId}
         listingId={listingId}
-        location={{city: location}}
+        location={{ city: location }}
         date={date}
         distance={distance}
         //@ts-ignore

@@ -1,12 +1,12 @@
-import Image from '@/common/components/ui/image'
-import formatCurrency from '@/common/helpers/formatCurrency'
-import { LucideStar } from 'lucide-react'
+import Image from "@/common/components/ui/image"
+import formatCurrency from "@/common/helpers/formatCurrency"
+import { LucideStar } from "lucide-react"
 import { Popup as LeafletPopup } from "react-leaflet"
-import Link from 'next/link'
-import React, { useRef } from 'react'
-import { LatLngTuple } from 'leaflet'
-import { T_Property_Card } from '../card'
-import propertyTypeMap from '@/common/helpers/propertyTypeMap'
+import Link from "next/link"
+import React, { useRef } from "react"
+import { LatLngTuple } from "leaflet"
+import { T_Property_Card } from "../card"
+import propertyTypeMap from "@/common/helpers/propertyTypeMap"
 
 const Popup = ({
   index,
@@ -32,14 +32,11 @@ const Popup = ({
       position={[location?.latitude, location?.longitude] as LatLngTuple}
       offset={[0, -2]}
     >
-      <Link
-        href={`/listing/activities/${listingId}`}
-        target="_blank"
-      >
+      <Link href={`/listing/activities/${listingId}`} target="_blank">
         {photos && photos.length > 0 ? (
           <Image
             src={`/assets/${photos[0]?.key}`}
-            alt={photos[0]?.alt ? photos[0]?.alt : (title || wholePlaceType)}
+            alt={photos[0]?.alt ? photos[0]?.alt : title || wholePlaceType}
             width={150}
             height={100}
             className="w-full bg-gray-200 rounded-t-xl"
@@ -47,7 +44,9 @@ const Popup = ({
         ) : null}
         <div className="p-4 flex flex-col gap-1">
           <div className="flex justify-between">
-            <span className="font-semibold text-text-500 text-sm truncate">{title ? title : (subtitle || "Unknown title")}</span>
+            <span className="font-semibold text-text-500 text-sm truncate">
+              {title ? title : subtitle || "Unknown title"}
+            </span>
             <div className="flex text-text-500 items-center gap-1">
               {average > 1 ? (
                 <>
@@ -55,15 +54,19 @@ const Popup = ({
                   {average} ({reviewsCount ? reviewsCount : 0})
                 </>
               ) : (
-                <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">Newly added</span>
+                <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">
+                  Newly added
+                </span>
               )}
             </div>
           </div>
-          <span className="truncate text-text-300 text-sm">{propertyTypeMap[wholePlaceType || type] || "Unknown type"} in {location.city ?? "Unknow location"}</span>
-          <span
-            className="text-text-700 underline truncate semibold text-sm"
-          >
-            From {formatCurrency(price)} <span className="font-normal">/ night</span>
+          <span className="truncate text-text-300 text-sm">
+            {propertyTypeMap[wholePlaceType || type] || "Unknown type"} in{" "}
+            {location.city ?? "Unknow location"}
+          </span>
+          <span className="text-text-700 underline truncate semibold text-sm">
+            From {formatCurrency(price)}{" "}
+            <span className="font-normal">/ night</span>
           </span>
         </div>
       </Link>

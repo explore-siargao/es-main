@@ -74,9 +74,7 @@ const MultiMarkerMap = ({
               }}
               position={[location.latitude, location.longitude] as LatLngTuple}
               offset={[0, -2]}
-            >
-
-            </Popup>
+            ></Popup>
           </CustomMarker>
         )
       })}

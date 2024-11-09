@@ -6,17 +6,17 @@ import { LucideHeart, LucideStar } from "lucide-react"
 import formatCurrency from "@/common/helpers/formatCurrency"
 
 type Props = {
-  listingId: string,
-  title: string,
-  type: string,
+  listingId: string
+  title: string
+  type: string
   photos: {
     key: string
     alt: string
-  }[],
+  }[]
   city: string
-  price: number,
-  average: number,
-  reviewsCount: number,
+  price: number
+  average: number
+  reviewsCount: number
 }
 
 const ActivityCard = ({
@@ -35,7 +35,7 @@ const ActivityCard = ({
         <Link href={`/listing/activities/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             <button
-              onClick={(e) => console.log('clicked heart')}
+              onClick={(e) => console.log("clicked heart")}
               className="absolute top-3 right-3 z-40"
             >
               <LucideHeart
@@ -62,18 +62,23 @@ const ActivityCard = ({
                     {average} ({reviewsCount ? reviewsCount : 0})
                   </>
                 ) : (
-                  <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">Newly added</span>
+                  <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">
+                    Newly added
+                  </span>
                 )}
               </div>
             </div>
             <div className="text-text-300 text-sm">
-              <Typography className="truncate">{type || "Unknown"} in {city ?? "Unknown location"}</Typography>
+              <Typography className="truncate">
+                {type || "Unknown"} in {city ?? "Unknown location"}
+              </Typography>
             </div>
             <Typography
               fontWeight="semibold"
               className="text-text-700 underline truncate"
             >
-              From {formatCurrency(price)} <span className="font-normal">/ person</span>
+              From {formatCurrency(price)}{" "}
+              <span className="font-normal">/ person</span>
             </Typography>
           </div>
         </Link>

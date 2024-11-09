@@ -15,7 +15,7 @@ export enum E_Location {
   SanBenito = "San Benito",
   Burgos = "Burgos",
   SantaMonica = "Santa Monica",
-  Socorro = "Socorro"
+  Socorro = "Socorro",
 }
 
 type T_Props = {
@@ -25,45 +25,45 @@ type T_Props = {
 
 const Map = ({ rentals, location }: T_Props) => {
   const locationMap = {
-    "any": {
+    any: {
       center: [9.825699, 126.0481901] as [number, number],
-      zoom: 11 
+      zoom: 11,
     },
     "General Luna": {
       center: [9.721637, 126.1501691] as [number, number],
-      zoom: 12 
+      zoom: 12,
     },
-    "Dapa": {
+    Dapa: {
       center: [9.752993, 126.0475581] as [number, number],
-      zoom: 12 
+      zoom: 12,
     },
     "Del Carmen": {
       center: [9.866288, 125.9790491] as [number, number],
-      zoom: 12 
+      zoom: 12,
     },
     "San Isidro": {
       center: [9.952742, 126.0685441] as [number, number],
-      zoom: 12 
+      zoom: 12,
     },
-    "Pilar": {
+    Pilar: {
       center: [9.873669, 126.0754001] as [number, number],
-      zoom: 13
+      zoom: 13,
     },
     "San Benito": {
       center: [9.957892, 126.0221231] as [number, number],
-      zoom: 13 
+      zoom: 13,
     },
-    "Burgos": {
+    Burgos: {
       center: [10.017579, 126.0594681] as [number, number],
-      zoom: 13 
+      zoom: 13,
     },
     "Santa Monica": {
       center: [10.025946, 126.0482881] as [number, number],
-      zoom: 13 
+      zoom: 13,
     },
-    "Socorro": {
+    Socorro: {
       center: [9.657513, 125.9392181] as [number, number],
-      zoom: 12 
+      zoom: 12,
     },
   }
   return (

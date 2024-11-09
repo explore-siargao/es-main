@@ -6,13 +6,13 @@ export enum E_Listing_Status {
 }
 
 export enum E_Supported_Currencies {
-  PHP = 'PHP',
-  USD = 'USD',
-  KRW = 'KRW',
-  EUR = 'EUR',
-  AUD = 'AUD',
-  ILS = 'ILS',
-  GBP = 'GBP'
+  PHP = "PHP",
+  USD = "USD",
+  KRW = "KRW",
+  EUR = "EUR",
+  AUD = "AUD",
+  ILS = "ILS",
+  GBP = "GBP",
 }
 
 export interface IUser {

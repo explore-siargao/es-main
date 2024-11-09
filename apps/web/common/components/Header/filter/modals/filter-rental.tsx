@@ -27,47 +27,74 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
 }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const pickUpDate = searchParams.get('pickUpDate')
-  const dropOffDate = searchParams.get('dropOffDate')
-  const location = searchParams.get('location')
-  const priceFrom = searchParams.get('priceFrom')
-  const priceTo = searchParams.get('priceTo')
-  const starRating = searchParams.get('starRating')
-  const seatCount = searchParams.get('seatCount')
-  const vehicleTypesSearch = searchParams.get('vehicleTypes')?.split(',')
-  const transmissionTypesSearch = searchParams.get('transmissionTypes')?.split(',')
+  const pickUpDate = searchParams.get("pickUpDate")
+  const dropOffDate = searchParams.get("dropOffDate")
+  const location = searchParams.get("location")
+  const priceFrom = searchParams.get("priceFrom")
+  const priceTo = searchParams.get("priceTo")
+  const starRating = searchParams.get("starRating")
+  const seatCount = searchParams.get("seatCount")
+  const vehicleTypesSearch = searchParams.get("vehicleTypes")?.split(",")
+  const transmissionTypesSearch = searchParams
+    .get("transmissionTypes")
+    ?.split(",")
 
-  const defaultVehicleTypes = (vehicleTypesSearch && vehicleTypesSearch.length > 0 && vehicleTypesSearch[0] !== "any" ? vehicleTypesSearch
-    ?.map(type => vehicleTypes.find(({ value }) => value === type)?.value) : vehicleTypes[0]?.value) as string[] | "any";
-  const defaultTransmissionTypes = (transmissionTypesSearch && transmissionTypesSearch.length > 0 && transmissionTypesSearch[0] !== "any" ? transmissionTypesSearch
-    ?.map(type => transmissionTypes.find(({ value }) => value === type)?.value) : transmissionTypes[0]?.value) as string[] | "any";
-  const defaultSelectedPriceRange = [priceFrom && priceFrom !== "any" ? Number(priceFrom) : "any", priceTo && priceTo !== "any" ? Number(priceTo) : "any"] as ("any" | number)[]
+  const defaultVehicleTypes = (
+    vehicleTypesSearch &&
+    vehicleTypesSearch.length > 0 &&
+    vehicleTypesSearch[0] !== "any"
+      ? vehicleTypesSearch?.map(
+          (type) => vehicleTypes.find(({ value }) => value === type)?.value
+        )
+      : vehicleTypes[0]?.value
+  ) as string[] | "any"
+  const defaultTransmissionTypes = (
+    transmissionTypesSearch &&
+    transmissionTypesSearch.length > 0 &&
+    transmissionTypesSearch[0] !== "any"
+      ? transmissionTypesSearch?.map(
+          (type) => transmissionTypes.find(({ value }) => value === type)?.value
+        )
+      : transmissionTypes[0]?.value
+  ) as string[] | "any"
+  const defaultSelectedPriceRange = [
+    priceFrom && priceFrom !== "any" ? Number(priceFrom) : "any",
+    priceTo && priceTo !== "any" ? Number(priceTo) : "any",
+  ] as ("any" | number)[]
 
   const rentalInitialState: T_Filter_Rental = {
     location: location ? location : (locations[0]?.value ?? "any"),
-    starRating: starRating !== 'any' ? Number(starRating) : "any",
+    starRating: starRating !== "any" ? Number(starRating) : "any",
     priceRange: [0, 10000],
     selectedPriceRange: defaultSelectedPriceRange,
     vehicleTypes: defaultVehicleTypes,
     transmissionTypes: defaultTransmissionTypes,
-    seatCount: seatCount !== 'any' ? Number(seatCount) : "any",
+    seatCount: seatCount !== "any" ? Number(seatCount) : "any",
   }
 
   const [state, dispatch] = useReducer(rentalReducer, rentalInitialState)
-  const { data, isLoading } = useGetListingCategoryHighestPrice(E_Listing_Category.Rental);
+  const { data, isLoading } = useGetListingCategoryHighestPrice(
+    E_Listing_Category.Rental
+  )
 
   useEffect(() => {
-    if(!isLoading && !data?.error && data?.item) {
+    if (!isLoading && !data?.error && data?.item) {
       dispatch({
         type: ERentalAction.SET_PRICE_RANGE,
         payload: [0, data?.item.amount],
-      });
+      })
     }
   }, [data])
 
   const handleSubmit = () => {
-    const { location, vehicleTypes, selectedPriceRange, transmissionTypes, seatCount, starRating } =
-      state
+    const {
+      location,
+      vehicleTypes,
+      selectedPriceRange,
+      transmissionTypes,
+      seatCount,
+      starRating,
+    } = state
 
     const queryString = [
       `?location=${location ? location : "any"}`,
@@ -76,11 +103,13 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
       `priceFrom=${selectedPriceRange && selectedPriceRange[0] !== "any" ? selectedPriceRange[0] : "any"}`,
       `priceTo=${selectedPriceRange && selectedPriceRange[1] !== "any" ? selectedPriceRange[1] : "any"}`,
       `seatCount=${seatCount && seatCount !== "any" ? seatCount : "any"}`,
-      `starRating=${starRating && starRating !== "any" ? starRating : "any"}`
-    ];
-      
+      `starRating=${starRating && starRating !== "any" ? starRating : "any"}`,
+    ]
+
     // the pickUpDate and dropOffDate comes from the header search bar
-    router.push(`${queryString.join("&")}&pickUpDate=${pickUpDate ?? "any"}&dropOffDate=${dropOffDate ?? "any"}`)
+    router.push(
+      `${queryString.join("&")}&pickUpDate=${pickUpDate ?? "any"}&dropOffDate=${dropOffDate ?? "any"}`
+    )
     onClose()
   }
 
@@ -97,7 +126,10 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             <h3 className="text-lg font-semibold mb-2">Location</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {locations.map((type) => (
-                <div key={`location-${type.value}`} className="flex items-center">
+                <div
+                  key={`location-${type.value}`}
+                  className="flex items-center"
+                >
                   <Input
                     type="radio"
                     id={`location-${type.value}`}
@@ -108,7 +140,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                       dispatch({
                         type: ERentalAction.SET_LOCATION,
                         payload: type.value,
-                      });
+                      })
                     }}
                     className="hidden peer"
                     label={""}
@@ -121,7 +153,6 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                   </label>
                 </div>
               ))}
-
             </div>
           </div>
           <div>
@@ -131,15 +162,20 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {vehicleTypes.map((type) => (
-                <div key={`vehicle-type-${type.value}`} className="flex items-center">
+                <div
+                  key={`vehicle-type-${type.value}`}
+                  className="flex items-center"
+                >
                   <Input
                     type="checkbox"
                     id={`vehicle-type-${type.value}`}
                     name="vehicleType"
                     value={type.value}
-                    checked={state.vehicleTypes !== "any" ? state.vehicleTypes.some(
-                      (t) => t === type.value
-                    ) : state.vehicleTypes === type.value}
+                    checked={
+                      state.vehicleTypes !== "any"
+                        ? state.vehicleTypes.some((t) => t === type.value)
+                        : state.vehicleTypes === type.value
+                    }
                     onChange={() => {
                       if (type.value === vehicleTypes[0]?.value) {
                         dispatch({
@@ -155,15 +191,13 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                         const newTypes = state.vehicleTypes.some(
                           (t) => t === type.value
                         )
-                          ? state.vehicleTypes.filter(
-                            (t) => t !== type.value
-                          )
+                          ? state.vehicleTypes.filter((t) => t !== type.value)
                           : [
-                            ...state.vehicleTypes.filter(
-                              (t) => t !== vehicleTypes[0]?.value
-                            ),
-                            type.value,
-                          ]
+                              ...state.vehicleTypes.filter(
+                                (t) => t !== vehicleTypes[0]?.value
+                              ),
+                              type.value,
+                            ]
                         dispatch({
                           type: ERentalAction.SET_VEHICLE_TYPES,
                           payload: newTypes,
@@ -190,15 +224,20 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
               {transmissionTypes.map((type) => (
-                <div key={`transmission-type-${type.value}`} className="flex items-center">
+                <div
+                  key={`transmission-type-${type.value}`}
+                  className="flex items-center"
+                >
                   <Input
                     type="checkbox"
                     id={`transmission-type-${type.value}`}
                     name="transmissionType"
                     value={type.value}
-                    checked={state.transmissionTypes !== "any" ? state.transmissionTypes.some(
-                      (t) => t === type.value
-                    ) : state.transmissionTypes === type.value}
+                    checked={
+                      state.transmissionTypes !== "any"
+                        ? state.transmissionTypes.some((t) => t === type.value)
+                        : state.transmissionTypes === type.value
+                    }
                     onChange={() => {
                       if (type.value === transmissionTypes[0]?.value) {
                         dispatch({
@@ -215,14 +254,14 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                           (t) => t === type.value
                         )
                           ? state.transmissionTypes.filter(
-                            (t) => t !== type.value
-                          )
+                              (t) => t !== type.value
+                            )
                           : [
-                            ...state.transmissionTypes.filter(
-                              (t) => t !== transmissionTypes[0]?.value
-                            ),
-                            type.value,
-                          ]
+                              ...state.transmissionTypes.filter(
+                                (t) => t !== transmissionTypes[0]?.value
+                              ),
+                              type.value,
+                            ]
                         dispatch({
                           type: ERentalAction.SET_TRANSMISSION_TYPES,
                           payload: newTypes,
@@ -248,7 +287,14 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
               Nightly prices before fees and taxes
             </p>
             <Slider
-              value={[typeof state.selectedPriceRange[0] === 'number' ? state.selectedPriceRange[0] : (state.priceRange[0] as number), typeof state.selectedPriceRange[1] === 'number' ? state.selectedPriceRange[1] : (state.priceRange[1] as number)]}
+              value={[
+                typeof state.selectedPriceRange[0] === "number"
+                  ? state.selectedPriceRange[0]
+                  : (state.priceRange[0] as number),
+                typeof state.selectedPriceRange[1] === "number"
+                  ? state.selectedPriceRange[1]
+                  : (state.priceRange[1] as number),
+              ]}
               min={state.priceRange[0]}
               max={state.priceRange[1]}
               onValueChange={(newRange) => {
@@ -263,13 +309,23 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                 <Input
                   id="min-price"
                   type="number"
-                  value={state.selectedPriceRange[0] && typeof state.selectedPriceRange[0] === 'number' ? state.selectedPriceRange[0] : (state.priceRange[0] as number)}
+                  value={
+                    state.selectedPriceRange[0] &&
+                    typeof state.selectedPriceRange[0] === "number"
+                      ? state.selectedPriceRange[0]
+                      : (state.priceRange[0] as number)
+                  }
                   onChange={(e) => {
                     const newValue = parseInt(e.target.value)
                     if (!isNaN(newValue)) {
                       dispatch({
                         type: ERentalAction.SET_SELECTED_PRICE_RANGE,
-                        payload: [newValue, typeof state.selectedPriceRange[1] === 'number' ? state.selectedPriceRange[1] : (state.priceRange[1] as number)],
+                        payload: [
+                          newValue,
+                          typeof state.selectedPriceRange[1] === "number"
+                            ? state.selectedPriceRange[1]
+                            : (state.priceRange[1] as number),
+                        ],
                       })
                     }
                   }}
@@ -282,12 +338,22 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                 <Input
                   id="max-price"
                   type="number"
-                  value={state.selectedPriceRange[1] && typeof state.selectedPriceRange[1] === 'number' ? state.selectedPriceRange[1] : (state.priceRange[1] as number)}
+                  value={
+                    state.selectedPriceRange[1] &&
+                    typeof state.selectedPriceRange[1] === "number"
+                      ? state.selectedPriceRange[1]
+                      : (state.priceRange[1] as number)
+                  }
                   onChange={(e) => {
                     const newValue = parseInt(e.target.value)
                     dispatch({
                       type: ERentalAction.SET_SELECTED_PRICE_RANGE,
-                      payload: [typeof state.selectedPriceRange[0] === 'number' ? state.selectedPriceRange[0] : (state.priceRange[0] as number), newValue],
+                      payload: [
+                        typeof state.selectedPriceRange[0] === "number"
+                          ? state.selectedPriceRange[0]
+                          : (state.priceRange[0] as number),
+                        newValue,
+                      ],
                     })
                   }}
                   className="mt-1 w-24"
@@ -302,7 +368,9 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             <div className="space-y-4">
               <CountInput
                 label="Number of seats"
-                count={typeof state.seatCount === 'number' ? state.seatCount : 0}
+                count={
+                  typeof state.seatCount === "number" ? state.seatCount : 0
+                }
                 setCount={(count) =>
                   dispatch({
                     type: ERentalAction.SET_SEAT_COUNT,
@@ -320,18 +388,20 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                 <button
                   key={index}
                   onClick={() => {
-                    const newRating = state.starRating === index + 1 ? 0 : index + 1;
+                    const newRating =
+                      state.starRating === index + 1 ? 0 : index + 1
                     dispatch({
                       type: ERentalAction.SET_STAR_RATING,
                       payload: newRating,
-                    });
+                    })
                   }}
                   className={`flex items-center justify-center cursor-pointer`}
                 >
                   <Star
                     size={28}
                     className={
-                      typeof state.starRating === 'number' && state.starRating > index
+                      typeof state.starRating === "number" &&
+                      state.starRating > index
                         ? "text-text-500 fill-text-500"
                         : "text-gray-300"
                     }
@@ -340,7 +410,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
               ))}
             </div>
             <p className="text-sm text-gray-500">
-              {typeof state.starRating === 'number' && state.starRating > 0
+              {typeof state.starRating === "number" && state.starRating > 0
                 ? `Selected ${state.starRating} star${state.starRating > 1 ? "s" : ""}`
                 : "Any star review count"}
             </p>

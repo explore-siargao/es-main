@@ -20,11 +20,11 @@ export const activityHighestPrice = async (req: Request, res: Response) => {
         $limit: 1,
       },
     ])
-    const valid = Z_Category_Highest_Price.safeParse(getHighestPrice[0]);
-    if(valid.success) {
+    const valid = Z_Category_Highest_Price.safeParse(getHighestPrice[0])
+    if (valid.success) {
       res.json(response.success({ item: getHighestPrice[0] }))
     } else {
-      res.json(response.error({ message: "Invalid request", item: null }))
+      res.json(response.error({ message: 'Invalid request', item: null }))
     }
   } catch (err: any) {
     res.json(

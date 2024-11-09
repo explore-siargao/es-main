@@ -8,23 +8,23 @@ import { E_Property_Type } from "@repo/contract-2/property"
 import propertyTypeMap from "@/common/helpers/propertyTypeMap"
 
 export type T_Property_Card = {
-  listingId: string,
-  title: string | null,
-  subtitle: string | null,
-  type: E_Property_Type,
-  wholePlaceType: E_Property_Type,
+  listingId: string
+  title: string | null
+  subtitle: string | null
+  type: E_Property_Type
+  wholePlaceType: E_Property_Type
   photos: {
     key: string
     alt: string
-  }[],
+  }[]
   location: {
-    city: string,
-    latitude: number,
-    longitude: number,
-  },
-  price: number,
-  average: number,
-  reviewsCount: number,
+    city: string
+    latitude: number
+    longitude: number
+  }
+  price: number
+  average: number
+  reviewsCount: number
 }
 
 const PropertyCard = ({
@@ -45,7 +45,7 @@ const PropertyCard = ({
         <Link href={`/listing/properties/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             <button
-              onClick={(e) => console.log('clicked heart')}
+              onClick={(e) => console.log("clicked heart")}
               className="absolute top-3 right-3 z-40"
             >
               <LucideHeart
@@ -63,7 +63,7 @@ const PropertyCard = ({
                 fontWeight="semibold"
                 className="text-text-500 truncate"
               >
-                {title ? title : (subtitle || "Unknown title")}
+                {title ? title : subtitle || "Unknown title"}
               </Typography>
               <div className="flex text-text-500 items-center gap-1">
                 {average > 1 ? (
@@ -72,18 +72,25 @@ const PropertyCard = ({
                     {average} ({reviewsCount ? reviewsCount : 0})
                   </>
                 ) : (
-                  <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">Newly added</span>
+                  <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">
+                    Newly added
+                  </span>
                 )}
               </div>
             </div>
             <div className="text-text-300 text-sm">
-              <Typography className="truncate">{propertyTypeMap[wholePlaceType || type || "Unknown type"] || "Unknown"} in {location.city || "Unknown location"}</Typography>
+              <Typography className="truncate">
+                {propertyTypeMap[wholePlaceType || type || "Unknown type"] ||
+                  "Unknown"}{" "}
+                in {location.city || "Unknown location"}
+              </Typography>
             </div>
             <Typography
               fontWeight="semibold"
               className="text-text-700 underline truncate"
             >
-              From {formatCurrency(price)} <span className="font-normal">/ night</span>
+              From {formatCurrency(price)}{" "}
+              <span className="font-normal">/ night</span>
             </Typography>
           </div>
         </Link>

@@ -216,9 +216,7 @@ const CheckoutBox = ({
           <div>Total before taxes</div>
           <div>
             {totalBasePrice !== null
-              ? formatCurrency(
-                  totalBasePrice + checkoutDesc.serviceFee
-                )
+              ? formatCurrency(totalBasePrice + checkoutDesc.serviceFee)
               : "Loading..."}
           </div>
         </div>

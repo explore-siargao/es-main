@@ -30,7 +30,17 @@ export const useSearchStore = create<T_Search & T_Search_Setter>((set) => ({
   pickUpDate: "",
   dropOffDate: "",
   setPathCategory: (pathCategory: string) => set({ pathCategory }),
-  setSearchValues: ({location, search, checkIn, checkOut, activityDate, numberOfGuest, pickUpDate, dropOffDate, vehicleType}) =>
+  setSearchValues: ({
+    location,
+    search,
+    checkIn,
+    checkOut,
+    activityDate,
+    numberOfGuest,
+    pickUpDate,
+    dropOffDate,
+    vehicleType,
+  }) =>
     set({
       location: location,
       search: search,

@@ -61,8 +61,7 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
         htmlFor="budget-range"
         className="block text-sm font-medium text-gray-700 mt-2"
       >
-        {formatCurrency(minValue)} -{" "}
-        {formatCurrency(maxValue)} +
+        {formatCurrency(minValue)} - {formatCurrency(maxValue)} +
       </label>
       <div className="relative mt-4">
         <div className="h-16 w-full flex mx-auto opacity-20 grayscale">

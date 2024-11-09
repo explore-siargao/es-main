@@ -35,11 +35,7 @@ const UpcomingChart = ({ data }: T_Prop) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
-        <YAxis
-          tickFormatter={(value: number) =>
-            formatCurrency(value)
-          }
-        />
+        <YAxis tickFormatter={(value: number) => formatCurrency(value)} />
         <Tooltip
           cursor={{ fill: "#F3F4F6" }}
           formatter={(value: number) => formatCurrency(value)}
