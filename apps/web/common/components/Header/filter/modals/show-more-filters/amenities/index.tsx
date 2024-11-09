@@ -15,17 +15,7 @@ import AmenitiesCheckboxes from "./amenities-checkboxes"
 const Amenities = () => {
   return (
     <div>
-      <Typography variant="h1" fontWeight="semibold">
-        Room Amenities
-      </Typography>
-      <Typography
-        variant="h4"
-        fontWeight="normal"
-        className="text-gray-500 pt-1 italic"
-      >
-        Checked Amenities will be filtered
-      </Typography>
-      <div className="mt-6 mb-8 grid grid-cols-3 gap-6">
+      <div className="mb-8 grid grid-cols-3 gap-6">
         <AmenitiesCheckboxes
           title="Most Popular"
           icon={<LucideSparkles className="h-4 w-4" />}

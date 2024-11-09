@@ -96,7 +96,7 @@ const LegendModal = ({ isOpen, onClose, date }: T_Props) => {
                 15%
               </Typography>
               <Typography className="leading-none">20</Typography>
-              <Typography>{formatCurrency(100000, "Philippines")}</Typography>
+              <Typography>{formatCurrency(100000)}</Typography>
             </div>
           </div>
           <div>

@@ -54,7 +54,7 @@ router.get(
 )
 //filtered data
 router.get(
-  '/filter',
+  '/filtered',
   isOriginValid,
   isCsrfTokenValid,
   paginate(15),

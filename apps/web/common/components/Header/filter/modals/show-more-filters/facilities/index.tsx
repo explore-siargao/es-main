@@ -24,17 +24,7 @@ import FacilitiesCheckboxes from "./facilities-checkboxes"
 const Facilities = () => {
   return (
     <div>
-      <Typography variant="h1" fontWeight="semibold">
-        Property Facilities
-      </Typography>
-      <Typography
-        variant="h4"
-        fontWeight="normal"
-        className="text-gray-500 pt-1 italic"
-      >
-        Checked Facilities will be filtered
-      </Typography>
-      <div className="mt-6 mb-8 grid grid-cols-3 gap-6">
+      <div className="mb-8 grid grid-cols-3 gap-6">
         <FacilitiesCheckboxes
           title="Most Popular"
           icon={<LucideSparkles className="h-4 w-4" />}

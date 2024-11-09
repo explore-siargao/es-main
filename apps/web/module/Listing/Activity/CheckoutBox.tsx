@@ -95,7 +95,7 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
-        {formatCurrency(checkoutDesc.titlePrice, "Philippines")}
+        {formatCurrency(checkoutDesc.titlePrice)}
         <small className="font-light"> person</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
@@ -188,7 +188,7 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
           >
             {APP_NAME} service fee
           </Button>
-          <div>{formatCurrency(checkoutDesc.serviceFee, "Philippines")}</div>
+          <div>{formatCurrency(checkoutDesc.serviceFee)}</div>
         </div>
         {totalGuest > maximumCapacity ? (
           <div className="flex justify-between items-center mt-2">
@@ -202,8 +202,7 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
             <div>
               {formatCurrency(
                 (totalGuest - maximumCapacity) *
-                  checkoutDesc.pricePerAdditionalPerson,
-                "Philippines"
+                  checkoutDesc.pricePerAdditionalPerson
               )}
             </div>
           </div>
@@ -219,8 +218,7 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
                   ? (totalGuest - maximumCapacity) *
                     checkoutDesc.pricePerAdditionalPerson
                   : 0) +
-                checkoutDesc.serviceFee,
-              "Philippines"
+                checkoutDesc.serviceFee
             )}
           </div>
         </div>

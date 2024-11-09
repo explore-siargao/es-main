@@ -1,72 +1,73 @@
-interface IFilterType {
-  value: string
-  label: string
-}
-
-export const VehicleTypes: IFilterType[] = [
-  { value: "any_vehicle", label: "Any Type" },
-  { value: "car", label: "Car" },
-  { value: "motorbike", label: "Motorbike" },
-  { value: "bicycle", label: "Bicycle" },
-]
-
-export const TransmissionTypes: IFilterType[] = [
-  { value: "any_transmission", label: "Any Type" },
-  { value: "automatic", label: "Automatic" },
-  { value: "semi_automatic", label: "Semi-Automatic" },
-  { value: "manual", label: "Manual" },
-]
+import {
+  locations,
+  T_Filter_Type,
+  transmissionTypes,
+  vehicleTypes,
+} from "../../constants"
 
 export enum ERentalAction {
+  SET_LOCATION = "SET_LOCATION",
   SET_STAR_RATING = "SET_STAR_RATING",
   SET_PRICE_RANGE = "SET_PRICE_RANGE",
-  SET_VEHICLE_TYPE = "SET_VEHICLE_TYPE",
-  SET_TRANSMISSION_TYPE = "SET_TRANSMISSION_TYPE",
+  SET_SELECTED_PRICE_RANGE = "SET_SELECTED_PRICE_RANGE",
+  SET_VEHICLE_TYPES = "SET_VEHICLE_TYPES",
+  SET_TRANSMISSION_TYPES = "SET_TRANSMISSION_TYPES",
   SET_SEAT_COUNT = "SET_SEAT_COUNT",
   RESET_FILTERS = "RESET_FILTERS",
 }
 
-export type TFilterRental = {
-  starRating: number
+export type T_Filter_Rental = {
+  location: string
+  starRating: number | "any"
   priceRange: number[]
-  vehicleType: IFilterType[]
-  transmissionType: IFilterType[]
-  seatCount: number | null
+  selectedPriceRange: ("any" | number)[]
+  vehicleTypes: string[] | "any"
+  transmissionTypes: string[] | "any"
+  seatCount: number | "any"
 }
 
 type Action =
+  | { type: ERentalAction.SET_LOCATION; payload: string }
   | { type: ERentalAction.SET_STAR_RATING; payload: number }
   | { type: ERentalAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: ERentalAction.SET_VEHICLE_TYPE; payload: IFilterType[] }
-  | { type: ERentalAction.SET_TRANSMISSION_TYPE; payload: IFilterType[] }
-  | { type: ERentalAction.SET_SEAT_COUNT; payload: number | null }
+  | {
+      type: ERentalAction.SET_SELECTED_PRICE_RANGE
+      payload: number[] | "any"[]
+    }
+  | { type: ERentalAction.SET_VEHICLE_TYPES; payload: string[] | "any" }
+  | { type: ERentalAction.SET_TRANSMISSION_TYPES; payload: string[] | "any" }
+  | { type: ERentalAction.SET_SEAT_COUNT; payload: number | "any" }
   | { type: ERentalAction.RESET_FILTERS }
 
-export const rentalInitialState: TFilterRental = {
-  starRating: 0,
-  priceRange: [0, 1000],
-  vehicleType: [VehicleTypes[0]!],
-  transmissionType: [TransmissionTypes[0]!],
-  seatCount: null,
-}
-
 export function rentalReducer(
-  state: TFilterRental,
+  state: T_Filter_Rental,
   action: Action
-): TFilterRental {
+): T_Filter_Rental {
   switch (action.type) {
+    case ERentalAction.SET_LOCATION:
+      return { ...state, location: action.payload }
     case ERentalAction.SET_STAR_RATING:
       return { ...state, starRating: action.payload }
     case ERentalAction.SET_PRICE_RANGE:
       return { ...state, priceRange: action.payload }
-    case ERentalAction.SET_VEHICLE_TYPE:
-      return { ...state, vehicleType: action.payload }
-    case ERentalAction.SET_TRANSMISSION_TYPE:
-      return { ...state, transmissionType: action.payload }
+    case ERentalAction.SET_SELECTED_PRICE_RANGE:
+      return { ...state, selectedPriceRange: action.payload }
+    case ERentalAction.SET_VEHICLE_TYPES:
+      return { ...state, vehicleTypes: action.payload }
+    case ERentalAction.SET_TRANSMISSION_TYPES:
+      return { ...state, transmissionTypes: action.payload }
     case ERentalAction.SET_SEAT_COUNT:
       return { ...state, seatCount: action.payload }
     case ERentalAction.RESET_FILTERS:
-      return rentalInitialState
+      return {
+        starRating: "any",
+        priceRange: [0, 1000],
+        selectedPriceRange: ["any", "any"],
+        location: "any",
+        vehicleTypes: "any",
+        transmissionTypes: "any",
+        seatCount: "any",
+      }
     default:
       return state
   }

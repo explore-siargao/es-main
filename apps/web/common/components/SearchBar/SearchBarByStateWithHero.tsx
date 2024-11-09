@@ -1,62 +1,13 @@
 "use client"
-import React, { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
+import React, { useState } from "react"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ApplyToHostModal from "../../../module/LandingPage/components/ApplyToHostModal"
-import { useForm } from "react-hook-form"
-import { useSearchStore } from "../../store/useSearchStore"
 import { Typography } from "../ui/Typography"
-import { E_Listing_Category } from "@repo/contract"
-import SearchBarByState from "./SearchBarByState"
-
-type T_Search_Form = {
-  search: string
-  checkIn: string
-  checkOut: string
-  date: string
-  numberOfGuest: number
-}
-
-const propertyEnum = E_Listing_Category.Property
-const activityEnum = E_Listing_Category.Activity
-const rentalEnum = E_Listing_Category.Rental
+import SearchBarByState from "./search-bar-by-state"
 
 function SearchBarByStateWithHero() {
-  const path = usePathname()
-  const [category, setCategory] = useState<E_Listing_Category>(propertyEnum)
-
-  const form = useForm<T_Search_Form>()
-  const { setSearchValues, clearSearchValues } = useSearchStore()
-
-  useEffect(() => {
-    form.reset()
-    clearSearchValues()
-  }, [path])
-
   const [isModalOpen, setIsModalOpen] = useState(false)
   const closeModal = () => setIsModalOpen(false)
-
-  const onSubmit = (data: T_Search_Form) => {
-    setSearchValues(
-      data.search,
-      data.checkIn,
-      data.checkOut,
-      data.date,
-      Number(data.numberOfGuest)
-    )
-  }
-
-  const [pageProperty, setPageProperty] = useState(1)
-
-  useEffect(() => {
-    if (category === propertyEnum) {
-      setPageProperty(1)
-    } else if (category === activityEnum) {
-      setPageProperty(2)
-    } else if (category === rentalEnum) {
-      setPageProperty(3)
-    }
-  }, [category])
 
   return (
     <div

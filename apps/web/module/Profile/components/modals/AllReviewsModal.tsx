@@ -87,8 +87,8 @@ const AllReviewsModal = ({
                     <div className="w-1/5 bg-gray-200 h-14 relative rounded-md">
                       <Image
                         src={`${ASSET_ROOT}/${data?.images[0]?.fileKey}`}
-                        layout="fill"
-                        objectFit="cover"
+                        fill
+                        style={{ objectFit: "cover" }}
                         className="rounded-md"
                         alt="listing-image"
                       />

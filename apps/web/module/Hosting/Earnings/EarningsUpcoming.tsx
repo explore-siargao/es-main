@@ -28,22 +28,10 @@ const EarningsUpcoming = ({ data }: T_Prop) => {
   const summaryData = [
     ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
     [
-      formatCurrency(
-        upcoming?.item?.yearToDateSummary?.gross ?? "",
-        "Philippines"
-      ),
-      formatCurrency(
-        upcoming?.item?.yearToDateSummary?.adjustment ?? "",
-        "Philippines"
-      ),
-      formatCurrency(
-        upcoming?.item?.yearToDateSummary?.serviceFee ?? "",
-        "Philippines"
-      ),
-      formatCurrency(
-        upcoming?.item?.yearToDateSummary?.tax ?? "",
-        "Philippines"
-      ),
+      formatCurrency(upcoming?.item?.yearToDateSummary?.gross ?? ""),
+      formatCurrency(upcoming?.item?.yearToDateSummary?.adjustment ?? ""),
+      formatCurrency(upcoming?.item?.yearToDateSummary?.serviceFee ?? ""),
+      formatCurrency(upcoming?.item?.yearToDateSummary?.tax ?? ""),
     ],
   ]
 
@@ -83,9 +71,7 @@ const EarningsUpcoming = ({ data }: T_Prop) => {
           <div>
             <Typography variant="h1" className="text-[30px]">
               Your upcoming earnings{" "}
-              <span className="text-gray-400">
-                {formatCurrency(total, "Philippines")}
-              </span>
+              <span className="text-gray-400">{formatCurrency(total)}</span>
             </Typography>
           </div>
           {earningsUpcomingDescription}

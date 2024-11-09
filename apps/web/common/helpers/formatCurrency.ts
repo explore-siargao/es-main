@@ -1,30 +1,39 @@
-const formatCurrency = (
+import { E_Supported_Currencies } from "../types/global"
+
+function formatCurrency(
   amount: number,
-  country?: "Philippines" | "United States" | "Australia"
-) => {
-  const countryFormat: Record<string, string> = {
-    PH: "en-PH",
-    "United States": "en-US",
-    Australia: "en-AU",
+  currencyCode?: E_Supported_Currencies
+): string {
+  const storedCurrency = localStorage.getItem(
+    "currency"
+  ) as E_Supported_Currencies | null
+  const finalCurrency =
+    currencyCode || storedCurrency || E_Supported_Currencies.PHP
+
+  const locale = {
+    PHP: "en-PH",
+    USD: "en-US",
+    KRW: "ko-KR",
+    EUR: "de-DE",
+    AUD: "en-AU",
+    ILS: "he-IL",
+    GBP: "en-GB",
+  }[finalCurrency]
+
+  const formatter = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: finalCurrency,
+    minimumFractionDigits: finalCurrency === "KRW" ? 0 : 2,
+    maximumFractionDigits: finalCurrency === "KRW" ? 0 : 2,
+  })
+
+  let formattedAmount = formatter.format(amount)
+
+  if (finalCurrency === "EUR") {
+    formattedAmount = `€${formattedAmount.replace("€", "").trim()}`
   }
 
-  const countryCurrency: Record<string, string> = {
-    Philippines: "PHP",
-    "United States": "USD",
-    Australia: "AUD",
-  }
-
-  const formatter = new Intl.NumberFormat(
-    countryFormat[country || "United States"],
-    {
-      style: "currency",
-      currency: countryCurrency[country || "United States"],
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    }
-  )
-
-  return formatter.format(amount)
+  return formattedAmount
 }
 
 export default formatCurrency

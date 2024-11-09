@@ -24,8 +24,8 @@ const ReviewCard = ({
         <div className="relative h-14 w-14 bg-gray-200 rounded-full">
           <Image
             src={`${ASSET_ROOT}/${reviewerImage}`}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             className="rounded-full"
             alt="Reviewer's profile"
           />

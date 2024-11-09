@@ -5,25 +5,19 @@ import { Input } from "../../ui/Input"
 import { useFormContext } from "react-hook-form"
 import { Button } from "../../ui/Button"
 import { Separator } from "../../ui/Separator"
-import { format } from "date-fns"
+import { format, isAfter } from "date-fns"
+import { locations } from "../../Header/filter/constants"
 
 function PropertySearchBar() {
-  const { register, watch, setValue } = useFormContext()
+  const { register, watch, setValue, getValues } = useFormContext()
   const dateToday = format(new Date(), "yyyy-MM-dd")
-  const siargaoLocations = [
-    "General Luna",
-    "Dapa",
-    "Del Carmen",
-    "San Isidro",
-    "Pilar",
-    "San Benito",
-    "Burgos",
-    "Santa Monica",
-    "Socorro",
-  ]
 
   useEffect(() => {
-    setValue("checkOut", "")
+    const checkInDate = getValues("checkIn")
+    const checkOutDate = getValues("checkOut")
+    if (isAfter(new Date(checkInDate), new Date(checkOutDate))) {
+      setValue("checkOut", "")
+    }
   }, [watch("checkIn")])
 
   return (
@@ -34,10 +28,10 @@ function PropertySearchBar() {
         {...register("location")}
         id="testable"
       >
-        <Option value="">Select Location</Option>
-        {siargaoLocations.map((loc) => (
-          <Option key={loc} value={loc}>
-            {loc}
+        <Option value="">Select location</Option>
+        {locations.map((loc) => (
+          <Option key={loc.value} value={loc.value}>
+            {loc.label}
           </Option>
         ))}
       </Select>
@@ -62,12 +56,10 @@ function PropertySearchBar() {
       <Input
         type="number"
         className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Number of Guest/s"}
-        placeholder="1"
-        defaultValue={"1"}
+        label={"Number of guest/s"}
+        placeholder="Add guests"
         {...register("numberOfGuest")}
       />
-      <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Button
         variant={"primary"}
         className="h-full px-4 py-3 justify-center items-center rounded-full gap-x-2"

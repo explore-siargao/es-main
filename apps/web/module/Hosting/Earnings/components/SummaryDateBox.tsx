@@ -8,10 +8,10 @@ const SummaryDateBox: React.FC = () => {
   const summaryData = [
     ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
     [
-      formatCurrency(94800, "Philippines"),
-      formatCurrency(2000, "Philippines"),
-      formatCurrency(2000, "Philippines"),
-      formatCurrency(2000, "Philippines"),
+      formatCurrency(94800),
+      formatCurrency(2000),
+      formatCurrency(2000),
+      formatCurrency(2000),
     ],
   ]
   return (
@@ -44,7 +44,7 @@ const SummaryDateBox: React.FC = () => {
           Total
         </Typography>
         <Typography className="pt-4 text-sm" variant="p" fontWeight="semibold">
-          {formatCurrency(97800, "Philippines")}
+          {formatCurrency(97800)}
         </Typography>
       </div>
     </div>

@@ -35,8 +35,8 @@ const Card = ({ imageKey, title, description }: CardProps) => {
             className="cursor-pointer"
             src={imageKey}
             alt={title}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
           />
         )}
       </div>

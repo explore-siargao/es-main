@@ -61,15 +61,13 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
           (!filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
             filteredPaymentHistory[0]?.completed) ||
-            0,
-          "Philippines"
+            0
         ),
         formatCurrency(
           (!filteredPaymentHistoryIsPending &&
             filteredPaymentHistory &&
             filteredPaymentHistory[0]?.cancelled) ||
-            0,
-          "Philippines"
+            0
         ),
       ],
     ],
@@ -77,8 +75,7 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
       !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
             (filteredPaymentHistory[0]?.cancelled || 0)
-        : 0,
-      "Philippines"
+        : 0
     ),
   }
 
@@ -90,8 +87,7 @@ const GraphTab: React.FC<PaymentHistoryProps> = ({
       !filteredPaymentHistoryIsPending && filteredPaymentHistory
         ? (filteredPaymentHistory[0]?.completed || 0) +
             (filteredPaymentHistory[0]?.cancelled || 0)
-        : 0,
-      "Philippines"
+        : 0
     ),
   }
   return (

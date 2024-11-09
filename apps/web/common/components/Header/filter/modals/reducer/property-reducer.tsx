@@ -1,25 +1,11 @@
-interface IFilterType {
-  value: string
-  label: string
-}
-
-export const PropertyTypes: IFilterType[] = [
-  { value: "any_property", label: "Any Type" },
-  { value: "hostel", label: "Hostel" },
-  { value: "apartment", label: "Apartment" },
-  { value: "homestay", label: "Homestay" },
-  { value: "hotel", label: "Hotel" },
-  { value: "resort", label: "Resort" },
-  { value: "villa", label: "Villa" },
-  { value: "house", label: "House" },
-  { value: "bungalow", label: "Bungalow" },
-  { value: "cottage", label: "Cottage" },
-]
+import { locations, propertyTypes, T_Filter_Type } from "../../constants"
 
 export enum EPropertyAction {
+  SET_LOCATION = "SET_LOCATION",
   SET_STAR_RATING = "SET_STAR_RATING",
   SET_PRICE_RANGE = "SET_PRICE_RANGE",
-  SET_PROPERTY_TYPE = "SET_PROPERTY_TYPE",
+  SET_SELECTED_PRICE_RANGE = "SET_SELECTED_PRICE_RANGE",
+  SET_PROPERTY_TYPES = "SET_PROPERTY_TYPES",
   SET_BEDROOM_COUNT = "SET_BEDROOM_COUNT",
   SET_BED_COUNT = "SET_BED_COUNT",
   SET_BATHROOM_COUNT = "SET_BATHROOM_COUNT",
@@ -28,54 +14,50 @@ export enum EPropertyAction {
   RESET_FILTERS = "RESET_FILTERS",
 }
 
-export type TFilterProperty = {
-  starRating: number
+export type T_Filter_Property = {
+  location: string
+  starRating: number | "any"
   priceRange: number[]
-  propertyType: IFilterType[]
-  bedroomCount: number | null
-  bedCount: number | null
-  bathroomCount: number | null
+  selectedPriceRange: ("any" | number)[]
+  propertyTypes: string[] | "any"
+  bedroomCount: number | "any"
+  bedCount: number | "any"
+  bathroomCount: number | "any"
   facilitiesModal: boolean
   amenitiesModal: boolean
-  facilities: string | null
-  amenities: string | null
 }
 
 type Action =
-  | { type: EPropertyAction.SET_STAR_RATING; payload: number }
-  | { type: EPropertyAction.SET_PRICE_RANGE; payload: [number, number] }
-  | { type: EPropertyAction.SET_PROPERTY_TYPE; payload: IFilterType[] }
-  | { type: EPropertyAction.SET_BEDROOM_COUNT; payload: number | null }
-  | { type: EPropertyAction.SET_BED_COUNT; payload: number | null }
-  | { type: EPropertyAction.SET_BATHROOM_COUNT; payload: number | null }
+  | { type: EPropertyAction.SET_LOCATION; payload: string }
+  | { type: EPropertyAction.SET_STAR_RATING; payload: number | "any" }
+  | { type: EPropertyAction.SET_PRICE_RANGE; payload: number[] }
+  | {
+      type: EPropertyAction.SET_SELECTED_PRICE_RANGE
+      payload: number[] | "any"[]
+    }
+  | { type: EPropertyAction.SET_PROPERTY_TYPES; payload: string[] | "any" }
+  | { type: EPropertyAction.SET_BEDROOM_COUNT; payload: number | "any" }
+  | { type: EPropertyAction.SET_BED_COUNT; payload: number | "any" }
+  | { type: EPropertyAction.SET_BATHROOM_COUNT; payload: number | "any" }
   | { type: EPropertyAction.TOGGLE_FACILITIES_MODAL; payload: boolean }
   | { type: EPropertyAction.TOGGLE_AMENITIES_MODAL; payload: boolean }
   | { type: EPropertyAction.RESET_FILTERS }
 
-export const propertyInitialState: TFilterProperty = {
-  starRating: 0,
-  priceRange: [0, 1000],
-  propertyType: [PropertyTypes[0]!],
-  bedroomCount: null,
-  bedCount: null,
-  bathroomCount: null,
-  facilitiesModal: false,
-  amenitiesModal: false,
-  facilities: null,
-  amenities: null,
-}
-
 export function propertyReducer(
-  state: TFilterProperty,
+  state: T_Filter_Property,
   action: Action
-): TFilterProperty {
+): T_Filter_Property {
   switch (action.type) {
+    case EPropertyAction.SET_LOCATION:
+      return { ...state, location: action.payload }
     case EPropertyAction.SET_STAR_RATING:
       return { ...state, starRating: action.payload }
     case EPropertyAction.SET_PRICE_RANGE:
       return { ...state, priceRange: action.payload }
-    case EPropertyAction.SET_PROPERTY_TYPE:
-      return { ...state, propertyType: action.payload }
+    case EPropertyAction.SET_SELECTED_PRICE_RANGE:
+      return { ...state, selectedPriceRange: action.payload }
+    case EPropertyAction.SET_PROPERTY_TYPES:
+      return { ...state, propertyTypes: action.payload }
     case EPropertyAction.SET_BEDROOM_COUNT:
       return { ...state, bedroomCount: action.payload }
     case EPropertyAction.SET_BED_COUNT:
@@ -87,7 +69,18 @@ export function propertyReducer(
     case EPropertyAction.TOGGLE_AMENITIES_MODAL:
       return { ...state, amenitiesModal: action.payload }
     case EPropertyAction.RESET_FILTERS:
-      return propertyInitialState
+      return {
+        location: "any",
+        starRating: "any",
+        priceRange: [0, 1000],
+        selectedPriceRange: ["any", "any"],
+        propertyTypes: "any",
+        bedroomCount: "any",
+        bedCount: "any",
+        bathroomCount: "any",
+        facilitiesModal: false,
+        amenitiesModal: false,
+      }
     default:
       return state
   }

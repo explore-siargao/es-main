@@ -4,16 +4,17 @@ import { Slider } from "@/common/components/ui/slider"
 import { Input } from "@/common/components/ui/Input"
 import { Star } from "lucide-react"
 import CountInput from "./components/count-input"
-import React, { useReducer } from "react"
-import { useRouter } from "next/navigation"
+import React, { useEffect, useReducer } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import {
   ERentalAction,
-  rentalInitialState,
   rentalReducer,
-  TransmissionTypes,
-  VehicleTypes,
+  T_Filter_Rental,
 } from "./reducer/rental-reducer"
 import { Typography } from "@/common/components/ui/Typography"
+import { locations, vehicleTypes, transmissionTypes } from "../constants"
+import useGetListingCategoryHighestPrice from "./hooks/useGetListingCategoryHighestPrice"
+import { E_Listing_Category } from "@repo/contract"
 
 interface FilterRentalModalProps {
   isOpen: boolean
@@ -25,19 +26,91 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
   onClose,
 }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const pickUpDate = searchParams.get("pickUpDate")
+  const dropOffDate = searchParams.get("dropOffDate")
+  const location = searchParams.get("location")
+  const priceFrom = searchParams.get("priceFrom")
+  const priceTo = searchParams.get("priceTo")
+  const starRating = searchParams.get("starRating")
+  const seatCount = searchParams.get("seatCount")
+  const vehicleTypesSearch = searchParams.get("vehicleTypes")?.split(",")
+  const transmissionTypesSearch = searchParams
+    .get("transmissionTypes")
+    ?.split(",")
+
+  const defaultVehicleTypes = (
+    vehicleTypesSearch &&
+    vehicleTypesSearch.length > 0 &&
+    vehicleTypesSearch[0] !== "any"
+      ? vehicleTypesSearch?.map(
+          (type) => vehicleTypes.find(({ value }) => value === type)?.value
+        )
+      : vehicleTypes[0]?.value
+  ) as string[] | "any"
+  const defaultTransmissionTypes = (
+    transmissionTypesSearch &&
+    transmissionTypesSearch.length > 0 &&
+    transmissionTypesSearch[0] !== "any"
+      ? transmissionTypesSearch?.map(
+          (type) => transmissionTypes.find(({ value }) => value === type)?.value
+        )
+      : transmissionTypes[0]?.value
+  ) as string[] | "any"
+  const defaultSelectedPriceRange = [
+    priceFrom && priceFrom !== "any" ? Number(priceFrom) : "any",
+    priceTo && priceTo !== "any" ? Number(priceTo) : "any",
+  ] as ("any" | number)[]
+
+  const rentalInitialState: T_Filter_Rental = {
+    location: location ? location : (locations[0]?.value ?? "any"),
+    starRating: starRating !== "any" ? Number(starRating) : "any",
+    priceRange: [0, 10000],
+    selectedPriceRange: defaultSelectedPriceRange,
+    vehicleTypes: defaultVehicleTypes,
+    transmissionTypes: defaultTransmissionTypes,
+    seatCount: seatCount !== "any" ? Number(seatCount) : "any",
+  }
+
   const [state, dispatch] = useReducer(rentalReducer, rentalInitialState)
+  const { data, isLoading } = useGetListingCategoryHighestPrice(
+    E_Listing_Category.Rental
+  )
+
+  useEffect(() => {
+    if (!isLoading && !data?.error && data?.item) {
+      dispatch({
+        type: ERentalAction.SET_PRICE_RANGE,
+        payload: [0, data?.item.amount],
+      })
+    }
+  }, [data])
 
   const handleSubmit = () => {
-    const { vehicleType, transmissionType, priceRange, seatCount, starRating } =
-      state
-    const queryString =
-      `?vehicleType=${vehicleType}` +
-      `&transmissionType=${transmissionType}` +
-      `&priceFrom=${priceRange ? priceRange[0] : ""}` +
-      `&priceTo=${priceRange ? priceRange[1] : ""}` +
-      `&seatCount=${seatCount ?? ""}` +
-      `&starRating=${starRating ?? ""}`
-    router.push(queryString)
+    const {
+      location,
+      vehicleTypes,
+      selectedPriceRange,
+      transmissionTypes,
+      seatCount,
+      starRating,
+    } = state
+
+    const queryString = [
+      `?location=${location ? location : "any"}`,
+      `vehicleTypes=${vehicleTypes && vehicleTypes.length ? vehicleTypes.toString() : "any"}`,
+      `transmissionTypes=${transmissionTypes && transmissionTypes.length ? transmissionTypes.toString() : "any"}`,
+      `priceFrom=${selectedPriceRange && selectedPriceRange[0] !== "any" ? selectedPriceRange[0] : "any"}`,
+      `priceTo=${selectedPriceRange && selectedPriceRange[1] !== "any" ? selectedPriceRange[1] : "any"}`,
+      `seatCount=${seatCount && seatCount !== "any" ? seatCount : "any"}`,
+      `starRating=${starRating && starRating !== "any" ? starRating : "any"}`,
+    ]
+
+    // the pickUpDate and dropOffDate comes from the header search bar
+    router.push(
+      `${queryString.join("&")}&pickUpDate=${pickUpDate ?? "any"}&dropOffDate=${dropOffDate ?? "any"}`
+    )
+    onClose()
   }
 
   return (
@@ -50,49 +123,31 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
       <div className="bg-white flex flex-col max-h-[80vh]">
         <div className="flex-grow p-6 space-y-6 overflow-y-auto">
           <div>
-            <h3 className="text-lg font-semibold mb-2">Vehicle Type</h3>
+            <h3 className="text-lg font-semibold mb-2">Location</h3>
             <div className="flex flex-wrap gap-2 mb-4">
-              {VehicleTypes.map((type) => (
-                <div key={type.value} className="flex items-center">
+              {locations.map((type) => (
+                <div
+                  key={`location-${type.value}`}
+                  className="flex items-center"
+                >
                   <Input
-                    type="checkbox"
-                    id={type.value}
-                    name="propertyType"
+                    type="radio"
+                    id={`location-${type.value}`}
+                    name="location"
                     value={type.value}
-                    checked={state.vehicleType.some(
-                      (t) => t.value === type.value
-                    )}
+                    checked={state.location === type.value}
                     onChange={() => {
-                      if (type.value === VehicleTypes[0]?.value) {
-                        dispatch({
-                          type: ERentalAction.SET_VEHICLE_TYPE,
-                          payload: [type],
-                        })
-                      } else {
-                        const newVehicleTypes = state.vehicleType.some(
-                          (t) => t.value === type.value
-                        )
-                          ? state.vehicleType.filter(
-                              (t) => t.value !== type.value
-                            )
-                          : [
-                              ...state.vehicleType.filter(
-                                (t) => t.value !== VehicleTypes[0]?.value
-                              ),
-                              type,
-                            ]
-                        dispatch({
-                          type: ERentalAction.SET_VEHICLE_TYPE,
-                          payload: newVehicleTypes,
-                        })
-                      }
+                      dispatch({
+                        type: ERentalAction.SET_LOCATION,
+                        payload: type.value,
+                      })
                     }}
                     className="hidden peer"
                     label={""}
                   />
                   <label
-                    htmlFor={type.value}
-                    className={`cursor-pointer border rounded-md px-3 py-1 ${state.vehicleType.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+                    htmlFor={`location-${type.value}`}
+                    className={`cursor-pointer border rounded-md px-3 py-1 ${state.location === type.value ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
                   >
                     {type.label}
                   </label>
@@ -101,71 +156,129 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Transmission Type</h3>
-            <div className="flex flex-wrap gap-2 mb-4"></div>
+            <h3 className="text-lg font-semibold">Vehicle Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple vehicle type
+            </Typography>
             <div className="flex flex-wrap gap-2 mb-4">
-              {state.vehicleType.length === 1 &&
-              state.vehicleType[0]?.value === "bicycle" ? (
-                <Typography className="my-1 text-gray-500">
-                  Not available
-                </Typography>
-              ) : (
-                TransmissionTypes.map((type) => {
-                  const isBicycleOnly =
-                    state.transmissionType.length === 1 &&
-                    state.transmissionType[0]?.value === "bicycle"
-
-                  return (
-                    <div key={type.value} className="flex items-center">
-                      <Input
-                        type="checkbox"
-                        id={type.value}
-                        name="propertyType"
-                        value={type.value}
-                        checked={state.transmissionType.some(
-                          (t) => t.value === type.value
-                        )}
-                        onChange={() => {
-                          if (type.value === TransmissionTypes[0]?.value) {
-                            dispatch({
-                              type: ERentalAction.SET_TRANSMISSION_TYPE,
-                              payload: [type],
-                            })
-                          } else {
-                            const newTransmissionTypes =
-                              state.transmissionType.some(
-                                (t) => t.value === type.value
-                              )
-                                ? state.transmissionType.filter(
-                                    (t) => t.value !== type.value
-                                  )
-                                : [
-                                    ...state.transmissionType.filter(
-                                      (t) =>
-                                        t.value !== TransmissionTypes[0]?.value
-                                    ),
-                                    type,
-                                  ]
-
-                            dispatch({
-                              type: ERentalAction.SET_TRANSMISSION_TYPE,
-                              payload: newTransmissionTypes,
-                            })
-                          }
-                        }}
-                        className="hidden peer"
-                        label={""}
-                      />
-                      <label
-                        htmlFor={type.value}
-                        className={`cursor-pointer border rounded-md px-3 py-1 ${state.transmissionType.some((t) => t.value === type.value) ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
-                      >
-                        {type.label}
-                      </label>
-                    </div>
-                  )
-                })
-              )}
+              {vehicleTypes.map((type) => (
+                <div
+                  key={`vehicle-type-${type.value}`}
+                  className="flex items-center"
+                >
+                  <Input
+                    type="checkbox"
+                    id={`vehicle-type-${type.value}`}
+                    name="vehicleType"
+                    value={type.value}
+                    checked={
+                      state.vehicleTypes !== "any"
+                        ? state.vehicleTypes.some((t) => t === type.value)
+                        : state.vehicleTypes === type.value
+                    }
+                    onChange={() => {
+                      if (type.value === vehicleTypes[0]?.value) {
+                        dispatch({
+                          type: ERentalAction.SET_VEHICLE_TYPES,
+                          payload: "any",
+                        })
+                      } else if (state.vehicleTypes === "any") {
+                        dispatch({
+                          type: ERentalAction.SET_VEHICLE_TYPES,
+                          payload: [type.value],
+                        })
+                      } else {
+                        const newTypes = state.vehicleTypes.some(
+                          (t) => t === type.value
+                        )
+                          ? state.vehicleTypes.filter((t) => t !== type.value)
+                          : [
+                              ...state.vehicleTypes.filter(
+                                (t) => t !== vehicleTypes[0]?.value
+                              ),
+                              type.value,
+                            ]
+                        dispatch({
+                          type: ERentalAction.SET_VEHICLE_TYPES,
+                          payload: newTypes,
+                        })
+                      }
+                    }}
+                    className="hidden peer"
+                    label={""}
+                  />
+                  <label
+                    htmlFor={`vehicle-type-${type.value}`}
+                    className={`cursor-pointer border rounded-md px-3 py-1 ${(state.vehicleTypes !== "any" && state.vehicleTypes.some((t) => t === type.value)) || state.vehicleTypes === type.value ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+                  >
+                    {type.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Transmission Type</h3>
+            <Typography className="text-gray-500 text-sm italic mb-2">
+              Can select multiple transmission type
+            </Typography>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {transmissionTypes.map((type) => (
+                <div
+                  key={`transmission-type-${type.value}`}
+                  className="flex items-center"
+                >
+                  <Input
+                    type="checkbox"
+                    id={`transmission-type-${type.value}`}
+                    name="transmissionType"
+                    value={type.value}
+                    checked={
+                      state.transmissionTypes !== "any"
+                        ? state.transmissionTypes.some((t) => t === type.value)
+                        : state.transmissionTypes === type.value
+                    }
+                    onChange={() => {
+                      if (type.value === transmissionTypes[0]?.value) {
+                        dispatch({
+                          type: ERentalAction.SET_TRANSMISSION_TYPES,
+                          payload: "any",
+                        })
+                      } else if (state.transmissionTypes === "any") {
+                        dispatch({
+                          type: ERentalAction.SET_TRANSMISSION_TYPES,
+                          payload: [type.value],
+                        })
+                      } else {
+                        const newTypes = state.transmissionTypes.some(
+                          (t) => t === type.value
+                        )
+                          ? state.transmissionTypes.filter(
+                              (t) => t !== type.value
+                            )
+                          : [
+                              ...state.transmissionTypes.filter(
+                                (t) => t !== transmissionTypes[0]?.value
+                              ),
+                              type.value,
+                            ]
+                        dispatch({
+                          type: ERentalAction.SET_TRANSMISSION_TYPES,
+                          payload: newTypes,
+                        })
+                      }
+                    }}
+                    className="hidden peer"
+                    label={""}
+                  />
+                  <label
+                    htmlFor={`transmission-type-${type.value}`}
+                    className={`cursor-pointer border rounded-md px-3 py-1 ${(state.transmissionTypes !== "any" && state.transmissionTypes.some((t) => t === type.value)) || state.transmissionTypes === type.value ? "bg-primary-500 text-white" : "border-gray-300"} hover:bg-primary-100 hover:text-primary-700`}
+                  >
+                    {type.label}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
           <div>
@@ -174,12 +287,19 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
               Nightly prices before fees and taxes
             </p>
             <Slider
-              value={state.priceRange}
-              min={0}
-              max={1000}
+              value={[
+                typeof state.selectedPriceRange[0] === "number"
+                  ? state.selectedPriceRange[0]
+                  : (state.priceRange[0] as number),
+                typeof state.selectedPriceRange[1] === "number"
+                  ? state.selectedPriceRange[1]
+                  : (state.priceRange[1] as number),
+              ]}
+              min={state.priceRange[0]}
+              max={state.priceRange[1]}
               onValueChange={(newRange) => {
                 dispatch({
-                  type: ERentalAction.SET_PRICE_RANGE,
+                  type: ERentalAction.SET_SELECTED_PRICE_RANGE,
                   payload: newRange as [number, number],
                 })
               }}
@@ -189,34 +309,56 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
                 <Input
                   id="min-price"
                   type="number"
-                  value={state.priceRange[0]}
+                  value={
+                    state.selectedPriceRange[0] &&
+                    typeof state.selectedPriceRange[0] === "number"
+                      ? state.selectedPriceRange[0]
+                      : (state.priceRange[0] as number)
+                  }
                   onChange={(e) => {
                     const newValue = parseInt(e.target.value)
                     if (!isNaN(newValue)) {
                       dispatch({
-                        type: ERentalAction.SET_PRICE_RANGE,
-                        payload: [newValue, state.priceRange[1] ?? 0],
+                        type: ERentalAction.SET_SELECTED_PRICE_RANGE,
+                        payload: [
+                          newValue,
+                          typeof state.selectedPriceRange[1] === "number"
+                            ? state.selectedPriceRange[1]
+                            : (state.priceRange[1] as number),
+                        ],
                       })
                     }
                   }}
                   className="mt-1 w-24"
                   label={"Minimum"}
+                  leftIcon={<span className="text-text-400">₱</span>}
                 />
               </div>
               <div>
                 <Input
                   id="max-price"
                   type="number"
-                  value={state.priceRange[1]}
+                  value={
+                    state.selectedPriceRange[1] &&
+                    typeof state.selectedPriceRange[1] === "number"
+                      ? state.selectedPriceRange[1]
+                      : (state.priceRange[1] as number)
+                  }
                   onChange={(e) => {
                     const newValue = parseInt(e.target.value)
                     dispatch({
-                      type: ERentalAction.SET_PRICE_RANGE,
-                      payload: [state.priceRange[0] ?? 0, newValue],
+                      type: ERentalAction.SET_SELECTED_PRICE_RANGE,
+                      payload: [
+                        typeof state.selectedPriceRange[0] === "number"
+                          ? state.selectedPriceRange[0]
+                          : (state.priceRange[0] as number),
+                        newValue,
+                      ],
                     })
                   }}
                   className="mt-1 w-24"
                   label={"Maximum"}
+                  leftIcon={<span className="text-text-400">₱</span>}
                 />
               </div>
             </div>
@@ -226,11 +368,13 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
             <div className="space-y-4">
               <CountInput
                 label="Number of seats"
-                count={state.seatCount}
+                count={
+                  typeof state.seatCount === "number" ? state.seatCount : 0
+                }
                 setCount={(count) =>
                   dispatch({
                     type: ERentalAction.SET_SEAT_COUNT,
-                    payload: count,
+                    payload: count ?? 0,
                   })
                 }
               />
@@ -238,24 +382,27 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-2">Star Rating</h3>
+            <h3 className="text-lg font-semibold mb-2">Guests star reviews</h3>
             <div className="flex space-x-2 mb-4">
               {Array.from({ length: 5 }, (_, index) => (
                 <button
                   key={index}
-                  onClick={() =>
+                  onClick={() => {
+                    const newRating =
+                      state.starRating === index + 1 ? 0 : index + 1
                     dispatch({
                       type: ERentalAction.SET_STAR_RATING,
-                      payload: index + 1,
+                      payload: newRating,
                     })
-                  }
+                  }}
                   className={`flex items-center justify-center cursor-pointer`}
                 >
                   <Star
                     size={28}
                     className={
+                      typeof state.starRating === "number" &&
                       state.starRating > index
-                        ? "text-yellow-500"
+                        ? "text-text-500 fill-text-500"
                         : "text-gray-300"
                     }
                   />
@@ -263,9 +410,9 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
               ))}
             </div>
             <p className="text-sm text-gray-500">
-              {state.starRating > 0
-                ? `Selected Rating: ${state.starRating} star${state.starRating > 1 ? "s" : ""}`
-                : "Select a rating"}
+              {typeof state.starRating === "number" && state.starRating > 0
+                ? `Selected ${state.starRating} star${state.starRating > 1 ? "s" : ""}`
+                : "Any star review count"}
             </p>
           </div>
         </div>

@@ -85,8 +85,8 @@ const PropertySlider = ({ cards }: SliderProps) => {
               className="cursor-pointer"
               src={card.imageKey}
               alt={card.cardTitle || ""}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="mt-4 text-left">

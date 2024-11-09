@@ -114,12 +114,10 @@ const Chart = ({
         />
         <YAxis
           dataKey={"earning"}
-          tickFormatter={(value: number) =>
-            formatCurrency(value, "Philippines")
-          }
+          tickFormatter={(value: number) => formatCurrency(value)}
         />
         <Tooltip
-          formatter={(value: number) => formatCurrency(value, "Philippines")}
+          formatter={(value: number) => formatCurrency(value)}
           labelFormatter={(value: string) => {
             let newDate
             if (earningType === "yearly") {

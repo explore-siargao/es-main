@@ -28,11 +28,8 @@ const EarningsPaid = () => {
               Your paid earnings{" "}
               <span className="text-gray-400">
                 {isPending
-                  ? formatCurrency(0.0, "Philippines")
-                  : formatCurrency(
-                      data.item.summary.totalEarnings,
-                      "Philippines"
-                    )}
+                  ? formatCurrency(0.0)
+                  : formatCurrency(data.item.summary.totalEarnings)}
               </span>
             </Typography>
           </div>

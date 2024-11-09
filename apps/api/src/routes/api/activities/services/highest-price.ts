@@ -1,5 +1,6 @@
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
+import { Z_Category_Highest_Price } from '@repo/contract-2/search-filters'
 import { dbActivities } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
@@ -8,19 +9,23 @@ export const activityHighestPrice = async (req: Request, res: Response) => {
     const getHighestPrice = await dbActivities.aggregate([
       {
         $project: {
-          _id: 1,
-          name: 1, // Include any other fields as needed
-          highestPrice: { $max: ['$pricePerPerson', '$pricePerSlots'] },
+          _id: 0,
+          amount: { $max: ['$pricePerPerson', '$pricePerSlots'] },
         },
       },
       {
-        $sort: { highestPrice: -1 },
+        $sort: { amount: -1 },
       },
       {
         $limit: 1,
       },
     ])
-    res.json(response.success({ item: getHighestPrice[0] }))
+    const valid = Z_Category_Highest_Price.safeParse(getHighestPrice[0])
+    if (valid.success) {
+      res.json(response.success({ item: getHighestPrice[0] }))
+    } else {
+      res.json(response.error({ message: 'Invalid request', item: null }))
+    }
   } catch (err: any) {
     res.json(
       response.error({

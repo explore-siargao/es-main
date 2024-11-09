@@ -15,7 +15,8 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
 import GuidesMenu from "./GuidesMenu"
 import ApplyToHostModal from "@/module/LandingPage/components/ApplyToHostModal"
-import SearchBarByState from "../SearchBar/SearchBarByState"
+import SearchBarByState from "../SearchBar/search-bar-by-state"
+import FilterHeader from "./filter"
 
 function WithSearch({
   contentWidth = "medium",
@@ -97,6 +98,7 @@ function WithSearch({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
+      <FilterHeader />
     </header>
   )
 }

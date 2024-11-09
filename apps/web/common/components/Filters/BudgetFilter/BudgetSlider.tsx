@@ -61,15 +61,14 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
         htmlFor="budget-range"
         className="block text-sm font-medium text-gray-700 mt-2"
       >
-        {formatCurrency(minValue, "Philippines")} -{" "}
-        {formatCurrency(maxValue, "Philippines")} +
+        {formatCurrency(minValue)} - {formatCurrency(maxValue)} +
       </label>
       <div className="relative mt-4">
         <div className="h-16 w-full flex mx-auto opacity-20 grayscale">
           <Image
             src={imageSrc}
             alt="Bar graph image"
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
             className="h-full w-full"
           />
         </div>

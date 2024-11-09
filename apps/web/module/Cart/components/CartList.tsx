@@ -111,7 +111,7 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
               </Typography>
             </div>
             <Typography variant="p" fontWeight="semibold">
-              {formatCurrency(2550, "Philippines")}
+              {formatCurrency(2550)}
             </Typography>
           </div>
           <div className="border-b mt-8"></div>

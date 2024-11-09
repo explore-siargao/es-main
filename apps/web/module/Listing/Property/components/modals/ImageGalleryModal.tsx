@@ -19,8 +19,8 @@ const ImageGalleryModal = ({
             <div className="relative h-60 w-10/12 md:w-1/2 lg:w-1/3 mx-auto bg-gray-200">
               <Image
                 src={data.key ? `/assets/${data.key}` : String(data.image?.url)}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 alt={
                   data.description ? data.description : String(data.image?.alt)
                 }

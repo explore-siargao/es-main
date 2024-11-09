@@ -58,7 +58,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
-        {formatCurrency(checkoutDesc.titlePrice, "Philippines")}
+        {formatCurrency(checkoutDesc.titlePrice)}
         <small className="font-light"> day</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
@@ -137,12 +137,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
             <PesoSign />
             {checkoutDesc.titlePrice} x {durationDays} days
           </Button>
-          <div>
-            {formatCurrency(
-              checkoutDesc.titlePrice * durationDays,
-              "Philippines"
-            )}
-          </div>
+          <div>{formatCurrency(checkoutDesc.titlePrice * durationDays)}</div>
         </div>
 
         <div className="flex justify-between items-center">
@@ -153,7 +148,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           >
             {APP_NAME} service fee
           </Button>
-          <div>{formatCurrency(checkoutDesc.serviceFee, "Philippines")}</div>
+          <div>{formatCurrency(checkoutDesc.serviceFee)}</div>
         </div>
 
         <div className="flex justify-between items-center">
@@ -164,7 +159,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
           >
             Down Payment
           </Button>
-          <div>{formatCurrency(checkoutDesc.downPayment, "Philippines")}</div>
+          <div>{formatCurrency(checkoutDesc.downPayment)}</div>
         </div>
 
         <div className="border-b mt-5 mb-5"></div>
@@ -174,8 +169,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
             {formatCurrency(
               checkoutDesc.titlePrice * durationDays +
                 checkoutDesc.downPayment +
-                checkoutDesc.serviceFee,
-              "Philippines"
+                checkoutDesc.serviceFee
             )}
           </div>
         </div>

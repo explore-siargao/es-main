@@ -158,8 +158,8 @@ const Photos = () => {
                     <Image
                       src={photo?.file?.preview ?? `/assets/${photo.key}`}
                       alt={`preview-` + index}
-                      layout="fill"
-                      objectFit="cover"
+                      fill
+                      style={{ objectFit: "cover" }}
                       objectPosition="center"
                       className="rounded-xl"
                     />

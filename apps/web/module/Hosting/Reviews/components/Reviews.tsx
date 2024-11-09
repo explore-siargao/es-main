@@ -35,8 +35,8 @@ const ReviewCard = () => {
                   <div className={`${imageShape()} rounded-full`}>
                     <Image
                       src={`/assets/${review.reviewedBy.profilePic}`}
-                      layout="fill"
-                      objectFit="cover"
+                      fill
+                      style={{ objectFit: "cover" }}
                       className="rounded-full"
                       alt="Reviewer's profile"
                     />
@@ -53,8 +53,8 @@ const ReviewCard = () => {
                     <div className={`${imageShape()}rounded-xl`}>
                       <Image
                         src={`/assets/${review.listing.image}`}
-                        layout="fill"
-                        objectFit="cover"
+                        fill
+                        style={{ objectFit: "cover" }}
                         className="rounded-xl"
                         alt="Reviewer's profile"
                       />

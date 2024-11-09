@@ -11,6 +11,7 @@
   "dependencies": {
     "@repo/constants": "*",
     "@repo/contract": "*",
+    "@repo/contract-2": "*",
     "@repo/database": "*",
     "@repo/services": "*",
     "@aws-sdk/client-s3": "^3.658.1",

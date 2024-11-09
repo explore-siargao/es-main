@@ -22,8 +22,8 @@ const earningsColumns = [
             <Image
               src={`/assets/${listing.row.original.listing?.imageKey}`}
               alt="Image"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
             />
           </div>
         </div>
@@ -59,7 +59,7 @@ const earningsColumns = [
     cell: (earnings) => {
       return (
         <Typography variant="p">
-          {formatCurrency(earnings.getValue() as number, "Philippines")}
+          {formatCurrency(earnings.getValue() as number)}
         </Typography>
       )
     },

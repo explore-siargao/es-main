@@ -38,8 +38,8 @@ const EarningBookingsTable = () => {
               <Image
                 src={`/assets/${listing.getValue()}`}
                 alt="Image"
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
               />
             </div>
           </div>
@@ -68,7 +68,7 @@ const EarningBookingsTable = () => {
       cell: (earnings) => {
         return (
           <Typography variant="p">
-            {formatCurrency(earnings.getValue(), "Philippines")}
+            {formatCurrency(earnings.getValue())}
           </Typography>
         )
       },

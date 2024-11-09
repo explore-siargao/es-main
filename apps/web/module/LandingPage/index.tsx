@@ -30,7 +30,8 @@ const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
   const path = usePathname()
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-  const { search, checkIn, checkOut, numberOfGuest, date } = useSearchStore()
+  const { search, checkIn, checkOut, numberOfGuest, activityDate } =
+    useSearchStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const LandingPage = () => {
     return () => {
       clearTimeout(timer)
     }
-  }, [search, checkIn, checkOut, numberOfGuest, date])
+  }, [search, checkIn, checkOut, numberOfGuest, activityDate])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -72,32 +73,32 @@ const LandingPage = () => {
     {
       imageKey: "/assets/cf7c14dc-d3f5-46e8-b813-01cf04200519",
       title: "Hostels",
-      url: "/search?category=Property&type=Hostels",
+      url: "/search/properties?type=Hostels",
     },
     {
       imageKey: "/assets/f57a9104-b3bc-4c6c-8e7b-ff15ac529b06",
       title: "Apartments",
-      url: "/search?category=Property&type=Apartments",
+      url: "/search/properties?type=Apartments",
     },
     {
       imageKey: "/assets/4.jpg",
       title: "Homestay",
-      url: "/search?category=Property&type=Homestay",
+      url: "/search/properties?type=Homestay",
     },
     {
       imageKey: "/assets/ac0d3e85-f3da-4f30-8db5-e8bdb98385df",
       title: "Hotels",
-      url: "/search?category=Property&type=Hotels",
+      url: "/search/properties?type=Hotels",
     },
     {
       imageKey: "/assets/3.jpg",
       title: "Resorts",
-      url: "/search?category=Property&type=Resorts",
+      url: "/search/properties?type=Resorts",
     },
     {
       imageKey: "/assets/1.jpg",
       title: "Villas",
-      url: "/search?category=Property&type=Villas",
+      url: "/search/properties?type=Villas",
     },
   ]
 
@@ -140,7 +141,7 @@ const LandingPage = () => {
     },
     {
       imageKey: il7,
-      title: "Catangnan",
+      title: "Catangnans",
       subTitle: "General Luna",
       url: "/guides/travel/kermit",
     },
@@ -223,27 +224,27 @@ const LandingPage = () => {
     {
       imageKey: il8,
       title: "Sightseeing",
-      url: "/search?category=Activity&type=Sightseeing",
+      url: "/search/activities?type=Sightseeing",
     },
     {
       imageKey: il9,
       title: "Walking",
-      url: "/search?category=Activity&type=Walking",
+      url: "/search/activities?type=Walking",
     },
     {
       imageKey: il5,
       title: "Sunset view",
-      url: "/search?category=Activity&type=Sunset%20view",
+      url: "/search/activities?type=Sunset%20view",
     },
     {
       imageKey: il4,
       title: "Sceneries",
-      url: "/search?category=Activity&type=Sceneries",
+      url: "/search/activities?type=Sceneries",
     },
     {
       imageKey: il6,
       title: "Visit",
-      url: "/search?category=Activity&type=Visit",
+      url: "/search/activities?type=Visit",
     },
   ]
 
@@ -251,32 +252,32 @@ const LandingPage = () => {
     {
       imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
       title: "2021 Suzuki R150 Fi MT",
-      url: "/search?category=Rental&type=Motorbikes",
+      url: "/search/rentals?type=Motorbikes",
     },
     {
       imageKey: "/assets/fe65c50d-2cde-46e6-8c9b-58a73c59e768",
       title: "2018 Honda Civic AT",
-      url: "/search?category=Rental&type=Cars",
+      url: "/search/rentals?type=Cars",
     },
     {
       imageKey: "/assets/b57d645a-a3bb-4d23-9e9b-d5caa3f0ae69",
       title: "2023 Toyota Wigo G CVT",
-      url: "/search?category=Rental&type=Bicycle",
+      url: "/search/rentals?type=Bicycle",
     },
     {
       imageKey: "/assets/2a820a6a-9baf-4b7c-884a-217f86e7e657",
       title: "2020 CBR500RXZ Honda MT",
-      url: "/search?category=Rental&type=Cars",
+      url: "/search/rentals?type=Cars",
     },
     {
       imageKey: "/assets/099843f0-d626-42fb-899e-62c6687614a2",
       title: "2000 CBR500R Honda SAT",
-      url: "/search?category=Rental&type=Cars",
+      url: "/search/rentals?type=Cars",
     },
     {
       imageKey: "/assets/10714cec-083b-48b8-9702-45cbb1debd76",
       title: "2020 Suzuki R150 Fi MT",
-      url: "/search?category=Rental&type=Motorbikes",
+      url: "/search/rentals?type=Motorbikes",
     },
   ]
 

@@ -32,7 +32,7 @@ const RecommendedListing = ({ title, guides }: T_Props) => {
                 alt=""
                 fill
                 className="bg-gray-200 rounded-md"
-                objectFit="cover"
+                style={{ objectFit: "cover" }}
               />
             </div>
             <Typography fontWeight="semibold">{guide.title}</Typography>

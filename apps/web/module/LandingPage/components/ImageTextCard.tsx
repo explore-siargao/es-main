@@ -25,9 +25,9 @@ const ImageTextCard = ({
       <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-56">
         <Image
           src={imageKey}
-          layout="fill"
+          fill
           alt={title}
-          objectFit="cover"
+          style={{ objectFit: "cover" }}
           className="rounded-t-lg"
         />
       </div>

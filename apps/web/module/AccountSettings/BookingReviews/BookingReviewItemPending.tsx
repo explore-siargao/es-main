@@ -42,8 +42,8 @@ const BookingReviewItemPending = ({
         <div className="h-24 w-24 rounded-xl bg-primary-100 relative">
           <Image
             src={`${ASSET_ROOT}/${image}`}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             className="rounded-xl"
             alt="booking-image"
           />

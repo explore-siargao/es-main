@@ -21,8 +21,8 @@ const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
           placeholder="blur"
           blurDataURL={GRAY_BASE64}
           alt={title}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: "cover" }}
         />
       </div>
       <div className="mt-2 text-left">

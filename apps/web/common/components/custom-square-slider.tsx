@@ -1,13 +1,14 @@
-import Image from "@/common/components/ui/image"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination } from "swiper/modules"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
+import Image from "./ui/image"
+import { IMAGE_FALLBACK } from "../constants"
 
 interface SliderProps {
   images: {
-    fileKey: string
+    key: string
     alt: string
   }[]
 }
@@ -15,7 +16,7 @@ interface SliderProps {
 const CustomSquareSlider = ({ images }: SliderProps) => {
   return (
     <Swiper
-      navigation
+      navigation={images.length > 0}
       pagination={{ type: "bullets", clickable: true }}
       modules={[Navigation, Pagination]}
       className="h-full w-full rounded-xl"
@@ -57,7 +58,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
         .image-wrapper {
           position: relative;
           width: 100%;
-          max-height: 300px; 
+          height: 250px; 
           padding-top: 80%; 
         }
         .image-wrapper img {
@@ -70,18 +71,31 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
         }
       `}</style>
 
-      {images.map((image) => (
-        <SwiperSlide key={image.fileKey}>
+      {images.length > 0 ? (
+        images.map((image) => (
+          <SwiperSlide key={image.key}>
+            <div className="image-wrapper">
+              <Image
+                src={`/assets/${image.key}`}
+                alt={image.alt}
+                layout="fill"
+                className="object-cover"
+              />
+            </div>
+          </SwiperSlide>
+        ))
+      ) : (
+        <SwiperSlide key="error">
           <div className="image-wrapper">
             <Image
-              src={`/assets/${image.fileKey}`}
-              alt={image.alt}
+              src={IMAGE_FALLBACK}
+              alt={"error"}
               layout="fill"
               className="object-cover"
             />
           </div>
         </SwiperSlide>
-      ))}
+      )}
     </Swiper>
   )
 }
