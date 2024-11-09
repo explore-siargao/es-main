@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.31.0](https://github.com/explore-siargao/es-main/compare/v0.30.0...v0.31.0) (2024-11-06)
+
+### 🚀 Features
+
+- **api:** Added additional filter options for rentals ([f053d15](https://github.com/explore-siargao/es-main/commit/f053d152fb470cda9943927c64e547a605b761ee))
+- **api:** Added additional needed parameters to activities filter endpoints ([cd5ccdb](https://github.com/explore-siargao/es-main/commit/cd5ccdb93ec399c0829ff5dbe03969368c0afb06))
+- **api:** Added endpoint for adding items to carts ([0d17890](https://github.com/explore-siargao/es-main/commit/0d17890fb52e94386eb6b16baeaeba37b8002635), [ab2cc62](https://github.com/explore-siargao/es-main/commit/ab2cc6234381a65c071139899af9aac3114834da))
+- **api:** Added endpoint for removing items from carts ([ffff59a](https://github.com/explore-siargao/es-main/commit/ffff59a342c3922b1e001df57653151f9bcf1ec5))
+- **api:** Added needed query parameters for filtering bookable units ([dd12de7](https://github.com/explore-siargao/es-main/commit/dd12de73b18c714848f80574cf9ef8ee27dff67c))
+- **api:** Created a new model for Carts to handle user carts and items ([be488be](https://github.com/explore-siargao/es-main/commit/be488be3b1b946bd2d87c15e7e6d5f9a60919e2f))
+- **api:** Adjusted rental count retrieval for cars, motorbikes, and bikes ([dae557b](https://github.com/explore-siargao/es-main/commit/dae557b311779d07197d610b8f99d0df25a95c26))
+- **api:** Modified endpoints to include maxGuests for bookable unit updates ([5cd8f4c](https://github.com/explore-siargao/es-main/commit/5cd8f4cee30e39106f1a4ee9afd7bf0fadeedfd9))
+
+### 🧰 Maintenance
+
+- Added `contract-2` for new fetch function implementation ([bc6f263](https://github.com/explore-siargao/es-main/commit/bc6f263073ae52f71875472d12e826cb83c079c4))
+- Added global HMAC service and new pattern for contract API requests ([ed84dfd](https://github.com/explore-siargao/es-main/commit/ed84dfd016a498cdb07b76d7dfe27619b2b86732))
+- Renamed `cart2` contract to `cart` ([97d9e60](https://github.com/explore-siargao/es-main/commit/97d9e60c4dc1fe820e55f3b7f68e34ca40b32b21))
+- Removed `cart` from contract ([a294e6d](https://github.com/explore-siargao/es-main/commit/a294e6db1bc08c13b7674a4c64991eeac2fc28d2))
+
 ## [0.30.0](https://github.com/explore-siargao/es-main/compare/v0.29.0...v0.30.0) (2024-10-30)
 
 ### 🚀 Features

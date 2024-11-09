@@ -19,8 +19,19 @@ import {
   editJoinerActivityReservation,
   editPrivateActivityReservation,
 } from './services/activityReservation'
+import paginate from '@/common/middleware/paginations/paginate'
+import { getAllReservations } from './services/default'
 
 const router = express.Router()
+
+router.get(
+  '/',
+  isOriginValid,
+  isUserLoggedIn,
+  paginate(15),
+  isCsrfTokenValid,
+  getAllReservations
+)
 
 //add reservation
 router.post(
