@@ -1,4 +1,4 @@
-import PropertiesFilter from "@/module/Listings/properties-filter"
+import PropertiesFilter from "@/module/Listings/search/properties/filter"
 
 const ListingsPage = () => {
   return <PropertiesFilter />

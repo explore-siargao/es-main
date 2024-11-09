@@ -34,8 +34,8 @@ function FilterHeader({
     setActiveModal(filterType);
   };
 
-  // 1. add endpoint for geting maxPrice for all Category
-  // 2. move filter to module
+  // 1. Fix search item cards information
+  // 2. Fix map pop up information
 
   return (
     <header className="w-full bg-white border-t border-t-gray-200/50">

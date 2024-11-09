@@ -17,6 +17,11 @@
       "import": "./build/search-filters/index.js",
       "require": "./build/search-filters/index.js",
       "types": "./build/search-filters/index.d.ts"
+    },
+    "./property": {
+      "import": "./build/property/index.js",
+      "require": "./build/property/index.js",
+      "types": "./build/property/index.d.ts"
     }
   },
   "scripts": {

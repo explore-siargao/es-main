@@ -4,7 +4,7 @@ export type T_Filter_Type = {
 }
 
 export const locations: T_Filter_Type[] = [
-  { value: "any", label: "Siargao Island (all)" },
+  { value: "any", label: "Siargao island (all)" },
   { value: "General Luna", label: "General Luna" },
   { value: "Dapa", label: "Dapa" },
   { value: "Del Carmen", label: "Del Carmen" },

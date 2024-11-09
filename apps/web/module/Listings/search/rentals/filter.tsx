@@ -2,12 +2,12 @@
 import React, { useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { useSearchParams } from "next/navigation"
-import ListingsMap from "./components/map"
+import Map, { E_Location } from "./map"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import useGetRentalListings from "./components/map/hooks/use-get-rental-listings"
+import useGetRentalListings from "./hooks/use-get-listings"
 import { E_Rental_Category } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
-import RentalCard from "./components/rental-card"
+import RentalCard from "./card"
 
 const RentalsFilter = () => {
   const searchParams = useSearchParams()
@@ -50,22 +50,10 @@ const RentalsFilter = () => {
       category,
       average: item.average,
       reviewsCount: item.reviewsCount,
-      city: item.location.city,
       transmission: item.transmission,
       fuel: item.fuel
     })
   });
-
-  const markers = rentals?.map((rental) => {
-    const marker = {
-      ...rental.location,
-      name: rental.title,
-      _id: rental.listingId,
-      price: rental.price,
-      photos: rental.photos[0] as { fileKey: string; alt: string },
-    }
-    return marker
-  })
 
   if(isLoading) {
     return (
@@ -86,23 +74,11 @@ const RentalsFilter = () => {
             {isRefetching ? (
               <Spinner variant="primary" />
             ): null}
-
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {rentals?.map((item: any) => (
+                {rentals?.map((item) => (
                   <div key={item.listingId}>
-                    <RentalCard
-                      listingId={item.listingId}
-                      title={item.title}
-                      photos={item.photos}
-                      city={item.city}
-                      price={item.price}
-                      average={item.average}
-                      reviewsCount={item.reviewsCount}
-                      category={item.category}
-                      transmission={item.transmission}
-                      fuel={item.fuel}
-                    />
+                    <RentalCard {...item} />
                   </div>
                 ))}
               </div>
@@ -118,7 +94,7 @@ const RentalsFilter = () => {
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {rentals && markers ? <ListingsMap markers={markers} iconMarker="island" /> : null}
+            {rentals ? <Map rentals={rentals} location={location as E_Location} /> : null}
           </div>
         </div>
       </div>

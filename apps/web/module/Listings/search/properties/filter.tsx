@@ -2,11 +2,11 @@
 import React, { useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { useSearchParams } from "next/navigation"
-import ListingsMap from "./components/map/index"
-import useGetPropertyListings from "./components/map/hooks/use-get-property-listings"
+import Map, { E_Location } from "./map"
+import useGetListings from "./hooks/use-get-listings"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { Spinner } from "@/common/components/ui/Spinner"
-import PropertyCard from "./components/property-card"
+import PropertyCard from "./card"
 import { E_Property_Type } from "@repo/contract-2/property"
 
 type T_Photo = {
@@ -34,7 +34,7 @@ const PropertiesFilter = () => {
   const amenities = searchParams.get("amenities")
   const starRating = searchParams.get("starRating")
 
-  const { data: propertyUnits, isLoading, isRefetching, refetch: refetchPropertyUnits } = useGetPropertyListings(
+  const { data: propertyUnits, isLoading, isRefetching, refetch: refetchPropertyUnits } = useGetListings(
     location,
     type,
     facilities,
@@ -50,7 +50,7 @@ const PropertiesFilter = () => {
     refetchPropertyUnits();
   }, [location, type, facilities, amenities, priceFrom, priceTo, beds, bathrooms, bedrooms, starRating]);
 
-  const bookableUnits = propertyUnits?.items
+  const units = propertyUnits?.items
     ?.flatMap(item =>
       item.bookableUnits.map((unit: T_Bookable_Unit_Type) => ({
         listingId: unit._id,
@@ -62,24 +62,11 @@ const PropertiesFilter = () => {
         type: item.type,
         wholePlaceType: item.wholePlaceType,
         price: unit.unitPrice.baseRate,
-        city: item.location.city,
         average: unit.average,
         reviewsCount: unit.reviewsCount,
         location: item.location
       }))
     );
-
-  const markers = bookableUnits?.map((property) => {
-    const marker = {
-      ...property.location,
-      name: property.title,
-      _id: property.listingId,
-      currency: property.currency,
-      price: property.price,
-      photos: property.photos[0] as { fileKey: string; alt: string },
-    }
-    return marker
-  })
 
   if(isLoading) {
     return (
@@ -101,28 +88,17 @@ const PropertiesFilter = () => {
               <Spinner variant="primary" />
             ): null}
 
-            {!isLoading && !isRefetching && bookableUnits && bookableUnits?.length > 0 ? (
+            {!isLoading && !isRefetching && units && units?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {bookableUnits?.map((item) => (
+                {units?.map((item) => (
                   <div key={item._id}>
-                    <PropertyCard
-                      listingId={item.listingId}
-                      title={item.title}
-                      subtitle={item.subtitle}
-                      type={item.type as E_Property_Type}
-                      wholePlaceType={item.wholePlaceType as E_Property_Type}
-                      photos={item.photos}
-                      city={item.city}
-                      price={item.price}
-                      average={item.average}
-                      reviewsCount={item.reviewsCount}
-                    />
+                    <PropertyCard {...item} />
                   </div>
                 ))}
               </div>
             ) : null}
 
-            {!isLoading && !isRefetching && bookableUnits && bookableUnits?.length === 0 ? (
+            {!isLoading && !isRefetching && units && units?.length === 0 ? (
               <Typography variant="h4" className="text-gray-500 italic">
                 No properties found for the search and filters values
               </Typography>
@@ -133,7 +109,7 @@ const PropertiesFilter = () => {
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {bookableUnits && markers ? <ListingsMap markers={markers} iconMarker="island" /> : null}
+            {units ? <Map units={units} location={location as E_Location} /> : null}
           </div>
         </div>
       </div>

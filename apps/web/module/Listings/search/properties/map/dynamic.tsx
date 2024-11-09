@@ -1,30 +1,46 @@
-import React, { useState, useEffect, useRef, ReactNode } from "react"
+import React, { useRef } from "react"
 import MapContainerWrapper from "@/common/components/Map/MapContainerWrapper"
-import { TileLayer, Popup, useMapEvent } from "react-leaflet"
+import { TileLayer, useMapEvent, GeoJSON } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
-import { T_Markers } from "."
-import CustomMarker from "./custom-marker"
+// import { Feature, Geometry } from "geojson";
+import Marker from "./marker"
+import { T_Property_Card } from "../card"
+import Popup from "./popup"
 
-interface MultipleMarkerMapProps {
+type T_Props = {
   center: [number, number]
-  markerLocations: T_Markers[]
+  units: T_Property_Card[]
   zoom?: number
   scrollWheelZoom?: boolean
-  isSurfGuide?: boolean
-  markerFileName?: string
 }
+// https://github.com/faeldon/philippines-json-maps
+// const generalLunaGeoJson: Feature<Geometry> = {
+//   "type": "Feature",
+//   "properties": {},
+//   "geometry": {
+//     "type": "Polygon",
+//     "coordinates": [
+//       [
+//         [126.1501691, 9.721637],
+//         [126.1601691, 9.721637],
+//         [126.1601691, 9.731637],
+//         [126.1501691, 9.731637],
+//         [126.1501691, 9.721637]
+//       ]
+//     ]
+//   }
+// };
 
-const MultiMarkerMap = ({
+const Dynamic = ({
   center,
-  markerLocations,
+  units,
   zoom,
   scrollWheelZoom,
-}: MultipleMarkerMapProps) => {
+}: T_Props) => {
   const { setCoordinates } = useCoordinatesStore()
   const markerRefs = useRef<Map<number, L.Marker>>(new Map())
-  const popupRefs = useRef<Map<number, L.Popup>>(new Map())
 
   const handleMapClick = (event: LeafletMouseEvent) => {
     const newCoordinates = event.latlng
@@ -53,35 +69,36 @@ const MultiMarkerMap = ({
         attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {markerLocations.map((location, index) => {
-        if (!location?.latitude || !location?.longitude) {
+      {units.map((unit, index) => {
+        if (!unit.location?.latitude || !unit.location?.longitude) {
           console.error(`Invalid location data at index ${index}`)
           return null
         }
-
         return (
-          <CustomMarker
-            position={[location.latitude, location.longitude] as LatLngTuple}
+          <Marker
+            position={[unit.location?.latitude, unit.location?.longitude] as LatLngTuple}
             key={index}
             onClick={() => handleMarkerMouseOver(index)}
-            price={location.price}
+            price={unit.price}
           >
             <Popup
-              ref={(el) => {
-                if (el) {
-                  popupRefs.current.set(index, el)
-                }
-              }}
-              position={[location.latitude, location.longitude] as LatLngTuple}
-              offset={[0, -2]}
-            >
-
-            </Popup>
-          </CustomMarker>
+              index={index}
+              {...unit}
+            />
+          </Marker>
         )
       })}
+      {/* <GeoJSON
+        data={generalLunaGeoJson}
+        style={{
+          color: "blue",
+          weight: 2,
+          fillColor: "lightblue",
+          fillOpacity: 0.1
+        }}
+      /> */}
     </MapContainerWrapper>
   )
 }
 
-export default MultiMarkerMap
+export default Dynamic

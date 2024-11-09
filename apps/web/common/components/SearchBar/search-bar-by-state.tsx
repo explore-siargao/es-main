@@ -25,7 +25,7 @@ const SearchBarByState = ({
   const location = searchParams.get('location')
   const checkIn = searchParams.get('checkIn')
   const checkOut = searchParams.get('checkOut')
-  const date = searchParams.get('date')
+  const activityDate = searchParams.get('activityDate')
   const numberOfGuest = searchParams.get('numberOfGuest')
   const vehicleType = (searchParams.get('vehicleTypes') ?? "")?.split(',')
   const pickUpDate = searchParams.get('pickUpDate')
@@ -41,7 +41,7 @@ const SearchBarByState = ({
       location: location ? location : "any",
       checkIn: checkIn === "any" ? "" : checkIn,
       checkOut: checkOut === "any" ? "" : checkOut,
-      date: date === "any" ? "" : date,
+      activityDate: activityDate === "any" ? "" : activityDate,
       numberOfGuest: numberOfGuest === "any" ? "" : (numberOfGuest ?? "1"),
       vehicleType: vehicleType[0],
       pickUpDate: pickUpDate === "any" ? "" : pickUpDate,
@@ -53,7 +53,7 @@ const SearchBarByState = ({
     location,
     checkIn,
     checkOut,
-    date,
+    activityDate,
     numberOfGuest,
     vehicleType,
     pickUpDate,
@@ -75,12 +75,12 @@ const SearchBarByState = ({
     } else if (
       pathCategory === LINK_SEARCH_ACTIVITIES &&
       location &&
-      date &&
+      activityDate &&
       numberOfGuest
     ) {
       router.push(buildActivitySearchURL({
         location,
-        date,
+        activityDate,
         numberOfGuest
       }))
     } else if (

@@ -9,7 +9,7 @@ import { IMAGE_FALLBACK } from "../constants"
 
 interface SliderProps {
   images: {
-    fileKey: string
+    key: string
     alt: string
   }[]
 }
@@ -73,10 +73,10 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
       `}</style>
 
       {images.length > 0 ? images.map((image) => (
-        <SwiperSlide key={image.fileKey}>
+        <SwiperSlide key={image.key}>
           <div className="image-wrapper">
             <Image
-              src={`/assets/${image.fileKey}`}
+              src={`/assets/${image.key}`}
               alt={image.alt}
               layout="fill"
               className="object-cover"

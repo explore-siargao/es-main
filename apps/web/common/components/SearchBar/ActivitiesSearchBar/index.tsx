@@ -32,7 +32,7 @@ function ActivitiesSearchBar() {
         type="date"
         className="w-[12rem] 4xl:w-[18rem] ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Date"}
-        {...register("date")}
+        {...register("activityDate")}
         min={dateToday}
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8 mx-5" />

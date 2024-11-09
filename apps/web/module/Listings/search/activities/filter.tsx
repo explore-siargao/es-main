@@ -2,11 +2,11 @@
 import React, { useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { useSearchParams } from "next/navigation"
-import ListingsMap from "./components/map/index"
+import Map, { E_Location } from "./map"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import useGetActivityListings from "./components/map/hooks/use-get-activity-listings"
+import useGetActivityListings from "./hooks/use-get-listings"
 import { Spinner } from "@/common/components/ui/Spinner"
-import ActivityCard from "./components/activity-card"
+import Card from "./card"
 
 const ActivitiesFilter = () => {
   const searchParams = useSearchParams()
@@ -42,19 +42,7 @@ const ActivitiesFilter = () => {
     average: item.average,
     type: item.activityType[1] ?? "Unknown type",
     reviewsCount: item.reviewsCount,
-    city: item.meetingPoint.city
   }));
-
-  const markers = activities?.map((activity) => {
-    const marker = {
-      ...activity.location,
-      name: activity.title,
-      _id: activity.listingId,
-      price: activity.price,
-      photos: activity.photos[0] as { fileKey: string; alt: string },
-    }
-    return marker
-  })
 
   if(isLoading) {
     return (
@@ -81,16 +69,7 @@ const ActivitiesFilter = () => {
               <div className="grid grid-cols-3 gap-6">
                 {activities?.map((item) => (
                   <div key={item.listingId}>
-                    <ActivityCard
-                      listingId={item.listingId}
-                      title={item.title}
-                      type={item.type}
-                      photos={item.photos}
-                      city={item.city}
-                      price={item.price}
-                      average={item.average}
-                      reviewsCount={item.reviewsCount}
-                    />
+                    <Card {...item} />
                   </div>
                 ))}
               </div>
@@ -107,7 +86,7 @@ const ActivitiesFilter = () => {
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {activities && markers ? <ListingsMap markers={markers} iconMarker="island" /> : null}
+            {activities ? <Map activities={activities} location={location as E_Location} /> : null}
           </div>
         </div>
       </div>

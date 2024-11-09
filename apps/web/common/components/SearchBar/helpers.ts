@@ -40,7 +40,7 @@ export function buildActivitySearchURL({
   priceTo = "any",
   duration = "any",
   starRating = "any",
-  date = "any",
+  activityDate = "any",
   numberOfGuest = "any"
 }) {
   const queryParts = [
@@ -51,7 +51,7 @@ export function buildActivitySearchURL({
     `priceTo=${priceTo}`,
     `durations=${duration}`,
     `starRating=${starRating}`,
-    `activityDate=${date}`,
+    `activityDate=${activityDate}`,
     `numberOfGuest=${numberOfGuest}`
   ];
 
