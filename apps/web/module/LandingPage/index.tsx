@@ -30,7 +30,7 @@ const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
   const path = usePathname()
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-  const { search, checkIn, checkOut, numberOfGuest, date } = useSearchStore()
+  const { search, checkIn, checkOut, numberOfGuest, activityDate } = useSearchStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const LandingPage = () => {
     return () => {
       clearTimeout(timer)
     }
-  }, [search, checkIn, checkOut, numberOfGuest, date])
+  }, [search, checkIn, checkOut, numberOfGuest, activityDate])
 
   useEffect(() => {
     if (typeof window !== "undefined") {

@@ -18,19 +18,16 @@ const TableTab = () => {
     values: [
       [
         formatCurrency(
-          !isPending && overAllSummaryDataTable?.item?.summary.completed,
-          "Philippines"
+          !isPending && overAllSummaryDataTable?.item?.summary.completed
         ) || null,
         formatCurrency(
-          !isPending && overAllSummaryDataTable?.item?.summary.cancelled,
-          "Philippines"
+          !isPending && overAllSummaryDataTable?.item?.summary.cancelled
         ) || null,
       ],
     ],
     total:
       formatCurrency(
-        !isPending && overAllSummaryDataTable?.item?.summary.total,
-        "Philippines"
+        !isPending && overAllSummaryDataTable?.item?.summary.total
       ) || null,
   }
 

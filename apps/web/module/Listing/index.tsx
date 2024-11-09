@@ -5,7 +5,7 @@ import { E_Listing_Category } from "@repo/contract"
 export type BookingProps = {
   listingId: number
   photos: {
-    fileKey: string
+    key: string
     alt: string
   }[]
   distance: string

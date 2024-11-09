@@ -29,20 +29,16 @@ const EarningsUpcoming = ({ data }: T_Prop) => {
     ["Gross earnings", "Adjustments", "Service fee", "Taxes withheld"],
     [
       formatCurrency(
-        upcoming?.item?.yearToDateSummary?.gross ?? "",
-        "Philippines"
+        upcoming?.item?.yearToDateSummary?.gross ?? ""
       ),
       formatCurrency(
-        upcoming?.item?.yearToDateSummary?.adjustment ?? "",
-        "Philippines"
+        upcoming?.item?.yearToDateSummary?.adjustment ?? ""
       ),
       formatCurrency(
-        upcoming?.item?.yearToDateSummary?.serviceFee ?? "",
-        "Philippines"
+        upcoming?.item?.yearToDateSummary?.serviceFee ?? ""
       ),
       formatCurrency(
-        upcoming?.item?.yearToDateSummary?.tax ?? "",
-        "Philippines"
+        upcoming?.item?.yearToDateSummary?.tax ?? ""
       ),
     ],
   ]
