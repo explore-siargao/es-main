@@ -68,6 +68,7 @@ COPY turbo.json ./
 # Copy sub folders files
 COPY apps/api ./apps/api
 COPY packages/contract ./packages/contract
+COPY packages/contract-2 ./packages/contract-2
 COPY packages/constants ./packages/constants
 COPY packages/database ./packages/database
 COPY packages/services ./packages/services
