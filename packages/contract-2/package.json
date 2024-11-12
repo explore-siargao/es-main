@@ -22,6 +22,11 @@
       "import": "./build/property/index.js",
       "require": "./build/property/index.js",
       "types": "./build/property/index.d.ts"
+    },
+    "./currency": {
+      "import": "./build/currency/index.js",
+      "require": "./build/currency/index.js",
+      "types": "./build/currency/index.d.ts"
     }
   },
   "scripts": {

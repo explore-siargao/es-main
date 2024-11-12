@@ -1,4 +1,4 @@
-import { E_Supported_Currencies } from "../types/global"
+import { E_Supported_Currencies } from "@repo/contract-2/currency"
 
 function formatCurrency(
   amount: number,

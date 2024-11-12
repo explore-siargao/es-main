@@ -1,4 +1,4 @@
-import { E_Supported_Currencies } from "@/common/types/global"
+import { E_Supported_Currencies } from "@repo/contract-2/currency"
 import React from "react"
 
 type CurrencyIconProps = {

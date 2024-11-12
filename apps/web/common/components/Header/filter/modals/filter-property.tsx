@@ -27,7 +27,6 @@ import {
   T_Property_Facility,
 } from "@repo/contract"
 import useGetListingCategoryHighestPrice from "./hooks/useGetListingCategoryHighestPrice"
-import { E_Supported_Currencies } from "@/common/types/global"
 import CurrencyIcon from "@/common/components/currency/currency-icon"
 
 type T_Props = {
