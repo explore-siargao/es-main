@@ -1,4 +1,4 @@
-import RentalsFilter from "@/module/Listings/search/rentals/filter"
+import RentalsFilter from "@/module/search/rentals/filter"
 
 const ListingsPage = () => {
   return <RentalsFilter />
