@@ -3,13 +3,11 @@ import { NextFunction, Request, Response } from 'express'
 import redisClient from '@/common/utils/redisClient'
 import { format } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
-import {
-  UNKNOWN_ERROR_OCCURRED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { E_Supported_Currencies } from '@repo/contract-2/currency'
 
 type CurrencyRates = {
-  [currency: string]: number;
+  [currency: string]: number
 }
 
 const response = new ResponseService()
@@ -19,7 +17,7 @@ const priceConversion = async (
   res: Response,
   next: NextFunction
 ) => {
-  const currency = req.header('currency') || "PHP"
+  const currency = req.header('currency') || 'PHP'
   try {
     const date = new Date()
     const timeZone: string = 'Asia/Manila'
@@ -48,12 +46,12 @@ const priceConversion = async (
       const filteredRates = Object.keys(E_Supported_Currencies).reduce(
         (acc: CurrencyRates, currency: string) => {
           if (data.conversion_rates[currency] !== undefined) {
-            acc[currency] = data.conversion_rates[currency];
+            acc[currency] = data.conversion_rates[currency]
           }
-          return acc;
+          return acc
         },
         {} as CurrencyRates
-      );
+      )
 
       // Save filtered rates to Redis
       await redisClient.hSet(

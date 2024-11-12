@@ -1,4 +1,4 @@
-import { E_Supported_Currencies } from "@repo/contract-2/currency"
+import { E_Supported_Currencies } from '@repo/contract-2/currency'
 
 export const convertPrice = (
   amountInPHP: number,

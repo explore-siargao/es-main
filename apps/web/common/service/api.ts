@@ -1,6 +1,6 @@
 import { API_ROOT, MOCK_ROOT } from "@repo/constants"
 import { T_BackendResponse } from "@repo/contract"
-import { E_Supported_Currencies } from '@repo/contract-2/currency';
+import { E_Supported_Currencies } from "@repo/contract-2/currency"
 
 export class ApiService {
   private BASE_URL: string | undefined
@@ -26,7 +26,7 @@ export class ApiService {
     const headers = {
       ...(!removeContentType && {
         "Content-Type": "application/json",
-        "currency": storedCurrency ?? E_Supported_Currencies.PHP
+        currency: storedCurrency ?? E_Supported_Currencies.PHP,
       }),
     } as Record<string, any>
     const options = {
