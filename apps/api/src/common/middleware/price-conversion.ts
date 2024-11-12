@@ -4,7 +4,10 @@ import redisClient from '@/common/utils/redisClient'
 import { format } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
-import { E_Supported_Currencies, Z_Supported_Currency } from '@repo/contract-2/currency'
+import {
+  E_Supported_Currencies,
+  Z_Supported_Currency,
+} from '@repo/contract-2/currency'
 
 type CurrencyRates = {
   [currency: string]: number
@@ -19,7 +22,9 @@ const priceConversion = async (
 ) => {
   let currency = E_Supported_Currencies.PHP
   const isValid = Z_Supported_Currency.safeParse(currency)
-  currency = isValid ? req.header('currency') as E_Supported_Currencies : E_Supported_Currencies.PHP
+  currency = isValid
+    ? (req.header('currency') as E_Supported_Currencies)
+    : E_Supported_Currencies.PHP
   try {
     const date = new Date()
     const timeZone: string = 'Asia/Manila'

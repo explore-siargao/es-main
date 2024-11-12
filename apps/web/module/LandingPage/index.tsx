@@ -396,7 +396,6 @@ const LandingPage = () => {
 
   return (
     <>
-
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
         <div className="sm:mt-20">
           <TravelSlider
