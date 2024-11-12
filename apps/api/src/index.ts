@@ -6,14 +6,14 @@ import routes from '@/routes'
 import { ALLOWED_CLIENTS, API_PORT } from '@/common/constants/ev'
 import '@/common/utils/redisClient'
 import { initMongo } from '@repo/database'
-import priceConversion from './common/middleware/price-conversion/price-conversion'
+import priceConversion from '@/common/middleware/price-conversion'
 
 const es = express()
 es.disable('x-powered-by')
 es.use(cookies())
 es.use(express.json())
-es.use(priceConversion)
 es.use(fileupload())
+es.use(priceConversion)
 es.use(
   cors({
     origin: ALLOWED_CLIENTS,
