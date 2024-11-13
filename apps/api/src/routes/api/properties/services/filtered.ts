@@ -2,13 +2,17 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { T_Property_Filtered } from '@repo/contract-2/search-filters'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredProperties = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   let {
     location,
     type,
@@ -287,6 +291,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -645,9 +696,68 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map(
+        (item: T_Property_Filtered) => ({
+          ...item,
+          bookableUnits: item.bookableUnits.map((item) => ({
+            ...item,
+            unitPrice: {
+              ...item.unitPrice,
+              baseRate: !item.unitPrice.baseRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item.unitPrice.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+            pricePerDates: item?.pricePerDates?.map((item) => ({
+              ...item,
+              price: {
+                ...item.price,
+                baseRate: !item.price?.baseRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.baseRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                  ? 0
+                  : convertPrice(
+                      item?.price?.pricePerAdditionalPerson,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.discountedWeekLyRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+              },
+            })),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: bookableUnits[0].results,
+          items: changePrices,
           pageItemCount: bookableUnits[0].pageItemCount || 0,
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
@@ -821,6 +931,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -1187,9 +1344,68 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map(
+        (item: T_Property_Filtered) => ({
+          ...item,
+          bookableUnits: item.bookableUnits.map((item) => ({
+            ...item,
+            unitPrice: {
+              ...item.unitPrice,
+              baseRate: !item.unitPrice.baseRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item.unitPrice.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+            pricePerDates: item?.pricePerDates?.map((item) => ({
+              ...item,
+              price: {
+                ...item.price,
+                baseRate: !item.price?.baseRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.baseRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                  ? 0
+                  : convertPrice(
+                      item?.price?.pricePerAdditionalPerson,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.discountedWeekLyRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+              },
+            })),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: bookableUnits[0].results,
+          items: changePrices,
           pageItemCount: bookableUnits[0].pageItemCount || 0,
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
@@ -1399,6 +1615,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -1757,9 +2020,68 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map(
+        (item: T_Property_Filtered) => ({
+          ...item,
+          bookableUnits: item.bookableUnits.map((item) => ({
+            ...item,
+            unitPrice: {
+              ...item.unitPrice,
+              baseRate: !item.unitPrice.baseRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item.unitPrice.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+            pricePerDates: item?.pricePerDates?.map((item) => ({
+              ...item,
+              price: {
+                ...item.price,
+                baseRate: !item.price?.baseRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.baseRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                  ? 0
+                  : convertPrice(
+                      item?.price?.pricePerAdditionalPerson,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.discountedWeekLyRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+              },
+            })),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: bookableUnits[0].results,
+          items: changePrices,
           pageItemCount: bookableUnits[0].pageItemCount || 0,
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
@@ -1969,6 +2291,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -2335,9 +2704,68 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map(
+        (item: T_Property_Filtered) => ({
+          ...item,
+          bookableUnits: item.bookableUnits.map((item) => ({
+            ...item,
+            unitPrice: {
+              ...item.unitPrice,
+              baseRate: !item.unitPrice.baseRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item.unitPrice.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.unitPrice?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+            pricePerDates: item?.pricePerDates?.map((item) => ({
+              ...item,
+              price: {
+                ...item.price,
+                baseRate: !item.price?.baseRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.baseRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                  ? 0
+                  : convertPrice(
+                      item?.price?.pricePerAdditionalPerson,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  ? 0
+                  : convertPrice(
+                      item.price?.discountedWeekLyRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+              },
+            })),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: bookableUnits[0].results,
+          items: changePrices,
           pageItemCount: bookableUnits[0].pageItemCount || 0,
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })

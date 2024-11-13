@@ -2,13 +2,18 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { T_Rental_Filtered } from '@repo/contract-2/search-filters'
+import { T_RentalPrice } from '@repo/contract-2/rentals'
 import { dbLocations, dbRentals, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
 
 export const getFilteredRentals = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   let startDate, endDate
   let {
     location,
@@ -300,6 +305,50 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'rentalrates', // The collection where price details are stored
+            localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+            foreignField: '_id', // The field in rentalrates matching the price IDs
+            as: 'priceDetails', // Temporary field to store the lookup result
+          },
+        },
+        {
+          $addFields: {
+            pricePerDates: {
+              $map: {
+                input: '$pricePerDates',
+                as: 'dateEntry',
+                in: {
+                  $mergeObjects: [
+                    '$$dateEntry', // Original data from pricePerDates
+                    {
+                      price: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: '$priceDetails',
+                              as: 'priceDetail',
+                              cond: {
+                                $eq: ['$$priceDetail._id', '$$dateEntry.price'],
+                              },
+                            },
+                          },
+                          0,
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            priceDetails: 0, // Remove the temporary priceDetails field
+          },
+        },
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -345,6 +394,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.details': 1,
             'results.addOns': 1,
             'results.pricing': 1,
+            'results.pricePerDates': 1,
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
@@ -353,9 +403,60 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
         },
       ]
       const rentals = await dbRentals.aggregate(pipeline)
+      const changePrices = rentals[0].results.map(
+        (item: T_Rental_Filtered) => ({
+          ...item,
+          pricing: {
+            ...item.pricing,
+            dayRate: convertPrice(
+              Number(item.pricing?.dayRate),
+              preferredCurrency,
+              conversionRates
+            ),
+            requiredDeposit: convertPrice(
+              Number(item.pricing?.requiredDeposit),
+              preferredCurrency,
+              conversionRates
+            ),
+            adminBookingCharge: !Number(item.pricing?.adminBookingCharge)
+              ? 0
+              : convertPrice(
+                  Number(item.pricing?.adminBookingCharge),
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !(item.price as unknown as T_RentalPrice).dayRate
+              ? null
+              : {
+                  ...(item.price as unknown as T_RentalPrice),
+                  dayRate: convertPrice(
+                    (item.price as unknown as T_RentalPrice).dayRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  requiredDeposit: convertPrice(
+                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  adminBookingCharge: convertPrice(
+                    (item.price as unknown as T_RentalPrice).adminBookingCharge
+                      ? (item.price as unknown as T_RentalPrice)
+                          .adminBookingCharge
+                      : 0,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                },
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: rentals[0].results,
+          items: changePrices,
           pageItemCount: rentals[0].pageItemCount || 0,
           allItemCount: rentals[0].allItemsCount || 0,
         })
@@ -548,6 +649,50 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'rentalrates', // The collection where price details are stored
+            localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+            foreignField: '_id', // The field in rentalrates matching the price IDs
+            as: 'priceDetails', // Temporary field to store the lookup result
+          },
+        },
+        {
+          $addFields: {
+            pricePerDates: {
+              $map: {
+                input: '$pricePerDates',
+                as: 'dateEntry',
+                in: {
+                  $mergeObjects: [
+                    '$$dateEntry', // Original data from pricePerDates
+                    {
+                      price: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: '$priceDetails',
+                              as: 'priceDetail',
+                              cond: {
+                                $eq: ['$$priceDetail._id', '$$dateEntry.price'],
+                              },
+                            },
+                          },
+                          0,
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            priceDetails: 0, // Remove the temporary priceDetails field
+          },
+        },
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -592,18 +737,69 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.details': 1,
             'results.addOns': 1,
             'results.pricing': 1,
+            'results.pricePerDates': 1,
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
-            'results.reviewsCount': 0,
+            'results.reviewsCount': 1,
           },
         },
       ]
       const rentals = await dbRentals.aggregate(pipeline)
-
+      const changePrices = rentals[0].results.map(
+        (item: T_Rental_Filtered) => ({
+          ...item,
+          pricing: {
+            ...item.pricing,
+            dayRate: convertPrice(
+              Number(item.pricing?.dayRate),
+              preferredCurrency,
+              conversionRates
+            ),
+            requiredDeposit: convertPrice(
+              Number(item.pricing?.requiredDeposit),
+              preferredCurrency,
+              conversionRates
+            ),
+            adminBookingCharge: !Number(item.pricing?.adminBookingCharge)
+              ? 0
+              : convertPrice(
+                  Number(item.pricing?.adminBookingCharge),
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !(item.price as unknown as T_RentalPrice).dayRate
+              ? null
+              : {
+                  ...(item.price as unknown as T_RentalPrice),
+                  dayRate: convertPrice(
+                    (item.price as unknown as T_RentalPrice).dayRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  requiredDeposit: convertPrice(
+                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  adminBookingCharge: convertPrice(
+                    (item.price as unknown as T_RentalPrice).adminBookingCharge
+                      ? (item.price as unknown as T_RentalPrice)
+                          .adminBookingCharge
+                      : 0,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                },
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: rentals[0].results,
+          items: changePrices,
           pageItemCount: rentals[0].pageItemCount || 0,
           allItemCount: rentals[0].allItemsCount || 0,
         })
@@ -791,6 +987,50 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'rentalrates', // The collection where price details are stored
+            localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+            foreignField: '_id', // The field in rentalrates matching the price IDs
+            as: 'priceDetails', // Temporary field to store the lookup result
+          },
+        },
+        {
+          $addFields: {
+            pricePerDates: {
+              $map: {
+                input: '$pricePerDates',
+                as: 'dateEntry',
+                in: {
+                  $mergeObjects: [
+                    '$$dateEntry', // Original data from pricePerDates
+                    {
+                      price: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: '$priceDetails',
+                              as: 'priceDetail',
+                              cond: {
+                                $eq: ['$$priceDetail._id', '$$dateEntry.price'],
+                              },
+                            },
+                          },
+                          0,
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            priceDetails: 0, // Remove the temporary priceDetails field
+          },
+        },
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -835,6 +1075,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.details': 1,
             'results.addOns': 1,
             'results.pricing': 1,
+            'results.pricePerDates': 1,
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
@@ -843,10 +1084,60 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
         },
       ]
       const rentals = await dbRentals.aggregate(pipeline)
-
+      const changePrices = rentals[0].results.map(
+        (item: T_Rental_Filtered) => ({
+          ...item,
+          pricing: {
+            ...item.pricing,
+            dayRate: convertPrice(
+              Number(item.pricing?.dayRate),
+              preferredCurrency,
+              conversionRates
+            ),
+            requiredDeposit: convertPrice(
+              Number(item.pricing?.requiredDeposit),
+              preferredCurrency,
+              conversionRates
+            ),
+            adminBookingCharge: !Number(item.pricing?.adminBookingCharge)
+              ? 0
+              : convertPrice(
+                  Number(item.pricing?.adminBookingCharge),
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !(item.price as unknown as T_RentalPrice).dayRate
+              ? null
+              : {
+                  ...(item.price as unknown as T_RentalPrice),
+                  dayRate: convertPrice(
+                    (item.price as unknown as T_RentalPrice).dayRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  requiredDeposit: convertPrice(
+                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  adminBookingCharge: convertPrice(
+                    (item.price as unknown as T_RentalPrice).adminBookingCharge
+                      ? (item.price as unknown as T_RentalPrice)
+                          .adminBookingCharge
+                      : 0,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                },
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: rentals[0].results,
+          items: changePrices,
           pageItemCount: rentals[0].pageItemCount || 0,
           allItemCount: rentals[0].allItemsCount || 0,
         })
@@ -1042,6 +1333,50 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
         },
         {
+          $lookup: {
+            from: 'rentalrates', // The collection where price details are stored
+            localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+            foreignField: '_id', // The field in rentalrates matching the price IDs
+            as: 'priceDetails', // Temporary field to store the lookup result
+          },
+        },
+        {
+          $addFields: {
+            pricePerDates: {
+              $map: {
+                input: '$pricePerDates',
+                as: 'dateEntry',
+                in: {
+                  $mergeObjects: [
+                    '$$dateEntry', // Original data from pricePerDates
+                    {
+                      price: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: '$priceDetails',
+                              as: 'priceDetail',
+                              cond: {
+                                $eq: ['$$priceDetail._id', '$$dateEntry.price'],
+                              },
+                            },
+                          },
+                          0,
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            priceDetails: 0, // Remove the temporary priceDetails field
+          },
+        },
+        {
           $facet: {
             totalCount: [{ $count: 'count' }],
             paginatedResults: [
@@ -1087,6 +1422,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             'results.details': 1,
             'results.addOns': 1,
             'results.pricing': 1,
+            'results.pricePerDates': 1,
             'results.photos': 1,
             'results.location': 1,
             'results.average': 1,
@@ -1095,10 +1431,60 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
         },
       ]
       const rentals = await dbRentals.aggregate(pipeline)
-
+      const changePrices = rentals[0].results.map(
+        (item: T_Rental_Filtered) => ({
+          ...item,
+          pricing: {
+            ...item.pricing,
+            dayRate: convertPrice(
+              Number(item.pricing?.dayRate),
+              preferredCurrency,
+              conversionRates
+            ),
+            requiredDeposit: convertPrice(
+              Number(item.pricing?.requiredDeposit),
+              preferredCurrency,
+              conversionRates
+            ),
+            adminBookingCharge: !Number(item.pricing?.adminBookingCharge)
+              ? 0
+              : convertPrice(
+                  Number(item.pricing?.adminBookingCharge),
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !(item.price as unknown as T_RentalPrice).dayRate
+              ? null
+              : {
+                  ...(item.price as unknown as T_RentalPrice),
+                  dayRate: convertPrice(
+                    (item.price as unknown as T_RentalPrice).dayRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  requiredDeposit: convertPrice(
+                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                  adminBookingCharge: convertPrice(
+                    (item.price as unknown as T_RentalPrice).adminBookingCharge
+                      ? (item.price as unknown as T_RentalPrice)
+                          .adminBookingCharge
+                      : 0,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+                },
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: rentals[0].results,
+          items: changePrices,
           pageItemCount: rentals[0].pageItemCount || 0,
           allItemCount: rentals[0].allItemsCount || 0,
         })

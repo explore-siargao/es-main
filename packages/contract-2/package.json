@@ -18,6 +18,21 @@
       "require": "./build/search-filters/index.js",
       "types": "./build/search-filters/index.d.ts"
     },
+    "./rentals": {
+      "import": "./build/rentals/index.js",
+      "require": "./build/rentals/index.js",
+      "types": "./build/rentals/index.d.ts"
+    },
+    "./price-per-dates": {
+      "import": "./build/price-per-dates/index.js",
+      "require": "./build/price-per-dates/index.js",
+      "types": "./build/price-per-dates/index.d.ts"
+    },
+    "./rental-calendar": {
+      "import": "./build/rental-calendar/index.js",
+      "require": "./build/rental-calendar/index.js",
+      "types": "./build/rental-calendar/index.d.ts"
+    },
     "./property": {
       "import": "./build/property/index.js",
       "require": "./build/property/index.js",

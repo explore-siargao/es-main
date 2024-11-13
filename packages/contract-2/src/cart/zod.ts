@@ -1,4 +1,16 @@
 import { z } from "zod"
+import { Z_Host } from "../host"
+import { Z_Location } from "../address-location"
+import { Z_Photo } from "../photos"
+import { Z_Property_Policy } from "../policies"
+import { Z_Activity_Segment } from "../activity-segments"
+import { Z_Activity_Schedule } from "../activity-schedules"
+import {
+  Z_Activity_PricePerDate,
+  Z_Bookable_PricePerDate,
+  Z_Rental_PricePerDate,
+} from "../price-per-dates"
+import { Z_RentalAddOns, Z_RentalDetails, Z_RentalPrice } from "../rentals/zod"
 const numberOrString = z.union([z.number(), z.string()])
 export const Z_AddCart = z
   .object({
@@ -43,46 +55,12 @@ export const Z_UpdateCart = z.object({
   price: z.number(),
 })
 
-export const Z_GovernmentId = z.object({
-  fileKey: z.string(),
-  type: z.string(),
-  createdAt: z.string(),
-  _id: z.string(),
-})
-
-export const Z_Address = z.object({
-  _id: z.string(),
-  country: z.string(),
-  city: z.string(),
-  stateProvince: z.string(),
-  streetAddress: z.string().nullable().optional(),
-  aptSuite: z.string().nullable().optional(),
-  zipCode: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string().nullable().optional(),
-})
 export const Z_Amenities = z.object({
   _id: z.string().optional(),
   index: z.number(),
   category: z.string(),
   amenity: z.string(),
   isSelected: z.boolean(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
-})
-
-export const Z_Photo = z.object({
-  _id: z.string().optional(),
-  bookableUnitId: z.string().nullable().optional(),
-  propertyId: z.string().nullable().optional(),
-  rentalId: z.string().nullable().optional(),
-  activityId: z.string().nullable().optional(),
-  key: z.string(),
-  thumbKey: z.string(),
-  isMain: z.boolean(),
-  description: z.string(),
-  tags: z.string(),
   createdAt: z.string().optional(),
   updatedAt: z.string().nullable().optional(),
   deletedAt: z.string().nullable().optional(),
@@ -103,54 +81,6 @@ export const Z_BedRoom = z.object({
     .optional(),
 })
 
-export const Z_PricePerDate = z.object({
-  _id: z.string().optional(),
-  fromDate: z.string(),
-  toDate: z.string(),
-  price: z.string().nullable().optional(),
-})
-
-export const Z_User = z.object({
-  _id: z.string(),
-  email: z.string().optional(),
-  role: z.string(),
-  isHost: z.boolean(),
-  guest: z.object({
-    _id: z.string(),
-    firstName: z.string(),
-    middleName: z.string().nullable().optional(),
-    lastName: z.string(),
-    language: z.string(),
-    currency: z.string(),
-    phone: z.string().optional(),
-    cellPhone: z.string().optional(),
-    country: z.string(),
-    birthDate: z.string().optional(),
-    confirm: z.string().optional(),
-    governmentId: z.array(Z_GovernmentId).nullable().optional(),
-    address: Z_Address,
-    createdAt: z.string().optional(),
-    updatedAt: z.string().nullable().optional(),
-    deletedAt: z.string().nullable().optional(),
-  }),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
-})
-
-export const Z_Location = z.object({
-  _id: z.string().optional(),
-  city: z.string(),
-  streetAddress: z.string(),
-  barangay: z.string(),
-  longitude: z.number(),
-  latitude: z.number(),
-  howToGetThere: z.string(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
-})
-
 export const Z_Facility = z.object({
   _id: z.string().optional(),
   index: z.number(),
@@ -162,70 +92,9 @@ export const Z_Facility = z.object({
   deletedAt: z.string().nullable().optional(),
 })
 
-export const Z_Policy = z.object({
-  _id: z.string().optional(),
-  index: z.number(),
-  category: z.string(),
-  reason: z.string().nullable().optional(),
-  policy: z.string(),
-  isSelected: z.boolean(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
-})
-
-export const Z_RentalDetails = z.object({
-  _id: z.string().optional(),
-  engineCapacityLiter: z.number().nullable(),
-  engineCapacityCc: z.number().nullable(),
-  condition: z.string(),
-  exteriorColor: z.string(),
-  interiorColor: z.string().nullable().optional(),
-  seatingCapacity: z.number().nullable(),
-  isRegistered: z.string(),
-  weightCapacityKg: z.number().nullable(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
-})
-
-export const Z_RentalPrice = z.object({
-  _id: z.string().optional(),
-  dayRate: z.number(),
-  requiredDeposit: z.number(),
-  adminBookingCharge: z.number(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
-})
-
-export const Z_RentalAddOns = z.object({
-  _id: z.string().optional(),
-  roofRack: z.boolean(),
-  boardRack: z.boolean(),
-  babySeat: z.boolean(),
-  dashCam: z.boolean(),
-  includesHelmet: z.boolean(),
-  others: z.array(z.string()).nullable().optional(),
-})
-
-export const Z_ActivitySegment = z.object({
-  _id: z.string().optional(),
-  index: z.number(),
-  activities: z.array(z.string()),
-  durationHour: z.number(),
-  durationMinute: z.number(),
-  location: z.string(),
-  longitude: z.number(),
-  latitude: z.number(),
-  optional: z.boolean(),
-  hasAdditionalFee: z.boolean(),
-  transfer: z.string().nullable().optional(),
-})
-
 export const Z_Review = z.object({
   _id: z.string().optional(),
-  reviewerId: Z_User,
+  reviewerId: Z_Host,
   cleanlinessRates: z.number(),
   accuracyRates: z.number(),
   checkInRates: z.number(),
@@ -247,40 +116,9 @@ export const Z_Review = z.object({
   deletedAt: z.string().nullable().optional(),
 })
 
-export const Z_ActivitySlot = z.object({
-  _id: z.string().optional(),
-  startTime: z.string(),
-  endTime: z.string(),
-  note: z.string(),
-  slotIdsId: z.array(
-    z
-      .object({
-        _id: z.string().optional(),
-        name: z.string(),
-      })
-      .nullable()
-      .optional()
-  ),
-})
-export const Z_ActivityDay = z.object({
-  _id: z.string().optional(),
-  slots: z.array(Z_ActivitySlot).nullable().optional(),
-})
-
-export const Z_ActivitySchedule = z.object({
-  _id: z.string().optional(),
-  monday: Z_ActivityDay.nullable().optional(),
-  tuesday: Z_ActivityDay.nullable().optional(),
-  wednesday: Z_ActivityDay.nullable().optional(),
-  thursday: Z_ActivityDay.nullable().optional(),
-  friday: Z_ActivityDay.nullable().optional(),
-  saturday: Z_ActivityDay.nullable().optional(),
-  sunday: Z_ActivityDay.nullable().optional(),
-})
-
 export const Z_CartItem = z.object({
   _id: z.string(),
-  userId: Z_User,
+  userId: Z_Host,
   propertyIds: z
     .object({
       _id: z.string().optional(),
@@ -342,7 +180,7 @@ export const Z_CartItem = z.object({
           )
           .nullable()
           .optional(),
-        pricePerDates: z.array(Z_PricePerDate).nullable().optional(),
+        pricePerDates: z.array(Z_Bookable_PricePerDate).nullable().optional(),
         reviews: Z_Review.nullable().optional(),
         createdAt: z.string().optional(),
         updatedAt: z.string().nullable(),
@@ -350,7 +188,7 @@ export const Z_CartItem = z.object({
       }),
       propertyId: z.object({
         _id: z.string().optional(),
-        offerBy: Z_User,
+        offerBy: Z_Host,
         status: z.enum(["Pending", "Incomplete", "Live"]),
         finishedSections: z.array(z.string()).optional(),
         title: z.string().nullable().optional(),
@@ -383,7 +221,7 @@ export const Z_CartItem = z.object({
           .nullable()
           .optional(),
         facilities: z.array(Z_Facility).nullable().optional(),
-        policies: z.array(Z_Policy).nullable().optional(),
+        policies: z.array(Z_Property_Policy).nullable().optional(),
         createdAt: z.string().optional(),
         updatedAt: z.string().nullable(),
         deletedAt: z.string().nullable(),
@@ -398,7 +236,7 @@ export const Z_CartItem = z.object({
         _id: z.string().optional(),
         details: Z_RentalDetails,
         pricing: Z_RentalPrice.nullable().optional(),
-        host: Z_User.nullable().optional(),
+        host: Z_Host.nullable().optional(),
         category: z.enum(["Car", "Motorbike", "Bicycle", ""]),
         make: z.string().nullable().optional(),
         modelBadge: z.string().nullable().optional(),
@@ -413,7 +251,7 @@ export const Z_CartItem = z.object({
         status: z.enum(["Pending", "Incomplete", "Live"]),
         finishedSections: z.array(z.string()).nullable().optional(),
         daysCanCancel: z.number().nullable().optional(),
-        pricePerDates: z.array(Z_PricePerDate).nullable().optional(),
+        pricePerDates: z.array(Z_Rental_PricePerDate).nullable().optional(),
         qtyIds: z
           .array(z.object({ _id: z.string().optional(), name: z.string() }))
           .nullable()
@@ -433,7 +271,7 @@ export const Z_CartItem = z.object({
       _id: z.string().optional(),
       activityId: z.object({
         _id: z.string().optional(),
-        host: Z_User.optional(),
+        host: Z_Host.optional(),
         title: z.string().optional(),
         activityType: z.array(z.string()),
         experienceType: z.enum(["Private", "Joiner"]),
@@ -453,7 +291,7 @@ export const Z_CartItem = z.object({
         notAllowed: z.array(z.string()),
         policies: z.array(z.string()),
         isSegmentBuilderEnabled: z.boolean(),
-        segments: z.array(Z_ActivitySegment).nullable().optional(),
+        segments: z.array(Z_Activity_Segment).nullable().optional(),
         meetingPoint: Z_Location,
         photos: z.array(Z_Photo).nullable().optional(),
         slotCapacity: z.object({
@@ -461,13 +299,13 @@ export const Z_CartItem = z.object({
           minimum: z.number(),
           maximum: z.number(),
         }),
-        schedule: Z_ActivitySchedule.optional(),
+        schedule: Z_Activity_Schedule.optional(),
         pricePerPerson: z.number().nullable().optional(),
         pricePerSlot: z.number().nullable().optional(),
         daysCanCancel: z.number(),
         status: z.enum(["Pending", "Incomplete", "Live"]),
         finishedSections: z.array(z.string()),
-        pricePerDates: z.array(Z_PricePerDate).nullable().optional(),
+        pricePerDates: z.array(Z_Activity_PricePerDate).nullable().optional(),
         activityNote: z.string().optional(),
         createdAt: z.string().optional(),
         updatedAt: z.string().nullable().optional(),

@@ -48,7 +48,7 @@ const reservations = new Schema({
   },
   guest: {
     type: mongoose.Schema.ObjectId,
-    ref: "Guests",
+    ref: "Users",
     required: false,
     default: null,
   },
