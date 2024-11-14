@@ -51,13 +51,18 @@ const AvailableBooking = ({
       <TitleSection size="lg" title={title} />
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
         {bookableUnits.map((unit: T_AvailableBookableUnitProps) => {
-          const bedDisplay = getCombinedBedDisplay(unit.bedRooms, unit.livingRooms);
+          const bedDisplay = getCombinedBedDisplay(
+            unit.bedRooms,
+            unit.livingRooms
+          )
 
           return (
             <div
               key={unit.id}
               className={`w-full rounded-xl border-2 p-5 cursor-pointer  ${
-                selectedBookableUnit === unit ? "bg-primary-200 border-primary-500" : "bg-white hover:bg-gray-100"
+                selectedBookableUnit === unit
+                  ? "bg-primary-200 border-primary-500"
+                  : "bg-white hover:bg-gray-100"
               }`}
               onClick={() => handleSelectUnit(unit)}
             >
@@ -83,14 +88,19 @@ const AvailableBooking = ({
                   <div className="text-md mb-2 font-bold">{unit.title}</div>
                   <div className="text-md mb-2">{bedDisplay}</div>
                   {unit.category === "Bed" && (
-                    <div className="text-md mb-2 font-bold">{unit.subtitle}</div>
+                    <div className="text-md mb-2 font-bold">
+                      {unit.subtitle}
+                    </div>
                   )}
                   {unit.totalSize && (
                     <div className="text-md mb-2">
-                      {unit.totalSize}m² / {Math.round(unit.totalSize * 10.764)}ft² {unit.category} Size
+                      {unit.totalSize}m² / {Math.round(unit.totalSize * 10.764)}
+                      ft² {unit.category} Size
                     </div>
                   )}
-                  <div className="text-md mb-2">Can accommodate maximum of {unit.maxGuests} guests</div>
+                  <div className="text-md mb-2">
+                    Can accommodate maximum of {unit.maxGuests} guests
+                  </div>
                   <Button
                     variant="link"
                     size="link"
