@@ -11,6 +11,8 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
+import { T_Bookable_PricePerDate } from '@repo/contract-2/price-per-dates'
 
 const response = new ResponseService()
 
@@ -84,6 +86,8 @@ const hasDateConflict = (
 }
 
 export const getPropertyCalendar = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
   const currentDate = new Date()
@@ -174,8 +178,28 @@ export const getPropertyCalendar = async (req: Request, res: Response) => {
       return {
         id: unit._id,
         name: unit.title || 'Unknown',
-        price: baseRate,
-        pricePerDates: unit.pricePerDates,
+        price: convertPrice(baseRate, preferredCurrency, conversionRates),
+        pricePerDates: unit.pricePerDates?.map(
+          (item: T_Bookable_PricePerDate) => ({
+            ...JSON.parse(JSON.stringify(item)), // Remove any metadata from `item`
+            price: {
+              ...JSON.parse(JSON.stringify(item.price)), // Remove any metadata from `item.price`
+              baseRate:
+                convertPrice(
+                  JSON.parse(JSON.stringify(item.price)).baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ) || 0,
+              pricePerAdditionalPerson:
+                convertPrice(
+                  JSON.parse(JSON.stringify(item.price))
+                    .pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ) || 0,
+            },
+          })
+        ),
         [propertyName]: formattedItems,
       }
     }

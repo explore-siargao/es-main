@@ -1,11 +1,15 @@
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { T_Activity_Filtered } from '@repo/contract-2/search-filters'
 import { dbActivities, dbLocations, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   let {
     location,
     experienceTypes,
@@ -706,9 +710,34 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       ]
 
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
@@ -1283,9 +1312,34 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       ]
 
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
@@ -1856,9 +1910,34 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       ]
 
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
@@ -2437,9 +2516,34 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         },
       ]
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
