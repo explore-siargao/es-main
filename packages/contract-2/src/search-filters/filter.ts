@@ -112,6 +112,9 @@ export class FilterService {
       rentalsHighestPrice: "rentals-highest-price",
       activitiesHighestPrice: "activities-highest-price",
       propertiesHighestPrice: "properties-highest-price",
+      filterActivities: "filter-activities",
+      filterRentals: "filter-rentals",
+      filterProperties: "filter-properties",
     }
   }
 }

@@ -68,7 +68,7 @@ const SearchBarByState = ({
     dropOffDate,
   }: T_Search) => {
     if (
-      pathCategory === LINK_SEARCH_PROPERTY &&
+      pathCategory?.includes(LINK_SEARCH_PROPERTY) &&
       location &&
       checkIn &&
       checkOut &&
@@ -84,7 +84,7 @@ const SearchBarByState = ({
         })
       )
     } else if (
-      pathCategory === LINK_SEARCH_ACTIVITIES &&
+      pathCategory?.includes(LINK_SEARCH_ACTIVITIES) &&
       location &&
       activityDate &&
       numberOfGuest
@@ -98,7 +98,7 @@ const SearchBarByState = ({
         })
       )
     } else if (
-      pathCategory === LINK_SEARCH_RENTAL &&
+      pathCategory?.includes(LINK_SEARCH_RENTAL) &&
       location &&
       vehicleType &&
       pickUpDate &&
