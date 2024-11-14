@@ -2,13 +2,14 @@
 import { Button } from "@/common/components/ui/Button"
 import {
   PropertyType,
+  T_AvailableBookableUnitProps,
   T_AvailableBookingProps,
 } from "../types/AvailableBooking"
 import { TitleSection } from "./TitleSection"
-import { T_BookableUnitType } from "@repo/contract"
 import ImageGallery from "./ImageGallery"
 import ImageGalleryModal from "./modals/ImageGalleryModal"
 import { useState } from "react"
+import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 
 const AvailableBooking = ({
   bookableUnits,
@@ -16,7 +17,7 @@ const AvailableBooking = ({
   onSelectBookableUnit,
   selectedBookableUnit,
 }: T_AvailableBookingProps) => {
-  const handleSelectUnit = (unit: T_BookableUnitType) => {
+  const handleSelectUnit = (unit: T_AvailableBookableUnitProps) => {
     onSelectBookableUnit(unit)
   }
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
@@ -48,54 +49,61 @@ const AvailableBooking = ({
   return (
     <>
       <TitleSection size="lg" title={title} />
-      {bookableUnits.map((unit: T_BookableUnitType) => (
-        <div key={unit.id} className="flex flex-col sm:flex-row w-full mt-10">
-          <div className="flex-1 sm:w-96">
-            {unit.photos && unit.photos.length > 0 && (
-              <>
-                <ImageGallery
-                  images={unit.photos}
-                  openModal={openModal}
-                  isViewModal={true}
-                  showThreeOnly={true}
-                />
-                <ImageGalleryModal
-                  images={unit.photos}
-                  isOpen={galleryModalOpen}
-                  onClose={() => setGalleryModalOpen(false)}
-                />
-              </>
-            )}
-            <Button
-              onClick={() => handleSelectUnit(unit)}
-              className="w-full mt-5"
-              variant="primary"
-            >
-              {selectedBookableUnit === unit ? "Selected" : "Select"}
-            </Button>
-          </div>
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
+        {bookableUnits.map((unit: T_AvailableBookableUnitProps) => {
+          const bedDisplay = getCombinedBedDisplay(unit.bedRooms, unit.livingRooms);
 
-          <div className="flex-1 sm:ml-10 mt-4 sm:mt-0">
-            <div className="text-md mb-2 font-bold">{unit.category}</div>
-            <div className="text-md mb-2">{unit.title}</div>
-            {unit.bed && <div className="text-md mb-2"> {unit.bed}</div>}
-            {unit.category === "Bed" && (
-              <div className="text-md mb-2">{unit.description}</div>
-            )}
-            {unit.totalSize && (
-              <div className="text-md mb-2">{unit.totalSize} Square meters</div>
-            )}
-            <div className="text-md mb-2">{unit.maxGuests} Guests capacity</div>
-            <Button
-              variant="link"
-              size="link"
-              className="text-md mb-2 underline"
+          return (
+            <div
+              key={unit.id}
+              className={`w-full rounded-xl border-2 p-5 cursor-pointer  ${
+                selectedBookableUnit === unit ? "bg-primary-200 border-primary-500" : "bg-white hover:bg-gray-100"
+              }`}
+              onClick={() => handleSelectUnit(unit)}
             >
-              Show all information &gt;
-            </Button>
-          </div>
-        </div>
-      ))}
+              <div>
+                {unit.photos && unit.photos.length > 0 && (
+                  <>
+                    <ImageGallery
+                      images={unit.photos}
+                      openModal={openModal}
+                      showTwoOnly={true}
+                      isViewModal={false}
+                      isImageAllowClickView={true}
+                      isRoundedEdge={true}
+                    />
+                    <ImageGalleryModal
+                      images={unit.photos}
+                      isOpen={galleryModalOpen}
+                      onClose={() => setGalleryModalOpen(false)}
+                    />
+                  </>
+                )}
+                <div className="p-2 mt-4">
+                  <div className="text-md mb-2 font-bold">{unit.title}</div>
+                  <div className="text-md mb-2">{bedDisplay}</div>
+                  {unit.category === "Bed" && (
+                    <div className="text-md mb-2 font-bold">{unit.subtitle}</div>
+                  )}
+                  {unit.totalSize && (
+                    <div className="text-md mb-2">
+                      {unit.totalSize}m² / {Math.round(unit.totalSize * 10.764)}ft² {unit.category} Size
+                    </div>
+                  )}
+                  <div className="text-md mb-2">Can accommodate maximum of {unit.maxGuests} guests</div>
+                  <Button
+                    variant="link"
+                    size="link"
+                    className="text-md mb-2 underline"
+                  >
+                    Show all information &gt;
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </>
   )
 }

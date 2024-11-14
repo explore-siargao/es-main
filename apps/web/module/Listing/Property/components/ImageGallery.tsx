@@ -14,6 +14,8 @@ const ImageGallery = ({
   images,
   isViewModal,
   showThreeOnly,
+  showTwoOnly,
+  isImageAllowClickView,
   isRoundedEdge,
   galleryHeight = "600px",
 }: ImageGalleryProps) => {
@@ -30,19 +32,30 @@ const ImageGallery = ({
     index: number,
     isRoundedEdge: boolean = false
   ) => {
-    if (!isRoundedEdge) return ""
-
-    switch (index) {
-      case 0:
-        return "rounded-l-xl"
-      case 2:
-        return "rounded-tr-xl"
-      case 4:
-        return "rounded-br-xl"
-      default:
-        return ""
+    if (!isRoundedEdge) return "";
+  
+    if (showTwoOnly) {
+      switch (index) {
+        case 0:
+          return "rounded-l-xl";
+        case 1:
+          return "rounded-r-xl";
+        default:
+          return "";
+      }
+    } else {
+      switch (index) {
+        case 0:
+          return "rounded-l-xl";
+        case 2:
+          return "rounded-tr-xl";
+        case 4:
+          return "rounded-br-xl";
+        default:
+          return "";
+      }
     }
-  }
+  };
 
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative ${additionalClasses} w-full h-full`}>
@@ -52,7 +65,7 @@ const ImageGallery = ({
         fill
         style={{ objectFit: "cover" }}
         alt={images ? getImgSrc(index).alt : ""}
-        className={`${getRoundedEdgeClass(index, isRoundedEdge)} cursor-pointer`}
+        className={`${getRoundedEdgeClass(index, isRoundedEdge)}  cursor-pointer`}
       />
     </div>
   )
@@ -86,8 +99,55 @@ const ImageGallery = ({
     )
   }
 
+  if (showTwoOnly) {
+    return (
+      <div className="relative h-44" >
+        <div className="grid grid-cols-2 h-full gap-2 w-full" onClick={() => setIsOpen(true)}>
+          {renderImage(
+            0,
+            "rounded-lg"
+          )}
+          {renderImage(
+            1,
+            "rounded-lg"
+          )}
+        </div>
+        {isViewModal && renderButton()}
+        {isImageAllowClickView && <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div className="relative w-full h-full bg-text-950 bg-opacity-70">
+          <SliderImages images={images} />
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
+          >
+            <svg
+              className="h-6 w-6 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </Dialog>}
+        
+      </div>
+    )
+  }
+
   return (
-    <div className="relative" style={{ height: galleryHeight }}>
+    <div className="relative" style={{ height: galleryHeight }} >
       <div
         className={`grid grid-cols-1 ${!isViewModal ? "border border-primary-500 rounded-xl" : ""} md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-full`}
       >
