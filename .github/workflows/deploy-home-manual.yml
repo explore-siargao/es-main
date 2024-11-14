@@ -33,6 +33,7 @@ jobs:
       RECAPTCHA_KEY: ${{ secrets.RECAPTCHA_KEY }}
       FACEBOOK_CLIENT_ID: ${{ secrets.FACEBOOK_CLIENT_ID }}
       FACEBOOK_SECRET_ID: ${{ secrets.FACEBOOK_SECRET_ID }}
+      EXCHANGERATE_API_KEY: ${{ secrets.EXCHANGERATE_API_KEY }}
       CLIENT_ORIGINS: ${{ secrets.CLIENT_ORIGINS }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}

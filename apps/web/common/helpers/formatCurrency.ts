@@ -1,4 +1,7 @@
-import { E_Supported_Currencies } from "@repo/contract-2/currency"
+import {
+  E_Supported_Currencies,
+  Z_Supported_Currency,
+} from "@repo/contract-2/currency"
 
 function formatCurrency(
   amount: number,
@@ -7,8 +10,11 @@ function formatCurrency(
   const storedCurrency = localStorage.getItem(
     "currency"
   ) as E_Supported_Currencies | null
+  const isValid = Z_Supported_Currency.safeParse(storedCurrency).success
   const finalCurrency =
-    currencyCode || storedCurrency || E_Supported_Currencies.PHP
+    currencyCode ||
+    (isValid ? storedCurrency : E_Supported_Currencies.PHP) ||
+    E_Supported_Currencies.PHP
 
   const locale = {
     PHP: "en-PH",

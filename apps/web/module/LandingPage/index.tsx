@@ -22,9 +22,7 @@ import surfImage from "../../common/assets/sample/surf.jpg"
 import airport from "../../common/assets/sample/airport.jpg"
 import TravelSlider from "./components/TravelSlider"
 import ImageTextCard from "./components/ImageTextCard"
-import BudgetSlider from "@/common/components/Filters/BudgetFilter/BudgetSlider"
 import { Typography } from "@/common/components/ui/Typography"
-import CardList, { Filters } from "../Listings/components/CardList"
 
 const LandingPage = () => {
   const userId = useSessionStore((state) => state).id
@@ -396,14 +394,8 @@ const LandingPage = () => {
     },
   ]
 
-  const dummyFilters: Filters[] = [{ type: "Free WiFi" }]
-
   return (
     <>
-      {/* {isPending || isLoading ? (
-        <Spinner variant="primary" middle />
-      ) : ( */}
-
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
         <div className="sm:mt-20">
           <TravelSlider
@@ -491,131 +483,6 @@ const LandingPage = () => {
             url="/siargao/islands/guides"
           />
         </div>
-
-        {/* {search || checkIn || checkOut || numberOfGuest ? (
-            <div className="flex flex-col gap-4">
-              {path === "/" && (
-                <Typography variant={"h5"} className="text-gray-500">
-                  {data?.items?.length} results for "{search}"
-                </Typography>
-              )}
-              {path === "/activities" && (
-                <Typography variant={"h5"} className="text-gray-500">
-                  Activities available for {numberOfGuest} guest/s on {date}
-                </Typography>
-              )}
-              {path === "/rentals" && (
-                <Typography variant={"h5"} className="text-gray-500">
-                  Rentals available for {numberOfGuest} guest/s on {date}
-                </Typography>
-              )}
-              <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
-                {data?.items?.map((item: any) => (
-                  <Listing
-                    key={item.id}
-                    listingId={item.id}
-                    location={item.address}
-                    date={item.description}
-                    distance={"100 kilometers away"}
-                    price={"₱" + item.price}
-                    imageKey={item.images}
-                    dayTime={item.price.isNight ? "Night" : ""}
-                    ratings={item.ratings}
-                    isHearted={
-                      item.wishes.filter(
-                        (value: any) => value.userId === userId
-                      ).length !== 0
-                    }
-                  />
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <Typography variant={"h1"} fontWeight={"semibold"}>
-                  Surf
-                </Typography>
-                <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
-                  {data?.items?.map((item: any) => (
-                    <Listing
-                      key={item.id}
-                      listingId={item.id}
-                      location={item.address}
-                      date={item.description}
-                      distance={"100 kilometers away"}
-                      price={"₱" + item.price}
-                      imageKey={item.images}
-                      dayTime={item.price.isNight ? "Night" : ""}
-                      ratings={item.ratings}
-                      isHearted={
-                        item.wishes.filter(
-                          (value: any) => value.userId === userId
-                        ).length !== 0
-                      }
-                    />
-                  ))}
-                </ul>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Typography variant={"h1"} fontWeight={"semibold"}>
-                  Travel
-                </Typography>
-                <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
-                  {data?.items?.map((item: any) => (
-                    <Listing
-                      key={item.id}
-                      listingId={item.id}
-                      location={item.address}
-                      date={item.description}
-                      distance={"100 kilometers away"}
-                      price={"₱" + item.price}
-                      imageKey={item.images}
-                      dayTime={item.price.isNight ? "Night" : ""}
-                      ratings={item.ratings}
-                      isHearted={
-                        item.wishes.filter(
-                          (value: any) => value.userId === userId
-                        ).length !== 0
-                      }
-                    />
-                  ))}
-                </ul>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Typography variant={"h1"} fontWeight={"semibold"}>
-                  Restaurant
-                </Typography>
-                <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 mx-auto w-full justify-center">
-                  {data?.items?.map((item: any) => (
-                    <Listing
-                      key={item.id}
-                      listingId={item.id}
-                      location={item.address}
-                      date={item.description}
-                      distance={"100 kilometers away"}
-                      price={"₱" + item.price}
-                      imageKey={item.images}
-                      dayTime={item.price.isNight ? "Night" : ""}
-                      ratings={item.ratings}
-                      isHearted={
-                        item.wishes.filter(
-                          (value: any) => value.userId === userId
-                        ).length !== 0
-                      }
-                    />
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-20">
-                <TravelStyleSlider
-                  title="What's your travel style?"
-                  description="Browse by property type to find the perfect space"
-                  groupCards={groupCardsDummy}
-                />
-              </div>
-            </div>
-          )} */}
       </WidthWrapper>
     </>
   )

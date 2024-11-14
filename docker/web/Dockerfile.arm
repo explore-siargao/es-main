@@ -47,6 +47,7 @@ COPY turbo.json ./
 # Copy sub folders files
 COPY apps/web ./apps/web
 COPY packages/contract ./packages/contract
+COPY packages/contract-2 ./packages/contract-2
 COPY packages/constants ./packages/constants
 COPY packages/services ./packages/services
 COPY packages/eslint-config ./packages/eslint-config

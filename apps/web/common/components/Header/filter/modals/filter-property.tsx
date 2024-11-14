@@ -26,8 +26,12 @@ import {
   T_Property_Amenity,
   T_Property_Facility,
 } from "@repo/contract"
-import useGetListingCategoryHighestPrice from "./hooks/useGetListingCategoryHighestPrice"
+import useGetListingCategoryHighestPrice from "./hooks/use-get-highest-category-price"
 import CurrencyIcon from "@/common/components/currency/currency-icon"
+
+// Uncomment the the next 2 line to debug the search query error
+// import { Z_Properties_Search } from "@repo/contract-2/search-filters"
+// import parseQueryToObject from "@/common/helpers/parseQueryToObject"
 
 type T_Props = {
   isOpen: boolean
@@ -37,6 +41,7 @@ type T_Props = {
 const FilterPropertyModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const page = searchParams.get("page")
   const location = searchParams.get("location")
   const checkIn = searchParams.get("checkIn")
   const checkOut = searchParams.get("checkOut")
@@ -49,7 +54,7 @@ const FilterPropertyModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
   const bathroomCount = searchParams.get("bathroomCount")
   const facilitiesSearch = searchParams.get("facilities")?.split(",")
   const amenitiesSearch = searchParams.get("amenities")?.split(",")
-  const propertyTypesSearch = searchParams.get("propertyType")?.split(",")
+  const propertyTypesSearch = searchParams.get("propertyTypes")?.split(",")
 
   const defaultPropertyTypes = (
     propertyTypesSearch &&
@@ -146,7 +151,8 @@ const FilterPropertyModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
       .join(",")
 
     const queryString = [
-      `?location=${location ? location : "any"}`,
+      `?page=${page ? page : 1}`,
+      `location=${location ? location : "any"}`,
       `propertyTypes=${propertyTypes && propertyTypes.length ? propertyTypes.toString() : "any"}`,
       `priceFrom=${selectedPriceRange && selectedPriceRange[0] !== "any" ? selectedPriceRange[0] : "any"}`,
       `priceTo=${selectedPriceRange && selectedPriceRange[1] !== "any" ? selectedPriceRange[1] : "any"}`,
@@ -158,10 +164,13 @@ const FilterPropertyModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
       `starRating=${starRating && starRating !== "any" ? starRating : "any"}`,
     ]
 
-    // the checkIn, checkOut and numberOfGuest comes from the header search bar
-    router.push(
-      `${queryString.join("&")}&checkIn=${checkIn ?? "any"}&checkOut=${checkOut ?? "any"}&numberOfGuest=${numberOfGuest ?? "any"}`
-    )
+    const completeSearchQuery = `${queryString.join("&")}&checkIn=${checkIn ?? "any"}&checkOut=${checkOut ?? "any"}&numberOfGuest=${numberOfGuest ?? "any"}`
+
+    // Uncomment the the next 2 line to debug the search query error, do not forget to enable the import in the top of this file
+    // const validate = Z_Properties_Search.safeParse(parseQueryToObject(completeSearchQuery))
+    // console.log(`validate`, validate)
+
+    router.push(completeSearchQuery)
     onClose()
   }
   return (

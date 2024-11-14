@@ -1,29 +1,17 @@
 import dynamic from "next/dynamic"
-import { T_Activity_Card } from "../card"
+import { T_Property_Card } from "../card"
+import { E_Location } from "@repo/contract-2/search-filters"
 
 const DynamicMap = dynamic(() => import("./dynamic"), {
   ssr: false,
 })
 
-export enum E_Location {
-  Any = "any",
-  GeneralLuna = "General Luna",
-  Dapa = "Dapa",
-  DelCarmen = "Del Carmen",
-  SanIsidro = "San Isidro",
-  Pilar = "Pilar",
-  SanBenito = "San Benito",
-  Burgos = "Burgos",
-  SantaMonica = "Santa Monica",
-  Socorro = "Socorro",
-}
-
 type T_Props = {
-  activities: T_Activity_Card[]
+  units: T_Property_Card[]
   location: E_Location
 }
 
-const Map = ({ activities, location }: T_Props) => {
+const Map = ({ units, location }: T_Props) => {
   const locationMap = {
     any: {
       center: [9.825699, 126.0481901] as [number, number],
@@ -70,7 +58,7 @@ const Map = ({ activities, location }: T_Props) => {
     <div className="w-full">
       <DynamicMap
         key={location}
-        activities={activities}
+        units={units}
         center={locationMap[location].center}
         zoom={locationMap[location].zoom}
       />
