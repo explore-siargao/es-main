@@ -1,7 +1,4 @@
-import {
-  REQUIRED_VALUE_EMPTY,
-  UNKNOWN_ERROR_OCCURRED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
@@ -11,15 +8,15 @@ const response = new ResponseService()
 export const getFilteredProperties = async (req: Request, res: Response) => {
   let {
     location,
-    type,
+    propertyTypes,
     facilities,
     amenities,
     priceFrom,
     priceTo,
-    beds,
-    bathrooms,
-    bedrooms,
-    stars,
+    bedCount,
+    bathroomCount,
+    bedroomCount,
+    starRating,
     checkIn = 'any',
     checkOut = 'any',
     numberOfGuest = 'any',
@@ -57,14 +54,14 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     ])
     priceTo = String(highestPrice[0].highestBaseRate)
   }
-  if (!beds) {
-    beds = 'any'
+  if (!bedCount) {
+    bedCount = 'any'
   }
-  if (!bedrooms) {
-    bedrooms = 'any'
+  if (!bedroomCount) {
+    bedroomCount = 'any'
   }
-  if (!bathrooms) {
-    bathrooms = 'any'
+  if (!bathroomCount) {
+    bathroomCount = 'any'
   }
   try {
     const startDate =
@@ -118,7 +115,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       getUnitReservations.length > 0
         ? getUnitReservations.map((item: any) => item.unitId)
         : []
-    if ((!location || location === 'any') && (!type || type === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!propertyTypes || propertyTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -260,13 +260,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -511,7 +511,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(bedCount), // Compare total qty to `beds` parameter
                                   ],
                                 },
                               ],
@@ -522,7 +522,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -531,11 +531,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -652,7 +652,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!type || type === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!propertyTypes || propertyTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -794,13 +798,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -1045,7 +1049,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(bedCount), // Compare total qty to `beds` parameter
                                   ],
                                 },
                               ],
@@ -1056,7 +1060,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -1065,11 +1069,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -1194,8 +1198,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && type && type !== 'any') {
-      const arrayTypes = String(type)
+    } else if (
+      (!location || location === 'any') &&
+      propertyTypes &&
+      propertyTypes !== 'any'
+    ) {
+      const arrayTypes = String(propertyTypes)
         .trim()
         .split(',')
         .map((item) => item.trim())
@@ -1372,13 +1380,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -1623,7 +1631,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds),
+                                    Number(bedCount),
                                   ],
                                 },
                               ],
@@ -1634,7 +1642,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -1643,11 +1651,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -1764,8 +1772,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && type && type !== 'any') {
-      const arrayTypes = String(type)
+    } else if (
+      location &&
+      location !== 'any' &&
+      propertyTypes &&
+      propertyTypes !== 'any'
+    ) {
+      const arrayTypes = String(propertyTypes)
         .trim()
         .split(',')
         .map((item) => item.trim())
@@ -1942,13 +1955,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -2193,7 +2206,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(bedCount), // Compare total qty to `beds` parameter
                                   ],
                                 },
                               ],
@@ -2204,7 +2217,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -2213,11 +2226,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],

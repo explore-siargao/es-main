@@ -8,12 +8,12 @@ const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
   let {
     location,
-    type,
+    experienceTypes,
     activityTypes,
     priceFrom,
     priceTo,
-    duration,
-    stars,
+    durations,
+    starRating,
     activityDate = 'any',
     numberOfGuest = 'any',
   } = req.query
@@ -38,11 +38,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         .map((t: string) => new RegExp(`^${t}$`, 'i'))
       query.activityType = { $in: newActivityTypesArray }
     }
-    if (duration && duration !== 'any') {
-      query.durationHour = Number(duration)
+    if (durations && durations !== 'any') {
+      query.durationHour = Number(durations)
     }
-    if (!stars || stars === 'any') {
-      stars = '0'
+    if (!starRating || starRating === 'any') {
+      starRating = '0'
     }
     const startDate =
       activityDate === 'any' ? 'any' : parseToUTCDate(activityDate as string)
@@ -145,7 +145,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         ? getActivityJoinerReservations.map((item: any) => item.slotIdsId)
         : []
 
-    if ((!location || location === 'any') && (!type || type === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!experienceTypes || experienceTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -240,13 +243,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -710,7 +713,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!type || type === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!experienceTypes || experienceTypes === 'any')
+    ) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         { $match: query },
@@ -813,13 +820,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -1283,8 +1290,12 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && type && type !== 'any') {
-      const typeArray = String(type)
+    } else if (
+      (!location || location === 'any') &&
+      experienceTypes &&
+      experienceTypes !== 'any'
+    ) {
+      const typeArray = String(experienceTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
       query.experienceType = { $in: typeArray }
@@ -1382,13 +1393,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -1852,9 +1863,14 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && type && type !== 'any') {
+    } else if (
+      location &&
+      location !== 'any' &&
+      experienceTypes &&
+      experienceTypes !== 'any'
+    ) {
       const normalizedLocation = String(location).toLowerCase()
-      const typeArray = String(type)
+      const typeArray = String(experienceTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
       query.experienceType = { $in: typeArray }
@@ -1959,13 +1975,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },

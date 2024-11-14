@@ -1,23 +1,19 @@
-import {
-  REQUIRED_VALUE_EMPTY,
-  UNKNOWN_ERROR_OCCURRED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
-import { dbLocations, dbRentals, dbReservations } from '@repo/database'
+import { dbRentals, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
 
 export const getFilteredRentals = async (req: Request, res: Response) => {
-  let startDate, endDate
   let {
     location,
-    type,
-    transmission,
-    seats,
+    vehicleTypes,
+    transmissionTypes,
+    seatCount,
     priceFrom,
     priceTo,
-    stars,
+    starRating,
     pickUpDate = 'any',
     dropOffDate = 'any',
   } = req.query
@@ -31,21 +27,21 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       priceTo = '9999999'
     }
     if (
-      transmission &&
-      typeof transmission === 'string' &&
-      transmission !== 'any'
+      transmissionTypes &&
+      typeof transmissionTypes === 'string' &&
+      transmissionTypes !== 'any'
     ) {
-      const newTransmission = transmission.split(',')
+      const newTransmission = transmissionTypes.split(',')
       const transmissionArray = newTransmission
         .map((t: string) => t.trim())
         .filter((t: string) => t !== '')
         .map((t: string) => new RegExp(`^${t}$`, 'i'))
-      query.transmission = {
+      query.transmissionTypes = {
         $in: transmissionArray,
       }
     }
-    if (!stars || stars === 'any') {
-      stars = '0'
+    if (!starRating || starRating === 'any') {
+      starRating = '0'
     }
     const startDate =
       pickUpDate === 'any' ? 'any' : parseToUTCDate(pickUpDate as string)
@@ -104,7 +100,10 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       getReservations.length > 0
         ? getReservations.map((item: any) => item.qtyIdsArray)
         : []
-    if ((!location || location === 'any') && (!type || type === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!vehicleTypes || vehicleTypes === 'any')
+    ) {
       const pipeline = [
         {
           $match: query,
@@ -124,8 +123,8 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $match: {
             $expr: {
               $or: [
-                { $eq: [seats, 'any'] },
-                { $eq: ['$details.seatingCapacity', Number(seats)] },
+                { $eq: [seatCount, 'any'] },
+                { $eq: ['$details.seatingCapacity', Number(seatCount)] },
               ],
             },
           },
@@ -271,13 +270,13 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -360,7 +359,11 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!type || type === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!vehicleTypes || vehicleTypes === 'any')
+    ) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         {
@@ -381,8 +384,8 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $match: {
             $expr: {
               $or: [
-                { $eq: [seats, 'any'] },
-                { $eq: ['$details.seatingCapacity', Number(seats)] },
+                { $eq: [seatCount, 'any'] },
+                { $eq: ['$details.seatingCapacity', Number(seatCount)] },
               ],
             },
           },
@@ -519,13 +522,13 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -608,8 +611,11 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && (type || type !== 'any')) {
-      const typeArray = String(type)
+    } else if (
+      (!location || location === 'any') &&
+      (vehicleTypes || vehicleTypes !== 'any')
+    ) {
+      const typeArray = String(vehicleTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
       query.category = { $in: typeArray }
@@ -632,8 +638,8 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $match: {
             $expr: {
               $or: [
-                { $eq: [seats, 'any'] },
-                { $eq: ['$details.seatingCapacity', Number(seats)] },
+                { $eq: [seatCount, 'any'] },
+                { $eq: ['$details.seatingCapacity', Number(seatCount)] },
               ],
             },
           },
@@ -762,13 +768,13 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -851,8 +857,13 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && type && type !== 'any') {
-      const typeArray = String(type)
+    } else if (
+      location &&
+      location !== 'any' &&
+      vehicleTypes &&
+      vehicleTypes !== 'any'
+    ) {
+      const typeArray = String(vehicleTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
       query.category = { $in: typeArray }
@@ -876,8 +887,8 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           $match: {
             $expr: {
               $or: [
-                { $eq: [seats, 'any'] },
-                { $eq: ['$details.seatingCapacity', Number(seats)] },
+                { $eq: [seatCount, 'any'] },
+                { $eq: ['$details.seatingCapacity', Number(seatCount)] },
               ],
             },
           },
@@ -1013,13 +1024,13 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
