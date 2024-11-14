@@ -33,6 +33,16 @@
       "require": "./build/rental-calendar/index.js",
       "types": "./build/rental-calendar/index.d.ts"
     },
+    "./activity-calendar": {
+      "import": "./build/activity-calendar/index.js",
+      "require": "./build/activity-calendar/index.js",
+      "types": "./build/activity-calendar/index.d.ts"
+    },
+    "./property-calendar": {
+      "import": "./build/property-calendar/index.js",
+      "require": "./build/property-calendar/index.js",
+      "types": "./build/property-calendar/index.d.ts"
+    },
     "./property": {
       "import": "./build/property/index.js",
       "require": "./build/property/index.js",

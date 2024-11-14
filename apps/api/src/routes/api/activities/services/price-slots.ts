@@ -1,4 +1,5 @@
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { ResponseService } from '@/common/service/response'
 import {
   T_Update_Activity_Price_Slots,
@@ -171,6 +172,8 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
 }
 
 export const getSlotPrice = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const activityId = req.params.activityId
   const getActivity = await dbActivities.findOne({
     _id: activityId,
@@ -184,8 +187,18 @@ export const getSlotPrice = async (req: Request, res: Response) => {
         experienceType: getActivity.experienceType,
         schedule: getActivity.schedule,
         slotCapacity: getActivity.slotCapacity,
-        pricePerSlot: getActivity.pricePerSlot,
-        pricePerPerson: getActivity.pricePerPerson,
+        pricePerSlot:
+          convertPrice(
+            getActivity.pricePerSlot,
+            preferredCurrency,
+            conversionRates
+          ) || 0,
+        pricePerPerson:
+          convertPrice(
+            getActivity.pricePerPerson,
+            preferredCurrency,
+            conversionRates
+          ) || 0,
       }
       res.json(response.success({ item: slotsDetail }))
     } catch (err: any) {

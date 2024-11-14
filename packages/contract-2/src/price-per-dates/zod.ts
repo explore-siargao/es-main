@@ -1,4 +1,4 @@
-import { string, z } from "zod"
+import { z } from "zod"
 import { Z_RentalPrice } from "../rentals"
 import { Z_UnitPrice } from "../property-bookable"
 
