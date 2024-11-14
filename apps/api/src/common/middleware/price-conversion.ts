@@ -20,7 +20,7 @@ const priceConversion = async (
   res: Response,
   next: NextFunction
 ) => {
-  const currency = req.header('currency');
+  const currency = req.header('currency')
   const isValid = Z_Supported_Currency.safeParse(currency).success
   const validCurrency = isValid
     ? (req.header('currency') as E_Supported_Currencies)
