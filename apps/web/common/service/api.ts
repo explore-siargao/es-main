@@ -26,8 +26,8 @@ export class ApiService {
     const headers = {
       ...(!removeContentType && {
         "Content-Type": "application/json",
-        currency: storedCurrency ?? E_Supported_Currencies.PHP,
       }),
+      currency: storedCurrency ?? E_Supported_Currencies.PHP,
     } as Record<string, any>
     const options = {
       headers,

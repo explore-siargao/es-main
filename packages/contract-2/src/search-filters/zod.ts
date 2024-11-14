@@ -114,7 +114,7 @@ export const Z_Rental_Filtered = z.object({
 })
 
 export const Z_Activity_Filtered = z.object({
-  _id: string().optional(),
+  _id: z.string().optional(),
   host: Z_Host,
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
