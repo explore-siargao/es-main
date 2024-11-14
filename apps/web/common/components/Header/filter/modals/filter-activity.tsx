@@ -18,8 +18,12 @@ import {
   durationTypes,
   T_Filter_Type,
 } from "../constants"
-import useGetListingCategoryHighestPrice from "./hooks/useGetListingCategoryHighestPrice"
+import useGetListingCategoryHighestPrice from "./hooks/use-get-highest-category-price"
 import { E_Listing_Category } from "@repo/contract"
+
+// Uncomment the the next 2 line to debug the search query error
+// import { Z_Activities_Search } from "@repo/contract-2/search-filters"
+// import parseQueryToObject from "@/common/helpers/parseQueryToObject"
 
 type T_Props = {
   isOpen: boolean
@@ -29,6 +33,7 @@ type T_Props = {
 const FilterActivityModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const page = searchParams.get("page")
   const location = searchParams.get("location")
   const activityDate = searchParams.get("activityDate")
   const priceFrom = searchParams.get("priceFrom")
@@ -106,7 +111,8 @@ const FilterActivityModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
     } = state
 
     const queryString = [
-      `?location=${location ? location : "any"}`,
+      `?page=${page ? page : 1}`,
+      `location=${location ? location : "any"}`,
       `activityTypes=${activityTypes && typeof activityTypes !== "string" && activityTypes.length ? activityTypes.toString() : "any"}`,
       `experienceTypes=${experienceTypes && typeof experienceTypes !== "string" && experienceTypes.length ? experienceTypes.toString() : "any"}`,
       `durations=${durations && typeof durations !== "string" && durations.length ? durations.toString() : "any"}`,
@@ -115,10 +121,13 @@ const FilterActivityModal: React.FC<T_Props> = ({ isOpen, onClose }) => {
       `starRating=${starRating && starRating !== "any" ? starRating : "any"}`,
     ]
 
-    // the date and numberOfGuest comes from the header search bar
-    router.push(
-      `${queryString.join("&")}&activityDate=${activityDate ?? "any"}&numberOfGuest=${numberOfGuest ?? "any"}`
-    )
+    const completeSearchQuery = `${queryString.join("&")}&activityDate=${activityDate ?? "any"}&numberOfGuest=${numberOfGuest ?? "any"}`
+
+    // Uncomment the the next 2 line to debug the search query error, do not forget to enable the import in the top of this file
+    // const validate = Z_Activities_Search.safeParse(parseQueryToObject(completeSearchQuery))
+    // console.log(`validate`, validate)
+
+    router.push(completeSearchQuery)
     onClose()
   }
 

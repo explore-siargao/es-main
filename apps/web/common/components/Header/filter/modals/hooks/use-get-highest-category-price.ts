@@ -10,7 +10,7 @@ export async function getHighestPrice(category: E_Listing_Category) {
   return await filter.getCategoryHighestPrice({ category })
 }
 
-function useGetListingCategoryHighestPrice(category: E_Listing_Category) {
+function useGetHighestCategoryPrice(category: E_Listing_Category) {
   const mapQueryKey = {
     [E_Listing_Category.Activity]: queryKeys.activitiesHighestPrice,
     [E_Listing_Category.Property]: queryKeys.propertiesHighestPrice,
@@ -26,4 +26,4 @@ function useGetListingCategoryHighestPrice(category: E_Listing_Category) {
   // SETUP CURRENCY OF 7 THAT JAKE SAID
 }
 
-export default useGetListingCategoryHighestPrice
+export default useGetHighestCategoryPrice

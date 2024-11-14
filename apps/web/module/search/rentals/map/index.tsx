@@ -1,22 +1,10 @@
 import dynamic from "next/dynamic"
 import { T_Rental_Card } from "../card"
+import { E_Location } from "@repo/contract-2/search-filters"
 
 const DynamicMap = dynamic(() => import("./dynamic"), {
   ssr: false,
 })
-
-export enum E_Location {
-  Any = "any",
-  GeneralLuna = "General Luna",
-  Dapa = "Dapa",
-  DelCarmen = "Del Carmen",
-  SanIsidro = "San Isidro",
-  Pilar = "Pilar",
-  SanBenito = "San Benito",
-  Burgos = "Burgos",
-  SantaMonica = "Santa Monica",
-  Socorro = "Socorro",
-}
 
 type T_Props = {
   rentals: T_Rental_Card[]

@@ -1,55 +1,21 @@
-import { ApiService } from "@/common/service/api"
-import { API_URL_RENTALS } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
+import { FilterService, T_Rentals_Search } from "@repo/contract-2/search-filters"
+import { E_Listing_Category } from "@repo/contract"
 
-const normalizeParam = (param: string | null): string => {
-  return param ? param : "any"
+export async function getPropertyListings(searchQueries: T_Rentals_Search) {
+  const filter = new FilterService();
+  return await filter.getPaginatedListings({
+    category: E_Listing_Category.Rental,
+    searchQueries,
+  });
 }
 
-export async function getListings(
-  location: string | null,
-  type: string | null,
-  transmission: string | null,
-  seats: string | null,
-  priceFrom: string | null,
-  priceTo: string | null,
-  stars: string | null
-) {
-  const apiService = new ApiService()
-  return await apiService.get(
-    `${API_URL_RENTALS}/filtered?` +
-      `location=${normalizeParam(location)}` +
-      `&type=${normalizeParam(type)}` +
-      `&transmission=${normalizeParam(transmission)}` +
-      `&seats=${normalizeParam(seats)}` +
-      `&priceFrom=${normalizeParam(priceFrom)}` +
-      `&priceTo=${normalizeParam(priceTo)}` +
-      `&stars=${normalizeParam(stars)}`
-  )
-}
-
-function useGetListings(
-  location: string | null,
-  type: string | null,
-  transmission: string | null,
-  seats: string | null,
-  priceFrom: string | null,
-  priceTo: string | null,
-  stars: string | null
-) {
+function useGetListings(searchQueries: T_Rentals_Search) {
   const query = useQuery({
     queryKey: ["filter-rentals"],
     refetchOnWindowFocus: false,
     queryFn: () =>
-      getListings(
-        location,
-        type,
-        transmission,
-        seats,
-        priceFrom,
-        priceTo,
-        stars
-      ),
+      getPropertyListings(searchQueries),
   })
   return query
 }

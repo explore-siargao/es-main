@@ -44,7 +44,8 @@
         "PAYLOAD_PORT",
         "PAYLOAD_DATABASE_URI",
         "PAYLOAD_SECRET",
-        "PAYLOAD_URL"
+        "PAYLOAD_URL",
+        "EXCHANGERATE_API_KEY"
       ]
     },
     "lint": {

@@ -1,7 +1,7 @@
 type QueryValue = number | string | "any"
 type QueryObject = { [key: string]: QueryValue }
 
-export function parseQueryToObject(fullUrl: string): QueryObject {
+export default function parseQueryToObject(fullUrl: string): QueryObject {
   const queryString = fullUrl.split("?")[1] || ""
   const params = new URLSearchParams(queryString)
   const result: QueryObject = {}

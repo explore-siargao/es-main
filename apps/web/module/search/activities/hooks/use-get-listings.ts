@@ -1,55 +1,21 @@
-import { ApiService } from "@/common/service/api"
-import { API_URL_ACTIVITIES } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
+import { FilterService, T_Activities_Search } from "@repo/contract-2/search-filters"
+import { E_Listing_Category } from "@repo/contract"
 
-const normalizeParam = (param: string | null): string => {
-  return param ? param : "any"
+export async function getPropertyListings(searchQueries: T_Activities_Search) {
+  const filter = new FilterService();
+  return await filter.getPaginatedListings({
+    category: E_Listing_Category.Activity,
+    searchQueries,
+  });
 }
 
-export async function getActivityListings(
-  location: string | null,
-  activityTypes: string | null,
-  type: string | null,
-  priceFrom: string | null,
-  priceTo: string | null,
-  duration: string | null,
-  stars: string | null
-) {
-  const apiService = new ApiService()
-  return await apiService.get(
-    `${API_URL_ACTIVITIES}/filtered?` +
-      `location=${normalizeParam(location)}` +
-      `&activityTypes=${normalizeParam(activityTypes)}` +
-      `&type=${normalizeParam(type)}` +
-      `&priceFrom=${normalizeParam(priceFrom)}` +
-      `&priceTo=${normalizeParam(priceTo)}` +
-      `&duration=${normalizeParam(duration)}` +
-      `&stars=${normalizeParam(stars)}`
-  )
-}
-
-function useGetListings(
-  location: string | null,
-  activityTypes: string | null,
-  type: string | null,
-  priceFrom: string | null,
-  priceTo: string | null,
-  duration: string | null,
-  stars: string | null
-) {
+function useGetListings(searchQueries: T_Activities_Search) {
   const query = useQuery({
     queryKey: ["filter-activities"],
     refetchOnWindowFocus: false,
     queryFn: () =>
-      getActivityListings(
-        location,
-        activityTypes,
-        type,
-        priceFrom,
-        priceTo,
-        duration,
-        stars
-      ),
+      getPropertyListings(searchQueries),
   })
   return query
 }

@@ -21,7 +21,7 @@ const priceConversion = async (
   next: NextFunction
 ) => {
   let currency = E_Supported_Currencies.PHP
-  const isValid = Z_Supported_Currency.safeParse(currency)
+  const isValid = Z_Supported_Currency.safeParse(currency).success
   currency = isValid
     ? (req.header('currency') as E_Supported_Currencies)
     : E_Supported_Currencies.PHP

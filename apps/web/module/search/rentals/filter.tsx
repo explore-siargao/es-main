@@ -2,43 +2,51 @@
 import React, { useEffect } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { useSearchParams } from "next/navigation"
-import Map, { E_Location } from "./map"
+import Map from "./map"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import useGetRentalListings from "./hooks/use-get-listings"
 import { E_Rental_Category } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
 import RentalCard from "./card"
+import getNumberOrAny from "@/common/helpers/getNumberOrAny"
+import { E_Location } from "@repo/contract-2/search-filters"
 
 const RentalsFilter = () => {
   const searchParams = useSearchParams()
-  const location = searchParams.get("location")
-  const type = searchParams.get("vehicleType")
-  const transmission = searchParams.get("transmissionType")
-  const seats = searchParams.get("seatCount")
-  const priceFrom = searchParams.get("priceFrom")
-  const priceTo = searchParams.get("priceTo")
-  const stars = searchParams.get("starRating")
+  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0;
+  const location = searchParams.get("location") || "any";
+  const vehicleTypes = searchParams.get("vehicleTypes") || "any";
+  const transmissionTypes = searchParams.get("transmissionTypes") || "any";
+  const seatCount = getNumberOrAny(searchParams.get("seatCount"))
+  const priceFrom = getNumberOrAny(searchParams.get("priceFrom"))
+  const priceTo = getNumberOrAny(searchParams.get("priceTo"))
+  const starRating = getNumberOrAny(searchParams.get("starRating"))
+  const pickUpDate = searchParams.get("pickUpDate") || "any";
+  const dropOffDate = searchParams.get("dropOffDate") || "any";
 
   const {
     data: rentalUnits,
     isLoading,
     isRefetching,
     refetch: refetchRentalUnits,
-  } = useGetRentalListings(
-    location,
-    type,
-    transmission,
-    seats,
+  } = useGetRentalListings({
+    page,
+    location: location as E_Location,
+    vehicleTypes,
+    transmissionTypes,
+    seatCount,
     priceFrom,
     priceTo,
-    stars
-  )
+    starRating,
+    pickUpDate,
+    dropOffDate
+  })
 
   useEffect(() => {
     refetchRentalUnits()
-  }, [location, type, transmission, seats, priceFrom, priceTo, stars])
+  }, [page, location, vehicleTypes, transmissionTypes, seatCount, priceFrom, priceTo, starRating, pickUpDate, dropOffDate])
 
-  const rentals = rentalUnits?.items?.map((item) => {
+  const rentals = (rentalUnits?.items as any)?.map((item: any) => { // TODO: fix types
     const category: E_Rental_Category = item.category
     const titleMap = {
       [E_Rental_Category.Motorbike]: `${item.make} ${item.modelBadge}`,
@@ -80,7 +88,7 @@ const RentalsFilter = () => {
             {isRefetching ? <Spinner variant="primary" /> : null}
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {rentals?.map((item) => (
+                {rentals?.map((item: any) => ( // TODO: fix types
                   <div key={item.listingId}>
                     <RentalCard {...item} />
                   </div>

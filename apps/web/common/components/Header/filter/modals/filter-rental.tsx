@@ -13,9 +13,12 @@ import {
 } from "./reducer/rental-reducer"
 import { Typography } from "@/common/components/ui/Typography"
 import { locations, vehicleTypes, transmissionTypes } from "../constants"
-import useGetListingCategoryHighestPrice from "./hooks/useGetListingCategoryHighestPrice"
+import useGetListingCategoryHighestPrice from "./hooks/use-get-highest-category-price"
 import { E_Listing_Category } from "@repo/contract"
 
+// Uncomment the the next 2 line to debug the search query error
+// import { Z_Rentals_Search } from "@repo/contract-2/search-filters"
+// import parseQueryToObject from "@/common/helpers/parseQueryToObject"
 interface FilterRentalModalProps {
   isOpen: boolean
   onClose: () => void
@@ -27,6 +30,7 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
 }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const page = searchParams.get("page")
   const pickUpDate = searchParams.get("pickUpDate")
   const dropOffDate = searchParams.get("dropOffDate")
   const location = searchParams.get("location")
@@ -97,7 +101,8 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
     } = state
 
     const queryString = [
-      `?location=${location ? location : "any"}`,
+      `?page=${page ? page : 1}`,
+      `location=${location ? location : "any"}`,
       `vehicleTypes=${vehicleTypes && vehicleTypes.length ? vehicleTypes.toString() : "any"}`,
       `transmissionTypes=${transmissionTypes && transmissionTypes.length ? transmissionTypes.toString() : "any"}`,
       `priceFrom=${selectedPriceRange && selectedPriceRange[0] !== "any" ? selectedPriceRange[0] : "any"}`,
@@ -106,10 +111,13 @@ const FilterRentalModal: React.FC<FilterRentalModalProps> = ({
       `starRating=${starRating && starRating !== "any" ? starRating : "any"}`,
     ]
 
-    // the pickUpDate and dropOffDate comes from the header search bar
-    router.push(
-      `${queryString.join("&")}&pickUpDate=${pickUpDate ?? "any"}&dropOffDate=${dropOffDate ?? "any"}`
-    )
+    const completeSearchQuery = `${queryString.join("&")}&pickUpDate=${pickUpDate ?? "any"}&dropOffDate=${dropOffDate ?? "any"}`
+
+    // Uncomment the the next 2 line to debug the search query error, do not forget to enable the import in the top of this file
+    // const validate = Z_Rentals_Search.safeParse(parseQueryToObject(completeSearchQuery))
+    // console.log(`validate`, validate)
+
+    router.push(completeSearchQuery)
     onClose()
   }
 

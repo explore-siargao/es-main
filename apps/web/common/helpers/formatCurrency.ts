@@ -10,7 +10,7 @@ function formatCurrency(
   const storedCurrency = localStorage.getItem(
     "currency"
   ) as E_Supported_Currencies | null
-  const isValid = Z_Supported_Currency.safeParse(storedCurrency)
+  const isValid = Z_Supported_Currency.safeParse(storedCurrency).success
   const finalCurrency =
     currencyCode ||
     (isValid ? storedCurrency : E_Supported_Currencies.PHP) ||

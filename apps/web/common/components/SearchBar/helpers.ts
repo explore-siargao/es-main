@@ -1,6 +1,7 @@
 export function buildPropertySearchURL({
+  page = "1",
   location = "any",
-  propertyType = "any",
+  propertyTypes = "any",
   priceFrom = "any",
   priceTo = "any",
   bedroomCount = "any",
@@ -14,8 +15,9 @@ export function buildPropertySearchURL({
   numberOfGuest = "any",
 }) {
   const queryParts = [
+    `page=${page}`,
     `location=${location}`,
-    `propertyTypes=${propertyType}`,
+    `propertyTypes=${propertyTypes}`,
     `priceFrom=${priceFrom}`,
     `priceTo=${priceTo}`,
     `bedroomCount=${bedroomCount}`,
@@ -33,6 +35,7 @@ export function buildPropertySearchURL({
 }
 
 export function buildActivitySearchURL({
+  page = "1",
   location = "any",
   activityType = "any",
   experienceType = "any",
@@ -44,6 +47,7 @@ export function buildActivitySearchURL({
   numberOfGuest = "any",
 }) {
   const queryParts = [
+    `page=${page}`,
     `location=${location}`,
     `activityTypes=${activityType}`,
     `experienceTypes=${experienceType}`,
@@ -59,6 +63,7 @@ export function buildActivitySearchURL({
 }
 
 export function buildRentalSearchURL({
+  page = "1",
   location = "any",
   vehicleType = "any",
   transmissionType = "any",
@@ -70,6 +75,7 @@ export function buildRentalSearchURL({
   dropOffDate = "any",
 }) {
   const queryParts = [
+    `page=${page}`,
     `location=${location}`,
     `vehicleTypes=${vehicleType}`,
     `transmissionTypes=${transmissionType}`,

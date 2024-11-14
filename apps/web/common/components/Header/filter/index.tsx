@@ -29,16 +29,16 @@ function FilterHeader({
 }) {
   const links = [
     {
-      href: buildPropertySearchURL({}),
+      href: buildPropertySearchURL({ page: "1" }),
       icon: House,
       category: "Places to stay",
     },
     {
-      href: buildActivitySearchURL({}),
+      href: buildActivitySearchURL({ page: "1" }),
       icon: Palmtree,
       category: "Activities",
     },
-    { href: buildRentalSearchURL({}), icon: CarFront, category: "Rentals" },
+    { href: buildRentalSearchURL({ page: "1" }), icon: CarFront, category: "Rentals" },
   ]
 
   const pathname = usePathname()
