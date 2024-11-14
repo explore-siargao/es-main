@@ -12,16 +12,16 @@ import { E_Location } from "@repo/contract-2/search-filters"
 
 const ActivitiesFilter = () => {
   const searchParams = useSearchParams()
-  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0;
-  const location = searchParams.get("location") || "any";
-  const experienceTypes = searchParams.get("experienceTypes") || "any";
-  const activityTypes = searchParams.get("activityTypes") || "any";
-  const durations = getNumberOrAny(searchParams.get("durations"));
-  const priceFrom = getNumberOrAny(searchParams.get("priceFrom"));
-  const priceTo = getNumberOrAny(searchParams.get("priceTo"));
-  const starRating = getNumberOrAny(searchParams.get("starRating"));
-  const activityDate = searchParams.get("activityDate") || "any";
-  const numberOfGuest = getNumberOrAny(searchParams.get("numberOfGuest"));
+  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0
+  const location = searchParams.get("location") || "any"
+  const experienceTypes = searchParams.get("experienceTypes") || "any"
+  const activityTypes = searchParams.get("activityTypes") || "any"
+  const durations = getNumberOrAny(searchParams.get("durations"))
+  const priceFrom = getNumberOrAny(searchParams.get("priceFrom"))
+  const priceTo = getNumberOrAny(searchParams.get("priceTo"))
+  const starRating = getNumberOrAny(searchParams.get("starRating"))
+  const activityDate = searchParams.get("activityDate") || "any"
+  const numberOfGuest = getNumberOrAny(searchParams.get("numberOfGuest"))
 
   const {
     data: activityUnits,
@@ -38,14 +38,26 @@ const ActivitiesFilter = () => {
     durations,
     starRating,
     activityDate,
-    numberOfGuest
+    numberOfGuest,
   })
 
   useEffect(() => {
     refetchActivityUnits()
-  }, [page, location, experienceTypes, activityTypes, priceFrom, priceTo, durations, starRating, activityDate, numberOfGuest])
+  }, [
+    page,
+    location,
+    experienceTypes,
+    activityTypes,
+    priceFrom,
+    priceTo,
+    durations,
+    starRating,
+    activityDate,
+    numberOfGuest,
+  ])
 
-  const activities = (activityUnits?.items as any)?.map((item: any) => ({ // TODO: fix types
+  const activities = (activityUnits?.items as any)?.map((item: any) => ({
+    // TODO: fix types
     title: item.title,
     location: item.meetingPoint,
     listingId: item._id,
@@ -81,11 +93,15 @@ const ActivitiesFilter = () => {
             activities &&
             activities?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {activities?.map((item: any) => ( // TODO: fix types
-                  <div key={item.listingId}>
-                    <Card {...item} />
-                  </div>
-                ))}
+                {activities?.map(
+                  (
+                    item: any // TODO: fix types
+                  ) => (
+                    <div key={item.listingId}>
+                      <Card {...item} />
+                    </div>
+                  )
+                )}
               </div>
             ) : null}
 

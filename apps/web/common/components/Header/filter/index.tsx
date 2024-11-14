@@ -38,7 +38,11 @@ function FilterHeader({
       icon: Palmtree,
       category: "Activities",
     },
-    { href: buildRentalSearchURL({ page: "1" }), icon: CarFront, category: "Rentals" },
+    {
+      href: buildRentalSearchURL({ page: "1" }),
+      icon: CarFront,
+      category: "Rentals",
+    },
   ]
 
   const pathname = usePathname()

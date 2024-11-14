@@ -24,27 +24,27 @@ type T_Bookable_Unit_Type = {
 
 const PropertiesFilter = () => {
   const searchParams = useSearchParams()
-  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0;
-  const location = searchParams.get("location") || "any";
-  const propertyTypes = searchParams.get("propertyTypes") || "any";
-  const priceFrom = getNumberOrAny(searchParams.get("priceFrom"));
-  const priceTo = getNumberOrAny(searchParams.get("priceTo"));
-  const bedroomCount = getNumberOrAny(searchParams.get("bedroomCount"));
-  const bedCount = getNumberOrAny(searchParams.get("bedCount"));
-  const bathroomCount = getNumberOrAny(searchParams.get("bathroomCount"));
-  const facilities = searchParams.get("facilities") || "any";
-  const amenities = searchParams.get("amenities") || "any";
-  const starRating = getNumberOrAny(searchParams.get("starRating"));
-  const checkIn = searchParams.get("checkIn") || "any";
-  const checkOut = searchParams.get("checkOut") || "any";
-  const numberOfGuest = getNumberOrAny(searchParams.get("numberOfGuest"));
+  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0
+  const location = searchParams.get("location") || "any"
+  const propertyTypes = searchParams.get("propertyTypes") || "any"
+  const priceFrom = getNumberOrAny(searchParams.get("priceFrom"))
+  const priceTo = getNumberOrAny(searchParams.get("priceTo"))
+  const bedroomCount = getNumberOrAny(searchParams.get("bedroomCount"))
+  const bedCount = getNumberOrAny(searchParams.get("bedCount"))
+  const bathroomCount = getNumberOrAny(searchParams.get("bathroomCount"))
+  const facilities = searchParams.get("facilities") || "any"
+  const amenities = searchParams.get("amenities") || "any"
+  const starRating = getNumberOrAny(searchParams.get("starRating"))
+  const checkIn = searchParams.get("checkIn") || "any"
+  const checkOut = searchParams.get("checkOut") || "any"
+  const numberOfGuest = getNumberOrAny(searchParams.get("numberOfGuest"))
 
   const {
     data: propertyUnits,
     isLoading,
     isRefetching,
     refetch: refetchPropertyUnits,
-  } = useGetListings({ 
+  } = useGetListings({
     page,
     location: location as E_Location,
     propertyTypes,
@@ -80,21 +80,24 @@ const PropertiesFilter = () => {
     numberOfGuest,
   ])
 
-  const units = (propertyUnits?.items as any)?.flatMap((item: any) => // TODO: fix types
-    item.bookableUnits.map((unit: T_Bookable_Unit_Type) => ({
-      listingId: unit._id,
-      photos: unit.photos.map((photo) => ({
-        key: photo.key,
-      })),
-      title: item.title,
-      subtitle: item.subtitle,
-      type: item.type,
-      wholePlaceType: item.wholePlaceType,
-      price: unit.unitPrice.baseRate,
-      average: unit.average,
-      reviewsCount: unit.reviewsCount,
-      location: item.location,
-    }))
+  const units = (propertyUnits?.items as any)?.flatMap(
+    (
+      item: any // TODO: fix types
+    ) =>
+      item.bookableUnits.map((unit: T_Bookable_Unit_Type) => ({
+        listingId: unit._id,
+        photos: unit.photos.map((photo) => ({
+          key: photo.key,
+        })),
+        title: item.title,
+        subtitle: item.subtitle,
+        type: item.type,
+        wholePlaceType: item.wholePlaceType,
+        price: unit.unitPrice.baseRate,
+        average: unit.average,
+        reviewsCount: unit.reviewsCount,
+        location: item.location,
+      }))
   )
 
   if (isLoading) {
@@ -117,11 +120,15 @@ const PropertiesFilter = () => {
 
             {!isLoading && !isRefetching && units && units?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {units?.map((item: any) => ( // TODO: fix types
-                  <div key={item._id}>
-                    <PropertyCard {...item} />
-                  </div>
-                ))}
+                {units?.map(
+                  (
+                    item: any // TODO: fix types
+                  ) => (
+                    <div key={item._id}>
+                      <PropertyCard {...item} />
+                    </div>
+                  )
+                )}
               </div>
             ) : null}
 

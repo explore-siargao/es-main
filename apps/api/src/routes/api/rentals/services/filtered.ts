@@ -1,6 +1,4 @@
-import {
-  UNKNOWN_ERROR_OCCURRED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { dbRentals, dbReservations } from '@repo/database'
@@ -102,7 +100,10 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       getReservations.length > 0
         ? getReservations.map((item: any) => item.qtyIdsArray)
         : []
-    if ((!location || location === 'any') && (!vehicleTypes || vehicleTypes === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!vehicleTypes || vehicleTypes === 'any')
+    ) {
       const pipeline = [
         {
           $match: query,
@@ -358,7 +359,11 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!vehicleTypes || vehicleTypes === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!vehicleTypes || vehicleTypes === 'any')
+    ) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         {
@@ -606,7 +611,10 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && (vehicleTypes || vehicleTypes !== 'any')) {
+    } else if (
+      (!location || location === 'any') &&
+      (vehicleTypes || vehicleTypes !== 'any')
+    ) {
       const typeArray = String(vehicleTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
@@ -849,7 +857,12 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           allItemCount: rentals[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && vehicleTypes && vehicleTypes !== 'any') {
+    } else if (
+      location &&
+      location !== 'any' &&
+      vehicleTypes &&
+      vehicleTypes !== 'any'
+    ) {
       const typeArray = String(vehicleTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))

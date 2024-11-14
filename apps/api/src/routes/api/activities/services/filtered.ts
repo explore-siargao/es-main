@@ -145,7 +145,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         ? getActivityJoinerReservations.map((item: any) => item.slotIdsId)
         : []
 
-    if ((!location || location === 'any') && (!experienceTypes || experienceTypes === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!experienceTypes || experienceTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -710,7 +713,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!experienceTypes || experienceTypes === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!experienceTypes || experienceTypes === 'any')
+    ) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         { $match: query },
@@ -1283,7 +1290,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && experienceTypes && experienceTypes !== 'any') {
+    } else if (
+      (!location || location === 'any') &&
+      experienceTypes &&
+      experienceTypes !== 'any'
+    ) {
       const typeArray = String(experienceTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
@@ -1852,7 +1863,12 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && experienceTypes && experienceTypes !== 'any') {
+    } else if (
+      location &&
+      location !== 'any' &&
+      experienceTypes &&
+      experienceTypes !== 'any'
+    ) {
       const normalizedLocation = String(location).toLowerCase()
       const typeArray = String(experienceTypes)
         .split(',')

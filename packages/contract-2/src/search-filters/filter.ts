@@ -1,8 +1,17 @@
 import pluralize from "pluralize"
 import { ApiService } from "../common/services/api"
-import { T_Activities_Search, T_Category_Highest_Price, T_Properties_Search, T_Rentals_Search } from "./type"
+import {
+  T_Activities_Search,
+  T_Category_Highest_Price,
+  T_Properties_Search,
+  T_Rentals_Search,
+} from "./type"
 import { E_Listing_Category } from "@repo/contract"
-import { Z_Activities_Search, Z_Properties_Search, Z_Rentals_Search } from "./zod"
+import {
+  Z_Activities_Search,
+  Z_Properties_Search,
+  Z_Rentals_Search,
+} from "./zod"
 
 const propertyQueryParts = [
   `page=1`,
@@ -55,38 +64,37 @@ export class FilterService {
 
   async getPaginatedListings({
     category,
-    searchQueries
+    searchQueries,
   }: {
     category: E_Listing_Category
     searchQueries: T_Properties_Search | T_Activities_Search | T_Rentals_Search
   }) {
-
     // Convert values to strings
     const stringSearchQueries = Object.fromEntries(
       Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
-    );
+    )
 
     let queryString = ""
-    let isValid = false;
+    let isValid = false
 
-    if(category === E_Listing_Category.Property) {
+    if (category === E_Listing_Category.Property) {
       isValid = Z_Properties_Search.safeParse(searchQueries).success
-      if(isValid) {
-        queryString = new URLSearchParams(stringSearchQueries).toString();
+      if (isValid) {
+        queryString = new URLSearchParams(stringSearchQueries).toString()
       } else {
         queryString = propertyQueryParts.join("&")
       }
-    } else if(category === E_Listing_Category.Activity) {
+    } else if (category === E_Listing_Category.Activity) {
       isValid = Z_Activities_Search.safeParse(searchQueries).success
-      if(isValid) {
-        queryString = new URLSearchParams(stringSearchQueries).toString();
+      if (isValid) {
+        queryString = new URLSearchParams(stringSearchQueries).toString()
       } else {
         queryString = activityQueryParts.join("&")
       }
-    } else if(category === E_Listing_Category.Rental) {
+    } else if (category === E_Listing_Category.Rental) {
       isValid = Z_Rentals_Search.safeParse(searchQueries).success
-      if(isValid) {
-        queryString = new URLSearchParams(stringSearchQueries).toString();
+      if (isValid) {
+        queryString = new URLSearchParams(stringSearchQueries).toString()
       } else {
         queryString = rentalQueryParts.join("&")
       }

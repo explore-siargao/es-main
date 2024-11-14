@@ -1,6 +1,4 @@
-import {
-  UNKNOWN_ERROR_OCCURRED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
@@ -117,7 +115,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       getUnitReservations.length > 0
         ? getUnitReservations.map((item: any) => item.unitId)
         : []
-    if ((!location || location === 'any') && (!propertyTypes || propertyTypes === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!propertyTypes || propertyTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -651,7 +652,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!propertyTypes || propertyTypes === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!propertyTypes || propertyTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -1193,7 +1198,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && propertyTypes && propertyTypes !== 'any') {
+    } else if (
+      (!location || location === 'any') &&
+      propertyTypes &&
+      propertyTypes !== 'any'
+    ) {
       const arrayTypes = String(propertyTypes)
         .trim()
         .split(',')
@@ -1763,7 +1772,12 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           allItemCount: bookableUnits[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && propertyTypes && propertyTypes !== 'any') {
+    } else if (
+      location &&
+      location !== 'any' &&
+      propertyTypes &&
+      propertyTypes !== 'any'
+    ) {
       const arrayTypes = String(propertyTypes)
         .trim()
         .split(',')

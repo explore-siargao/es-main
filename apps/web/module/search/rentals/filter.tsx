@@ -13,16 +13,16 @@ import { E_Location } from "@repo/contract-2/search-filters"
 
 const RentalsFilter = () => {
   const searchParams = useSearchParams()
-  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0;
-  const location = searchParams.get("location") || "any";
-  const vehicleTypes = searchParams.get("vehicleTypes") || "any";
-  const transmissionTypes = searchParams.get("transmissionTypes") || "any";
+  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0
+  const location = searchParams.get("location") || "any"
+  const vehicleTypes = searchParams.get("vehicleTypes") || "any"
+  const transmissionTypes = searchParams.get("transmissionTypes") || "any"
   const seatCount = getNumberOrAny(searchParams.get("seatCount"))
   const priceFrom = getNumberOrAny(searchParams.get("priceFrom"))
   const priceTo = getNumberOrAny(searchParams.get("priceTo"))
   const starRating = getNumberOrAny(searchParams.get("starRating"))
-  const pickUpDate = searchParams.get("pickUpDate") || "any";
-  const dropOffDate = searchParams.get("dropOffDate") || "any";
+  const pickUpDate = searchParams.get("pickUpDate") || "any"
+  const dropOffDate = searchParams.get("dropOffDate") || "any"
 
   const {
     data: rentalUnits,
@@ -39,14 +39,26 @@ const RentalsFilter = () => {
     priceTo,
     starRating,
     pickUpDate,
-    dropOffDate
+    dropOffDate,
   })
 
   useEffect(() => {
     refetchRentalUnits()
-  }, [page, location, vehicleTypes, transmissionTypes, seatCount, priceFrom, priceTo, starRating, pickUpDate, dropOffDate])
+  }, [
+    page,
+    location,
+    vehicleTypes,
+    transmissionTypes,
+    seatCount,
+    priceFrom,
+    priceTo,
+    starRating,
+    pickUpDate,
+    dropOffDate,
+  ])
 
-  const rentals = (rentalUnits?.items as any)?.map((item: any) => { // TODO: fix types
+  const rentals = (rentalUnits?.items as any)?.map((item: any) => {
+    // TODO: fix types
     const category: E_Rental_Category = item.category
     const titleMap = {
       [E_Rental_Category.Motorbike]: `${item.make} ${item.modelBadge}`,
@@ -88,11 +100,15 @@ const RentalsFilter = () => {
             {isRefetching ? <Spinner variant="primary" /> : null}
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {rentals?.map((item: any) => ( // TODO: fix types
-                  <div key={item.listingId}>
-                    <RentalCard {...item} />
-                  </div>
-                ))}
+                {rentals?.map(
+                  (
+                    item: any // TODO: fix types
+                  ) => (
+                    <div key={item.listingId}>
+                      <RentalCard {...item} />
+                    </div>
+                  )
+                )}
               </div>
             ) : null}
 

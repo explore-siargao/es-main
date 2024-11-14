@@ -13,24 +13,24 @@ const Z_Properties_Search = z.object({
   facilities: z.string().default("any"),
   amenities: z.string().default("any"),
   starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
-  checkIn: z.union([
-    z.literal("any"),
-    z
-      .string()
-      .refine((date) => !isNaN(new Date(date).getTime()), {
+  checkIn: z
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
         message: "Invalid date format",
       }),
-  ]).default("any"),
-  checkOut: z.union([
-    z.literal("any"),
-    z
-      .string()
-      .refine((date) => !isNaN(new Date(date).getTime()), {
+    ])
+    .default("any"),
+  checkOut: z
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
         message: "Invalid date format",
       }),
-  ]).default("any"),
+    ])
+    .default("any"),
   numberOfGuest: z.number().min(1).or(z.literal("any")).default("any"),
-});
+})
 
 const Z_Activities_Search = z.object({
   page: z.number().min(1).default(1),
@@ -41,16 +41,16 @@ const Z_Activities_Search = z.object({
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   durations: z.number().min(1).or(z.literal("any")).default(1),
   starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
-  activityDate: z.union([
-    z.literal("any"),
-    z
-      .string()
-      .refine((date) => !isNaN(new Date(date).getTime()), {
+  activityDate: z
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
         message: "Invalid date format",
       }),
-  ]).default("any"),
+    ])
+    .default("any"),
   numberOfGuest: z.number().min(1).or(z.literal("any")).default(1),
-});
+})
 
 const Z_Rentals_Search = z.object({
   page: z.number().min(1).default(1),
@@ -61,22 +61,22 @@ const Z_Rentals_Search = z.object({
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   seatCount: z.number().min(1).or(z.literal("any")).default(1),
   starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
-  pickUpDate: z.union([
-    z.literal("any"),
-    z
-      .string()
-      .refine((date) => !isNaN(new Date(date).getTime()), {
+  pickUpDate: z
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
         message: "Invalid date format",
       }),
-  ]).default("any"),
-  dropOffDate: z.union([
-    z.literal("any"),
-    z
-      .string()
-      .refine((date) => !isNaN(new Date(date).getTime()), {
+    ])
+    .default("any"),
+  dropOffDate: z
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
         message: "Invalid date format",
       }),
-  ]).default("any"),
+    ])
+    .default("any"),
 })
 
 const Z_Category_Highest_Price = z.object({
