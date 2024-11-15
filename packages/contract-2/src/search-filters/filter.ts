@@ -65,8 +65,7 @@ export declare enum E_Property_Type {
   VILLA = "VILLA",
   HOUSE = "HOUSE",
   BUNGALOW = "BUNGALOW",
-  COTTAGE = "COTTAGE"
-
+  COTTAGE = "COTTAGE",
 }
 export type T_Property_Card = {
   listingId: string
@@ -86,20 +85,18 @@ export type T_Property_Card = {
   price: number
   average: number
   reviewsCount: number
-  
 }
 type T_DBReturn = {
-  items: T_Property_Card[];
-  pageItemCount: number;
-  allItemCount: number;
-};
+  items: T_Property_Card[]
+  pageItemCount: number
+  allItemCount: number
+}
 export class FilterService {
   private api: ApiService
   constructor(source: "main" | "mock" = "main") {
     this.api = new ApiService(source)
   }
 
-  
   async getPaginatedListings({
     category,
     searchQueries,

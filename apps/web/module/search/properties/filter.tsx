@@ -44,7 +44,7 @@ const PropertiesFilter = () => {
   const checkIn = searchParams.get("checkIn") || "any"
   const checkOut = searchParams.get("checkOut") || "any"
   const numberOfGuest = getNumberOrAny(searchParams.get("numberOfGuest"))
-  
+
   const {
     data: propertyUnits,
     isLoading,
@@ -91,8 +91,11 @@ const PropertiesFilter = () => {
     params.set("page", newPage.toString())
     router.push(`?${params.toString()}`)
   }
-  const totalPages = Math.max(1, Math.ceil((propertyUnits?.allItemCount || 0)  / 15));
-  
+  const totalPages = Math.max(
+    1,
+    Math.ceil((propertyUnits?.allItemCount || 0) / 15)
+  )
+
   if (isLoading) {
     return (
       <WidthWrapper width="medium">
@@ -111,7 +114,10 @@ const PropertiesFilter = () => {
           <div>
             {isRefetching ? <Spinner variant="primary" /> : null}
 
-            {!isLoading && !isRefetching && propertyUnits && propertyUnits?.pageItemCount > 0 ? (
+            {!isLoading &&
+            !isRefetching &&
+            propertyUnits &&
+            propertyUnits?.pageItemCount > 0 ? (
               <>
                 <div className="grid grid-cols-3 gap-6">
                   {propertyUnits?.items?.map((item) => (
@@ -121,20 +127,23 @@ const PropertiesFilter = () => {
                   ))}
                 </div>
                 <div className="items-end pt-4">
-                <Pagination
-                  pageIndex={page - 1}
-                  pageCount={totalPages}
-                  canPreviousPage={page > 1}
-                  canNextPage={page < totalPages} 
-                  gotoPage={(newPage) => handlePageChange(newPage + 1)} 
-                  previousPage={() => handlePageChange(page - 1)}
-                  nextPage={() => handlePageChange(page + 1)} 
-                />
+                  <Pagination
+                    pageIndex={page - 1}
+                    pageCount={totalPages}
+                    canPreviousPage={page > 1}
+                    canNextPage={page < totalPages}
+                    gotoPage={(newPage) => handlePageChange(newPage + 1)}
+                    previousPage={() => handlePageChange(page - 1)}
+                    nextPage={() => handlePageChange(page + 1)}
+                  />
                 </div>
               </>
             ) : null}
 
-            {!isLoading && !isRefetching && propertyUnits && propertyUnits?.pageItemCount === 0 ? (
+            {!isLoading &&
+            !isRefetching &&
+            propertyUnits &&
+            propertyUnits?.pageItemCount === 0 ? (
               <Typography variant="h4" className="text-gray-500 italic">
                 No properties found for the search and filters values
               </Typography>
@@ -145,7 +154,10 @@ const PropertiesFilter = () => {
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
             {propertyUnits && propertyUnits?.items ? (
-              <Map units={propertyUnits?.items} location={location as E_Location} />
+              <Map
+                units={propertyUnits?.items}
+                location={location as E_Location}
+              />
             ) : null}
           </div>
         </div>
@@ -153,7 +165,5 @@ const PropertiesFilter = () => {
     </WidthWrapper>
   )
 }
-
-
 
 export default PropertiesFilter

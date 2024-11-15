@@ -30,8 +30,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     numberOfGuest = 'any',
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
+  const startIndex = (page - 1) * limit
+  const endIndex = startIndex + limit
   const query: any = {
     bookableUnits: { $exists: true, $not: { $size: 0 } },
     deletedAt: null,
@@ -615,14 +615,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-          paginatedResults: [
-             
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            
             results: '$paginatedResults',
           },
         },
@@ -757,34 +754,38 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
-       const allBookableUnits = changePrices.flatMap((property: T_Property_Filtered) => 
-        property.bookableUnits.map((unit: T_BookableUnitType) => ({
-          listingId: unit._id,
-          title: property.title || null,
-          subtitle: unit.subtitle || null,
-          type: property.type,
-          wholePlaceType: unit.wholePlaceType,
-          photos: unit.photos.map((photo: T_Photo) => ({
-            key: photo.key,
-            alt: "", 
-          })),
-          location: {
-            city: property.location.city,
-            latitude: property.location.latitude,
-            longitude: property.location.longitude,
-          },
-          price: unit.unitPrice?.baseRate || 0,
-          average: unit.average || 0,
-          reviewsCount: unit.reviewsCount || 0,
-        }))
-      );
-      const paginatedBookableUnits = allBookableUnits.slice(startIndex, endIndex);
-      
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-           items: paginatedBookableUnits,
+          items: paginatedBookableUnits,
           pageItemCount: paginatedBookableUnits.length,
-    allItemCount: allBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else if (
@@ -1286,14 +1287,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-          paginatedResults: [
-             
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            
             results: '$paginatedResults',
           },
         },
@@ -1428,34 +1426,38 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
-       const allBookableUnits = changePrices.flatMap((property: T_Property_Filtered) => 
-        property.bookableUnits.map((unit: T_BookableUnitType) => ({
-          listingId: unit._id,
-          title: property.title || null,
-          subtitle: unit.subtitle || null,
-          type: property.type,
-          wholePlaceType: unit.wholePlaceType,
-          photos: unit.photos.map((photo: T_Photo) => ({
-            key: photo.key,
-            alt: "", 
-          })),
-          location: {
-            city: property.location.city,
-            latitude: property.location.latitude,
-            longitude: property.location.longitude,
-          },
-          price: unit.unitPrice?.baseRate || 0,
-          average: unit.average || 0,
-          reviewsCount: unit.reviewsCount || 0,
-        }))
-      );
-      const paginatedBookableUnits = allBookableUnits.slice(startIndex, endIndex);
-      
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-           items: paginatedBookableUnits,
+          items: paginatedBookableUnits,
           pageItemCount: paginatedBookableUnits.length,
-    allItemCount: allBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else if (
@@ -1985,14 +1987,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-          paginatedResults: [
-             
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            
             results: '$paginatedResults',
           },
         },
@@ -2127,34 +2126,38 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
-       const allBookableUnits = changePrices.flatMap((property: T_Property_Filtered) => 
-        property.bookableUnits.map((unit: T_BookableUnitType) => ({
-          listingId: unit._id,
-          title: property.title || null,
-          subtitle: unit.subtitle || null,
-          type: property.type,
-          wholePlaceType: unit.wholePlaceType,
-          photos: unit.photos.map((photo: T_Photo) => ({
-            key: photo.key,
-            alt: "", 
-          })),
-          location: {
-            city: property.location.city,
-            latitude: property.location.latitude,
-            longitude: property.location.longitude,
-          },
-          price: unit.unitPrice?.baseRate || 0,
-          average: unit.average || 0,
-          reviewsCount: unit.reviewsCount || 0,
-        }))
-      );
-      const paginatedBookableUnits = allBookableUnits.slice(startIndex, endIndex);
-      
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-           items: paginatedBookableUnits,
+          items: paginatedBookableUnits,
           pageItemCount: paginatedBookableUnits.length,
-    allItemCount: allBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else if (
@@ -2693,9 +2696,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-             
-            ],
+            paginatedResults: [],
           },
         },
         {
@@ -2834,35 +2835,39 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
-      const allBookableUnits = changePrices.flatMap((property: T_Property_Filtered) => 
-        property.bookableUnits.map((unit: T_BookableUnitType) => ({
-          listingId: unit._id,
-          title: property.title || null,
-          subtitle: unit.subtitle || null,
-          type: property.type,
-          wholePlaceType: unit.wholePlaceType,
-          photos: unit.photos.map((photo: T_Photo) => ({
-            key: photo.key,
-            alt: "", 
-          })),
-          location: {
-            city: property.location.city,
-            latitude: property.location.latitude,
-            longitude: property.location.longitude,
-          },
-          price: unit.unitPrice?.baseRate || 0,
-          average: unit.average || 0,
-          reviewsCount: unit.reviewsCount || 0,
-        }))
-      );
-      
-      const paginatedBookableUnits = allBookableUnits.slice(startIndex, endIndex);
-    
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
           items: paginatedBookableUnits,
           pageItemCount: paginatedBookableUnits.length,
-    allItemCount: allBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else {
