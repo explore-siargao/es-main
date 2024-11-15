@@ -126,6 +126,12 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         >
           Book Now
         </Button>
+        <Button
+          variant="secondary"
+          onClick={() => handleAddToCartSingleItem(params.propertyId)}
+        >
+          Add to cart
+        </Button>
       </div>
       <div>
         <div className="flex justify-between items-center mt-4">

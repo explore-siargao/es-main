@@ -95,7 +95,7 @@ export const addToCart = async (req: Request, res: Response) => {
         res.json(
           response.success({
             item: existingCart,
-            message: 'Cart list  updated successfully',
+            message: 'Cart list has been updated',
           })
         )
       } else {
@@ -116,7 +116,7 @@ export const addToCart = async (req: Request, res: Response) => {
         res.json(
           response.success({
             item: saveCart,
-            message: 'Cart list  updated successfully',
+            message: 'Item added to cart',
           })
         )
       }

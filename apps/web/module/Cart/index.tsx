@@ -2,37 +2,27 @@
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import CartList from "./components/CartList"
 import SubTotalBox from "./components/SubTotalBox"
-
-const items = [
-  {
-    id: 1,
-    imageKey: "1.jpg",
-    title: "Ocean Park Hong Kong Ticket",
-    address: "Hong Kong",
-    dateFrom: "2024-03-20",
-    dateTo: "2024-03-25",
-  },
-  {
-    id: 2,
-    imageKey: "4.jpg",
-    title:
-      "The Fullertan Ocean Park Hotel Hong Kong Buffet | Ligthouse Cafe | Lunch buffet, dinner buffet",
-    address: "Hong kong",
-    dateFrom: "2024-04-10",
-    dateTo: "2024-04-15",
-  },
-]
+import useGetCartItems from "@/common/hooks/useGetCartItems";
+import { T_Cart_Item } from "@repo/contract-2/cart";
+import { Spinner } from "@/common/components/ui/Spinner";
+import Loading from "@/app/(accommodation)/loading";
 
 const Cart = () => {
+  const { data } = useGetCartItems()
   return (
     <WidthWrapper
       width="medium"
       className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8 mt-28 md:mt-36"
     >
+      
+      
       <div className="lg:col-span-3">
-        <CartList items={items} />
-      </div>
-
+      {
+        data && data?.items.length > 0 ?
+        <CartList items={data?.items as T_Cart_Item[]} /> :
+        <Loading />
+      }
+      </div> 
       <div className="col-span-1 relative ">
         <SubTotalBox
           subTotal={{
