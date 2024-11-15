@@ -8,6 +8,7 @@ const statusEnum = [
   "No-Show",
   "Blocked-Dates",
   "Out-of-Service-Dates",
+  "For-Payment",
 ]
 const reservations = new Schema({
   propertyIds: {

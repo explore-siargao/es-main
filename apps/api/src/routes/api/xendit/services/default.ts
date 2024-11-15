@@ -138,10 +138,13 @@ export const cardInitiatePayment = async (req: Request, res: Response) => {
 }
 
 export const gcashCreatePayment = async (req: Request, res: Response) => {
-  const { amount, bookingId } = req.body
-  if (amount && bookingId) {
+  const { amount } = req.body
+  const refId = `${randomUUID()}`
+  console.log(refId)
+  if (amount) {
     try {
       const data = {
+        reference_id: refId,
         amount: amount,
         currency: 'PHP',
         country: 'PH',
@@ -150,8 +153,8 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
           ewallet: {
             channel_code: 'GCASH',
             channel_properties: {
-              success_return_url: `${WEB_URL}/bookings/${bookingId}/success-payment`,
-              failure_return_url: `${WEB_URL}/bookings/${bookingId}/error-payment`,
+              success_return_url: `${WEB_URL}/bookings/${refId}/success-payment`,
+              failure_return_url: `${WEB_URL}/bookings/${refId}/error-payment`,
             },
           },
           reusability: 'ONE_TIME_USE',

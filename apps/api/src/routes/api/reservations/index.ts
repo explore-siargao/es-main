@@ -21,6 +21,7 @@ import {
 } from './services/activityReservation'
 import paginate from '@/common/middleware/paginations/paginate'
 import { getAllReservations } from './services/default'
+import { multipleCheckout } from './services/cart-reservations'
 
 const router = express.Router()
 
@@ -122,5 +123,13 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   cancelActivityReservation
+)
+
+router.post(
+  '/cart/checkout',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  multipleCheckout
 )
 export default router
