@@ -39,7 +39,7 @@ const ActivityCard = ({
       <li className="relative rounded-xl overflow-hidden h-full list-none">
         <Link href={`/listing/rentals/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
-            {reviewsCount < 1 ? <NewlyAddedTag/> : null}
+            {reviewsCount < 1 ? <NewlyAddedTag /> : null}
             <button
               onClick={(e) => console.log("clicked heart")}
               className="absolute top-3 right-3 z-40"
@@ -61,7 +61,10 @@ const ActivityCard = ({
               >
                 {title ?? "Unknown title"}
               </Typography>
-              <Typography variant="h5" className="flex text-text-500 items-center gap-1">
+              <Typography
+                variant="h5"
+                className="flex text-text-500 items-center gap-1"
+              >
                 {reviewsCount > 1 ? (
                   <>
                     <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />

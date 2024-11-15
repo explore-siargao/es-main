@@ -31,7 +31,7 @@ const Popup = ({
       offset={[0, -2]}
       className="relative"
     >
-      {reviewsCount < 1 ? <NewlyAddedTag/> : null}
+      {reviewsCount < 1 ? <NewlyAddedTag /> : null}
       <Link href={`/listing/activities/${listingId}`} target="_blank">
         {photos && photos.length > 0 ? (
           <Image

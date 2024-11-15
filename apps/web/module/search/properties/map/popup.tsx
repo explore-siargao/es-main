@@ -33,7 +33,7 @@ const Popup = ({
       position={[location?.latitude, location?.longitude] as LatLngTuple}
       offset={[0, -2]}
     >
-      {reviewsCount < 1 ? <NewlyAddedTag/> : null}
+      {reviewsCount < 1 ? <NewlyAddedTag /> : null}
       <Link href={`/listing/activities/${listingId}`} target="_blank">
         {photos && photos.length > 0 ? (
           <Image
