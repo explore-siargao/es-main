@@ -56,12 +56,50 @@ const rentalQueryParts = [
   `dropOffDate=any`,
 ]
 
+export declare enum E_Property_Type {
+  HOSTEL = "HOSTEL",
+  HOMESTAY = "HOMESTAY",
+  HOTEL = "HOTEL",
+  RESORT = "RESORT",
+  WHOLE_PLACE = "WHOLE_PLACE",
+  VILLA = "VILLA",
+  HOUSE = "HOUSE",
+  BUNGALOW = "BUNGALOW",
+  COTTAGE = "COTTAGE"
+
+}
+export type T_Property_Card = {
+  listingId: string
+  title: string | null
+  subtitle: string | null
+  type: E_Property_Type
+  wholePlaceType: E_Property_Type
+  photos: {
+    key: string
+    alt: string
+  }[]
+  location: {
+    city: string
+    latitude: number
+    longitude: number
+  }
+  price: number
+  average: number
+  reviewsCount: number
+  
+}
+type T_DBReturn = {
+  items: T_Property_Card[];
+  pageItemCount: number;
+  allItemCount: number;
+};
 export class FilterService {
   private api: ApiService
   constructor(source: "main" | "mock" = "main") {
     this.api = new ApiService(source)
   }
 
+  
   async getPaginatedListings({
     category,
     searchQueries,
@@ -69,7 +107,6 @@ export class FilterService {
     category: E_Listing_Category
     searchQueries: T_Properties_Search | T_Activities_Search | T_Rentals_Search
   }) {
-    // Convert values to strings
     const stringSearchQueries = Object.fromEntries(
       Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
     )
@@ -100,7 +137,7 @@ export class FilterService {
       }
     }
 
-    return this.api.get(
+    return this.api.get<T_DBReturn>(
       `/${pluralize(category).toLocaleLowerCase()}/filtered?${queryString}`
     )
   }
