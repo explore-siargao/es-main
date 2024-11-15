@@ -5,6 +5,8 @@ import "swiper/css/navigation"
 import "swiper/css/pagination"
 import Image from "./ui/image"
 import { IMAGE_FALLBACK } from "../constants"
+import { Typography } from "./ui/Typography"
+import { ReactNode } from "react"
 
 interface SliderProps {
   images: {
@@ -19,7 +21,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
       navigation={images.length > 0}
       pagination={{ type: "bullets", clickable: true }}
       modules={[Navigation, Pagination]}
-      className="h-full w-full rounded-xl"
+      className="h-full w-full rounded-xl relative"
     >
       <style>{`
         .swiper-button-prev, .swiper-button-next {
@@ -70,7 +72,6 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
           object-fit: cover;
         }
       `}</style>
-
       {images.length > 0 ? (
         images.map((image) => (
           <SwiperSlide key={image.key}>
