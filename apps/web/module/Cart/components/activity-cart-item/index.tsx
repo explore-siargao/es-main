@@ -51,7 +51,7 @@ function ActivityCartItem({ item, selectedItems, index, toggleCheckbox }: ICartP
                     )
                   }
                   {
-                    activityItem.durationMinute && (
+                    activityItem.durationMinute != 0 && (
                       <Typography variant="p" className="text-gray-500">
                         {activityItem.durationMinute}m
                       </Typography>
@@ -90,7 +90,7 @@ function ActivityCartItem({ item, selectedItems, index, toggleCheckbox }: ICartP
         </div>
         
         <Typography variant="p" fontWeight="semibold">
-          {formatCurrency(5000)}
+          {formatCurrency(item.price)}
         </Typography>
       </div>
     </div>

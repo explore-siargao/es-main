@@ -22,7 +22,7 @@ const SubTotalBox = ({ subTotal }: CheckoutProcessProps) => {
   const router = useRouter()
 
   return (
-    <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5 sticky shadow-md">
+    <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5 sticky">
       <div className="flex gap-2 items-center hover: cursor-pointer">
         <Typography variant="p" fontWeight="semibold">
           Subtotal (2)
