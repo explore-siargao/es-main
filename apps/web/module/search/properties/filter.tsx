@@ -12,6 +12,7 @@ import getNumberOrAny from "@/common/helpers/getNumberOrAny"
 
 type T_Photo = {
   key: string
+  tags: string
 }
 
 type T_Bookable_Unit_Type = {
@@ -88,6 +89,7 @@ const PropertiesFilter = () => {
         listingId: unit._id,
         photos: unit.photos.map((photo) => ({
           key: photo.key,
+          alt: photo.tags
         })),
         title: item.title,
         subtitle: item.subtitle,

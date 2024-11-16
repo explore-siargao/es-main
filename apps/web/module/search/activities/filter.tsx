@@ -62,8 +62,9 @@ const ActivitiesFilter = () => {
     location: item.meetingPoint,
     listingId: item._id,
     price: item.pricePerPerson ?? item.pricePerSlot,
-    photos: item.photos.map((photo: { key: string }) => ({
+    photos: item.photos.map((photo: { key: string, alt: string }) => ({
       key: photo.key,
+      alt: photo.alt,
     })),
     average: item.average,
     type: item.activityType[1] ?? "Unknown type",

@@ -70,8 +70,9 @@ const RentalsFilter = () => {
       location: item.location,
       listingId: item._id,
       price: item.pricing.dayRate,
-      photos: item.photos.map((photo: { key: string }) => ({
+      photos: item.photos.map((photo: { key: string, alt: string }) => ({
         key: photo.key,
+        alt: photo.alt
       })),
       category,
       average: item.average,

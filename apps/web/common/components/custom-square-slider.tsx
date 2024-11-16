@@ -78,8 +78,9 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
             <div className="image-wrapper">
               <Image
                 src={`/assets/${image.key}`}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 alt={image.alt}
-                layout="fill"
+                fill
                 className="object-cover"
               />
             </div>
@@ -90,8 +91,9 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
           <div className="image-wrapper">
             <Image
               src={IMAGE_FALLBACK}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               alt={"error"}
-              layout="fill"
+              fill
               className="object-cover"
             />
           </div>
