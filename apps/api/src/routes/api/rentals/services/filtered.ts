@@ -6,8 +6,8 @@ import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { T_Rental_Filtered } from '@repo/contract-2/search-filters'
-import { T_RentalPrice } from '@repo/contract-2/rentals'
-import { dbLocations, dbRentals, dbReservations } from '@repo/database'
+import { T_Rental_Price } from '@repo/contract-2/rentals'
+import { dbRentals, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
 
@@ -431,23 +431,23 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
           pricePerDates: item.pricePerDates?.map((item) => ({
             ...item,
-            price: !(item.price as unknown as T_RentalPrice).dayRate
+            price: !(item.price as unknown as T_Rental_Price).dayRate
               ? null
               : {
-                  ...(item.price as unknown as T_RentalPrice),
+                  ...(item.price as unknown as T_Rental_Price),
                   dayRate: convertPrice(
-                    (item.price as unknown as T_RentalPrice).dayRate,
+                    (item.price as unknown as T_Rental_Price).dayRate,
                     preferredCurrency,
                     conversionRates
                   ),
                   requiredDeposit: convertPrice(
-                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    (item.price as unknown as T_Rental_Price).requiredDeposit,
                     preferredCurrency,
                     conversionRates
                   ),
                   adminBookingCharge: convertPrice(
-                    (item.price as unknown as T_RentalPrice).adminBookingCharge
-                      ? (item.price as unknown as T_RentalPrice)
+                    (item.price as unknown as T_Rental_Price).adminBookingCharge
+                      ? (item.price as unknown as T_Rental_Price)
                           .adminBookingCharge
                       : 0,
                     preferredCurrency,
@@ -778,23 +778,23 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
           pricePerDates: item.pricePerDates?.map((item) => ({
             ...item,
-            price: !(item.price as unknown as T_RentalPrice).dayRate
+            price: !(item.price as unknown as T_Rental_Price).dayRate
               ? null
               : {
-                  ...(item.price as unknown as T_RentalPrice),
+                  ...(item.price as unknown as T_Rental_Price),
                   dayRate: convertPrice(
-                    (item.price as unknown as T_RentalPrice).dayRate,
+                    (item.price as unknown as T_Rental_Price).dayRate,
                     preferredCurrency,
                     conversionRates
                   ),
                   requiredDeposit: convertPrice(
-                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    (item.price as unknown as T_Rental_Price).requiredDeposit,
                     preferredCurrency,
                     conversionRates
                   ),
                   adminBookingCharge: convertPrice(
-                    (item.price as unknown as T_RentalPrice).adminBookingCharge
-                      ? (item.price as unknown as T_RentalPrice)
+                    (item.price as unknown as T_Rental_Price).adminBookingCharge
+                      ? (item.price as unknown as T_Rental_Price)
                           .adminBookingCharge
                       : 0,
                     preferredCurrency,
@@ -1119,23 +1119,23 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
           pricePerDates: item.pricePerDates?.map((item) => ({
             ...item,
-            price: !(item.price as unknown as T_RentalPrice).dayRate
+            price: !(item.price as unknown as T_Rental_Price).dayRate
               ? null
               : {
-                  ...(item.price as unknown as T_RentalPrice),
+                  ...(item.price as unknown as T_Rental_Price),
                   dayRate: convertPrice(
-                    (item.price as unknown as T_RentalPrice).dayRate,
+                    (item.price as unknown as T_Rental_Price).dayRate,
                     preferredCurrency,
                     conversionRates
                   ),
                   requiredDeposit: convertPrice(
-                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    (item.price as unknown as T_Rental_Price).requiredDeposit,
                     preferredCurrency,
                     conversionRates
                   ),
                   adminBookingCharge: convertPrice(
-                    (item.price as unknown as T_RentalPrice).adminBookingCharge
-                      ? (item.price as unknown as T_RentalPrice)
+                    (item.price as unknown as T_Rental_Price).adminBookingCharge
+                      ? (item.price as unknown as T_Rental_Price)
                           .adminBookingCharge
                       : 0,
                     preferredCurrency,
@@ -1471,23 +1471,23 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           },
           pricePerDates: item.pricePerDates?.map((item) => ({
             ...item,
-            price: !(item.price as unknown as T_RentalPrice).dayRate
+            price: !(item.price as unknown as T_Rental_Price).dayRate
               ? null
               : {
-                  ...(item.price as unknown as T_RentalPrice),
+                  ...(item.price as unknown as T_Rental_Price),
                   dayRate: convertPrice(
-                    (item.price as unknown as T_RentalPrice).dayRate,
+                    (item.price as unknown as T_Rental_Price).dayRate,
                     preferredCurrency,
                     conversionRates
                   ),
                   requiredDeposit: convertPrice(
-                    (item.price as unknown as T_RentalPrice).requiredDeposit,
+                    (item.price as unknown as T_Rental_Price).requiredDeposit,
                     preferredCurrency,
                     conversionRates
                   ),
                   adminBookingCharge: convertPrice(
-                    (item.price as unknown as T_RentalPrice).adminBookingCharge
-                      ? (item.price as unknown as T_RentalPrice)
+                    (item.price as unknown as T_Rental_Price).adminBookingCharge
+                      ? (item.price as unknown as T_Rental_Price)
                           .adminBookingCharge
                       : 0,
                     preferredCurrency,

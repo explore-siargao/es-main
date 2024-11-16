@@ -3,14 +3,9 @@ import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 import { Z_Property_Policy } from "../policies"
-import { Z_Activity_Segment } from "../activity-segments"
-import { Z_Activity_Schedule } from "../activity-schedules"
-import {
-  Z_Activity_PricePerDate,
-  Z_Bookable_PricePerDate,
-  Z_Rental_PricePerDate,
-} from "../price-per-dates"
-import { Z_RentalAddOns, Z_RentalDetails, Z_RentalPrice } from "../rentals/zod"
+import { Z_Rental_AddOns, Z_Rental_Details, Z_Rental_Price, Z_Rental_PricePerDate } from "../rentals"
+import { Z_Bookable_PricePerDate } from "../property"
+import { Z_Activity_PricePerDate, Z_Activity_Schedule, Z_Activity_Segment } from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
 export const Z_AddCart = z
   .object({
@@ -234,8 +229,8 @@ export const Z_CartItem = z.object({
       _id: z.string().optional(),
       rentalId: z.object({
         _id: z.string().optional(),
-        details: Z_RentalDetails,
-        pricing: Z_RentalPrice.nullable().optional(),
+        details: Z_Rental_Details,
+        pricing: Z_Rental_Price.nullable().optional(),
         host: Z_Host.nullable().optional(),
         category: z.enum(["Car", "Motorbike", "Bicycle", ""]),
         make: z.string().nullable().optional(),
@@ -245,7 +240,7 @@ export const Z_CartItem = z.object({
         transmission: z.string().nullable().optional(),
         year: z.string().nullable().optional(),
         qty: z.number(),
-        addOns: Z_RentalAddOns,
+        addOns: Z_Rental_AddOns,
         photos: z.array(Z_Photo).nullable().optional(),
         location: Z_Location.nullable().optional(),
         status: z.enum(["Pending", "Incomplete", "Live"]),

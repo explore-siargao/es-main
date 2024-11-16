@@ -4,42 +4,24 @@ import Link from "next/link"
 import CustomSquareSlider from "@/common/components/custom-square-slider"
 import { LucideHeart, LucideStar } from "lucide-react"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import { E_Property_Type } from "@repo/contract-2/property"
 import propertyTypeMap from "@/common/helpers/propertyTypeMap"
 import NewlyAddedTag from "../components/newly-added-tag"
+import { T_Property_Filtered } from "@repo/contract-2/search-filters"
 
-export type T_Property_Card = {
-  listingId: string
-  title: string | null
-  subtitle: string | null
-  type: E_Property_Type
-  wholePlaceType: E_Property_Type
-  photos: {
-    key: string
-    alt: string
-  }[]
-  location: {
-    city: string
-    latitude: number
-    longitude: number
-  }
-  price: number
-  average: number
-  reviewsCount: number
-}
-
-const PropertyCard = ({
-  listingId,
-  title,
-  subtitle,
-  type,
-  wholePlaceType,
-  photos,
-  location,
-  price,
-  average,
-  reviewsCount,
-}: T_Property_Card) => {
+const PropertyCard = (props: T_Property_Filtered) => {
+  const listingId = props.listingId
+  const title = props.title
+  const subtitle = props.subtitle
+  const type = props.type
+  const wholePlaceType = props.wholeplaceType
+  const photos =  props.photos?.map((photo) => ({
+    key: photo.key,
+    alt: photo.tags
+  }))
+  const location = props.location
+  const price = props.price
+  const average = props.average
+  const reviewsCount = props.reviewsCount ?? 0
   return (
     <>
       <li className="relative overflow-hidden h-full list-none">

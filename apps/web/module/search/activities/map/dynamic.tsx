@@ -6,12 +6,12 @@ import { LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 // import { Feature, Geometry } from "geojson";
 import Marker from "./marker"
-import { T_Activity_Card } from "../card"
 import Popup from "./popup"
+import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 
 type T_Props = {
   center: [number, number]
-  activities: T_Activity_Card[]
+  activities: T_Activity_Filtered[]
   zoom?: number
   scrollWheelZoom?: boolean
 }
@@ -65,7 +65,7 @@ const Dynamic = ({ center, activities, zoom, scrollWheelZoom }: T_Props) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {activities.map((activity, index) => {
-        if (!activity.location?.latitude || !activity.location?.longitude) {
+        if (!activity.meetingPoint?.latitude || !activity.meetingPoint?.longitude) {
           console.error(`Invalid location data at index ${index}`)
           return null
         }
@@ -73,15 +73,15 @@ const Dynamic = ({ center, activities, zoom, scrollWheelZoom }: T_Props) => {
           <Marker
             position={
               [
-                activity.location?.latitude,
-                activity.location?.longitude,
+                activity.meetingPoint?.latitude,
+                activity.meetingPoint?.longitude,
               ] as LatLngTuple
             }
             key={index}
             onClick={() => handleMarkerMouseOver(index)}
-            price={activity.price}
+            price={(activity.pricePerPerson ?? activity.pricePerSlot) || 0}
           >
-            <Popup index={index} {...activity} />
+            <Popup index={index} activity={activity} />
           </Marker>
         )
       })}

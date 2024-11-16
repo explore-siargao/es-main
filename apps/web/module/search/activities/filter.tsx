@@ -1,7 +1,7 @@
 "use client"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Map from "./map"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import useGetActivityListings from "./hooks/use-get-listings"
@@ -9,10 +9,16 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import Card from "./card"
 import getNumberOrAny from "@/common/helpers/getNumberOrAny"
 import { E_Location } from "@repo/contract-2/search-filters"
+import Pagination from "../components/pagination"
 
 const ActivitiesFilter = () => {
   const searchParams = useSearchParams()
-  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0
+  const router = useRouter()
+
+  const [page, setPage] = useState(
+    searchParams.get("page") ? Number(searchParams.get("page")) : 1
+  )
+
   const location = searchParams.get("location") || "any"
   const experienceTypes = searchParams.get("experienceTypes") || "any"
   const activityTypes = searchParams.get("activityTypes") || "any"
@@ -56,20 +62,17 @@ const ActivitiesFilter = () => {
     numberOfGuest,
   ])
 
-  const activities = (activityUnits?.items as any)?.map((item: any) => ({
-    // TODO: fix types
-    title: item.title,
-    location: item.meetingPoint,
-    listingId: item._id,
-    price: item.pricePerPerson ?? item.pricePerSlot,
-    photos: item.photos.map((photo: { key: string, alt: string }) => ({
-      key: photo.key,
-      alt: photo.alt,
-    })),
-    average: item.average,
-    type: item.activityType[1] ?? "Unknown type",
-    reviewsCount: item.reviewsCount,
-  }))
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+    const params = new URLSearchParams(window.location.search)
+    params.set("page", newPage.toString())
+    router.push(`?${params.toString()}`)
+  }
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil((activityUnits?.allItemCount || 0) / 15)
+  );
 
   if (isLoading) {
     return (
@@ -80,6 +83,8 @@ const ActivitiesFilter = () => {
       </WidthWrapper>
     )
   }
+
+  const activities = activityUnits?.items;
 
   return (
     <WidthWrapper width="medium">
@@ -96,9 +101,9 @@ const ActivitiesFilter = () => {
               <div className="grid grid-cols-3 gap-6">
                 {activities?.map(
                   (
-                    item: any // TODO: fix types
+                    item
                   ) => (
-                    <div key={item.listingId}>
+                    <div key={item._id}>
                       <Card {...item} />
                     </div>
                   )
@@ -125,6 +130,15 @@ const ActivitiesFilter = () => {
           </div>
         </div>
       </div>
+      <Pagination
+        pageIndex={page - 1}
+        pageCount={totalPages}
+        canPreviousPage={page > 1}
+        canNextPage={page < totalPages}
+        gotoPage={(newPage) => handlePageChange(newPage + 1)}
+        previousPage={() => handlePageChange(page - 1)}
+        nextPage={() => handlePageChange(page + 1)}
+      />
     </WidthWrapper>
   )
 }

@@ -6,7 +6,7 @@ import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { T_BookableUnitType, T_Photo } from '@repo/contract'
-import { T_Property_Filtered } from '@repo/contract-2/search-filters'
+import { T_Property } from '@repo/contract-2/property'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
@@ -696,7 +696,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
       const changePrices = bookableUnits[0].results.map(
-        (item: T_Property_Filtered) => ({
+        (item: T_Property) => ({
           ...item,
           bookableUnits: item.bookableUnits.map((item) => ({
             ...item,
@@ -755,7 +755,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         })
       )
       const allBookableUnits = changePrices.flatMap(
-        (property: T_Property_Filtered) =>
+        (property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: unit._id,
             title: property.title || null,
@@ -1368,7 +1368,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
       const changePrices = bookableUnits[0].results.map(
-        (item: T_Property_Filtered) => ({
+        (item: T_Property) => ({
           ...item,
           bookableUnits: item.bookableUnits.map((item) => ({
             ...item,
@@ -1427,7 +1427,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         })
       )
       const allBookableUnits = changePrices.flatMap(
-        (property: T_Property_Filtered) =>
+        (property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: unit._id,
             title: property.title || null,
@@ -2068,7 +2068,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
       const changePrices = bookableUnits[0].results.map(
-        (item: T_Property_Filtered) => ({
+        (item: T_Property) => ({
           ...item,
           bookableUnits: item.bookableUnits.map((item) => ({
             ...item,
@@ -2127,7 +2127,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         })
       )
       const allBookableUnits = changePrices.flatMap(
-        (property: T_Property_Filtered) =>
+        (property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: unit._id,
             title: property.title || null,
@@ -2777,7 +2777,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
       const changePrices = bookableUnits[0].results.map(
-        (item: T_Property_Filtered) => ({
+        (item: T_Property) => ({
           ...item,
           bookableUnits: item.bookableUnits.map((item) => ({
             ...item,
@@ -2836,7 +2836,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         })
       )
       const allBookableUnits = changePrices.flatMap(
-        (property: T_Property_Filtered) =>
+        (property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: unit._id,
             title: property.title || null,

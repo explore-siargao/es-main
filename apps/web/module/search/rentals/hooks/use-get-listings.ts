@@ -3,24 +3,20 @@ import {
   FilterService,
   T_Rentals_Search,
 } from "@repo/contract-2/search-filters"
-import { E_Listing_Category } from "@repo/contract"
 import { FIFTEEN_MINUTES, TWELVE_MINUTES } from "@/common/constants"
 
 const queryKey = FilterService.getQueryKeys().filterRentals
 
-export async function getPropertyListings(searchQueries: T_Rentals_Search) {
+export async function getListings(searchQueries: T_Rentals_Search) {
   const filter = new FilterService()
-  return await filter.getPaginatedListings({
-    category: E_Listing_Category.Rental,
-    searchQueries,
-  })
+  return await filter.getPaginatedRentals({searchQueries})
 }
 
 function useGetListings(searchQueries: T_Rentals_Search) {
   const query = useQuery({
     queryKey: [queryKey, searchQueries],
     refetchOnWindowFocus: false,
-    queryFn: () => getPropertyListings(searchQueries),
+    queryFn: () => getListings(searchQueries),
     gcTime: FIFTEEN_MINUTES,
     staleTime: TWELVE_MINUTES,
   })

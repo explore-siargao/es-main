@@ -5,23 +5,34 @@ import { Popup as LeafletPopup } from "react-leaflet"
 import Link from "next/link"
 import React, { useRef } from "react"
 import { LatLngTuple } from "leaflet"
-import { T_Rental_Card } from "../card"
 import NewlyAddedTag from "../../components/newly-added-tag"
+import { T_Rental_Filtered } from "@repo/contract-2/search-filters"
+import { E_Rental_Category } from "@repo/contract"
 
 const Popup = ({
   index,
-  listingId,
-  title,
-  photos,
-  location,
-  price,
-  average,
-  reviewsCount,
-  category,
-  transmission,
-  fuel,
-}: T_Rental_Card & { index: number }) => {
+  rental
+}: { index: number, rental: T_Rental_Filtered }) => {
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
+  const category: E_Rental_Category = rental.category
+  const titleMap = {
+    [E_Rental_Category.Motorbike]: `${rental.make} ${rental.modelBadge}`,
+    [E_Rental_Category.Car]: `${rental.year} ${rental.make} ${rental.modelBadge}`,
+    [E_Rental_Category.Bicycle]: rental.make,
+  }
+   
+  const title = titleMap[category]
+  const location = rental.location
+  const listingId = rental._id
+  const price = rental.pricing?.dayRate ?? 0
+  const photos = rental.photos?.map((photo) => ({
+      key: photo.key,
+      alt: photo.tags
+    }))
+  const average = rental.average
+  const reviewsCount = rental.reviewsCount ?? 0
+  const transmission = rental.transmission
+  const fuel = rental.fuel
   return (
     <LeafletPopup
       ref={(el) => {
@@ -59,7 +70,7 @@ const Popup = ({
           </div>
           <span className="truncate text-text-300 text-xs">
             {category || "Unknown category"} in{" "}
-            {location.city ?? "Unknown location"}
+            {location?.city ?? "Unknown location"}
           </span>
           <span className="truncate text-text-300 text-xs">
             {fuel || "Unknown fuel"} - {transmission ?? "Unknown transmission"}
