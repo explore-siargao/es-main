@@ -1,15 +1,12 @@
 import { Request, Response } from 'express'
-import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
 import { dbRentalRates, dbRentals, dbReservations } from '@repo/database'
 import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
-import { T_CarReservation } from '@repo/contract-2/rental-calendar'
 import { convertPrice } from '@/common/helpers/convert-price'
-import { T_Rental_PricePerDate } from '@repo/contract-2/price-per-dates'
-import { T_RentalPrice } from '@repo/contract-2/rentals'
+import { T_Rental_Price } from '@repo/contract-2/rentals'
 
 const response = new ResponseService()
 
@@ -21,12 +18,6 @@ type Reservation = {
   guestCount: number
   status: string
   notes?: string
-}
-
-type Bicycle = {
-  name: string
-  status: string
-  reservations: Reservation[]
 }
 
 const STATUS_DISPLAY = ['Out of service', 'Blocked dates']
@@ -157,7 +148,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           price:
             rental?.pricing && typeof rental.pricing === 'object'
               ? convertPrice(
-                  (rental?.pricing as unknown as T_RentalPrice)?.dayRate,
+                  (rental?.pricing as unknown as T_Rental_Price)?.dayRate,
                   preferredCurrency,
                   conversionRates
                 )
@@ -328,7 +319,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           price:
             rental?.pricing && typeof rental.pricing === 'object'
               ? convertPrice(
-                  (rental?.pricing as unknown as T_RentalPrice)?.dayRate,
+                  (rental?.pricing as unknown as T_Rental_Price)?.dayRate,
                   preferredCurrency,
                   conversionRates
                 )
@@ -503,7 +494,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           price:
             rental?.pricing && typeof rental.pricing === 'object'
               ? convertPrice(
-                  (rental?.pricing as unknown as T_RentalPrice)?.dayRate,
+                  (rental?.pricing as unknown as T_Rental_Price)?.dayRate,
                   preferredCurrency,
                   conversionRates
                 )

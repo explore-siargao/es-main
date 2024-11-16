@@ -5,24 +5,31 @@ import { Popup as LeafletPopup } from "react-leaflet"
 import Link from "next/link"
 import React, { useRef } from "react"
 import { LatLngTuple } from "leaflet"
-import { T_Property_Card } from "../card"
 import propertyTypeMap from "@/common/helpers/propertyTypeMap"
 import NewlyAddedTag from "../../components/newly-added-tag"
+import { T_Property_Filtered } from "@repo/contract-2/search-filters"
 
 const Popup = ({
   index,
-  listingId,
-  title,
-  subtitle,
-  type,
-  wholePlaceType,
-  photos,
-  location,
-  price,
-  average,
-  reviewsCount,
-}: T_Property_Card & { index: number }) => {
+  unit,
+}: {
+  index: number
+  unit: T_Property_Filtered
+}) => {
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
+  const listingId = unit.listingId
+  const title = unit.title || "Unknown title"
+  const subtitle = unit.subtitle
+  const type = unit.type
+  const wholePlaceType = unit.wholeplaceType
+  const photos = unit.photos?.map((photo) => ({
+    key: photo.key,
+    alt: photo.tags,
+  }))
+  const location = unit.location
+  const price = unit.price
+  const average = unit.average
+  const reviewsCount = unit.reviewsCount ?? 0
   return (
     <LeafletPopup
       ref={(el) => {
@@ -38,7 +45,7 @@ const Popup = ({
         {photos && photos.length > 0 ? (
           <Image
             src={`/assets/${photos[0]?.key}`}
-            alt={photos[0]?.alt ? photos[0]?.alt : title || wholePlaceType}
+            alt={photos[0]?.alt ? photos[0]?.alt : title}
             width={150}
             height={100}
             className="w-full bg-gray-200 rounded-t-xl"

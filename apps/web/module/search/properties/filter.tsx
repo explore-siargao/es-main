@@ -9,19 +9,7 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import PropertyCard from "./card"
 import { E_Location } from "@repo/contract-2/search-filters"
 import getNumberOrAny from "@/common/helpers/getNumberOrAny"
-import Pagination from "@/common/components/Table/Pagination"
-
-type T_Photo = {
-  key: string
-}
-
-type T_Bookable_Unit_Type = {
-  _id: string
-  photos: T_Photo[]
-  unitPrice: { baseRate: number }
-  average: number
-  reviewsCount: number
-}
+import Pagination from "../components/pagination"
 
 const PropertiesFilter = () => {
   const searchParams = useSearchParams()
@@ -85,6 +73,7 @@ const PropertiesFilter = () => {
     checkOut,
     numberOfGuest,
   ])
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
     const params = new URLSearchParams(window.location.search)
@@ -106,6 +95,8 @@ const PropertiesFilter = () => {
     )
   }
 
+  const properties = propertyUnits?.items
+
   return (
     <WidthWrapper width="medium">
       <div className="flex gap-7 mt-16">
@@ -117,27 +108,14 @@ const PropertiesFilter = () => {
             {!isLoading &&
             !isRefetching &&
             propertyUnits &&
-            propertyUnits?.pageItemCount > 0 ? (
-              <>
-                <div className="grid grid-cols-3 gap-6">
-                  {propertyUnits?.items?.map((item) => (
-                    <div key={item.listingId}>
-                      <PropertyCard {...item} />
-                    </div>
-                  ))}
-                </div>
-                <div className="items-end pt-4">
-                  <Pagination
-                    pageIndex={page - 1}
-                    pageCount={totalPages}
-                    canPreviousPage={page > 1}
-                    canNextPage={page < totalPages}
-                    gotoPage={(newPage) => handlePageChange(newPage + 1)}
-                    previousPage={() => handlePageChange(page - 1)}
-                    nextPage={() => handlePageChange(page + 1)}
-                  />
-                </div>
-              </>
+            (propertyUnits?.pageItemCount || 0) > 0 ? (
+              <div className="grid grid-cols-3 gap-6">
+                {properties?.map((item) => (
+                  <div key={item.listingId}>
+                    <PropertyCard {...item} />
+                  </div>
+                ))}
+              </div>
             ) : null}
 
             {!isLoading &&
@@ -153,15 +131,21 @@ const PropertiesFilter = () => {
 
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
-            {propertyUnits && propertyUnits?.items ? (
-              <Map
-                units={propertyUnits?.items}
-                location={location as E_Location}
-              />
+            {properties ? (
+              <Map units={properties} location={location as E_Location} />
             ) : null}
           </div>
         </div>
       </div>
+      <Pagination
+        pageIndex={page - 1}
+        pageCount={totalPages}
+        canPreviousPage={page > 1}
+        canNextPage={page < totalPages}
+        gotoPage={(newPage) => handlePageChange(newPage + 1)}
+        previousPage={() => handlePageChange(page - 1)}
+        nextPage={() => handlePageChange(page + 1)}
+      />
     </WidthWrapper>
   )
 }

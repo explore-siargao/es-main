@@ -6,12 +6,12 @@ import { LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 // import { Feature, Geometry } from "geojson";
 import Marker from "./marker"
-import { T_Property_Card } from "../card"
 import Popup from "./popup"
+import { T_Property_Filtered } from "@repo/contract-2/search-filters"
 
 type T_Props = {
   center: [number, number]
-  units: T_Property_Card[]
+  units: T_Property_Filtered[]
   zoom?: number
   scrollWheelZoom?: boolean
 }
@@ -78,7 +78,7 @@ const Dynamic = ({ center, units, zoom, scrollWheelZoom }: T_Props) => {
             onClick={() => handleMarkerMouseOver(index)}
             price={unit.price}
           >
-            <Popup index={index} {...unit} />
+            <Popup index={index} unit={unit} />
           </Marker>
         )
       })}

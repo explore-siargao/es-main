@@ -1,13 +1,15 @@
 import dynamic from "next/dynamic"
-import { T_Activity_Card } from "../card"
-import { E_Location } from "@repo/contract-2/search-filters"
+import {
+  E_Location,
+  T_Activity_Filtered,
+} from "@repo/contract-2/search-filters"
 
 const DynamicMap = dynamic(() => import("./dynamic"), {
   ssr: false,
 })
 
 type T_Props = {
-  activities: T_Activity_Card[]
+  activities: T_Activity_Filtered[]
   location: E_Location
 }
 

@@ -5,21 +5,28 @@ import { Popup as LeafletPopup } from "react-leaflet"
 import Link from "next/link"
 import React, { useRef } from "react"
 import { LatLngTuple } from "leaflet"
-import { T_Activity_Card } from "../card"
 import NewlyAddedTag from "../../components/newly-added-tag"
+import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 
 const Popup = ({
   index,
-  listingId,
-  title,
-  photos,
-  location,
-  price,
-  average,
-  reviewsCount,
-  type,
-}: T_Activity_Card & { index: number }) => {
+  activity,
+}: {
+  index: number
+  activity: T_Activity_Filtered
+}) => {
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
+  const title = activity.title || "Unknown title"
+  const location = activity.meetingPoint
+  const listingId = activity._id
+  const price = (activity.pricePerPerson ?? activity.pricePerSlot) || 0
+  const photos = activity.photos.map((photo) => ({
+    key: photo.key,
+    alt: photo.tags,
+  }))
+  const average = activity.average
+  const type = (activity.activityType ?? [])[1] ?? "Unknown type"
+  const reviewsCount = activity.reviewsCount
   return (
     <LeafletPopup
       ref={(el) => {
@@ -58,7 +65,7 @@ const Popup = ({
           </div>
           <span className="truncate text-text-300 text-xs">
             {type || "Unknown category"} in{" "}
-            {location.city ?? "Unknown location"}
+            {location?.city ?? "Unknown location"}
           </span>
           <span className="text-text-700 underline truncate semibold text-xs">
             {formatCurrency(price)}{" "}
