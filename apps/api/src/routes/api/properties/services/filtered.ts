@@ -695,86 +695,83 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
-      const changePrices = bookableUnits[0].results.map(
-        (item: T_Property) => ({
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
           ...item,
-          bookableUnits: item.bookableUnits.map((item) => ({
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
             ...item,
-            unitPrice: {
-              ...item.unitPrice,
-              baseRate: !item.unitPrice.baseRate
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice.baseRate,
+                    item.price?.baseRate,
                     preferredCurrency,
                     conversionRates
                   ),
-              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
                 ? 0
                 : convertPrice(
-                    item.unitPrice.pricePerAdditionalPerson,
+                    item?.price?.pricePerAdditionalPerson,
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice?.discountedWeekLyRate,
+                    item.price?.discountedWeekLyRate,
                     preferredCurrency,
                     conversionRates
                   ),
             },
-            pricePerDates: item?.pricePerDates?.map((item) => ({
-              ...item,
-              price: {
-                ...item.price,
-                baseRate: !item.price?.baseRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.baseRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
-                  ? 0
-                  : convertPrice(
-                      item?.price?.pricePerAdditionalPerson,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                discountedWeekLyRate: !item.price?.discountedWeekLyRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.discountedWeekLyRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-              },
-            })),
           })),
-        })
-      )
-      const allBookableUnits = changePrices.flatMap(
-        (property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
-            listingId: unit._id,
-            title: property.title || null,
-            subtitle: unit.subtitle || null,
-            type: property.type,
-            wholePlaceType: unit.wholePlaceType,
-            photos: unit.photos.map((photo: T_Photo) => ({
-              key: photo.key,
-              alt: '',
-            })),
-            location: {
-              city: property.location.city,
-              latitude: property.location.latitude,
-              longitude: property.location.longitude,
-            },
-            price: unit.unitPrice?.baseRate || 0,
-            average: unit.average || 0,
-            reviewsCount: unit.reviewsCount || 0,
-          }))
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
       )
       const paginatedBookableUnits = allBookableUnits.slice(
         startIndex,
@@ -1367,86 +1364,83 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
-      const changePrices = bookableUnits[0].results.map(
-        (item: T_Property) => ({
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
           ...item,
-          bookableUnits: item.bookableUnits.map((item) => ({
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
             ...item,
-            unitPrice: {
-              ...item.unitPrice,
-              baseRate: !item.unitPrice.baseRate
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice.baseRate,
+                    item.price?.baseRate,
                     preferredCurrency,
                     conversionRates
                   ),
-              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
                 ? 0
                 : convertPrice(
-                    item.unitPrice.pricePerAdditionalPerson,
+                    item?.price?.pricePerAdditionalPerson,
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice?.discountedWeekLyRate,
+                    item.price?.discountedWeekLyRate,
                     preferredCurrency,
                     conversionRates
                   ),
             },
-            pricePerDates: item?.pricePerDates?.map((item) => ({
-              ...item,
-              price: {
-                ...item.price,
-                baseRate: !item.price?.baseRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.baseRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
-                  ? 0
-                  : convertPrice(
-                      item?.price?.pricePerAdditionalPerson,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                discountedWeekLyRate: !item.price?.discountedWeekLyRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.discountedWeekLyRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-              },
-            })),
           })),
-        })
-      )
-      const allBookableUnits = changePrices.flatMap(
-        (property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
-            listingId: unit._id,
-            title: property.title || null,
-            subtitle: unit.subtitle || null,
-            type: property.type,
-            wholePlaceType: unit.wholePlaceType,
-            photos: unit.photos.map((photo: T_Photo) => ({
-              key: photo.key,
-              alt: '',
-            })),
-            location: {
-              city: property.location.city,
-              latitude: property.location.latitude,
-              longitude: property.location.longitude,
-            },
-            price: unit.unitPrice?.baseRate || 0,
-            average: unit.average || 0,
-            reviewsCount: unit.reviewsCount || 0,
-          }))
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
       )
       const paginatedBookableUnits = allBookableUnits.slice(
         startIndex,
@@ -2067,86 +2061,83 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
-      const changePrices = bookableUnits[0].results.map(
-        (item: T_Property) => ({
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
           ...item,
-          bookableUnits: item.bookableUnits.map((item) => ({
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
             ...item,
-            unitPrice: {
-              ...item.unitPrice,
-              baseRate: !item.unitPrice.baseRate
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice.baseRate,
+                    item.price?.baseRate,
                     preferredCurrency,
                     conversionRates
                   ),
-              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
                 ? 0
                 : convertPrice(
-                    item.unitPrice.pricePerAdditionalPerson,
+                    item?.price?.pricePerAdditionalPerson,
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice?.discountedWeekLyRate,
+                    item.price?.discountedWeekLyRate,
                     preferredCurrency,
                     conversionRates
                   ),
             },
-            pricePerDates: item?.pricePerDates?.map((item) => ({
-              ...item,
-              price: {
-                ...item.price,
-                baseRate: !item.price?.baseRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.baseRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
-                  ? 0
-                  : convertPrice(
-                      item?.price?.pricePerAdditionalPerson,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                discountedWeekLyRate: !item.price?.discountedWeekLyRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.discountedWeekLyRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-              },
-            })),
           })),
-        })
-      )
-      const allBookableUnits = changePrices.flatMap(
-        (property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
-            listingId: unit._id,
-            title: property.title || null,
-            subtitle: unit.subtitle || null,
-            type: property.type,
-            wholePlaceType: unit.wholePlaceType,
-            photos: unit.photos.map((photo: T_Photo) => ({
-              key: photo.key,
-              alt: '',
-            })),
-            location: {
-              city: property.location.city,
-              latitude: property.location.latitude,
-              longitude: property.location.longitude,
-            },
-            price: unit.unitPrice?.baseRate || 0,
-            average: unit.average || 0,
-            reviewsCount: unit.reviewsCount || 0,
-          }))
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
       )
       const paginatedBookableUnits = allBookableUnits.slice(
         startIndex,
@@ -2776,86 +2767,83 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
-      const changePrices = bookableUnits[0].results.map(
-        (item: T_Property) => ({
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
           ...item,
-          bookableUnits: item.bookableUnits.map((item) => ({
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
             ...item,
-            unitPrice: {
-              ...item.unitPrice,
-              baseRate: !item.unitPrice.baseRate
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice.baseRate,
+                    item.price?.baseRate,
                     preferredCurrency,
                     conversionRates
                   ),
-              pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
                 ? 0
                 : convertPrice(
-                    item.unitPrice.pricePerAdditionalPerson,
+                    item?.price?.pricePerAdditionalPerson,
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
                 ? 0
                 : convertPrice(
-                    item.unitPrice?.discountedWeekLyRate,
+                    item.price?.discountedWeekLyRate,
                     preferredCurrency,
                     conversionRates
                   ),
             },
-            pricePerDates: item?.pricePerDates?.map((item) => ({
-              ...item,
-              price: {
-                ...item.price,
-                baseRate: !item.price?.baseRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.baseRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
-                  ? 0
-                  : convertPrice(
-                      item?.price?.pricePerAdditionalPerson,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-                discountedWeekLyRate: !item.price?.discountedWeekLyRate
-                  ? 0
-                  : convertPrice(
-                      item.price?.discountedWeekLyRate,
-                      preferredCurrency,
-                      conversionRates
-                    ),
-              },
-            })),
           })),
-        })
-      )
-      const allBookableUnits = changePrices.flatMap(
-        (property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
-            listingId: unit._id,
-            title: property.title || null,
-            subtitle: unit.subtitle || null,
-            type: property.type,
-            wholePlaceType: unit.wholePlaceType,
-            photos: unit.photos.map((photo: T_Photo) => ({
-              key: photo.key,
-              alt: '',
-            })),
-            location: {
-              city: property.location.city,
-              latitude: property.location.latitude,
-              longitude: property.location.longitude,
-            },
-            price: unit.unitPrice?.baseRate || 0,
-            average: unit.average || 0,
-            reviewsCount: unit.reviewsCount || 0,
-          }))
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
       )
 
       const paginatedBookableUnits = allBookableUnits.slice(

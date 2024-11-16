@@ -9,7 +9,7 @@ const queryKey = FilterService.getQueryKeys().filterRentals
 
 export async function getListings(searchQueries: T_Rentals_Search) {
   const filter = new FilterService()
-  return await filter.getPaginatedRentals({searchQueries})
+  return await filter.getPaginatedRentals({ searchQueries })
 }
 
 function useGetListings(searchQueries: T_Rentals_Search) {

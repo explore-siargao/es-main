@@ -8,7 +8,13 @@ import { LatLngTuple } from "leaflet"
 import NewlyAddedTag from "../../components/newly-added-tag"
 import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 
-const Popup = ({ index, activity}: { index: number, activity: T_Activity_Filtered }) => {
+const Popup = ({
+  index,
+  activity,
+}: {
+  index: number
+  activity: T_Activity_Filtered
+}) => {
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
   const title = activity.title || "Unknown title"
   const location = activity.meetingPoint

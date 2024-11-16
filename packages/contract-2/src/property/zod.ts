@@ -1,7 +1,7 @@
-import z from "zod";
-import { Z_Host } from "../host";
-import { Z_Photo } from "../photos";
-import { Z_Location } from "../address-location";
+import z from "zod"
+import { Z_Host } from "../host"
+import { Z_Photo } from "../photos"
+import { Z_Location } from "../address-location"
 
 export const Z_Unit_Price = z.object({
   _id: z.string(),

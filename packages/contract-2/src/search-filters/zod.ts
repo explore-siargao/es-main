@@ -3,11 +3,24 @@ import { z } from "zod"
 import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
-import { Z_Rental_PricePerDate, Z_Rental_AddOns, Z_Rental_Details, Z_Rental_Price } from "../rentals"
+import {
+  Z_Rental_PricePerDate,
+  Z_Rental_AddOns,
+  Z_Rental_Details,
+  Z_Rental_Price,
+} from "../rentals"
 import { E_Location } from "./enum"
-import { E_Rental_Category, E_Rental_Vehicle_Fuel, E_Rental_Vehicle_Transmission } from "../rentals/enum"
+import {
+  E_Rental_Category,
+  E_Rental_Vehicle_Fuel,
+  E_Rental_Vehicle_Transmission,
+} from "../rentals/enum"
 import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
-import { Z_Activity_PricePerDate, Z_Activity_Schedule, Z_Activity_Segment } from "../activity"
+import {
+  Z_Activity_PricePerDate,
+  Z_Activity_Schedule,
+  Z_Activity_Segment,
+} from "../activity"
 
 export const Z_Properties_Search = z.object({
   page: z.number().min(1).default(1),
@@ -91,7 +104,8 @@ export const Z_Category_Highest_Price = z.object({
   amount: z.number(),
 })
 
-export const Z_Rental_Filtered = z.object({ // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
+export const Z_Rental_Filtered = z.object({
+  // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
   _id: z.string().optional(),
   details: Z_Rental_Details.nullable(),
   pricing: Z_Rental_Price.nullable(),
@@ -123,7 +137,8 @@ export const Z_Rental_Filtered = z.object({ // TODO: REMOVE ALL THE UNNECCESSARY
   reviewsCount: z.number().optional(),
 })
 
-export const Z_Activity_Filtered = z.object({ // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
+export const Z_Activity_Filtered = z.object({
+  // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
   _id: z.string().optional(),
   host: Z_Host,
   title: z.string().optional(),
@@ -175,5 +190,5 @@ export const Z_Property_Filtered = z.object({
   photos: z.array(Z_Photo),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
-  price: z.number()
+  price: z.number(),
 })

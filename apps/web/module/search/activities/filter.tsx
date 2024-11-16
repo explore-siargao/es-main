@@ -72,7 +72,7 @@ const ActivitiesFilter = () => {
   const totalPages = Math.max(
     1,
     Math.ceil((activityUnits?.allItemCount || 0) / 15)
-  );
+  )
 
   if (isLoading) {
     return (
@@ -84,7 +84,7 @@ const ActivitiesFilter = () => {
     )
   }
 
-  const activities = activityUnits?.items;
+  const activities = activityUnits?.items
 
   return (
     <WidthWrapper width="medium">
@@ -99,15 +99,11 @@ const ActivitiesFilter = () => {
             activities &&
             activities?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {activities?.map(
-                  (
-                    item
-                  ) => (
-                    <div key={item._id}>
-                      <Card {...item} />
-                    </div>
-                  )
-                )}
+                {activities?.map((item) => (
+                  <div key={item._id}>
+                    <Card {...item} />
+                  </div>
+                ))}
               </div>
             ) : null}
 

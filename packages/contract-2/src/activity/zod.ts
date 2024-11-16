@@ -1,7 +1,7 @@
-import z from "zod";
-import { Z_Host } from "../host";
-import { Z_Location } from "../address-location";
-import { Z_Photo } from "../photos";
+import z from "zod"
+import { Z_Host } from "../host"
+import { Z_Location } from "../address-location"
+import { Z_Photo } from "../photos"
 
 export const Z_Activity_Segment = z.object({
   _id: z.string().optional(),

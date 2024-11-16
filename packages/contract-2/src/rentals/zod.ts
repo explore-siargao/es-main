@@ -1,6 +1,10 @@
 import { z } from "zod"
 import { Z_Host } from "../host"
-import { E_Rental_Category, E_Rental_Vehicle_Fuel, E_Rental_Vehicle_Transmission } from "./enum"
+import {
+  E_Rental_Category,
+  E_Rental_Vehicle_Fuel,
+  E_Rental_Vehicle_Transmission,
+} from "./enum"
 import { Z_Photo } from "../photos"
 import { Z_Location } from "../address-location"
 

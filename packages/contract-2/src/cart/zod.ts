@@ -3,9 +3,18 @@ import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 import { Z_Property_Policy } from "../policies"
-import { Z_Rental_AddOns, Z_Rental_Details, Z_Rental_Price, Z_Rental_PricePerDate } from "../rentals"
+import {
+  Z_Rental_AddOns,
+  Z_Rental_Details,
+  Z_Rental_Price,
+  Z_Rental_PricePerDate,
+} from "../rentals"
 import { Z_Bookable_PricePerDate } from "../property"
-import { Z_Activity_PricePerDate, Z_Activity_Schedule, Z_Activity_Segment } from "../activity"
+import {
+  Z_Activity_PricePerDate,
+  Z_Activity_Schedule,
+  Z_Activity_Segment,
+} from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
 export const Z_AddCart = z
   .object({

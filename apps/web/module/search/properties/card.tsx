@@ -14,9 +14,9 @@ const PropertyCard = (props: T_Property_Filtered) => {
   const subtitle = props.subtitle
   const type = props.type
   const wholePlaceType = props.wholeplaceType
-  const photos =  props.photos?.map((photo) => ({
+  const photos = props.photos?.map((photo) => ({
     key: photo.key,
-    alt: photo.tags
+    alt: photo.tags,
   }))
   const location = props.location
   const price = props.price

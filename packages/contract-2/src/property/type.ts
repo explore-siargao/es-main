@@ -20,4 +20,3 @@ export type T_Bedroom = z.infer<typeof Z_Bedroom>
 export type T_Bookable_Unit = z.infer<typeof Z_Bookable_Unit>
 export type T_Facility = z.infer<typeof Z_Facility>
 export type T_Policy = z.infer<typeof Z_Policy>
-

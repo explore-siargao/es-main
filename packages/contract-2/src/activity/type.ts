@@ -1,5 +1,12 @@
 import z from "zod"
-import { Z_Activity_Schedule, Z_Activity_Day, Z_Activity_Slot, Z_Activity_Segment, Z_Activity_PricePerDate, Z_Activity } from "./zod"
+import {
+  Z_Activity_Schedule,
+  Z_Activity_Day,
+  Z_Activity_Slot,
+  Z_Activity_Segment,
+  Z_Activity_PricePerDate,
+  Z_Activity,
+} from "./zod"
 
 export type T_Activity_Segment = z.infer<typeof Z_Activity_Segment>
 export type T_Activity_PricePerDate = z.infer<typeof Z_Activity_PricePerDate>

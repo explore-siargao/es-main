@@ -1,5 +1,8 @@
 import dynamic from "next/dynamic"
-import { E_Location, T_Activity_Filtered } from "@repo/contract-2/search-filters"
+import {
+  E_Location,
+  T_Activity_Filtered,
+} from "@repo/contract-2/search-filters"
 
 const DynamicMap = dynamic(() => import("./dynamic"), {
   ssr: false,

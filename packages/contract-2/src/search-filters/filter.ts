@@ -75,12 +75,12 @@ export class FilterService {
       Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
     )
     let isValid = Z_Rentals_Search.safeParse(searchQueries).success
-    let queryString = isValid ? new URLSearchParams(stringSearchQueries).toString() : rentalQueryParts.join("&")
+    let queryString = isValid
+      ? new URLSearchParams(stringSearchQueries).toString()
+      : rentalQueryParts.join("&")
     return this.api.get<{
       items: T_Rental_Filtered[]
-    }>(
-      `/rentals/filtered?${queryString}`
-    )
+    }>(`/rentals/filtered?${queryString}`)
   }
 
   async getPaginatedActivities({
@@ -92,12 +92,12 @@ export class FilterService {
       Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
     )
     let isValid = Z_Activities_Search.safeParse(searchQueries).success
-    let queryString = isValid ? new URLSearchParams(stringSearchQueries).toString() : activityQueryParts.join("&")
+    let queryString = isValid
+      ? new URLSearchParams(stringSearchQueries).toString()
+      : activityQueryParts.join("&")
     return this.api.get<{
       items: T_Activity_Filtered[]
-    }>(
-      `/activities/filtered?${queryString}`
-    )
+    }>(`/activities/filtered?${queryString}`)
   }
 
   async getPaginatedProperties({
@@ -109,12 +109,12 @@ export class FilterService {
       Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
     )
     let isValid = Z_Properties_Search.safeParse(searchQueries).success
-    let queryString = isValid ? new URLSearchParams(stringSearchQueries).toString() : propertyQueryParts.join("&")
+    let queryString = isValid
+      ? new URLSearchParams(stringSearchQueries).toString()
+      : propertyQueryParts.join("&")
     return this.api.get<{
       items: T_Property_Filtered[]
-    }>(
-      `/properties/filtered?${queryString}`
-    )
+    }>(`/properties/filtered?${queryString}`)
   }
 
   async getCategoryHighestPrice({

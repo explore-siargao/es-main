@@ -15,15 +15,15 @@ const RentalCard = (props: T_Rental_Filtered) => {
     [E_Rental_Category.Car]: `${props.year} ${props.make} ${props.modelBadge}`,
     [E_Rental_Category.Bicycle]: props.make,
   }
-   
+
   const title = titleMap[category]
   const location = props.location
   const listingId = props._id
   const price = props.pricing?.dayRate ?? 0
   const photos = props.photos?.map((photo) => ({
-      key: photo.key,
-      alt: photo.tags
-    }))
+    key: photo.key,
+    alt: photo.tags,
+  }))
   const average = props.average
   const reviewsCount = props.reviewsCount ?? 0
   const transmission = props.transmission

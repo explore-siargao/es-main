@@ -83,7 +83,7 @@ const PropertiesFilter = () => {
   const totalPages = Math.max(
     1,
     Math.ceil((propertyUnits?.allItemCount || 0) / 15)
-  );
+  )
 
   if (isLoading) {
     return (
@@ -95,7 +95,7 @@ const PropertiesFilter = () => {
     )
   }
 
-  const properties = propertyUnits?.items;
+  const properties = propertyUnits?.items
 
   return (
     <WidthWrapper width="medium">
@@ -106,10 +106,9 @@ const PropertiesFilter = () => {
             {isRefetching ? <Spinner variant="primary" /> : null}
 
             {!isLoading &&
-              !isRefetching &&
-              propertyUnits &&
-              (propertyUnits?.pageItemCount || 0) > 0 ? (
-
+            !isRefetching &&
+            propertyUnits &&
+            (propertyUnits?.pageItemCount || 0) > 0 ? (
               <div className="grid grid-cols-3 gap-6">
                 {properties?.map((item) => (
                   <div key={item.listingId}>
@@ -117,13 +116,12 @@ const PropertiesFilter = () => {
                   </div>
                 ))}
               </div>
-
             ) : null}
 
             {!isLoading &&
-              !isRefetching &&
-              propertyUnits &&
-              propertyUnits?.pageItemCount === 0 ? (
+            !isRefetching &&
+            propertyUnits &&
+            propertyUnits?.pageItemCount === 0 ? (
               <Typography variant="h4" className="text-gray-500 italic">
                 No properties found for the search and filters values
               </Typography>
@@ -134,10 +132,7 @@ const PropertiesFilter = () => {
         <div className="w-2/3 relative">
           <div className="sticky top-[20rem]">
             {properties ? (
-              <Map
-                units={properties}
-                location={location as E_Location}
-              />
+              <Map units={properties} location={location as E_Location} />
             ) : null}
           </div>
         </div>

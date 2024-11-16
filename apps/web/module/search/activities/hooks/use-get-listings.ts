@@ -9,7 +9,7 @@ const queryKey = FilterService.getQueryKeys().filterActivities
 
 export async function getListings(searchQueries: T_Activities_Search) {
   const filter = new FilterService()
-  return await filter.getPaginatedActivities({searchQueries})
+  return await filter.getPaginatedActivities({ searchQueries })
 }
 
 function useGetListings(searchQueries: T_Activities_Search) {

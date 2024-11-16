@@ -73,7 +73,7 @@ const RentalsFilter = () => {
   const totalPages = Math.max(
     1,
     Math.ceil((rentalUnits?.allItemCount || 0) / 15)
-  );
+  )
 
   if (isLoading) {
     return (
@@ -85,7 +85,7 @@ const RentalsFilter = () => {
     )
   }
 
-  const rentals = rentalUnits?.items;
+  const rentals = rentalUnits?.items
 
   return (
     <WidthWrapper width="medium">
@@ -96,15 +96,11 @@ const RentalsFilter = () => {
             {isRefetching ? <Spinner variant="primary" /> : null}
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {rentals?.map(
-                  (
-                    item
-                  ) => (
-                    <div key={item._id}>
-                      <RentalCard {...item} />
-                    </div>
-                  )
-                )}
+                {rentals?.map((item) => (
+                  <div key={item._id}>
+                    <RentalCard {...item} />
+                  </div>
+                ))}
               </div>
             ) : null}
 

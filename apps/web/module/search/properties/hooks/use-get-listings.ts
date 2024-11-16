@@ -9,7 +9,7 @@ const queryKey = FilterService.getQueryKeys().filterProperties
 
 export async function getListings(searchQueries: T_Properties_Search) {
   const filter = new FilterService()
-  return await filter.getPaginatedProperties({searchQueries})
+  return await filter.getPaginatedProperties({ searchQueries })
 }
 
 function useGetListings(searchQueries: T_Properties_Search) {

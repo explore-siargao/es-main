@@ -9,16 +9,22 @@ import propertyTypeMap from "@/common/helpers/propertyTypeMap"
 import NewlyAddedTag from "../../components/newly-added-tag"
 import { T_Property_Filtered } from "@repo/contract-2/search-filters"
 
-const Popup = ({index, unit}: { index: number, unit: T_Property_Filtered }) => {
+const Popup = ({
+  index,
+  unit,
+}: {
+  index: number
+  unit: T_Property_Filtered
+}) => {
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
   const listingId = unit.listingId
   const title = unit.title || "Unknown title"
   const subtitle = unit.subtitle
   const type = unit.type
   const wholePlaceType = unit.wholeplaceType
-  const photos =  unit.photos?.map((photo) => ({
+  const photos = unit.photos?.map((photo) => ({
     key: photo.key,
-    alt: photo.tags
+    alt: photo.tags,
   }))
   const location = unit.location
   const price = unit.price

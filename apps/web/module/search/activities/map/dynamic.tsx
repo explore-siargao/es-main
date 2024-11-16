@@ -65,7 +65,10 @@ const Dynamic = ({ center, activities, zoom, scrollWheelZoom }: T_Props) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {activities.map((activity, index) => {
-        if (!activity.meetingPoint?.latitude || !activity.meetingPoint?.longitude) {
+        if (
+          !activity.meetingPoint?.latitude ||
+          !activity.meetingPoint?.longitude
+        ) {
           console.error(`Invalid location data at index ${index}`)
           return null
         }

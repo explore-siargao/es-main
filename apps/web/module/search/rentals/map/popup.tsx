@@ -11,8 +11,11 @@ import { E_Rental_Category } from "@repo/contract"
 
 const Popup = ({
   index,
-  rental
-}: { index: number, rental: T_Rental_Filtered }) => {
+  rental,
+}: {
+  index: number
+  rental: T_Rental_Filtered
+}) => {
   const popupRefs = useRef<Map<number, L.Popup>>(new Map())
   const category: E_Rental_Category = rental.category
   const titleMap = {
@@ -20,15 +23,15 @@ const Popup = ({
     [E_Rental_Category.Car]: `${rental.year} ${rental.make} ${rental.modelBadge}`,
     [E_Rental_Category.Bicycle]: rental.make,
   }
-   
+
   const title = titleMap[category]
   const location = rental.location
   const listingId = rental._id
   const price = rental.pricing?.dayRate ?? 0
   const photos = rental.photos?.map((photo) => ({
-      key: photo.key,
-      alt: photo.tags
-    }))
+    key: photo.key,
+    alt: photo.tags,
+  }))
   const average = rental.average
   const reviewsCount = rental.reviewsCount ?? 0
   const transmission = rental.transmission
