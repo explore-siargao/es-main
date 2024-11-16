@@ -5,6 +5,7 @@ import {
 import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { T_BookableUnitType, T_Photo } from '@repo/contract'
 import { T_Property_Filtered } from '@repo/contract-2/search-filters'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
@@ -29,6 +30,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     numberOfGuest = 'any',
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
+  const startIndex = (page - 1) * limit
+  const endIndex = startIndex + limit
   const query: any = {
     bookableUnits: { $exists: true, $not: { $size: 0 } },
     deletedAt: null,
@@ -612,23 +615,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -758,11 +754,38 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: changePrices,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else if (
@@ -1264,23 +1287,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -1410,11 +1426,38 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: changePrices,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else if (
@@ -1944,23 +1987,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -2090,11 +2126,38 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: changePrices,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else if (
@@ -2633,23 +2696,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -2779,11 +2835,39 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })),
         })
       )
+      const allBookableUnits = changePrices.flatMap(
+        (property: T_Property_Filtered) =>
+          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+            listingId: unit._id,
+            title: property.title || null,
+            subtitle: unit.subtitle || null,
+            type: property.type,
+            wholePlaceType: unit.wholePlaceType,
+            photos: unit.photos.map((photo: T_Photo) => ({
+              key: photo.key,
+              alt: '',
+            })),
+            location: {
+              city: property.location.city,
+              latitude: property.location.latitude,
+              longitude: property.location.longitude,
+            },
+            price: unit.unitPrice?.baseRate || 0,
+            average: unit.average || 0,
+            reviewsCount: unit.reviewsCount || 0,
+          }))
+      )
+
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: changePrices,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else {
