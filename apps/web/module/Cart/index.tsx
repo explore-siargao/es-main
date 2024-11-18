@@ -2,13 +2,13 @@
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import CartList from "./components/CartList"
 import SubTotalBox from "./components/SubTotalBox"
-import useGetCartItems from "@/common/hooks/useGetCartItems";
+import useGetCartItems from "@/common/hooks/use-get-cart-items";
 import { T_Cart_Item } from "@repo/contract-2/cart";
 import { Spinner } from "@/common/components/ui/Spinner";
 import Loading from "@/app/(accommodation)/loading";
 
 const Cart = () => {
-  const { data } = useGetCartItems()
+  const { data, isLoading } = useGetCartItems()
   return (
     <WidthWrapper
       width="medium"
@@ -17,12 +17,17 @@ const Cart = () => {
       
       
       <div className="lg:col-span-3">
-      {
-        data && data?.items.length > 0 ?
-        <CartList items={data?.items as T_Cart_Item[]} /> :
-        <Loading />
-      }
+        {
+          isLoading ? 
+          <Loading /> : 
+          data && data?.items.length > 0 ?
+          <CartList items={data?.items as T_Cart_Item[]} /> :
+          <div className="col-span-3 w-full">
+            <h2 className="text-lg font-bold mx-auto text-text-400">There are no items in your cart</h2>
+          </div>
+        }
       </div> 
+      
       <div className="col-span-1 relative ">
         <SubTotalBox
           subTotal={{

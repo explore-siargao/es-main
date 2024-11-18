@@ -4,12 +4,14 @@ import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Button } from "@/common/components/ui/Button"
 import { useState } from "react"
 import { Clock, Pencil, Trash } from "lucide-react"
-import useGetCartItems from "@/common/hooks/useGetCartItems"
+import useGetCartItems from "@/common/hooks/use-get-cart-items"
 import { format } from "date-fns"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { indexOf } from "lodash"
 import PropertyCartItem from "./property-cart-item"
 import ActivityCartItem from "./activity-cart-item"
+import RentalCartItem from "./rental-cart-item"
+import DeleteCartItemModal from "./delete-cart-item-modal"
 
 interface ICartProps {
   items: T_Cart_Item[]
@@ -18,6 +20,8 @@ interface ICartProps {
 const CartList: React.FC<ICartProps> = ({ items }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] = useState<boolean>(false)
+  const [itemId, setItemId] = useState<string>("")
   
   const toggleAllCheckboxes = () => {
     const newSelectAll = !selectAll
@@ -44,7 +48,7 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
       console.log("Checkbox ID unchecked")
     }
   }
-
+  
   return (
     <>
       <div className="flex bg-white-100 mb-8 pb-4 justify-between items-center border-b">
@@ -69,6 +73,8 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
               selectedItems={selectedItems} 
               index={index} 
               toggleCheckbox={toggleCheckbox}
+              setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
+              setItemId={setItemId}
             />
           )
         } else if(cartItem.activityIds) {
@@ -78,10 +84,28 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
               selectedItems={selectedItems} 
               index={index} 
               toggleCheckbox={toggleCheckbox}
+              setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
+              setItemId={setItemId}
+            />
+          )
+        } else if(cartItem.rentalIds) {
+          return (
+            <RentalCartItem 
+              item={cartItem} 
+              selectedItems={selectedItems} 
+              index={index} 
+              toggleCheckbox={toggleCheckbox}
+              setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
+              setItemId={setItemId}
             />
           )
         }
       })}
+      <DeleteCartItemModal
+        isOpen={isDeleteCartItemOpen}
+        onClose={() => setIsDeleteCartItemOpen(false)}
+        itemId={itemId}
+      />
     </>
   )
 }

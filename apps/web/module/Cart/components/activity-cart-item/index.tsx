@@ -1,3 +1,4 @@
+import { Button } from '@/common/components/ui/Button'
 import InputCheckbox from '@/common/components/ui/InputCheckbox'
 import { Typography } from '@/common/components/ui/Typography'
 import formatCurrency from '@/common/helpers/formatCurrency'
@@ -5,15 +6,18 @@ import { T_Cart_Item } from '@repo/contract-2/cart'
 import { format } from 'date-fns/format'
 import { Clock, Pencil, Trash } from 'lucide-react'
 import React from 'react'
+import DeleteCartItemModal from '../delete-cart-item-modal'
 
 interface ICartProps {
   item: T_Cart_Item
   selectedItems: number[]
   index: number
   toggleCheckbox: (index: number) => void
+  setItemId: (value: string) => void
+  setIsDeleteCartItemOpen: (value: boolean) => void
 }
 
-function ActivityCartItem({ item, selectedItems, index, toggleCheckbox }: ICartProps) {
+function ActivityCartItem({ item, selectedItems, index, toggleCheckbox, setItemId, setIsDeleteCartItemOpen }: ICartProps) {
   const activityItem = item.activityIds?.activityId
   return (
     <div key={activityItem?._id} className="border rounded-xl p-4 mb-6">
@@ -62,30 +66,29 @@ function ActivityCartItem({ item, selectedItems, index, toggleCheckbox }: ICartP
             )}
           </div>
         </div>
-        <div className="flex gap-4 items-end">
-          <Typography
-            variant="p"
-            fontWeight="semibold"
+        <div className="flex items-end">
+          <Button
+            variant="link"
             className="hover:underline text-info-500 hover:cursor-pointer flex items-center"
           >
             <Pencil height={18} />
             Modify
-          </Typography>
-          <Typography
-            variant="p"
-            fontWeight="semibold"
-            className="hover:underline text-error-500 hover:cursor-pointer mt-2 flex items-center"
+          </Button>
+          <Button
+            variant="link"
+            className="hover:underline text-error-500 hover:cursor-pointer flex items-center"
+            onClick={() => {setItemId(item._id); setIsDeleteCartItemOpen(true)}}
           >
             <Trash height={18} />
             Remove
-          </Typography>
+          </Button>
         </div>
       </div>
       <div className="border-t my-4"></div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <Typography variant="p" className="text-gray-500">
-            {format(item.startDate, "d MMM, yyyy")} - {format(item.endDate, "d MMM, yyyy")}
+            {item.startDate && format(item.startDate, "d MMM, yyyy")} {item?.endDate && `- ${format(item?.endDate, "d MMM, yyyy")}`}
           </Typography>
         </div>
         

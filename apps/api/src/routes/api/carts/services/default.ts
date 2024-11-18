@@ -163,7 +163,7 @@ export const removeToCart = async (req: Request, res: Response) => {
         res.json(
           response.success({
             item: deleteCart,
-            message: 'Item successfully removed from carts',
+            message: 'Item successfully removed from cart',
           })
         )
       }
