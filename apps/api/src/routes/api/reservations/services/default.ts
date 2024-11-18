@@ -1,5 +1,9 @@
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
+import { T_Add_Reservation } from '@repo/contract-2/reservations'
 import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
@@ -545,6 +549,24 @@ export const getAllReservations = async (req: Request, res: Response) => {
           allItemCount: totalCounts,
         })
       )
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const addMultipleReservations = async (req: Request, res: Response) => {
+  try {
+    const items: T_Add_Reservation[] = req.body.items
+    if (!items || items.length === 0) {
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    } else {
+      const addReservations = await dbReservations.insertMany(items)
+      res.json(response.success({ message: 'Reservations added successfully' }))
     }
   } catch (err: any) {
     res.json(

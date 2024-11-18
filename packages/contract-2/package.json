@@ -52,6 +52,11 @@
       "import": "./build/currency/index.js",
       "require": "./build/currency/index.js",
       "types": "./build/currency/index.d.ts"
+    },
+    "./reservations": {
+      "import": "./build/reservations/index.js",
+      "require": "./build/reservations/index.js",
+      "types": "./build/reservations/index.d.ts"
     }
   },
   "scripts": {
