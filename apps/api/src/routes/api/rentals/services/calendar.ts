@@ -76,7 +76,10 @@ export const getCarCalendar = async (req: Request, res: Response) => {
             {
               startDate: { $lte: endDate },
               endDate: { $gte: startDate },
-              status: { $ne: 'Cancelled' },
+              $and: [
+                { status: { $ne: 'Cancelled' } },
+                { status: { $ne: 'For-Payment' } },
+              ],
             },
           ],
         })
@@ -244,7 +247,10 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
             {
               startDate: { $lte: endDate },
               endDate: { $gte: startDate },
-              status: { $ne: 'Cancelled' },
+              $and: [
+                { status: { $ne: 'Cancelled' } },
+                { status: { $ne: 'For-Payment' } },
+              ],
             },
           ],
         })
@@ -416,7 +422,10 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
             {
               startDate: { $lte: endDate },
               endDate: { $gte: startDate },
-              status: { $ne: 'Cancelled' },
+              $and: [
+                { status: { $ne: 'Cancelled' } },
+                { status: { $ne: 'For-Payment' } },
+              ],
             },
           ],
         })

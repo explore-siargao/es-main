@@ -20,7 +20,11 @@ import {
   editPrivateActivityReservation,
 } from './services/activityReservation'
 import paginate from '@/common/middleware/paginations/paginate'
-import { getAllReservations } from './services/default'
+import {
+  getAllReservations,
+  updateReservationStatusByReferenceId,
+} from './services/default'
+import { gcashMultipleCheckout } from './services/cart-reservations'
 
 const router = express.Router()
 
@@ -123,4 +127,21 @@ router.patch(
   isCsrfTokenValid,
   cancelActivityReservation
 )
+
+router.patch(
+  '/status/:referenceId',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  updateReservationStatusByReferenceId
+)
+
+router.post(
+  '/cart/checkout',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  gcashMultipleCheckout
+)
+
 export default router

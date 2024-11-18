@@ -16,6 +16,7 @@ import {
   Z_Activity_Segment,
 } from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
+
 export const Z_AddCart = z
   .object({
     id: z.string().optional(),
@@ -40,9 +41,10 @@ export const Z_AddCart = z
         slotIdsId: z.string().optional(),
       })
       .optional(),
+    guestCount: z.number(),
     price: z.number(),
-    startDate: z.date(),
-    endDate: z.date(),
+    startDate: z.string(),
+    endDate: z.string(),
     createdAt: z.date().optional(),
     updatedAt: z.date().nullable().optional(),
     deletedAt: z.date().nullable().optional(),
@@ -121,8 +123,8 @@ export const Z_Review = z.object({
 })
 
 export const Z_CartItem = z.object({
-  _id: z.string(),
-  userId: Z_Host,
+  _id: z.string().optional(),
+  userId: Z_Host.optional(),
   propertyIds: z
     .object({
       _id: z.string().optional(),
@@ -321,6 +323,7 @@ export const Z_CartItem = z.object({
     })
     .nullable()
     .optional(),
+  guestCount: z.number().optional(),
   price: z.number(),
   endDate: z.string(),
   startDate: z.string(),
@@ -329,3 +332,5 @@ export const Z_CartItem = z.object({
   updatedAt: z.string().nullable().optional(),
   deletedAt: z.string().nullable().optional(),
 })
+
+export const Z_Add_CartItems = z.array(Z_AddCart)

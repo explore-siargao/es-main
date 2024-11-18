@@ -8,6 +8,7 @@ const statusEnum = [
   "No-Show",
   "Blocked-Dates",
   "Out-of-Service-Dates",
+  "For-Payment",
 ]
 const reservations = new Schema({
   propertyIds: {
@@ -92,7 +93,7 @@ const reservations = new Schema({
   },
   cancelledBy: {
     type: String,
-    enum: ["host", "guest"],
+    enum: ["Host", "Guest"],
     default: null,
   },
   cancellationDate: {

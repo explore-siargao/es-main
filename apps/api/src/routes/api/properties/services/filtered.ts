@@ -84,7 +84,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         $match: {
           deletedAt: null,
           propertyIds: { $ne: null },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $expr: {
             $and: [
               {

@@ -56,7 +56,10 @@ export const addPrivateActivityReservation = async (
           'activityIds.timeSlotId': slotId,
           'activityIds.slotIdsId': { $exists: false },
           startDate: { $eq: date },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
         })
 
         if (overlappingReservation) {
@@ -135,7 +138,10 @@ export const addJoinerActivityReservation = async (
             },
             'activityIds.slotIdsId': { $exists: true },
             deletedAt: null,
-            status: { $ne: 'Cancelled' },
+            $and: [
+              { status: { $ne: 'Cancelled' } },
+              { status: { $ne: 'For-Payment' } },
+            ],
           })
           const takenSlotsIds = getJoinerActivityReservation.map((item) =>
             String(item.activityIds?.slotIdsId)
@@ -227,7 +233,10 @@ export const editPrivateActivityReservation = async (
       'activityIds.dayId': reservation?.activityIds?.dayId,
       'activityIds.slotIdsId': null,
       _id: { $ne: reservation?._id },
-      status: { $ne: 'Cancelled' },
+      $and: [
+        { status: { $ne: 'Cancelled' } },
+        { status: { $ne: 'For-Payment' } },
+      ],
       startDate: reservation?.startDate,
     })
 
@@ -287,7 +296,10 @@ export const editJoinerActivityReservation = async (
       'activityIds.dayId': reservation?.activityIds?.dayId,
       'activityIds.slotIdsId': reservation?.activityIds?.slotIdsId,
       _id: { $ne: reservation?._id },
-      status: { $ne: 'Cancelled' },
+      $and: [
+        { status: { $ne: 'Cancelled' } },
+        { status: { $ne: 'For-Payment' } },
+      ],
       startDate: reservation?.startDate,
     })
 
@@ -346,7 +358,10 @@ export const cancelActivityReservation = async (
     const reservation = await dbReservations.findOne({
       _id: reservationId,
       deletedAt: null,
-      status: { $ne: 'Cancelled' },
+      $and: [
+        { status: { $ne: 'Cancelled' } },
+        { status: { $ne: 'For-Payment' } },
+      ],
     })
     if (reservation) {
       const joinerActivity = await dbActivities.findOne({
@@ -369,7 +384,7 @@ export const cancelActivityReservation = async (
             {
               status: 'Cancelled',
               cancellationDate: Date.now(),
-              cancelledBy: 'host',
+              cancelledBy: 'Host',
               hostHavePenalty: false,
             }
           )
@@ -385,7 +400,7 @@ export const cancelActivityReservation = async (
             reservationId,
             {
               status: 'Cancelled',
-              cancelledBy: 'host',
+              cancelledBy: 'Host',
               cancellationDate: Date.now(),
               hostHavePenalty: true,
               updatedAt: Date.now(),
@@ -418,7 +433,7 @@ export const cancelActivityReservation = async (
               {
                 status: 'Cancelled',
                 cancellationDate: Date.now(),
-                cancelledBy: 'host',
+                cancelledBy: 'Host',
                 hostHavePenalty: false,
               }
             )
@@ -434,7 +449,7 @@ export const cancelActivityReservation = async (
               reservationId,
               {
                 status: 'Cancelled',
-                cancelledBy: 'host',
+                cancelledBy: 'Host',
                 cancellationDate: Date.now(),
                 hostHavePenalty: true,
                 updatedAt: Date.now(),

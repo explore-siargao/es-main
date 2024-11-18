@@ -103,7 +103,10 @@ export const getPrivateActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.timeSlotId': { $in: ids },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate({
@@ -289,7 +292,10 @@ export const getJoinerActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.slotIdsId': { $in: ids },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
         .populate({
