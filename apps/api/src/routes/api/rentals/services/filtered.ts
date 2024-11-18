@@ -62,7 +62,10 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       {
         $match: {
           deletedAt: null,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           rentalIds: { $ne: null },
           $expr: {
             $and: [

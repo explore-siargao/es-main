@@ -4,6 +4,7 @@ import {
 } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { Z_AddCart } from '@repo/contract-2/cart'
 import { dbCarts, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
@@ -21,104 +22,118 @@ export const addToCart = async (req: Request, res: Response) => {
       startDate,
       endDate,
     } = req.body
-    if (
-      (!propertyIds && !rentalIds && !activityIds) ||
-      !price ||
-      !startDate ||
-      !endDate
-    ) {
-      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-    } else {
-      const existingCart = await dbCarts.findOne({
-        userId: userId,
-        status: 'Active',
-        $or: [
-          ...(propertyIds
-            ? [
-                {
-                  $and: [
-                    { 'propertyIds.propertyId': propertyIds.propertyId },
-                    { 'propertyIds.unitId': propertyIds.unitId },
-                    { rentalIds: null },
-                    { activityIds: null },
-                  ],
-                },
-              ]
-            : []),
-          ...(rentalIds
-            ? [
-                {
-                  $and: [
-                    { 'rentalIds.rentalId': rentalIds.rentalId },
-                    { 'rentalIds.qtyIdsId': rentalIds.qtyIdsId },
-                    { propertyIds: null },
-                    { activityIds: null },
-                  ],
-                },
-              ]
-            : []),
-          ...(activityIds
-            ? [
-                {
-                  $and: [
-                    { 'activityIds.activityId': activityIds.activityId },
-                    { 'activityIds.timeSlotId': activityIds.timeSlotId },
-                    { 'activityIds.slotIdsId': { $exists: false } },
-                    { propertyIds: null },
-                    { rentalIds: null },
-                  ],
-                },
-                {
-                  $and: [
-                    {
-                      'activityIds.activityId': activityIds.activityId || null,
-                    },
-                    {
-                      'activityIds.timeSlotId': activityIds.timeSlotId || null,
-                    },
-                    { 'activityIds.slotIdsId': activityIds.slotIdsId || null },
-                    { propertyIds: null },
-                    { rentalIds: null },
-                  ],
-                },
-              ]
-            : []),
-        ],
-      })
-      if (existingCart) {
-        existingCart.price = price
-        existingCart.updatedAt = new Date()
-        existingCart.startDate = new Date(startDate)
-        existingCart.endDate = new Date(endDate)
-
-        await existingCart.save()
-        res.json(
-          response.success({
-            item: existingCart,
-            message: 'Cart list  updated successfully',
-          })
-        )
-      } else {
-        const newCart = new dbCarts({
-          userId,
-          price,
-          propertyIds,
-          rentalIds,
-          activityIds,
-          status: 'Active',
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          createdAt: Date.now(),
-          updatedAt: null,
-          deletedAt: null,
+    const parseCartItem = Z_AddCart.safeParse(req.body)
+    if (!parseCartItem.success) {
+      res.json(
+        response.error({
+          items: parseCartItem.error.errors,
+          message: 'Invalid request body',
         })
-        const saveCart = await newCart.save()
-        res.json(
-          response.success({
-            item: saveCart,
-            message: 'Cart list  updated successfully',
+      )
+    } else {
+      if (
+        (!propertyIds && !rentalIds && !activityIds) ||
+        !price ||
+        !startDate ||
+        !endDate
+      ) {
+        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+      } else {
+        const existingCart = await dbCarts.findOne({
+          userId: userId,
+          status: 'Active',
+          $or: [
+            ...(propertyIds
+              ? [
+                  {
+                    $and: [
+                      { 'propertyIds.propertyId': propertyIds.propertyId },
+                      { 'propertyIds.unitId': propertyIds.unitId },
+                      { rentalIds: null },
+                      { activityIds: null },
+                    ],
+                  },
+                ]
+              : []),
+            ...(rentalIds
+              ? [
+                  {
+                    $and: [
+                      { 'rentalIds.rentalId': rentalIds.rentalId },
+                      { 'rentalIds.qtyIdsId': rentalIds.qtyIdsId },
+                      { propertyIds: null },
+                      { activityIds: null },
+                    ],
+                  },
+                ]
+              : []),
+            ...(activityIds
+              ? [
+                  {
+                    $and: [
+                      { 'activityIds.activityId': activityIds.activityId },
+                      { 'activityIds.timeSlotId': activityIds.timeSlotId },
+                      { 'activityIds.slotIdsId': { $exists: false } },
+                      { propertyIds: null },
+                      { rentalIds: null },
+                    ],
+                  },
+                  {
+                    $and: [
+                      {
+                        'activityIds.activityId':
+                          activityIds.activityId || null,
+                      },
+                      {
+                        'activityIds.timeSlotId':
+                          activityIds.timeSlotId || null,
+                      },
+                      {
+                        'activityIds.slotIdsId': activityIds.slotIdsId || null,
+                      },
+                      { propertyIds: null },
+                      { rentalIds: null },
+                    ],
+                  },
+                ]
+              : []),
+          ],
+        })
+        if (existingCart) {
+          existingCart.price = price
+          existingCart.updatedAt = new Date()
+          existingCart.startDate = new Date(startDate)
+          existingCart.endDate = new Date(endDate)
+
+          await existingCart.save()
+          res.json(
+            response.success({
+              item: existingCart,
+              message: 'Cart list  updated successfully',
+            })
+          )
+        } else {
+          const newCart = new dbCarts({
+            userId,
+            price,
+            propertyIds,
+            rentalIds,
+            activityIds,
+            status: 'Active',
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            createdAt: Date.now(),
+            updatedAt: null,
+            deletedAt: null,
           })
-        )
+          const saveCart = await newCart.save()
+          res.json(
+            response.success({
+              item: saveCart,
+              message: 'Cart list  updated successfully',
+            })
+          )
+        }
       }
     }
   } catch (err: any) {

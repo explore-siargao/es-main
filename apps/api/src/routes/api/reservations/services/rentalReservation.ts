@@ -29,7 +29,10 @@ export const addRentalReservation = async (req: Request, res: Response) => {
         // Check for overlapping reservations on the same rentalId
         const overlappingReservation = await dbReservations.findOne({
           'rentalIds.qtyIdsId': qtyIdsId,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $or: [
             {
               startDate: { $lt: end_date },
@@ -102,7 +105,10 @@ export const editRentalReservation = async (req: Request, res: Response) => {
       const overlappingReservation = await dbReservations.findOne({
         'rentalIds.qtyIdsId': reservation?.rentalIds?.qtyIdsId,
         _id: { $ne: reservation?._id },
-        status: { $ne: 'Cancelled' },
+        $and: [
+          { status: { $ne: 'Cancelled' } },
+          { status: { $ne: 'For-Payment' } },
+        ],
         $or: [
           {
             startDate: { $lt: endDate },
@@ -160,7 +166,10 @@ export const cancelRentalReservationByHost = async (
     const reservation = await dbReservations.findOne({
       _id: reservationId,
       deletedAt: null,
-      status: { $ne: 'Cancelled' },
+      $and: [
+        { status: { $ne: 'Cancelled' } },
+        { status: { $ne: 'For-Payment' } },
+      ],
     })
 
     if (reservation) {
@@ -180,7 +189,7 @@ export const cancelRentalReservationByHost = async (
             reservation._id,
             {
               status: 'Cancelled',
-              cancelledBy: 'host',
+              cancelledBy: 'Host',
               cancellationDate: Date.now(),
               hostHavePenalty: false,
               updatedAt: Date.now(),
@@ -198,7 +207,7 @@ export const cancelRentalReservationByHost = async (
             reservation._id,
             {
               status: 'Cancelled',
-              cancelledBy: 'host',
+              cancelledBy: 'Host',
               cancellationDate: Date.now(),
               hostHavePenalty: true,
               updatedAt: Date.now(),

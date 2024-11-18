@@ -93,7 +93,7 @@ const reservations = new Schema({
   },
   cancelledBy: {
     type: String,
-    enum: ["host", "guest"],
+    enum: ["Host", "Guest"],
     default: null,
   },
   cancellationDate: {

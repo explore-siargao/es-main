@@ -3,7 +3,10 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { T_Add_Reservation } from '@repo/contract-2/reservations'
+import {
+  T_Add_Reservation,
+  Z_Add_Reservations,
+} from '@repo/contract-2/reservations'
 import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
@@ -17,7 +20,10 @@ export const getAllReservations = async (req: Request, res: Response) => {
         $match: {
           guest: new Types.ObjectId(userId),
           deletedAt: null,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
         },
       },
       {
@@ -531,7 +537,13 @@ export const getAllReservations = async (req: Request, res: Response) => {
     ]
     const reservations = await dbReservations.aggregate(pipeline)
     const totalCounts = await dbReservations
-      .find({ guest: userId, status: { $ne: 'Cancelled' } })
+      .find({
+        guest: userId,
+        $and: [
+          { status: { $ne: 'Cancelled' } },
+          { status: { $ne: 'For-Payment' } },
+        ],
+      })
       .countDocuments()
 
     if (!reservations || reservations.length === 0) {
@@ -559,14 +571,25 @@ export const getAllReservations = async (req: Request, res: Response) => {
   }
 }
 
-export const addMultipleReservations = async (req: Request, res: Response) => {
+export const updateReservationStatusByReferenceId = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const items: T_Add_Reservation[] = req.body.items
-    if (!items || items.length === 0) {
-      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+    const referenceId = req.params.referenceId
+    const confirmedStatus = await dbReservations.updateMany(
+      { xendItPaymentReferenceId: referenceId },
+      {
+        $set: { status: 'Confirmed' },
+        updatedAt: Date.now(),
+      }
+    )
+    if (!confirmedStatus) {
+      res.json(response.error({ message: 'Wrong reference ID' }))
     } else {
-      const addReservations = await dbReservations.insertMany(items)
-      res.json(response.success({ message: 'Reservations added successfully' }))
+      res.json(
+        response.success({ message: 'Reservation status updated successfully' })
+      )
     }
   } catch (err: any) {
     res.json(
