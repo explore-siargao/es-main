@@ -1,18 +1,22 @@
 import z from "zod"
 import {
-  Z_UnitPrice,
+  Z_Bookable_PricePerDate,
+  Z_Property,
+  Z_Unit_Price,
   Z_Amenity,
   Z_Bed,
   Z_Bedroom,
-  Z_BookableUnit,
+  Z_Bookable_Unit,
   Z_Facility,
   Z_Policy,
 } from "./zod"
 
-export type T_UnitPrice = z.infer<typeof Z_UnitPrice>
+export type T_Property = z.infer<typeof Z_Property>
+export type T_Bookable_PricePerDate = z.infer<typeof Z_Bookable_PricePerDate>
+export type T_Unit_Price = z.infer<typeof Z_Unit_Price>
 export type T_Amenity = z.infer<typeof Z_Amenity>
 export type T_Bed = z.infer<typeof Z_Bed>
 export type T_Bedroom = z.infer<typeof Z_Bedroom>
-export type T_BookableUnit = z.infer<typeof Z_BookableUnit>
+export type T_Bookable_Unit = z.infer<typeof Z_Bookable_Unit>
 export type T_Facility = z.infer<typeof Z_Facility>
 export type T_Policy = z.infer<typeof Z_Policy>

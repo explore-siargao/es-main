@@ -20,9 +20,9 @@ const priceConversion = async (
   res: Response,
   next: NextFunction
 ) => {
-  let currency = E_Supported_Currencies.PHP
+  const currency = req.header('currency')
   const isValid = Z_Supported_Currency.safeParse(currency).success
-  currency = isValid
+  const validCurrency = isValid
     ? (req.header('currency') as E_Supported_Currencies)
     : E_Supported_Currencies.PHP
   try {
@@ -74,13 +74,13 @@ const priceConversion = async (
 
       // Set response data
       res.locals.currency = {
-        preferred: currency,
+        preferred: validCurrency,
         conversionRates: filteredRates,
       }
     } else {
       // If conversion rates are found in Redis, use them
       res.locals.currency = {
-        preferred: currency,
+        preferred: validCurrency,
         conversionRates: conversionRate,
       }
     }

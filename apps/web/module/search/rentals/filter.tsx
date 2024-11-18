@@ -1,7 +1,7 @@
 "use client"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Map from "./map"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import useGetRentalListings from "./hooks/use-get-listings"
@@ -10,10 +10,16 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import RentalCard from "./card"
 import getNumberOrAny from "@/common/helpers/getNumberOrAny"
 import { E_Location } from "@repo/contract-2/search-filters"
+import Pagination from "../components/pagination"
 
 const RentalsFilter = () => {
   const searchParams = useSearchParams()
-  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 0
+  const router = useRouter()
+
+  const [page, setPage] = useState(
+    searchParams.get("page") ? Number(searchParams.get("page")) : 1
+  )
+
   const location = searchParams.get("location") || "any"
   const vehicleTypes = searchParams.get("vehicleTypes") || "any"
   const transmissionTypes = searchParams.get("transmissionTypes") || "any"
@@ -57,29 +63,17 @@ const RentalsFilter = () => {
     dropOffDate,
   ])
 
-  const rentals = (rentalUnits?.items as any)?.map((item: any) => {
-    // TODO: fix types
-    const category: E_Rental_Category = item.category
-    const titleMap = {
-      [E_Rental_Category.Motorbike]: `${item.make} ${item.modelBadge}`,
-      [E_Rental_Category.Car]: `${item.year} ${item.make} ${item.modelBadge}`,
-      [E_Rental_Category.Bicycle]: item.make,
-    }
-    return {
-      title: titleMap[category],
-      location: item.location,
-      listingId: item._id,
-      price: item.pricing.dayRate,
-      photos: item.photos.map((photo: { key: string }) => ({
-        key: photo.key,
-      })),
-      category,
-      average: item.average,
-      reviewsCount: item.reviewsCount,
-      transmission: item.transmission,
-      fuel: item.fuel,
-    }
-  })
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+    const params = new URLSearchParams(window.location.search)
+    params.set("page", newPage.toString())
+    router.push(`?${params.toString()}`)
+  }
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil((rentalUnits?.allItemCount || 0) / 15)
+  )
 
   if (isLoading) {
     return (
@@ -91,6 +85,8 @@ const RentalsFilter = () => {
     )
   }
 
+  const rentals = rentalUnits?.items
+
   return (
     <WidthWrapper width="medium">
       <div className="flex gap-7 mt-16">
@@ -100,15 +96,11 @@ const RentalsFilter = () => {
             {isRefetching ? <Spinner variant="primary" /> : null}
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
               <div className="grid grid-cols-3 gap-6">
-                {rentals?.map(
-                  (
-                    item: any // TODO: fix types
-                  ) => (
-                    <div key={item.listingId}>
-                      <RentalCard {...item} />
-                    </div>
-                  )
-                )}
+                {rentals?.map((item) => (
+                  <div key={item._id}>
+                    <RentalCard {...item} />
+                  </div>
+                ))}
               </div>
             ) : null}
 
@@ -128,6 +120,15 @@ const RentalsFilter = () => {
           </div>
         </div>
       </div>
+      <Pagination
+        pageIndex={page - 1}
+        pageCount={totalPages}
+        canPreviousPage={page > 1}
+        canNextPage={page < totalPages}
+        gotoPage={(newPage) => handlePageChange(newPage + 1)}
+        previousPage={() => handlePageChange(page - 1)}
+        nextPage={() => handlePageChange(page + 1)}
+      />
     </WidthWrapper>
   )
 }

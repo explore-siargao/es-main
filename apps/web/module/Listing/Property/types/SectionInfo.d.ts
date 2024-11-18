@@ -36,7 +36,9 @@ export type T_ImagesProps = {
   images: T_Image[]
   isViewModal: boolean
   showThreeOnly?: boolean
+  showTwoOnly?: boolean
   isRoundedEdge?: boolean
+  isImageAllowClickView?: boolean
 }
 
 export type T_ImageGalleryModalProps = {

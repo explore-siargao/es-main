@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { Z_ReservationCalendar } from "../reservations"
-import { Z_Rental_PricePerDate } from "../price-per-dates"
+import { Z_Rental_PricePerDate } from "../rentals"
 
 export const Z_Car = z.object({
   id: z.string(),

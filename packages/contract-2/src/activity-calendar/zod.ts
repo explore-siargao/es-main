@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { Z_ReservationCalendar } from "../reservations"
-import { Z_Activity_PricePerDate } from "../price-per-dates"
+import { Z_Activity_PricePerDate } from "../activity"
 
 export const Z_Slot_Joiner = z.object({
   id: z.string().optional(),

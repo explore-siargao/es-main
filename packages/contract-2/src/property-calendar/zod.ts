@@ -1,7 +1,6 @@
 import { z } from "zod"
-import { Z_Bookable_PricePerDate } from "../price-per-dates"
 import { Z_ReservationCalendar } from "../reservations"
-import { Z_UnitPrice } from "../property-bookable"
+import { Z_Bookable_PricePerDate, Z_Unit_Price } from "../property/zod"
 
 export const Z_Unit_Qty = z.object({
   id: z.string().optional(),
@@ -13,7 +12,7 @@ export const Z_Unit_Qty = z.object({
 export const Z_Bookable_Unit = z.object({
   id: z.string().optional(),
   name: z.string(),
-  price: Z_UnitPrice,
+  price: Z_Unit_Price,
   pricePerDates: z.array(Z_Bookable_PricePerDate),
   wholePlaces: z.array(Z_Unit_Qty).optional(),
   rooms: z.array(Z_Unit_Qty).optional(),

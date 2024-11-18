@@ -2,11 +2,15 @@ import pluralize from "pluralize"
 import { ApiService } from "../common/services/api"
 import {
   T_Activities_Search,
+  T_Activity_Filtered,
   T_Category_Highest_Price,
   T_Properties_Search,
+  T_Property_Filtered,
+  T_Rental_Filtered,
   T_Rentals_Search,
 } from "./type"
 import { E_Listing_Category } from "@repo/contract"
+
 import {
   Z_Activities_Search,
   Z_Properties_Search,
@@ -62,47 +66,55 @@ export class FilterService {
     this.api = new ApiService(source)
   }
 
-  async getPaginatedListings({
-    category,
+  async getPaginatedRentals({
     searchQueries,
   }: {
-    category: E_Listing_Category
-    searchQueries: T_Properties_Search | T_Activities_Search | T_Rentals_Search
+    searchQueries: T_Rentals_Search
   }) {
-    // Convert values to strings
     const stringSearchQueries = Object.fromEntries(
       Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
     )
+    let isValid = Z_Rentals_Search.safeParse(searchQueries).success
+    let queryString = isValid
+      ? new URLSearchParams(stringSearchQueries).toString()
+      : rentalQueryParts.join("&")
+    return this.api.get<{
+      items: T_Rental_Filtered[]
+    }>(`/rentals/filtered?${queryString}`)
+  }
 
-    let queryString = ""
-    let isValid = false
-
-    if (category === E_Listing_Category.Property) {
-      isValid = Z_Properties_Search.safeParse(searchQueries).success
-      if (isValid) {
-        queryString = new URLSearchParams(stringSearchQueries).toString()
-      } else {
-        queryString = propertyQueryParts.join("&")
-      }
-    } else if (category === E_Listing_Category.Activity) {
-      isValid = Z_Activities_Search.safeParse(searchQueries).success
-      if (isValid) {
-        queryString = new URLSearchParams(stringSearchQueries).toString()
-      } else {
-        queryString = activityQueryParts.join("&")
-      }
-    } else if (category === E_Listing_Category.Rental) {
-      isValid = Z_Rentals_Search.safeParse(searchQueries).success
-      if (isValid) {
-        queryString = new URLSearchParams(stringSearchQueries).toString()
-      } else {
-        queryString = rentalQueryParts.join("&")
-      }
-    }
-
-    return this.api.get(
-      `/${pluralize(category).toLocaleLowerCase()}/filtered?${queryString}`
+  async getPaginatedActivities({
+    searchQueries,
+  }: {
+    searchQueries: T_Activities_Search
+  }) {
+    const stringSearchQueries = Object.fromEntries(
+      Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
     )
+    let isValid = Z_Activities_Search.safeParse(searchQueries).success
+    let queryString = isValid
+      ? new URLSearchParams(stringSearchQueries).toString()
+      : activityQueryParts.join("&")
+    return this.api.get<{
+      items: T_Activity_Filtered[]
+    }>(`/activities/filtered?${queryString}`)
+  }
+
+  async getPaginatedProperties({
+    searchQueries,
+  }: {
+    searchQueries: T_Properties_Search
+  }) {
+    const stringSearchQueries = Object.fromEntries(
+      Object.entries(searchQueries).map(([key, value]) => [key, String(value)])
+    )
+    let isValid = Z_Properties_Search.safeParse(searchQueries).success
+    let queryString = isValid
+      ? new URLSearchParams(stringSearchQueries).toString()
+      : propertyQueryParts.join("&")
+    return this.api.get<{
+      items: T_Property_Filtered[]
+    }>(`/properties/filtered?${queryString}`)
   }
 
   async getCategoryHighestPrice({

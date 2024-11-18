@@ -3,18 +3,29 @@ import { z } from "zod"
 import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
-import { Z_Activity_Segment } from "../activity-segments"
-import { Z_Activity_Schedule } from "../activity-schedules"
+import {
+  Z_Rental_PricePerDate,
+  Z_Rental_AddOns,
+  Z_Rental_Details,
+  Z_Rental_Price,
+} from "../rentals"
+import { E_Location } from "./enum"
+import {
+  E_Rental_Category,
+  E_Rental_Vehicle_Fuel,
+  E_Rental_Vehicle_Transmission,
+} from "../rentals/enum"
+import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
 import {
   Z_Activity_PricePerDate,
-  Z_Rental_PricePerDate,
-} from "../price-per-dates"
-import { Z_RentalAddOns, Z_RentalDetails, Z_RentalPrice } from "../rentals"
-import { Z_BookableUnit, Z_Facility, Z_Policy } from "../property-bookable"
+  Z_Activity_Schedule,
+  Z_Activity_Segment,
+} from "../activity"
 
 export const Z_Properties_Search = z.object({
-  location: z.string().default("any"),
-  propertyType: z.string().default("any"),
+  page: z.number().min(1).default(1),
+  location: z.nativeEnum(E_Location).default(E_Location.any),
+  propertyTypes: z.string().default("any"), // TODO: ENUMS
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   bedroomCount: z.number().min(1).or(z.literal("any")).default(0),
@@ -24,56 +35,68 @@ export const Z_Properties_Search = z.object({
   amenities: z.string().default("any"),
   starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
   checkIn: z
-    .string()
-    .refine((date) => date === "any" || !isNaN(new Date(date).getTime()), {
-      message: "Invalid date format",
-    })
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+        message: "Invalid date format",
+      }),
+    ])
     .default("any"),
   checkOut: z
-    .string()
-    .refine((date) => date === "any" || !isNaN(new Date(date).getTime()), {
-      message: "Invalid date format",
-    })
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+        message: "Invalid date format",
+      }),
+    ])
     .default("any"),
-  numberOfGuest: z.number().min(1).or(z.literal("any")).default(1),
+  numberOfGuest: z.number().min(1).or(z.literal("any")).default("any"),
 })
 
 export const Z_Activities_Search = z.object({
-  location: z.string().default("any"),
-  activityType: z.string().default("any"),
-  experienceType: z.string().default("any"),
+  page: z.number().min(1).default(1),
+  location: z.nativeEnum(E_Location).default(E_Location.any),
+  activityTypes: z.string().default("any"), // TODO: ENUMS
+  experienceTypes: z.string().default("any"), // TODO: ENUMS
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
-  duration: z.number().min(1).or(z.literal("any")).default(1),
+  durations: z.number().min(1).or(z.literal("any")).default(1),
   starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
-  date: z
-    .string()
-    .refine((date) => date === "any" || !isNaN(new Date(date).getTime()), {
-      message: "Invalid date format",
-    })
+  activityDate: z
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+        message: "Invalid date format",
+      }),
+    ])
     .default("any"),
   numberOfGuest: z.number().min(1).or(z.literal("any")).default(1),
 })
 
 export const Z_Rentals_Search = z.object({
-  location: z.string().default("any"),
-  vehicleType: z.string().default("any"),
-  transmissionType: z.string().default("any"),
+  page: z.number().min(1).default(1),
+  location: z.nativeEnum(E_Location).default(E_Location.any),
+  vehicleTypes: z.string().default("any"), // TODO: ENUMS
+  transmissionTypes: z.string().default("any"), // TODO: ENUMS
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   seatCount: z.number().min(1).or(z.literal("any")).default(1),
   starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
   pickUpDate: z
-    .string()
-    .refine((date) => date === "any" || !isNaN(new Date(date).getTime()), {
-      message: "Invalid date format",
-    })
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+        message: "Invalid date format",
+      }),
+    ])
     .default("any"),
   dropOffDate: z
-    .string()
-    .refine((date) => date === "any" || !isNaN(new Date(date).getTime()), {
-      message: "Invalid date format",
-    })
+    .union([
+      z.literal("any"),
+      z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+        message: "Invalid date format",
+      }),
+    ])
     .default("any"),
 })
 
@@ -82,20 +105,21 @@ export const Z_Category_Highest_Price = z.object({
 })
 
 export const Z_Rental_Filtered = z.object({
+  // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
   _id: z.string().optional(),
-  details: Z_RentalDetails.nullable(),
-  pricing: Z_RentalPrice.nullable(),
+  details: Z_Rental_Details.nullable(),
+  pricing: Z_Rental_Price.nullable(),
   host: Z_Host,
-  category: z.enum(["Car", "Motorbike", "Bicycle"]),
+  category: z.nativeEnum(E_Rental_Category),
   make: z.string(),
   modelBadge: z.string().optional().nullable(),
   bodyType: z.string().optional().nullable(),
-  fuel: z.enum(["Petrol", "Diesel", "Electric"]).nullable(),
-  transmission: z.enum(["Automatic", "Semi-Automatic", "Manual"]).nullable(),
+  fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
+  transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
   year: z.string().optional().nullable(),
   qty: z.number(),
-  addOns: Z_RentalAddOns.nullable(),
-  photos: Z_Photo.nullable(),
+  addOns: Z_Rental_AddOns.nullable(),
+  photos: z.array(Z_Photo),
   location: Z_Location.nullable(),
   status: z.enum(["Pending", "Incomplete", "Live"]),
   finishedSections: z.array(z.string()),
@@ -114,6 +138,7 @@ export const Z_Rental_Filtered = z.object({
 })
 
 export const Z_Activity_Filtered = z.object({
+  // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
   _id: z.string().optional(),
   host: Z_Host,
   title: z.string().optional(),
@@ -156,32 +181,14 @@ export const Z_Activity_Filtered = z.object({
 })
 
 export const Z_Property_Filtered = z.object({
-  _id: z.string(),
-  offerBy: Z_Host,
-  status: z.enum(["Pending", "Incomplete", "Live"]),
-  title: z.string(),
-  description: z.string(),
-  currency: z.string().nullable(),
-  primaryLanguage: z.string().nullable(),
-  photos: z.array(Z_Photo),
-  phone: z.string().nullable(),
-  email: z.string().nullable(),
+  listingId: z.string(),
+  type: z.nativeEnum(E_Property_Type),
+  wholeplaceType: z.nativeEnum(E_Whole_Place_Property_Type).optional(),
   location: Z_Location,
-  checkInTime: z.string().nullable(),
-  checkOutTime: z.string().nullable(),
-  isLateCheckOutAllowed: z.boolean(),
-  lateCheckOutType: z.string().nullable(),
-  lateCheckOutValue: z.number().nullable(),
-  termsAndConditions: z.string().nullable(),
-  taxId: z.string().nullable(),
-  taxId2: z.string().nullable(),
-  companyLegalName: z.string().nullable(),
-  type: z.string(),
-  wholeplaceType: z.string().nullable(),
-  facilities: z.array(Z_Facility),
-  policies: z.array(Z_Policy),
-  bookableUnits: z.array(Z_BookableUnit),
-  createdAt: z.string().nullable().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
+  title: z.string().nullable(),
+  subtitle: z.string().nullable(),
+  photos: z.array(Z_Photo),
+  average: z.number().optional(),
+  reviewsCount: z.number().optional(),
+  price: z.number(),
 })

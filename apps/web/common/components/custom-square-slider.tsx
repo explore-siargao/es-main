@@ -5,6 +5,8 @@ import "swiper/css/navigation"
 import "swiper/css/pagination"
 import Image from "./ui/image"
 import { IMAGE_FALLBACK } from "../constants"
+import { Typography } from "./ui/Typography"
+import { ReactNode } from "react"
 
 interface SliderProps {
   images: {
@@ -19,7 +21,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
       navigation={images.length > 0}
       pagination={{ type: "bullets", clickable: true }}
       modules={[Navigation, Pagination]}
-      className="h-full w-full rounded-xl"
+      className="h-full w-full rounded-xl relative"
     >
       <style>{`
         .swiper-button-prev, .swiper-button-next {
@@ -70,15 +72,15 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
           object-fit: cover;
         }
       `}</style>
-
       {images.length > 0 ? (
         images.map((image) => (
           <SwiperSlide key={image.key}>
             <div className="image-wrapper">
               <Image
                 src={`/assets/${image.key}`}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                 alt={image.alt}
-                layout="fill"
+                fill
                 className="object-cover"
               />
             </div>
@@ -89,8 +91,9 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
           <div className="image-wrapper">
             <Image
               src={IMAGE_FALLBACK}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               alt={"error"}
-              layout="fill"
+              fill
               className="object-cover"
             />
           </div>
