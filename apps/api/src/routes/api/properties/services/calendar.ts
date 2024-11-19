@@ -12,7 +12,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { convertPrice } from '@/common/helpers/convert-price'
-import { T_Bookable_PricePerDate } from '@repo/contract-2/price-per-dates'
+import { T_Bookable_PricePerDate } from '@repo/contract-2/property'
 
 const response = new ResponseService()
 
