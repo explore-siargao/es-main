@@ -218,7 +218,7 @@ const AdditionalInfo = ({ pageType }: Prop) => {
                 </Typography>
                 {notAllowed.length > 0 && (
                   <ul>
-                    {notAllowed.map((item) => (
+                    {notAllowed?.map((item) => (
                       <li
                         key={item.id}
                         className="mt-2 p-2 border border-gray-100 rounded-md flex justify-between items-center"

@@ -31,7 +31,7 @@ const RentalCard = (props: T_Rental_Filtered) => {
   return (
     <>
       <li className="relative rounded-xl overflow-hidden h-full list-none">
-        <Link href={`/listing/rentals/${listingId}`} target="_blank">
+        <Link href={`/listings/rentals/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             {reviewsCount < 1 ? <NewlyAddedTag /> : null}
             <button

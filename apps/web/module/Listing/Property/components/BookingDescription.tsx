@@ -12,7 +12,7 @@ const BookingDescription = ({
   const [descriptionModalOpen, setDescriptionModalOpen] = useState(false)
   const maximumLength = 600
   const slicedDescription =
-    generalDescription.length > maximumLength
+    generalDescription?.length > maximumLength
       ? generalDescription.slice(0, maximumLength) + "....."
       : generalDescription
   return (

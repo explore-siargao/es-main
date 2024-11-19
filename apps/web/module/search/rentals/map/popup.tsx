@@ -47,7 +47,7 @@ const Popup = ({
       offset={[0, -2]}
     >
       {reviewsCount < 1 ? <NewlyAddedTag /> : null}
-      <Link href={`/listing/rental/${listingId}`} target="_blank">
+      <Link href={`/listings/rentals/${listingId}`} target="_blank">
         {photos && photos.length > 0 ? (
           <Image
             src={`/assets/${photos[0]?.key}`}

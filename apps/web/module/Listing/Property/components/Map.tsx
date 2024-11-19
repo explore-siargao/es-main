@@ -40,7 +40,7 @@ const WhereYoullBeDescription: React.FC<WhereYoullBeDescriptionProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const maxLength = 600
   const slicedDescription =
-    desc.length > maxLength ? desc.slice(0, maxLength) + "...." : desc
+    desc?.length > maxLength ? desc.slice(0, maxLength) + "...." : desc
 
   return (
     <div className="flex flex-col w-full">
