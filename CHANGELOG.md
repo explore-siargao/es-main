@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.33.0](https://github.com/explore-siargao/es-main/compare/v0.32.0...v0.33.0) (2024-11-20)
+
+
+### 🚀 Features
+
+* Added currency header in contract api service ([c9cf34b](https://github.com/explore-siargao/es-main/commit/c9cf34bafff4c77997224a944ac60e0b21d864f6))
+* Added endpoint for checking out cart items to reservations and updated hook on payment success on frontend ([d8aab5b](https://github.com/explore-siargao/es-main/commit/d8aab5be918828ab2b7831e7c4f133daa28961d8))
+* Added pagination for search page result for all category ([9a68bfc](https://github.com/explore-siargao/es-main/commit/9a68bfca827f1ec973aef9deb251c97bfac03c9e))
+* **api:** Added endpoint for cart to reservations ([d67d063](https://github.com/explore-siargao/es-main/commit/d67d063f83bf3feec11d93c8ec719b3b18d63689))
+* **api:** Added endpoint for multiple reservations and payment ([e8de861](https://github.com/explore-siargao/es-main/commit/e8de861685717a70aa30ea9c7a0ee7f34ce29d84))
+* **api:** Converted all related to price rates on calendar and filter endpoints ([03a86ea](https://github.com/explore-siargao/es-main/commit/03a86eac1ffcc8c85a98414325915a917fdad7be))
+* Make main search bar only accepts location for search and added loading icon for its button ([fd12f8a](https://github.com/explore-siargao/es-main/commit/fd12f8a9776309cd7f8ecf962e8bfc611eb62ed0))
+* Pagination of search page flatten need to come from the backend ([4d564e1](https://github.com/explore-siargao/es-main/commit/4d564e1e031ff84b2cf7bb531fb3c450597a58a7))
+* **web:** Modified units in public page listing ([ba49f0c](https://github.com/explore-siargao/es-main/commit/ba49f0c0d71c2be0fc0019dae2c1c0b99e6deab9))
+
+
+### 🛠 Bug Fixes
+
+* Change date converstion to toISOString for calendar ([06d1eff](https://github.com/explore-siargao/es-main/commit/06d1efffbe1c7bb89b70ef19cb0950b99968f585))
+* change price per date type contract directory ([8efa2c9](https://github.com/explore-siargao/es-main/commit/8efa2c9b224717c80d0d08578e6e42fd485e3563))
+* console errors for next image ([4cf07d5](https://github.com/explore-siargao/es-main/commit/4cf07d5d476c14916575f08741b5bce93c5840dc))
+* Move calendar localdatestring to isodatestring ([06c5666](https://github.com/explore-siargao/es-main/commit/06c56661190f7f159e14d97b9c74d1854893857b))
+
+
+### 🧰 Maintenance
+
+* change listing public page url ([1e5c331](https://github.com/explore-siargao/es-main/commit/1e5c331e41a9a8d69093349f10f57d70c2aba839))
+* made the rentals and activities url and tabs plural ([8e880a4](https://github.com/explore-siargao/es-main/commit/8e880a482e53114a517df86969bf293583fd89b9))
+* made the text smaller on listing cards ([128faf8](https://github.com/explore-siargao/es-main/commit/128faf8d08f878b2f5d97ec3b5a8cf7a847723c8))
+* revert the update search params for listing search ([5a3f755](https://github.com/explore-siargao/es-main/commit/5a3f75581a4c67b979dcd6846ce90c01f0092e67))
+
 ## [0.32.0](https://github.com/explore-siargao/es-main/compare/v0.31.0...v0.32.0) (2024-11-14)
 
 ### 🚀 Features
