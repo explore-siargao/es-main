@@ -7,7 +7,7 @@ const Highlights = ({ highlights }: { highlights: string[] }) => {
       <TitleSection size="lg" title="Highlights">
         <div className="mb-5"></div>
         <div className="flex flex-col gap-4 w-full">
-          {highlights.map((highlight) => (
+          {highlights?.map((highlight) => (
             <div className="flex gap-2">
               <Check className="text-primary-700 shrink-0" />
               {highlight}

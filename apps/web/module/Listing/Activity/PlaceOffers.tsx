@@ -41,13 +41,13 @@ const PlaceOffers = ({
             </div>
           )}
 
-          {otherInclusion.map((item) => (
+          {otherInclusion?.map((item) => (
             <div className="flex gap-2">
               <Check className="text-primary-700 shrink-0" />
               {item}
             </div>
           ))}
-          {notIncluded.map((item) => (
+          {notIncluded?.map((item) => (
             <div className="flex gap-2">
               <X className="text-error-500 shrink-0" />
               {item}

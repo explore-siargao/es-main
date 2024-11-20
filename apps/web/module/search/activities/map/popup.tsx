@@ -39,7 +39,7 @@ const Popup = ({
       className="relative"
     >
       {reviewsCount < 1 ? <NewlyAddedTag /> : null}
-      <Link href={`/listing/activities/${listingId}`} target="_blank">
+      <Link href={`/listings/activities/${listingId}`} target="_blank">
         {photos && photos.length > 0 ? (
           <Image
             src={`/assets/${photos[0]?.key}`}

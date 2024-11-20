@@ -133,6 +133,44 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
   }
 }
 
+export const getActivityByIdPublic = async (req: Request, res: Response) => {
+  try {
+    const activityId = req.params.activityId
+    const rental = await dbActivities
+      .findOne({
+        _id: activityId,
+        // status: E_Rental_Status.Pending,
+      })
+      .populate('host', 'email isHost')
+      .populate('meetingPoint')
+      .populate('photos')
+      .select('title description status')
+      .exec()
+
+    if (!rental) {
+      res.json(
+        response.error({
+          status: 404,
+          message: 'Rental with given ID not found!',
+        })
+      )
+    } else {
+      res.json(
+        response.success({
+          item: rental,
+        })
+      )
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        status: 500,
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
 export const updateItinerary = async (req: Request, res: Response) => {
   const activityId = req.params.activityId
   const isHost = res.locals.user?.isHost

@@ -11,6 +11,7 @@ import { QK_CALENDAR_MOTOR_RENTALS } from "../constants"
 import useGetRentalCounts from "../hooks/use-get-rental-counts"
 import { E_Rental_Category } from "@repo/contract"
 import { useCalendarStore } from "../stores/use-motor-store"
+import pluralize from "pluralize"
 
 const Controls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -35,20 +36,20 @@ const Controls = () => {
   if (rentalCountsData && !rentalCountsPending) {
     if (rentalCountsData?.item?.cars > 0) {
       rentalTabs.push({
-        name: E_Rental_Category.Car,
+        name: pluralize(E_Rental_Category.Car),
         link: "/hosting/reservations/calendar/rentals/cars",
       })
     }
 
     if (rentalCountsData?.item?.motorbikes > 0) {
       rentalTabs.push({
-        name: E_Rental_Category.Motorbike,
+        name: pluralize(E_Rental_Category.Motorbike),
         link: "/hosting/reservations/calendar/rentals/motorcycles",
       })
     }
     if (rentalCountsData?.item?.bicycles > 0) {
       rentalTabs.push({
-        name: E_Rental_Category.Bicycle,
+        name: pluralize(E_Rental_Category.Bicycle),
         link: "/hosting/reservations/calendar/rentals/bicycles",
       })
     }

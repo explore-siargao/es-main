@@ -22,7 +22,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   return (
     <>
       <li className="relative rounded-xl overflow-hidden h-full list-none">
-        <Link href={`/listing/rentals/${listingId}`} target="_blank">
+        <Link href={`/listings/activities/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             {reviewsCount < 1 ? <NewlyAddedTag /> : null}
             <button

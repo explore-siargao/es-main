@@ -9,8 +9,8 @@ import CarCalendarTable from "./car-calendar-table"
 const CarReservationCalendar = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetCarRentals(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
+    currentDate.toISOString(),
+    currentDate.toISOString()
   )
 
   return (

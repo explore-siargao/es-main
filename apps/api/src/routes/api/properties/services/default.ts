@@ -94,7 +94,7 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
     const property = await dbProperties
       .findOne({
         _id: propertyId,
-        status: E_Property_Status.pending,
+        status: E_Property_Status.live,
         deletedAt: null,
       })
       .populate({
