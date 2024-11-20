@@ -50,7 +50,7 @@ const SearchBarByState = ({
       checkIn: checkIn === "any" ? "" : checkIn,
       checkOut: checkOut === "any" ? "" : checkOut,
       activityDate: activityDate === "any" ? "" : activityDate,
-      numberOfGuest: numberOfGuest === "any" ? "" : (numberOfGuest ?? "1"),
+      numberOfGuest: numberOfGuest === "any" ? "" : numberOfGuest,
       vehicleType: vehicleType[0],
       pickUpDate: pickUpDate === "any" ? "" : pickUpDate,
       dropOffDate: dropOffDate === "any" ? "" : dropOffDate,
@@ -69,48 +69,40 @@ const SearchBarByState = ({
   }: T_Search) => {
     if (
       pathCategory?.includes(LINK_SEARCH_PROPERTY) &&
-      location &&
-      checkIn &&
-      checkOut &&
-      numberOfGuest
+      location
     ) {
       router.push(
         buildPropertySearchURL({
           page: page ? page : "1",
           location,
-          checkIn,
-          checkOut,
-          numberOfGuest,
+          checkIn: checkIn ?? "any",
+          checkOut: checkOut ?? "any",
+          numberOfGuest: numberOfGuest ?? "any",
         })
       )
     } else if (
       pathCategory?.includes(LINK_SEARCH_ACTIVITIES) &&
-      location &&
-      activityDate &&
-      numberOfGuest
+      location
     ) {
       router.push(
         buildActivitySearchURL({
           page: page ? page : "1",
           location,
-          activityDate,
-          numberOfGuest,
+          activityDate: activityDate ?? "any",
+          numberOfGuest: numberOfGuest ?? "any",
         })
       )
     } else if (
       pathCategory?.includes(LINK_SEARCH_RENTAL) &&
-      location &&
-      vehicleType &&
-      pickUpDate &&
-      dropOffDate
+      location
     ) {
       router.push(
         buildRentalSearchURL({
           page: page ? page : "1",
           location,
-          vehicleType,
-          pickUpDate,
-          dropOffDate,
+          vehicleType: vehicleType ?? "any",
+          pickUpDate: pickUpDate ?? "any",
+          dropOffDate: dropOffDate ?? "any",
         })
       )
     }

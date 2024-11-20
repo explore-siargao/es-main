@@ -12,6 +12,7 @@ const spinnerVariants = cva("font-bold", {
       secondary: "text-secondary-400 fill-secondary-700",
     },
     size: {
+      xs: "w-4 h-4",
       sm: "w-6 h-6",
       md: "w-8 h-8",
       lg: "w-12 h-12",
