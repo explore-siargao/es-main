@@ -67,10 +67,7 @@ const SearchBarByState = ({
     pickUpDate,
     dropOffDate,
   }: T_Search) => {
-    if (
-      pathCategory?.includes(LINK_SEARCH_PROPERTY) &&
-      location
-    ) {
+    if (pathCategory?.includes(LINK_SEARCH_PROPERTY) && location) {
       router.push(
         buildPropertySearchURL({
           page: page ? page : "1",
@@ -80,10 +77,7 @@ const SearchBarByState = ({
           numberOfGuest: numberOfGuest ?? "any",
         })
       )
-    } else if (
-      pathCategory?.includes(LINK_SEARCH_ACTIVITIES) &&
-      location
-    ) {
+    } else if (pathCategory?.includes(LINK_SEARCH_ACTIVITIES) && location) {
       router.push(
         buildActivitySearchURL({
           page: page ? page : "1",
@@ -92,10 +86,7 @@ const SearchBarByState = ({
           numberOfGuest: numberOfGuest ?? "any",
         })
       )
-    } else if (
-      pathCategory?.includes(LINK_SEARCH_RENTAL) &&
-      location
-    ) {
+    } else if (pathCategory?.includes(LINK_SEARCH_RENTAL) && location) {
       router.push(
         buildRentalSearchURL({
           page: page ? page : "1",

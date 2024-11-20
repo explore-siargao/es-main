@@ -11,9 +11,9 @@ import { Spinner } from "../../ui/Spinner"
 import { useSearchParams } from "next/navigation"
 
 function PropertySearchBar() {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
   const { register, watch, setValue, getValues } = useFormContext()
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const dateToday = format(new Date(), "yyyy-MM-dd")
 
   useEffect(() => {
@@ -25,10 +25,9 @@ function PropertySearchBar() {
   }, [watch("checkIn")])
 
   useEffect(() => {
-    if(isLoading)
-    setIsLoading(false)
+    if (isLoading) setIsLoading(false)
   }, [searchParams])
-  
+
   return (
     <div className="flex w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
       <Select
@@ -74,7 +73,11 @@ function PropertySearchBar() {
         className="h-full px-4 py-3 justify-center items-center rounded-full gap-x-2"
         onClick={() => setIsLoading(true)}
       >
-        {!isLoading ? <Search className="text-white h-5 w-5" /> : <Spinner variant="primary" size="xs" />}
+        {!isLoading ? (
+          <Search className="text-white h-5 w-5" />
+        ) : (
+          <Spinner variant="primary" size="xs" />
+        )}
         {!isLoading ? "Search" : "Searching"}
       </Button>
     </div>
