@@ -28,8 +28,8 @@ const CarCalendarTable = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
   const { data: calendarRentals } = useGetMotorRentals(
-    startDate.toLocaleDateString(),
-    endDate.toLocaleDateString()
+    startDate.toISOString(),
+    endDate.toISOString()
   )
 
   useEffect(() => {

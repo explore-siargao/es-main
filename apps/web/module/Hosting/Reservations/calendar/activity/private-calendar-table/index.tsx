@@ -28,8 +28,8 @@ const PrivateCalendarTable = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 12)
   const { data: calendarActivities } = useGetPrivateActivities(
-    startDate.toLocaleDateString(),
-    endDate.toLocaleDateString()
+    startDate.toISOString(),
+    endDate.toISOString()
   )
 
   useEffect(() => {
