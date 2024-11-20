@@ -6,12 +6,11 @@ import { E_Rental_Category } from "@repo/contract"
 
 const ReservationTab = ({
   activityTab = E_Activity_Experience_Type.Private,
-  rentalTab = E_Rental_Category.Car
+  rentalTab = E_Rental_Category.Car,
 }: {
-  activityTab?: E_Activity_Experience_Type,
+  activityTab?: E_Activity_Experience_Type
   rentalTab?: E_Rental_Category
 }) => {
-
   const tabs = [
     {
       name: "Properties",

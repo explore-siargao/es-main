@@ -336,7 +336,11 @@ export const value = {
   ],
 }
 
-export const ActivitySingleView = ({ activityData: data }: { activityData: any }) => {
+export const ActivitySingleView = ({
+  activityData: data,
+}: {
+  activityData: any
+}) => {
   const [showModal, setShowModal] = useState(false)
 
   const handleOpenModal = () => {
@@ -363,10 +367,7 @@ export const ActivitySingleView = ({ activityData: data }: { activityData: any }
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       {data && (
-        <SectionInfo
-          images={data?.item?.photos}
-          title={data?.item?.title}
-        />
+        <SectionInfo images={data?.item?.photos} title={data?.item?.title} />
       )}
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
@@ -384,9 +385,7 @@ export const ActivitySingleView = ({ activityData: data }: { activityData: any }
 
             <div className="py-6">
               {data && (
-                <ActivityDescription
-                  description={data?.item?.description}
-                />
+                <ActivityDescription description={data?.item?.description} />
               )}
             </div>
 
@@ -430,9 +429,7 @@ export const ActivitySingleView = ({ activityData: data }: { activityData: any }
             </div>
 
             <div className="py-6">
-              {data && (
-                <WhatToBrings whatToBrings={data?.item?.whatToBring} />
-              )}
+              {data && <WhatToBrings whatToBrings={data?.item?.whatToBring} />}
             </div>
 
             <div className="py-6">
@@ -522,8 +519,7 @@ export const ActivitySingleView = ({ activityData: data }: { activityData: any }
               descTotalBeforeTaxes: 3000,
               totalBeforeTaxes: 1000,
               titlePrice: value.price.baseRate,
-              pricePerAdditionalPerson:
-                value.price.pricePerAdditionalPerson,
+              pricePerAdditionalPerson: value.price.pricePerAdditionalPerson,
             }}
             timeSlot={value.timeSlots}
           />
