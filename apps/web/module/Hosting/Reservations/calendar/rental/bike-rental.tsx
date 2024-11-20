@@ -9,8 +9,8 @@ import BikeCalendarTable from "./bike-calendar-table"
 const BikeReservationCalendar = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetBikeRentals(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
+    currentDate.toISOString(),
+    currentDate.toISOString()
   )
 
   return (

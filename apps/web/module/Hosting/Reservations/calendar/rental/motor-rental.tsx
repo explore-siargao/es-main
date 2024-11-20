@@ -9,8 +9,8 @@ import MotorCalendarTable from "./motor-calendar-table"
 const MotorReservationCalendar = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetCarRentals(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
+    currentDate.toISOString(),
+    currentDate.toISOString()
   )
 
   return (

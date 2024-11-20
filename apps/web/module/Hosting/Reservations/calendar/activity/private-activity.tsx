@@ -10,8 +10,8 @@ import { addDays } from "date-fns"
 const PrivateActivity = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetPrivateActivities(
-    addDays(currentDate, +1).toLocaleDateString(),
-    currentDate.toLocaleDateString()
+    addDays(currentDate, +1).toISOString(),
+    currentDate.toISOString()
   )
   return (
     <div className="mt-20">

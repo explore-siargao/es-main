@@ -10,8 +10,8 @@ import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum
 const JoinerActivity = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetJoinerActivities(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
+    currentDate.toISOString(),
+    currentDate.toISOString()
   )
   return (
     <div className="mt-20">
