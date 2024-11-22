@@ -24,7 +24,7 @@ import {
   getAllReservations,
   updateReservationStatusByReferenceId,
 } from './services/default'
-import { gcashMultipleCheckout } from './services/cart-reservations'
+import { cardMultipleCheckout, gcashMultipleCheckout } from './services/cart-reservations'
 
 const router = express.Router()
 
@@ -137,11 +137,19 @@ router.patch(
 )
 
 router.post(
-  '/cart/checkout',
+  '/cart/checkout/gcash',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
   gcashMultipleCheckout
+)
+
+router.post(
+  '/cart/checkout/card',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cardMultipleCheckout
 )
 
 export default router
