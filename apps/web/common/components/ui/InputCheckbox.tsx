@@ -1,8 +1,8 @@
 interface CheckboxProps {
-  id: number
+  id: number | string
   colorVariant: string
   checked?: boolean
-  onChange: (id: number, event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (id: number | string, event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Checkbox = ({ id, colorVariant, checked, onChange }: CheckboxProps) => {

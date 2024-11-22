@@ -4,16 +4,14 @@ import { Typography } from '@/common/components/ui/Typography'
 import formatCurrency from '@/common/helpers/formatCurrency'
 import { T_Cart_Item } from '@repo/contract-2/cart'
 import { format } from 'date-fns/format'
-import { toNumber } from 'lodash'
 import { Pencil, Trash } from 'lucide-react'
 import React from 'react'
-import DeleteCartItemModal from '../delete-cart-item-modal'
 
 interface ICartProps {
   item: T_Cart_Item
-  selectedItems: number[]
+  selectedItems: string[]
   index: number
-  toggleCheckbox: (index: number) => void
+  toggleCheckbox: (id: string, price: number) => void
   setItemId: (value: string) => void
   setIsDeleteCartItemOpen: (value: boolean) => void
 }
@@ -25,10 +23,10 @@ function PropertyCartItem({ item, selectedItems, index, toggleCheckbox, setItemI
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-4">
           <InputCheckbox
-            id={index}
+            id={item._id}
             colorVariant="secondary"
-            checked={selectedItems.includes(index)}
-            onChange={() => toggleCheckbox(index)}
+            checked={selectedItems.includes(item._id)}
+            onChange={() => toggleCheckbox(item._id, item.price)}
           />
           <img
             src={`/assets/${propertyItem?.photos && propertyItem?.photos[0]?.key}`}

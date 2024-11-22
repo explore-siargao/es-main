@@ -1,53 +1,52 @@
-import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
 import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Button } from "@/common/components/ui/Button"
 import { useState } from "react"
-import { Clock, Pencil, Trash } from "lucide-react"
-import useGetCartItems from "@/common/hooks/use-get-cart-items"
-import { format } from "date-fns"
 import { T_Cart_Item } from "@repo/contract-2/cart"
-import { indexOf } from "lodash"
 import PropertyCartItem from "./property-cart-item"
 import ActivityCartItem from "./activity-cart-item"
 import RentalCartItem from "./rental-cart-item"
 import DeleteCartItemModal from "./delete-cart-item-modal"
+import DeleteAllSelectedItems from "./delete-all-selected-items-modal"
 
 interface ICartProps {
   items: T_Cart_Item[]
+  setSelectedItemsPrice: (price: number[]) => void
+  selectedItemsPrice: number[]
 }
 
-const CartList: React.FC<ICartProps> = ({ items }) => {
+const CartList: React.FC<ICartProps> = ({ items, setSelectedItemsPrice, selectedItemsPrice }) => {
   const [selectAll, setSelectAll] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] = useState<boolean>(false)
+  const [isDeleteMultipleCartItemOpen, setIsDeleteMultipleCartItemOpen] = useState<boolean>(false)
+  
   const [itemId, setItemId] = useState<string>("")
   
   const toggleAllCheckboxes = () => {
     const newSelectAll = !selectAll
     setSelectAll(newSelectAll)
     if (newSelectAll) {
-      const allIds = items.map((item) => indexOf(items, item))
+      const allIds = items.map((item) => item._id)
+      const allPrices = items.map((item) => item.price)
       setSelectedItems(allIds)
-      console.log("Checked IDs:", allIds)
+      setSelectedItemsPrice(allPrices)
     } else {
       setSelectedItems([])
-      console.log("Checked IDs cleared")
+      setSelectedItemsPrice([])
     }
   }
 
-  const toggleCheckbox = (id: number) => {
-    const newSelectedItems = selectedItems.includes(id)
-      ? selectedItems.filter((itemId) => itemId !== id)
-      : [...selectedItems, id]
-    setSelectedItems(newSelectedItems)
-    
-    if (!selectedItems.includes(id)) {
-      console.log("Checkbox ID clicked:", id)
+  const toggleCheckbox = (id: string, price: number) => {
+    if (selectedItems.includes(id)) {
+      // If the item is already selected, remove it and its price
+      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
+      setSelectedItemsPrice(selectedItemsPrice.filter((itemPrice, index) => selectedItems[index] !== id));
     } else {
-      console.log("Checkbox ID unchecked")
+      // If the item is not selected, add it and its price
+      setSelectedItems([...selectedItems, id]);
+      setSelectedItemsPrice([...selectedItemsPrice, price]);
     }
-  }
+  };
   
   return (
     <>
@@ -63,7 +62,7 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
             Select all
           </label>
         </div>
-        <Button variant="outline">Delete all selected</Button>
+        <Button disabled={selectedItems.length === 0} onClick={() => setIsDeleteMultipleCartItemOpen(true)} variant="outline">Delete all selected</Button>
       </div>
       {items.map((cartItem, index) => {
         if(cartItem.propertyIds) {
@@ -101,6 +100,11 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
           )
         }
       })}
+      <DeleteAllSelectedItems
+        isOpen={isDeleteMultipleCartItemOpen}
+        onClose={() => setIsDeleteMultipleCartItemOpen(false)}
+        itemIds={selectedItems}
+      />
       <DeleteCartItemModal
         isOpen={isDeleteCartItemOpen}
         onClose={() => setIsDeleteCartItemOpen(false)}
