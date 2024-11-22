@@ -7,11 +7,13 @@ import { T_Cart_Item } from "@repo/contract-2/cart";
 import { Spinner } from "@/common/components/ui/Spinner";
 import Loading from "@/app/(accommodation)/loading";
 import { useState } from "react";
+import PaymentOptions from "./components/payment-options";
+import CheckoutModal from "./components/checkout-modal";
 
 const Cart = () => {
   const { data, isLoading } = useGetCartItems()
   const [selectedItemsPrice, setSelectedItemsPrice] = useState<number[]>([])
-  console.log(selectedItemsPrice)
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false)
   return (
     <WidthWrapper
       width="medium"
@@ -35,9 +37,15 @@ const Cart = () => {
       
       <div className="col-span-1 relative ">
         <SubTotalBox
-          selectedItemsPrice={selectedItemsPrice}
+          selectedItemsPrice={selectedItemsPrice} 
+          setIsCheckoutModalOpen={setIsCheckoutModalOpen}
         />
       </div>
+      <CheckoutModal 
+        isOpen={isCheckoutModalOpen} 
+        onClose={() => setIsCheckoutModalOpen(false)} 
+        itemIds={[]} 
+      />
     </WidthWrapper>
   )
 }

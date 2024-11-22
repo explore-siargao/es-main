@@ -19,10 +19,16 @@ const ModalContainerFooter = ({
   buttonFn,
 }: Props) => {
   return (
-    <div className="flex justify-between px-6 pb-4">
-      <Button variant={"shaded"} type="button" onClick={onClose}>
-        {negative}
-      </Button>
+    <div
+      className={`flex px-6 pb-4 ${
+        negative ? "justify-between" : "justify-end"
+      } space-x-2`}
+    >
+      {negative && (
+        <Button variant={"shaded"} type="button" onClick={onClose}>
+          {negative}
+        </Button>
+      )}
       <Button
         type={isSubmit ? "submit" : "button"}
         onClick={() => (isSubmit ? null : buttonFn())}
