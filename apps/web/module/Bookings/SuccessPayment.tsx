@@ -6,13 +6,13 @@ import { APP_NAME } from "@repo/constants"
 import { LucideCheckCircle2 } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import React, { useEffect } from "react"
-import useUpdateTransaction from "./hooks/useUpdateTransaction"
+import useUpdateReservationStatus from "./hooks/update-reservation-status.ts"
 import toast from "react-hot-toast"
 
 const SuccessPayment = () => {
   const router = useRouter()
   const params = useParams<{ bookingId: string }>()
-  const { mutate } = useUpdateTransaction(params.bookingId)
+  const { mutate } = useUpdateReservationStatus(params.bookingId)
   useEffect(() => {
     if (params && params.bookingId) {
       const callBackReq = {

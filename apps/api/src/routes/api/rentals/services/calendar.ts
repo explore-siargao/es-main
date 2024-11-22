@@ -1,20 +1,14 @@
 import { Request, Response } from 'express'
-import mongoose from 'mongoose'
 import { ResponseService } from '@/common/service/response'
 import { dbRentalRates, dbRentals, dbReservations } from '@repo/database'
 import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
+import { T_Rental_Price } from '@repo/contract-2/rentals'
 
 const response = new ResponseService()
-
-// Define types
-type Guest = {
-  _id: mongoose.Types.ObjectId
-  firstName: string
-  lastName: string
-}
 
 type Reservation = {
   id: string
@@ -24,24 +18,6 @@ type Reservation = {
   guestCount: number
   status: string
   notes?: string
-}
-
-type Bicycle = {
-  name: string
-  status: string
-  reservations: Reservation[]
-}
-
-type Car = {
-  name: string
-  status: string
-  reservations: Reservation[]
-}
-
-type Item = {
-  name: string
-  price: string
-  bicycles: Bicycle[]
 }
 
 const STATUS_DISPLAY = ['Out of service', 'Blocked dates']
@@ -64,6 +40,8 @@ const hasDateConflict = (
 }
 
 export const getCarCalendar = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
   const currentDate = new Date()
@@ -98,11 +76,19 @@ export const getCarCalendar = async (req: Request, res: Response) => {
             {
               startDate: { $lte: endDate },
               endDate: { $gte: startDate },
-              status: { $ne: 'Cancelled' },
+              $and: [
+                { status: { $ne: 'Cancelled' } },
+                { status: { $ne: 'For-Payment' } },
+              ],
             },
           ],
         })
-        .populate('guest')
+        .populate({
+          path: 'guest',
+          populate: {
+            path: 'guest',
+          },
+        })
 
       const reservationMap: Record<string, Reservation[]> = {}
       reservations.forEach((reservation: any) => {
@@ -128,7 +114,7 @@ export const getCarCalendar = async (req: Request, res: Response) => {
           name: STATUS_DISPLAY.includes(reservation.status)
             ? reservation.status
             : guest
-              ? `${guest.firstName} ${guest.lastName}`
+              ? `${guest.guest.firstName} ${guest.guest.lastName}`
               : reservation.guestName || 'Unknown',
           startDate: reservation.startDate ?? new Date(),
           endDate: reservation.endDate ?? new Date(),
@@ -162,12 +148,46 @@ export const getCarCalendar = async (req: Request, res: Response) => {
         return {
           id: rental?._id,
           name: `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`,
-          //@ts-ignore
-          price: rental?.pricing?.dayRate ?? 0,
+          price:
+            rental?.pricing && typeof rental.pricing === 'object'
+              ? convertPrice(
+                  (rental?.pricing as unknown as T_Rental_Price)?.dayRate,
+                  preferredCurrency,
+                  conversionRates
+                )
+              : 0,
           pricePerDates: rental?.pricePerDates.map((priceDate) => ({
             fromDate: priceDate.fromDate,
             toDate: priceDate.toDate,
-            price: priceDate?.price,
+            price:
+              priceDate?.price && typeof priceDate?.price === 'object'
+                ? {
+                    //@ts-ignore
+                    ...priceDate.price._doc,
+                    dayRate: convertPrice(
+                      //@ts-ignore
+                      priceDate.price._doc.dayRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                    requiredDeposit: convertPrice(
+                      //@ts-ignore
+                      priceDate.price._doc.requiredDeposit,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                    adminBookingCharge:
+                      //@ts-ignore
+                      !priceDate.price._doc.adminBookingCharge
+                        ? convertPrice(
+                            //@ts-ignore
+                            priceDate.price._doc.adminBookingCharge,
+                            preferredCurrency,
+                            conversionRates
+                          )
+                        : 0,
+                  }
+                : 0,
           })),
           cars: cars.filter((car) => car.name !== 'Unknown'),
         }
@@ -191,6 +211,8 @@ export const getCarCalendar = async (req: Request, res: Response) => {
 }
 
 export const getBikeCalendar = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
   const currentDate = new Date()
@@ -225,11 +247,19 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
             {
               startDate: { $lte: endDate },
               endDate: { $gte: startDate },
-              status: { $ne: 'Cancelled' },
+              $and: [
+                { status: { $ne: 'Cancelled' } },
+                { status: { $ne: 'For-Payment' } },
+              ],
             },
           ],
         })
-        .populate('guest')
+        .populate({
+          path: 'guest',
+          populate: {
+            path: 'guest',
+          },
+        })
 
       const reservationMap: Record<string, Reservation[]> = {}
       reservations.forEach((reservation: any) => {
@@ -257,7 +287,7 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           name: STATUS_DISPLAY.includes(reservation.status)
             ? reservation.status
             : guest
-              ? `${guest.firstName} ${guest.lastName}`
+              ? `${guest.guest.firstName} ${guest.guest.lastName}`
               : reservation.guestName || 'Unknown',
           startDate: reservation.startDate ?? new Date(),
           endDate: reservation.endDate ?? new Date(),
@@ -292,8 +322,48 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
           id: rental?._id,
           name: rental?.make ?? 'Unknown',
           //@ts-ignore
-          price: rental?.pricing?.dayRate ?? 0,
-          pricePerDates: rental?.pricePerDates,
+          price:
+            rental?.pricing && typeof rental.pricing === 'object'
+              ? convertPrice(
+                  (rental?.pricing as unknown as T_Rental_Price)?.dayRate,
+                  preferredCurrency,
+                  conversionRates
+                )
+              : 0,
+
+          pricePerDates: rental?.pricePerDates.map((priceDate) => ({
+            fromDate: priceDate.fromDate,
+            toDate: priceDate.toDate,
+            price:
+              priceDate?.price && typeof priceDate?.price === 'object'
+                ? {
+                    //@ts-ignore
+                    ...priceDate.price._doc,
+                    dayRate: convertPrice(
+                      //@ts-ignore
+                      priceDate.price._doc.dayRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                    requiredDeposit: convertPrice(
+                      //@ts-ignore
+                      priceDate.price._doc.requiredDeposit,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                    adminBookingCharge:
+                      //@ts-ignore
+                      !priceDate.price._doc.adminBookingCharge
+                        ? convertPrice(
+                            //@ts-ignore
+                            priceDate.price._doc.adminBookingCharge,
+                            preferredCurrency,
+                            conversionRates
+                          )
+                        : 0,
+                  }
+                : 0,
+          })),
           bicycles: bicycles.filter((bike) => bike.name !== 'Unknown'),
         }
       })
@@ -316,6 +386,8 @@ export const getBikeCalendar = async (req: Request, res: Response) => {
 }
 
 export const getMotorcycleCalendar = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
   const currentDate = new Date()
@@ -350,11 +422,19 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
             {
               startDate: { $lte: endDate },
               endDate: { $gte: startDate },
-              status: { $ne: 'Cancelled' },
+              $and: [
+                { status: { $ne: 'Cancelled' } },
+                { status: { $ne: 'For-Payment' } },
+              ],
             },
           ],
         })
-        .populate('guest')
+        .populate({
+          path: 'guest',
+          populate: {
+            path: 'guest',
+          },
+        })
 
       const reservationMap: Record<string, Reservation[]> = {}
       reservations.forEach((reservation: any) => {
@@ -382,7 +462,7 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
           name: STATUS_DISPLAY.includes(reservation.status)
             ? reservation.status
             : guest
-              ? `${guest.firstName} ${guest.lastName}`
+              ? `${guest.guest.firstName} ${guest.guest.lastName}`
               : reservation.guestName || 'Unknown',
           startDate: reservation.startDate ?? new Date(),
           endDate: reservation.endDate ?? new Date(),
@@ -419,8 +499,49 @@ export const getMotorcycleCalendar = async (req: Request, res: Response) => {
             ? `${rental.year} ${rental.make} ${rental.modelBadge} ${rental.transmission === 'Automatic' ? 'AT' : 'MT'}`
             : 'Unknown',
           //@ts-ignore
-          price: rental?.pricing?.dayRate ?? 0,
-          pricePerDates: rental?.pricePerDates,
+          //@ts-ignore
+          price:
+            rental?.pricing && typeof rental.pricing === 'object'
+              ? convertPrice(
+                  (rental?.pricing as unknown as T_Rental_Price)?.dayRate,
+                  preferredCurrency,
+                  conversionRates
+                )
+              : 0,
+
+          pricePerDates: rental?.pricePerDates.map((priceDate) => ({
+            fromDate: priceDate.fromDate,
+            toDate: priceDate.toDate,
+            price:
+              priceDate?.price && typeof priceDate?.price === 'object'
+                ? {
+                    //@ts-ignore
+                    ...priceDate.price._doc,
+                    dayRate: convertPrice(
+                      //@ts-ignore
+                      priceDate.price._doc.dayRate,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                    requiredDeposit: convertPrice(
+                      //@ts-ignore
+                      priceDate.price._doc.requiredDeposit,
+                      preferredCurrency,
+                      conversionRates
+                    ),
+                    adminBookingCharge:
+                      //@ts-ignore
+                      !priceDate.price._doc.adminBookingCharge
+                        ? convertPrice(
+                            //@ts-ignore
+                            priceDate.price._doc.adminBookingCharge,
+                            preferredCurrency,
+                            conversionRates
+                          )
+                        : 0,
+                  }
+                : 0,
+          })),
           motorcycles: motorcycles.filter((motor) => motor.name !== 'Unknown'),
         }
       })

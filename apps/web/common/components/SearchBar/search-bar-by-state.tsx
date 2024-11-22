@@ -13,7 +13,6 @@ import {
   LINK_SEARCH_PROPERTY,
   LINK_SEARCH_RENTAL,
 } from "@/common/constants"
-import { Z_Properties_Search } from "@repo/contract-2/search-filters"
 import {
   buildActivitySearchURL,
   buildPropertySearchURL,
@@ -30,6 +29,7 @@ const SearchBarByState = ({
   const router = useRouter()
   const path = usePathname()
   const searchParams = useSearchParams()
+  const page = searchParams.get("page")
   const location = searchParams.get("location")
   const checkIn = searchParams.get("checkIn")
   const checkOut = searchParams.get("checkOut")
@@ -68,7 +68,7 @@ const SearchBarByState = ({
     dropOffDate,
   }: T_Search) => {
     if (
-      pathCategory === LINK_SEARCH_PROPERTY &&
+      pathCategory?.includes(LINK_SEARCH_PROPERTY) &&
       location &&
       checkIn &&
       checkOut &&
@@ -76,6 +76,7 @@ const SearchBarByState = ({
     ) {
       router.push(
         buildPropertySearchURL({
+          page: page ? page : "1",
           location,
           checkIn,
           checkOut,
@@ -83,20 +84,21 @@ const SearchBarByState = ({
         })
       )
     } else if (
-      pathCategory === LINK_SEARCH_ACTIVITIES &&
+      pathCategory?.includes(LINK_SEARCH_ACTIVITIES) &&
       location &&
       activityDate &&
       numberOfGuest
     ) {
       router.push(
         buildActivitySearchURL({
+          page: page ? page : "1",
           location,
           activityDate,
           numberOfGuest,
         })
       )
     } else if (
-      pathCategory === LINK_SEARCH_RENTAL &&
+      pathCategory?.includes(LINK_SEARCH_RENTAL) &&
       location &&
       vehicleType &&
       pickUpDate &&
@@ -104,6 +106,7 @@ const SearchBarByState = ({
     ) {
       router.push(
         buildRentalSearchURL({
+          page: page ? page : "1",
           location,
           vehicleType,
           pickUpDate,

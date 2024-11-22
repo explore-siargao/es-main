@@ -5,7 +5,7 @@ const CART_BASE_URL = `/carts`
 
 export class CartService {
   private api: ApiService
-  constructor(source: "main" | "auth" | "mock" = "main") {
+  constructor(source: "main" | "mock" = "main") {
     this.api = new ApiService(source)
   }
   async addItem(item: T_Add_To_Cart) {

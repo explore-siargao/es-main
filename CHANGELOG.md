@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.32.0](https://github.com/explore-siargao/es-main/compare/v0.31.0...v0.32.0) (2024-11-14)
+
+### 🚀 Features
+
+- added validation for currency conversion ([04451c8](https://github.com/explore-siargao/es-main/commit/04451c81814ef28393337e045a8b561632d450b5))
+- **api:** Added endpoint for getting either all reservations or carts list ([a7fa7bb](https://github.com/explore-siargao/es-main/commit/a7fa7bb6c0df136676d9c647cd94e5cfc2be7043))
+- **api:** Added endpoint for removing multiple items from carts ([1b81478](https://github.com/explore-siargao/es-main/commit/1b8147872c928e67dd133521d6248fea3f55c1d9))
+- **api:** Added endpoint for updating cart item info ([e8b5d0f](https://github.com/explore-siargao/es-main/commit/e8b5d0f0ea4b2955c2dea77be37df40dbf36c326))
+- **api:** Created middleware for handling currency and create reusable function for conversion rates ([ad1fb3f](https://github.com/explore-siargao/es-main/commit/ad1fb3f77ee20b48957187657b14597d205324aa))
+- **api:** Separted get all carts and reservation to different endpoint and apply the contract to get all cart endpoint ([877f408](https://github.com/explore-siargao/es-main/commit/877f4086b7aafdf349de06c019e5bfc233823425))
+- Connect search page fetch to contract and sync types ([8bf534d](https://github.com/explore-siargao/es-main/commit/8bf534d6f876c681998690b468af1fcc57673900))
+- Require all search and filter value to be in the url ([c84bb74](https://github.com/explore-siargao/es-main/commit/c84bb742b0577efb02cae020bbcce7a8182c74c5))
+- Sync filters and ur search data and unify the value to the endpoints ([5b2c48c](https://github.com/explore-siargao/es-main/commit/5b2c48cb9a33ca545c4dd072ca8cc93c720388b3))
+- Update formatCurrency to support 7 specifics ([6a5f551](https://github.com/explore-siargao/es-main/commit/6a5f551ad8cbbf2cf3a0b35c4ff871312babf83e))
+
+### 🛠 Bug Fixes
+
+- **api:** made price conversion middleware work even without currency header ([6f1daa7](https://github.com/explore-siargao/es-main/commit/6f1daa70d1842789bda3fef5a451935c36a1938b))
+- Change filtered endpoints keys to sync with the contract ([ed813c3](https://github.com/explore-siargao/es-main/commit/ed813c3e9de247a61a55e0fcf7dd901f2e9dfe0d))
+
+### 🧰 Maintenance
+
+- added exchangerate api to deployment scripts ([500c328](https://github.com/explore-siargao/es-main/commit/500c328664075341ae72df8a4f093ccf87db4add))
+- Added new global package contract-2 to dockerfile deployment ([b37b484](https://github.com/explore-siargao/es-main/commit/b37b484fc3a16beb3c5e27a6d8db627b90eee88b))
+- fix formatCurrency and props value for photo ([091bf84](https://github.com/explore-siargao/es-main/commit/091bf846383186f120ae403ebe56c3f025ad5410))
+- restructure folder for search and listing ([d4cd326](https://github.com/explore-siargao/es-main/commit/d4cd32693a698190a9567209f310ee4c4509ab3a))
+
 ## [0.31.0](https://github.com/explore-siargao/es-main/compare/v0.30.0...v0.31.0) (2024-11-06)
 
 ### 🚀 Features

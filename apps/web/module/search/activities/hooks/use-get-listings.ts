@@ -1,55 +1,24 @@
-import { ApiService } from "@/common/service/api"
-import { API_URL_ACTIVITIES } from "@/common/constants"
 import { useQuery } from "@tanstack/react-query"
+import {
+  FilterService,
+  T_Activities_Search,
+} from "@repo/contract-2/search-filters"
+import { FIFTEEN_MINUTES, TWELVE_MINUTES } from "@/common/constants"
 
-const normalizeParam = (param: string | null): string => {
-  return param ? param : "any"
+const queryKey = FilterService.getQueryKeys().filterActivities
+
+export async function getListings(searchQueries: T_Activities_Search) {
+  const filter = new FilterService()
+  return await filter.getPaginatedActivities({ searchQueries })
 }
 
-export async function getActivityListings(
-  location: string | null,
-  activityTypes: string | null,
-  type: string | null,
-  priceFrom: string | null,
-  priceTo: string | null,
-  duration: string | null,
-  stars: string | null
-) {
-  const apiService = new ApiService()
-  return await apiService.get(
-    `${API_URL_ACTIVITIES}/filtered?` +
-      `location=${normalizeParam(location)}` +
-      `&activityTypes=${normalizeParam(activityTypes)}` +
-      `&type=${normalizeParam(type)}` +
-      `&priceFrom=${normalizeParam(priceFrom)}` +
-      `&priceTo=${normalizeParam(priceTo)}` +
-      `&duration=${normalizeParam(duration)}` +
-      `&stars=${normalizeParam(stars)}`
-  )
-}
-
-function useGetListings(
-  location: string | null,
-  activityTypes: string | null,
-  type: string | null,
-  priceFrom: string | null,
-  priceTo: string | null,
-  duration: string | null,
-  stars: string | null
-) {
+function useGetListings(searchQueries: T_Activities_Search) {
   const query = useQuery({
-    queryKey: ["filter-activities"],
+    queryKey: [queryKey, searchQueries],
     refetchOnWindowFocus: false,
-    queryFn: () =>
-      getActivityListings(
-        location,
-        activityTypes,
-        type,
-        priceFrom,
-        priceTo,
-        duration,
-        stars
-      ),
+    queryFn: () => getListings(searchQueries),
+    gcTime: FIFTEEN_MINUTES,
+    staleTime: TWELVE_MINUTES,
   })
   return query
 }

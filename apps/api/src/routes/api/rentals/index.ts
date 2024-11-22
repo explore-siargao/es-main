@@ -45,13 +45,6 @@ import { rentalHighestPrice } from './services/highest-price'
 
 const router = express.Router()
 
-//hifhest price
-router.get(
-  '/highest-price',
-  isOriginValid,
-  isCsrfTokenValid,
-  rentalHighestPrice
-)
 //filtered data
 router.get(
   '/filtered',
@@ -59,6 +52,14 @@ router.get(
   isCsrfTokenValid,
   paginate(15),
   getFilteredRentals
+)
+
+//highest price
+router.get(
+  '/highest-price',
+  isOriginValid,
+  isCsrfTokenValid,
+  rentalHighestPrice
 )
 
 //Rentals

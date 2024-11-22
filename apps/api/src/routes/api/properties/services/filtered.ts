@@ -2,29 +2,36 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { T_BookableUnitType, T_Photo } from '@repo/contract'
+import { T_Property } from '@repo/contract-2/property'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredProperties = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   let {
     location,
-    type,
+    propertyTypes,
     facilities,
     amenities,
     priceFrom,
     priceTo,
-    beds,
-    bathrooms,
-    bedrooms,
-    stars,
+    bedCount,
+    bathroomCount,
+    bedroomCount,
+    starRating,
     checkIn = 'any',
     checkOut = 'any',
     numberOfGuest = 'any',
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
+  const startIndex = (page - 1) * limit
+  const endIndex = startIndex + limit
   const query: any = {
     bookableUnits: { $exists: true, $not: { $size: 0 } },
     deletedAt: null,
@@ -57,14 +64,14 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     ])
     priceTo = String(highestPrice[0].highestBaseRate)
   }
-  if (!beds) {
-    beds = 'any'
+  if (!bedCount) {
+    bedCount = 'any'
   }
-  if (!bedrooms) {
-    bedrooms = 'any'
+  if (!bedroomCount) {
+    bedroomCount = 'any'
   }
-  if (!bathrooms) {
-    bathrooms = 'any'
+  if (!bathroomCount) {
+    bathroomCount = 'any'
   }
   try {
     const startDate =
@@ -77,7 +84,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         $match: {
           deletedAt: null,
           propertyIds: { $ne: null },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $expr: {
             $and: [
               {
@@ -118,7 +128,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       getUnitReservations.length > 0
         ? getUnitReservations.map((item: any) => item.unitId)
         : []
-    if ((!location || location === 'any') && (!type || type === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!propertyTypes || propertyTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -260,13 +273,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -287,6 +300,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -511,7 +571,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(bedCount), // Compare total qty to `beds` parameter
                                   ],
                                 },
                               ],
@@ -522,7 +582,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -531,11 +591,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -558,23 +618,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -645,14 +698,101 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
+          ...item,
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
+            ...item,
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
+                ? 0
+                : convertPrice(
+                    item.price?.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item?.price?.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.price?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+          })),
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: bookableUnits[0].results,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
-    } else if (location && location !== 'any' && (!type || type === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!propertyTypes || propertyTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -794,13 +934,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -821,6 +961,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -1045,7 +1232,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(bedCount), // Compare total qty to `beds` parameter
                                   ],
                                 },
                               ],
@@ -1056,7 +1243,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -1065,11 +1252,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -1100,23 +1287,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -1187,15 +1367,102 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
+          ...item,
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
+            ...item,
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
+                ? 0
+                : convertPrice(
+                    item.price?.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item?.price?.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.price?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+          })),
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: bookableUnits[0].results,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
-    } else if ((!location || location === 'any') && type && type !== 'any') {
-      const arrayTypes = String(type)
+    } else if (
+      (!location || location === 'any') &&
+      propertyTypes &&
+      propertyTypes !== 'any'
+    ) {
+      const arrayTypes = String(propertyTypes)
         .trim()
         .split(',')
         .map((item) => item.trim())
@@ -1372,13 +1639,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -1399,6 +1666,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -1623,7 +1937,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds),
+                                    Number(bedCount),
                                   ],
                                 },
                               ],
@@ -1634,7 +1948,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -1643,11 +1957,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -1670,23 +1984,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -1757,15 +2064,103 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
+          ...item,
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
+            ...item,
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
+                ? 0
+                : convertPrice(
+                    item.price?.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item?.price?.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.price?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+          })),
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
+      )
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: bookableUnits[0].results,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
-    } else if (location && location !== 'any' && type && type !== 'any') {
-      const arrayTypes = String(type)
+    } else if (
+      location &&
+      location !== 'any' &&
+      propertyTypes &&
+      propertyTypes !== 'any'
+    ) {
+      const arrayTypes = String(propertyTypes)
         .trim()
         .split(',')
         .map((item) => item.trim())
@@ -1942,13 +2337,13 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   reviewsCount: { $size: '$reviews' },
                 },
               },
-              ...(Number(stars) > 0
+              ...(Number(starRating) > 0
                 ? [
                     {
                       $match: {
                         average: {
-                          $gte: Number(stars),
-                          $lt: Number(stars) + 1,
+                          $gte: Number(starRating),
+                          $lt: Number(starRating) + 1,
                         },
                       },
                     },
@@ -1969,6 +2364,53 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 $match: {
                   qtyIds: { $ne: [] },
                   maxGuests: { $gte: guestNumber },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'unitprices', // The collection where price details are stored
+                  localField: 'pricePerDates.price', // Path to the price IDs within pricePerDates
+                  foreignField: '_id', // The field in rentalrates matching the price IDs
+                  as: 'priceDetails', // Temporary field to store the lookup result
+                },
+              },
+              {
+                $addFields: {
+                  pricePerDates: {
+                    $map: {
+                      input: '$pricePerDates',
+                      as: 'dateEntry',
+                      in: {
+                        $mergeObjects: [
+                          '$$dateEntry', // Original data from pricePerDates
+                          {
+                            price: {
+                              $arrayElemAt: [
+                                {
+                                  $filter: {
+                                    input: '$priceDetails',
+                                    as: 'priceDetail',
+                                    cond: {
+                                      $eq: [
+                                        '$$priceDetail._id',
+                                        '$$dateEntry.price',
+                                      ],
+                                    },
+                                  },
+                                },
+                                0,
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                $project: {
+                  priceDetails: 0, // Remove the temporary priceDetails field
                 },
               },
             ],
@@ -2193,7 +2635,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                         },
                                       },
                                     },
-                                    Number(beds), // Compare total qty to `beds` parameter
+                                    Number(bedCount), // Compare total qty to `beds` parameter
                                   ],
                                 },
                               ],
@@ -2204,7 +2646,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                                 {
                                   $gte: [
                                     { $size: '$$unit.bedRooms' },
-                                    Number(bedrooms),
+                                    Number(bedroomCount),
                                   ],
                                 },
                               ],
@@ -2213,11 +2655,11 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                         {
                           $or: [
-                            { $eq: [bathrooms, 'any'] }, // Ignore if bathrooms is "any"
+                            { $eq: [bathroomCount, 'any'] }, // Ignore if bathrooms is "any"
                             {
                               $gte: [
                                 { $toInt: '$$unit.numBathRooms' }, // Convert to number
-                                Number(bathrooms), // Compare to req.params.bathrooms
+                                Number(bathroomCount), // Compare to req.params.bathrooms
                               ],
                             },
                           ],
@@ -2248,23 +2690,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         {
           $facet: {
             totalCount: [{ $count: 'count' }],
-            paginatedResults: [
-              { $skip: (page - 1) * limit },
-              { $limit: limit },
-            ],
+            paginatedResults: [],
           },
         },
         {
           $project: {
-            allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
             results: '$paginatedResults',
           },
         },
         {
           $project: {
-            allItemsCount: 1,
-            pageItemCount: 1,
             'results._id': 1,
             'results.status': 1,
             'results.finishedSection': 1,
@@ -2335,11 +2770,95 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         },
       ]
       const bookableUnits = await dbProperties.aggregate(pipeline)
+      const changePrices = bookableUnits[0].results.map((item: T_Property) => ({
+        ...item,
+        bookableUnits: item.bookableUnits.map((item) => ({
+          ...item,
+          unitPrice: {
+            ...item.unitPrice,
+            baseRate: !item.unitPrice.baseRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice.baseRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            pricePerAdditionalPerson: !item.unitPrice.pricePerAdditionalPerson
+              ? 0
+              : convertPrice(
+                  item.unitPrice.pricePerAdditionalPerson,
+                  preferredCurrency,
+                  conversionRates
+                ),
+            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+              ? 0
+              : convertPrice(
+                  item.unitPrice?.discountedWeekLyRate,
+                  preferredCurrency,
+                  conversionRates
+                ),
+          },
+          pricePerDates: item?.pricePerDates?.map((item) => ({
+            ...item,
+            price: {
+              ...item.price,
+              baseRate: !item.price?.baseRate
+                ? 0
+                : convertPrice(
+                    item.price?.baseRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              pricePerAdditionalPerson: !item.price?.pricePerAdditionalPerson
+                ? 0
+                : convertPrice(
+                    item?.price?.pricePerAdditionalPerson,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                ? 0
+                : convertPrice(
+                    item.price?.discountedWeekLyRate,
+                    preferredCurrency,
+                    conversionRates
+                  ),
+            },
+          })),
+        })),
+      }))
+      const allBookableUnits = changePrices.flatMap((property: T_Property) =>
+        property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          listingId: unit._id,
+          title: property.title || null,
+          subtitle: unit.subtitle || null,
+          type: property.type,
+          wholePlaceType: unit.wholePlaceType,
+          photos: unit.photos.map((photo: T_Photo) => ({
+            key: photo.key,
+            alt: '',
+          })),
+          location: {
+            city: property.location.city,
+            latitude: property.location.latitude,
+            longitude: property.location.longitude,
+          },
+          price: unit.unitPrice?.baseRate || 0,
+          average: unit.average || 0,
+          reviewsCount: unit.reviewsCount || 0,
+        }))
+      )
+
+      const paginatedBookableUnits = allBookableUnits.slice(
+        startIndex,
+        endIndex
+      )
+
       res.json(
         response.success({
-          items: bookableUnits[0].results,
-          pageItemCount: bookableUnits[0].pageItemCount || 0,
-          allItemCount: bookableUnits[0].allItemsCount || 0,
+          items: paginatedBookableUnits,
+          pageItemCount: paginatedBookableUnits.length,
+          allItemCount: allBookableUnits.length,
         })
       )
     } else {

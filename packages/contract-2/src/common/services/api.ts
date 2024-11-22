@@ -1,6 +1,7 @@
 import { WEB_URL, API_AUTH_URL } from "../constants/ev"
 import { API_ROOT, MOCK_ROOT } from "@repo/constants"
 import { T_Backend_Response } from "../../backend-response"
+import { E_Supported_Currencies } from "../../currency"
 
 type WithModifiedKeys<
   T,
@@ -25,10 +26,14 @@ export class ApiService {
   }
 
   private constructOptions(removeContentType = false) {
+    const storedCurrency = localStorage.getItem(
+      "currency"
+    ) as E_Supported_Currencies | null
     const headers = {
       ...(!removeContentType && {
         "Content-Type": "application/json",
       }),
+      currency: storedCurrency ?? E_Supported_Currencies.PHP,
     } as Record<string, any>
     const options = {
       headers,

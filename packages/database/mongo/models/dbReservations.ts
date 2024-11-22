@@ -8,6 +8,7 @@ const statusEnum = [
   "No-Show",
   "Blocked-Dates",
   "Out-of-Service-Dates",
+  "For-Payment",
 ]
 const reservations = new Schema({
   propertyIds: {
@@ -48,7 +49,7 @@ const reservations = new Schema({
   },
   guest: {
     type: mongoose.Schema.ObjectId,
-    ref: "Guests",
+    ref: "Users",
     required: false,
     default: null,
   },
@@ -92,11 +93,17 @@ const reservations = new Schema({
   },
   cancelledBy: {
     type: String,
-    enum: ["host", "guest"],
+    enum: ["Host", "Guest"],
     default: null,
   },
   cancellationDate: {
     type: Date,
+    required: false,
+    default: null,
+  },
+  cartId:{
+    type: mongoose.Schema.ObjectId,
+    ref: "Carts",
     required: false,
     default: null,
   },

@@ -27,7 +27,10 @@ export const addUnitReservation = async (req: Request, res: Response) => {
         // Check for overlapping reservations on the same rentalId
         const overlappingReservation = await dbReservations.findOne({
           'propertyIds.unitId': unitId,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $or: [
             {
               startDate: { $lte: endDate },
@@ -94,7 +97,10 @@ export const editUnitReservation = async (req: Request, res: Response) => {
       const overlappingReservation = await dbReservations.findOne({
         'propertyIds.unitId': reservation?.propertyIds?.unitId,
         _id: { $ne: reservation?._id },
-        status: { $ne: 'Cancelled' },
+        $and: [
+          { status: { $ne: 'Cancelled' } },
+          { status: { $ne: 'For-Payment' } },
+        ],
         $or: [
           {
             startDate: { $lt: endDate },
@@ -152,7 +158,10 @@ export const cancelUnitReservationByHost = async (
     const reservation = await dbReservations.findOne({
       _id: reservationId,
       deletedAt: null,
-      status: { $ne: 'Cancelled' },
+      $and: [
+        { status: { $ne: 'Cancelled' } },
+        { status: { $ne: 'For-Payment' } },
+      ],
     })
 
     if (reservation) {
@@ -172,7 +181,7 @@ export const cancelUnitReservationByHost = async (
             reservation._id,
             {
               status: 'Cancelled',
-              cancelledBy: 'host',
+              cancelledBy: 'Host',
               cancellationDate: Date.now(),
               hostHavePenalty: false,
               updatedAt: Date.now(),
@@ -190,7 +199,7 @@ export const cancelUnitReservationByHost = async (
             reservation._id,
             {
               status: 'Cancelled',
-              cancelledBy: 'host',
+              cancelledBy: 'Host',
               cancellationDate: Date.now(),
               hostHavePenalty: true,
               updatedAt: Date.now(),

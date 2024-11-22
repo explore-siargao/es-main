@@ -1,6 +1,13 @@
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import {
+  REQUIRED_VALUE_EMPTY,
+  UNKNOWN_ERROR_OCCURRED,
+} from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { dbReservations } from '@repo/database'
+import {
+  T_Add_Reservation,
+  Z_Add_Reservations,
+} from '@repo/contract-2/reservations'
+import { dbCarts, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
 const response = new ResponseService()
@@ -13,7 +20,10 @@ export const getAllReservations = async (req: Request, res: Response) => {
         $match: {
           guest: new Types.ObjectId(userId),
           deletedAt: null,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
         },
       },
       {
@@ -527,7 +537,13 @@ export const getAllReservations = async (req: Request, res: Response) => {
     ]
     const reservations = await dbReservations.aggregate(pipeline)
     const totalCounts = await dbReservations
-      .find({ guest: userId, status: { $ne: 'Cancelled' } })
+      .find({
+        guest: userId,
+        $and: [
+          { status: { $ne: 'Cancelled' } },
+          { status: { $ne: 'For-Payment' } },
+        ],
+      })
       .countDocuments()
 
     if (!reservations || reservations.length === 0) {
@@ -544,6 +560,41 @@ export const getAllReservations = async (req: Request, res: Response) => {
           pageItemCount: reservations.length,
           allItemCount: totalCounts,
         })
+      )
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const updateReservationStatusByReferenceId = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const referenceId = req.params.referenceId
+    const getReservations = await dbReservations.find({
+      xendItPaymentReferenceId:referenceId,status:"For-Payment"
+    })
+    const cartIds = getReservations.flatMap((item)=>item.cartId)
+    const confirmedStatus = await dbReservations.updateMany(
+      { xendItPaymentReferenceId: referenceId, status:"For-Payment"},
+      {
+        $set: { status: 'Confirmed' },
+        updatedAt: Date.now(),
+      }
+    )
+    if (!confirmedStatus) {
+      res.json(response.error({ message: 'Wrong reference ID' }))
+    } else {
+      await dbCarts.updateMany({_id:{$in:cartIds}},{$set:{status:"Completed"}})
+
+      res.json(
+        response.success({ message: 'Reservation status updated successfully' })
       )
     }
   } catch (err: any) {

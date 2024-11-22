@@ -138,10 +138,13 @@ export const cardInitiatePayment = async (req: Request, res: Response) => {
 }
 
 export const gcashCreatePayment = async (req: Request, res: Response) => {
-  const { amount, bookingId } = req.body
-  if (amount && bookingId) {
+  const { amount } = req.body
+  const refId = `${randomUUID()}`
+  console.log(refId)
+  if (amount) {
     try {
       const data = {
+        reference_id: refId,
         amount: amount,
         currency: 'PHP',
         country: 'PH',
@@ -150,8 +153,8 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
           ewallet: {
             channel_code: 'GCASH',
             channel_properties: {
-              success_return_url: `${WEB_URL}/bookings/${bookingId}/success-payment`,
-              failure_return_url: `${WEB_URL}/bookings/${bookingId}/error-payment`,
+              success_return_url: `${WEB_URL}/bookings/${refId}/success-payment`,
+              failure_return_url: `${WEB_URL}/bookings/${refId}/error-payment`,
             },
           },
           reusability: 'ONE_TIME_USE',
@@ -164,5 +167,55 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
     }
   } else {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+  }
+}
+
+export const cardPayment = async (req: Request, res: Response) => {
+  const { amount, cardNumber, expirationMonth, expirationYear, cvv } = req.body
+  const refId = `${randomUUID()}`
+  console.log(refId)
+
+  if (amount && cardNumber && expirationMonth && expirationYear && cvv) {
+    try {
+      const data = {
+        reference_id: refId,
+        amount: amount,
+        currency: 'PHP',
+        country: 'PH',
+        payment_method: {
+          type: 'CARD',
+          card: {
+            card_information: {
+              card_number: cardNumber,
+              card_expiry:"12/25",
+              cvv: cvv,
+            },
+          },
+          reusability: 'ONE_TIME_USE',
+        },
+        billing_address: {
+          country: 'PH',
+          street_line1: '123 Test Street', // Example address; replace with dynamic data if needed
+          city: 'Manila',
+          province: 'Metro Manila',
+          postal_code: '1000',
+        },
+        metadata: {
+          description: 'Card payment for booking',
+        },
+      }
+
+      const req = await apiXendit.post(`/payment_requests`, data, false, true)
+      res.json(response.success({ item: req }))
+    } catch (err: any) {
+      res.json(response.error({ item: req.body, message: err.message }))
+    }
+  } else {
+    res.json(
+      response.error({
+        item: req.body,
+        message: 'Missing required fields for card payment',
+      })
+    )
   }
 }

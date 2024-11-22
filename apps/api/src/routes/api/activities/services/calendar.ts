@@ -2,6 +2,7 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { ResponseService } from '@/common/service/response'
 import { dbActivities, dbReservations } from '@repo/database'
 import { populate } from 'dotenv'
@@ -52,6 +53,8 @@ export const getPrivateActivityCalendar = async (
   req: Request,
   res: Response
 ) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
   const currentDate = new Date()
@@ -100,10 +103,18 @@ export const getPrivateActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.timeSlotId': { $in: ids },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
-        .populate('guest')
+        .populate({
+          path: 'guest',
+          populate: {
+            path: 'guest',
+          },
+        })
 
       // Build a map for reservations by session (activityId)
       const reservationMap: Record<string, Reservation[]> = {}
@@ -133,7 +144,7 @@ export const getPrivateActivityCalendar = async (
           name: STATUS_DISPLAY.includes(reservation.status)
             ? reservation.status
             : reservation.guest
-              ? `${guest.firstName} ${guest.lastName}`
+              ? `${guest.guest.firstName} ${guest.guest.lastName}`
               : reservation.guestName || 'Unknown',
           startDate: reservation.startDate ?? new Date(),
           endDate: reservation.endDate ?? new Date(),
@@ -184,11 +195,23 @@ export const getPrivateActivityCalendar = async (
         return {
           id: activity._id,
           name: activity.title || 'Unknown name',
-          price: activity.pricePerSlot,
+          price: !activity.pricePerSlot
+            ? 0
+            : convertPrice(
+                activity.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
           pricePerDates: activity?.pricePerDates.map((priceDate) => ({
             fromDate: priceDate.fromDate,
             toDate: priceDate.toDate,
-            price: priceDate?.price,
+            price: !priceDate.price
+              ? 0
+              : convertPrice(
+                  priceDate?.price,
+                  preferredCurrency,
+                  conversionRates
+                ),
           })),
           privateActivities: privateActivities,
         }
@@ -217,6 +240,8 @@ export const getJoinerActivityCalendar = async (
   req: Request,
   res: Response
 ) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   const startDate = new Date(req.query.startDate as string)
   const endDate = new Date(req.query.endDate as string)
   const currentDate = new Date()
@@ -267,10 +292,18 @@ export const getJoinerActivityCalendar = async (
       const reservations = await dbReservations
         .find({
           'activityIds.slotIdsId': { $in: ids },
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
         })
-        .populate('guest')
+        .populate({
+          path: 'guest',
+          populate: {
+            path: 'guest',
+          },
+        })
 
       // Build a map for reservations by session (activityId)
       const reservationMap: Record<string, Reservation[]> = {}
@@ -300,7 +333,7 @@ export const getJoinerActivityCalendar = async (
           name: STATUS_DISPLAY.includes(reservation.status)
             ? reservation.status
             : reservation.guest
-              ? `${guest.firstName} ${guest.lastName}`
+              ? `${guest.guest.firstName} ${guest.guest.lastName}`
               : reservation.guestName || 'Unknown',
           startDate: reservation.startDate ?? new Date(),
           endDate: reservation.endDate ?? new Date(),
@@ -343,14 +376,27 @@ export const getJoinerActivityCalendar = async (
                     reservations: slotReservations,
                   }
                 })
+
                 return {
                   id: session._id.toString(), // Ensure _id is a string
                   name: `${capitalize(day.slice(0, 3))} ${session.startTime || '00:00'} - ${session.endTime || '00:00'}`,
-                  price: activity.pricePerPerson,
+                  price: !activity.pricePerPerson
+                    ? 0
+                    : convertPrice(
+                        activity.pricePerPerson,
+                        preferredCurrency,
+                        conversionRates
+                      ),
                   pricePerDates: activity?.pricePerDates.map((priceDate) => ({
                     fromDate: priceDate.fromDate,
                     toDate: priceDate.toDate,
-                    price: priceDate?.price,
+                    price: !priceDate?.price
+                      ? 0
+                      : convertPrice(
+                          priceDate?.price,
+                          preferredCurrency,
+                          conversionRates
+                        ),
                   })),
                   slots: Array.isArray(slotsItems) ? slotsItems : [],
                 }

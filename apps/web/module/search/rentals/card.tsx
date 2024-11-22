@@ -4,44 +4,36 @@ import Link from "next/link"
 import CustomSquareSlider from "@/common/components/custom-square-slider"
 import { LucideHeart, LucideStar } from "lucide-react"
 import formatCurrency from "@/common/helpers/formatCurrency"
+import NewlyAddedTag from "../components/newly-added-tag"
+import { E_Rental_Category } from "@repo/contract"
+import { T_Rental_Filtered } from "@repo/contract-2/search-filters"
 
-export type T_Rental_Card = {
-  listingId: string
-  title: string
-  photos: {
-    key: string
-    alt: string
-  }[]
-  location: {
-    city: string
-    latitude: number
-    longitude: number
+const RentalCard = (props: T_Rental_Filtered) => {
+  const category: E_Rental_Category = props.category
+  const titleMap = {
+    [E_Rental_Category.Motorbike]: `${props.make} ${props.modelBadge}`,
+    [E_Rental_Category.Car]: `${props.year} ${props.make} ${props.modelBadge}`,
+    [E_Rental_Category.Bicycle]: props.make,
   }
-  price: number
-  average: number
-  reviewsCount: number
-  category: string
-  transmission: string
-  fuel: string
-}
 
-const RentalCard = ({
-  listingId,
-  title,
-  photos,
-  location,
-  price,
-  average,
-  reviewsCount,
-  category,
-  transmission,
-  fuel,
-}: T_Rental_Card) => {
+  const title = titleMap[category]
+  const location = props.location
+  const listingId = props._id
+  const price = props.pricing?.dayRate ?? 0
+  const photos = props.photos?.map((photo) => ({
+    key: photo.key,
+    alt: photo.tags,
+  }))
+  const average = props.average
+  const reviewsCount = props.reviewsCount ?? 0
+  const transmission = props.transmission
+  const fuel = props.fuel
   return (
     <>
       <li className="relative rounded-xl overflow-hidden h-full list-none">
         <Link href={`/listing/rentals/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
+            {reviewsCount < 1 ? <NewlyAddedTag /> : null}
             <button
               onClick={(e) => console.log("clicked heart")}
               className="absolute top-3 right-3 z-40"
@@ -57,37 +49,37 @@ const RentalCard = ({
           <div className="pt-4">
             <div className="flex justify-between">
               <Typography
-                variant="h3"
+                variant="h4"
                 fontWeight="semibold"
                 className="text-text-500 truncate"
               >
                 {title ?? "Unknown title"}
               </Typography>
-              <div className="flex text-text-500 items-center gap-1">
-                {average > 1 ? (
+              <Typography
+                variant="h5"
+                className="flex text-text-500 items-center gap-1"
+              >
+                {reviewsCount > 1 ? (
                   <>
                     <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />
                     {average} ({reviewsCount ? reviewsCount : 0})
                   </>
-                ) : (
-                  <span className="px-2 text-sm text-primary-500 bg-primary-50 rounded-xl min-w-24">
-                    Newly added
-                  </span>
-                )}
-              </div>
+                ) : null}
+              </Typography>
             </div>
             <div className="text-text-300 text-sm">
-              <Typography className="truncate">
+              <Typography className="truncate" variant="h5">
                 {category || "Unknown category"} in{" "}
-                {location.city ?? "Unknown location"}
+                {location?.city ?? "Unknown location"}
               </Typography>
-              <Typography className="truncate">
+              <Typography className="truncate" variant="h5">
                 {fuel || "Unknown fuel"} -{" "}
                 {transmission ?? "Unknown transmission"}
               </Typography>
             </div>
             <Typography
               fontWeight="semibold"
+              variant="h5"
               className="text-text-700 underline truncate"
             >
               {formatCurrency(price)}{" "}

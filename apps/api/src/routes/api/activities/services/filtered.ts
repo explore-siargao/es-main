@@ -1,19 +1,23 @@
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { T_Activity_Filtered } from '@repo/contract-2/search-filters'
 import { dbActivities, dbLocations, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   let {
     location,
-    type,
+    experienceTypes,
     activityTypes,
     priceFrom,
     priceTo,
-    duration,
-    stars,
+    durations,
+    starRating,
     activityDate = 'any',
     numberOfGuest = 'any',
   } = req.query
@@ -38,11 +42,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         .map((t: string) => new RegExp(`^${t}$`, 'i'))
       query.activityType = { $in: newActivityTypesArray }
     }
-    if (duration && duration !== 'any') {
-      query.durationHour = Number(duration)
+    if (durations && durations !== 'any') {
+      query.durationHour = Number(durations)
     }
-    if (!stars || stars === 'any') {
-      stars = '0'
+    if (!starRating || starRating === 'any') {
+      starRating = '0'
     }
     const startDate =
       activityDate === 'any' ? 'any' : parseToUTCDate(activityDate as string)
@@ -51,7 +55,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       {
         $match: {
           deletedAt: null,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           activityIds: { $ne: null },
           $expr: {
             $or: [
@@ -98,7 +105,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       {
         $match: {
           deletedAt: null,
-          status: { $ne: 'Cancelled' },
+          $and: [
+            { status: { $ne: 'Cancelled' } },
+            { status: { $ne: 'For-Payment' } },
+          ],
           activityIds: { $ne: null },
           $expr: {
             $or: [
@@ -145,7 +155,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         ? getActivityJoinerReservations.map((item: any) => item.slotIdsId)
         : []
 
-    if ((!location || location === 'any') && (!type || type === 'any')) {
+    if (
+      (!location || location === 'any') &&
+      (!experienceTypes || experienceTypes === 'any')
+    ) {
       const pipeline = [
         { $match: query },
         {
@@ -240,13 +253,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -703,14 +716,43 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       ]
 
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && (!type || type === 'any')) {
+    } else if (
+      location &&
+      location !== 'any' &&
+      (!experienceTypes || experienceTypes === 'any')
+    ) {
       const normalizedLocation = String(location).toLowerCase()
       const pipeline = [
         { $match: query },
@@ -813,13 +855,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -1276,15 +1318,44 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       ]
 
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if ((!location || location === 'any') && type && type !== 'any') {
-      const typeArray = String(type)
+    } else if (
+      (!location || location === 'any') &&
+      experienceTypes &&
+      experienceTypes !== 'any'
+    ) {
+      const typeArray = String(experienceTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
       query.experienceType = { $in: typeArray }
@@ -1382,13 +1453,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -1845,16 +1916,46 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       ]
 
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
       )
-    } else if (location && location !== 'any' && type && type !== 'any') {
+    } else if (
+      location &&
+      location !== 'any' &&
+      experienceTypes &&
+      experienceTypes !== 'any'
+    ) {
       const normalizedLocation = String(location).toLowerCase()
-      const typeArray = String(type)
+      const typeArray = String(experienceTypes)
         .split(',')
         .map((item) => new RegExp(`^${item.trim()}$`, 'i'))
       query.experienceType = { $in: typeArray }
@@ -1959,13 +2060,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             reviewsCount: { $size: '$reviews' },
           },
         },
-        ...(Number(stars) > 0
+        ...(Number(starRating) > 0
           ? [
               {
                 $match: {
                   average: {
-                    $gte: Number(stars),
-                    $lt: Number(stars) + 1,
+                    $gte: Number(starRating),
+                    $lt: Number(starRating) + 1,
                   },
                 },
               },
@@ -2421,9 +2522,34 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         },
       ]
       const activities = await dbActivities.aggregate(pipeline)
+      const changePrices = activities[0].results.map(
+        (item: T_Activity_Filtered) => ({
+          ...item,
+          pricePerPerson: !item.pricePerPerson
+            ? 0
+            : convertPrice(
+                item.pricePerPerson,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerSlot: !item.pricePerSlot
+            ? 0
+            : convertPrice(
+                item.pricePerSlot,
+                preferredCurrency,
+                conversionRates
+              ),
+          pricePerDates: item.pricePerDates?.map((item) => ({
+            ...item,
+            price: !item.price
+              ? 0
+              : convertPrice(item.price, preferredCurrency, conversionRates),
+          })),
+        })
+      )
       res.json(
         response.success({
-          items: activities[0].results,
+          items: changePrices,
           pageItemCount: activities[0].pageItemCount || 0,
           allItemCount: activities[0].allItemsCount || 0,
         })
