@@ -1,41 +1,40 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
-import CustomSquareSlider from "@/common/components/custom-square-slider"
-import { LucideHeart, LucideStar } from "lucide-react"
+import { LucideStar } from "lucide-react"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import NewlyAddedTag from "../components/newly-added-tag"
-import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
+import propertyTypeMap from "@/common/helpers/propertyTypeMap"
+import { T_Property_Filtered } from "@repo/contract-2/search-filters"
+import Image from "@/common/components/ui/image"
 
-const ActivityCard = (props: T_Activity_Filtered) => {
+const PropertyCard = (props: T_Property_Filtered) => {
+  const listingId = props.listingId
   const title = props.title
-  const location = props.meetingPoint
-  const listingId = props._id
-  const price = (props.pricePerPerson ?? props.pricePerSlot) || 0
-  const photos = props.photos.map((photo) => ({
+  const subtitle = props.subtitle
+  const type = props.type
+  const wholePlaceType = props.wholeplaceType
+  const photos = props.photos?.map((photo) => ({
     key: photo.key,
     alt: photo.tags,
   }))
+  const location = props.location
+  const price = props.price
   const average = props.average
-  const type = (props.activityType ?? [])[1] ?? "Unknown type"
-  const reviewsCount = props.reviewsCount
+  const reviewsCount = props.reviewsCount ?? 0
   return (
     <>
-      <li className="relative rounded-xl overflow-hidden h-full list-none">
-        <Link href={`/listings/activities/${listingId}`} target="_blank">
+      <div className="relative overflow-hidden h-full">
+        <Link href={`/listings/properties/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
-            {reviewsCount < 1 ? <NewlyAddedTag /> : null}
-            <button
-              onClick={(e) => console.log("clicked heart")}
-              className="absolute top-3 right-3 z-40"
-            >
-              <LucideHeart
-                className={`h-7 w-7 text-text-50 active:scale-90 ${
-                  false ? "fill-error-500" : "fill-text-500/50"
-                }`}
+            <div className="h-56">
+              <Image
+                src={`/assets/${photos[0]?.key}`}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                alt={photos[0]?.alt ?? "Image"}
+                fill
+                className="object-cover rounded-2xl"
               />
-            </button>
-            <CustomSquareSlider images={photos} />
+            </div>
           </div>
           <div className="pt-4">
             <div className="flex justify-between">
@@ -44,7 +43,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
                 fontWeight="semibold"
                 className="text-text-500 truncate"
               >
-                {title ?? "Unknown title"}
+                {title ? title : subtitle || "Unknown title"}
               </Typography>
               {reviewsCount > 1 ? (
                 <Typography
@@ -58,8 +57,9 @@ const ActivityCard = (props: T_Activity_Filtered) => {
             </div>
             <div className="text-text-300 text-sm">
               <Typography className="truncate" variant="h5">
-                {type || "Unknown category"} in{" "}
-                {location?.city ?? "Unknown location"}
+                {propertyTypeMap[wholePlaceType || type || "Unknown type"] ||
+                  "Unknown"}{" "}
+                in {location.city || "Unknown location"}
               </Typography>
             </div>
             <Typography
@@ -68,13 +68,13 @@ const ActivityCard = (props: T_Activity_Filtered) => {
               className="text-text-700 underline truncate"
             >
               From {formatCurrency(price)}{" "}
-              <span className="font-normal">/ person</span>
+              <span className="font-normal">/ night</span>
             </Typography>
           </div>
         </Link>
-      </li>
+      </div>
     </>
   )
 }
 
-export default ActivityCard
+export default PropertyCard

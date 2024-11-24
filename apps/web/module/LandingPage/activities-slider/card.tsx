@@ -1,11 +1,10 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
-import CustomSquareSlider from "@/common/components/custom-square-slider"
-import { LucideHeart, LucideStar } from "lucide-react"
+import { LucideStar } from "lucide-react"
 import formatCurrency from "@/common/helpers/formatCurrency"
-import NewlyAddedTag from "../components/newly-added-tag"
 import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
+import Image from "@/common/components/ui/image"
 
 const ActivityCard = (props: T_Activity_Filtered) => {
   const title = props.title
@@ -21,21 +20,18 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const reviewsCount = props.reviewsCount
   return (
     <>
-      <li className="relative rounded-xl overflow-hidden h-full list-none">
+      <div className="relative overflow-hidden h-full list-none">
         <Link href={`/listings/activities/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
-            {reviewsCount < 1 ? <NewlyAddedTag /> : null}
-            <button
-              onClick={(e) => console.log("clicked heart")}
-              className="absolute top-3 right-3 z-40"
-            >
-              <LucideHeart
-                className={`h-7 w-7 text-text-50 active:scale-90 ${
-                  false ? "fill-error-500" : "fill-text-500/50"
-                }`}
+            <div className="h-56">
+              <Image
+                src={`/assets/${photos[0]?.key}`}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                alt={photos[0]?.alt ?? "Image"}
+                fill
+                className="object-cover rounded-2xl"
               />
-            </button>
-            <CustomSquareSlider images={photos} />
+            </div>
           </div>
           <div className="pt-4">
             <div className="flex justify-between">
@@ -72,7 +68,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
             </Typography>
           </div>
         </Link>
-      </li>
+      </div>
     </>
   )
 }
