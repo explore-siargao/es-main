@@ -17,7 +17,6 @@ const RentalsSlider = ({
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
-
   const calculateOffset = (itemsNumber: number) => {
     const containerWidth = 100 // Assuming container width is 100%
     const itemWidth = containerWidth / itemsNumber
@@ -126,7 +125,9 @@ const RentalsSlider = ({
         }
       `}</style>
           {rentals.map((card) => (
-            <SwiperSlide key={`${card.make}-${card.modelBadge}-${card.category}`}>
+            <SwiperSlide
+              key={`${card.make}-${card.modelBadge}-${card.category}`}
+            >
               <RentalCard {...card} />
             </SwiperSlide>
           ))}

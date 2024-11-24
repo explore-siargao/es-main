@@ -23,7 +23,6 @@ const Slider = ({
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
-
   const calculateOffset = (itemsNumber: number) => {
     const containerWidth = 100
     const itemWidth = containerWidth / itemsNumber

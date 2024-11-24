@@ -17,7 +17,6 @@ const ActivitiesSlider = ({
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
-
   const calculateOffset = (itemsNumber: number) => {
     const containerWidth = 100 // Assuming container width is 100%
     const itemWidth = containerWidth / itemsNumber

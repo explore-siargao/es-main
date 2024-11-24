@@ -39,8 +39,9 @@ const RentalCard = (props: T_Rental_Filtered) => {
               className="absolute top-3 right-3 z-40"
             >
               <LucideHeart
-                className={`h-7 w-7 text-text-50 active:scale-90 ${false ? "fill-error-500" : "fill-text-500/50"
-                  }`}
+                className={`h-7 w-7 text-text-50 active:scale-90 ${
+                  false ? "fill-error-500" : "fill-text-500/50"
+                }`}
               />
             </button>
             <CustomSquareSlider images={photos} />
@@ -55,7 +56,6 @@ const RentalCard = (props: T_Rental_Filtered) => {
                 {title ?? "Unknown title"}
               </Typography>
               {reviewsCount > 1 ? (
-
                 <Typography
                   variant="h5"
                   className="flex text-text-500 items-center gap-1 min-w-20 justify-end"

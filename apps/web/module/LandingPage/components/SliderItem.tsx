@@ -34,7 +34,9 @@ const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
         >
           {title}
         </Typography>
-        <Typography className="text-text-300 text-sm" variant="h5">{subTitle}</Typography>
+        <Typography className="text-text-300 text-sm" variant="h5">
+          {subTitle}
+        </Typography>
       </div>
     </Link>
   )

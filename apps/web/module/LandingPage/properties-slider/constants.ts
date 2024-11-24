@@ -1,4 +1,7 @@
-import { E_Property_Type, E_Whole_Place_Property_Type } from "@repo/contract-2/property";
+import {
+  E_Property_Type,
+  E_Whole_Place_Property_Type,
+} from "@repo/contract-2/property"
 
 export const placesToStay = [
   {
@@ -12,7 +15,8 @@ export const placesToStay = [
       barangay: "Poblacion",
       longitude: 126.1628,
       latitude: 9.8486,
-      howToGetThere: "From Siargao Airport, take a tricycle or van to General Luna. The cottage is located along Tourism Road.",
+      howToGetThere:
+        "From Siargao Airport, take a tricycle or van to General Luna. The cottage is located along Tourism Road.",
       createdAt: "2024-01-01T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -51,7 +55,8 @@ export const placesToStay = [
       barangay: "Sugba",
       longitude: 126.0758,
       latitude: 9.8721,
-      howToGetThere: "From Siargao Airport, head towards Del Carmen and follow signs to Sugba Lagoon.",
+      howToGetThere:
+        "From Siargao Airport, head towards Del Carmen and follow signs to Sugba Lagoon.",
       createdAt: "2024-01-05T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -90,7 +95,8 @@ export const placesToStay = [
       barangay: "San Roque",
       longitude: 126.0822,
       latitude: 9.8718,
-      howToGetThere: "Take the main road to Pilar and follow the signs to San Roque beach.",
+      howToGetThere:
+        "Take the main road to Pilar and follow the signs to San Roque beach.",
       createdAt: "2024-01-07T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -129,7 +135,8 @@ export const placesToStay = [
       barangay: "Dapa",
       longitude: 126.1154,
       latitude: 9.8042,
-      howToGetThere: "Drive to Dapa and find the bungalow near the market area.",
+      howToGetThere:
+        "Drive to Dapa and find the bungalow near the market area.",
       createdAt: "2024-01-09T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -168,7 +175,8 @@ export const placesToStay = [
       barangay: "Catangnan",
       longitude: 126.1528,
       latitude: 9.8456,
-      howToGetThere: "Take a van from Siargao Airport to General Luna. Follow signs to Catangnan Resort Drive.",
+      howToGetThere:
+        "Take a van from Siargao Airport to General Luna. Follow signs to Catangnan Resort Drive.",
       createdAt: "2024-01-11T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -207,7 +215,8 @@ export const placesToStay = [
       barangay: "Alegria",
       longitude: 126.1128,
       latitude: 9.8528,
-      howToGetThere: "From General Luna, head north to Santa Monica. Follow signs to Alegria Coastal Road.",
+      howToGetThere:
+        "From General Luna, head north to Santa Monica. Follow signs to Alegria Coastal Road.",
       createdAt: "2024-01-12T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -246,7 +255,8 @@ export const placesToStay = [
       barangay: "San Benito",
       longitude: 126.0934,
       latitude: 9.8794,
-      howToGetThere: "From Del Carmen Port, take a tricycle to San Benito Mangrove Road.",
+      howToGetThere:
+        "From Del Carmen Port, take a tricycle to San Benito Mangrove Road.",
       createdAt: "2024-01-13T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -324,7 +334,8 @@ export const placesToStay = [
       barangay: "Taytay",
       longitude: 126.1245,
       latitude: 9.8702,
-      howToGetThere: "Take the Burgos Main Road to Taytay and follow Mountain View signs.",
+      howToGetThere:
+        "Take the Burgos Main Road to Taytay and follow Mountain View signs.",
       createdAt: "2024-01-15T08:00:00Z",
       updatedAt: null,
       deletedAt: null,
@@ -352,4 +363,4 @@ export const placesToStay = [
     reviewsCount: 50,
     price: 200,
   },
-];
+]

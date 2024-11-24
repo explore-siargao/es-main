@@ -1,4 +1,8 @@
-import { E_Rental_Category, E_Rental_Vehicle_Fuel, E_Rental_Vehicle_Transmission } from "@repo/contract";
+import {
+  E_Rental_Category,
+  E_Rental_Vehicle_Fuel,
+  E_Rental_Vehicle_Transmission,
+} from "@repo/contract"
 
 export const rentals = [
   {
@@ -64,7 +68,7 @@ export const rentals = [
       city: "General Luna",
       streetAddress: "Tourist Road",
       barangay: "Poblacion",
-      longitude: 126.1620,
+      longitude: 126.162,
       latitude: 9.8486,
       howToGetThere: "Meet at the General Luna Tourism Office.",
     },
@@ -625,4 +629,4 @@ export const rentals = [
     average: 4.7,
     reviewsCount: 78,
   },
-];
+]
