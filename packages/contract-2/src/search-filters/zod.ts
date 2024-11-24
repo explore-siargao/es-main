@@ -121,7 +121,7 @@ export const Z_Rental_Filtered = z.object({
   addOns: Z_Rental_AddOns.nullable(),
   photos: z.array(Z_Photo),
   location: Z_Location.nullable(),
-  status: z.enum(["Pending", "Incomplete", "Live"]),
+  status: z.string(),
   finishedSections: z.array(z.string()),
   qtyIds: z
     .array(
@@ -131,7 +131,7 @@ export const Z_Rental_Filtered = z.object({
       })
     )
     .nullable(),
-  pricePerDates: z.array(Z_Rental_PricePerDate),
+  pricePerDates: z.array(Z_Rental_PricePerDate).nullable(),
   rentalNote: z.string().optional(),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
@@ -143,7 +143,7 @@ export const Z_Activity_Filtered = z.object({
   host: Z_Host,
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
-  experienceType: z.enum(["Joiner", "Private"]),
+  experienceType: z.string(),
   description: z.string().optional(),
   highLights: z.array(z.string()).nullable(),
   durationHour: z.number(),
@@ -172,7 +172,7 @@ export const Z_Activity_Filtered = z.object({
   pricePerPerson: z.number().nullable().optional(),
   pricePerSlot: z.number().nullable().optional(),
   daysCanCancel: z.number(),
-  status: z.enum(["Pending", "Incomplete", "Live"]),
+  status: z.string(),
   finishedSections: z.array(z.string()),
   pricePerDates: z.array(Z_Activity_PricePerDate),
   activityNote: z.string().nullable(),

@@ -49,17 +49,15 @@ const PropertyCard = (props: T_Property_Filtered) => {
               >
                 {title ? title : subtitle || "Unknown title"}
               </Typography>
-              <Typography
-                variant="h5"
-                className="flex text-text-500 items-center gap-1"
-              >
-                {reviewsCount > 1 ? (
-                  <>
-                    <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />
-                    {average} ({reviewsCount ? reviewsCount : 0})
-                  </>
-                ) : null}
-              </Typography>
+              {reviewsCount > 1 ? (
+                <Typography
+                  variant="h5"
+                  className="flex text-text-500 items-center gap-1 min-w-20 justify-end"
+                >
+                  <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />
+                  {average} ({reviewsCount ? reviewsCount : 0})
+                </Typography>
+              ) : null}
             </div>
             <div className="text-text-300 text-sm">
               <Typography className="truncate" variant="h5">

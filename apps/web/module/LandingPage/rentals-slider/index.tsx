@@ -1,30 +1,24 @@
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
-import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import SliderItem from "./SliderItem"
+import { T_Rental_Filtered } from "@repo/contract-2/search-filters"
+import RentalCard from "./card"
+import { Typography } from "@/common/components/ui/Typography"
 
-interface SliderProps {
-  cards: {
-    imageKey: StaticImageData | string
-    title: string
-    subTitle?: string
-    url?: string
-  }[]
-  isGuide: boolean
+type SliderProps = {
+  rentals: T_Rental_Filtered[]
   itemsNumber: number
   isLastItemFull?: boolean
 }
 
-const Slider = ({
-  cards,
-  isGuide,
+const RentalsSlider = ({
+  rentals,
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
   const calculateOffset = (itemsNumber: number) => {
-    const containerWidth = 100
+    const containerWidth = 100 // Assuming container width is 100%
     const itemWidth = containerWidth / itemsNumber
     const visiblePartOfLastItem = itemWidth / 2
     return containerWidth - visiblePartOfLastItem
@@ -64,17 +58,27 @@ const Slider = ({
   }
 
   return (
-    <Swiper
-      slidesPerView={itemsNumber}
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
-      navigation
-      slidesOffsetAfter={
-        isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)
-      }
-      breakpoints={slidesPerViewBreakpoints}
-      spaceBetween={40}
-    >
-      <style>{`
+    <div className="mb-5">
+      <div className="mb-8">
+        <Typography variant="h2" fontWeight="semibold" className="text-left">
+          Reliable cars, motorbikes and more
+        </Typography>
+        <Typography variant="h4" className="text-left">
+          Take the road, let's travel with one of our trusted rental partners.
+        </Typography>
+      </div>
+      <div>
+        <Swiper
+          slidesPerView={itemsNumber} // show half of the last item
+          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          navigation
+          slidesOffsetAfter={
+            isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)
+          }
+          breakpoints={slidesPerViewBreakpoints}
+          spaceBetween={40}
+        >
+          <style>{`
         .swiper {
           position: relative;
         }
@@ -120,19 +124,17 @@ const Slider = ({
           opacity: 1;
         }
       `}</style>
-      {cards.map((card) => (
-        <SwiperSlide key={card.title}>
-          <SliderItem
-            imageKey={card.imageKey}
-            title={card.title}
-            subTitle={card.subTitle}
-            url={card.url}
-            isGuide={isGuide}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+          {rentals.map((card) => (
+            <SwiperSlide
+              key={`${card.make}-${card.modelBadge}-${card.category}`}
+            >
+              <RentalCard {...card} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
   )
 }
 
-export default Slider
+export default RentalsSlider
