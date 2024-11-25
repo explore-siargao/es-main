@@ -75,7 +75,7 @@ export const exploreSiargaoIsland = [
     imageKey: "coconut-view-deck.jpg",
     title: "Coconut Tree View Deck",
     subTitle: "Dapa",
-    url: "/siargao/travel/guides/coconut-view-deck",
+    url: "/siargao/travel/guides/coconut-tree-view-deck",
   },
   {
     imageKey: "magpupungko.jpg",
@@ -93,7 +93,7 @@ export const exploreSiargaoIsland = [
     imageKey: "sohoton-cove.jpg",
     title: "Sohoton Cove National Park",
     subTitle: "Socorro",
-    url: "/siargao/travel/guides/sohoton-cove",
+    url: "/siargao/travel/guides/sohoton-cove-national-park",
   },
   {
     imageKey: "tayangban-cave-pool.jpg",

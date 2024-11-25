@@ -40,10 +40,6 @@ const SearchBarByState = ({
   const dropOffDate = searchParams.get("dropOffDate")
   const { pathCategory, setPathCategory } = useSearchStore((state) => state)
 
-  useEffect(() => {
-    setPathCategory(path === `/` ? LINK_SEARCH_PROPERTY : path)
-  }, [])
-
   const form = useForm<T_Search>({
     values: {
       location: location ? location : "any",
