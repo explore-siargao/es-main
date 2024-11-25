@@ -26,7 +26,7 @@ export default async function RootLayout({
       <body>
         <Toaster />
         <GlobalWrappers>
-          <Header contentWidth="medium" />
+          <Header contentWidth="medium" withFilters />
           <YMarginWrapper>{children}</YMarginWrapper>
           <Footer />
         </GlobalWrappers>

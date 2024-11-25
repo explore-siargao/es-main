@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { LINK_SEARCH_PROPERTY } from "../constants"
 
 export type T_Search = {
   location?: string | null
@@ -29,6 +30,7 @@ export const useSearchStore = create<T_Search & T_Search_Setter>((set) => ({
   vehicleType: "",
   pickUpDate: "",
   dropOffDate: "",
+  pathCategory: LINK_SEARCH_PROPERTY,
   setPathCategory: (pathCategory: string) => set({ pathCategory }),
   setSearchValues: ({
     location,
