@@ -238,8 +238,7 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
     const rental = await dbRentals
       .findOne({
         _id: rentalId,
-        status: E_Rental_Status.Pending,
-        deletedAt: null,
+        // status: E_Rental_Status.Pending,
       })
       .populate({
         path: 'host',

@@ -1,35 +1,16 @@
 import { LucideBuilding2, LucideCarFront, LucidePalmtree } from "lucide-react"
 import Tabs from "@/common/components/Tabs"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
-import useGetRentalCounts from "../calendar/rental/hooks/use-get-rental-counts"
+import pluralize from "pluralize"
+import { E_Rental_Category } from "@repo/contract"
 
 const ReservationTab = ({
   activityTab = E_Activity_Experience_Type.Private,
+  rentalTab = E_Rental_Category.Car,
 }: {
   activityTab?: E_Activity_Experience_Type
+  rentalTab?: E_Rental_Category
 }) => {
-  const { data: rentalCountsData, isPending: rentalCountsPending } =
-    useGetRentalCounts()
-
-  let rentalLink
-
-  if (rentalCountsData && !rentalCountsPending) {
-    if (
-      rentalCountsData?.item?.cars === 0 &&
-      rentalCountsData?.item?.motorbikes === 0 &&
-      rentalCountsData?.item?.bicycles > 0
-    ) {
-      rentalLink = "bicycles"
-    } else if (
-      rentalCountsData?.item?.cars === 0 &&
-      rentalCountsData?.item?.motorbikes > 0
-    ) {
-      rentalLink = "motorcycles"
-    } else {
-      rentalLink = "cars"
-    }
-  }
-
   const tabs = [
     {
       name: "Properties",
@@ -39,12 +20,12 @@ const ReservationTab = ({
     {
       name: "Rentals",
       icon: <LucideCarFront className="w-5" />,
-      link: `/hosting/reservations/calendar/rentals/${rentalLink}`,
+      link: `/hosting/reservations/calendar/rentals/${pluralize(rentalTab.toLocaleLowerCase())}`,
     },
     {
       name: "Activities",
       icon: <LucidePalmtree className="w-5" />,
-      link: `/hosting/reservations/calendar/activities/${activityTab.toLocaleLowerCase()}`,
+      link: `/hosting/reservations/calendar/activities/${pluralize(activityTab.toLocaleLowerCase())}`,
     },
   ]
 

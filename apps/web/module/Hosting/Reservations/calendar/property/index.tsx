@@ -9,8 +9,8 @@ import useGetProperties from "./hooks/use-get-properties"
 const PropertyCalendar = () => {
   const currentDate = new Date()
   const { data, isLoading } = useGetProperties(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
+    currentDate.toISOString(),
+    currentDate.toISOString()
   )
 
   return (

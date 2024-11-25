@@ -14,7 +14,6 @@ import {
 import { convertPrice } from '@/common/helpers/convert-price'
 import { T_Bookable_PricePerDate } from '@repo/contract-2/property'
 
-
 const response = new ResponseService()
 
 // Define types

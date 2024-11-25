@@ -21,9 +21,11 @@ import FilterHeader from "./filter"
 function WithSearch({
   contentWidth = "medium",
   isFixed = true,
+  withFilters = false,
 }: {
   readonly contentWidth?: "medium" | "small" | "wide" | "full"
   isFixed?: boolean
+  withFilters?: boolean
 }) {
   const session = useSessionStore((state) => state)
   const path = usePathname()
@@ -98,7 +100,7 @@ function WithSearch({
         </nav>
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
-      <FilterHeader />
+      {withFilters ? <FilterHeader /> : null}
     </header>
   )
 }

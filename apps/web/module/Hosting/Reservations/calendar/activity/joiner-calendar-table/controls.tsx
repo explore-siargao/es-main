@@ -11,6 +11,7 @@ import AddActivityReservationModal from "./modals/add-reservation-modal"
 import useGetActivityCounts from "../hooks/use-get-activity-counts"
 import { QK_CALENDAR_PRIVATE_ACTIVITIES } from "../constants"
 import { E_Activity_Experience_Type } from "@repo/contract/build/Activities/enum"
+import pluralize from "pluralize"
 
 const Controls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -35,14 +36,14 @@ const Controls = () => {
   if (activityCountsData && !activityCountsPending) {
     if (activityCountsData?.item?.private > 0) {
       activityTabs.push({
-        name: E_Activity_Experience_Type.Private,
-        link: "/hosting/reservations/calendar/activities/private",
+        name: pluralize(E_Activity_Experience_Type.Private),
+        link: "/hosting/reservations/calendar/activities/privates",
       })
     }
     if (activityCountsData?.item?.joiner > 0) {
       activityTabs.push({
-        name: E_Activity_Experience_Type.Joiner,
-        link: "/hosting/reservations/calendar/activities/joiner",
+        name: pluralize(E_Activity_Experience_Type.Joiner),
+        link: "/hosting/reservations/calendar/activities/joiners",
       })
     }
   }

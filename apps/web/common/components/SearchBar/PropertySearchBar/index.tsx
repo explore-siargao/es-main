@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Option, Select } from "@/common/components/ui/Select"
 import { Search } from "lucide-react"
 import { Input } from "../../ui/Input"
@@ -7,9 +7,13 @@ import { Button } from "../../ui/Button"
 import { Separator } from "../../ui/Separator"
 import { format, isAfter } from "date-fns"
 import { locations } from "../../Header/filter/constants"
+import { Spinner } from "../../ui/Spinner"
+import { useSearchParams } from "next/navigation"
 
 function PropertySearchBar() {
+  const searchParams = useSearchParams()
   const { register, watch, setValue, getValues } = useFormContext()
+  const [isLoading, setIsLoading] = useState(false)
   const dateToday = format(new Date(), "yyyy-MM-dd")
 
   useEffect(() => {
@@ -19,6 +23,10 @@ function PropertySearchBar() {
       setValue("checkOut", "")
     }
   }, [watch("checkIn")])
+
+  useEffect(() => {
+    if (isLoading) setIsLoading(false)
+  }, [searchParams])
 
   return (
     <div className="flex w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
@@ -63,9 +71,14 @@ function PropertySearchBar() {
       <Button
         variant={"primary"}
         className="h-full px-4 py-3 justify-center items-center rounded-full gap-x-2"
+        onClick={() => setIsLoading(true)}
       >
-        <Search className="text-white h-5 w-5" />
-        Search
+        {!isLoading ? (
+          <Search className="text-white h-5 w-5" />
+        ) : (
+          <Spinner variant="primary" size="xs" />
+        )}
+        {!isLoading ? "Search" : "Searching"}
       </Button>
     </div>
   )

@@ -9,6 +9,7 @@ import {
   getActivityCounts,
   getAllActivitiesByHostId,
   updateItinerary,
+  getActivityByIdPublic,
 } from './services/default'
 import { getActivities, updateActivities } from './services/basic-info'
 import {
@@ -67,6 +68,8 @@ router.get(
 router.get('/host', isOriginValid, isUserLoggedIn, getAllActivitiesByHostId)
 
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)
+
+router.get('/public/:activityId', isOriginValid, getActivityByIdPublic)
 
 router.get(
   '/:activityId/:slotId/:date',

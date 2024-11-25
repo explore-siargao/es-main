@@ -6,7 +6,7 @@ import Link from "next/link"
 import Image from "@/common/components/ui/image"
 
 interface ICardItems {
-  imageKey: StaticImageData
+  imageKey: string
   title: string
   description: string
   linkTitle: string
@@ -21,10 +21,10 @@ const ImageTextCard = ({
   url,
 }: ICardItems) => {
   return (
-    <div className="bg-white rounded-xl shadow-md mx-auto">
+    <div className="bg-white rounded-xl mx-auto border border-solid border-text-50 border-1">
       <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-56">
         <Image
-          src={imageKey}
+          src={`/assets/${imageKey}`}
           fill
           alt={title}
           style={{ objectFit: "cover" }}

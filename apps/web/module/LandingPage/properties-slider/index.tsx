@@ -1,30 +1,24 @@
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
-import { StaticImageData } from "next/image"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import SliderItem from "./SliderItem"
+import { T_Property_Filtered } from "@repo/contract-2/search-filters"
+import PropertyCard from "./card"
+import { Typography } from "@/common/components/ui/Typography"
 
-interface SliderProps {
-  cards: {
-    imageKey: StaticImageData | string
-    title: string
-    subTitle?: string
-    url?: string
-  }[]
-  isGuide: boolean
+type SliderProps = {
+  properties: T_Property_Filtered[]
   itemsNumber: number
   isLastItemFull?: boolean
 }
 
-const Slider = ({
-  cards,
-  isGuide,
+const SliderItemProperty = ({
+  properties,
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
   const calculateOffset = (itemsNumber: number) => {
-    const containerWidth = 100
+    const containerWidth = 100 // Assuming container width is 100%
     const itemWidth = containerWidth / itemsNumber
     const visiblePartOfLastItem = itemWidth / 2
     return containerWidth - visiblePartOfLastItem
@@ -64,17 +58,27 @@ const Slider = ({
   }
 
   return (
-    <Swiper
-      slidesPerView={itemsNumber}
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
-      navigation
-      slidesOffsetAfter={
-        isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)
-      }
-      breakpoints={slidesPerViewBreakpoints}
-      spaceBetween={40}
-    >
-      <style>{`
+    <div className="mb-5">
+      <div className="mb-8">
+        <Typography variant="h2" fontWeight="semibold" className="text-left">
+          Recommended places to stay
+        </Typography>
+        <Typography variant="h4" className="text-left">
+          Hand-picked properties just for you
+        </Typography>
+      </div>
+      <div>
+        <Swiper
+          slidesPerView={itemsNumber} // show half of the last item
+          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          navigation
+          slidesOffsetAfter={
+            isLastItemFull ? itemsNumber : calculateOffset(itemsNumber)
+          }
+          breakpoints={slidesPerViewBreakpoints}
+          spaceBetween={40}
+        >
+          <style>{`
         .swiper {
           position: relative;
         }
@@ -120,19 +124,15 @@ const Slider = ({
           opacity: 1;
         }
       `}</style>
-      {cards.map((card) => (
-        <SwiperSlide key={card.title}>
-          <SliderItem
-            imageKey={card.imageKey}
-            title={card.title}
-            subTitle={card.subTitle}
-            url={card.url}
-            isGuide={isGuide}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+          {properties.map((card) => (
+            <SwiperSlide key={card.title}>
+              <PropertyCard {...card} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
   )
 }
 
-export default Slider
+export default SliderItemProperty

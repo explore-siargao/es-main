@@ -3,14 +3,14 @@ import { Typography } from "@/common/components/ui/Typography"
 import ReservationCalendarTab from "../../components/reservation-tab"
 import Legends from "./legends"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useGetCarRentals from "./hooks/use-get-car-rentals"
+import useGetMotorRentals from "./hooks/use-get-motor-rentals"
 import MotorCalendarTable from "./motor-calendar-table"
 
 const MotorReservationCalendar = () => {
   const currentDate = new Date()
-  const { data, isLoading } = useGetCarRentals(
-    currentDate.toLocaleDateString(),
-    currentDate.toLocaleDateString()
+  const { data, isLoading } = useGetMotorRentals(
+    currentDate.toISOString(),
+    currentDate.toISOString()
   )
 
   return (

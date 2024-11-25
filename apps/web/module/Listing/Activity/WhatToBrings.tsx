@@ -7,7 +7,7 @@ const WhatToBrings = ({ whatToBrings }: { whatToBrings: string[] }) => {
       <TitleSection size="lg" title="What to bring">
         <div className="mb-5"></div>
         <div className="grid grid-cols-2 gap-4 w-full">
-          {whatToBrings.map((item) => (
+          {whatToBrings?.map((item) => (
             <div className="flex gap-2">
               <Check className="text-primary-700 shrink-0" />
               {item}

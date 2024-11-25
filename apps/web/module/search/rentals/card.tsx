@@ -31,7 +31,7 @@ const RentalCard = (props: T_Rental_Filtered) => {
   return (
     <>
       <li className="relative rounded-xl overflow-hidden h-full list-none">
-        <Link href={`/listing/rentals/${listingId}`} target="_blank">
+        <Link href={`/listings/rentals/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
             {reviewsCount < 1 ? <NewlyAddedTag /> : null}
             <button
@@ -55,17 +55,15 @@ const RentalCard = (props: T_Rental_Filtered) => {
               >
                 {title ?? "Unknown title"}
               </Typography>
-              <Typography
-                variant="h5"
-                className="flex text-text-500 items-center gap-1"
-              >
-                {reviewsCount > 1 ? (
-                  <>
-                    <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />
-                    {average} ({reviewsCount ? reviewsCount : 0})
-                  </>
-                ) : null}
-              </Typography>
+              {reviewsCount > 1 ? (
+                <Typography
+                  variant="h5"
+                  className="flex text-text-500 items-center gap-1 min-w-20 justify-end"
+                >
+                  <LucideStar className="h-4 w-auto text-text-500 fill-text-500" />
+                  {average} ({reviewsCount ? reviewsCount : 0})
+                </Typography>
+              ) : null}
             </div>
             <div className="text-text-300 text-sm">
               <Typography className="truncate" variant="h5">

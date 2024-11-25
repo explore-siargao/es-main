@@ -28,8 +28,8 @@ const BikeCalendarTable = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 11)
   const { data: calendarRentals } = useGetBikeRentals(
-    startDate.toLocaleDateString(),
-    endDate.toLocaleDateString()
+    startDate.toISOString(),
+    endDate.toISOString()
   )
 
   useEffect(() => {

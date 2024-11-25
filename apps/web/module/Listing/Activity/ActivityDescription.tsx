@@ -5,7 +5,7 @@ const ActivityDescription = ({ description }: { description: string }) => {
   const [descriptionModalOpen, setDescriptionModalOpen] = useState(false)
   const maximumLength = 600
   const slicedDescription =
-    description.length > maximumLength
+    description?.length > maximumLength
       ? description.slice(0, maximumLength) + "....."
       : description
   return (
