@@ -12,8 +12,9 @@ import CheckoutModal from "./components/checkout-modal";
 
 const Cart = () => {
   const { data, isLoading } = useGetCartItems()
-  const [selectedItemsPrice, setSelectedItemsPrice] = useState<number[]>([])
+  const [selectedItems, setSelectedItems] = useState<T_Cart_Item[]>([])
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false)
+
   return (
     <WidthWrapper
       width="medium"
@@ -25,8 +26,8 @@ const Cart = () => {
           <Loading /> : 
           data && data?.items.length > 0 ?
           <CartList 
-            setSelectedItemsPrice={setSelectedItemsPrice} 
-            selectedItemsPrice={selectedItemsPrice} 
+            setSelectedItems={setSelectedItems} 
+            selectedItems={selectedItems} 
             items={data?.items as T_Cart_Item[]} 
           /> :
           <div className="col-span-3 w-full">
@@ -37,14 +38,14 @@ const Cart = () => {
       
       <div className="col-span-1 relative ">
         <SubTotalBox
-          selectedItemsPrice={selectedItemsPrice} 
+          selectedItemsPrice={selectedItems.map(item => item.price)} 
           setIsCheckoutModalOpen={setIsCheckoutModalOpen}
         />
       </div>
       <CheckoutModal 
         isOpen={isCheckoutModalOpen} 
         onClose={() => setIsCheckoutModalOpen(false)} 
-        itemIds={[]} 
+        items={selectedItems} 
       />
     </WidthWrapper>
   )

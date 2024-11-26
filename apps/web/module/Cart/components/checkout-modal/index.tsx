@@ -5,21 +5,28 @@ import ModalContainerFooter from "@/common/components/ModalContainer/ModalContai
 import { useQueryClient } from "@tanstack/react-query"
 import useRemoveMultipleItemsFromCart from "../../hooks/use-delete-multiple-items-from-cart"
 import PaymentOptions from "@/module/Listing/Property/Checkout/PaymentOptions"
+import { T_Add_To_Cart, T_Cart_Item } from "@repo/contract-2/cart"
+import useAddGCashPayment from "../../hooks/use-add-gcash-payment"
+import { useRouter } from "next/navigation"
 
 interface CheckoutModalProps {
   isOpen: boolean
   onClose: () => void
-  itemIds: string[]
+  items: T_Add_To_Cart[]
 }
 
 const CheckoutModal = ({
   isOpen: openModal,
   onClose: closeModal,
-  itemIds
+  items
 }: CheckoutModalProps) => {
   const queryClient = useQueryClient()
-  const { mutate, isPending } = useRemoveMultipleItemsFromCart()
-
+  const { mutate, isPending } = useAddGCashPayment()
+  const fixedItems = items.map(item => ({
+    ...item,
+    guestCount: item.guestCount ?? 1
+  }));
+  const router = useRouter()
   return (
     <ModalContainer
       title="Select payment method"
@@ -35,7 +42,24 @@ const CheckoutModal = ({
         isPending={isPending}
         isSubmit={false}
         onClose={closeModal}
-        buttonFn={() => console.log('asdasd')}
+        buttonFn={() => {
+          mutate(fixedItems, {
+            onSuccess: (data: any) => {
+              if (!data.error) {
+                queryClient.invalidateQueries({
+                  queryKey: ["get-cart-item"],
+                })
+                 router.push(data.item.action.link)
+                closeModal()
+              } else {
+                toast.error(String(data.message))
+              }
+            },
+            onError: (err: any) => {
+              toast.error(String(err))
+            },
+          })
+        }}
       />
     </ModalContainer>
   )

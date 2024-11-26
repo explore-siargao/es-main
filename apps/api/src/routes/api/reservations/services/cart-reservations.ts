@@ -6,8 +6,8 @@ import { API_URL } from '@/common/constants/ev'
 import { ResponseService } from '@/common/service/response'
 import { T_CardInfo } from '@repo/contract'
 import {
-  T_CartItem,
-  T_Add_CartItems,
+  T_Add_To_Cart,
+  T_Cart_Item,
   Z_Add_CartItems,
 } from '@repo/contract-2/cart'
 import { dbPaymentMethods, dbReservations } from '@repo/database'
@@ -18,8 +18,9 @@ const response = new ResponseService()
 const encryptionService = new EncryptionService('card')
 export const gcashMultipleCheckout = async (req: Request, res: Response) => {
   try {
+ 
     const userId = res.locals.user?.id
-    const cartItems: T_Add_CartItems = req.body.cartItems
+    const cartItems: T_Add_To_Cart[] = req.body
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else if (!Array.isArray(cartItems)) {
@@ -105,7 +106,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
 export const cardMultipleCheckout = async (req: Request, res: Response) => {
   try {
     const userId = res.locals.user?.id
-    const cartItems: T_Add_CartItems = req.body.cartItems
+    const cartItems: T_Add_To_Cart[] = req.body.cartItems
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else if (!Array.isArray(cartItems)) {
