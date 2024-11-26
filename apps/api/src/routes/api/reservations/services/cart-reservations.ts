@@ -64,7 +64,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
             xendItPaymentReferenceId: gcashData.item.reference_id,
             guestCount: item.guestCount,
             status: 'For-Payment',
-            cartId: item.id,
+            cartId: item._id,
           }))
           const addReservations =
             await dbReservations.insertMany(reservationItems)

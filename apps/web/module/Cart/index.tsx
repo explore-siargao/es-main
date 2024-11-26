@@ -14,7 +14,7 @@ const Cart = () => {
   const { data, isLoading } = useGetCartItems()
   const [selectedItems, setSelectedItems] = useState<T_Cart_Item[]>([])
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false)
-
+  
   return (
     <WidthWrapper
       width="medium"
@@ -26,7 +26,7 @@ const Cart = () => {
           <Loading /> : 
           data && data?.items.length > 0 ?
           <CartList 
-            setSelectedItems={setSelectedItems} 
+            setSelectedItems={setSelectedItems}
             selectedItems={selectedItems} 
             items={data?.items as T_Cart_Item[]} 
           /> :

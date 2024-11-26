@@ -20,24 +20,25 @@ const numberOrString = z.union([z.number(), z.string()])
 export const Z_AddCart = z
   .object({
     id: z.string().optional(),
+    _id: z.string().optional(),
     userId: Z_Host.optional(),
     propertyIds: z
       .object({
-        propertyId: z.string(),
-        unitId: z.string(),
+        propertyId: z.string().optional(),
+        unitId: z.string().optional(),
       })
       .optional().nullable(),
     rentalIds: z
       .object({
-        rentalId: z.string(),
-        qtyIdsId: z.string(),
+        rentalId: z.string().optional(),
+        qtyIdsId: z.string().optional(),
       })
       .optional().nullable(),
     activityIds: z
       .object({
-        activityId: z.string(),
-        dayId: z.string(),
-        timeSlotId: z.string(),
+        activityId: z.string().optional(),
+        dayId: z.string().optional(),
+        timeSlotId: z.string().optional(),
         slotIdsId: z.string().optional(),
       })
       .optional().nullable(),

@@ -14,20 +14,23 @@ interface ICartProps {
   toggleCheckbox: (id: string, price: number) => void
   setItemId: (value: string) => void
   setIsDeleteCartItemOpen: (value: boolean) => void
+  viewOnly?: boolean
 }
 
-function RentalCartItem({ item, selectedItems, index, toggleCheckbox, setItemId, setIsDeleteCartItemOpen }: ICartProps) {
+function RentalCartItem({ item, selectedItems, index, toggleCheckbox, setItemId, setIsDeleteCartItemOpen, viewOnly }: ICartProps) {
   const rentalItem = item.rentalIds?.rentalId
   return (
     <div key={rentalItem?._id} className="border rounded-xl p-4 mb-6">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-4">
+        {viewOnly ? null :
           <InputCheckbox
             id={item._id}
             colorVariant="secondary"
             checked={selectedItems.includes(item._id)}
             onChange={() => toggleCheckbox(item._id, item.price)}
           />
+        }
           <img
             src={`/assets/${rentalItem?.photos && rentalItem?.photos[0]?.key}`}
             width={140}
@@ -47,6 +50,7 @@ function RentalCartItem({ item, selectedItems, index, toggleCheckbox, setItemId,
             </Typography>
           </div>
         </div>
+        {viewOnly ? null :
         <div className="flex items-end">
           <Button
             variant="link"
@@ -64,6 +68,7 @@ function RentalCartItem({ item, selectedItems, index, toggleCheckbox, setItemId,
             Remove
           </Button>
         </div>
+}
       </div>
       <div className="border-t my-4"></div>
       <div className="flex justify-between items-center">
