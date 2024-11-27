@@ -6,7 +6,7 @@ import {
 
 export const rentals = [
   {
-    _id: "1",
+    _id: "6657ef2b2ee20e8998e08ada",
     details: null,
     pricing: {
       _id: "pricing1",
@@ -53,7 +53,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo1",
-        key: "toyota_corolla.jpg",
+        key: "honda-click-2.jpg",
         thumbKey: "toyota_corolla_thumb.jpg",
         isMain: true,
         description: "Toyota Corolla rental",
@@ -90,7 +90,7 @@ export const rentals = [
     reviewsCount: 120,
   },
   {
-    _id: "2",
+    _id: "6662c3f20e688a27393cb4af",
     details: null,
     pricing: {
       _id: "pricing2",
@@ -137,7 +137,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo2",
-        key: "honda_civic.jpg",
+        key: "d822adfb-6e57-411d-bf16-f4c38f1e0fb6",
         thumbKey: "honda_civic_thumb.jpg",
         isMain: true,
         description: "Honda Civic rental",
@@ -165,7 +165,7 @@ export const rentals = [
     reviewsCount: 85,
   },
   {
-    _id: "3",
+    _id: "6667f5e8ef169899d1657538",
     details: null,
     pricing: {
       _id: "pricing3",
@@ -212,7 +212,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo3",
-        key: "ford_focus.jpg",
+        key: "74986692-b458-45f4-986c-2403f2ad5ed0",
         thumbKey: "ford_focus_thumb.jpg",
         isMain: true,
         description: "Ford Focus rental",
@@ -245,7 +245,7 @@ export const rentals = [
     reviewsCount: 60,
   },
   {
-    _id: "4",
+    _id: "666ab18b7e7ac54915803a3c",
     details: null,
     pricing: {
       _id: "pricing4",
@@ -292,7 +292,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo4",
-        key: "nissan_altima.jpg",
+        key: "608628a6-dd93-4dbf-997a-588eff7567c7",
         thumbKey: "nissan_altima_thumb.jpg",
         isMain: true,
         description: "Nissan Altima rental",
@@ -325,7 +325,7 @@ export const rentals = [
     reviewsCount: 75,
   },
   {
-    _id: "5",
+    _id: "668b7f9796952aae45529c94",
     details: null,
     pricing: {
       _id: "pricing5",
@@ -372,7 +372,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo5",
-        key: "chevrolet_malibu.jpg",
+        key: "099843f0-d626-42fb-899e-62c6687614a2",
         thumbKey: "chevrolet_malibu_thumb.jpg",
         isMain: true,
         description: "Chevrolet Malibu rental",
@@ -400,7 +400,7 @@ export const rentals = [
     reviewsCount: 90,
   },
   {
-    _id: "6",
+    _id: "668b810d96952aae45529ee6",
     details: null,
     pricing: {
       _id: "pricing6",
@@ -447,7 +447,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo6",
-        key: "mazda_cx5.jpg",
+        key: "84f4b686-d4ed-491d-8cbd-0a1d218e2c98",
         thumbKey: "mazda_cx5_thumb.jpg",
         isMain: true,
         description: "Mazda CX-5 rental",
@@ -480,7 +480,7 @@ export const rentals = [
     reviewsCount: 85,
   },
   {
-    _id: "7",
+    _id: "669e164dd9d8292bce42d51c",
     details: null,
     pricing: {
       _id: "pricing7",
@@ -527,7 +527,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo7",
-        key: "hyundai_tucson.jpg",
+        key: "2a820a6a-9baf-4b7c-884a-217f86e7e657",
         thumbKey: "hyundai_tucson_thumb.jpg",
         isMain: true,
         description: "Hyundai Tucson rental",
@@ -555,7 +555,7 @@ export const rentals = [
     reviewsCount: 90,
   },
   {
-    _id: "8",
+    _id: "66a9ee57cbecc5b833a34b7d",
     details: null,
     pricing: {
       _id: "pricing8",
@@ -602,7 +602,7 @@ export const rentals = [
     photos: [
       {
         _id: "photo8",
-        key: "suzuki_jimny.jpg",
+        key: "195bfc51-f43e-4cca-9d13-b6474bd7306c",
         thumbKey: "suzuki_jimny_thumb.jpg",
         isMain: true,
         description: "Suzuki Jimny rental",

@@ -48,16 +48,17 @@ const LandingPage = () => {
             groupCards={travelStyle}
             isGuide={true}
             itemsNumber={4}
+            isLastItemFull
           />
         </div>
         <div className="sm:mt-10">
-          <SliderItemProperty properties={placesToStay} itemsNumber={6} />
+          <SliderItemProperty properties={placesToStay} itemsNumber={4} isLastItemFull />
         </div>
         <div className="sm:mt-10">
-          <ActivitiesSlider activities={activities} itemsNumber={6} />
+          <ActivitiesSlider activities={activities} itemsNumber={4} isLastItemFull />
         </div>
         <div className="sm:mt-10">
-          <RentalsSlider rentals={rentals} itemsNumber={6} />
+          <RentalsSlider rentals={rentals} itemsNumber={4} isLastItemFull />
         </div>
         <div className="sm:mt-10 mb-8">
           <Typography variant="h2" fontWeight="semibold" className="text-left">
