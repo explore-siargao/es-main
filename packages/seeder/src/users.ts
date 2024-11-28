@@ -1,0 +1,540 @@
+import {
+  dbAddresses,
+  dbEmergencyContacts,
+  dbGuests,
+  dbUsers,
+} from "@repo/database"
+import { E_RegistrationType, E_UserRole, T_User } from "@repo/contract-2/user"
+import { T_Guest } from "@repo/contract-2/guest"
+import { T_Address } from "@repo/contract-2/address-location"
+import { EncryptionService } from '@repo/'
+
+const passwordEncryption = new EncryptionService('password')
+const seedUsers = async () => {
+  try {
+    console.log("Seeding users...")
+
+    const addressData: T_Address[] = [
+      {
+        country: "Philippines",
+        city: "Quezon City",
+        stateProvince: "Metro Manila",
+        streetAddress: "23 Katipunan Avenue",
+        aptSuite: "Unit 301",
+        zipCode: 1105,
+        createdAt: "2024-11-19T10:00:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Makati City",
+        stateProvince: "Metro Manila",
+        streetAddress: "45 Ayala Avenue",
+        aptSuite: "Floor 8",
+        zipCode: 1226,
+        createdAt: "2024-11-19T09:45:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Pasig City",
+        stateProvince: "Metro Manila",
+        streetAddress: "67 Ortigas Avenue",
+        aptSuite: "Room 12B",
+        zipCode: 1605,
+        createdAt: "2024-11-19T09:30:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Cebu City",
+        stateProvince: "Cebu",
+        streetAddress: "89 Osmeña Boulevard",
+        aptSuite: "Block C",
+        zipCode: 6000,
+        createdAt: "2024-11-19T09:15:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Davao City",
+        stateProvince: "Davao del Sur",
+        streetAddress: "12 Roxas Avenue",
+        aptSuite: "Building 5",
+        zipCode: 8000,
+        createdAt: "2024-11-19T09:00:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Taguig City",
+        stateProvince: "Metro Manila",
+        streetAddress: "33 McKinley Road",
+        aptSuite: "Suite 4",
+        zipCode: 1630,
+        createdAt: "2024-11-19T08:45:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Baguio City",
+        stateProvince: "Benguet",
+        streetAddress: "56 Session Road",
+        aptSuite: "Apartment 7",
+        zipCode: 2600,
+        createdAt: "2024-11-19T08:30:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Iloilo City",
+        stateProvince: "Iloilo",
+        streetAddress: "21 Jaro Road",
+        aptSuite: "Villa 2",
+        zipCode: 5000,
+        createdAt: "2024-11-19T08:15:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Cagayan de Oro",
+        stateProvince: "Misamis Oriental",
+        streetAddress: "98 Divisoria Street",
+        aptSuite: "Unit 10",
+        zipCode: 9000,
+        createdAt: "2024-11-19T08:00:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Zamboanga City",
+        stateProvince: "Zamboanga del Sur",
+        streetAddress: "34 Pilar Street",
+        aptSuite: "Condo 3A",
+        zipCode: 7000,
+        createdAt: "2024-11-19T07:45:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "San Fernando",
+        stateProvince: "Pampanga",
+        streetAddress: "18 MacArthur Highway",
+        aptSuite: "House 15",
+        zipCode: 2000,
+        createdAt: "2024-11-19T07:30:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Legazpi City",
+        stateProvince: "Albay",
+        streetAddress: "77 Mayon Avenue",
+        aptSuite: "Room 23",
+        zipCode: 4500,
+        createdAt: "2024-11-19T07:15:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Tacloban City",
+        stateProvince: "Leyte",
+        streetAddress: "54 Rizal Avenue",
+        aptSuite: "Flat 6A",
+        zipCode: 6500,
+        createdAt: "2024-11-19T07:00:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "Puerto Princesa",
+        stateProvince: "Palawan",
+        streetAddress: "12 Abueg Street",
+        aptSuite: "Cottage 4",
+        zipCode: 5300,
+        createdAt: "2024-11-19T06:45:00Z",
+      },
+      {
+        country: "Philippines",
+        city: "General Santos City",
+        stateProvince: "South Cotabato",
+        streetAddress: "40 Tuna Boulevard",
+        aptSuite: "Suite 9B",
+        zipCode: 9500,
+        createdAt: "2024-11-19T06:30:00Z",
+      },
+    ]
+
+    const usersData: T_User[] = [
+      {
+        email: "ramil@gmail.com",
+        password: "Ramil@25",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "jp.madrigal07@gmail.com",
+        password:
+          "ExploreSiargao@01",
+          role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "kv.madrigal08@gmail.com",
+        password:
+          "ExploreSiargao@01",
+          role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        profilePicture: "https://example.com/user2-profile.jpg",
+        canReceiveEmail: true,
+      },
+      {
+        email: "jeusdsn@gmail.com",
+        password:
+          "ExploreSiargao@01",
+          role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "jepoyyy0225@gmail.com",
+        password:
+          "ExploreSiargao@01",
+          role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "jpearcehenderson@gmail.com",
+        password: "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "kyllemadrigal08@gmail.com",
+        password:
+          "ExploreSiargao@01",
+          role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "juan.delacruz@gmail.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "maria.lopez@yahoo.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "pedro.garcia@hotmail.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "ana.reyes@gmail.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "carlos.diaz@yahoo.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "sofia.torres@hotmail.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "miguel.luna@gmail.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+      {
+        email: "isabel.mata@yahoo.com",
+        password:
+          "ExploreSiargao@01",
+        role: E_UserRole.User,
+        registrationType: E_RegistrationType.Manual,
+        isHost: false,
+        canReceiveEmail: false,
+      },
+    ]
+
+    const guestData: T_Guest[] = [
+      {
+        firstName: "Ramil",
+        middleName: "Lapitan",
+        lastName: "Kaharian",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-8123456",
+        cellPhone: "09171234567",
+        country: "Philippines",
+        birthDate: "1990-05-14",
+        companyTaxId: 123456789,
+        companyName: "Cruz Corp",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-11-20",
+      },
+      {
+        firstName: "Maria",
+        middleName: "Santos",
+        lastName: "Lopez",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-8234567",
+        cellPhone: "09281234567",
+        country: "Philippines",
+        birthDate: "1985-08-22",
+        companyTaxId: 987654321,
+        companyName: "Lopez Trading",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-10-15",
+      },
+      {
+        firstName: "Pedro",
+        lastName: "Garcia",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-8345678",
+        cellPhone: "09183456789",
+        country: "Philippines",
+        birthDate: "1992-12-30",
+        companyName: "Garcia Enterprises",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-09-01",
+      },
+      {
+        firstName: "Ana",
+        lastName: "Reyes",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-8456789",
+        cellPhone: "09194567890",
+        country: "Philippines",
+        birthDate: "1995-03-18",
+        companyTaxId: 456789123,
+        companyName: "Reyes Innovations",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-11-10",
+      },
+      {
+        firstName: "Jose",
+        middleName: "Mercado",
+        lastName: "Diaz",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-8567890",
+        cellPhone: "09364567890",
+        country: "Philippines",
+        birthDate: "1988-11-05",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-06-25",
+      },
+      {
+        firstName: "Carmen",
+        lastName: "Torres",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-8678901",
+        cellPhone: "09176789012",
+        country: "Philippines",
+        birthDate: "1983-07-12",
+        companyTaxId: 112233445,
+        companyName: "Torres Solutions",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-08-18",
+      },
+      {
+        firstName: "Miguel",
+        middleName: "Aguila",
+        lastName: "Luna",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-8789012",
+        cellPhone: "09217890123",
+        country: "Philippines",
+        birthDate: "1993-01-23",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-11-18",
+      },
+      {
+        firstName: "Isabel",
+        middleName: "Rizal",
+        lastName: "Mata",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-8890123",
+        cellPhone: "09288901234",
+        country: "Philippines",
+        birthDate: "1997-04-12",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-03-02",
+      },
+      {
+        firstName: "Gabriel",
+        lastName: "Flores",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-8901234",
+        cellPhone: "09129012345",
+        country: "Philippines",
+        birthDate: "1991-09-10",
+        companyTaxId: 334455667,
+        companyName: "Flores Enterprises",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-11-05",
+      },
+      {
+        firstName: "Rosario",
+        middleName: "De La",
+        lastName: "Paz",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-9012345",
+        cellPhone: "09239012346",
+        country: "Philippines",
+        birthDate: "1999-02-25",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-07-19",
+      },
+      {
+        firstName: "Enrique",
+        lastName: "Cruz",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-9123456",
+        cellPhone: "09179123457",
+        country: "Philippines",
+        birthDate: "1986-10-15",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-09-11",
+      },
+      {
+        firstName: "Sophia",
+        middleName: "Gomez",
+        lastName: "Fernandez",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-9234567",
+        cellPhone: "09239234567",
+        country: "Philippines",
+        birthDate: "1994-06-09",
+        companyName: "Fernandez Realty",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-05-13",
+      },
+      {
+        firstName: "Diego",
+        middleName: "Bonifacio",
+        lastName: "Ramos",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-9345678",
+        cellPhone: "09189345678",
+        country: "Philippines",
+        birthDate: "1987-12-05",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-04-20",
+      },
+      {
+        firstName: "Angela",
+        lastName: "Martinez",
+        language: "English",
+        currency: "PHP",
+        gender: "F",
+        phone: "632-9456789",
+        cellPhone: "09219456789",
+        country: "Philippines",
+        birthDate: "2000-10-30",
+        companyTaxId: 778899112,
+        companyName: "Martinez Technologies",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-02-10",
+      },
+      {
+        firstName: "Carlos",
+        lastName: "Mendoza",
+        language: "English",
+        currency: "PHP",
+        gender: "M",
+        phone: "632-9567890",
+        cellPhone: "09199567890",
+        country: "Philippines",
+        birthDate: "1984-03-14",
+        confirm: '{"identity":false,"email":false,"phone":false}',
+        createdAt: "2024-01-25",
+      },
+    ]
+    const guests = await dbGuests.insertMany(guestData)
+    const address = await dbAddresses.insertMany(addressData)
+    const getGuest = await dbGuests.find({})
+    const users = await dbUsers.insertMany(usersData)
+    users.forEach(async (item, i) => {
+      const encryptedPassword = passwordEncryption.encrypt(item.password)
+      await dbUsers.findByIdAndUpdate(item._id,{
+        $set:{
+          guest:getGuest[i]?._id,
+          password:encryptedPassword
+        }
+      })
+    })
+
+    guests.forEach(async (guest,i)=>{
+      await dbGuests.findByIdAndUpdate(guest._id,{
+        $set:{
+          address:address[i]?._id
+        }
+      })
+    })
+    
+
+    console.log("Users seeded successfully!")
+  } catch (error) {
+    console.error("Error seeding users:", error)
+  }
+}
+
+export default seedUsers

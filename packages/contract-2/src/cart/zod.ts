@@ -141,7 +141,7 @@ export const Z_CartItem = z.object({
             baseRateMaxCapacity: z.number(),
             maximumCapacity: z.number(),
             pricePerAdditionalPerson: z.number(),
-            discountedWeekLyRate: z.number(),
+            discountedWeeklyRate: z.number(),
             createdAt: z.string().optional(),
             updatedAt: z.string().nullable().optional(),
             deletedAt: z.string().nullable().optional(),

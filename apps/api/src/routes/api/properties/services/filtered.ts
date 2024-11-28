@@ -718,10 +718,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+            discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
-                  item.unitPrice?.discountedWeekLyRate,
+                  item.unitPrice?.discountedWeeklyRate,
                   preferredCurrency,
                   conversionRates
                 ),
@@ -744,10 +744,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+              discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
-                    item.price?.discountedWeekLyRate,
+                    item.price?.discountedWeeklyRate,
                     preferredCurrency,
                     conversionRates
                   ),
@@ -1387,10 +1387,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
-                  item.unitPrice?.discountedWeekLyRate,
+                  item.unitPrice?.discountedWeeklyRate,
                   preferredCurrency,
                   conversionRates
                 ),
@@ -1413,10 +1413,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
-                    item.price?.discountedWeekLyRate,
+                    item.price?.discountedWeeklyRate,
                     preferredCurrency,
                     conversionRates
                   ),
@@ -2084,10 +2084,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
-                  item.unitPrice?.discountedWeekLyRate,
+                  item.unitPrice?.discountedWeeklyRate,
                   preferredCurrency,
                   conversionRates
                 ),
@@ -2110,10 +2110,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
-                    item.price?.discountedWeekLyRate,
+                    item.price?.discountedWeeklyRate,
                     preferredCurrency,
                     conversionRates
                   ),
@@ -2790,10 +2790,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-            discountedWeekLyRate: !item.unitPrice?.discountedWeekLyRate
+                discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
-                  item.unitPrice?.discountedWeekLyRate,
+                  item.unitPrice?.discountedWeeklyRate,
                   preferredCurrency,
                   conversionRates
                 ),
@@ -2816,10 +2816,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-              discountedWeekLyRate: !item.price?.discountedWeekLyRate
+                  discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
-                    item.price?.discountedWeekLyRate,
+                    item.price?.discountedWeeklyRate,
                     preferredCurrency,
                     conversionRates
                   ),

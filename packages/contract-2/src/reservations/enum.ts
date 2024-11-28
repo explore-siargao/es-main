@@ -1,4 +1,4 @@
-export enum ReservationStatus {
+export enum E_ReservationStatus {
   Confirmed = "Confirmed",
   NotConfirmed = "Not-Confirmed",
   Cancelled = "Cancelled",
@@ -6,8 +6,7 @@ export enum ReservationStatus {
   CheckedOut = "Checked-Out",
   NoShow = "No-Show",
   BlockedDates = "Blocked-Dates",
-  OutofServiceDates = "Out-of-Service-Dates",
-  ForPayment = "For-Payment",
+  OutOfServiceDates = "Out-of-Service-Dates",
 }
 
 export enum UserRole {

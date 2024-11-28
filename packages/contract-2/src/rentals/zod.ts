@@ -40,7 +40,7 @@ export const Z_Rental_AddOns = z.object({
   babySeat: z.boolean(),
   dashCam: z.boolean(),
   includesHelmet: z.boolean(),
-  others: z.array(z.string()).nullable().optional(),
+  others: z.string().nullable().optional(),
 })
 
 export const Z_Rental_PricePerDate = z.object({
@@ -54,7 +54,7 @@ export const Z_Rental = z.object({
   _id: z.string().optional(),
   details: Z_Rental_Details.nullable(),
   pricing: Z_Rental_Price.nullable(),
-  host: Z_Host,
+  host: Z_Host.nullable().optional(),
   category: z.nativeEnum(E_Rental_Category),
   make: z.string(),
   modelBadge: z.string().optional().nullable(),
@@ -80,4 +80,7 @@ export const Z_Rental = z.object({
   rentalNote: z.string().optional(),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
+  reviews:z.array(z.string()).optional().nullable(),
+  daysCanCancel:z.number().optional(),
+  updatedAt:z.string().optional().nullable()
 })

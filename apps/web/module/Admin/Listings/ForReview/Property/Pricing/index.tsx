@@ -49,7 +49,7 @@ const Pricing = ({ pageType }: PricingContentProps) => {
       //     baseRateMaxCapacity: item.unitPrice.baseRateMaxcapacity,
       //     maximumCapacity: item.unitPrice.maximumCapacity,
       //     pricePerAdditionalPerson: item.unitPrice.pricePerAdditionalPerson,
-      //     discountedWeeklyRate: item.unitPrice.discountedWeekLyRate,
+      //     discountedWeeklyRate: item.unitPrice.discountedWeeklyRate,
       //     discountMonthlyRate: item.unitPrice.discountMonthlyRate,
       //   },
       // }))
