@@ -13,6 +13,21 @@
       "require": "./build/cart/index.js",
       "types": "./build/cart/index.d.ts"
     },
+    "./user": {
+      "import": "./build/user/index.js",
+      "require": "./build/user/index.js",
+      "types": "./build/user/index.d.ts"
+    },
+    "./address-location": {
+      "import": "./build/address-location/index.js",
+      "require": "./build/address-location/index.js",
+      "types": "./build/address-location/index.d.ts"
+    },
+    "./guest": {
+      "import": "./build/guest/index.js",
+      "require": "./build/guest/index.js",
+      "types": "./build/guest/index.d.ts"
+    },
     "./search-filters": {
       "import": "./build/search-filters/index.js",
       "require": "./build/search-filters/index.js",
@@ -57,6 +72,11 @@
       "import": "./build/reservations/index.js",
       "require": "./build/reservations/index.js",
       "types": "./build/reservations/index.d.ts"
+    },
+    "./activity": {
+      "import": "./build/activity/index.js",
+      "require": "./build/activity/index.js",
+      "types": "./build/activity/index.d.ts"
     }
   },
   "scripts": {

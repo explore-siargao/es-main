@@ -5,9 +5,9 @@ import {
 
 export const placesToStay = [
   {
-    listingId: "66ea3f5d3b9b6d4b7f4fa44d",
-    type: E_Property_Type.RESORT,
-    wholeplaceType: null, // Valid value from the enum
+    listingId: "67495fecb559d15c7ac0f576",
+    type: E_Property_Type.WHOLE_PLACE,
+    wholeplaceType: E_Whole_Place_Property_Type.COTTAGE, // Valid value from the enum
     location: {
       _id: "loc1",
       city: "Burgos",
@@ -45,9 +45,9 @@ export const placesToStay = [
     price: 5,
   },
   {
-    listingId: "66ea3f5d3b9b6d4b7f4fa44d",
-    type: E_Property_Type.RESORT,
-    wholeplaceType: null, // Valid value from the enum
+    listingId: "67495fecb559d15c7ac0f577",
+    type: E_Property_Type.WHOLE_PLACE,
+    wholeplaceType: E_Whole_Place_Property_Type.HOUSE, // Valid value from the enum
     location: {
       _id: "loc2",
       city: "Burgos",
@@ -85,9 +85,9 @@ export const placesToStay = [
     reviewsCount: 0,
   },
   {
-    listingId: "66ebfa085bafc56583a8e49e",
-    type: E_Property_Type.HOSTEL,
-    wholeplaceType: null, // Valid value from the enum
+    listingId: "67495fecb559d15c7ac0f57a",
+    type: E_Property_Type.WHOLE_PLACE,
+    wholeplaceType: E_Whole_Place_Property_Type.VILLA, // Valid value from the enum
     location: {
       _id: "loc3",
       city: "Pilar",
@@ -125,9 +125,9 @@ export const placesToStay = [
     reviewsCount: 0,
   },
   {
-    listingId: "66ecb40d59435b308f01ea48",
+    listingId: "67495fecb559d15c7ac0f57d",
     type: E_Property_Type.WHOLE_PLACE,
-    wholeplaceType: null, // Explicitly undefined if not applicable
+    wholeplaceType: undefined, // Explicitly undefined if not applicable
     location: {
       _id: "loc4",
       city: "Dapa",
@@ -165,9 +165,9 @@ export const placesToStay = [
     reviewsCount: 0,
   },
   {
-    listingId: "66ecd0484bc5c0eeea2e78a3",
+    listingId: "67495fecb559d15c7ac0f580",
     type: E_Property_Type.WHOLE_PLACE,
-    wholeplaceType: null, // Valid enum value
+    wholeplaceType: undefined, // Valid enum value
     location: {
       _id: "loc5",
       city: "San Isidro",
@@ -205,9 +205,9 @@ export const placesToStay = [
     price: 1000,
   },
   {
-    listingId: "66eceacd5af60214ba6b370c",
+    listingId: "67495fecb559d15c7ac0f581",
     type: E_Property_Type.WHOLE_PLACE,
-    wholeplaceType: null, // Valid enum value
+    wholeplaceType: E_Whole_Place_Property_Type.BUNGALOW, // Valid enum value
     location: {
       _id: "loc6",
       city: "Del Carmen",
@@ -245,7 +245,7 @@ export const placesToStay = [
     reviewsCount: 0,
   },
   {
-    listingId: "66ed2f44fe4ab5ae5cf9940f",
+    listingId: "67495fecb559d15c7ac0f582",
     type: E_Property_Type.RESORT,
     wholeplaceType: undefined, // Explicitly undefined
     location: {
@@ -285,7 +285,7 @@ export const placesToStay = [
     reviewsCount: 0,
   },
   {
-    listingId: "66ed2f44fe4ab5ae5cf9940f",
+    listingId: "67495fecb559d15c7ac0f583",
     type: E_Property_Type.HOTEL,
     wholeplaceType: undefined, // Explicitly undefined
     location: {
@@ -320,46 +320,6 @@ export const placesToStay = [
       },
     ],
     price: 3000,
-    average: 0,
-    reviewsCount: 0,
-  },
-  {
-    listingId: "66f65304ba6c843cc97bf25b",
-    type: E_Property_Type.RESORT,
-    wholeplaceType: undefined, // Explicitly undefined
-    location: {
-      _id: "loc9",
-      city: "Burgos",
-      streetAddress: "Mountain View Road",
-      barangay: "Taytay",
-      longitude: 126.1245,
-      latitude: 9.8702,
-      howToGetThere:
-        "Take the Burgos Main Road to Taytay and follow Mountain View signs.",
-      createdAt: "2024-01-15T08:00:00Z",
-      updatedAt: null,
-      deletedAt: null,
-    },
-    title: "Isla tropical",
-    subtitle: "",
-    photos: [
-      {
-        _id: "photo15",
-        bookableUnitId: null,
-        propertyId: "9",
-        rentalId: null,
-        activityId: null,
-        key: "ff0a936d-1ebb-40c8-9656-7944ccf73578",
-        thumbKey: "ff0a936d-1ebb-40c8-9656-7944ccf73578",
-        isMain: true,
-        description: "Traditional homestay with mountain views",
-        tags: "mountain",
-        createdAt: "2024-01-24T10:00:00Z",
-        updatedAt: null,
-        deletedAt: null,
-      },
-    ],
-    price: 4000,
     average: 0,
     reviewsCount: 0,
   },

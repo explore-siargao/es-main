@@ -32,7 +32,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
     unitPrice?.pricePerAdditionalPerson ?? 0
   )
   const [weeklyDiscountRate, setWeeklyDiscountRate] = useState(
-    unitPrice?.discountedWeekLyRate ?? 0
+    unitPrice?.discountedWeeklyRate ?? 0
   )
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const PricingContent: React.FC<Props> = ({ index, field, update }) => {
         baseRateMaxCapacity: baseRateMax,
         maximumCapacity: maxCapacity,
         pricePerAdditionalPerson: pricePerAddPerson,
-        discountedWeekLyRate: weeklyDiscountRate,
+        discountedWeeklyRate: weeklyDiscountRate,
       },
     })
   }, [

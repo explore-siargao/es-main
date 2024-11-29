@@ -40,7 +40,7 @@ const isUserLoggedIn3 = async (
             },
           ],
         })
-
+      console.log(user)
       const authUser: T_Session = {
         isHost: user?.isHost as boolean,
         id: String(user?._id),

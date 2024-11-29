@@ -74,8 +74,8 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
       bookableUnit.BookableUnitType.unitPrice.discountMonthlyRate =
         item?.discountMonthlyRate
       //@ts-ignore
-      bookableUnit.BookableUnitType.unitPrice.discountedWeekLyRate =
-        item?.discountedWeekLyRate
+      bookableUnit.BookableUnitType.unitPrice.discountedWeeklyRate =
+        item?.discountedWeeklyRate
       //@ts-ignore
       bookableUnit.BookableUnitType.unitPrice.maximumCapacity =
         item?.maximumCapacity

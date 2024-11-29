@@ -1,0 +1,17 @@
+{
+  "name": "@repo/seeder",
+  "version": "0.0.0",
+  "scripts": {
+    "seed": "ts-node index.ts",
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "@types/node": "^17.0.12",
+    "typescript": "^5.2.2",
+    "@repo/database": "*",
+    "@repo/contract": "*",
+    "@repo/contract-2": "*",
+    "ts-node": "^9.1.1"
+  }
+}
