@@ -6,7 +6,7 @@ import {
 
 export const rentals = [
   {
-    _id: "6657ef2b2ee20e8998e08ada",
+    _id: "6749600eb559d15c7ac111ab",
     details: null,
     pricing: {
       _id: "pricing1",
@@ -90,7 +90,7 @@ export const rentals = [
     reviewsCount: 120,
   },
   {
-    _id: "6662c3f20e688a27393cb4af",
+    _id: "6749600eb559d15c7ac111ac",
     details: null,
     pricing: {
       _id: "pricing2",
@@ -165,7 +165,7 @@ export const rentals = [
     reviewsCount: 85,
   },
   {
-    _id: "6667f5e8ef169899d1657538",
+    _id: "6749600eb559d15c7ac111ad",
     details: null,
     pricing: {
       _id: "pricing3",
@@ -245,7 +245,7 @@ export const rentals = [
     reviewsCount: 60,
   },
   {
-    _id: "666ab18b7e7ac54915803a3c",
+    _id: "6749600eb559d15c7ac111af",
     details: null,
     pricing: {
       _id: "pricing4",
@@ -325,7 +325,7 @@ export const rentals = [
     reviewsCount: 75,
   },
   {
-    _id: "668b7f9796952aae45529c94",
+    _id: "6749600eb559d15c7ac111b0",
     details: null,
     pricing: {
       _id: "pricing5",
@@ -400,7 +400,7 @@ export const rentals = [
     reviewsCount: 90,
   },
   {
-    _id: "668b810d96952aae45529ee6",
+    _id: "6749600eb559d15c7ac111b1",
     details: null,
     pricing: {
       _id: "pricing6",
@@ -480,7 +480,7 @@ export const rentals = [
     reviewsCount: 85,
   },
   {
-    _id: "669e164dd9d8292bce42d51c",
+    _id: "6749600eb559d15c7ac111b2",
     details: null,
     pricing: {
       _id: "pricing7",
@@ -555,7 +555,7 @@ export const rentals = [
     reviewsCount: 90,
   },
   {
-    _id: "66a9ee57cbecc5b833a34b7d",
+    _id: "6749600eb559d15c7ac111b3",
     details: null,
     pricing: {
       _id: "pricing8",
