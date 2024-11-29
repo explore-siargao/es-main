@@ -22,15 +22,18 @@ export const Z_Activity_Slot = z.object({
   startTime: z.string(),
   endTime: z.string(),
   note: z.string(),
-  slotIdsId: z.array(
-    z
-      .object({
-        _id: z.string().optional(),
-        name: z.string(),
-      })
-      .nullable()
-      .optional()
-  ),
+  slotIdsId: z
+    .array(
+      z
+        .object({
+          _id: z.string().optional(),
+          name: z.string(),
+        })
+        .nullable()
+        .optional()
+    )
+    .optional()
+    .nullable(),
 })
 
 export const Z_Activity_Day = z.object({
@@ -58,7 +61,7 @@ export const Z_Activity_PricePerDate = z.object({
 
 export const Z_Activity = z.object({
   _id: z.string().optional(),
-  host: Z_Host,
+  host: z.union([Z_Host, z.string()]).nullable().optional(),
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
   experienceType: z.enum(["Joiner", "Private"]),
@@ -94,6 +97,6 @@ export const Z_Activity = z.object({
   finishedSections: z.array(z.string()),
   pricePerDates: z.array(Z_Activity_PricePerDate),
   activityNote: z.string().nullable(),
-  average: z.number(),
-  reviewsCount: z.number(),
+  average: z.number().optional(),
+  reviewsCount: z.number().optional(),
 })

@@ -4,10 +4,6 @@ export enum E_Property_Type {
   HOTEL = "HOTEL",
   RESORT = "RESORT",
   WHOLE_PLACE = "WHOLE_PLACE",
-  VILLA = "VILLA",
-  HOUSE = "HOUSE",
-  BUNGALOW = "BUNGALOW",
-  COTTAGE = "COTTAGE",
 }
 
 export enum E_Whole_Place_Property_Type {
@@ -15,4 +11,10 @@ export enum E_Whole_Place_Property_Type {
   HOUSE = "HOUSE",
   BUNGALOW = "BUNGALOW",
   COTTAGE = "COTTAGE",
+}
+
+export enum E_Property_Status {
+  INCOMPLETE = "Incomplete",
+  PENDING = "Pending",
+  LIVE = "Live",
 }

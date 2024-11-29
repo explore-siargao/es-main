@@ -1,6 +1,6 @@
 export const activities = [
   {
-    _id: "6704df6883e618b3946ddb75",
+    _id: "67495fe8b559d15c7ac0e427",
     host: {
       _id: "host1",
       role: "admin",
@@ -102,7 +102,7 @@ export const activities = [
     reviewsCount: 120,
   },
   {
-    _id: "670617f38317093663494213",
+    _id: "67495fe8b559d15c7ac0e450",
     host: {
       _id: "host3",
       role: "host",
@@ -198,7 +198,7 @@ export const activities = [
     reviewsCount: 95,
   },
   {
-    _id: "6708e6500280d18cd27461c4",
+    _id: "67495fe8b559d15c7ac0e46d",
     host: {
       _id: "host4",
       role: "host",
@@ -297,7 +297,7 @@ export const activities = [
     reviewsCount: 65,
   },
   {
-    _id: "670f6659dedbb82f69c7761e",
+    _id: "67495fe8b559d15c7ac0e48a",
     host: {
       _id: "host5",
       role: "guide",
@@ -396,7 +396,7 @@ export const activities = [
     reviewsCount: 120,
   },
   {
-    _id: "670f684adedbb82f69c77cf0",
+    _id: "67495fe8b559d15c7ac0e4b3",
     host: {
       _id: "host6",
       role: "guide",
@@ -495,7 +495,7 @@ export const activities = [
     reviewsCount: 90,
   },
   {
-    _id: "670f71218e92555162f3e1d3",
+    _id: "67495fe8b559d15c7ac0e4dc",
     host: {
       _id: "host7",
       role: "host",
@@ -590,7 +590,7 @@ export const activities = [
     reviewsCount: 85,
   },
   {
-    _id: "672d5e6d9e5555d18e208d75",
+    _id: "67495fe8b559d15c7ac0e505",
     host: {
       _id: "host8",
       role: "host",

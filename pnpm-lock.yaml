@@ -11,6 +11,9 @@ importers:
       '@repo/eslint-config':
         specifier: '*'
         version: link:packages/eslint-config
+      '@repo/services':
+        specifier: '*'
+        version: link:packages/services
       '@repo/typescript-config':
         specifier: '*'
         version: link:packages/typescript-config
@@ -504,6 +507,30 @@ importers:
       eslint-plugin-only-warn:
         specifier: ^1.1.0
         version: 1.1.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.6.2
+
+  packages/seeder:
+    devDependencies:
+      '@repo/contract':
+        specifier: '*'
+        version: link:../contract
+      '@repo/contract-2':
+        specifier: '*'
+        version: link:../contract-2
+      '@repo/database':
+        specifier: '*'
+        version: link:../database
+      '@types/node':
+        specifier: ^17.0.12
+        version: 17.0.45
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.4.5
+      ts-node:
+        specifier: ^9.1.1
+        version: 9.1.1(typescript@5.6.2)
       typescript:
         specifier: ^5.2.2
         version: 5.6.2
@@ -13532,6 +13559,22 @@ packages:
       make-error: 1.3.6
       source-map-support: 0.5.21
       typescript: 4.9.5
+      yn: 3.1.1
+    dev: true
+
+  /ts-node@9.1.1(typescript@5.6.2):
+    resolution: {integrity: sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=2.7'
+    dependencies:
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      source-map-support: 0.5.21
+      typescript: 5.6.2
       yn: 3.1.1
     dev: true
 

@@ -45,7 +45,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
             baseRateMaxCapacity: unitPrice.baseRateMaxCapacity,
             maximumCapacity: unitPrice.maximumCapacity,
             pricePerAdditionalPerson: unitPrice.pricePerAdditionalPerson,
-            discountedWeeklyRate: unitPrice.discountedWeekLyRate,
+            discountedWeeklyRate: unitPrice.discountedWeeklyRate,
             updatedAt: Date.now(),
           },
         },
@@ -58,7 +58,7 @@ export const updateUnitPrice = async (req: Request, res: Response) => {
         baseRateMaxCapacity: unitPrice.baseRateMaxCapacity,
         maximumCapacity: unitPrice.maximumCapacity,
         pricePerAdditionalPerson: unitPrice.pricePerAdditionalPerson,
-        discountedWeeklyRate: unitPrice.discountedWeekLyRate,
+        discountedWeeklyRate: unitPrice.discountedWeeklyRate,
         createdAt: Date.now(),
         updatedAt: null,
         deletedAt: null,
@@ -141,7 +141,7 @@ export const getUnitPrice = async (req: Request, res: Response) => {
         maximumCapacity: unitPrice?.maximumCapacity ?? 1,
         pricePerAdditionalPerson: unitPrice?.pricePerAdditionalPerson ?? 0.0,
         discountedMonthlyRate: unitPrice?.discountMonthlyRate ?? 0,
-        discountedWeekLyRate: unitPrice?.discountedWeekLyRate ?? 0,
+        discountedWeeklyRate: unitPrice?.discountedWeeklyRate ?? 0,
       },
     }
   })

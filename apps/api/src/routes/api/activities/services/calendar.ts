@@ -172,7 +172,7 @@ export const getPrivateActivityCalendar = async (
 
         for (const day in activity.schedule) {
           const daySchedule = activity.schedule[day as keyof Schedule]
-          if (Array.isArray(daySchedule.slots)) {
+          if (Array.isArray(daySchedule?.slots)) {
             // Flatten and provide default values
             privateActivities.push(
               ...daySchedule.slots.map((session) => {
@@ -230,7 +230,7 @@ export const getPrivateActivityCalendar = async (
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message || UNKNOWN_ERROR_OCCURRED,
+        message: err.message + ' ' + err.stack || UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
@@ -361,7 +361,7 @@ export const getJoinerActivityCalendar = async (
 
         for (const day in activity.schedule) {
           const daySchedule = activity.schedule[day as keyof Schedule]
-          if (Array.isArray(daySchedule.slots)) {
+          if (Array.isArray(daySchedule?.slots)) {
             // Flatten and provide default values
             joinerActivities.push(
               ...daySchedule.slots.map((session) => {
