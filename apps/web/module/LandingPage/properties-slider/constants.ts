@@ -82,7 +82,7 @@ export const placesToStay = [
     ],
     price: 3000,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
   {
     listingId: "66ebfa085bafc56583a8e49e",
@@ -122,7 +122,7 @@ export const placesToStay = [
     ],
     price: 1000,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
   {
     listingId: "66ecb40d59435b308f01ea48",
@@ -162,7 +162,7 @@ export const placesToStay = [
     ],
     price: 7400,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
   {
     listingId: "66ecd0484bc5c0eeea2e78a3",
@@ -242,7 +242,7 @@ export const placesToStay = [
     ],
     price: 4000,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
   {
     listingId: "66ed2f44fe4ab5ae5cf9940f",
@@ -282,7 +282,7 @@ export const placesToStay = [
     ],
     price: 2000,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
   {
     listingId: "66ed2f44fe4ab5ae5cf9940f",
@@ -321,7 +321,7 @@ export const placesToStay = [
     ],
     price: 3000,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
   {
     listingId: "66f65304ba6c843cc97bf25b",
@@ -361,6 +361,6 @@ export const placesToStay = [
     ],
     price: 4000,
     average: 0,
-    reviewsCount: 0
+    reviewsCount: 0,
   },
 ]
