@@ -26,7 +26,7 @@ export default async function CartLayout({
         <Toaster />
 
         <GlobalWrappers>
-          <Header isFixed={false}/>
+          <Header isFixed={false} />
           <div className="min-h-screen">{children}</div>
           <Footer contentWidth="medium" />
         </GlobalWrappers>

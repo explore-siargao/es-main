@@ -1,19 +1,26 @@
-"use client";
-import { Button } from "@/common/components/ui/Button";
-import formatCurrency from "@/common/helpers/formatCurrency";
-import { Typography } from "@/common/components/ui/Typography";
+"use client"
+import { Button } from "@/common/components/ui/Button"
+import formatCurrency from "@/common/helpers/formatCurrency"
+import { Typography } from "@/common/components/ui/Typography"
 
 interface SubTotalBoxProps {
-  selectedItemsPrice: number[];
-  buttonText: string;
-  onButtonClick: () => void;
+  selectedItemsPrice: number[]
+  buttonText: string
+  onButtonClick: () => void
 }
 
-const SubTotalBox = ({ selectedItemsPrice, buttonText, onButtonClick }: SubTotalBoxProps) => {
+const SubTotalBox = ({
+  selectedItemsPrice,
+  buttonText,
+  onButtonClick,
+}: SubTotalBoxProps) => {
   const calculateTotalPrice =
     selectedItemsPrice.length > 0
-      ? selectedItemsPrice.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-      : 0;
+      ? selectedItemsPrice.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        )
+      : 0
 
   return (
     <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5 sticky">
@@ -34,7 +41,7 @@ const SubTotalBox = ({ selectedItemsPrice, buttonText, onButtonClick }: SubTotal
         {buttonText}
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default SubTotalBox;
+export default SubTotalBox

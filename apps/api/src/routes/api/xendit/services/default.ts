@@ -187,7 +187,7 @@ export const cardPayment = async (req: Request, res: Response) => {
           card: {
             card_information: {
               card_number: cardNumber,
-              card_expiry:"12/25",
+              card_expiry: '12/25',
               cvv: cvv,
             },
           },

@@ -107,7 +107,7 @@ const CheckoutBox = ({
       price: totalPrice,
       propertyIds: { propertyId, unitId: unit._id },
       startDate: dateRange.from!,
-      endDate: dateRange.to!
+      endDate: dateRange.to!,
     }
     addToCart(payload, {
       onSuccess: (data: any) => {

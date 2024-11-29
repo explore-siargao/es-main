@@ -1,24 +1,24 @@
-"use client";
-import { Button } from "@/common/components/ui/Button";
-import { Typography } from "@/common/components/ui/Typography";
-import React, { useState } from "react";
-import { APP_NAME } from "@repo/constants";
-import Image from "@/common/components/ui/image";
-import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal";
-import { T_Cart_Item } from "@repo/contract-2/cart";
-import { Clock } from "lucide-react";
+"use client"
+import { Button } from "@/common/components/ui/Button"
+import { Typography } from "@/common/components/ui/Typography"
+import React, { useState } from "react"
+import { APP_NAME } from "@repo/constants"
+import Image from "@/common/components/ui/image"
+import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
+import { T_Cart_Item } from "@repo/contract-2/cart"
+import { Clock } from "lucide-react"
 
 interface ListingPriceDetailsBoxProps {
-  items: T_Cart_Item[];
+  items: T_Cart_Item[]
 }
 
 const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
-  const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false);
+  const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
 
   const calculateTotalPrice =
     items.length > 0
       ? items.reduce((accumulator, item) => accumulator + (item.price || 0), 0)
-      : 0;
+      : 0
 
   return (
     <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5 sticky">
@@ -37,10 +37,19 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                   />
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <Typography fontWeight="semibold">{item.rentalIds.rentalId.make}</Typography>
-                  <Typography fontWeight="light">{item.rentalIds.rentalId.category}</Typography>
+                  <Typography fontWeight="semibold">
+                    {item.rentalIds.rentalId.make}
+                  </Typography>
                   <Typography fontWeight="light">
-                  {item.rentalIds.rentalId?.location?.streetAddress && `${item.rentalIds.rentalId?.location?.streetAddress }, `}{item.rentalIds.rentalId?.location?.barangay && `${item.rentalIds.rentalId?.location?.barangay}, `}{item.rentalIds.rentalId?.location?.city && `${item.rentalIds.rentalId?.location?.city}`}
+                    {item.rentalIds.rentalId.category}
+                  </Typography>
+                  <Typography fontWeight="light">
+                    {item.rentalIds.rentalId?.location?.streetAddress &&
+                      `${item.rentalIds.rentalId?.location?.streetAddress}, `}
+                    {item.rentalIds.rentalId?.location?.barangay &&
+                      `${item.rentalIds.rentalId?.location?.barangay}, `}
+                    {item.rentalIds.rentalId?.location?.city &&
+                      `${item.rentalIds.rentalId?.location?.city}`}
                   </Typography>
                 </div>
               </div>
@@ -58,13 +67,16 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                   />
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <Typography fontWeight="semibold">{item.activityIds.activityId.title}</Typography>
+                  <Typography fontWeight="semibold">
+                    {item.activityIds.activityId.title}
+                  </Typography>
                   <Typography fontWeight="light">
                     {`${item.activityIds.activityId.meetingPoint?.streetAddress || ""}, ${
                       item.activityIds.activityId.meetingPoint?.barangay || ""
                     }, ${item.activityIds.activityId.meetingPoint?.city || ""}`}
                   </Typography>
-                  {(item.activityIds.activityId.durationHour || item.activityIds.activityId.durationMinute) && (
+                  {(item.activityIds.activityId.durationHour ||
+                    item.activityIds.activityId.durationMinute) && (
                     <div className="flex gap-2 items-center">
                       <Clock height={18} className="text-gray-500" />
                       <div className="flex gap-1">
@@ -73,11 +85,12 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                             {item.activityIds.activityId.durationHour}h
                           </Typography>
                         )}
-                        {item.activityIds.activityId.durationMinute || item.activityIds.activityId.durationMinute > 0 && (
-                          <Typography variant="p" className="text-gray-500">
-                            {item.activityIds.activityId.durationMinute}m
-                          </Typography>
-                        )}
+                        {item.activityIds.activityId.durationMinute ||
+                          (item.activityIds.activityId.durationMinute > 0 && (
+                            <Typography variant="p" className="text-gray-500">
+                              {item.activityIds.activityId.durationMinute}m
+                            </Typography>
+                          ))}
                       </div>
                     </div>
                   )}
@@ -97,7 +110,9 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                   />
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <Typography fontWeight="semibold">{item.propertyIds.propertyId.title}</Typography>
+                  <Typography fontWeight="semibold">
+                    {item.propertyIds.propertyId.title}
+                  </Typography>
                   <Typography variant="p" className="text-gray-500">
                     {`${item.propertyIds.propertyId.location?.streetAddress || ""}, ${
                       item.propertyIds.propertyId.location?.barangay || ""
@@ -139,7 +154,7 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
         onClose={() => setIsMoreInfoModalOpen(false)}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ListingPriceDetailsBox;
+export default ListingPriceDetailsBox

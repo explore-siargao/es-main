@@ -5,65 +5,70 @@ import ActivityCartItem from "./activity-cart-item"
 import RentalCartItem from "./rental-cart-item"
 
 interface ICartProps {
-  items: T_Cart_Item[];
-  setSelectedItems: (items: T_Cart_Item[]) => void;
-  selectedItems: T_Cart_Item[];
+  items: T_Cart_Item[]
+  setSelectedItems: (items: T_Cart_Item[]) => void
+  selectedItems: T_Cart_Item[]
 }
 
-const OrderSummary: React.FC<ICartProps> = ({ items, setSelectedItems, selectedItems }) => {
+const OrderSummary: React.FC<ICartProps> = ({
+  items,
+  setSelectedItems,
+  selectedItems,
+}) => {
   const [selectedItemsIds, setSelectedItemsIds] = useState<string[]>([])
-  const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] = useState<boolean>(false)
-  
+  const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] =
+    useState<boolean>(false)
+
   const [itemId, setItemId] = useState<string>("")
 
   const toggleCheckbox = (id: string) => {
-    const item = items.find((cartItem) => cartItem._id === id);
-    if (!item) return;
+    const item = items.find((cartItem) => cartItem._id === id)
+    if (!item) return
 
     if (selectedItemsIds.includes(id)) {
-      setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id));
+      setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id))
       setSelectedItems(
         selectedItems.filter((selectedItem) => selectedItem._id !== id)
-      );
+      )
     } else {
-      setSelectedItemsIds([...selectedItemsIds, id]);
-      setSelectedItems([...selectedItems, item]);
+      setSelectedItemsIds([...selectedItemsIds, id])
+      setSelectedItems([...selectedItems, item])
     }
-  };
-  
+  }
+
   return (
     <>
       {items.map((cartItem, index) => {
-        if(cartItem.propertyIds) {
+        if (cartItem.propertyIds) {
           return (
-            <PropertyCartItem 
-              item={cartItem} 
-              selectedItems={selectedItemsIds} 
-              index={index} 
+            <PropertyCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
               viewOnly={true}
             />
           )
-        } else if(cartItem.activityIds) {
+        } else if (cartItem.activityIds) {
           return (
-            <ActivityCartItem 
-              item={cartItem} 
-              selectedItems={selectedItemsIds} 
-              index={index} 
+            <ActivityCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
               viewOnly={true}
             />
           )
-        } else if(cartItem.rentalIds) {
+        } else if (cartItem.rentalIds) {
           return (
-            <RentalCartItem 
-              item={cartItem} 
-              selectedItems={selectedItemsIds} 
-              index={index} 
+            <RentalCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}

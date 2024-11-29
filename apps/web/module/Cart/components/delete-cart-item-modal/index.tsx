@@ -14,7 +14,7 @@ interface DeleteCartItemModalProps {
 const DeleteCartItemModal = ({
   isOpen: openModal,
   onClose: closeModal,
-  itemId
+  itemId,
 }: DeleteCartItemModalProps) => {
   const queryClient = useQueryClient()
   const { mutate, isPending } = useRemoveItemFromCart()

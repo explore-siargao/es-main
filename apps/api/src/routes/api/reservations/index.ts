@@ -24,7 +24,10 @@ import {
   getAllReservations,
   updateReservationStatusByReferenceId,
 } from './services/default'
-import { cardMultipleCheckout, gcashMultipleCheckout } from './services/cart-reservations'
+import {
+  cardMultipleCheckout,
+  gcashMultipleCheckout,
+} from './services/cart-reservations'
 
 const router = express.Router()
 

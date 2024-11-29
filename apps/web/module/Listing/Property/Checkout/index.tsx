@@ -35,7 +35,7 @@ const Checkout = () => {
     { label: "Choose Listings", status: "completed" },
     { label: "Enter info", status: "current" },
     { label: "Pay", status: "upcoming" },
-  ];
+  ]
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isConfirmPayModalOpen, setIsConfirmPayModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
@@ -107,14 +107,12 @@ const Checkout = () => {
   }
   return (
     <WidthWrapper width="small" className="mt-4 md:mt-8 lg:mt-10">
-         <Stepper steps={steps} />
+      <Stepper steps={steps} />
       <div className="flex items-center gap-x-4">
-   
         <Link href="/accommodation/1">
-       
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
-      
+
         <Typography variant="h1" fontWeight="semibold">
           Confirm and pay
         </Typography>

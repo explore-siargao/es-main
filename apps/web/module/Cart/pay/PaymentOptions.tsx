@@ -10,7 +10,11 @@ import { E_PaymentType } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
 import PaymentSavedForm from "./PaymentSavedForm"
 
-export default function PaymentOptions({ onSelectionChange }: { onSelectionChange:  (selection: {type: E_PaymentType | null }) => void }) {
+export default function PaymentOptions({
+  onSelectionChange,
+}: {
+  onSelectionChange: (selection: { type: E_PaymentType | null }) => void
+}) {
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )
@@ -90,8 +94,8 @@ export default function PaymentOptions({ onSelectionChange }: { onSelectionChang
             })
             setSelected(e)
             onSelectionChange({
-              type: option?.type ?? null
-            }) 
+              type: option?.type ?? null,
+            })
           }}
         >
           <RadioGroup.Label className="sr-only">

@@ -14,7 +14,7 @@ interface DeleteAllSelectedItemsProps {
 const DeleteAllSelectedItems = ({
   isOpen: openModal,
   onClose: closeModal,
-  itemIds
+  itemIds,
 }: DeleteAllSelectedItemsProps) => {
   const queryClient = useQueryClient()
   const { mutate, isPending } = useRemoveMultipleItemsFromCart()

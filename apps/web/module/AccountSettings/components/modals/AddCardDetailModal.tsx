@@ -69,7 +69,7 @@ const AddCardDetailModal = ({ isOpen, onClose, userId }: CardDetailModal) => {
           cardholderName: formData.cardholderName,
           country: formData.country,
           zipCode: formData.zipCode,
-          cvv:formData.cvv
+          cvv: formData.cvv,
         }),
         cardType: cardValid?.card?.niceType ?? "Visa",
         lastFour: `${formData.cardNumber?.slice(-4)}`,

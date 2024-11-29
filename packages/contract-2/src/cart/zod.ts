@@ -27,13 +27,15 @@ export const Z_AddCart = z
         propertyId: z.string().optional(),
         unitId: z.string().optional(),
       })
-      .optional().nullable(),
+      .optional()
+      .nullable(),
     rentalIds: z
       .object({
         rentalId: z.string().optional(),
         qtyIdsId: z.string().optional(),
       })
-      .optional().nullable(),
+      .optional()
+      .nullable(),
     activityIds: z
       .object({
         activityId: z.string().optional(),
@@ -41,7 +43,8 @@ export const Z_AddCart = z
         timeSlotId: z.string().optional(),
         slotIdsId: z.string().optional(),
       })
-      .optional().nullable(),
+      .optional()
+      .nullable(),
     guestCount: z.number(),
     price: z.number(),
     startDate: z.string(),

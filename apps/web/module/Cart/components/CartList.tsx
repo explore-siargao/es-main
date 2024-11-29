@@ -9,47 +9,53 @@ import DeleteCartItemModal from "./delete-cart-item-modal"
 import DeleteAllSelectedItems from "./delete-all-selected-items-modal"
 
 interface ICartProps {
-  items: T_Cart_Item[];
-  setSelectedItems: (items: T_Cart_Item[]) => void;
-  selectedItems: T_Cart_Item[];
+  items: T_Cart_Item[]
+  setSelectedItems: (items: T_Cart_Item[]) => void
+  selectedItems: T_Cart_Item[]
 }
 
-const CartList: React.FC<ICartProps> = ({ items, setSelectedItems, selectedItems }) => {
+const CartList: React.FC<ICartProps> = ({
+  items,
+  setSelectedItems,
+  selectedItems,
+}) => {
   const [selectAll, setSelectAll] = useState(false)
   const [selectedItemsIds, setSelectedItemsIds] = useState<string[]>([])
-  const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] = useState<boolean>(false)
-  const [isDeleteMultipleCartItemOpen, setIsDeleteMultipleCartItemOpen] = useState<boolean>(false)
-  
+  const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] =
+    useState<boolean>(false)
+  const [isDeleteMultipleCartItemOpen, setIsDeleteMultipleCartItemOpen] =
+    useState<boolean>(false)
+
   const [itemId, setItemId] = useState<string>("")
-  
+
   const toggleAllCheckboxes = () => {
-    const newSelectAll = !selectAll;
-    setSelectAll(newSelectAll);
+    const newSelectAll = !selectAll
+    setSelectAll(newSelectAll)
     if (newSelectAll) {
-      const allIds = items.map((item) => item._id);
-      setSelectedItemsIds(allIds);
-      setSelectedItems(items);
+      const allIds = items.map((item) => item._id)
+      setSelectedItemsIds(allIds)
+      setSelectedItems(items)
     } else {
-      setSelectedItemsIds([]);
-      setSelectedItems([]);
+      setSelectedItemsIds([])
+      setSelectedItems([])
     }
-  };
+  }
 
   const toggleCheckbox = (id: string) => {
-    const item = items.find((cartItem) => cartItem._id === id);
-    if (!item) return;
+    const item = items.find((cartItem) => cartItem._id === id)
+    if (!item) return
 
     if (selectedItemsIds.includes(id)) {
-      setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id));
+      setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id))
       setSelectedItems(
         selectedItems.filter((selectedItem) => selectedItem._id !== id)
-      );
+      )
     } else {
-      setSelectedItemsIds([...selectedItemsIds, id]);
-      setSelectedItems([...selectedItems, item]);
+      setSelectedItemsIds([...selectedItemsIds, id])
+      setSelectedItems([...selectedItems, item])
     }
-  };
-  
+  }
+
   return (
     <>
       <div className="flex bg-white-100 mb-8 pb-4 justify-between items-center border-b">
@@ -64,37 +70,43 @@ const CartList: React.FC<ICartProps> = ({ items, setSelectedItems, selectedItems
             Select all
           </label>
         </div>
-        <Button disabled={selectedItemsIds.length === 0} onClick={() => setIsDeleteMultipleCartItemOpen(true)} variant="outline">Delete all selected</Button>
+        <Button
+          disabled={selectedItemsIds.length === 0}
+          onClick={() => setIsDeleteMultipleCartItemOpen(true)}
+          variant="outline"
+        >
+          Delete all selected
+        </Button>
       </div>
       {items.map((cartItem, index) => {
-        if(cartItem.propertyIds) {
+        if (cartItem.propertyIds) {
           return (
-            <PropertyCartItem 
-              item={cartItem} 
-              selectedItems={selectedItemsIds} 
-              index={index} 
+            <PropertyCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
             />
           )
-        } else if(cartItem.activityIds) {
+        } else if (cartItem.activityIds) {
           return (
-            <ActivityCartItem 
-              item={cartItem} 
-              selectedItems={selectedItemsIds} 
-              index={index} 
+            <ActivityCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
             />
           )
-        } else if(cartItem.rentalIds) {
+        } else if (cartItem.rentalIds) {
           return (
-            <RentalCartItem 
-              item={cartItem} 
-              selectedItems={selectedItemsIds} 
-              index={index} 
+            <RentalCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}

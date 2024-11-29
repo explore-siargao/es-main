@@ -1,26 +1,26 @@
-"use client";
+"use client"
 
-import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper";
-import CartList from "./components/CartList";
-import SubTotalBox from "./components/SubTotalBox";
-import useGetCartItems from "@/common/hooks/use-get-cart-items";
-import { Spinner } from "@/common/components/ui/Spinner";
-import Loading from "@/app/(accommodation)/loading";
-import { useRouter } from "next/navigation";
-import { useCartStore } from "./stores/cart-stores";
+import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
+import CartList from "./components/CartList"
+import SubTotalBox from "./components/SubTotalBox"
+import useGetCartItems from "@/common/hooks/use-get-cart-items"
+import { Spinner } from "@/common/components/ui/Spinner"
+import Loading from "@/app/(accommodation)/loading"
+import { useRouter } from "next/navigation"
+import { useCartStore } from "./stores/cart-stores"
 
 const Cart = () => {
-  const { data, isLoading } = useGetCartItems();
-  const { selectedItems, setSelectedItems } = useCartStore();
-  const router = useRouter();
+  const { data, isLoading } = useGetCartItems()
+  const { selectedItems, setSelectedItems } = useCartStore()
+  const router = useRouter()
 
   const handleCheckout = () => {
     if (selectedItems.length === 0) {
-      alert("Please select items before proceeding to checkout.");
-      return;
+      alert("Please select items before proceeding to checkout.")
+      return
     }
-    router.push("/cart-summary");
-  };
+    router.push("/cart-summary")
+  }
 
   return (
     <WidthWrapper
@@ -53,7 +53,7 @@ const Cart = () => {
         />
       </div>
     </WidthWrapper>
-  );
-};
+  )
+}
 
-export default Cart;
+export default Cart

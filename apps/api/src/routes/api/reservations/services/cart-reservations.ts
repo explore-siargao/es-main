@@ -18,7 +18,6 @@ const response = new ResponseService()
 const encryptionService = new EncryptionService('card')
 export const gcashMultipleCheckout = async (req: Request, res: Response) => {
   try {
- 
     const userId = res.locals.user?.id
     const cartItems: T_Add_To_Cart[] = req.body
     if (!cartItems || cartItems.length === 0) {
@@ -142,11 +141,11 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              amount:amount,
+              amount: amount,
               cardNumber: cardInfo.cardNumber,
               expirationMonth: cardInfo.expirationMonth,
               expirationYear: cardInfo.expirationYear,
-              cvv:cardInfo.cvv
+              cvv: cardInfo.cvv,
             }),
           }
         )

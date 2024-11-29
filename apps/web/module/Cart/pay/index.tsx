@@ -38,8 +38,10 @@ const Pay = () => {
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )
-  const [selectedPayment, setSelectedPayment] = useState<E_PaymentType | null>(null);
-  const { selectedItems } = useCartStore();
+  const [selectedPayment, setSelectedPayment] = useState<E_PaymentType | null>(
+    null
+  )
+  const { selectedItems } = useCartStore()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isConfirmPayModalOpen, setIsConfirmPayModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
@@ -112,57 +114,57 @@ const Pay = () => {
   }
 
   const remapItems = (items: T_Add_To_Cart[]) => {
-    return items.map(item => ({
+    return items.map((item) => ({
       ...item,
       guestCount: item.guestCount ?? 0,
       activityIds: {
         ...item.activityIds,
-        activityId: item.activityIds?.activityId._id
+        activityId: item.activityIds?.activityId._id,
       },
       rentalIds: {
         ...item.rentalIds,
         guestCount: item.guestCount ?? 0,
-        rentalId: item.rentalIds?.rentalId._id 
-      }
-    }));
-  };
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const { mutate,isPending } = useAddGCashPayment();
-  const remappedItems = remapItems(selectedItems);
+        rentalId: item.rentalIds?.rentalId._id,
+      },
+    }))
+  }
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  const { mutate, isPending } = useAddGCashPayment()
+  const remappedItems = remapItems(selectedItems)
   const steps: Step[] = [
     { label: "Choose Listings", status: "completed" },
     { label: "Summary", status: "completed" },
     { label: "Pay", status: "current" },
-  ];
+  ]
   const handleProceedToPayment = () => {
-    if (selectedPayment == E_PaymentType.GCASH) 
-    {mutate(remappedItems, {
-      onSuccess: (data: any) => {
-        if (!data.error) {
-          queryClient.invalidateQueries({
-            queryKey: ["get-cart-item"],
-          });
-          router.push(data.item.action.link);
-        } else {
-          toast.error(String(data.message));
-          console.log(data.items)
-        }
-      },
-      onError: (err: any) => {
-        toast.error(String(err));
-      },
-    });
+    if (selectedPayment == E_PaymentType.GCASH) {
+      mutate(remappedItems, {
+        onSuccess: (data: any) => {
+          if (!data.error) {
+            queryClient.invalidateQueries({
+              queryKey: ["get-cart-item"],
+            })
+            router.push(data.item.action.link)
+          } else {
+            toast.error(String(data.message))
+            console.log(data.items)
+          }
+        },
+        onError: (err: any) => {
+          toast.error(String(err))
+        },
+      })
+    }
   }
-  };
-  
-  const handleSelectedPayment = (selection: {type: E_PaymentType | null }) => {
-    setSelectedPayment(selection.type); 
+
+  const handleSelectedPayment = (selection: { type: E_PaymentType | null }) => {
+    setSelectedPayment(selection.type)
   }
-  
+
   return (
     <WidthWrapper width="medium" className="mt-4 md:mt-8 lg:mt-10">
-         <Stepper steps={steps} />
+      <Stepper steps={steps} />
       <div className="flex flex-col xl:flex-row gap-8 xl:gap-16 mt-8">
         <div className="block xl:hidden">
           <ListingPriceDetailsBox items={selectedItems} />
@@ -261,10 +263,10 @@ const Pay = () => {
           <div className="md:sticky md:top-0 space-y-4">
             <ListingPriceDetailsBox items={selectedItems} />
             <SubTotalBox
-        selectedItemsPrice={selectedItems.map((item) => item.price)}
-        buttonText="Pay Now"
-        onButtonClick={handleProceedToPayment}
-      />
+              selectedItemsPrice={selectedItems.map((item) => item.price)}
+              buttonText="Pay Now"
+              onButtonClick={handleProceedToPayment}
+            />
           </div>
         </div>
       </div>
