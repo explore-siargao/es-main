@@ -20,26 +20,31 @@ import { EncryptionService } from "@repo/services/"
 import useSessionStore from "@/common/store/useSessionStore"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
 import toast from "react-hot-toast"
-import { Step, Stepper } from "./components/modals/stepper"
+import { Step, Stepper } from "../components/stepper"
+import SubTotalBox from "../components/SubTotalBox"
+import { useCartStore } from "../stores/cart-stores"
+import { T_Add_To_Cart } from "@repo/contract-2/cart"
+import useAddGCashPayment from "../hooks/use-add-gcash-payment"
+import { useQueryClient } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
+import { E_PaymentType } from "@repo/contract"
 
 const encryptionService = new EncryptionService("card")
 
-const Checkout = () => {
+const Pay = () => {
   const paymentInfo = usePaymentInfoStore((state) => state)
   const session = useSessionStore((state) => state)
   const { data: paymentMethods } = useGetPaymentMethods()
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )
-  const steps: Step[] = [
-    { label: "Choose Listings", status: "completed" },
-    { label: "Enter info", status: "current" },
-    { label: "Pay", status: "upcoming" },
-  ];
+  const [selectedPayment, setSelectedPayment] = useState<E_PaymentType | null>(null);
+  const { selectedItems } = useCartStore();
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isConfirmPayModalOpen, setIsConfirmPayModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
+
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const totalGuest = adults + children + infants
@@ -105,26 +110,65 @@ const Checkout = () => {
     }
     return isValid
   }
+
+  const remapItems = (items: T_Add_To_Cart[]) => {
+    return items.map(item => ({
+      ...item,
+      guestCount: item.guestCount ?? 0,
+      activityIds: {
+        ...item.activityIds,
+        activityId: item.activityIds?.activityId._id
+      },
+      rentalIds: {
+        ...item.rentalIds,
+        guestCount: item.guestCount ?? 0,
+        rentalId: item.rentalIds?.rentalId._id 
+      }
+    }));
+  };
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { mutate,isPending } = useAddGCashPayment();
+  const remappedItems = remapItems(selectedItems);
+  const steps: Step[] = [
+    { label: "Choose Listings", status: "completed" },
+    { label: "Summary", status: "completed" },
+    { label: "Pay", status: "current" },
+  ];
+  const handleProceedToPayment = () => {
+    if (selectedPayment == E_PaymentType.GCASH) 
+    {mutate(remappedItems, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["get-cart-item"],
+          });
+          router.push(data.item.action.link);
+        } else {
+          toast.error(String(data.message));
+          console.log(data.items)
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err));
+      },
+    });
+  }
+  };
+  
+  const handleSelectedPayment = (selection: {type: E_PaymentType | null }) => {
+    setSelectedPayment(selection.type); 
+  }
+  
   return (
-    <WidthWrapper width="small" className="mt-4 md:mt-8 lg:mt-10">
+    <WidthWrapper width="medium" className="mt-4 md:mt-8 lg:mt-10">
          <Stepper steps={steps} />
-      <div className="flex items-center gap-x-4">
-   
-        <Link href="/accommodation/1">
-       
-          <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
-        </Link>
-      
-        <Typography variant="h1" fontWeight="semibold">
-          Confirm and pay
-        </Typography>
-      </div>
       <div className="flex flex-col xl:flex-row gap-8 xl:gap-16 mt-8">
         <div className="block xl:hidden">
-          <ListingPriceDetailsBox />
+          <ListingPriceDetailsBox items={selectedItems} />
         </div>
         <div className="flex-1 flex flex-col gap-y-4">
-          <Typography variant={"h2"} fontWeight="semibold">
+          {/* <Typography variant={"h2"} fontWeight="semibold">
             Your booking
           </Typography>
           <div className="flex w-full flex-col">
@@ -160,9 +204,9 @@ const Checkout = () => {
               </button>
             </div>
             <Typography className="text-sm">{`${totalGuest} guest${Number(totalGuest) > 1 ? "s" : ""}`}</Typography>
-          </div>
-          <hr className="my-4" />
-          <PaymentOptions />
+          </div> */}
+          {/* <hr className="my-4" /> */}
+          <PaymentOptions onSelectionChange={handleSelectedPayment} />
           <hr className="my-4" />
           <div className="flex flex-col gap-y-4">
             <Typography variant={"h2"} fontWeight="semibold">
@@ -212,26 +256,15 @@ const Checkout = () => {
             </Link>{" "}
             if I’m responsible for damage.
           </div>
-          <div className="mt-4">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => {
-                const isPaymentValid = validatePayment()
-                if (isPaymentValid) {
-                  setIsConfirmPayModalOpen(true)
-                } else {
-                  toast.error("Make sure your payment is complete and valid")
-                }
-              }}
-            >
-              Confirm booking
-            </Button>
-          </div>
         </div>
         <div className="hidden xl:block flex-1 xl:flex-none xl:w-1/3 md:relative">
-          <div className="md:sticky md:top-0">
-            <ListingPriceDetailsBox />
+          <div className="md:sticky md:top-0 space-y-4">
+            <ListingPriceDetailsBox items={selectedItems} />
+            <SubTotalBox
+        selectedItemsPrice={selectedItems.map((item) => item.price)}
+        buttonText="Pay Now"
+        onButtonClick={handleProceedToPayment}
+      />
           </div>
         </div>
       </div>
@@ -248,4 +281,4 @@ const Checkout = () => {
   )
 }
 
-export default Checkout
+export default Pay

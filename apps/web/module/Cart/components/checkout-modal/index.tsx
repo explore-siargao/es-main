@@ -42,7 +42,6 @@ const CheckoutModal = ({
     }));
   };
   const remappedItems = remapItems(items);
-  console.log(remappedItems)
   const handleProceedToPayment = () => {
     mutate(remappedItems, {
       onSuccess: (data: any) => {
