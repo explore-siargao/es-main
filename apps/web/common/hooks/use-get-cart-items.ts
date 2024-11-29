@@ -17,4 +17,5 @@ function useGetCartItems() {
   })
   return query
 }
+
 export default useGetCartItems

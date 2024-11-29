@@ -466,7 +466,8 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
                   totalBeforeTaxes: 126000,
                   titlePrice: bookableUnit.unitPrice?.baseRate || 0,
                 }}
-                isSelectedBookableUnit={bookableUnit}
+                isSelectedBookableUnit={bookableUnit ? true : false}
+                unit={bookableUnit}
               />
             )}
             <div>

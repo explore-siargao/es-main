@@ -12,7 +12,8 @@ export const removeMultipleItemsOnCarts = async (
   res: Response
 ) => {
   const userId = res.locals.user?.id
-  const { cartIds = [] } = req.body
+  const cartIds = req.body
+
   try {
     if (cartIds.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))

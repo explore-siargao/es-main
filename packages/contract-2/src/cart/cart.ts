@@ -1,17 +1,17 @@
 import { ApiService } from "../common/services/api"
-import { T_AddCart, T_UpdateCart, T_CartItem } from "./type"
+import { T_Add_To_Cart, T_Update_Cart, T_Cart_Item } from "./type"
 
-const CART_BASE_URL = `/api/v1/carts`
+const CART_BASE_URL = `/carts`
 
 export class CartService {
   private api: ApiService
   constructor(source: "main" | "mock" = "main") {
     this.api = new ApiService(source)
   }
-  async addItem(item: T_AddCart) {
+  async addItem(item: T_Add_To_Cart) {
     return this.api.post(CART_BASE_URL, item)
   }
-  async updateItem(itemId: string, item: T_UpdateCart) {
+  async updateItem(itemId: string, item: T_Update_Cart) {
     return this.api.patch(`${CART_BASE_URL}/${itemId}`, item)
   }
   async removeItem(itemId: string) {
@@ -23,7 +23,7 @@ export class CartService {
   }
 
   async getItems() {
-    return this.api.get<{ items: T_CartItem[] }>(CART_BASE_URL)
+    return this.api.get<{ items: T_Cart_Item[] }>(CART_BASE_URL)
   }
   static getQueryKeys() {
     return {

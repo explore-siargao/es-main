@@ -101,6 +101,12 @@ const reservations = new Schema({
     required: false,
     default: null,
   },
+  cartId:{
+    type: mongoose.Schema.ObjectId,
+    ref: "Carts",
+    required: false,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
