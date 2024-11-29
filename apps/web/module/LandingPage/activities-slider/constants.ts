@@ -1,6 +1,6 @@
 export const activities = [
   {
-    _id: "1",
+    _id: "6704df6883e618b3946ddb75",
     host: {
       _id: "host1",
       role: "admin",
@@ -58,7 +58,7 @@ export const activities = [
     photos: [
       {
         _id: "photo1",
-        key: "surfing1.jpg",
+        key: "3964aab8-2f71-4d49-8b89-8309a60cc9e6",
         thumbKey: "surfing1_thumb.jpg",
         isMain: true,
         description: "Surfing action shot",
@@ -102,7 +102,7 @@ export const activities = [
     reviewsCount: 120,
   },
   {
-    _id: "3",
+    _id: "670617f38317093663494213",
     host: {
       _id: "host3",
       role: "host",
@@ -160,7 +160,7 @@ export const activities = [
     photos: [
       {
         _id: "photo3",
-        key: "paddleboard1.jpg",
+        key: "b8e16ed1-1749-4987-9276-401ba0de5794",
         thumbKey: "paddleboard1_thumb.jpg",
         isMain: true,
         description: "Paddleboarding through serene mangroves",
@@ -198,7 +198,7 @@ export const activities = [
     reviewsCount: 95,
   },
   {
-    _id: "4",
+    _id: "6708e6500280d18cd27461c4",
     host: {
       _id: "host4",
       role: "host",
@@ -259,7 +259,7 @@ export const activities = [
     photos: [
       {
         _id: "photo4",
-        key: "sailing1.jpg",
+        key: "ce08d955-37f3-48f7-938f-72ecd2f9bb0e",
         thumbKey: "sailing1_thumb.jpg",
         isMain: true,
         description: "Boat cruising at sunset",
@@ -297,7 +297,7 @@ export const activities = [
     reviewsCount: 65,
   },
   {
-    _id: "5",
+    _id: "670f6659dedbb82f69c7761e",
     host: {
       _id: "host5",
       role: "guide",
@@ -358,7 +358,7 @@ export const activities = [
     photos: [
       {
         _id: "photo5",
-        key: "trekking1.jpg",
+        key: "c354a9dd-4eb9-46ed-98f4-a0dea8624548",
         thumbKey: "trekking1_thumb.jpg",
         isMain: true,
         description: "Hikers exploring rainforest trails",
@@ -396,7 +396,7 @@ export const activities = [
     reviewsCount: 120,
   },
   {
-    _id: "6",
+    _id: "670f684adedbb82f69c77cf0",
     host: {
       _id: "host6",
       role: "guide",
@@ -457,7 +457,7 @@ export const activities = [
     photos: [
       {
         _id: "photo6",
-        key: "cave1.jpg",
+        key: "17440aa3-75d3-4995-a6ac-110367cb515f",
         thumbKey: "cave1_thumb.jpg",
         isMain: true,
         description: "Explorers entering a cave",
@@ -495,7 +495,7 @@ export const activities = [
     reviewsCount: 90,
   },
   {
-    _id: "7",
+    _id: "670f71218e92555162f3e1d3",
     host: {
       _id: "host7",
       role: "host",
@@ -552,7 +552,7 @@ export const activities = [
     photos: [
       {
         _id: "photo7",
-        key: "cycling1.jpg",
+        key: "92c177a6-5812-4535-a60a-5bd5b8018252",
         thumbKey: "cycling1_thumb.jpg",
         isMain: true,
         description: "Cyclists enjoying a rice field trail",
@@ -590,7 +590,7 @@ export const activities = [
     reviewsCount: 85,
   },
   {
-    _id: "8",
+    _id: "672d5e6d9e5555d18e208d75",
     host: {
       _id: "host8",
       role: "host",
@@ -652,7 +652,7 @@ export const activities = [
     photos: [
       {
         _id: "photo8",
-        key: "snorkeling1.jpg",
+        key: "4e109b92-f54c-420f-9714-87687c080f9d",
         thumbKey: "snorkeling1_thumb.jpg",
         isMain: true,
         description: "Snorkeling in vibrant coral reefs",

@@ -21,8 +21,6 @@ import MeetingPoint from "./MeetingPoint"
 import CheckoutBox from "./CheckoutBox"
 import Builder from "./Itinerary/Builder"
 import { notFound, useParams } from "next/navigation"
-import useGetActivityById from "@/module/Admin/Activity/hooks/useGetActivitiesById"
-import { Spinner } from "@/common/components/ui/Spinner"
 
 export const ratingSummary = {
   ratings: 5,
@@ -349,9 +347,6 @@ export const ActivitySingleView = ({
   const handleCloseModal = () => {
     setShowModal(false)
   }
-
-  const params = useParams<{ rentalId: string }>()
-  const rentalId = String(params.rentalId)
 
   const hostingSince = new Date(data?.item?.host?.guest?.createdAt)
   const monthsDifference =

@@ -33,7 +33,7 @@ const RentalCard = (props: T_Rental_Filtered) => {
       <div className="relative overflow-hidden h-full list-none">
         <Link href={`/listings/rentals/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
-            <div className="h-56">
+            <div className="h-80">
               <Image
                 src={`/assets/${photos[0]?.key}`}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
