@@ -94,8 +94,7 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
     const property = await dbProperties
       .findOne({
         _id: propertyId,
-        status: E_Property_Status.live,
-        deletedAt: null,
+        // status: { $in: [E_Property_Status.live, E_Property_Status.pending] },
       })
       .populate({
         path: 'offerBy',

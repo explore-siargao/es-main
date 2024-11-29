@@ -50,9 +50,9 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
   }
 
   const splitOffersIntoColumns = (offers: T_Offer[]) => {
-    const middleIndex = Math.ceil(offers.length / 2)
-    const leftColumn = offers.slice(0, middleIndex).slice(0, 4)
-    const rightColumn = offers.slice(middleIndex).slice(0, 4)
+    const middleIndex = Math.ceil(offers?.length / 2)
+    const leftColumn = offers?.slice(0, middleIndex).slice(0, 4)
+    const rightColumn = offers?.slice(middleIndex).slice(0, 4)
     return [leftColumn, rightColumn]
   }
 
@@ -93,7 +93,7 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
           variant="outline"
           onClick={() => setShowMoreModalOpen(!showMoreModalOpen)}
         >
-          Show all {offers.length} amenities
+          Show all {offers?.length} amenities
         </Button>
       </TitleSection>
       <PlaceOfferModal
