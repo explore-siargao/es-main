@@ -22,15 +22,18 @@ export const Z_Activity_Slot = z.object({
   startTime: z.string(),
   endTime: z.string(),
   note: z.string(),
-  slotIdsId: z.array(
-    z
-      .object({
-        _id: z.string().optional(),
-        name: z.string(),
-      })
-      .nullable()
-      .optional()
-  ).optional().nullable(),
+  slotIdsId: z
+    .array(
+      z
+        .object({
+          _id: z.string().optional(),
+          name: z.string(),
+        })
+        .nullable()
+        .optional()
+    )
+    .optional()
+    .nullable(),
 })
 
 export const Z_Activity_Day = z.object({

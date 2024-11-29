@@ -7,9 +7,9 @@ import {
 import { E_RegistrationType, E_UserRole, T_User } from "@repo/contract-2/user"
 import { T_Guest } from "@repo/contract-2/guest"
 import { T_Address } from "@repo/contract-2/address-location"
-import { EncryptionService } from '@repo/services'
+import { EncryptionService } from "@repo/services"
 
-const passwordEncryption = new EncryptionService('password')
+const passwordEncryption = new EncryptionService("password")
 const seedUsers = async () => {
   try {
     console.log("Seeding users...")
@@ -163,18 +163,16 @@ const seedUsers = async () => {
       },
       {
         email: "jp.madrigal07@gmail.com",
-        password:
-          "ExploreSiargao@01",
-          role: E_UserRole.User,
+        password: "ExploreSiargao@01",
+        role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
         canReceiveEmail: false,
       },
       {
         email: "kv.madrigal08@gmail.com",
-        password:
-          "ExploreSiargao@01",
-          role: E_UserRole.User,
+        password: "ExploreSiargao@01",
+        role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
         profilePicture: "https://example.com/user2-profile.jpg",
@@ -182,18 +180,16 @@ const seedUsers = async () => {
       },
       {
         email: "jeusdsn@gmail.com",
-        password:
-          "ExploreSiargao@01",
-          role: E_UserRole.User,
+        password: "ExploreSiargao@01",
+        role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
         canReceiveEmail: false,
       },
       {
         email: "jepoyyy0225@gmail.com",
-        password:
-          "ExploreSiargao@01",
-          role: E_UserRole.User,
+        password: "ExploreSiargao@01",
+        role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
         canReceiveEmail: false,
@@ -208,17 +204,15 @@ const seedUsers = async () => {
       },
       {
         email: "kyllemadrigal08@gmail.com",
-        password:
-          "ExploreSiargao@01",
-          role: E_UserRole.User,
+        password: "ExploreSiargao@01",
+        role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
         canReceiveEmail: false,
       },
       {
         email: "juan.delacruz@gmail.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -226,8 +220,7 @@ const seedUsers = async () => {
       },
       {
         email: "maria.lopez@yahoo.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -235,8 +228,7 @@ const seedUsers = async () => {
       },
       {
         email: "pedro.garcia@hotmail.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -244,8 +236,7 @@ const seedUsers = async () => {
       },
       {
         email: "ana.reyes@gmail.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -253,8 +244,7 @@ const seedUsers = async () => {
       },
       {
         email: "carlos.diaz@yahoo.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -262,8 +252,7 @@ const seedUsers = async () => {
       },
       {
         email: "sofia.torres@hotmail.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -271,8 +260,7 @@ const seedUsers = async () => {
       },
       {
         email: "miguel.luna@gmail.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -280,8 +268,7 @@ const seedUsers = async () => {
       },
       {
         email: "isabel.mata@yahoo.com",
-        password:
-          "ExploreSiargao@01",
+        password: "ExploreSiargao@01",
         role: E_UserRole.User,
         registrationType: E_RegistrationType.Manual,
         isHost: false,
@@ -514,26 +501,25 @@ const seedUsers = async () => {
     const users = await dbUsers.insertMany(usersData)
     users.forEach(async (item, i) => {
       const encryptedPassword = passwordEncryption.encrypt(item.password)
-      await dbUsers.findByIdAndUpdate(item._id,{
-        $set:{
-          guest:getGuest[i]?._id,
-          password:encryptedPassword,
-          profilePicture:"",
-          deactivated:false,
-          updatedAt:null,
-          deletedAt:null
-        }
+      await dbUsers.findByIdAndUpdate(item._id, {
+        $set: {
+          guest: getGuest[i]?._id,
+          password: encryptedPassword,
+          profilePicture: "",
+          deactivated: false,
+          updatedAt: null,
+          deletedAt: null,
+        },
       })
     })
 
-    guests.forEach(async (guest,i)=>{
-      await dbGuests.findByIdAndUpdate(guest._id,{
-        $set:{
-          address:address[i]?._id
-        }
+    guests.forEach(async (guest, i) => {
+      await dbGuests.findByIdAndUpdate(guest._id, {
+        $set: {
+          address: address[i]?._id,
+        },
       })
     })
-    
 
     console.log("Users seeded successfully!")
   } catch (error) {

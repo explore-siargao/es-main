@@ -2,7 +2,7 @@ import { string, z } from "zod"
 import { E_RegistrationType, E_UserRole } from "./enum"
 
 export const Z_User = z.object({
-  _id:z.string().uuid(),
+  _id: z.string().uuid(),
   profilePicture: z.string(),
   role: z.nativeEnum(E_UserRole),
   email: z.string().email(),

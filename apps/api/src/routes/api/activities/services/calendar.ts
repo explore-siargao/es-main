@@ -230,7 +230,7 @@ export const getPrivateActivityCalendar = async (
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message+" "+err.stack || UNKNOWN_ERROR_OCCURRED,
+        message: err.message + ' ' + err.stack || UNKNOWN_ERROR_OCCURRED,
       })
     )
   }

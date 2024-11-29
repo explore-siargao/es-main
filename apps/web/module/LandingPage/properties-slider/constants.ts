@@ -323,5 +323,4 @@ export const placesToStay = [
     average: 0,
     reviewsCount: 0,
   },
- 
 ]

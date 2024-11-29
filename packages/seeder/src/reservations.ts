@@ -174,7 +174,7 @@ const seedReservations = async () => {
             joinerActivities[0]?.schedule?.monday?.slots[0]?._id
           ),
           slotIdsId: String(
-             //@ts-ignore
+            //@ts-ignore
             joinerActivities[0]?.schedule?.monday?.slots[0]?.slotIdsId[0]?._id
           ),
         },

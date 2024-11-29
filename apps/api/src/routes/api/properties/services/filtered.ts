@@ -1387,7 +1387,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-                discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
+            discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
                   item.unitPrice?.discountedWeeklyRate,
@@ -1413,7 +1413,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-                  discountedWeeklyRate: !item.price?.discountedWeeklyRate
+              discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
                     item.price?.discountedWeeklyRate,
@@ -2084,7 +2084,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-                discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
+            discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
                   item.unitPrice?.discountedWeeklyRate,
@@ -2110,7 +2110,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-                  discountedWeeklyRate: !item.price?.discountedWeeklyRate
+              discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
                     item.price?.discountedWeeklyRate,
@@ -2790,7 +2790,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   preferredCurrency,
                   conversionRates
                 ),
-                discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
+            discountedWeeklyRate: !item.unitPrice?.discountedWeeklyRate
               ? 0
               : convertPrice(
                   item.unitPrice?.discountedWeeklyRate,
@@ -2816,7 +2816,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     preferredCurrency,
                     conversionRates
                   ),
-                  discountedWeeklyRate: !item.price?.discountedWeeklyRate
+              discountedWeeklyRate: !item.price?.discountedWeeklyRate
                 ? 0
                 : convertPrice(
                     item.price?.discountedWeeklyRate,

@@ -2,7 +2,11 @@ import z from "zod"
 import { Z_Host } from "../host"
 import { Z_Photo } from "../photos"
 import { Z_Location } from "../address-location"
-import { E_Property_Status, E_Property_Type, E_Whole_Place_Property_Type } from "./enum"
+import {
+  E_Property_Status,
+  E_Property_Type,
+  E_Whole_Place_Property_Type,
+} from "./enum"
 
 export const Z_Unit_Price = z.object({
   _id: z.string().optional(),
@@ -15,7 +19,6 @@ export const Z_Unit_Price = z.object({
   deletedAt: z.string().datetime().nullable().optional(),
   discountedWeeklyRate: z.number().nullable().optional(),
   discountedMonthlyRate: z.number().nullable().optional(),
-
 })
 
 export const Z_Bookable_PricePerDate = z.object({
@@ -27,28 +30,28 @@ export const Z_Bookable_PricePerDate = z.object({
 
 export const Z_Amenity = z.object({
   _id: z.string().optional(),
-  index:z.number().optional(),
+  index: z.number().optional(),
   category: z.string(),
   amenity: z.string(),
-  isSelected:z.boolean().optional()
+  isSelected: z.boolean().optional(),
 })
 
 export const Z_Facility = z.object({
   _id: z.string().optional(),
-  index:z.number().optional(),
+  index: z.number().optional(),
   category: z.string(),
   facility: z.string(),
-  propertyId:z.string().nullable().optional(),
-  isSelected:z.boolean().optional()
+  propertyId: z.string().nullable().optional(),
+  isSelected: z.boolean().optional(),
 })
 
 export const Z_Policy = z.object({
   _id: z.string().optional(),
-  index:z.number().optional(),
+  index: z.number().optional(),
   category: z.string(),
   reason: z.string().nullable(),
   policy: z.string(),
-  isSelected:z.boolean().optional()
+  isSelected: z.boolean().optional(),
 })
 
 export const Z_Bed = z.object({

@@ -91,7 +91,7 @@ export const register = async (req: Request, res: Response) => {
           deactivated: false,
         })
         await newUser.save()
- //@ts-ignore
+        //@ts-ignore
         await generateSession(req, res, newUser)
         res.json(
           response.success({
@@ -130,7 +130,7 @@ export const manual = async (req: Request, res: Response) => {
       const originalPassword = decryptedPassword.toString()
       const decryptInputPassword = passwordEncryption.decrypt(password)
       if (user && originalPassword === decryptInputPassword) {
-      const sess = await generateSession(req, res, user as unknown as T_User)
+        const sess = await generateSession(req, res, user as unknown as T_User)
         res.json(
           response.success({
             action: {

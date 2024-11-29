@@ -17,7 +17,7 @@ export const Z_Rental_Details = z.object({
   interiorColor: z.string().nullable().optional(),
   seatingCapacity: z.number().nullable(),
   isRegistered: z.string().optional(),
-  haveDriverLicense:z.string().optional(),
+  haveDriverLicense: z.string().optional(),
   weightCapacityKg: z.number().nullable(),
   createdAt: z.string().optional(),
   updatedAt: z.string().nullable().optional(),
@@ -81,7 +81,7 @@ export const Z_Rental = z.object({
   rentalNote: z.string().optional(),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
-  reviews:z.array(z.string()).optional().nullable(),
-  daysCanCancel:z.number().optional(),
-  updatedAt:z.string().optional().nullable()
+  reviews: z.array(z.string()).optional().nullable(),
+  daysCanCancel: z.number().optional(),
+  updatedAt: z.string().optional().nullable(),
 })
