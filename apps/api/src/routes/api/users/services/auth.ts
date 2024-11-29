@@ -20,7 +20,6 @@ import {
 } from '../helpers/googleAuth'
 import { getGoogleUserData } from '../helpers/googleApiRequest'
 import generateSession from '../helpers/generateSession'
-import { T_User } from '@repo/contract'
 import randomNumber from '@/common/helpers/randomNumber'
 import { WEB_URL } from '@/common/constants/ev'
 import { AuthEmail, TSendEmailParams } from './authEmail'
@@ -31,6 +30,7 @@ import {
   dbMultiFactorAuths,
   dbUsers,
 } from '@repo/database'
+import { T_User } from '@repo/contract-2/user'
 const passwordEncryption = new EncryptionService('password')
 
 const response = new ResponseService()
@@ -91,8 +91,8 @@ export const register = async (req: Request, res: Response) => {
           deactivated: false,
         })
         await newUser.save()
-
-        await generateSession(req, res, newUser as T_User)
+ //@ts-ignore
+        await generateSession(req, res, newUser)
         res.json(
           response.success({
             action: {
@@ -130,7 +130,7 @@ export const manual = async (req: Request, res: Response) => {
       const originalPassword = decryptedPassword.toString()
       const decryptInputPassword = passwordEncryption.decrypt(password)
       if (user && originalPassword === decryptInputPassword) {
-        await generateSession(req, res, user as T_User)
+      const sess = await generateSession(req, res, user as unknown as T_User)
         res.json(
           response.success({
             action: {
@@ -209,7 +209,8 @@ export const googleRedirect = async (req: Request, res: Response) => {
       )
       const user = await dbUsers.findOne({ email: googleUserData.item?.email })
       if (user) {
-        await generateSession(req, res, user as T_User)
+        //@ts-ignore
+        await generateSession(req, res, user)
         res.json(
           response.success({
             action: {

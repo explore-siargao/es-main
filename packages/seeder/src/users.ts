@@ -7,7 +7,7 @@ import {
 import { E_RegistrationType, E_UserRole, T_User } from "@repo/contract-2/user"
 import { T_Guest } from "@repo/contract-2/guest"
 import { T_Address } from "@repo/contract-2/address-location"
-import { EncryptionService } from '@repo/'
+import { EncryptionService } from '@repo/services'
 
 const passwordEncryption = new EncryptionService('password')
 const seedUsers = async () => {
@@ -517,7 +517,11 @@ const seedUsers = async () => {
       await dbUsers.findByIdAndUpdate(item._id,{
         $set:{
           guest:getGuest[i]?._id,
-          password:encryptedPassword
+          password:encryptedPassword,
+          profilePicture:"",
+          deactivated:false,
+          updatedAt:null,
+          deletedAt:null
         }
       })
     })

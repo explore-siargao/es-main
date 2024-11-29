@@ -6,7 +6,7 @@ import {
 export const placesToStay = [
   {
     listingId: "1",
-    type: E_Property_Type.COTTAGE,
+    type: E_Property_Type.WHOLE_PLACE,
     wholeplaceType: E_Whole_Place_Property_Type.COTTAGE, // Valid value from the enum
     location: {
       _id: "loc1",
@@ -46,7 +46,7 @@ export const placesToStay = [
   },
   {
     listingId: "2",
-    type: E_Property_Type.HOUSE,
+    type: E_Property_Type.WHOLE_PLACE,
     wholeplaceType: E_Whole_Place_Property_Type.HOUSE, // Valid value from the enum
     location: {
       _id: "loc2",
@@ -86,7 +86,7 @@ export const placesToStay = [
   },
   {
     listingId: "3",
-    type: E_Property_Type.VILLA,
+    type: E_Property_Type.WHOLE_PLACE,
     wholeplaceType: E_Whole_Place_Property_Type.VILLA, // Valid value from the enum
     location: {
       _id: "loc3",
@@ -126,7 +126,7 @@ export const placesToStay = [
   },
   {
     listingId: "4",
-    type: E_Property_Type.BUNGALOW,
+    type: E_Property_Type.WHOLE_PLACE,
     wholeplaceType: undefined, // Explicitly undefined if not applicable
     location: {
       _id: "loc4",
@@ -206,7 +206,7 @@ export const placesToStay = [
   },
   {
     listingId: "6",
-    type: E_Property_Type.BUNGALOW,
+    type: E_Property_Type.WHOLE_PLACE,
     wholeplaceType: E_Whole_Place_Property_Type.BUNGALOW, // Valid enum value
     location: {
       _id: "loc6",

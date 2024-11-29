@@ -3208,7 +3208,7 @@ const seedProperties = async () => {
           description: unit.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: unit._id,
           propertyId: null,
@@ -3220,7 +3220,7 @@ const seedProperties = async () => {
           description: unit.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: unit._id,
           propertyId: null,
@@ -3232,7 +3232,7 @@ const seedProperties = async () => {
           description: unit.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: unit._id,
           propertyId: null,
@@ -3244,7 +3244,7 @@ const seedProperties = async () => {
           description: unit.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: unit._id,
           propertyId: null,
@@ -3314,7 +3314,7 @@ const seedProperties = async () => {
           description: property.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: null,
           propertyId: property._id,
@@ -3326,7 +3326,7 @@ const seedProperties = async () => {
           description: property.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: null,
           propertyId: property._id,
@@ -3338,7 +3338,7 @@ const seedProperties = async () => {
           description: property.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: null,
           propertyId: property._id,
@@ -3350,7 +3350,7 @@ const seedProperties = async () => {
           description: property.title + " description",
         },
         {
-          isMain: true,
+          isMain: false,
           activityId: null,
           bookableUnitId: null,
           propertyId: property._id,
