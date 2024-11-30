@@ -32,7 +32,7 @@ const CartList: React.FC<ICartProps> = ({
     const newSelectAll = !selectAll
     setSelectAll(newSelectAll)
     if (newSelectAll) {
-      const allIds = items.map((item) => item._id)
+      const allIds = items.map((item) => item._id || "")
       setSelectedItemsIds(allIds)
       setSelectedItems(items)
     } else {

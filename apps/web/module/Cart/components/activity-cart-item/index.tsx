@@ -34,10 +34,10 @@ function ActivityCartItem({
         <div className="flex items-center gap-4">
           {viewOnly ? null : (
             <InputCheckbox
-              id={item._id}
+              id={item._id || index}
               colorVariant="secondary"
-              checked={selectedItems.includes(item._id)}
-              onChange={() => toggleCheckbox(item._id, item.price)}
+              checked={selectedItems.includes(item._id || "")}
+              onChange={() => toggleCheckbox(item._id || "", item.price)}
             />
           )}
           <img
@@ -88,7 +88,7 @@ function ActivityCartItem({
               variant="link"
               className="hover:underline text-error-500 hover:cursor-pointer flex items-center"
               onClick={() => {
-                setItemId(item._id)
+                setItemId(item._id || "")
                 setIsDeleteCartItemOpen(true)
               }}
             >

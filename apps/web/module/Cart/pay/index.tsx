@@ -119,19 +119,21 @@ const Pay = () => {
       guestCount: item.guestCount ?? 0,
       activityIds: {
         ...item.activityIds,
-        activityId: item.activityIds?.activityId._id,
+        // @ts-expect-error
+        activityId: item.activityIds?.activityId._id ?? "",
       },
       rentalIds: {
         ...item.rentalIds,
         guestCount: item.guestCount ?? 0,
-        rentalId: item.rentalIds?.rentalId._id,
+        // @ts-expect-error
+        rentalId: item.rentalIds?.rentalId._id ?? "",
       },
     }))
   }
   const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate, isPending } = useAddGCashPayment()
-  const remappedItems = remapItems(selectedItems)
+  const remappedItems = remapItems(selectedItems as T_Add_To_Cart[])
   const steps: Step[] = [
     { label: "Choose Listings", status: "completed" },
     { label: "Summary", status: "completed" },

@@ -128,7 +128,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         </Button>
         <Button
           variant="secondary"
-          onClick={() => handleAddToCartSingleItem(params.propertyId)}
+          onClick={() => console.log('add to cart')}
         >
           Add to cart
         </Button>

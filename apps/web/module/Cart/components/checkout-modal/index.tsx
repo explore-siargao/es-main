@@ -38,11 +38,13 @@ const CheckoutModal = ({
       ...item,
       activityIds: {
         ...item.activityIds,
-        activityId: item.activityIds?.activityId._id,
+        // @ts-expect-error
+        activityId: item.activityIds?.activityId?._id,
       },
       rentalIds: {
         ...item.rentalIds,
-        rentalId: item.rentalIds?.rentalId._id,
+        // @ts-expect-error
+        rentalId: item.rentalIds?.rentalId?._id,
       },
     }))
   }

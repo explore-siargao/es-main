@@ -8,7 +8,7 @@ interface CheckboxProps {
   ) => void
 }
 
-const Checkbox = ({ id, colorVariant, checked, onChange }: CheckboxProps) => {
+const InputCheckbox = ({ id, colorVariant, checked, onChange }: CheckboxProps) => {
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(id, e)
   }
@@ -37,4 +37,4 @@ const Checkbox = ({ id, colorVariant, checked, onChange }: CheckboxProps) => {
   )
 }
 
-export default Checkbox
+export default InputCheckbox

@@ -106,8 +106,9 @@ const CheckoutBox = ({
     const payload: T_Add_To_Cart = {
       price: totalPrice,
       propertyIds: { propertyId, unitId: unit._id },
-      startDate: dateRange.from!,
-      endDate: dateRange.to!,
+      startDate: dateRange.from?.toISOString() || "",
+      endDate: dateRange.to?.toISOString() || "",
+      guestCount: totalGuest,
     }
     addToCart(payload, {
       onSuccess: (data: any) => {
