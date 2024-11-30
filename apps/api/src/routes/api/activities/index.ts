@@ -58,12 +58,7 @@ router.get(
 )
 
 //filted data
-router.get(
-  '/filtered',
-  isOriginValid,
-  paginate(15),
-  getFilteredActivities
-)
+router.get('/filtered', isOriginValid, paginate(15), getFilteredActivities)
 router.get('/host', isOriginValid, isUserLoggedIn, getAllActivitiesByHostId)
 
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)

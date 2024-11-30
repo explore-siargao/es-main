@@ -76,12 +76,7 @@ router.get('/public/:propertyId', isOriginValid, getPropertyByIdPublic)
 
 //highest price
 router.get('/highest-price', isOriginValid, isCsrfTokenValid, unitHighestPrice)
-router.get(
-  '/filtered',
-  isOriginValid,
-  paginate(15),
-  getFilteredProperties
-)
+router.get('/filtered', isOriginValid, paginate(15), getFilteredProperties)
 
 router.get(
   '/:propertyId',
