@@ -38,7 +38,7 @@ const Cart = () => {
           />
         ) : (
           <div className="col-span-3 w-full">
-            <h2 className="text-lg font-bold mx-auto text-text-400">
+            <h2 className="text-lg mx-auto text-text-300 italic">
               There are no items in your cart
             </h2>
           </div>

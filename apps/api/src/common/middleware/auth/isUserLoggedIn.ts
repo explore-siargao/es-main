@@ -8,7 +8,7 @@ import { dbUsers } from '@repo/database'
 
 const response = new ResponseService()
 
-const isUserLoggedIn3 = async (
+const isUserLoggedIn = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -40,7 +40,6 @@ const isUserLoggedIn3 = async (
             },
           ],
         })
-      console.log(user)
       const authUser: T_Session = {
         isHost: user?.isHost as boolean,
         id: String(user?._id),
@@ -87,4 +86,4 @@ const isUserLoggedIn3 = async (
   }
 }
 
-export default isUserLoggedIn3
+export default isUserLoggedIn

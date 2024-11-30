@@ -1,5 +1,5 @@
 import express from 'express'
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isHostPropertyOwner from './middlewares/isHostPropertyOwner'
@@ -79,7 +79,6 @@ router.get('/highest-price', isOriginValid, isCsrfTokenValid, unitHighestPrice)
 router.get(
   '/filtered',
   isOriginValid,
-  isCsrfTokenValid,
   paginate(15),
   getFilteredProperties
 )

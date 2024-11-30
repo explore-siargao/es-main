@@ -11,7 +11,7 @@ import {
   getRentalByIdPublic,
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
 import { getRentalRates, updateRentalRate } from './services/rates'
@@ -49,7 +49,6 @@ const router = express.Router()
 router.get(
   '/filtered',
   isOriginValid,
-  isCsrfTokenValid,
   paginate(15),
   getFilteredRentals
 )
