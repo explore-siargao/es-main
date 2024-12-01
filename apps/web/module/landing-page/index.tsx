@@ -8,10 +8,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { exploreSiargaoIsland, travelStyle } from "./constants"
 import SliderItemProperty from "./properties-slider"
 import ActivitiesSlider from "./activities-slider"
-import { placesToStay } from "./properties-slider/constants"
-import { activities } from "./activities-slider/constants"
 import RentalsSlider from "./rentals-slider"
-import { rentals } from "./rentals-slider/constants"
 
 const LandingPage = () => {
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
@@ -29,7 +26,7 @@ const LandingPage = () => {
   return (
     <>
       <WidthWrapper width="medium" className="mb-24 lg:mt-6">
-        <div className="sm:mt-20">
+        <div className="sm:mt-24">
           <TravelSlider
             title="Explore Siargao Island"
             description="Essential travel information for your island vacation"
@@ -38,7 +35,7 @@ const LandingPage = () => {
             itemsNumber={6}
           />
         </div>
-        <div className="sm:mt-10">
+        <div className="sm:mt-14">
           <TravelSlider
             title="What's your travel style?"
             description="Browse by property type to find the perfect space"
@@ -48,24 +45,22 @@ const LandingPage = () => {
             isLastItemFull
           />
         </div>
-        <div className="sm:mt-10">
+        <div className="sm:mt-14">
           <SliderItemProperty
-            properties={placesToStay}
             itemsNumber={4}
             isLastItemFull
           />
         </div>
-        <div className="sm:mt-10">
+        <div className="sm:mt-14">
           <ActivitiesSlider
-            activities={activities}
             itemsNumber={4}
             isLastItemFull
           />
         </div>
-        <div className="sm:mt-10">
-          <RentalsSlider rentals={rentals} itemsNumber={4} isLastItemFull />
+        <div className="sm:mt-14">
+          <RentalsSlider itemsNumber={4} isLastItemFull />
         </div>
-        <div className="sm:mt-10 mb-8">
+        <div className="sm:mt-14 mb-8">
           <Typography variant="h2" fontWeight="semibold" className="text-left">
             Inspiration for your trip
           </Typography>

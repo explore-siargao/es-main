@@ -2,22 +2,46 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import { T_Rental_Filtered } from "@repo/contract-2/search-filters"
+import { E_Location } from "@repo/contract-2/search-filters"
 import RentalCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
 import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
+import useGetRentalListings from "@/module/search/rentals/hooks/use-get-listings"
 
 type SliderProps = {
-  rentals: T_Rental_Filtered[]
   itemsNumber: number
   isLastItemFull?: boolean
 }
 
 const RentalsSlider = ({
-  rentals,
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
+  const location = "any";
+  const vehicleTypes = "any";
+  const transmissionTypes = "any";
+  const seatCount = "any";
+  const priceFrom = "any";
+  const priceTo = "any";
+  const starRating = "any";
+  const pickUpDate = "any";
+  const dropOffDate = "any";
+
+  const {
+    data: rentalUnits,
+  } = useGetRentalListings({
+    page: 1,
+    location: location as E_Location,
+    vehicleTypes,
+    transmissionTypes,
+    seatCount,
+    priceFrom,
+    priceTo,
+    starRating,
+    pickUpDate,
+    dropOffDate,
+  })
+
   const calculateOffset = (itemsNumber: number) => {
     const containerWidth = 100 // Assuming container width is 100%
     const itemWidth = containerWidth / itemsNumber
@@ -57,7 +81,7 @@ const RentalsSlider = ({
     },
     1536: { slidesPerView: isLastItemFull ? itemsNumber : itemsNumber - 0.5 },
   }
-
+  const rentalsData = rentalUnits?.items || []
   return (
     <div className="slider-item mb-5">
       <div className="mb-8">
@@ -80,7 +104,7 @@ const RentalsSlider = ({
           spaceBetween={40}
         >
           <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
-          {rentals.map((card) => (
+          {rentalsData.map((card) => (
             <SwiperSlide
               key={`${card.make}-${card.modelBadge}-${card.category}`}
             >

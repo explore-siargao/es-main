@@ -1,6 +1,8 @@
 import { T_Activity } from "@repo/contract-2/activity"
 import { T_Location } from "@repo/contract-2/address-location"
 import { dbActivities, dbLocations, dbPhotos, dbUsers } from "@repo/database"
+import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
+import { ACTIVITY_PHOTO_KEYS } from "./common/constants/photo-keys"
 
 const seedJoinerActivities = async () => {
   try {
@@ -1566,6 +1568,7 @@ const seedJoinerActivities = async () => {
       })
     })
     joinerActivities.forEach(async (activity) => {
+      const photosKey = getRandomPhotoKeys(ACTIVITY_PHOTO_KEYS, 5);
       const photos = await dbPhotos.insertMany([
         {
           isMain: true,
@@ -1574,7 +1577,7 @@ const seedJoinerActivities = async () => {
           propertyId: null,
           rentalId: null,
           createdAt: String(Date.now()),
-          key: activity.title + "-1",
+          key: photosKey[0],
           thumbKey: activity.title + "-1",
           tags: "photo",
           description: activity.title + " description",
@@ -1586,8 +1589,8 @@ const seedJoinerActivities = async () => {
           propertyId: null,
           rentalId: null,
           createdAt: String(Date.now()),
-          key: activity.title + "-2",
-          thumbKey: activity.title + "-2",
+          key: photosKey[1],
+          thumbKey: "",
           tags: "photo",
           description: activity.title + " description",
         },
@@ -1598,8 +1601,8 @@ const seedJoinerActivities = async () => {
           propertyId: null,
           rentalId: null,
           createdAt: String(Date.now()),
-          key: activity.title + "-3",
-          thumbKey: activity.title + "-3",
+          key: photosKey[2],
+          thumbKey: "",
           tags: "photo",
           description: activity.title + " description",
         },
@@ -1610,8 +1613,8 @@ const seedJoinerActivities = async () => {
           propertyId: null,
           rentalId: null,
           createdAt: String(Date.now()),
-          key: activity.title + "-4",
-          thumbKey: activity.title + "-4",
+          key: photosKey[3],
+          thumbKey: "",
           tags: "photo",
           description: activity.title + " description",
         },
@@ -1622,8 +1625,8 @@ const seedJoinerActivities = async () => {
           propertyId: null,
           rentalId: null,
           createdAt: String(Date.now()),
-          key: activity.title + "-5",
-          thumbKey: activity.title + "-5",
+          key: photosKey[4],
+          thumbKey: "",
           tags: "photo",
           description: activity.title + " description",
         },

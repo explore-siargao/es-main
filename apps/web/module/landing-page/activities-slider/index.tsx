@@ -2,22 +2,44 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
+import { E_Location } from "@repo/contract-2/search-filters"
 import ActivityCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
 import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
+import useGetActivityListings from "@/module/search/activities/hooks/use-get-listings"
 
 type SliderProps = {
-  activities: T_Activity_Filtered[]
   itemsNumber: number
   isLastItemFull?: boolean
 }
 
 const ActivitiesSlider = ({
-  activities,
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
+  const location = "any";
+  const experienceTypes = "any";
+  const activityTypes = "any";
+  const durations = "any";
+  const priceFrom = "any";
+  const priceTo = "any";
+  const starRating = "any";
+  const activityDate = "any";
+  const numberOfGuest = "any";
+  const {
+    data: activityUnits,
+  } = useGetActivityListings({
+    page: 1,
+    location: location as E_Location,
+    activityTypes,
+    experienceTypes,
+    priceTo,
+    priceFrom,
+    durations,
+    starRating,
+    activityDate,
+    numberOfGuest,
+  })
   const calculateOffset = (itemsNumber: number) => {
     const containerWidth = 100 // Assuming container width is 100%
     const itemWidth = containerWidth / itemsNumber
@@ -57,7 +79,7 @@ const ActivitiesSlider = ({
     },
     1536: { slidesPerView: isLastItemFull ? itemsNumber : itemsNumber - 0.5 },
   }
-
+  const activitiesData = activityUnits?.items || []
   return (
     <div className="slider-item mb-5">
       <div className="mb-8">
@@ -80,7 +102,7 @@ const ActivitiesSlider = ({
           spaceBetween={40}
         >
           <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
-          {activities.map((card) => (
+          {activitiesData.map((card) => (
             <SwiperSlide key={card.title}>
               <ActivityCard {...card} />
             </SwiperSlide>
