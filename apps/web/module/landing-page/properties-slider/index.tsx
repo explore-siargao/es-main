@@ -2,18 +2,19 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
-import ActivityCard from "./card"
+import { T_Property_Filtered } from "@repo/contract-2/search-filters"
+import PropertyCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
+import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
 
 type SliderProps = {
-  activities: T_Activity_Filtered[]
+  properties: T_Property_Filtered[]
   itemsNumber: number
   isLastItemFull?: boolean
 }
 
-const ActivitiesSlider = ({
-  activities,
+const SliderItemProperty = ({
+  properties,
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
@@ -58,13 +59,13 @@ const ActivitiesSlider = ({
   }
 
   return (
-    <div className="mb-5">
+    <div className="slider-item mb-5">
       <div className="mb-8">
         <Typography variant="h2" fontWeight="semibold" className="text-left">
-          Looking for something to do in Siargao?
+          Recommended places to stay
         </Typography>
         <Typography variant="h4" className="text-left">
-          We've partnered the islands for tour and activity providers.
+          Hand-picked properties just for you
         </Typography>
       </div>
       <div>
@@ -78,9 +79,10 @@ const ActivitiesSlider = ({
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-          {activities.map((card) => (
+           <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
+          {properties.map((card) => (
             <SwiperSlide key={card.title}>
-              <ActivityCard {...card} />
+              <PropertyCard {...card} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -89,4 +91,4 @@ const ActivitiesSlider = ({
   )
 }
 
-export default ActivitiesSlider
+export default SliderItemProperty

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import ApplyToHostModal from "../../../module/LandingPage/components/ApplyToHostModal"
+import ApplyToHostModal from "@/common/components/modals/apply-to-host-modal"
 import { Typography } from "../ui/Typography"
 import SearchBarByState from "./search-bar-by-state"
 

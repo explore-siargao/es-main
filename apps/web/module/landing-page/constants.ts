@@ -338,3 +338,53 @@ export const dummyCards = [
     type: "Beach Front",
   },
 ]
+
+// Class name `slider-item` is required from swiper parent tag for this to work
+// All sliders from landing page will share this style
+export const HOME_SLIDER_CUSTOM_STYLE = `
+  .slider-item .swiper {
+    position: relative;
+  }
+  .slider-item .swiper-button-prev,
+  .slider-item .swiper-button-next {
+    color: black;
+    background-color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    margin-left: -5px;
+    margin-right: -5px;
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease-in-out;
+  }
+  .slider-item .swiper-button-next {
+    opacity: 1; 
+    right: 10px; 
+  }
+  .slider-item .swiper-button-prev {
+    opacity: 0;
+    left: 10px; 
+  }
+  .slider-item .swiper-button-prev.swiper-button-disabled {
+    opacity: 0; 
+    cursor: default; 
+  }
+  .slider-item .swiper-button-next:after, 
+  .slider-item .swiper-button-prev:after {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .slider-item .swiper-button-prev:not(.swiper-button-disabled) {
+    opacity: 1; 
+  }
+  .slider-item .swiper-button-next:not(.swiper-button-disabled) {
+    opacity: 1;
+  }
+`;

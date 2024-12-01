@@ -17,6 +17,7 @@ interface SliderProps {
 
 const CustomSquareSlider = ({ images }: SliderProps) => {
   return (
+    <div className="custom-square-slider">
     <Swiper
       navigation={images.length > 0}
       pagination={{ type: "bullets", clickable: true }}
@@ -24,7 +25,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
       className="h-full w-full rounded-xl relative"
     >
       <style>{`
-        .swiper-button-prev, .swiper-button-next {
+        .custom-square-slider .swiper-button-prev, .swiper-button-next {
           color: black;
           background-color: white;
           border-radius: 50%; 
@@ -38,32 +39,32 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
           transition: opacity 0.3s ease-in-out;
           cursor: pointer;
         }
-        .swiper:hover .swiper-button-prev:not(:disabled), .swiper:hover .swiper-button-next:not(:disabled) {
+        .custom-square-slider .swiper:hover .swiper-button-prev:not(:disabled), .swiper:hover .swiper-button-next:not(:disabled) {
           opacity: 1;
         }
-        .swiper-button-prev.swiper-button-disabled{
+        .custom-square-slider .swiper-button-prev.swiper-button-disabled{
           opacity: 0;
         }
-        .swiper-button-next:after, 
-        .swiper-button-prev:after {
+        .custom-square-slider .swiper-button-next:after, 
+        .custom-square-slider .swiper-button-prev:after {
           font-size: 10px;
           font-weight: 600;
         }
-        .swiper-pagination-bullet {
+        .custom-square-slider .swiper-pagination-bullet {
           background-color: white;
         }
-        .swiper-slide {
+        .custom-square-slider .swiper-slide {
           display: flex;
           justify-content: center;
           align-items: center;
         }
-        .image-wrapper {
+        .custom-square-slider .image-wrapper {
           position: relative;
           width: 100%;
           height: 250px; 
           padding-top: 80%; 
         }
-        .image-wrapper img {
+        .custom-square-slider .image-wrapper img {
           position: absolute;
           top: 0;
           left: 0;
@@ -100,6 +101,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
         </SwiperSlide>
       )}
     </Swiper>
+    </div>
   )
 }
 

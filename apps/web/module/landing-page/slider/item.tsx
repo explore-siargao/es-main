@@ -12,7 +12,7 @@ type T_Props = {
   isGuide: boolean
 }
 
-const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
+const Item = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
   return (
     <Link href={url ?? "#"} target={isGuide ? "_blank" : "_self"}>
       <div className="relative w-full h-56 rounded-xl overflow-hidden">
@@ -42,4 +42,4 @@ const SliderItem = ({ imageKey, title, subTitle, url, isGuide }: T_Props) => {
   )
 }
 
-export default SliderItem
+export default Item

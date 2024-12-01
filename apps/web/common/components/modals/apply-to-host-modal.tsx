@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
-import useChangeToHost from "../hooks/useChangeToHost"
+import useChangeToHost from "@/common/hooks/use-change-to-host"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"

@@ -5,6 +5,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { T_Rental_Filtered } from "@repo/contract-2/search-filters"
 import RentalCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
+import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
 
 type SliderProps = {
   rentals: T_Rental_Filtered[]
@@ -58,7 +59,7 @@ const RentalsSlider = ({
   }
 
   return (
-    <div className="mb-5">
+    <div className="slider-item mb-5">
       <div className="mb-8">
         <Typography variant="h2" fontWeight="semibold" className="text-left">
           Reliable cars, motorbikes and more
@@ -78,52 +79,7 @@ const RentalsSlider = ({
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-          <style>{`
-        .swiper {
-          position: relative;
-        }
-        .swiper-button-prev, .swiper-button-next {
-          color: black;
-          background-color: white;
-          border-radius: 50%;
-          width: 30px;
-          height: 30px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-          cursor: pointer;
-          position: absolute;
-          top: 50%;
-          margin-left: -5px;
-          margin-right: -5px;
-          transform: translateY(-50%);
-          transition: opacity 0.3s ease-in-out;
-        }
-        .swiper-button-next {
-          opacity: 1; 
-          right: 10px; 
-        }
-        .swiper-button-prev {
-          opacity: 0;
-          left: 10px; 
-        }
-        .swiper-button-prev.swiper-button-disabled {
-          opacity: 0; 
-          cursor: default; 
-        }
-        .swiper-button-next:after, 
-        .swiper-button-prev:after {
-          font-size: 10px;
-          font-weight: 600;
-        }
-        .swiper-button-prev:not(.swiper-button-disabled) {
-          opacity: 1; 
-        }
-        .swiper-button-next:not(.swiper-button-disabled) {
-          opacity: 1;
-        }
-      `}</style>
+          <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
           {rentals.map((card) => (
             <SwiperSlide
               key={`${card.make}-${card.modelBadge}-${card.category}`}

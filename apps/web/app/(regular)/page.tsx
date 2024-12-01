@@ -1,4 +1,4 @@
-import LandingPage from "@/module/LandingPage"
+import LandingPage from "@/module/landing-page"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import { HOME } from "@/common/constants"

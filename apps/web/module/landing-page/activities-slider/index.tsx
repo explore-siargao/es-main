@@ -2,18 +2,19 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/swiper-bundle.css"
 import "swiper/css/navigation"
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-import { T_Property_Filtered } from "@repo/contract-2/search-filters"
-import PropertyCard from "./card"
+import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
+import ActivityCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
+import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
 
 type SliderProps = {
-  properties: T_Property_Filtered[]
+  activities: T_Activity_Filtered[]
   itemsNumber: number
   isLastItemFull?: boolean
 }
 
-const SliderItemProperty = ({
-  properties,
+const ActivitiesSlider = ({
+  activities,
   itemsNumber,
   isLastItemFull,
 }: SliderProps) => {
@@ -58,13 +59,13 @@ const SliderItemProperty = ({
   }
 
   return (
-    <div className="mb-5">
+    <div className="slider-item mb-5">
       <div className="mb-8">
         <Typography variant="h2" fontWeight="semibold" className="text-left">
-          Recommended places to stay
+          Looking for something to do in Siargao?
         </Typography>
         <Typography variant="h4" className="text-left">
-          Hand-picked properties just for you
+          We've partnered the islands for tour and activity providers.
         </Typography>
       </div>
       <div>
@@ -78,55 +79,10 @@ const SliderItemProperty = ({
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-          <style>{`
-        .swiper {
-          position: relative;
-        }
-        .swiper-button-prev, .swiper-button-next {
-          color: black;
-          background-color: white;
-          border-radius: 50%;
-          width: 30px;
-          height: 30px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-          cursor: pointer;
-          position: absolute;
-          top: 50%;
-          margin-left: -5px;
-          margin-right: -5px;
-          transform: translateY(-50%);
-          transition: opacity 0.3s ease-in-out;
-        }
-        .swiper-button-next {
-          opacity: 1; 
-          right: 10px; 
-        }
-        .swiper-button-prev {
-          opacity: 0;
-          left: 10px; 
-        }
-        .swiper-button-prev.swiper-button-disabled {
-          opacity: 0; 
-          cursor: default; 
-        }
-        .swiper-button-next:after, 
-        .swiper-button-prev:after {
-          font-size: 10px;
-          font-weight: 600;
-        }
-        .swiper-button-prev:not(.swiper-button-disabled) {
-          opacity: 1; 
-        }
-        .swiper-button-next:not(.swiper-button-disabled) {
-          opacity: 1;
-        }
-      `}</style>
-          {properties.map((card) => (
+           <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
+          {activities.map((card) => (
             <SwiperSlide key={card.title}>
-              <PropertyCard {...card} />
+              <ActivityCard {...card} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -135,4 +91,4 @@ const SliderItemProperty = ({
   )
 }
 
-export default SliderItemProperty
+export default ActivitiesSlider

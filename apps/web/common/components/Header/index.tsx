@@ -14,7 +14,7 @@ import { cn } from "@/common/helpers/cn"
 import useSessionStore from "@/common/store/useSessionStore"
 import { E_UserRole } from "@repo/contract"
 import GuidesMenu from "./GuidesMenu"
-import ApplyToHostModal from "@/module/LandingPage/components/ApplyToHostModal"
+import ApplyToHostModal from "@/common/components/modals/apply-to-host-modal"
 
 function Header({
   contentWidth = "medium",

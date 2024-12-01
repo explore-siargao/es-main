@@ -5,7 +5,7 @@ import { LucideArrowRight } from "lucide-react"
 import Link from "next/link"
 import Image from "@/common/components/ui/image"
 
-interface ICardItems {
+type T_Card_Item = {
   imageKey: string
   title: string
   description: string
@@ -19,7 +19,7 @@ const ImageTextCard = ({
   description,
   linkTitle,
   url,
-}: ICardItems) => {
+}: T_Card_Item) => {
   return (
     <div className="bg-white rounded-xl mx-auto border border-solid border-text-50 border-1">
       <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-56">
