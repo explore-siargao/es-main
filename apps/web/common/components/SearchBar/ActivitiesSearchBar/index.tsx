@@ -46,8 +46,7 @@ function ActivitiesSearchBar() {
         type="number"
         className="w-[23rem] 4xl:w-[28rem] ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Number of guest/s"}
-        placeholder="1"
-        defaultValue={"1"}
+        placeholder="Add guests"
         {...register("numberOfGuest")}
       />
       <Button
