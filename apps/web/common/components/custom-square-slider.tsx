@@ -18,13 +18,13 @@ interface SliderProps {
 const CustomSquareSlider = ({ images }: SliderProps) => {
   return (
     <div className="custom-square-slider">
-    <Swiper
-      navigation={images.length > 0}
-      pagination={{ type: "bullets", clickable: true }}
-      modules={[Navigation, Pagination]}
-      className="h-full w-full rounded-xl relative"
-    >
-      <style>{`
+      <Swiper
+        navigation={images.length > 0}
+        pagination={{ type: "bullets", clickable: true }}
+        modules={[Navigation, Pagination]}
+        className="h-full w-full rounded-xl relative"
+      >
+        <style>{`
         .custom-square-slider .swiper-button-prev, .swiper-button-next {
           color: black;
           background-color: white;
@@ -73,34 +73,34 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
           object-fit: cover;
         }
       `}</style>
-      {images.length > 0 ? (
-        images.map((image) => (
-          <SwiperSlide key={image.key}>
+        {images.length > 0 ? (
+          images.map((image) => (
+            <SwiperSlide key={image.key}>
+              <div className="image-wrapper">
+                <Image
+                  src={`/assets/${image.key}`}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  alt={image.alt}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </SwiperSlide>
+          ))
+        ) : (
+          <SwiperSlide key="error">
             <div className="image-wrapper">
               <Image
-                src={`/assets/${image.key}`}
+                src={IMAGE_FALLBACK}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                alt={image.alt}
+                alt={"error"}
                 fill
                 className="object-cover"
               />
             </div>
           </SwiperSlide>
-        ))
-      ) : (
-        <SwiperSlide key="error">
-          <div className="image-wrapper">
-            <Image
-              src={IMAGE_FALLBACK}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-              alt={"error"}
-              fill
-              className="object-cover"
-            />
-          </div>
-        </SwiperSlide>
-      )}
-    </Swiper>
+        )}
+      </Swiper>
     </div>
   )
 }

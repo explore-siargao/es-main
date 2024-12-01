@@ -79,7 +79,7 @@ const SliderItemProperty = ({
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-           <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
+          <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
           {properties.map((card) => (
             <SwiperSlide key={card.title}>
               <PropertyCard {...card} />

@@ -79,7 +79,7 @@ const ActivitiesSlider = ({
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-           <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
+          <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
           {activities.map((card) => (
             <SwiperSlide key={card.title}>
               <ActivityCard {...card} />

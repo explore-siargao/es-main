@@ -387,4 +387,4 @@ export const HOME_SLIDER_CUSTOM_STYLE = `
   .slider-item .swiper-button-next:not(.swiper-button-disabled) {
     opacity: 1;
   }
-`;
+`

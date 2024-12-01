@@ -15,13 +15,13 @@ interface SliderProps {
 const Slider = ({ images }: SliderProps) => {
   return (
     <div className="common-slider">
-    <Swiper
-      navigation
-      pagination={{ type: "bullets", clickable: true }}
-      modules={[Navigation, Pagination]}
-      className="h-full w-full rounded-xl"
-    >
-      <style>{`
+      <Swiper
+        navigation
+        pagination={{ type: "bullets", clickable: true }}
+        modules={[Navigation, Pagination]}
+        className="h-full w-full rounded-xl"
+      >
+        <style>{`
         .common-slider .swiper-button-prev, .swiper-button-next {
           color: black;
           background-color: white;
@@ -52,20 +52,20 @@ const Slider = ({ images }: SliderProps) => {
         }
       `}</style>
 
-      {images.map((image) => (
-        <SwiperSlide key={image.fileKey}>
-          <div className="flex h-full w-full items-center justify-center">
-            <Image
-              width={300}
-              height={300}
-              src={`/assets/${image.fileKey}`}
-              alt={image.alt}
-              className="block h-full w-full object-cover"
-            />
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+        {images.map((image) => (
+          <SwiperSlide key={image.fileKey}>
+            <div className="flex h-full w-full items-center justify-center">
+              <Image
+                width={300}
+                height={300}
+                src={`/assets/${image.fileKey}`}
+                alt={image.alt}
+                className="block h-full w-full object-cover"
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   )
 }
