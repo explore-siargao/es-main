@@ -13,27 +13,22 @@ type SliderProps = {
   isLastItemFull?: boolean
 }
 
-const SliderItemProperty = ({
-  itemsNumber,
-  isLastItemFull,
-}: SliderProps) => {
-  const location = "any";
-  const propertyTypes = "any";
-  const priceFrom = "any";
-  const priceTo = "any";
-  const bedroomCount = "any";
-  const bedCount = "any";
-  const bathroomCount = "any";
-  const facilities = "any";
-  const amenities = "any";
-  const starRating = "any";
-  const checkIn = "any";
-  const checkOut = "any";
-  const numberOfGuest = "any";
+const SliderItemProperty = ({ itemsNumber, isLastItemFull }: SliderProps) => {
+  const location = "any"
+  const propertyTypes = "any"
+  const priceFrom = "any"
+  const priceTo = "any"
+  const bedroomCount = "any"
+  const bedCount = "any"
+  const bathroomCount = "any"
+  const facilities = "any"
+  const amenities = "any"
+  const starRating = "any"
+  const checkIn = "any"
+  const checkOut = "any"
+  const numberOfGuest = "any"
   // This need to be change with server fetch request
-  const {
-    data: propertyUnits,
-  } = useGetListings({
+  const { data: propertyUnits } = useGetListings({
     page: 1,
     location: location as E_Location,
     propertyTypes,
@@ -88,7 +83,7 @@ const SliderItemProperty = ({
     },
     1536: { slidesPerView: isLastItemFull ? itemsNumber : itemsNumber - 0.5 },
   }
-  const propertiesData = propertyUnits?.items || []  
+  const propertiesData = propertyUnits?.items || []
   return (
     <div className="slider-item mb-5">
       <div className="mb-8">

@@ -13,22 +13,17 @@ type SliderProps = {
   isLastItemFull?: boolean
 }
 
-const ActivitiesSlider = ({
-  itemsNumber,
-  isLastItemFull,
-}: SliderProps) => {
-  const location = "any";
-  const experienceTypes = "any";
-  const activityTypes = "any";
-  const durations = "any";
-  const priceFrom = "any";
-  const priceTo = "any";
-  const starRating = "any";
-  const activityDate = "any";
-  const numberOfGuest = "any";
-  const {
-    data: activityUnits,
-  } = useGetActivityListings({
+const ActivitiesSlider = ({ itemsNumber, isLastItemFull }: SliderProps) => {
+  const location = "any"
+  const experienceTypes = "any"
+  const activityTypes = "any"
+  const durations = "any"
+  const priceFrom = "any"
+  const priceTo = "any"
+  const starRating = "any"
+  const activityDate = "any"
+  const numberOfGuest = "any"
+  const { data: activityUnits } = useGetActivityListings({
     page: 1,
     location: location as E_Location,
     activityTypes,

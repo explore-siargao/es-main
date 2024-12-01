@@ -13,23 +13,18 @@ type SliderProps = {
   isLastItemFull?: boolean
 }
 
-const RentalsSlider = ({
-  itemsNumber,
-  isLastItemFull,
-}: SliderProps) => {
-  const location = "any";
-  const vehicleTypes = "any";
-  const transmissionTypes = "any";
-  const seatCount = "any";
-  const priceFrom = "any";
-  const priceTo = "any";
-  const starRating = "any";
-  const pickUpDate = "any";
-  const dropOffDate = "any";
+const RentalsSlider = ({ itemsNumber, isLastItemFull }: SliderProps) => {
+  const location = "any"
+  const vehicleTypes = "any"
+  const transmissionTypes = "any"
+  const seatCount = "any"
+  const priceFrom = "any"
+  const priceTo = "any"
+  const starRating = "any"
+  const pickUpDate = "any"
+  const dropOffDate = "any"
 
-  const {
-    data: rentalUnits,
-  } = useGetRentalListings({
+  const { data: rentalUnits } = useGetRentalListings({
     page: 1,
     location: location as E_Location,
     vehicleTypes,

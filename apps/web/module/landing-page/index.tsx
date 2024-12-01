@@ -46,16 +46,10 @@ const LandingPage = () => {
           />
         </div>
         <div className="sm:mt-14">
-          <SliderItemProperty
-            itemsNumber={4}
-            isLastItemFull
-          />
+          <SliderItemProperty itemsNumber={4} isLastItemFull />
         </div>
         <div className="sm:mt-14">
-          <ActivitiesSlider
-            itemsNumber={4}
-            isLastItemFull
-          />
+          <ActivitiesSlider itemsNumber={4} isLastItemFull />
         </div>
         <div className="sm:mt-14">
           <RentalsSlider itemsNumber={4} isLastItemFull />
