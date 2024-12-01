@@ -1,4 +1,4 @@
-import { T_Policy } from "@repo/contract-2/property";
+import { T_Policy } from "@repo/contract-2/property"
 
 export const policiesItem: T_Policy[] = [
   {

@@ -1089,7 +1089,7 @@ const seedActivities = async () => {
     })
 
     privateActivities.forEach(async (activity) => {
-      const photosKey = getRandomPhotoKeys(ACTIVITY_PHOTO_KEYS, 5);
+      const photosKey = getRandomPhotoKeys(ACTIVITY_PHOTO_KEYS, 5)
       const photos = await dbPhotos.insertMany([
         {
           isMain: true,

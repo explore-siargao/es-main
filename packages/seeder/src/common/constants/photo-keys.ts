@@ -25,7 +25,7 @@ export const PROPERTY_PHOTO_KEYS = [
   "2e9e2b60-e8d3-4cfb-8458-ac84e0970871",
   "2eee83bf-b594-48ec-97ca-4d1e44fab86a",
   "2ffe5bb9-2250-406d-b881-c71dd13f109b",
-];
+]
 
 export const RENTAL_PHOTO_KEYS_MOTOR = [
   "dd908c6e-0d56-4945-b2f3-37bfd36a1793",
@@ -38,7 +38,7 @@ export const RENTAL_PHOTO_KEYS_MOTOR = [
   "2a820a6a-9baf-4b7c-884a-217f86e7e657",
   "24e7462f-891f-4972-bea4-0219a75e99b7",
   "8c01135a-57fa-419a-be22-c7fe78701070",
-];
+]
 
 export const RENTAL_PHOTO_KEYS_CAR = [
   "e61431ee-0a92-4cf2-b9ef-be17754b9461",
@@ -53,7 +53,7 @@ export const RENTAL_PHOTO_KEYS_CAR = [
   "35725ac6-515d-4bc5-a65e-72ed214a0a38",
   "41c81369-0947-4b8a-adad-1d389a9d325f",
   "3a742442-0093-4c32-94b7-396d537ab29d",
-];
+]
 
 export const RENTAL_PHOTO_KEYS_BIKE = [
   "5863beb3-ec49-497e-bc31-1dd778dba36c",
@@ -63,7 +63,7 @@ export const RENTAL_PHOTO_KEYS_BIKE = [
   "4a2bdfb7-c949-4957-962b-397588cb62cc",
   "74db30d2-95f3-49f8-97b0-642dd2cc3ad5",
   "ee09a285-c130-4f76-a220-e9de9baa86e6",
-];
+]
 
 export const ACTIVITY_PHOTO_KEYS = [
   "e53f897b-5de8-4b4a-8f30-b4538bb82d1f",
@@ -81,8 +81,4 @@ export const ACTIVITY_PHOTO_KEYS = [
   "c354a9dd-4eb9-46ed-98f4-a0dea8624548",
   "6b485309-09fc-4ca1-b3e9-dcf008c55b8a",
   "d15c15f8-4d1c-4bad-bffb-8a14065cfa87",
-];
-
-
-
-
+]

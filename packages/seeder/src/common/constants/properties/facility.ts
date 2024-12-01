@@ -1,4 +1,4 @@
-import { T_Facility } from "@repo/contract-2/property";
+import { T_Facility } from "@repo/contract-2/property"
 
 const MOST_POPULAR = "Most Popular"
 const OUTDOORS = "Outdoors"

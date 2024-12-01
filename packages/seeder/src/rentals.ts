@@ -19,7 +19,11 @@ import {
 } from "@repo/database"
 import mongoose from "mongoose"
 import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
-import { RENTAL_PHOTO_KEYS_BIKE, RENTAL_PHOTO_KEYS_CAR, RENTAL_PHOTO_KEYS_MOTOR } from "./common/constants/photo-keys"
+import {
+  RENTAL_PHOTO_KEYS_BIKE,
+  RENTAL_PHOTO_KEYS_CAR,
+  RENTAL_PHOTO_KEYS_MOTOR,
+} from "./common/constants/photo-keys"
 
 const locations: T_Location[] = [
   {
@@ -1154,7 +1158,7 @@ const seedRentals = async () => {
         [E_Rental_Category.Car]: RENTAL_PHOTO_KEYS_CAR,
         [E_Rental_Category.Bicycle]: RENTAL_PHOTO_KEYS_BIKE,
       }
-      const photosKey = getRandomPhotoKeys(keysMap[rental.category], 5);
+      const photosKey = getRandomPhotoKeys(keysMap[rental.category], 5)
       const photos = await dbPhotos.insertMany([
         {
           isMain: true,

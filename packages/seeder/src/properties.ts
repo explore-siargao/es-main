@@ -1445,7 +1445,7 @@ const seedProperties = async () => {
       })
     })
     bookableUnitsType.forEach(async (unit) => {
-      const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5);
+      const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5)
       const photos = await dbPhotos.insertMany([
         {
           isMain: true,
@@ -1541,7 +1541,9 @@ const seedProperties = async () => {
     await dbProperties.insertMany(newProperties)
     const getProperties = await dbProperties.find({})
     getProperties.forEach(async (item) => {
-      const facilities = facilitiesItem.filter((facility) => facility.isSelected)
+      const facilities = facilitiesItem.filter(
+        (facility) => facility.isSelected
+      )
       facilities.forEach(async (facility) => {
         await dbProperties.updateOne(
           { _id: item._id },
@@ -1552,7 +1554,7 @@ const seedProperties = async () => {
       })
     })
     getProperties.forEach(async (property) => {
-      const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5);
+      const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5)
       const photos = await dbPhotos.insertMany([
         {
           isMain: true,
