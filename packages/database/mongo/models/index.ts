@@ -16,15 +16,12 @@ import dbRentalAddOns from "./dbRentalAddOns"
 import dbPhotos from "./dbPhotos"
 import dbActivities from "./dbActivities"
 import dbProperties from "./dbProperties"
-import dbFacilities from "./dbFacilities"
 import dbBookableUnits from "./dbBookableUnits"
 import dbBookableUnitTypes from "./dbBookableUnitTypes"
-import dbAmenities from "./dbAmenities"
 import dbUnitPrices from "./dbUnitPrices"
 import dbBedConfigs from "./dbBedConfigs"
 import dbReservations from "./dbReservations"
 import dbLocations from "./dbLocations"
-import dbPolicies from "./dbPolicies"
 import dbReviews from "./dbReviews"
 import dbCarts from "./dbCarts"
 
@@ -47,15 +44,12 @@ export {
   dbPhotos,
   dbActivities,
   dbProperties,
-  dbFacilities,
   dbBookableUnits,
   dbBookableUnitTypes,
-  dbAmenities,
   dbUnitPrices,
   dbBedConfigs,
   dbReservations,
   dbLocations,
-  dbPolicies,
   dbReviews,
   dbCarts,
 }
