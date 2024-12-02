@@ -60,10 +60,10 @@ function WithSearch({
         >
           <Link
             href={LINK_HOME}
-            className="-m-1.5 gap-2 flex lg:flex-1 items-center"
+            className="gap-2 items-center min-w-64"
           >
             <Image
-              className="h-12 w-auto"
+              className="h-12 w-fit"
               src={Logo}
               width={500}
               height={700}
@@ -71,7 +71,7 @@ function WithSearch({
             />
           </Link>
           <SearchBarByState isNavCenter={true} />
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end space-x-3 items-center relative">
+          <div className="hidden lg:flex lg:justify-end space-x-3 items-center relative min-w-64">
             <div className="flex gap-2 rounded-full items-center px-2 py-1">
               <GuidesMenu />
               <div>
