@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.34.0](https://github.com/explore-siargao/es-main/compare/v0.33.0...v0.34.0) (2024-12-02)
+
+### 🚀 Features
+
+- **api:** Added endpoint for payment using card ([e336ee4](https://github.com/explore-siargao/es-main/commit/e336ee42b93600bd6443977b193ee2b87b4547ce))
+- **api:** Moved the seeder from test to es-main ([928ef04](https://github.com/explore-siargao/es-main/commit/928ef040900532dd6c4b52aa3f822438ed878c17), [1555d73](https://github.com/explore-siargao/es-main/commit/1555d73bc7fb072b8c7b3dd8eeb17b3ec649d3c5), [12ae929](https://github.com/explore-siargao/es-main/commit/12ae929766c393af2eb4a63b9e9c75ac4fd7ac19))
+- **cart:** Implemented cart feature for adding and managing bookable items across sessions ([47cc296](https://github.com/explore-siargao/es-main/commit/47cc296ac26c59317513c9d3a63194fdd7779dce), [91bc2a1](https://github.com/explore-siargao/es-main/commit/91bc2a1beffecb5b6b1de21d2fb0007241dd2d42), [418c3d8](https://github.com/explore-siargao/es-main/commit/418c3d8805357c661eb0861a32c6f4498471288d), [9eda292](https://github.com/explore-siargao/es-main/commit/9eda2921a1a7d3da2acf7afe5afdf66632d7928e))
+- **api:** Move dummy data to actual data for activity, rental, and property lists in the home page ([e2b4000](https://github.com/explore-siargao/es-main/commit/e2b40007cbc89a51231f0500f471bda2492bdc09))
+- **web:** Cleanup ([c2e3229](https://github.com/explore-siargao/es-main/commit/c2e322985fa80f835226148dec67dd3abf0ca654))
+
+### 🛠 Bug Fixes
+
+- **api:** Fixed bug on activities filter endpoint ([b23616b](https://github.com/explore-siargao/es-main/commit/b23616b3d8d4245b6c3bc081dea580c3a5145996))
+- Removed filters from non-search pages ([0c346e6](https://github.com/explore-siargao/es-main/commit/0c346e6e3f5675545af0f0be31093d5596d229b9))
+
+### 🧰 Maintenance
+
+- Cleanup `isUserLoggedIn` middleware for search filters endpoints ([e994250](https://github.com/explore-siargao/es-main/commit/e9942506c011353077d9bc2b2b52b187c662f05d))
+- Disabled public endpoint of listing to show all status for all categories ([8090225](https://github.com/explore-siargao/es-main/commit/8090225902e2e7229f7e261a0a60805a073e0039))
+- Fixed type build errors ([2e11276](https://github.com/explore-siargao/es-main/commit/2e112764859ed218b232df7fdfdcdfd535259a59))
+- Migrated landing page folder structures and files ([8f0f7ce](https://github.com/explore-siargao/es-main/commit/8f0f7cee35b43c011f5fd362694f1a9050c27518))
+- Removed guest default for activity search ([3c3e2ec](https://github.com/explore-siargao/es-main/commit/3c3e2ec369b5a10c98db03669aaa00f73516e9df))
+- Removed static project images and corresponding components and pages ([dd2ee2a](https://github.com/explore-siargao/es-main/commit/dd2ee2ae9c031467c3c7bdbc2babeee3cd84cc7d))
+- Updated explore island items in the homepage ([8a91b47](https://github.com/explore-siargao/es-main/commit/8a91b474fd6e5cabd19bf45da274119c0c59c69b))
+- Updated home page cards images and links ([e00a6ef](https://github.com/explore-siargao/es-main/commit/e00a6ef93e8241d74746efcbfadb9b1013e1d3e0))
+
 ## [0.33.0](https://github.com/explore-siargao/es-main/compare/v0.32.0...v0.33.0) (2024-11-20)
 
 ### 🚀 Features
