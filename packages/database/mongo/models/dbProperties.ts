@@ -15,7 +15,7 @@ const facilities = new Schema({
   index: Number,
   category: String,
   facility: String,
-  isSelected:Boolean
+  isSelected: Boolean,
 })
 
 const policies = new Schema({
@@ -23,7 +23,7 @@ const policies = new Schema({
   category: String,
   reason: String,
   policy: String,
-  isSelected: Boolean
+  isSelected: Boolean,
 })
 
 const properties = new Schema({
@@ -82,12 +82,12 @@ const properties = new Schema({
     default: null,
   },
   facilities: {
-    type:[facilities],
-    default:[]
+    type: [facilities],
+    default: [],
   },
   policies: {
-      type:[policies],
-      default:[],
+    type: [policies],
+    default: [],
   },
   bookableUnits: [
     {

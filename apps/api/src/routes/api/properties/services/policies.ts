@@ -53,17 +53,28 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
         })
       )
     } else {
-     try {
-      const truePolicies = policies.filter((policy)=>policy.isSelected===true)
-      const newPolicies = await dbProperties.findByIdAndUpdate(propertyId,{
-        $set:{
-          policies:truePolicies
-        }
-      })
-      res.json(response.success({item:newPolicies, message:"Property policies successfullu updated"}))
-     } catch (err:any) {
-      res.json(response.error({message: err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
-     }
+      try {
+        const truePolicies = policies.filter(
+          (policy) => policy.isSelected === true
+        )
+        const newPolicies = await dbProperties.findByIdAndUpdate(propertyId, {
+          $set: {
+            policies: truePolicies,
+          },
+        })
+        res.json(
+          response.success({
+            item: newPolicies,
+            message: 'Property policies successfullu updated',
+          })
+        )
+      } catch (err: any) {
+        res.json(
+          response.error({
+            message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+          })
+        )
+      }
     }
   }
 }

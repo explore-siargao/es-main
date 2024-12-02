@@ -1433,19 +1433,19 @@ const seedProperties = async () => {
         },
       })
 
-        await dbBookableUnitTypes.updateOne(
-          { _id: unit._id },
-          {
-            $push: {
-              amenities: {
-                index: 0,
-                category: "Most Popular",
-                amenity: "Bar",
-                isSelected: true,
-              },
+      await dbBookableUnitTypes.updateOne(
+        { _id: unit._id },
+        {
+          $push: {
+            amenities: {
+              index: 0,
+              category: "Most Popular",
+              amenity: "Bar",
+              isSelected: true,
             },
-          }
-        )
+          },
+        }
+      )
     })
     bookableUnitsType.forEach(async (unit) => {
       const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5)
@@ -1544,19 +1544,19 @@ const seedProperties = async () => {
     await dbProperties.insertMany(newProperties)
     const getProperties = await dbProperties.find({})
     getProperties.forEach(async (item) => {
-        await dbProperties.updateOne(
-          { _id: item._id },
-          {
-            $push: {
-              facilities: {
-                index: 0,
-                category: "Most Popular",
-                facility: "Bar",
-                isSelected: true,
-              },
+      await dbProperties.updateOne(
+        { _id: item._id },
+        {
+          $push: {
+            facilities: {
+              index: 0,
+              category: "Most Popular",
+              facility: "Bar",
+              isSelected: true,
             },
-          }
-        )
+          },
+        }
+      )
     })
     getProperties.forEach(async (property) => {
       const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5)
@@ -1633,20 +1633,20 @@ const seedProperties = async () => {
     })
 
     getProperties.forEach(async (property) => {
-        await dbProperties.updateOne(
-          { _id: property._id },
-          {
-            $push: {
-              policies: {
-                index: 0,
-                category: "Things To Know",
-                reason: null,
-                policy: "No pets allowed",
-                isSelected: true,
-              },
+      await dbProperties.updateOne(
+        { _id: property._id },
+        {
+          $push: {
+            policies: {
+              index: 0,
+              category: "Things To Know",
+              reason: null,
+              policy: "No pets allowed",
+              isSelected: true,
             },
-          }
-        )
+          },
+        }
+      )
     })
     console.log("Properties seeded successfully!")
   } catch (error) {

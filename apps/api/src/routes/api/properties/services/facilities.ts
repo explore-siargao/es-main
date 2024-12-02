@@ -1,7 +1,7 @@
 import { REQUIRED_VALUE_EMPTY } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { T_Property_Facility } from '@repo/contract'
-import {  dbProperties } from '@repo/database'
+import { dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -44,13 +44,20 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
         })
       )
     } else {
-        const trueFacilities = facilities.filter((facility)=> facility.isSelected === true)
-        const newFacilities = await dbProperties.findByIdAndUpdate(propertyId,{
-          $set:{
-            facilities:trueFacilities
-          }
+      const trueFacilities = facilities.filter(
+        (facility) => facility.isSelected === true
+      )
+      const newFacilities = await dbProperties.findByIdAndUpdate(propertyId, {
+        $set: {
+          facilities: trueFacilities,
+        },
+      })
+      res.json(
+        response.success({
+          item: newFacilities,
+          message: 'Property Facilities successfully updated',
         })
-        res.json(response.success({item:newFacilities, message:"Property Facilities successfully updated"}))
+      )
     }
   }
 }

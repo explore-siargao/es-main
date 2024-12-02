@@ -44,17 +44,31 @@ export const updateBookableUnitTypeAmenities = async (
           response.error({ message: REQUIRED_VALUE_EMPTY + ' or invalid data' })
         )
       } else {
-      try {
-        const trueAmenities = amenities.filter((amenity)=>amenity.isSelected===true)
-        const newAmenities = await dbBookableUnitTypes.findByIdAndUpdate(bookableUnitTypeId,{
-          $set:{
-            amenities:trueAmenities
-          }
-        })
-        res.json(response.success({item:newAmenities, message:"Amenities successfully updated"}))
-      } catch (err:any) {
-        res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
-      }
+        try {
+          const trueAmenities = amenities.filter(
+            (amenity) => amenity.isSelected === true
+          )
+          const newAmenities = await dbBookableUnitTypes.findByIdAndUpdate(
+            bookableUnitTypeId,
+            {
+              $set: {
+                amenities: trueAmenities,
+              },
+            }
+          )
+          res.json(
+            response.success({
+              item: newAmenities,
+              message: 'Amenities successfully updated',
+            })
+          )
+        } catch (err: any) {
+          res.json(
+            response.error({
+              message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+            })
+          )
+        }
       }
     }
   }
