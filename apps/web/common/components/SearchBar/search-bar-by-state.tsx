@@ -96,7 +96,7 @@ const SearchBarByState = ({
   }
 
   return (
-    <div>
+    <div className="flex-1">
       <div
         className={cn(
           `space-x-8 flex mb-3`,
@@ -109,7 +109,7 @@ const SearchBarByState = ({
           isDark={isDark}
         />
       </div>
-      <div className="drop-shadow-lg w-[65rem]">
+      <div className="flex justify-center drop-shadow-lg">
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             {pathCategory !== LINK_SEARCH_ACTIVITIES &&
