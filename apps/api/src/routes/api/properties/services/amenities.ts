@@ -4,7 +4,7 @@ import {
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
 import { T_Property_Amenity } from '@repo/contract'
-import { dbAmenities, dbBookableUnitTypes, dbProperties } from '@repo/database'
+import { dbBookableUnitTypes, dbProperties } from '@repo/database'
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 
@@ -44,56 +44,17 @@ export const updateBookableUnitTypeAmenities = async (
           response.error({ message: REQUIRED_VALUE_EMPTY + ' or invalid data' })
         )
       } else {
-        const amenitiesWithOutId = amenities.filter((item) => !('_id' in item))
-        const amenitiesWithId = amenities.filter((item) => '_id' in item)
-        try {
-          for (const item of amenitiesWithOutId as T_Property_Amenity[]) {
-            const newAmenity = new dbAmenities({
-              index: item.index,
-              category: item.category,
-              amenity: item.amenity,
-              isSelected: item.isSelected,
-              createdAt: Date.now(),
-            })
-            await newAmenity.save()
-            await dbBookableUnitTypes.findByIdAndUpdate(
-              bookableUnitTypeId,
-              {
-                $push: {
-                  amenities: newAmenity._id,
-                },
-              },
-              { new: true }
-            )
+      try {
+        const trueAmenities = amenities.filter((amenity)=>amenity.isSelected===true)
+        const newAmenities = await dbBookableUnitTypes.findByIdAndUpdate(bookableUnitTypeId,{
+          $set:{
+            amenities:trueAmenities
           }
-          for (const item of amenitiesWithId) {
-            await dbAmenities.findByIdAndUpdate(
-              item._id,
-              {
-                $set: {
-                  index: item.index,
-                  category: item.category,
-                  amenity: item.amenity,
-                  isSelected: item.isSelected,
-                  updatedAt: Date.now(),
-                },
-              },
-              { new: true }
-            )
-          }
-          res.json(
-            response.success({
-              items: amenities,
-              message: 'Bookable unit amenities successfully updated',
-            })
-          )
-        } catch (err: any) {
-          res.json(
-            response.error({
-              message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-            })
-          )
-        }
+        })
+        res.json(response.success({item:newAmenities, message:"Amenities successfully updated"}))
+      } catch (err:any) {
+        res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+      }
       }
     }
   }

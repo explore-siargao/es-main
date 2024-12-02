@@ -14,8 +14,6 @@ import {
   dbUnitPrices,
   dbUsers,
 } from "@repo/database"
-import { amenitiesItem } from "./common/constants/properties/amenities"
-import { facilitiesItem } from "./common/constants/properties/facility"
 import { policiesItem } from "./common/constants/properties/policies"
 import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
 import { PROPERTY_PHOTO_KEYS } from "./common/constants/photo-keys"
@@ -1434,15 +1432,20 @@ const seedProperties = async () => {
           unitPrice: unitRates[i]?._id,
         },
       })
-      const amenities = amenitiesItem.filter((item) => item.isSelected)
-      amenities.forEach(async (amenity) => {
+
         await dbBookableUnitTypes.updateOne(
           { _id: unit._id },
           {
-            $push: { amenities: amenity._id },
+            $push: {
+              amenities: {
+                index: 0,
+                category: "Most Popular",
+                amenity: "Bar",
+                isSelected: true,
+              },
+            },
           }
         )
-      })
     })
     bookableUnitsType.forEach(async (unit) => {
       const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5)
@@ -1541,17 +1544,19 @@ const seedProperties = async () => {
     await dbProperties.insertMany(newProperties)
     const getProperties = await dbProperties.find({})
     getProperties.forEach(async (item) => {
-      const facilities = facilitiesItem.filter(
-        (facility) => facility.isSelected
-      )
-      facilities.forEach(async (facility) => {
         await dbProperties.updateOne(
           { _id: item._id },
           {
-            $push: { facilities: facility._id },
+            $push: {
+              facilities: {
+                index: 0,
+                category: "Most Popular",
+                facility: "Bar",
+                isSelected: true,
+              },
+            },
           }
         )
-      })
     })
     getProperties.forEach(async (property) => {
       const photosKey = getRandomPhotoKeys(PROPERTY_PHOTO_KEYS, 5)
@@ -1628,15 +1633,20 @@ const seedProperties = async () => {
     })
 
     getProperties.forEach(async (property) => {
-      const newPolicies = policiesItem.filter((policy) => policy.isSelected)
-      newPolicies.forEach(async (policy) => {
         await dbProperties.updateOne(
           { _id: property._id },
           {
-            $push: { policies: policy._id },
+            $push: {
+              policies: {
+                index: 0,
+                category: "Things To Know",
+                reason: null,
+                policy: "No pets allowed",
+                isSelected: true,
+              },
+            },
           }
         )
-      })
     })
     console.log("Properties seeded successfully!")
   } catch (error) {
