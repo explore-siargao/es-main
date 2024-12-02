@@ -580,13 +580,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                     if: { $eq: ['$experienceType', 'Private'] },
                     then: {
                       $and: [
-                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.monday.slots',[]] }}, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.tuesday.slots',[]] }}, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.wednesday.slots',[]] }}, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.thursday.slots',[]] }}, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.friday.slots',[]] }}, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.saturday.slots',[]] }}, 0] },
+                        { $ne: [{ $size:{'$ifNull':['$schedule.sunday.slots',[]] }}, 0] },
                       ],
                     },
                     else: {
@@ -595,45 +595,45 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                           $or: [
                             {
                               $ne: [
-                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                { $size: { '$ifNull':['$schedule.monday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                { $size: { '$ifNull':['$schedule.tuesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
                                 {
-                                  $size: '$schedule.wednesday.slots.slotIdsId',
+                                  $size: { '$ifNull':['$schedule.wednesday.slots.slotIdsId',[]]}
                                 },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                { $size: { '$ifNull':['$schedule.thursday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                { $size: { '$ifNull':['$schedule.friday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                { $size: { '$ifNull':['$schedule.saturday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                { $size: { '$ifNull':['$schedule.sunday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
@@ -659,7 +659,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         {
           $project: {
             allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
+            pageItemCount: { $size: {'$ifNull':['$paginatedResults',[]]} },
             results: '$paginatedResults',
           },
         },
@@ -1182,13 +1182,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                     if: { $eq: ['$experienceType', 'Private'] },
                     then: {
                       $and: [
-                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.monday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.tuesday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.wednesday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.thursday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.friday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.saturday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.sunday.slots',[]]} }, 0] },
                       ],
                     },
                     else: {
@@ -1197,45 +1197,43 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                           $or: [
                             {
                               $ne: [
-                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.monday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.tuesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                {
-                                  $size: '$schedule.wednesday.slots.slotIdsId',
-                                },
+                                { $size: {'$ifNull':['$schedule.wednesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.thursday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.friday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.saturday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.sunday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
@@ -1261,7 +1259,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         {
           $project: {
             allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
+            pageItemCount: { $size:{'$ifNull':['$paginatedResults',[]]} },
             results: '$paginatedResults',
           },
         },
@@ -1780,13 +1778,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                     if: { $eq: ['$experienceType', 'Private'] },
                     then: {
                       $and: [
-                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.monday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.tuesday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.wednesday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.thursday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.friday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.saturday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.sunday.slots',[]]} }, 0] },
                       ],
                     },
                     else: {
@@ -1795,45 +1793,43 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                           $or: [
                             {
                               $ne: [
-                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                { $size:{'$ifNull':['$schedule.monday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                { $size:{'$ifNull':['$schedule.tuesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                {
-                                  $size: '$schedule.wednesday.slots.slotIdsId',
-                                },
+                                { $size:{'$ifNull':['$schedule.wednesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                { $size:{'$ifNull':['$schedule.thursday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                { $size:{'$ifNull':['$schedule.friday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                { $size:{'$ifNull':['$schedule.saturday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                { $size:{'$ifNull':['$schedule.sunday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
@@ -1859,7 +1855,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         {
           $project: {
             allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
+            pageItemCount: { $size: {'$ifNull':['$paginatedResults',[]]} },
             results: '$paginatedResults',
           },
         },
@@ -2387,13 +2383,13 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                     if: { $eq: ['$experienceType', 'Private'] },
                     then: {
                       $and: [
-                        { $ne: [{ $size: '$schedule.monday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.tuesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.wednesday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.thursday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.friday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.saturday.slots' }, 0] },
-                        { $ne: [{ $size: '$schedule.sunday.slots' }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.monday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.tuesday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.wednesday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.thursday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.friday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.saturday.slots',[]]} }, 0] },
+                        { $ne: [{ $size: {'$ifNull':['$schedule.sunday.slots',[]]} }, 0] },
                       ],
                     },
                     else: {
@@ -2402,45 +2398,43 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                           $or: [
                             {
                               $ne: [
-                                { $size: '$schedule.monday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.monday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.tuesday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.tuesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                {
-                                  $size: '$schedule.wednesday.slots.slotIdsId',
-                                },
+                                { $size: {'$ifNull':['$schedule.wednesday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.thursday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.thursday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.friday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.friday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.saturday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.saturday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
                             {
                               $ne: [
-                                { $size: '$schedule.sunday.slots.slotIdsId' },
+                                { $size: {'$ifNull':['$schedule.sunday.slots.slotIdsId',[]]} },
                                 0,
                               ],
                             },
@@ -2466,7 +2460,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
         {
           $project: {
             allItemsCount: { $arrayElemAt: ['$totalCount.count', 0] },
-            pageItemCount: { $size: '$paginatedResults' },
+            pageItemCount: { $size: {'$IfNull':['$paginatedResults',[]]} },
             results: '$paginatedResults',
           },
         },
@@ -2562,7 +2556,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        message: err.message ? err.message+" "+err.stack : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
