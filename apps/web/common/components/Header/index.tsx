@@ -46,7 +46,7 @@ function Header({
     >
       <div className="min-w-full py-3 text-center bg-primary-50 sr-only md:not-sr-only">
         <Typography fontWeight={"light"} className="py-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Travel with purpose 🏖️ Support local communities 🫶
         </Typography>
       </div>
       <WidthWrapper width={contentWidth}>
