@@ -8,7 +8,6 @@ import { T_User } from '@repo/contract-2/user'
 const csrfEncryption = new EncryptionService('csrf')
 
 async function generateSession(req: Request, res: Response, user: T_User) {
-  console.log(user)
   const sessionKey = randomChar()
   const ip =
     req.headers['x-real-ip'] ||
@@ -33,7 +32,6 @@ async function generateSession(req: Request, res: Response, user: T_User) {
   const cookieOption = { httpOnly: true, secure: false, encode: String }
   res.cookie(SESSION, sessionKey, cookieOption)
   res.cookie(CSRF, csrf, cookieOption)
-  console.log(csrf)
 }
 
 export default generateSession

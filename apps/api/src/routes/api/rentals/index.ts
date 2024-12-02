@@ -11,7 +11,7 @@ import {
   getRentalByIdPublic,
 } from './services/default'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import { getRentalBasicInfo, updateRentalBasicInfo } from './services/basicInfo'
 import { updateRentalDetails } from './services/details'
 import { getRentalRates, updateRentalRate } from './services/rates'
@@ -46,13 +46,7 @@ import { rentalHighestPrice } from './services/highest-price'
 const router = express.Router()
 
 //filtered data
-router.get(
-  '/filtered',
-  isOriginValid,
-  isCsrfTokenValid,
-  paginate(15),
-  getFilteredRentals
-)
+router.get('/filtered', isOriginValid, paginate(15), getFilteredRentals)
 
 //highest price
 router.get(

@@ -1,47 +1,55 @@
 "use client"
+
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import CartList from "./components/CartList"
 import SubTotalBox from "./components/SubTotalBox"
-
-const items = [
-  {
-    id: 1,
-    imageKey: "1.jpg",
-    title: "Ocean Park Hong Kong Ticket",
-    address: "Hong Kong",
-    dateFrom: "2024-03-20",
-    dateTo: "2024-03-25",
-  },
-  {
-    id: 2,
-    imageKey: "4.jpg",
-    title:
-      "The Fullertan Ocean Park Hotel Hong Kong Buffet | Ligthouse Cafe | Lunch buffet, dinner buffet",
-    address: "Hong kong",
-    dateFrom: "2024-04-10",
-    dateTo: "2024-04-15",
-  },
-]
+import useGetCartItems from "@/common/hooks/use-get-cart-items"
+import { Spinner } from "@/common/components/ui/Spinner"
+import Loading from "@/app/(accommodation)/loading"
+import { useRouter } from "next/navigation"
+import { useCartStore } from "./stores/cart-stores"
 
 const Cart = () => {
+  const { data, isLoading } = useGetCartItems()
+  const { selectedItems, setSelectedItems } = useCartStore()
+  const router = useRouter()
+
+  const handleCheckout = () => {
+    if (selectedItems.length === 0) {
+      alert("Please select items before proceeding to checkout.")
+      return
+    }
+    router.push("/cart-summary")
+  }
+
   return (
     <WidthWrapper
       width="medium"
-      className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8 mt-28 md:mt-36"
+      className="grid grid-cols-1 lg:grid-cols-4 gap-12 mt-6 md:mt-8 lg:mt-16"
     >
       <div className="lg:col-span-3">
-        <CartList items={items} />
+        {isLoading ? (
+          <Loading />
+        ) : data && data?.items.length > 0 ? (
+          <CartList
+            setSelectedItems={setSelectedItems}
+            selectedItems={selectedItems}
+            items={data?.items}
+          />
+        ) : (
+          <div className="col-span-3 w-full">
+            <h2 className="text-lg mx-auto text-text-300 italic">
+              There are no items in your cart
+            </h2>
+          </div>
+        )}
       </div>
 
-      <div className="col-span-1 relative ">
+      <div className="col-span-1 relative">
         <SubTotalBox
-          subTotal={{
-            serviceFee: 1000,
-            durationCost: 125000,
-            descTotalBeforeTaxes: 3000,
-            totalBeforeTaxes: 126000,
-            titlePrice: 25000,
-          }}
+          selectedItemsPrice={selectedItems.map((item) => item.price)}
+          buttonText="Checkout"
+          onButtonClick={handleCheckout}
         />
       </div>
     </WidthWrapper>

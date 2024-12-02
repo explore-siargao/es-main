@@ -7,7 +7,6 @@ import {
   T_Rental_AddOns,
   T_Rental_Details,
   T_Rental_Price,
-  Z_Rental,
 } from "@repo/contract-2/rentals"
 import {
   dbLocations,
@@ -19,6 +18,12 @@ import {
   dbUsers,
 } from "@repo/database"
 import mongoose from "mongoose"
+import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
+import {
+  RENTAL_PHOTO_KEYS_BIKE,
+  RENTAL_PHOTO_KEYS_CAR,
+  RENTAL_PHOTO_KEYS_MOTOR,
+} from "./common/constants/photo-keys"
 
 const locations: T_Location[] = [
   {
@@ -1148,6 +1153,12 @@ const seedRentals = async () => {
           location: locationData[i]?._id,
         },
       })
+      const keysMap = {
+        [E_Rental_Category.Motorbike]: RENTAL_PHOTO_KEYS_MOTOR,
+        [E_Rental_Category.Car]: RENTAL_PHOTO_KEYS_CAR,
+        [E_Rental_Category.Bicycle]: RENTAL_PHOTO_KEYS_BIKE,
+      }
+      const photosKey = getRandomPhotoKeys(keysMap[rental.category], 5)
       const photos = await dbPhotos.insertMany([
         {
           isMain: true,
@@ -1156,9 +1167,8 @@ const seedRentals = async () => {
           propertyId: null,
           rentalId: rental._id,
           createdAt: String(Date.now()),
-          key: rental.make + " " + rental.year + "-1" || rental.make + "-1",
-          thumbKey:
-            rental.make + " " + rental.year + "-1" || rental.make + "-1",
+          key: photosKey[0],
+          thumbKey: "",
           tags: "photo",
           description:
             (rental.make + " " + rental.year + "-1" || rental.make + "-1") +
@@ -1171,9 +1181,8 @@ const seedRentals = async () => {
           propertyId: null,
           rentalId: rental._id,
           createdAt: String(Date.now()),
-          key: rental.make + " " + rental.year + "-2" || rental.make + "-2",
-          thumbKey:
-            rental.make + " " + rental.year + "-2" || rental.make + "-2",
+          key: photosKey[1],
+          thumbKey: "",
           tags: "photo",
           description:
             (rental.make + " " + rental.year + "-2" || rental.make + "-2") +
@@ -1186,9 +1195,8 @@ const seedRentals = async () => {
           propertyId: null,
           rentalId: rental._id,
           createdAt: String(Date.now()),
-          key: rental.make + " " + rental.year + "-3" || rental.make + "-3",
-          thumbKey:
-            rental.make + " " + rental.year + "-3" || rental.make + "-3",
+          key: photosKey[2],
+          thumbKey: "",
           tags: "photo",
           description:
             (rental.make + " " + rental.year + "-3" || rental.make + "-3") +
@@ -1201,9 +1209,8 @@ const seedRentals = async () => {
           propertyId: null,
           rentalId: rental._id,
           createdAt: String(Date.now()),
-          key: rental.make + " " + rental.year + "-4" || rental.make + "-4",
-          thumbKey:
-            rental.make + " " + rental.year + "-4" || rental.make + "-4",
+          key: photosKey[3],
+          thumbKey: "",
           tags: "photo",
           description:
             (rental.make + " " + rental.year + "-4" || rental.make + "-4") +
@@ -1216,9 +1223,8 @@ const seedRentals = async () => {
           propertyId: null,
           rentalId: rental._id,
           createdAt: String(Date.now()),
-          key: rental.make + " " + rental.year + "-5" || rental.make + "-5",
-          thumbKey:
-            rental.make + " " + rental.year + "-5" || rental.make + "-5",
+          key: photosKey[4],
+          thumbKey: "",
           tags: "photo",
           description:
             (rental.make + " " + rental.year + "-5" || rental.make + "-5") +

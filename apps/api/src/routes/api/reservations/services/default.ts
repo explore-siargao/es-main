@@ -7,7 +7,7 @@ import {
   T_Add_Reservation,
   Z_Add_Reservations,
 } from '@repo/contract-2/reservations'
-import { dbReservations } from '@repo/database'
+import { dbCarts, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
 const response = new ResponseService()
@@ -577,8 +577,13 @@ export const updateReservationStatusByReferenceId = async (
 ) => {
   try {
     const referenceId = req.params.referenceId
+    const getReservations = await dbReservations.find({
+      xendItPaymentReferenceId: referenceId,
+      status: 'For-Payment',
+    })
+    const cartIds = getReservations.flatMap((item) => item.cartId)
     const confirmedStatus = await dbReservations.updateMany(
-      { xendItPaymentReferenceId: referenceId },
+      { xendItPaymentReferenceId: referenceId, status: 'For-Payment' },
       {
         $set: { status: 'Confirmed' },
         updatedAt: Date.now(),
@@ -587,6 +592,11 @@ export const updateReservationStatusByReferenceId = async (
     if (!confirmedStatus) {
       res.json(response.error({ message: 'Wrong reference ID' }))
     } else {
+      await dbCarts.updateMany(
+        { _id: { $in: cartIds } },
+        { $set: { status: 'Completed' } }
+      )
+
       res.json(
         response.success({ message: 'Reservation status updated successfully' })
       )

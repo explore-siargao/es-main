@@ -21,6 +21,10 @@ const LoggedInUserDropdown = () => {
       group: "My bookings and Wishlist",
       items: [
         {
+          name: "Cart",
+          href: "/cart",
+        },
+        {
           name: "My bookings",
           href: "/bookings",
         },

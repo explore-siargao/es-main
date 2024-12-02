@@ -16,7 +16,7 @@ const HostReviews = ({ name, reviewsCount, reviews }: HostReviewsProps) => {
   const [openReviewsModal, setOpenReviewsModal] = useState(false)
 
   return (
-    <div>
+    <div className="profile-slider">
       <Swiper
         modules={[Navigation, Pagination, A11y]}
         spaceBetween={20}
@@ -29,10 +29,10 @@ const HostReviews = ({ name, reviewsCount, reviews }: HostReviewsProps) => {
       >
         <style>
           {`
-        .swiper-wrapper {
-          width: 100px;
-        }
-        `}
+            .profile-slider .swiper-wrapper {
+              width: 100px;
+            }
+          `}
         </style>
         <div className="flex justify-between items-center absolute top-0 w-full z-10">
           <Typography variant="h2" fontWeight="semibold" className="text-2xl">

@@ -20,34 +20,38 @@ const numberOrString = z.union([z.number(), z.string()])
 export const Z_AddCart = z
   .object({
     id: z.string().optional(),
-    userId: z.string().optional(),
+    _id: z.string().optional(),
+    userId: Z_Host.optional(),
     propertyIds: z
       .object({
-        propertyId: z.string(),
-        unitId: z.string(),
+        propertyId: z.string().optional(),
+        unitId: z.string().optional(),
       })
-      .optional(),
+      .optional()
+      .nullable(),
     rentalIds: z
       .object({
-        rentalId: z.string(),
-        qtyIdsId: z.string(),
+        rentalId: z.string().optional(),
+        qtyIdsId: z.string().optional(),
       })
-      .optional(),
+      .optional()
+      .nullable(),
     activityIds: z
       .object({
-        activityId: z.string(),
-        dayId: z.string(),
-        timeSlotId: z.string(),
+        activityId: z.string().optional(),
+        dayId: z.string().optional(),
+        timeSlotId: z.string().optional(),
         slotIdsId: z.string().optional(),
       })
-      .optional(),
+      .optional()
+      .nullable(),
     guestCount: z.number(),
     price: z.number(),
     startDate: z.string(),
     endDate: z.string(),
-    createdAt: z.date().optional(),
-    updatedAt: z.date().nullable().optional(),
-    deletedAt: z.date().nullable().optional(),
+    createdAt: z.string().nullable().optional(),
+    updatedAt: z.string().nullable().optional(),
+    deletedAt: z.string().nullable().optional(),
   })
   .refine((data) => data.propertyIds || data.rentalIds || data.activityIds, {
     message:

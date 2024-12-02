@@ -28,10 +28,10 @@ const MapCustomPopup = ({
   onClose,
 }: Prop) => {
   return (
-    <>
+    <div className="map-custom-popup">
       <style>
         {`
-          .request-popup .leaflet-popup-content-wrapper {
+          .map-custom-popup .request-popup .leaflet-popup-content-wrapper {
             border-radius: 6px;
           }
         `}
@@ -55,7 +55,7 @@ const MapCustomPopup = ({
               className="h-full w-full rounded-t-md"
             >
               <style>{`
-                .swiper-button-prev, .swiper-button-next {
+                .map-custom-popup .swiper-button-prev, .swiper-button-next {
                   color: black;
                   background-color: white;
                   border-radius: 50%; 
@@ -66,12 +66,12 @@ const MapCustomPopup = ({
                   align-items: center;
                   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
                 }
-                .swiper-button-next:after, 
-                .swiper-button-prev:after {
+                .map-custom-popup .swiper-button-next:after, 
+                .map-custom-popup .swiper-button-prev:after {
                   font-size: 10px;
                   font-weight: 600;
                 }
-                .swiper-pagination-bullet {
+                .map-custom-popup .swiper-pagination-bullet {
                   background-color: white;
                 }
               `}</style>
@@ -119,7 +119,7 @@ const MapCustomPopup = ({
           </div>
         </Link>
       </Popup>
-    </>
+    </div>
   )
 }
 

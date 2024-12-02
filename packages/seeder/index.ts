@@ -1,14 +1,11 @@
 import {
   dbActivities,
   dbAddresses,
-  dbAmenities,
   dbBookableUnitTypes,
   dbEmergencyContacts,
-  dbFacilities,
   dbGuests,
   dbLocations,
   dbPhotos,
-  dbPolicies,
   dbProperties,
   dbRentalAddOns,
   dbRentalDetails,
@@ -40,9 +37,6 @@ const seedAll = async () => {
     await dbProperties.deleteMany({})
     await dbBookableUnitTypes.deleteMany({})
     await dbLocations.deleteMany({})
-    await dbAmenities.deleteMany({})
-    await dbFacilities.deleteMany({})
-    await dbPolicies.deleteMany({})
     await dbPhotos.deleteMany({})
     await dbRentalAddOns.deleteMany({})
     await dbRentalDetails.deleteMany({})

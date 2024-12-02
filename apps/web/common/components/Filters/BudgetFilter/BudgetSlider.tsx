@@ -55,7 +55,7 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
   // }, [minValue, maxValue, onValueChange])
 
   return (
-    <div className="max-w-xs p-4 overflow-hidden">
+    <div className="budget max-w-xs p-4 overflow-hidden">
       <Typography fontWeight="bold">{title}</Typography>
       <label
         htmlFor="budget-range"
@@ -110,11 +110,11 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
         </div>
       </div>
       <style>{`
-        .thumb {
+        .budget .thumb {
           -webkit-appearance: none;
           background-color: transparent;
         }
-        .thumb::-webkit-slider-thumb {
+        .budget .thumb::-webkit-slider-thumb {
           -webkit-appearance: none;
           background-color: transparent;
           -webkit-tap-highlight-color: transparent;
@@ -129,8 +129,6 @@ const BudgetSlider: React.FC<BudgetSliderProps> = ({
           pointer-events: all;
           position: relative;
         }
-
-        /* For Firefox browsers */
         .thumb::-moz-range-thumb {
           background-color: #f1f5f7;
           border: none;

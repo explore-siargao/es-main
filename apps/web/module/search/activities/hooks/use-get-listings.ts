@@ -12,7 +12,7 @@ export async function getListings(searchQueries: T_Activities_Search) {
   return await filter.getPaginatedActivities({ searchQueries })
 }
 
-function useGetListings(searchQueries: T_Activities_Search) {
+function useGetActivityListings(searchQueries: T_Activities_Search) {
   const query = useQuery({
     queryKey: [queryKey, searchQueries],
     refetchOnWindowFocus: false,
@@ -23,4 +23,4 @@ function useGetListings(searchQueries: T_Activities_Search) {
   return query
 }
 
-export default useGetListings
+export default useGetActivityListings

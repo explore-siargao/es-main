@@ -1,6 +1,6 @@
 import express from 'express'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import isHostActivityOwner from './middleware/isHostActivityOwner'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import {
@@ -58,13 +58,7 @@ router.get(
 )
 
 //filted data
-router.get(
-  '/filtered',
-  isOriginValid,
-  isCsrfTokenValid,
-  paginate(15),
-  getFilteredActivities
-)
+router.get('/filtered', isOriginValid, paginate(15), getFilteredActivities)
 router.get('/host', isOriginValid, isUserLoggedIn, getAllActivitiesByHostId)
 
 router.post('/', isUserLoggedIn, isOriginValid, addActivity)

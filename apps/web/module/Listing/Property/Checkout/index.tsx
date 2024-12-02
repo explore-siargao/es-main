@@ -20,6 +20,7 @@ import { EncryptionService } from "@repo/services/"
 import useSessionStore from "@/common/store/useSessionStore"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
 import toast from "react-hot-toast"
+import { Step, Stepper } from "./components/modals/stepper"
 
 const encryptionService = new EncryptionService("card")
 
@@ -30,6 +31,11 @@ const Checkout = () => {
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )
+  const steps: Step[] = [
+    { label: "Choose Listings", status: "completed" },
+    { label: "Enter info", status: "current" },
+    { label: "Pay", status: "upcoming" },
+  ]
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isConfirmPayModalOpen, setIsConfirmPayModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
@@ -101,10 +107,12 @@ const Checkout = () => {
   }
   return (
     <WidthWrapper width="small" className="mt-4 md:mt-8 lg:mt-10">
+      <Stepper steps={steps} />
       <div className="flex items-center gap-x-4">
         <Link href="/accommodation/1">
           <LucideChevronLeft className="text-text-300 hover:text-text-500 transition" />
         </Link>
+
         <Typography variant="h1" fontWeight="semibold">
           Confirm and pay
         </Typography>

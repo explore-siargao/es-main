@@ -1,49 +1,58 @@
-import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
 import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Button } from "@/common/components/ui/Button"
 import { useState } from "react"
-
-interface CartItems {
-  id: number
-  imageKey: string
-  title: string
-  address: string
-  dateTo: string
-  dateFrom: string
-}
+import { T_Cart_Item } from "@repo/contract-2/cart"
+import PropertyCartItem from "./property-cart-item"
+import ActivityCartItem from "./activity-cart-item"
+import RentalCartItem from "./rental-cart-item"
+import DeleteCartItemModal from "./delete-cart-item-modal"
+import DeleteAllSelectedItems from "./delete-all-selected-items-modal"
 
 interface ICartProps {
-  items: CartItems[]
+  items: T_Cart_Item[]
+  setSelectedItems: (items: T_Cart_Item[]) => void
+  selectedItems: T_Cart_Item[]
 }
 
-const CartList: React.FC<ICartProps> = ({ items }) => {
+const CartList: React.FC<ICartProps> = ({
+  items,
+  setSelectedItems,
+  selectedItems,
+}) => {
   const [selectAll, setSelectAll] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const [selectedItemsIds, setSelectedItemsIds] = useState<string[]>([])
+  const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] =
+    useState<boolean>(false)
+  const [isDeleteMultipleCartItemOpen, setIsDeleteMultipleCartItemOpen] =
+    useState<boolean>(false)
+
+  const [itemId, setItemId] = useState<string>("")
 
   const toggleAllCheckboxes = () => {
     const newSelectAll = !selectAll
     setSelectAll(newSelectAll)
     if (newSelectAll) {
-      const allIds = items.map((item) => item.id)
-      setSelectedItems(allIds)
-      console.log("Checked IDs:", allIds)
+      const allIds = items.map((item) => item._id || "")
+      setSelectedItemsIds(allIds)
+      setSelectedItems(items)
     } else {
+      setSelectedItemsIds([])
       setSelectedItems([])
-      console.log("Checked IDs cleared")
     }
   }
 
-  const toggleCheckbox = (id: number) => {
-    const newSelectedItems = selectedItems.includes(id)
-      ? selectedItems.filter((itemId) => itemId !== id)
-      : [...selectedItems, id]
-    setSelectedItems(newSelectedItems)
+  const toggleCheckbox = (id: string) => {
+    const item = items.find((cartItem) => cartItem._id === id)
+    if (!item) return
 
-    if (!selectedItems.includes(id)) {
-      console.log("Checkbox ID clicked:", id)
+    if (selectedItemsIds.includes(id)) {
+      setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id))
+      setSelectedItems(
+        selectedItems.filter((selectedItem) => selectedItem._id !== id)
+      )
     } else {
-      console.log("Checkbox ID unchecked")
+      setSelectedItemsIds([...selectedItemsIds, id])
+      setSelectedItems([...selectedItems, item])
     }
   }
 
@@ -58,65 +67,63 @@ const CartList: React.FC<ICartProps> = ({ items }) => {
             onChange={toggleAllCheckboxes}
           />
           <label htmlFor="selectAll" className="pt-1">
-            All
+            Select all
           </label>
         </div>
-        <Button variant="outline">Remove selected activity</Button>
+        <Button
+          disabled={selectedItemsIds.length === 0}
+          onClick={() => setIsDeleteMultipleCartItemOpen(true)}
+          variant="outline"
+        >
+          Delete all selected
+        </Button>
       </div>
-      {items.map((cartItem) => (
-        <div key={cartItem.id} className=" bg-white pt-2">
-          <div className="flex flex-col gap-8 sm:flex-row pt-4">
-            <div className="lg:flex-none w-full sm:w-6 align-center">
-              <InputCheckbox
-                id={cartItem.id}
-                colorVariant="secondary"
-                checked={selectedItems.includes(cartItem.id)}
-                onChange={() => toggleCheckbox(cartItem.id)}
-              />
-            </div>
-            <div className="lg:flex-none pt-2 sm:w-full lg:w-1/6">
-              <img
-                src={`/assets/${cartItem.imageKey}`}
-                width={100}
-                alt={"image"}
-                className="rounded-md object-cover w-full sm:w-auto"
-              />
-            </div>
-
-            <div className="flex-1 w-60 sm:w-auto align-center">
-              <Typography variant="h3" fontWeight="semibold">
-                {cartItem.title}
-              </Typography>
-              <Typography variant="p">{cartItem.address}</Typography>
-              <Typography variant="p">
-                {cartItem.dateFrom} - {cartItem.dateTo}
-              </Typography>
-            </div>
-          </div>
-          <div className="flex justify-between items-center mt-6 pr-4 lg:pl-14">
-            <div className="flex gap-4">
-              <Typography
-                variant="p"
-                fontWeight="semibold"
-                className="underline underline-offset-4 mr-4 hover:cursor-pointer"
-              >
-                Manage
-              </Typography>
-              <Typography
-                variant="p"
-                fontWeight="semibold"
-                className="underline underline-offset-4 hover:cursor-pointer"
-              >
-                Remove
-              </Typography>
-            </div>
-            <Typography variant="p" fontWeight="semibold">
-              {formatCurrency(2550)}
-            </Typography>
-          </div>
-          <div className="border-b mt-8"></div>
-        </div>
-      ))}
+      {items.map((cartItem, index) => {
+        if (cartItem.propertyIds) {
+          return (
+            <PropertyCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
+              toggleCheckbox={toggleCheckbox}
+              setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
+              setItemId={setItemId}
+            />
+          )
+        } else if (cartItem.activityIds) {
+          return (
+            <ActivityCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
+              toggleCheckbox={toggleCheckbox}
+              setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
+              setItemId={setItemId}
+            />
+          )
+        } else if (cartItem.rentalIds) {
+          return (
+            <RentalCartItem
+              item={cartItem}
+              selectedItems={selectedItemsIds}
+              index={index}
+              toggleCheckbox={toggleCheckbox}
+              setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
+              setItemId={setItemId}
+            />
+          )
+        }
+      })}
+      <DeleteAllSelectedItems
+        isOpen={isDeleteMultipleCartItemOpen}
+        onClose={() => setIsDeleteMultipleCartItemOpen(false)}
+        itemIds={selectedItemsIds}
+      />
+      <DeleteCartItemModal
+        isOpen={isDeleteCartItemOpen}
+        onClose={() => setIsDeleteCartItemOpen(false)}
+        itemId={itemId}
+      />
     </>
   )
 }

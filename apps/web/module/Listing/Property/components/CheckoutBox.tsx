@@ -15,6 +15,10 @@ import { APP_NAME } from "@repo/constants"
 import { Typography } from "@/common/components/ui/Typography"
 import { T_BookableUnitType } from "@repo/contract"
 import { differenceInDays, format, eachDayOfInterval } from "date-fns"
+import useAddToCart from "@/common/hooks/use-add-to-cart"
+import { T_Add_To_Cart } from "@repo/contract-2/cart"
+import { useQueryClient } from "@tanstack/react-query"
+import toast from "react-hot-toast"
 
 interface ICheckout {
   id?: number
@@ -38,7 +42,8 @@ const CheckoutBox = ({
   unit,
 }: CheckoutProcessProps) => {
   const router = useRouter()
-  const params = useParams<{ listingId: string }>()
+  const params = useParams<{ propertyId: string }>()
+  const queryClient = useQueryClient()
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
@@ -47,7 +52,7 @@ const CheckoutBox = ({
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const totalGuest = adults + children + infants
-
+  const { mutate: addToCart } = useAddToCart()
   const nights = differenceInDays(
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
@@ -56,9 +61,7 @@ const CheckoutBox = ({
   const [breakdown, setBreakdown] = useState<{ date: string; price: number }[]>(
     []
   )
-
   const [totalBasePrice, setTotalBasePrice] = useState<number | null>(null)
-
   const calculatePrice = () => {
     const nights = differenceInDays(
       dateRange.to ?? new Date(),
@@ -98,6 +101,31 @@ const CheckoutBox = ({
       setTotalBasePrice(total)
     }
   }, [breakdown])
+
+  const handleAddToCartSingleItem = (propertyId: string) => {
+    const payload: T_Add_To_Cart = {
+      price: totalPrice,
+      propertyIds: { propertyId, unitId: unit._id },
+      startDate: dateRange.from?.toISOString() || "",
+      endDate: dateRange.to?.toISOString() || "",
+      guestCount: totalGuest,
+    }
+    addToCart(payload, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["get-cart-item"],
+          })
+          toast.success(data.message)
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err: any) => {
+        toast.error(String(err))
+      },
+    })
+  }
 
   return (
     <div
@@ -172,11 +200,17 @@ const CheckoutBox = ({
           variant="primary"
           onClick={() =>
             isSelectedBookableUnit
-              ? router.push(`/accommodation/${params.listingId}/checkout`)
+              ? router.push(`/accommodation/${params.propertyId}/checkout`)
               : null
           }
         >
           Book Now
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => handleAddToCartSingleItem(params.propertyId)}
+        >
+          Add to cart
         </Button>
       </div>
       <div>

@@ -169,3 +169,53 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
     res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
   }
 }
+
+export const cardPayment = async (req: Request, res: Response) => {
+  const { amount, cardNumber, expirationMonth, expirationYear, cvv } = req.body
+  const refId = `${randomUUID()}`
+  console.log(refId)
+
+  if (amount && cardNumber && expirationMonth && expirationYear && cvv) {
+    try {
+      const data = {
+        reference_id: refId,
+        amount: amount,
+        currency: 'PHP',
+        country: 'PH',
+        payment_method: {
+          type: 'CARD',
+          card: {
+            card_information: {
+              card_number: cardNumber,
+              card_expiry: '12/25',
+              cvv: cvv,
+            },
+          },
+          reusability: 'ONE_TIME_USE',
+        },
+        billing_address: {
+          country: 'PH',
+          street_line1: '123 Test Street', // Example address; replace with dynamic data if needed
+          city: 'Manila',
+          province: 'Metro Manila',
+          postal_code: '1000',
+        },
+        metadata: {
+          description: 'Card payment for booking',
+        },
+      }
+
+      const req = await apiXendit.post(`/payment_requests`, data, false, true)
+      res.json(response.success({ item: req }))
+    } catch (err: any) {
+      res.json(response.error({ item: req.body, message: err.message }))
+    }
+  } else {
+    res.json(
+      response.error({
+        item: req.body,
+        message: 'Missing required fields for card payment',
+      })
+    )
+  }
+}

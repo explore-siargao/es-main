@@ -12,7 +12,7 @@ export async function getListings(searchQueries: T_Rentals_Search) {
   return await filter.getPaginatedRentals({ searchQueries })
 }
 
-function useGetListings(searchQueries: T_Rentals_Search) {
+function useGetRentalListings(searchQueries: T_Rentals_Search) {
   const query = useQuery({
     queryKey: [queryKey, searchQueries],
     refetchOnWindowFocus: false,
@@ -23,4 +23,4 @@ function useGetListings(searchQueries: T_Rentals_Search) {
   return query
 }
 
-export default useGetListings
+export default useGetRentalListings

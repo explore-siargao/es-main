@@ -1,6 +1,6 @@
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
-import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn3'
+import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import express from 'express'
 import {
   addRentalReservation,
@@ -24,7 +24,10 @@ import {
   getAllReservations,
   updateReservationStatusByReferenceId,
 } from './services/default'
-import { gcashMultipleCheckout } from './services/cart-reservations'
+import {
+  cardMultipleCheckout,
+  gcashMultipleCheckout,
+} from './services/cart-reservations'
 
 const router = express.Router()
 
@@ -137,11 +140,19 @@ router.patch(
 )
 
 router.post(
-  '/cart/checkout',
+  '/cart/checkout/gcash',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
   gcashMultipleCheckout
+)
+
+router.post(
+  '/cart/checkout/card',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cardMultipleCheckout
 )
 
 export default router
