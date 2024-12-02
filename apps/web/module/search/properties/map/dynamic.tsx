@@ -57,7 +57,8 @@ const Dynamic = ({ center, units, zoom, scrollWheelZoom }: T_Props) => {
       center={center}
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
-      className="h-[70vh]"
+      className="h-[100vh]"
+      rounded="rounded-none"
     >
       <MapClickHandler />
       <TileLayer
