@@ -105,6 +105,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
 export const cardMultipleCheckout = async (req: Request, res: Response) => {
   try {
     const userId = res.locals.user?.id
+    const customer = res.locals.user.personalInfo
     const cartItems: T_Add_To_Cart[] = req.body.cartItems
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
@@ -132,7 +133,6 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         const cardInfo = encryptionService.decrypt(
           paymentMethod?.cardInfo as string
         ) as T_CardInfo
-        console.log(cardInfo)
         const cardResponse = await fetch(
           `${API_URL}/api/v1/xendit/card-payment`,
           {
@@ -145,58 +145,65 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
               cardNumber: cardInfo.cardNumber,
               expirationMonth: cardInfo.expirationMonth,
               expirationYear: cardInfo.expirationYear,
+              cardHolderName: cardInfo.cardholderName,
+              country: cardInfo.country,
               cvv: cardInfo.cvv,
+              customer: customer,
+              userId: userId,
             }),
           }
         )
 
         const cardData = await cardResponse.json()
-        if (cardResponse.ok) {
-          // const reservationItems = cartItems.map((item) => ({
-          //   activityIds: item.activityIds || null,
-          //   rentalIds: item.rentalIds || null,
-          //   propertyIds: item.propertyIds || null,
-          //   startDate: item.startDate,
-          //   endDate: item.endDate,
-          //   guest: userId,
-          //   xendItPaymentMethodId: gcashData.item.payment_method.id,
-          //   xendItPaymentRequestId: gcashData.item.id,
-          //   xendItPaymentReferenceId: gcashData.item.reference_id,
-          //   guestCount: item.guestCount,
-          //   status: 'For-Payment',
-          //   cartId:item.id
-          // }))
+        if (cardData.item.actions) {
+          const reservationItems = cartItems.map((item) => ({
+            activityIds: item.activityIds || null,
+            rentalIds: item.rentalIds || null,
+            propertyIds: item.propertyIds || null,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            guest: userId,
+            xendItPaymentMethodId: cardData.item.payment_method.id,
+            xendItPaymentRequestId: cardData.item.id,
+            xendItPaymentReferenceId: cardData.item.reference_id,
+            guestCount: item.guestCount,
+            status: 'For-Payment',
+            cartId: item.id,
+          }))
+          const addReservations =
+            await dbReservations.insertMany(reservationItems)
 
-          console.log(cardData)
-          res.json(
-            response.success({
-              item: {
-                reservations: null,
-                action: {
-                  type: 'PAYMENT',
-                  link: cardData.item.actions[0].url,
+          if (addReservations) {
+            res.json(
+              response.success({
+                item: {
+                  reservations: addReservations,
+                  action: {
+                    type: 'PAYMENT',
+                    link: cardData.item.actions[0].url,
+                  },
+                  message: 'Pending payment',
                 },
-                message: 'Pending payment',
-              },
+              })
+            )
+          } else {
+            res.json(response.error({ message: 'Invalid card details' }))
+          }
+        } else {
+          res.json(
+            response.error({
+              message: cardData.item.message || UNKNOWN_ERROR_OCCURRED,
             })
           )
-          // } else {
-          //   res.json(
-          //     response.error({
-          //       items: addReservations,
-          //       message: 'Invalid items',
-          //     })
-          //   )
-          // }
-        } else {
-          res.json(response.error({ message: cardData.message }))
         }
       }
     }
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        message: err.message
+          ? err.message + ' ' + err.stack
+          : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
