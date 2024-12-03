@@ -79,7 +79,7 @@ export const cardSingleUse = async (req: Request, res: Response) => {
             card_number: cardNumber,
             expiry_month: expirationMonth,
             expiry_year: expirationYear,
-            card_expiry:'07/25',
+            card_expiry: '07/25',
             cvv: cvv,
             cardholder_name: cardholderName,
           },
@@ -171,33 +171,52 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
 }
 
 export const cardPayment = async (req: Request, res: Response) => {
-  const { amount, cardNumber, cardHolderName, country, expirationMonth, expirationYear, cvv, customer,userId} = req.body
+  const {
+    amount,
+    cardNumber,
+    cardHolderName,
+    country,
+    expirationMonth,
+    expirationYear,
+    cvv,
+    customer,
+    userId,
+  } = req.body
   const refId = `${randomUUID()}`
-  if (amount && cardNumber && expirationMonth && cardHolderName && country && expirationYear && cvv && customer) {
+  if (
+    amount &&
+    cardNumber &&
+    expirationMonth &&
+    cardHolderName &&
+    country &&
+    expirationYear &&
+    cvv &&
+    customer
+  ) {
     try {
       const data = {
         reference_id: refId,
         amount: amount,
         currency: 'PHP',
         country: 'PH',
-        customer_id:`cust-${userId}`,
+        customer_id: `cust-${userId}`,
         payment_method: {
           type: 'CARD',
-          billing_information:{
-            city:customer.Address.city,
-            country:customer.Address.country,
-            postal_code:String(customer.Address.zipCode),
-            province_state:customer.Address.stateProvince,
-            street_line1:`${customer.Address.streetAddress} ${customer.Address.brangay}`,
-            street_line2:null
-        },
+          billing_information: {
+            city: customer.Address.city,
+            country: customer.Address.country,
+            postal_code: String(customer.Address.zipCode),
+            province_state: customer.Address.stateProvince,
+            street_line1: `${customer.Address.streetAddress} ${customer.Address.brangay}`,
+            street_line2: null,
+          },
           card: {
             card_information: {
-              cardholder_name:cardHolderName,
-              country:country,
+              cardholder_name: cardHolderName,
+              country: country,
               card_number: cardNumber,
               expiry_month: expirationMonth,
-            expiry_year: expirationYear,
+              expiry_year: expirationYear,
               cvv: cvv,
             },
             channel_properties: {
@@ -215,7 +234,9 @@ export const cardPayment = async (req: Request, res: Response) => {
       const req = await apiXendit.post(`/payment_requests`, data, false, true)
       res.json(response.success({ item: req }))
     } catch (err: any) {
-      res.json(response.error({ item: req.body, message: err.message+"hello" }))
+      res.json(
+        response.error({ item: req.body, message: err.message + 'hello' })
+      )
     }
   } else {
     res.json(
