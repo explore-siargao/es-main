@@ -10,6 +10,7 @@ import ImageGallery from "./ImageGallery"
 import ImageGalleryModal from "./modals/ImageGalleryModal"
 import { useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
+import { Typography } from "@/common/components/ui/Typography"
 
 const AvailableBooking = ({
   bookableUnits,
@@ -17,7 +18,8 @@ const AvailableBooking = ({
   onSelectBookableUnit,
   selectedBookableUnit,
 }: T_AvailableBookingProps) => {
-  const handleSelectUnit = (unit: T_AvailableBookableUnitProps) => {
+
+  const handleSelectUnit = (unit: T_AvailableBookableUnitProps | null) => {
     onSelectBookableUnit(unit)
   }
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
@@ -49,7 +51,7 @@ const AvailableBooking = ({
   return (
     <>
       <TitleSection size="lg" title={title} />
-      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-6">
         {bookableUnits.map((unit: T_AvailableBookableUnitProps) => {
           const bedDisplay = getCombinedBedDisplay(
             unit.bedRooms,
@@ -59,12 +61,12 @@ const AvailableBooking = ({
           return (
             <div
               key={unit.id}
-              className={`w-full rounded-xl border-2 p-5 cursor-pointer  ${
+              className={`w-full rounded-2xl border p-5 cursor-pointer transition ${
                 selectedBookableUnit === unit
                   ? "bg-primary-200 border-primary-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white hover:bg-text-50 border-text-100"
               }`}
-              onClick={() => handleSelectUnit(unit)}
+              onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
             >
               <div>
                 {unit.photos && unit.photos.length > 0 && (
@@ -84,30 +86,39 @@ const AvailableBooking = ({
                     />
                   </>
                 )}
-                <div className="p-2 mt-4">
-                  <div className="text-md mb-2 font-bold">{unit.title}</div>
-                  <div className="text-md mb-2">{bedDisplay}</div>
+                <div className="mt-4">
+                  <Typography variant="h3" fontWeight="semibold">{unit.title}</Typography>
+                  <Typography variant="h5">{bedDisplay}</Typography>
                   {unit.category === "Bed" && (
-                    <div className="text-md mb-2 font-bold">
+                    <Typography variant="h5">
                       {unit.subtitle}
-                    </div>
+                    </Typography>
                   )}
                   {unit.totalSize && (
-                    <div className="text-md mb-2">
+                    <Typography variant="h5">
                       {unit.totalSize}m² / {Math.round(unit.totalSize * 10.764)}
                       ft² {unit.category} Size
-                    </div>
+                    </Typography>
                   )}
-                  <div className="text-md mb-2">
+                  <Typography variant="h5">
                     Can accommodate maximum of {unit.maxGuests} guests
-                  </div>
+                  </Typography>
+                  <div className="flex gap-2 mt-6">                 
+                  <Button
+                    variant={selectedBookableUnit === unit ? "primary" : "default"}
+                    size="sm"
+                    onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
+                  >
+                   {selectedBookableUnit === unit ? "Unselect this unit" : "Select this unit"}
+                  </Button>
                   <Button
                     variant="link"
-                    size="link"
-                    className="text-md mb-2 underline"
+                    size="sm"
+                    className="underline"
                   >
-                    Show all information &gt;
+                    More information
                   </Button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -11,14 +11,15 @@ import CheckoutBox from "./components/CheckoutBox"
 import PlaceOffers from "./components/PlaceOffers"
 import WhereYoullBeDescription from "./components/Map"
 import { Button } from "@/common/components/ui/Button"
-import { Flag, Tag } from "lucide-react"
+import { Flag, LucideHandHeart, LucideHeartHandshake, Tag } from "lucide-react"
 import { useState } from "react"
 import ListingMark from "@/module/Listing/Property/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
-import AvailableBooking from "./components/AvailableBooking"
+import AvailableBooking from "./components/available-booking"
 import { T_BookableUnitType } from "@repo/contract"
-import { useParams } from "next/navigation"
 import { format, parseISO } from "date-fns"
+import { Typography } from "@/common/components/ui/Typography"
+import formatCurrency from "@/common/helpers/formatCurrency"
 
 export const imageGallery = [
   {
@@ -386,17 +387,9 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const [showModal, setShowModal] = useState(false)
   const [selectedBookableUnit, setSelectedBookableUnit] =
     useState<T_BookableUnitType>()
-  const params = useParams<{ propertyId: string }>()
-  const propertyId = String(params.propertyId)
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleSelectBookableUnit = (bookableUnit: T_BookableUnitType) => {
     setSelectedBookableUnit(bookableUnit)
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedBookableUnit(null)
   }
 
   const handleOpenModal = () => {
@@ -415,6 +408,11 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
     (data?.item?.bookableUnits?.length > 0 && data?.item?.bookableUnits[0])
   const latitude = data?.item?.location?.latitude
   const longitude = data?.item?.location?.longitude
+
+  const current = 450000
+  const goal = 1000000
+  const percentage = Math.min((current / goal) * 100, 100).toFixed(2);
+
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
@@ -471,11 +469,25 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
               />
             )}
             <div>
-              <ListingMark
-                icon={<Tag />}
-                title="Lower Price"
-                desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-              />
+              <div className="border border-gray-300 rounded-xl p-4 mb-2 flex gap-4">
+                <div className="mt-1"><LucideHeartHandshake/></div>
+                <div>
+                  <h3 className="font-semibold">Pledge to LokalLab by ExploreSiargao</h3>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                      <div
+                        className="bg-primary-500 h-2 rounded-full"
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                  <Typography variant="h6" className="text-justify mt-1 text-text-300">
+                    {percentage}% of {formatCurrency(goal)}
+                  </Typography>
+
+                  <Typography variant="h5" className="mt-1">
+                    Your stay contributes to Siargao's community growth
+                  </Typography>
+                </div>
+              </div>
             </div>
 
             <div className="flex justify-center">
