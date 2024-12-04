@@ -20,7 +20,7 @@ import ThingsToKnow from "./ThingsToKnow"
 import MeetingPoint from "./MeetingPoint"
 import CheckoutBox from "./CheckoutBox"
 import Builder from "./Itinerary/Builder"
-import { notFound, useParams } from "next/navigation"
+import { notFound } from "next/navigation"
 
 export const ratingSummary = {
   ratings: 5,
