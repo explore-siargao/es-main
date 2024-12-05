@@ -57,13 +57,13 @@ export const Z_Policy = z.object({
 export const Z_Bed = z.object({
   name: z.string(),
   qty: z.number(),
-  _id: z.string(),
+  _id: z.string().optional(),
 })
 
 export const Z_Bedroom = z.object({
   roomName: z.string(),
   beds: z.array(Z_Bed),
-  _id: z.string(),
+  _id: z.string().optional(),
 })
 
 export const Z_Add_Property = z.object({
