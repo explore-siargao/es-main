@@ -1165,7 +1165,7 @@ const seedProperties = async () => {
       {
         category: "Room",
         title: "Serenity Garden Suite",
-        subtitle:"",
+        subtitle: "",
         unitNote: null,
         description:
           "The Serenity Garden Suite is a peaceful haven with tranquil garden views, a king-sized bed, and calming natural decor, perfect for a relaxing and rejuvenating experience.",
@@ -1421,7 +1421,7 @@ const seedProperties = async () => {
         createdAt: "2024-11-12T10:00:00Z",
         updatedAt: "2024-11-23T16:00:00Z",
         deletedAt: null,
-      } ,
+      },
       {
         category: "Whole-Place",
         title: "Tranquil Garden Suite",
@@ -1534,7 +1534,7 @@ const seedProperties = async () => {
         createdAt: "2024-11-20T13:00:00Z",
         updatedAt: "2024-11-20T20:30:00Z",
         deletedAt: null,
-      },     
+      },
       {
         category: "Room",
         title: "Azure Coast Suite",
@@ -1575,7 +1575,8 @@ const seedProperties = async () => {
       {
         category: "Room",
         title: "Golden Horizon Suite",
-        subtitle: "A luxurious suite with golden-toned interiors and breathtaking views.",
+        subtitle:
+          "A luxurious suite with golden-toned interiors and breathtaking views.",
         unitNote: null,
         description:
           "The Golden Horizon Suite offers a king-sized bed, elegant golden accents, and a spacious private balcony with sweeping views of the horizon, perfect for a lavish getaway.",
@@ -1628,7 +1629,7 @@ const seedProperties = async () => {
         isPrivate: true,
         maxGuests: 8,
         adultsIncluded: 4,
-        childrenIncluded:4 ,
+        childrenIncluded: 4,
         bedRooms: [],
         livingRooms: [],
         bedroomStudio: [],
@@ -2556,7 +2557,7 @@ const seedProperties = async () => {
         maxGuests: 10,
         adultsIncluded: 10,
         childrenIncluded: 0,
-        bedRooms:[],
+        bedRooms: [],
         livingRooms: [],
         bedroomStudio: [],
         singleLivingRoom: null,
@@ -2908,7 +2909,6 @@ const seedProperties = async () => {
       },
     ]
 
-   
     const pricing: T_Unit_Price[] = [
       {
         baseRate: 2000,
@@ -3710,58 +3710,65 @@ const seedProperties = async () => {
       bookableUnits: getBookableUnitsIds[index],
     }))
 
-    const getWholePlace = await dbBookableUnitTypes.find({category:"Whole-Place"})
-    const wholePlaceIds = getWholePlace.flatMap((item)=>item._id)
-    
+    const getWholePlace = await dbBookableUnitTypes.find({
+      category: "Whole-Place",
+    })
+    const wholePlaceIds = getWholePlace.flatMap((item) => item._id)
+
     const bedRoom = {
-      roomName:"",
-      beds:[
+      roomName: "",
+      beds: [
         {
-          name:"Single Bed",
-          qty:2
+          name: "Single Bed",
+          qty: 2,
         },
         {
-          name:"Twin Bed",
-          qty:2
+          name: "Twin Bed",
+          qty: 2,
         },
         {
-          name:"Double Bed",
-          qty:1
+          name: "Double Bed",
+          qty: 1,
         },
         {
-          name:"Queen Bed",
-          qty:0
+          name: "Queen Bed",
+          qty: 0,
         },
         {
-          name:"Queen XL Bed",
-          qty:0
+          name: "Queen XL Bed",
+          qty: 0,
         },
         {
-          name:"King Bed",
-          qty:0
+          name: "King Bed",
+          qty: 0,
         },
         {
-          name:"King XL Bed",
-          qty:0
+          name: "King XL Bed",
+          qty: 0,
         },
         {
-          name:"Sofa Bed",
-          qty:0
+          name: "Sofa Bed",
+          qty: 0,
         },
         {
-          name:"Bunk Bed",
-          qty:0
+          name: "Bunk Bed",
+          qty: 0,
         },
         {
-          name:"Lot (Baby Bed)",
-          qty:0
+          name: "Lot (Baby Bed)",
+          qty: 0,
         },
-      ]
+      ],
     }
-    wholePlaceIds.forEach(async (item)=>{
-      await dbBookableUnitTypes.findByIdAndUpdate(item,{
-          $push:{bedRooms:bedRoom},
-          $set:{livingRooms:[], singleBedRoom:{name:"Single Bed",qty:0}, singleLivingRoom:{name:"",qty:0},numBedRooms:"0"}
+    wholePlaceIds.forEach(async (item) => {
+      await dbBookableUnitTypes.findByIdAndUpdate(item, {
+        $push: { bedRooms: bedRoom },
+        $set: {
+          livingRooms: [],
+          singleBedRoom: { name: "Single Bed", qty: 0 },
+          singleLivingRoom: { name: "", qty: 0 },
+          numBedRooms: "0",
+        },
       })
     })
 
@@ -3873,20 +3880,20 @@ const seedProperties = async () => {
       )
     })
 
-    const unitIds = getBookableUnitsIds.slice(15,30)
-    const unitIds2 = getBookableUnitsIds.slice(30,45)
-    const unitIds3 = getBookableUnitsIds.slice(45,60)
-   getProperties.forEach(async(property,i)=>{
-      await dbProperties.findByIdAndUpdate(property._id,{
-        $push:{bookableUnits:unitIds[i]}
+    const unitIds = getBookableUnitsIds.slice(15, 30)
+    const unitIds2 = getBookableUnitsIds.slice(30, 45)
+    const unitIds3 = getBookableUnitsIds.slice(45, 60)
+    getProperties.forEach(async (property, i) => {
+      await dbProperties.findByIdAndUpdate(property._id, {
+        $push: { bookableUnits: unitIds[i] },
       })
-      await dbProperties.findByIdAndUpdate(property._id,{
-        $push:{bookableUnits:unitIds2[i]}
+      await dbProperties.findByIdAndUpdate(property._id, {
+        $push: { bookableUnits: unitIds2[i] },
       })
-      await dbProperties.findByIdAndUpdate(property._id,{
-        $push:{bookableUnits:unitIds3[i]}
+      await dbProperties.findByIdAndUpdate(property._id, {
+        $push: { bookableUnits: unitIds3[i] },
       })
-   })
+    })
     console.log("Properties seeded successfully!")
   } catch (error) {
     console.error("Error seeding properties:", error)

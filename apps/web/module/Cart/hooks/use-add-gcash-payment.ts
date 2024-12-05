@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 
 export async function addGCashPayment(props: T_Add_To_Cart[]) {
   const reservation = new ReservationService()
-  return await reservation.addItem(props,"gcash")
+  return await reservation.addItem(props, "gcash")
 }
 
 function useAddGCashPayment() {

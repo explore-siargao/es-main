@@ -8,10 +8,10 @@ export class ReservationService {
   constructor(source: "main" | "mock" = "main") {
     this.api = new ApiService(source)
   }
-  async addItem(item: T_Add_To_Cart[], type:PaymentMethod) {
-    if(type==="gcash"){
-    return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
-    }else{
+  async addItem(item: T_Add_To_Cart[], type: PaymentMethod) {
+    if (type === "gcash") {
+      return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
+    } else {
       return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/card`, item)
     }
   }

@@ -223,9 +223,8 @@ const CheckoutBox = ({
             }
           >
             <PesoSign />
-            {unit
-              ? unit.unitPrice.baseRate
-              : checkoutDesc.titlePrice} x {totalGuest}
+            {unit ? unit.unitPrice.baseRate : checkoutDesc.titlePrice} x{" "}
+            {totalGuest}
           </Button>
           <div>
             {formatCurrency(
