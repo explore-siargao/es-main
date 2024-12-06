@@ -2,7 +2,7 @@ import { T_Add_To_Cart } from "../cart"
 import { ApiService } from "../common/services/api"
 
 const RESERVATION_BASE_URL = `/reservations`
-type PaymentMethod = "gcash" | "card" | "manual" 
+type PaymentMethod = "gcash" | "card" | "manual"
 export class ReservationService {
   private api: ApiService
   constructor(source: "main" | "mock" = "main") {
@@ -11,10 +11,13 @@ export class ReservationService {
   async addItem(item: T_Add_To_Cart[], type: PaymentMethod) {
     if (type === "gcash") {
       return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
-    } else if(type=== "card"){
+    } else if (type === "card") {
       return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/card`, item)
-    }else{
-      return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/manual-card`, item)
+    } else {
+      return this.api.post(
+        `${RESERVATION_BASE_URL}/cart/checkout/manual-card`,
+        item
+      )
     }
   }
 

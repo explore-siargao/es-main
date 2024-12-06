@@ -209,16 +209,19 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
   }
 }
 
-export const manualCardMultipleCheckout = async (req: Request, res: Response) => {
+export const manualCardMultipleCheckout = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const userId = res.locals.user?.id
     const customer = res.locals.user.personalInfo
-    const cardInfo:T_CardInfo = req.body.cardInfo
+    const cardInfo: T_CardInfo = req.body.cardInfo
     const cartItems: T_Add_To_Cart[] = req.body.cartItems
     const validCardInfo = Z_CardInfo.safeParse(cardInfo)
-    if(validCardInfo.error){
+    if (validCardInfo.error) {
       console.error(validCardInfo.error)
-      res.json(response.error({message:REQUIRED_VALUE_EMPTY}))
+      res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     }
     if (!cartItems || cartItems.length === 0 || !cardInfo) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
@@ -238,7 +241,7 @@ export const manualCardMultipleCheckout = async (req: Request, res: Response) =>
           (total, item) => total + (item.price || 0),
           0
         )
-       
+
         const cardResponse = await fetch(
           `${API_URL}/api/v1/xendit/card-payment`,
           {
