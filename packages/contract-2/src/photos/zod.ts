@@ -1,12 +1,11 @@
 import { z } from "zod"
 
 const objectIdSchema = z
-.any()
-.refine(
-    (val) => typeof val === "object" && val.toString().length === 24,
-    { message: "Invalid ObjectId" }
-)
-.transform((val) => val.toString());
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
 
 export const Z_Photo = z.object({
   _id: objectIdSchema.optional(),
@@ -19,7 +18,7 @@ export const Z_Photo = z.object({
   isMain: z.boolean(),
   description: z.string(),
   tags: z.string(),
-  createdAt: z.union([z.string(),z.date()]).optional(),
-  updatedAt: z.union([z.string(),z.date()]).nullable().optional(),
-  deletedAt: z.union([z.string(),z.date()]).nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).nullable().optional(),
+  deletedAt: z.union([z.string(), z.date()]).nullable().optional(),
 })

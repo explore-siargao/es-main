@@ -17,13 +17,12 @@ import {
 } from "../rentals/enum"
 import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
 
-    const objectIdSchema = z
-    .any()
-    .refine(
-        (val) => typeof val === "object" && val.toString().length === 24,
-        { message: "Invalid ObjectId" }
-    )
-    .transform((val) => val.toString());
+const objectIdSchema = z
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
 
 export const Z_Properties_Search = z.object({
   page: z.number().min(1).default(1),
@@ -107,11 +106,10 @@ export const Z_Category_Highest_Price = z.object({
   amount: z.number(),
 })
 
-
 export const Z_Rental_Filtered = z.object({
   // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
   _id: objectIdSchema.optional(),
-  category:z.nativeEnum(E_Rental_Category),
+  category: z.nativeEnum(E_Rental_Category),
   make: z.string(),
   modelBadge: z.string().optional().nullable(),
   year: z.string().optional().nullable(),
