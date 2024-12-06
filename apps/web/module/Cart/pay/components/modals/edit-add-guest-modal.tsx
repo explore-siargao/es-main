@@ -47,54 +47,42 @@ const EditAddGuestModal = ({ isOpen, action, guest, onSubmit }: EditAddGuestModa
       <div className="space-y-4 p-5">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label htmlFor="firstName" className="text-sm font-normal text-gray-500">
-              First name
-            </label>
             <Input
               id="firstName"
               value={formData.firstName}
               onChange={handleChange}
               className="border-gray-300"
-              label=""
+              label="First name"
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="lastName" className="text-sm font-normal text-gray-500">
-              Last name
-            </label>
             <Input
               id="lastName"
               value={formData.lastName}
               onChange={handleChange}
               className="border-gray-300"
-              label=""
+              label="Last name"
             />
           </div>
         </div>
         <div className="space-y-2">
-          <label htmlFor="phoneNumber" className="text-sm font-normal text-gray-500">
-            Phone number
-          </label>
           <Input
             id="phoneNumber"
             type="tel"
             value={formData.phoneNumber}
             onChange={handleChange}
             className="border-gray-300"
-            label=""
+            label="Phone number"
           />
         </div>
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-normal text-gray-500">
-            Email (for updates on your booking)
-          </label>
           <Input
             id="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
             className="border-gray-300"
-            label=""
+            label="Email (for updates on your booking)"
           />
         </div>
         <div className="flex justify-end">

@@ -168,14 +168,13 @@ const Pay = () => {
 
   return (
     <WidthWrapper width="medium" className="mt-4 md:mt-8 lg:mt-10">
-      <Stepper steps={steps} />
       <div className="flex flex-col xl:flex-row gap-8 xl:gap-16 mt-8">
         <div className="block xl:hidden">
           <ListingPriceDetailsBox items={selectedItems} />
         </div>
         <div className="flex-1 flex flex-col gap-y-4">
-          <Typography variant={"h2"} fontWeight="semibold">
-            Your booking
+          <Typography variant={"h1"} fontWeight="semibold">
+            Pay
           </Typography>
           <div className="flex w-full flex-col">
             <div className="flex justify-between w-full">

@@ -1,38 +1,35 @@
 "use client"
 import { useEffect, useState } from "react"
-import { RadioGroup } from "@headlessui/react"
-import { cn } from "@/common/helpers/cn"
-import PaymentMethodForm from "@/module/Listing/Property/Checkout/PaymentMethodForm"
+import { Menu } from "@headlessui/react"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
 import useSessionStore from "@/common/store/useSessionStore"
 import usePaymentInfoStore from "./store/usePaymentInfoStore"
 import { E_PaymentType } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
+import PaymentMethodForm from "@/module/Listing/Property/Checkout/PaymentMethodForm"
 import PaymentSavedForm from "./PaymentSavedForm"
+import { ChevronDownIcon } from "lucide-react"
 
 export default function PaymentOptions({
   onSelectionChange,
 }: {
   onSelectionChange: (selection: { type: E_PaymentType | null }) => void
 }) {
-  const updatePaymentInfo = usePaymentInfoStore(
-    (state) => state.updatePaymentInfo
-  )
+  const updatePaymentInfo = usePaymentInfoStore((state) => state.updatePaymentInfo)
   const session = useSessionStore((state) => state)
   const [selected, setSelected] = useState<number | null>(null)
-  const { data: paymentMethods, isPending: isPendingPaymentMethods } =
-    useGetPaymentMethods()
+  const { data: paymentMethods, isPending: isPendingPaymentMethods } = useGetPaymentMethods()
+
   const savedCreditDebitOptions =
-    paymentMethods?.items?.map((paymentMethod) => {
-      return {
-        type: E_PaymentType.SavedCreditDebit,
-        name: `${paymentMethod.cardType} ending with ${paymentMethod.lastFour}`,
-        description: "Pay using your saved card information.",
-        content: <PaymentSavedForm />,
-        selected: paymentMethod.isDefault,
-        paymentMethodId: paymentMethod.id,
-      }
-    }) ?? []
+    paymentMethods?.items?.map((paymentMethod) => ({
+      type: E_PaymentType.SavedCreditDebit,
+      name: `${paymentMethod.cardType} ending with ${paymentMethod.lastFour}`,
+      description: "Pay using your saved card information.",
+      content: <PaymentSavedForm />,
+      selected: paymentMethod.isDefault,
+      paymentMethodId: paymentMethod.id,
+    })) ?? []
+
   const options = [
     {
       type: E_PaymentType.CreditDebit,
@@ -51,117 +48,99 @@ export default function PaymentOptions({
       selected: false,
     },
   ]
-  const combinedOptions = [...options, ...savedCreditDebitOptions].map(
-    (option, index) => {
-      return {
-        ...option,
-        id: index + 1,
+
+  const combinedOptions = [...options, ...savedCreditDebitOptions].map((option, index) => ({
+    ...option,
+    id: index + 1,
+  }))
+
+  useEffect(() => {
+    if (selected === null) {
+      const defaultOption = combinedOptions.find((option) => option.selected)
+      if (defaultOption) {
+        setSelected(defaultOption.id)
+        onSelectionChange({ type: defaultOption.type })
+        updatePaymentInfo({
+          key: "paymentType",
+          value: defaultOption.type,
+        })
+        updatePaymentInfo({
+          key: "paymentMethodId",
+          value: defaultOption.paymentMethodId,
+        })
       }
     }
-  )
-  const defaultSelectedOption = combinedOptions.find(
-    (option) => option.selected
-  )
-  useEffect(() => {
-    if (!selected && defaultSelectedOption) {
-      setSelected(defaultSelectedOption.id)
-      onSelectionChange({
-        type: defaultSelectedOption.type,
-      })
-      updatePaymentInfo({
-        key: "paymentType",
-        value: E_PaymentType.SavedCreditDebit,
-      })
-      updatePaymentInfo({
-        key: "paymentMethodId",
-        value: defaultSelectedOption.paymentMethodId,
-      })
-    }
-  }, [defaultSelectedOption])
+  }, [combinedOptions, selected])
+
+  const handleSelectionChange = (id: number) => {
+    const selectedOption = combinedOptions.find((option) => option.id === id)
+    setSelected(id)
+    updatePaymentInfo({
+      key: "paymentType",
+      value: selectedOption?.type ?? "",
+    })
+    updatePaymentInfo({
+      key: "paymentMethodId",
+      value: selectedOption?.paymentMethodId,
+    })
+    onSelectionChange({
+      type: selectedOption?.type ?? null,
+    })
+  }
+
   return (
     <>
       {isPendingPaymentMethods ? (
         <Spinner variant="primary" />
       ) : (
-        <RadioGroup
-          value={selected ? selected : 1}
-          onChange={(e) => {
-            const option = combinedOptions.find((option) => option.id === e)
-            updatePaymentInfo({ key: "paymentType", value: option?.type ?? "" })
-            updatePaymentInfo({
-              key: "paymentMethodId",
-              value: option?.paymentMethodId,
-            })
-            setSelected(e)
-            onSelectionChange({
-              type: option?.type ?? null,
-            })
-          }}
-        >
-          <RadioGroup.Label className="sr-only">
-            Payment Options
-          </RadioGroup.Label>
-          <div className="-space-y-px rounded-md bg-white">
-            {combinedOptions.map((setting, settingIdx) => (
-              <RadioGroup.Option
-                key={setting.name}
-                value={setting.id}
-                className={({ checked }) =>
-                  cn(
-                    settingIdx === 0 ? "rounded-tl-md rounded-tr-md" : "",
-                    settingIdx === combinedOptions.length - 1
-                      ? "rounded-bl-md rounded-br-md"
-                      : "",
-                    checked ? "z-10 border-primary-500" : "hover:bg-primary-50",
-                    "relative flex cursor-pointer border p-4 focus:outline-none "
-                  )
-                }
-              >
-                {({ active, checked }) => (
-                  <>
-                    <span
-                      className={cn(
-                        checked
-                          ? "bg-primary-600 border-transparent"
-                          : "bg-white border-gray-300",
-                        active ? "ring-2 ring-offset-2 ring-primary-600" : "",
-                        "mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded-full border flex items-center justify-center"
-                      )}
-                      aria-hidden="true"
+        <div>
+          <Menu as="div" className="relative">
+          <Menu.Button className="flex items-center justify-between w-full p-4 bg-white border border-primary-600 rounded-md">
+  <div className="flex flex-col text-left">
+    <span className="font-medium">
+      {selected
+        ? combinedOptions.find((option) => option.id === selected)?.name
+        : "Select a payment method"}
+    </span>
+    <p className="text-xs text-gray-500">
+      {selected
+        ? combinedOptions.find((option) => option.id === selected)?.description
+        : "Choose a payment method to see the details."}
+    </p>
+  </div>
+  <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+</Menu.Button>
+            <Menu.Items className="absolute z-10 mt-2 w-full bg-white border rounded-md shadow-lg">
+              {combinedOptions.map((option) => (
+                <Menu.Item key={option.id}>
+                  {({ active }) => (
+                    <button
+                      onClick={() => handleSelectionChange(option.id)}
+                      className={`w-full text-left px-4 py-2 ${
+                        active ? "bg-gray-100" : ""
+                      }`}
                     >
-                      <span className="rounded-full bg-white w-1.5 h-1.5" />
-                    </span>
-                    <span className="ml-3 flex flex-col w-full">
-                      <RadioGroup.Label
-                        as="span"
-                        className={cn(
-                          checked ? "text-primary-700" : "text-text-900",
-                          "block text-sm font-medium"
-                        )}
-                      >
-                        {setting.name}
-                      </RadioGroup.Label>
-                      <RadioGroup.Description
-                        as="span"
-                        className={cn(
-                          checked ? "text-primary-700" : "text-text-300",
-                          "block text-sm"
-                        )}
-                      >
-                        <div>{setting.description}</div>
-                        {checked && (
-                          <div className={cn(setting.content && "mt-2")}>
-                            {setting.content}
-                          </div>
-                        )}
-                      </RadioGroup.Description>
-                    </span>
-                  </>
-                )}
-              </RadioGroup.Option>
-            ))}
-          </div>
-        </RadioGroup>
+                      <p className="text-sm font-medium">{option.name}</p>
+                      <p className="text-xs text-gray-500">{option.description}</p>
+                    </button>
+                  )}
+                </Menu.Item>
+              ))}
+            </Menu.Items>
+          </Menu>
+
+          {selected && combinedOptions.find((option) => option.id === selected)?.content && (
+  <div className="mt-4 border border-primary-600 p-4 rounded-md">
+    {combinedOptions
+      .filter((option) => option.id === selected)
+      .map((option) => (
+        <div key={option.id}>
+          <div className="mt-4">{option.content}</div>
+        </div>
+      ))}
+  </div>
+)}
+        </div>
       )}
     </>
   )
