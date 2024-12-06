@@ -2,21 +2,15 @@
 import { useEffect, useState } from "react"
 import { Menu } from "@headlessui/react"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
-import useSessionStore from "@/common/store/useSessionStore"
 import usePaymentInfoStore from "./store/usePaymentInfoStore"
 import { E_PaymentType } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
-import PaymentMethodForm from "@/module/Listing/Property/Checkout/PaymentMethodForm"
 import PaymentSavedForm from "./PaymentSavedForm"
 import { ChevronDownIcon } from "lucide-react"
+import PaymentMethodForm from "./PaymentMethodForm"
 
-export default function PaymentOptions({
-  onSelectionChange,
-}: {
-  onSelectionChange: (selection: { type: E_PaymentType | null }) => void
-}) {
+export default function PaymentOptions() {
   const updatePaymentInfo = usePaymentInfoStore((state) => state.updatePaymentInfo)
-  const session = useSessionStore((state) => state)
   const [selected, setSelected] = useState<number | null>(null)
   const { data: paymentMethods, isPending: isPendingPaymentMethods } = useGetPaymentMethods()
 
@@ -59,7 +53,6 @@ export default function PaymentOptions({
       const defaultOption = combinedOptions.find((option) => option.selected)
       if (defaultOption) {
         setSelected(defaultOption.id)
-        onSelectionChange({ type: defaultOption.type })
         updatePaymentInfo({
           key: "paymentType",
           value: defaultOption.type,
@@ -82,9 +75,6 @@ export default function PaymentOptions({
     updatePaymentInfo({
       key: "paymentMethodId",
       value: selectedOption?.paymentMethodId,
-    })
-    onSelectionChange({
-      type: selectedOption?.type ?? null,
     })
   }
 

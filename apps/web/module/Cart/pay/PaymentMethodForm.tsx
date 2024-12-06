@@ -144,41 +144,51 @@ const PaymentMethodForm = () => {
         />
 
         <div className="grid grid-flow-col space-x-2">
-          <Input
-            label="Expiration date"
-            id="expirationDate"
-            placeholder="MM/YY"
-            type="text"
-            // disabled={isPending}
-            {...register("expirationDate", {
-              minLength: 5,
-              maxLength: 5,
-              required: "This field is required",
-              onChange: (e) => {
-                let value = e.target.value
-                updatePaymentInfo({
-                  key: "expirationDate",
-                  value: e.target.value,
-                })
-                if (e.nativeEvent.inputType === "deleteContentBackward") {
-                  value = value.slice(0, -2)
-                  setValue("expirationDate", value)
-                } else {
-                  value = value.replace(/\//g, "")
-                  const slashValue = value.replace(/(.{2})/g, "$1/")
-                  const newValue = String(slashValue).trim()
-                  if (newValue.length > 5) {
-                    setValue("expirationDate", newValue.slice(0, -1))
-                    validateExpirationDate()
-                  } else {
-                    setValue("expirationDate", newValue.trim())
-                    validateExpirationDate()
-                  }
-                }
-              },
-            })}
-            required
-          />
+        <Input
+  label="Expiration date"
+  id="expirationDate"
+  placeholder="MM/YY"
+  type="text"
+  {...register("expirationDate", {
+    minLength: 5,
+    maxLength: 5,
+    required: "This field is required",
+    onChange: (e) => {
+      let value = e.target.value;
+      updatePaymentInfo({
+        key: "expirationDate",
+        value: e.target.value,
+      });
+
+      if (e.nativeEvent.inputType === "deleteContentBackward") {
+        value = value.slice(0, -2);
+        setValue("expirationDate", value);
+      } else {
+        value = value.replace(/\//g, "");
+        const slashValue = value.replace(/(.{2})/g, "$1/");
+        const newValue = String(slashValue).trim();
+
+        if (newValue.length > 5) {
+          setValue("expirationDate", newValue.slice(0, -1));
+          validateExpirationDate();
+        } else {
+          setValue("expirationDate", newValue.trim());
+          validateExpirationDate();
+        }
+
+        if (value.length >= 4) {
+          const expirationMonth = value.slice(0, 2); 
+          const expirationYear = "20" + value.slice(2, 4); 
+          updatePaymentInfo({ key: "expirationMonth", value: expirationMonth });
+          updatePaymentInfo({ key: "expirationYear", value: expirationYear });
+        }
+      }
+    },
+  })}
+  required
+/>
+
+
           <Input
             label="CVV"
             id="cvv"

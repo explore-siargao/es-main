@@ -30,19 +30,19 @@ import { useRouter } from "next/navigation"
 import { E_PaymentType } from "@repo/contract"
 import { Input } from "@/common/components/ui/Input"
 import GuestSection from "./guest-section"
+import useAddManualCardPayment from "../hooks/use-add-manual-card-payment"
+import useAddCardPayment from "../hooks/use-add-card-payment"
 
 const encryptionService = new EncryptionService("card")
 
 const Pay = () => {
   const paymentInfo = usePaymentInfoStore((state) => state)
-  const session = useSessionStore((state) => state)
+
   const { data: paymentMethods } = useGetPaymentMethods()
   const updatePaymentInfo = usePaymentInfoStore(
     (state) => state.updatePaymentInfo
   )
-  const [selectedPayment, setSelectedPayment] = useState<E_PaymentType | null>(
-    null
-  )
+
   const { selectedItems } = useCartStore()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isConfirmPayModalOpen, setIsConfirmPayModalOpen] = useState(false)
@@ -126,7 +126,6 @@ const Pay = () => {
       },
       rentalIds: {
         ...item.rentalIds,
-        guestCount: item.guestCount ?? 0,
         // @ts-expect-error
         rentalId: item.rentalIds?.rentalId._id ?? "",
       },
@@ -135,14 +134,12 @@ const Pay = () => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate, isPending } = useAddGCashPayment()
+  const { mutate: mutateUseAddManualCardPayment } = useAddManualCardPayment()
+  const { mutate: mutateUseAddCardPayment } = useAddCardPayment() 
   const remappedItems = remapItems(selectedItems as T_Add_To_Cart[])
-  const steps: Step[] = [
-    { label: "Choose Listings", status: "completed" },
-    // { label: "Summary", status: "completed" },
-    { label: "Pay", status: "current" },
-  ]
+
   const handleProceedToPayment = () => {
-    if (selectedPayment == E_PaymentType.GCASH) {
+    if (paymentInfo.paymentType == E_PaymentType.GCASH) {
       mutate(remappedItems, {
         onSuccess: (data: any) => {
           if (!data.error) {
@@ -152,7 +149,6 @@ const Pay = () => {
             router.push(data.item.action.link)
           } else {
             toast.error(String(data.message))
-            console.log(data.items)
           }
         },
         onError: (err: any) => {
@@ -160,10 +156,40 @@ const Pay = () => {
         },
       })
     }
-  }
-
-  const handleSelectedPayment = (selection: { type: E_PaymentType | null }) => {
-    setSelectedPayment(selection.type)
+    if (paymentInfo.paymentType == E_PaymentType.CreditDebit) {
+      const payload = {
+        cardInfo: {
+          cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ''),
+          expirationMonth: paymentInfo.expirationMonth,
+          expirationYear: paymentInfo.expirationYear,
+          cardholderName: paymentInfo.cardholderName,
+          country: paymentInfo.country,
+          cvv: paymentInfo.cvv,
+          zipCode: paymentInfo.zipCode,
+        },
+        cartItems: remappedItems
+      }
+      // console.log(payload)
+      mutateUseAddManualCardPayment(payload,
+        {
+          onSuccess: (data: any) => {
+            if (!data.error) {
+              // router.push(data.item.action.link)
+            } else {
+              toast.error(String(data.message))
+            }
+          },
+          onError: (err: any) => {
+            toast.error(String(err))
+          },
+        }
+      )
+      // setIsConfirmPayModalOpen(true)
+     }
+     if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
+      // mutateUseAddCardPayment()
+      setIsConfirmPayModalOpen(true)
+     }
   }
 
   return (
@@ -199,7 +225,7 @@ const Pay = () => {
           </div>
           <GuestSection/>
           <hr className="my-4" />
-          <PaymentOptions onSelectionChange={handleSelectedPayment} />
+          <PaymentOptions />
           <hr className="my-4" />
           <div className="flex flex-col gap-y-4">
             <Typography variant={"h2"} fontWeight="semibold">
