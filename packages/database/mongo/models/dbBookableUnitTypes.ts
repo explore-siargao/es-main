@@ -1,5 +1,12 @@
 import mongoose, { Schema } from "mongoose"
 
+const amenities = new Schema({
+  index: Number,
+  category: String,
+  amenity: String,
+  isSelected: Boolean,
+})
+
 const bed = new Schema({
   name: String,
   qty: Number,
@@ -56,8 +63,8 @@ const bookableUnitTypes = new Schema({
     default: [],
   },
   amenities: {
-    type: [mongoose.Schema.ObjectId],
-    ref: "Amenities",
+    type: [amenities],
+    default: [],
   },
   photos: [
     {

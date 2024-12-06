@@ -11,6 +11,21 @@ const propertyTypeEnum = [
 
 const wholePlaceType = ["VILLA", "HOUSE", "BUNGALOW", "COTTAGE"]
 
+const facilities = new Schema({
+  index: Number,
+  category: String,
+  facility: String,
+  isSelected: Boolean,
+})
+
+const policies = new Schema({
+  index: Number,
+  category: String,
+  reason: String,
+  policy: String,
+  isSelected: Boolean,
+})
+
 const properties = new Schema({
   offerBy: {
     type: mongoose.Schema.ObjectId,
@@ -66,18 +81,14 @@ const properties = new Schema({
     enum: wholePlaceType,
     default: null,
   },
-  facilities: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Facilities",
-    },
-  ],
-  policies: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Policies",
-    },
-  ],
+  facilities: {
+    type: [facilities],
+    default: [],
+  },
+  policies: {
+    type: [policies],
+    default: [],
+  },
   bookableUnits: [
     {
       type: mongoose.Schema.ObjectId,

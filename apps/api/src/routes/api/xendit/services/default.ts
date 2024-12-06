@@ -79,6 +79,7 @@ export const cardSingleUse = async (req: Request, res: Response) => {
             card_number: cardNumber,
             expiry_month: expirationMonth,
             expiry_year: expirationYear,
+            card_expiry: '07/25',
             cvv: cvv,
             cardholder_name: cardholderName,
           },
@@ -140,7 +141,6 @@ export const cardInitiatePayment = async (req: Request, res: Response) => {
 export const gcashCreatePayment = async (req: Request, res: Response) => {
   const { amount } = req.body
   const refId = `${randomUUID()}`
-  console.log(refId)
   if (amount) {
     try {
       const data = {
@@ -171,34 +171,60 @@ export const gcashCreatePayment = async (req: Request, res: Response) => {
 }
 
 export const cardPayment = async (req: Request, res: Response) => {
-  const { amount, cardNumber, expirationMonth, expirationYear, cvv } = req.body
+  const {
+    amount,
+    cardNumber,
+    cardHolderName,
+    country,
+    expirationMonth,
+    expirationYear,
+    cvv,
+    customer,
+    userId,
+  } = req.body
   const refId = `${randomUUID()}`
-  console.log(refId)
-
-  if (amount && cardNumber && expirationMonth && expirationYear && cvv) {
+  if (
+    amount &&
+    cardNumber &&
+    expirationMonth &&
+    cardHolderName &&
+    country &&
+    expirationYear &&
+    cvv &&
+    customer
+  ) {
     try {
       const data = {
         reference_id: refId,
         amount: amount,
         currency: 'PHP',
         country: 'PH',
+        customer_id: `cust-${userId}`,
         payment_method: {
           type: 'CARD',
+          billing_information: {
+            city: customer.Address.city,
+            country: customer.Address.country,
+            postal_code: String(customer.Address.zipCode),
+            province_state: customer.Address.stateProvince,
+            street_line1: `${customer.Address.streetAddress} ${customer.Address.brangay}`,
+            street_line2: null,
+          },
           card: {
             card_information: {
+              cardholder_name: cardHolderName,
+              country: country,
               card_number: cardNumber,
-              card_expiry: '12/25',
+              expiry_month: expirationMonth,
+              expiry_year: expirationYear,
               cvv: cvv,
+            },
+            channel_properties: {
+              success_return_url: `${WEB_URL}/bookings/${refId}/success-payment`,
+              failure_return_url: `${WEB_URL}/bookings/${refId}/error-payment`,
             },
           },
           reusability: 'ONE_TIME_USE',
-        },
-        billing_address: {
-          country: 'PH',
-          street_line1: '123 Test Street', // Example address; replace with dynamic data if needed
-          city: 'Manila',
-          province: 'Metro Manila',
-          postal_code: '1000',
         },
         metadata: {
           description: 'Card payment for booking',
@@ -208,7 +234,9 @@ export const cardPayment = async (req: Request, res: Response) => {
       const req = await apiXendit.post(`/payment_requests`, data, false, true)
       res.json(response.success({ item: req }))
     } catch (err: any) {
-      res.json(response.error({ item: req.body, message: err.message }))
+      res.json(
+        response.error({ item: req.body, message: err.message + 'hello' })
+      )
     }
   } else {
     res.json(
