@@ -20,6 +20,7 @@ import { T_BookableUnitType } from "@repo/contract"
 import { format, parseISO } from "date-fns"
 import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/formatCurrency"
+import Link from "next/link"
 
 export const imageGallery = [
   {
@@ -413,7 +414,6 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const goal = 1000000
   const percentage = Math.min((current / goal) * 100, 100).toFixed(2);
 
-
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <SectionInfo images={data?.item?.photos} title={data?.item?.title} />
@@ -422,7 +422,7 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
             <div className="pb-6">
-              <SummaryInfo />
+              <SummaryInfo bookableUnits={data?.item?.bookableUnits} reviews={data?.item?.reviews} stars={data?.item?.stars} location={data?.item?.location} />
             </div>
             <div className="py-6">
               <BookingDescription {...description} />
@@ -479,13 +479,15 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
                         style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
-                  <Typography variant="h6" className="text-justify mt-1 text-text-300">
-                    {percentage}% of {formatCurrency(goal)}
+                  <Typography variant="h6" className="text-justify mt-1 text-text-400">
+                    {formatCurrency(current)} of {formatCurrency(goal)}
                   </Typography>
-
-                  <Typography variant="h5" className="mt-1">
-                    Your stay contributes to Siargao's community growth
-                  </Typography>
+          
+                    <Typography variant="h5" className="mt-1">
+                      Your stay contributes to Siargao's community growth. <Link href="/read-more" className="underline text-primary-600">Find out more here</Link>
+                    </Typography>
+                    
+             
                 </div>
               </div>
             </div>

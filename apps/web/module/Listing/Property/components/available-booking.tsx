@@ -11,6 +11,7 @@ import ImageGalleryModal from "./modals/ImageGalleryModal"
 import { useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"
+import { LucideGrip } from "lucide-react"
 
 const AvailableBooking = ({
   bookableUnits,
@@ -18,7 +19,6 @@ const AvailableBooking = ({
   onSelectBookableUnit,
   selectedBookableUnit,
 }: T_AvailableBookingProps) => {
-
   const handleSelectUnit = (unit: T_AvailableBookableUnitProps | null) => {
     onSelectBookableUnit(unit)
   }
@@ -61,30 +61,34 @@ const AvailableBooking = ({
           return (
             <div
               key={unit.id}
-              className={`w-full rounded-2xl border p-5 cursor-pointer transition ${
-                selectedBookableUnit === unit
+              className={`w-full rounded-2xl border p-5 cursor-pointer transition ${selectedBookableUnit === unit
                   ? "bg-primary-200 border-primary-500"
                   : "bg-white hover:bg-text-50 border-text-100"
-              }`}
+                }`}
               onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
             >
               <div>
                 {unit.photos && unit.photos.length > 0 && (
-                  <>
+                  <div className="relative">
                     <ImageGallery
                       images={unit.photos}
-                      openModal={openModal}
+                      openModal={() => setGalleryModalOpen(!galleryModalOpen)}
+                      isOpen={galleryModalOpen}
                       showTwoOnly={true}
                       isViewModal={false}
                       isImageAllowClickView={true}
                       isRoundedEdge={true}
                     />
-                    <ImageGalleryModal
-                      images={unit.photos}
-                      isOpen={galleryModalOpen}
-                      onClose={() => setGalleryModalOpen(false)}
-                    />
-                  </>
+                    <Button
+                      size="sm"
+                      variant="shaded"
+                      className="absolute bottom-2 md:bottom-4 right-1 md:right-4 bg-white text-xs"
+                      onClick={() => setGalleryModalOpen(true)}
+                    >
+                      <LucideGrip className="h-3 w-3 mr-2" />
+                      Show all photos
+                    </Button>
+                  </div>
                 )}
                 <div className="mt-4">
                   <Typography variant="h3" fontWeight="semibold">{unit.title}</Typography>
@@ -103,21 +107,21 @@ const AvailableBooking = ({
                   <Typography variant="h5">
                     Can accommodate maximum of {unit.maxGuests} guests
                   </Typography>
-                  <div className="flex gap-2 mt-6">                 
-                  <Button
-                    variant={selectedBookableUnit === unit ? "primary" : "default"}
-                    size="sm"
-                    onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
-                  >
-                   {selectedBookableUnit === unit ? "Unselect this unit" : "Select this unit"}
-                  </Button>
-                  <Button
-                    variant="link"
-                    size="sm"
-                    className="underline"
-                  >
-                    More information
-                  </Button>
+                  <div className="flex gap-2 mt-6">
+                    <Button
+                      variant={selectedBookableUnit === unit ? "primary" : "default"}
+                      size="sm"
+                      onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
+                    >
+                      {selectedBookableUnit === unit ? "Unselect this unit" : "Select this unit"}
+                    </Button>
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="underline"
+                    >
+                      More information
+                    </Button>
                   </div>
                 </div>
               </div>

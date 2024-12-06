@@ -7,10 +7,13 @@ import { useState } from "react"
 import SliderImages from "@/common/components/SliderImages"
 
 type ImageGalleryProps = T_ImagesProps & {
+  isOpen?: boolean
   galleryHeight?: string
 }
 
 const ImageGallery = ({
+  isOpen = false,
+  openModal,
   images,
   isViewModal,
   showThreeOnly,
@@ -25,8 +28,6 @@ const ImageGallery = ({
     const imgAlt = image?.description || image?.image?.alt || ""
     return { src: imgSrc, alt: imgAlt }
   }
-
-  const [isOpen, setIsOpen] = useState(false)
 
   const getRoundedEdgeClass = (
     index: number,
@@ -60,7 +61,7 @@ const ImageGallery = ({
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative ${additionalClasses} w-full h-full`}>
       <Image
-        onClick={() => setIsOpen(true)}
+        onClick={() => openModal()}
         src={images ? getImgSrc(index).src : ""}
         fill
         style={{ objectFit: "cover" }}
@@ -74,7 +75,7 @@ const ImageGallery = ({
     <Button
       variant="shaded"
       className="absolute bottom-2 md:bottom-2 right-2 md:right-2 bg-white px-1 text-[10px] h-6 p-2"
-      onClick={() => setIsOpen(true)}
+      onClick={() => openModal()}
     >
       <Grip className="h-2 w-2 mr-1 mb-0.5" />
       Show all photos
@@ -104,7 +105,7 @@ const ImageGallery = ({
       <div className="relative h-44">
         <div
           className="grid grid-cols-2 h-full gap-2 w-full"
-          onClick={() => setIsOpen(true)}
+          onClick={() => openModal()}
         >
           {renderImage(0, "rounded-lg")}
           {renderImage(1, "rounded-lg")}
@@ -113,13 +114,13 @@ const ImageGallery = ({
         {isImageAllowClickView && (
           <Dialog
             open={isOpen}
-            onClose={() => setIsOpen(false)}
+            onClose={() => openModal()}
             className="fixed inset-0 z-50 flex items-center justify-center"
           >
             <div className="relative w-full h-full bg-text-950 bg-opacity-70">
               <SliderImages images={images} />
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => openModal()}
                 className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
               >
                 <svg
@@ -169,7 +170,7 @@ const ImageGallery = ({
         <Button
           variant="shaded"
           className="absolute bottom-2 md:bottom-4 right-1 md:right-4 bg-white"
-          onClick={() => setIsOpen(true)}
+          onClick={() => openModal()}
         >
           <Grip className="h-4 w-4 mr-2 mb-0.5" />
           Show all photos
@@ -177,13 +178,13 @@ const ImageGallery = ({
       )}
       <Dialog
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => openModal()}
         className="fixed inset-0 z-50 flex items-center justify-center"
       >
         <div className="relative w-full h-full bg-text-950 bg-opacity-70">
           <SliderImages images={images} />
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => openModal()}
             className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
           >
             <svg
