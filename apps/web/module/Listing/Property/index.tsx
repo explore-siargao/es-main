@@ -418,7 +418,7 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <SectionInfo images={data?.item?.photos} title={data?.item?.title} />
 
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
             <div className="pb-6">
@@ -449,7 +449,7 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
             </div>
           </div>
         </div>
-        <div className="md:w-96 md:relative">
+        <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
             {bookableUnit && (
               <CheckoutBox
@@ -472,7 +472,7 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
               <div className="border border-gray-300 rounded-xl p-4 mb-2 flex gap-4">
                 <div className="mt-1"><LucideHeartHandshake/></div>
                 <div>
-                  <h3 className="font-semibold">Pledge to LokalLab by ExploreSiargao</h3>
+                  <h3 className="font-semibold">Pledged to LokalLab by ExploreSiargao</h3>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div
                         className="bg-primary-500 h-2 rounded-full"
