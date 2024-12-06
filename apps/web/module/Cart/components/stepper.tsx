@@ -15,7 +15,8 @@ export function Stepper({ steps, className }: StepperProps) {
   if (!steps?.length) return null
 
   return (
-    <div className={cn("w-full pb-20 mt-5 flex items-center", className)}>
+    <div className="flex justify-center">
+    <div className={cn("w-1/4 pb-20 mt-5 flex items-center", className)}>
       {steps.map((step, index) => (
         <div
           key={index}
@@ -72,6 +73,7 @@ export function Stepper({ steps, className }: StepperProps) {
           </div>
         </div>
       ))}
+    </div>
     </div>
   )
 }

@@ -28,6 +28,8 @@ import useAddGCashPayment from "../hooks/use-add-gcash-payment"
 import { useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { E_PaymentType } from "@repo/contract"
+import { Input } from "@/common/components/ui/Input"
+import GuestSection from "./guest-section"
 
 const encryptionService = new EncryptionService("card")
 
@@ -136,7 +138,7 @@ const Pay = () => {
   const remappedItems = remapItems(selectedItems as T_Add_To_Cart[])
   const steps: Step[] = [
     { label: "Choose Listings", status: "completed" },
-    { label: "Summary", status: "completed" },
+    // { label: "Summary", status: "completed" },
     { label: "Pay", status: "current" },
   ]
   const handleProceedToPayment = () => {
@@ -172,7 +174,7 @@ const Pay = () => {
           <ListingPriceDetailsBox items={selectedItems} />
         </div>
         <div className="flex-1 flex flex-col gap-y-4">
-          {/* <Typography variant={"h2"} fontWeight="semibold">
+          <Typography variant={"h2"} fontWeight="semibold">
             Your booking
           </Typography>
           <div className="flex w-full flex-col">
@@ -196,20 +198,8 @@ const Pay = () => {
                 : "Date to"}
             </Typography>
           </div>
-          <div className="flex w-full flex-col">
-            <div className="flex justify-between w-full">
-              <div className="font-semibold">Guests</div>
-              <button
-                type="button"
-                className="underline hover:text-text-400 text-sm"
-                onClick={() => setIsGuestsModalOpen(true)}
-              >
-                Edit
-              </button>
-            </div>
-            <Typography className="text-sm">{`${totalGuest} guest${Number(totalGuest) > 1 ? "s" : ""}`}</Typography>
-          </div> */}
-          {/* <hr className="my-4" /> */}
+          <GuestSection/>
+          <hr className="my-4" />
           <PaymentOptions onSelectionChange={handleSelectedPayment} />
           <hr className="my-4" />
           <div className="flex flex-col gap-y-4">
