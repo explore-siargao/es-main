@@ -16,11 +16,14 @@ import {
   E_Rental_Vehicle_Transmission,
 } from "../rentals/enum"
 import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
-import {
-  Z_Activity_PricePerDate,
-  Z_Activity_Schedule,
-  Z_Activity_Segment,
-} from "../activity"
+
+    const objectIdSchema = z
+    .any()
+    .refine(
+        (val) => typeof val === "object" && val.toString().length === 24,
+        { message: "Invalid ObjectId" }
+    )
+    .transform((val) => val.toString());
 
 export const Z_Properties_Search = z.object({
   page: z.number().min(1).default(1),
@@ -104,81 +107,39 @@ export const Z_Category_Highest_Price = z.object({
   amount: z.number(),
 })
 
+
 export const Z_Rental_Filtered = z.object({
   // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
-  _id: z.string().optional(),
-  details: Z_Rental_Details.nullable(),
-  pricing: Z_Rental_Price.nullable(),
-  host: Z_Host,
-  category: z.nativeEnum(E_Rental_Category),
+  _id: objectIdSchema.optional(),
+  category:z.nativeEnum(E_Rental_Category),
   make: z.string(),
   modelBadge: z.string().optional().nullable(),
-  bodyType: z.string().optional().nullable(),
-  fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
-  transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
   year: z.string().optional().nullable(),
-  qty: z.number(),
-  addOns: Z_Rental_AddOns.nullable(),
-  photos: z.array(Z_Photo),
   location: Z_Location.nullable(),
-  status: z.string(),
-  finishedSections: z.array(z.string()),
-  qtyIds: z
-    .array(
-      z.object({
-        _id: z.string(),
-        name: z.string(),
-      })
-    )
-    .nullable(),
-  pricePerDates: z.array(Z_Rental_PricePerDate).nullable(),
-  rentalNote: z.string().optional(),
+  pricing: Z_Rental_Price.nullable(),
+  photos: z.array(Z_Photo),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
+  transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
+  fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
 })
+
+export const Z_Rental_Filtered_Result = z.array(Z_Rental_Filtered)
 
 export const Z_Activity_Filtered = z.object({
   // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
-  _id: z.string().optional(),
-  host: Z_Host,
+  _id: objectIdSchema.optional(),
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
-  experienceType: z.string(),
-  description: z.string().optional(),
-  highLights: z.array(z.string()).nullable(),
-  durationHour: z.number(),
-  durationMinute: z.number(),
-  languages: z.array(z.string()),
-  isFoodIncluded: z.boolean(),
-  includedFoods: z.array(z.string()),
-  isNonAlcoholicDrinkIncluded: z.boolean(),
-  isAlcoholicDrinkIncluded: z.boolean(),
-  includedAlcoholicDrinks: z.array(z.string()),
-  otherInclusion: z.array(z.string()),
-  notIncluded: z.array(z.string()),
-  whatToBring: z.array(z.string()),
-  notAllowed: z.array(z.string()),
-  policies: z.array(z.string()),
-  isSegmentBuilderEnabled: z.boolean(),
-  segments: z.array(Z_Activity_Segment),
   meetingPoint: Z_Location.nullable(),
   photos: z.array(Z_Photo),
-  slotCapacity: z.object({
-    _id: z.string().optional(),
-    minimum: z.number(),
-    maximum: z.number(),
-  }),
-  schedule: Z_Activity_Schedule.nullable().optional(),
   pricePerPerson: z.number().nullable().optional(),
   pricePerSlot: z.number().nullable().optional(),
-  daysCanCancel: z.number(),
-  status: z.string(),
-  finishedSections: z.array(z.string()),
-  pricePerDates: z.array(Z_Activity_PricePerDate),
-  activityNote: z.string().nullable(),
   average: z.number(),
   reviewsCount: z.number(),
 })
+
+export const Z_Activity_Filtered_Results = z.array(Z_Activity_Filtered)
 
 export const Z_Property_Filtered = z.object({
   listingId: z.string(),

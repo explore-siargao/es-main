@@ -8,6 +8,14 @@ import {
 import { Z_Photo } from "../photos"
 import { Z_Location } from "../address-location"
 
+const objectIdSchema = z
+    .any()
+    .refine(
+        (val) => typeof val === "object" && val.toString().length === 24,
+        { message: "Invalid ObjectId" }
+    )
+    .transform((val) => val.toString());
+
 export const Z_Rental_Details = z.object({
   _id: z.string().optional(),
   engineCapacityLiter: z.number().nullable(),
@@ -25,13 +33,13 @@ export const Z_Rental_Details = z.object({
 })
 
 export const Z_Rental_Price = z.object({
-  _id: z.string().optional(),
+  _id: objectIdSchema.optional(),
   dayRate: z.number(),
   requiredDeposit: z.number(),
   adminBookingCharge: z.number(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
+  createdAt: z.union([z.string(),z.date()]).optional(),
+  updatedAt: z.union([z.string(),z.date()]).nullable().optional(),
+  deletedAt: z.union([z.string(),z.date()]).nullable().optional(),
 })
 
 export const Z_Rental_AddOns = z.object({
