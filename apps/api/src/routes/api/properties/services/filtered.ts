@@ -7,6 +7,7 @@ import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import { T_BookableUnitType, T_Photo } from '@repo/contract'
 import { T_Property } from '@repo/contract-2/property'
+import { Z_Properties_Search, Z_Property_Filtered, Z_Property_Filtered_Result } from '@repo/contract-2/search-filters'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
 import { Request, Response } from 'express'
 
@@ -32,8 +33,25 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
   const startIndex = (page - 1) * limit
   const endIndex = startIndex + limit
+  const validPropertySearch = Z_Properties_Search.safeParse({
+    page,
+    location,
+    propertyTypes,
+    priceFrom,
+    priceTo,
+    bedroomCount,
+    bedCount,
+    bathroomCount,
+    facilities,
+    amenities,
+    starRating,
+    checkIn,
+    checkOut,
+    numberOfGuest
+  })
   const query: any = {
     bookableUnits: { $exists: true, $not: { $size: 0 } },
+    status:"Live",
     deletedAt: null,
   }
   let facilitiesArray: string[] | string = []
@@ -73,6 +91,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   if (!bathroomCount) {
     bathroomCount = 'any'
   }
+  if(validPropertySearch.success){
   try {
     const startDate =
       checkIn === 'any' ? 'any' : parseToUTCDate(checkIn as string)
@@ -780,14 +799,19 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         startIndex,
         endIndex
       )
-
+      const validBookableUnits = Z_Property_Filtered_Result.safeParse(paginatedBookableUnits)
+      if(validBookableUnits.success){
       res.json(
         response.success({
-          items: paginatedBookableUnits,
+          items: validBookableUnits.data,
           pageItemCount: paginatedBookableUnits.length,
           allItemCount: allBookableUnits.length,
         })
       )
+    }else{
+      console.error(validBookableUnits.error)
+      res.json(response.error({item:paginatedBookableUnits,items:JSON.parse(validBookableUnits.error.message),message:"Invalid data exists"}))
+    }
     } else if (
       location &&
       location !== 'any' &&
@@ -1449,14 +1473,20 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         startIndex,
         endIndex
       )
-
+      
+      const validBookableUnits = Z_Property_Filtered_Result.safeParse(paginatedBookableUnits)
+      if(validBookableUnits.success){
       res.json(
         response.success({
-          items: paginatedBookableUnits,
+          items: validBookableUnits.data,
           pageItemCount: paginatedBookableUnits.length,
           allItemCount: allBookableUnits.length,
         })
       )
+    }else{
+      console.error(validBookableUnits.error)
+      res.json(response.error({items:[],message:"Invalid data exists"}))
+    }
     } else if (
       (!location || location === 'any') &&
       propertyTypes &&
@@ -2147,13 +2177,19 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         endIndex
       )
 
+      const validBookableUnits = Z_Property_Filtered_Result.safeParse(paginatedBookableUnits)
+      if(validBookableUnits.success){
       res.json(
         response.success({
-          items: paginatedBookableUnits,
+          items: validBookableUnits.data,
           pageItemCount: paginatedBookableUnits.length,
           allItemCount: allBookableUnits.length,
         })
       )
+    }else{
+      console.error(validBookableUnits.error)
+      res.json(response.error({items:[],message:"Invalid data exists"}))
+    }
     } else if (
       location &&
       location !== 'any' &&
@@ -2854,13 +2890,19 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         endIndex
       )
 
+      const validBookableUnits = Z_Property_Filtered_Result.safeParse(paginatedBookableUnits)
+      if(validBookableUnits.success){
       res.json(
         response.success({
-          items: paginatedBookableUnits,
+          items: validBookableUnits.data,
           pageItemCount: paginatedBookableUnits.length,
           allItemCount: allBookableUnits.length,
         })
       )
+    }else{
+      console.error(validBookableUnits.error)
+      res.json(response.error({items:[],message:"Invalid data exists"}))
+    }
     } else {
       res.jsonp(
         response.success({ items: null, pageItemCount: 0, allItemCount: 0 })
@@ -2873,4 +2915,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
       })
     )
   }
+}else{
+  console.error(validPropertySearch.error)
+  res.json(response.error({items:[], message:"Invalid search parameters"}))
+}
 }

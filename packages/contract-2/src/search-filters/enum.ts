@@ -10,3 +10,10 @@ export enum E_Location {
   "Santa Monica" = "Santa Monica",
   Socorro = "Socorro",
 }
+
+export enum E_Vehicle_Type {
+  Car = "car",
+  Motorbike = "motorbike",
+  Bicycle = "bicycle",
+  Any = "any"
+}

@@ -9,7 +9,7 @@ import {
   Z_Rental_Details,
   Z_Rental_Price,
 } from "../rentals"
-import { E_Location } from "./enum"
+import { E_Location, E_Vehicle_Type } from "./enum"
 import {
   E_Rental_Category,
   E_Rental_Vehicle_Fuel,
@@ -27,7 +27,7 @@ const objectIdSchema = z
 export const Z_Properties_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
-  propertyTypes: z.string().default("any"), // TODO: ENUMS
+  propertyTypes:z.string().default("any"), // TODO: ENUMS
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   bedroomCount: z.number().min(1).or(z.literal("any")).default(0),
@@ -78,7 +78,10 @@ export const Z_Activities_Search = z.object({
 export const Z_Rentals_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
-  vehicleTypes: z.string().default("any"), // TODO: ENUMS
+  vehicleTypes: z.union([
+    z.nativeEnum(E_Vehicle_Type),
+    z.array(z.nativeEnum(E_Vehicle_Type).default(E_Vehicle_Type.Any))
+  ]),
   transmissionTypes: z.string().default("any"), // TODO: ENUMS
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
@@ -140,7 +143,7 @@ export const Z_Activity_Filtered = z.object({
 export const Z_Activity_Filtered_Results = z.array(Z_Activity_Filtered)
 
 export const Z_Property_Filtered = z.object({
-  listingId: z.string(),
+  listingId: objectIdSchema,
   type: z.nativeEnum(E_Property_Type),
   wholeplaceType: z.nativeEnum(E_Whole_Place_Property_Type).optional(),
   location: Z_Location,
@@ -151,3 +154,5 @@ export const Z_Property_Filtered = z.object({
   reviewsCount: z.number().optional(),
   price: z.number(),
 })
+
+export const Z_Property_Filtered_Result = z.array(Z_Property_Filtered)
