@@ -27,6 +27,7 @@ import {
 import {
   cardMultipleCheckout,
   gcashMultipleCheckout,
+  manualCardMultipleCheckout,
 } from './services/cart-reservations'
 
 const router = express.Router()
@@ -153,6 +154,14 @@ router.post(
   isUserLoggedIn,
   isCsrfTokenValid,
   cardMultipleCheckout
+)
+
+router.post(
+  '/cart/checkout/manual-card',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  manualCardMultipleCheckout
 )
 
 export default router
