@@ -135,7 +135,7 @@ const PropertiesFilter = () => {
         </div>
 
         <div className="w-2/3 relative mt-5">
-          <div className="sticky top-20">
+          <div className="sticky top-[17.3rem]">
             {properties ? (
               <Map units={properties} location={location as E_Location} />
             ) : null}

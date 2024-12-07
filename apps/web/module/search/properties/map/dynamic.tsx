@@ -57,7 +57,7 @@ const Dynamic = ({ center, units, zoom, scrollWheelZoom }: T_Props) => {
       center={center}
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
-      className="h-[100vh]"
+      className="h-screen"
       rounded="rounded-none"
     >
       <MapClickHandler />

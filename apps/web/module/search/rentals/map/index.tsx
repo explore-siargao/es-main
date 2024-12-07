@@ -60,6 +60,7 @@ const Map = ({ rentals, location }: T_Props) => {
         rentals={rentals}
         center={locationMap[location].center}
         zoom={locationMap[location].zoom}
+        scrollWheelZoom
       />
     </div>
   )
