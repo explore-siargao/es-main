@@ -33,7 +33,7 @@ const SummaryInfo = ({
         </button>{" "}
         <Typography className="text-sm md:flex">&middot;</Typography>
         <button className="hover:underline hover:duration-300 cursor-pointer">
-          <Typography className="text-sm md:flex">{baths} Baths</Typography>
+          <Typography className="text-sm md:flex">{baths} Bathrooms</Typography>
         </button>{" "}
       </div>
       <div className="flex gap-1 mt-1">

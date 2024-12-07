@@ -2,14 +2,14 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucideMapPin, Flag } from "lucide-react"
 import React from "react"
 import { TitleSection } from "@/module/Listing/Property/components/TitleSection"
-import { value } from ".."
 import { useParams } from "next/navigation"
+import { activities } from "../dummy"
 
 const Builder = () => {
   const params = useParams<{ activityId: string }>()
   const data: any = { item: null };
 
-  const testSegmentsData = value.segments
+  const testSegmentsData = activities.segments
   return (
     <>
       <div className=" sm:w-3/4 w-full">

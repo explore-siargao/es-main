@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import ImageGallery from "@/module/Listing/Property/components/ImageGallery"
+import ImageGallery from "@/module/Listing/Property/components/image-gallery"
 import ImageGalleryModal from "@/module/Listing/Property/components/modals/ImageGalleryModal"
 import { T_SectionInfoProps } from "@/module/Listing/Property/types/SectionInfo"
 import { StarIcon } from "lucide-react"

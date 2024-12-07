@@ -25,7 +25,7 @@ const SummaryInfo = ({ bookableUnits, reviews, stars, location}: any) => {
       0
     )
 
-    return `${totalGuests} Guests · ${totalBedrooms} Bedrooms · ${totalBeds} Beds · ${totalBaths} Baths`
+    return `${totalGuests} Guests · ${totalBedrooms} Bedrooms · ${totalBeds} Beds · ${totalBaths} Bathrooms`
   }
 
   return (

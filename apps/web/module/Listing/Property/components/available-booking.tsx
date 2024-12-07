@@ -6,8 +6,7 @@ import {
   T_AvailableBookingProps,
 } from "../types/AvailableBooking"
 import { TitleSection } from "./TitleSection"
-import ImageGallery from "./ImageGallery"
-import ImageGalleryModal from "./modals/ImageGalleryModal"
+import ImageGallery from "./image-gallery"
 import { useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"
@@ -23,9 +22,6 @@ const AvailableBooking = ({
     onSelectBookableUnit(unit)
   }
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
-  const openModal = () => {
-    setGalleryModalOpen(true)
-  }
 
   let title = ""
   switch (propertyType.toUpperCase()) {
@@ -59,9 +55,10 @@ const AvailableBooking = ({
           )
 
           return (
-            <div
+            <button
+              type="button"
               key={unit.id}
-              className={`w-full rounded-2xl border p-5 cursor-pointer transition ${selectedBookableUnit === unit
+              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${selectedBookableUnit === unit
                   ? "bg-primary-200 border-primary-500"
                   : "bg-white hover:bg-text-50 border-text-100"
                 }`}
@@ -125,7 +122,7 @@ const AvailableBooking = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           )
         })}
       </div>
