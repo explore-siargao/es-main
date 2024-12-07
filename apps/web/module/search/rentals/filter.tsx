@@ -63,6 +63,8 @@ const RentalsFilter = () => {
     dropOffDate,
   ])
 
+  const allItemCount = rentalUnits?.allItemCount || 0
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
     const params = new URLSearchParams(window.location.search)
@@ -70,10 +72,7 @@ const RentalsFilter = () => {
     router.push(`?${params.toString()}`)
   }
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil((rentalUnits?.allItemCount || 0) / 15)
-  )
+  const totalPages = Math.max(1, Math.ceil(allItemCount / 15))
 
   if (isLoading) {
     return (
@@ -89,19 +88,25 @@ const RentalsFilter = () => {
 
   return (
     <WidthWrapper width="medium">
-      <div className="flex gap-7 mt-16">
+      <div className="flex gap-7">
         {/* Listings section */}
-        <div className="flex w-full">
+        <div className="flex w-full mt-14">
           <div>
             {isRefetching ? <Spinner variant="primary" /> : null}
             {!isLoading && !isRefetching && rentals && rentals?.length > 0 ? (
-              <div className="grid grid-cols-3 gap-6">
-                {rentals?.map((item) => (
-                  <div key={item._id}>
-                    <RentalCard {...item} />
-                  </div>
-                ))}
-              </div>
+              <>
+                <Typography className="mb-4">
+                  {" "}
+                  {allItemCount} rental{allItemCount > 1 ? "s" : ""} found
+                </Typography>
+                <div className="grid grid-cols-3 gap-6">
+                  {rentals?.map((item) => (
+                    <div key={item._id}>
+                      <RentalCard {...item} />
+                    </div>
+                  ))}
+                </div>
+              </>
             ) : null}
 
             {!isLoading && !isRefetching && rentals && rentals?.length === 0 ? (
@@ -112,8 +117,8 @@ const RentalsFilter = () => {
           </div>
         </div>
 
-        <div className="w-2/3 relative">
-          <div className="sticky top-[20rem]">
+        <div className="w-2/3 relative mt-5">
+          <div className="sticky top-[17.3rem]">
             {rentals ? (
               <Map rentals={rentals} location={location as E_Location} />
             ) : null}

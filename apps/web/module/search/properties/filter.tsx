@@ -74,16 +74,15 @@ const PropertiesFilter = () => {
     numberOfGuest,
   ])
 
+  const allItemCount = propertyUnits?.allItemCount || 0
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
     const params = new URLSearchParams(window.location.search)
     params.set("page", newPage.toString())
     router.push(`?${params.toString()}`)
   }
-  const totalPages = Math.max(
-    1,
-    Math.ceil((propertyUnits?.allItemCount || 0) / 15)
-  )
+  const totalPages = Math.max(1, Math.ceil(allItemCount / 15))
 
   if (isLoading) {
     return (
@@ -99,9 +98,9 @@ const PropertiesFilter = () => {
 
   return (
     <WidthWrapper width="medium">
-      <div className="flex gap-7 mt-16">
+      <div className="flex gap-7">
         {/* Listings section */}
-        <div className="flex w-full">
+        <div className="flex w-full mt-14">
           <div>
             {isRefetching ? <Spinner variant="primary" /> : null}
 
@@ -109,13 +108,19 @@ const PropertiesFilter = () => {
             !isRefetching &&
             propertyUnits &&
             (propertyUnits?.pageItemCount || 0) > 0 ? (
-              <div className="grid grid-cols-3 gap-6">
-                {properties?.map((item) => (
-                  <div key={item.listingId}>
-                    <PropertyCard {...item} />
-                  </div>
-                ))}
-              </div>
+              <>
+                <Typography className="mb-4">
+                  {" "}
+                  {allItemCount} place{allItemCount > 1 ? "s" : ""} found
+                </Typography>
+                <div className="grid grid-cols-3 gap-6">
+                  {properties?.map((item) => (
+                    <div key={item.listingId}>
+                      <PropertyCard {...item} />
+                    </div>
+                  ))}
+                </div>
+              </>
             ) : null}
 
             {!isLoading &&
@@ -129,8 +134,8 @@ const PropertiesFilter = () => {
           </div>
         </div>
 
-        <div className="w-2/3 relative">
-          <div className="sticky top-[20rem]">
+        <div className="w-2/3 relative mt-5">
+          <div className="sticky top-[17.3rem]">
             {properties ? (
               <Map units={properties} location={location as E_Location} />
             ) : null}

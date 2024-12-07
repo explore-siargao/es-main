@@ -126,7 +126,7 @@ const CheckoutBox = ({ checkoutDesc }: CheckoutProcessProps) => {
         >
           Book Now
         </Button>
-        <Button variant="secondary" onClick={() => console.log("add to cart")}>
+        <Button variant="default" onClick={() => console.log("add to cart")}>
           Add to cart
         </Button>
       </div>

@@ -87,7 +87,7 @@ const Slider = ({ images }: SliderProps) => {
           }
         `}</style>
 
-        {images.map((imageData) => (
+        {images?.map((imageData) => (
           <SwiperSlide key={imageData.fileKey}>
             <div className="relative flex h-full w-full items-center justify-center">
               <img
@@ -126,7 +126,7 @@ const Slider = ({ images }: SliderProps) => {
         modules={[FreeMode, Thumbs]}
         className="w-1/2 my-5 rounded-xl"
       >
-        {images.map((imageData) => (
+        {images?.map((imageData) => (
           <SwiperSlide key={imageData.fileKey}>
             <div className="relative flex h-full w-full items-center justify-center">
               <img

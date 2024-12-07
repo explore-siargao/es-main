@@ -19,6 +19,7 @@ import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { T_Add_To_Cart } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
+import { LucideShoppingCart } from "lucide-react"
 
 interface ICheckout {
   id?: number
@@ -198,6 +199,7 @@ const CheckoutBox = ({
         </div>
         <Button
           variant="primary"
+          className="font-bold"
           onClick={() =>
             isSelectedBookableUnit
               ? router.push(`/accommodation/${params.propertyId}/checkout`)
@@ -207,10 +209,11 @@ const CheckoutBox = ({
           Book Now
         </Button>
         <Button
-          variant="secondary"
+          variant="default"
+          className="font-bold"
           onClick={() => handleAddToCartSingleItem(params.propertyId)}
         >
-          Add to cart
+          <LucideShoppingCart size={20} className="mr-2" /> Add to cart
         </Button>
       </div>
       <div>

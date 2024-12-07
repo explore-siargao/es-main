@@ -63,6 +63,7 @@ const Map = ({ units, location }: T_Props) => {
         units={units}
         center={locationMap[location].center}
         zoom={locationMap[location].zoom}
+        scrollWheelZoom
       />
     </div>
   )
