@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.35.0](https://github.com/explore-siargao/es-main/compare/v0.34.0...v0.35.0) (2024-12-07)
+
+
+### 🚀 Features
+
+* **api:** Added endpoint for paying reservations using manual input of card ([4690191](https://github.com/explore-siargao/es-main/commit/4690191241391b2ce99434c3603ca7c0b87991ab))
+* **api:** Added endpoint for payments using card ([f61b985](https://github.com/explore-siargao/es-main/commit/f61b985fbd64d64dcf9f53870dd003e0bf017fb0))
+* **api:** Added items to bookable units seeders and added zod apiService for card payment ([58963ef](https://github.com/explore-siargao/es-main/commit/58963efe134d68e42a806eef5d5ab4b00f75f14f))
+* **api:** Modified logic for saving and updating facilities, amenities and policies ([28d17f8](https://github.com/explore-siargao/es-main/commit/28d17f87b0581c02cdac1670c97fd7a6d972f766))
+* cart enhancement ([75c5d78](https://github.com/explore-siargao/es-main/commit/75c5d781de679151a678caed266da2549ef1d55b))
+* **web:** cart enhancement ([782a0d5](https://github.com/explore-siargao/es-main/commit/782a0d55206bd07107ecc6a4cbf8c5b57fd4a4cd))
+* **web:** cart enhancement ([bcc135c](https://github.com/explore-siargao/es-main/commit/bcc135c9a2f10ffbe89cc636638c37b7b9ef1902))
+
+
+### 🛠 Bug Fixes
+
+* change activities to properties map card url ([17d2c77](https://github.com/explore-siargao/es-main/commit/17d2c77ed0e17f862a675377647a6c2fad644bea))
+* remove services in root package.json ([4b291cd](https://github.com/explore-siargao/es-main/commit/4b291cde50f41927badb2d88ffc2ef7a295e5e2a))
+
+
+### 🧰 Maintenance
+
+* change map of properties search ([6ecaa86](https://github.com/explore-siargao/es-main/commit/6ecaa86b5587bfc2962fdea4ce3ddd55330f6622))
+* change top info header text ([7eab9b0](https://github.com/explore-siargao/es-main/commit/7eab9b0c1394a7c49a42c602deadd208f61b3cec))
+* cleanup public listing property units and pledge card ([9429780](https://github.com/explore-siargao/es-main/commit/94297808f396ed0fe6236409509f850dda18e35d))
+* fix map on initial scroll in search pages ([cbeab93](https://github.com/explore-siargao/es-main/commit/cbeab93ce3db88c9f4c947c1073c855802f26c9f))
+* fix summary info data of property ([f7a7989](https://github.com/explore-siargao/es-main/commit/f7a79898230d138455772d8a17beb83bb6670ba6))
+* increase size of checkoutbox in property ([fc2bd19](https://github.com/explore-siargao/es-main/commit/fc2bd190373d65e5c577d175f3c9dc2fa6f74d5a))
+* remove itenerary builder client request for public listing activity ([feb8ca5](https://github.com/explore-siargao/es-main/commit/feb8ca5028c61ef2f51aa56f83a0cc2f5d188844))
+* update image gallery for listing ([45bfb91](https://github.com/explore-siargao/es-main/commit/45bfb91c1d76b973fc16581257fd4db0234127bd))
+
 ## [0.34.0](https://github.com/explore-siargao/es-main/compare/v0.33.0...v0.34.0) (2024-12-02)
 
 ### 🚀 Features
