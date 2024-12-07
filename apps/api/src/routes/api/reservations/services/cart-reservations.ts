@@ -251,7 +251,7 @@ export const manualCardMultipleCheckout = async (
             },
             body: JSON.stringify({
               amount: amount,
-              cardNumber: cardInfo.cardNumber,
+              cardNumber: cardInfo.cardNumber.trim(),
               expirationMonth: cardInfo.expirationMonth,
               expirationYear: cardInfo.expirationYear,
               cardHolderName: cardInfo.cardholderName,

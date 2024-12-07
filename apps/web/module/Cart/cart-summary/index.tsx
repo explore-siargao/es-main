@@ -39,7 +39,6 @@ const CheckoutPage = () => {
 
   return (
     <WidthWrapper width="medium" className="mt-4 md:mt-8 lg:mt-10">
-      <Stepper steps={steps} />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8">
         <div className="lg:col-span-3">
           <OrderSummary
