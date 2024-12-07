@@ -135,7 +135,7 @@ const Pay = () => {
   const queryClient = useQueryClient()
   const { mutate, isPending } = useAddGCashPayment()
   const { mutate: mutateUseAddManualCardPayment } = useAddManualCardPayment()
-  const { mutate: mutateUseAddCardPayment } = useAddCardPayment() 
+  const { mutate: mutateUseAddCardPayment } = useAddCardPayment()
   const remappedItems = remapItems(selectedItems as T_Add_To_Cart[])
 
   const handleProceedToPayment = () => {
@@ -159,7 +159,7 @@ const Pay = () => {
     if (paymentInfo.paymentType == E_PaymentType.CreditDebit) {
       const payload = {
         cardInfo: {
-          cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ''),
+          cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ""),
           expirationMonth: paymentInfo.expirationMonth,
           expirationYear: paymentInfo.expirationYear,
           cardholderName: paymentInfo.cardholderName,
@@ -167,29 +167,27 @@ const Pay = () => {
           cvv: paymentInfo.cvv,
           zipCode: paymentInfo.zipCode,
         },
-        cartItems: remappedItems
+        cartItems: remappedItems,
       }
       // console.log(payload)
-      mutateUseAddManualCardPayment(payload,
-        {
-          onSuccess: (data: any) => {
-            if (!data.error) {
-              // router.push(data.item.action.link)
-            } else {
-              toast.error(String(data.message))
-            }
-          },
-          onError: (err: any) => {
-            toast.error(String(err))
-          },
-        }
-      )
+      mutateUseAddManualCardPayment(payload, {
+        onSuccess: (data: any) => {
+          if (!data.error) {
+            // router.push(data.item.action.link)
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err: any) => {
+          toast.error(String(err))
+        },
+      })
       // setIsConfirmPayModalOpen(true)
-     }
-     if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
+    }
+    if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
       // mutateUseAddCardPayment()
       setIsConfirmPayModalOpen(true)
-     }
+    }
   }
 
   return (
@@ -223,7 +221,7 @@ const Pay = () => {
                 : "Date to"}
             </Typography>
           </div>
-          <GuestSection/>
+          <GuestSection />
           <hr className="my-4" />
           <PaymentOptions />
           <hr className="my-4" />

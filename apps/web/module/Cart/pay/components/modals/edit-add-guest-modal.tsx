@@ -1,49 +1,58 @@
-import ModalContainer from "@/common/components/ModalContainer";
-import React, { useState, useEffect } from "react";
-import { Input } from "@/common/components/ui/Input";
-import { Button } from "@/common/components/ui/Button";
+import ModalContainer from "@/common/components/ModalContainer"
+import React, { useState, useEffect } from "react"
+import { Input } from "@/common/components/ui/Input"
+import { Button } from "@/common/components/ui/Button"
 
 interface Guest {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  email: string
 }
 
 interface EditAddGuestModalProps {
-  isOpen: boolean;
-  action: "EDIT" | "ADD";
-  guest?: Guest;
-  onSubmit: (guest: Guest) => void;
+  isOpen: boolean
+  action: "EDIT" | "ADD"
+  guest?: Guest
+  onSubmit: (guest: Guest) => void
 }
 
-const EditAddGuestModal = ({ isOpen, action, guest, onSubmit }: EditAddGuestModalProps) => {
+const EditAddGuestModal = ({
+  isOpen,
+  action,
+  guest,
+  onSubmit,
+}: EditAddGuestModalProps) => {
   const [formData, setFormData] = useState<Guest>({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    email: '',
-  });
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+  })
 
   useEffect(() => {
-    if (action === 'EDIT' && guest) {
-      setFormData(guest);
-    } else if (action === 'ADD') {
-      setFormData({ firstName: '', lastName: '', phoneNumber: '', email: '' });
+    if (action === "EDIT" && guest) {
+      setFormData(guest)
+    } else if (action === "ADD") {
+      setFormData({ firstName: "", lastName: "", phoneNumber: "", email: "" })
     }
-  }, [action, guest]);
+  }, [action, guest])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
+    const { id, value } = e.target
+    setFormData((prev) => ({ ...prev, [id]: value }))
+  }
 
   const handleSubmit = () => {
-    onSubmit(formData);
-  };
+    onSubmit(formData)
+  }
 
   return (
-    <ModalContainer isOpen={isOpen} size="auto" title={action === 'EDIT' ? 'Edit Guest Information' : 'Add Guest'}>
+    <ModalContainer
+      isOpen={isOpen}
+      size="auto"
+      title={action === "EDIT" ? "Edit Guest Information" : "Add Guest"}
+    >
       <div className="space-y-4 p-5">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -92,7 +101,7 @@ const EditAddGuestModal = ({ isOpen, action, guest, onSubmit }: EditAddGuestModa
         </div>
       </div>
     </ModalContainer>
-  );
-};
+  )
+}
 
-export default EditAddGuestModal;
+export default EditAddGuestModal

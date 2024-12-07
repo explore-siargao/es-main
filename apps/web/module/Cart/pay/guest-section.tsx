@@ -1,55 +1,56 @@
-import React, { useState } from 'react';
-import EditAddGuestModal from './components/modals/edit-add-guest-modal';
+import React, { useState } from "react"
+import EditAddGuestModal from "./components/modals/edit-add-guest-modal"
 
 interface Guest {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  email: string
 }
 
 const GuestSection: React.FC = () => {
-  const [isEditAddGuestModalOpen, setIsEditAddGuestModalOpen] = useState(false);
-  const [modalAction, setModalAction] = useState<'EDIT' | 'ADD'>('EDIT');
-  const [selectedGuestIndex, setSelectedGuestIndex] = useState<number | null>(0);
+  const [isEditAddGuestModalOpen, setIsEditAddGuestModalOpen] = useState(false)
+  const [modalAction, setModalAction] = useState<"EDIT" | "ADD">("EDIT")
+  const [selectedGuestIndex, setSelectedGuestIndex] = useState<number | null>(0)
   const [guests, setGuests] = useState<Guest[]>([
     {
-      firstName: 'Ramil',
-      lastName: 'Lapitan',
-      phoneNumber: '09987643211',
-      email: 'ramil@gmail.com',
-    }
-  ]);
+      firstName: "Ramil",
+      lastName: "Lapitan",
+      phoneNumber: "09987643211",
+      email: "ramil@gmail.com",
+    },
+  ])
 
   const openEditModal = (index: number) => {
-    setModalAction('EDIT');
-    setSelectedGuestIndex(index);
-    setIsEditAddGuestModalOpen(true);
-  };
+    setModalAction("EDIT")
+    setSelectedGuestIndex(index)
+    setIsEditAddGuestModalOpen(true)
+  }
 
   const openAddModal = () => {
-    setModalAction('ADD');
-    setSelectedGuestIndex(null);
-    setIsEditAddGuestModalOpen(true);
-  };
+    setModalAction("ADD")
+    setSelectedGuestIndex(null)
+    setIsEditAddGuestModalOpen(true)
+  }
 
   const handleModalSubmit = (guest: Guest) => {
-    if (modalAction === 'EDIT' && selectedGuestIndex !== null) {
+    if (modalAction === "EDIT" && selectedGuestIndex !== null) {
       // Update the selected guest
       setGuests((prevGuests) =>
         prevGuests.map((g, index) =>
           index === selectedGuestIndex ? { ...guest } : g
         )
-      );
-    } else if (modalAction === 'ADD') {
+      )
+    } else if (modalAction === "ADD") {
       // Add a new guest and select the new one
-      setGuests((prevGuests) => [...prevGuests, guest]);
-      setSelectedGuestIndex(guests.length);
+      setGuests((prevGuests) => [...prevGuests, guest])
+      setSelectedGuestIndex(guests.length)
     }
-    setIsEditAddGuestModalOpen(false);
-  };
+    setIsEditAddGuestModalOpen(false)
+  }
 
-  const selectedGuest = selectedGuestIndex !== null ? guests[selectedGuestIndex] : null;
+  const selectedGuest =
+    selectedGuestIndex !== null ? guests[selectedGuestIndex] : null
 
   return (
     <div className="space-y-4">
@@ -66,8 +67,8 @@ const GuestSection: React.FC = () => {
             onClick={() => setSelectedGuestIndex(index)}
             className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer ${
               selectedGuestIndex === index
-                ? 'bg-primary-50 text-primary-700'
-                : 'bg-gray-100 text-gray-700'
+                ? "bg-primary-50 text-primary-700"
+                : "bg-gray-100 text-gray-700"
             }`}
           >
             <span className="text-sm">{`${guest.firstName} ${guest.lastName}`}</span>
@@ -104,7 +105,9 @@ const GuestSection: React.FC = () => {
             </span>
           </div>
           <div className="grid grid-cols-2 items-center">
-            <span className="text-sm text-gray-500">Email (for updates on your booking)</span>
+            <span className="text-sm text-gray-500">
+              Email (for updates on your booking)
+            </span>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-800 mr-4">
                 {selectedGuest.email}
@@ -123,11 +126,15 @@ const GuestSection: React.FC = () => {
       <EditAddGuestModal
         isOpen={isEditAddGuestModalOpen}
         action={modalAction}
-        guest={modalAction === 'EDIT' && selectedGuestIndex !== null ? guests[selectedGuestIndex] : undefined}
+        guest={
+          modalAction === "EDIT" && selectedGuestIndex !== null
+            ? guests[selectedGuestIndex]
+            : undefined
+        }
         onSubmit={handleModalSubmit}
       />
     </div>
-  );
-};
+  )
+}
 
-export default GuestSection;
+export default GuestSection

@@ -79,7 +79,6 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                       item.activityIds.activityId.meetingPoint?.barangay || ""
                     }, ${item.activityIds.activityId.meetingPoint?.city || ""}`}
                   </Typography>
-                
                 </div>
               </div>
             )}
@@ -96,7 +95,7 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                   />
                 </div>
                 <div className="flex flex-col">
-                <Typography variant={"h4"} fontWeight="semibold">
+                  <Typography variant={"h4"} fontWeight="semibold">
                     {item.propertyIds.propertyId.title}
                   </Typography>
                   <Typography variant="p" className="text-gray-500">

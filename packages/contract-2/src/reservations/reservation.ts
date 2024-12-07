@@ -6,7 +6,7 @@ const RESERVATION_BASE_URL = `/reservations`
 type PaymentMethod = "gcash" | "card" | "manual"
 
 type T_Props = {
-  cartItems: T_Add_To_Cart[],
+  cartItems: T_Add_To_Cart[]
   cardInfo: T_CardInfo | undefined
 }
 
@@ -16,7 +16,7 @@ export class ReservationService {
     this.api = new ApiService(source)
   }
   async addItem(item: T_Props, type: PaymentMethod) {
-      console.log(item)
+    console.log(item)
     if (type === "gcash") {
       return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
     } else if (type === "card") {

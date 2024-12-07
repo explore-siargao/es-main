@@ -10,9 +10,12 @@ import { ChevronDownIcon } from "lucide-react"
 import PaymentMethodForm from "./PaymentMethodForm"
 
 export default function PaymentOptions() {
-  const updatePaymentInfo = usePaymentInfoStore((state) => state.updatePaymentInfo)
+  const updatePaymentInfo = usePaymentInfoStore(
+    (state) => state.updatePaymentInfo
+  )
   const [selected, setSelected] = useState<number | null>(null)
-  const { data: paymentMethods, isPending: isPendingPaymentMethods } = useGetPaymentMethods()
+  const { data: paymentMethods, isPending: isPendingPaymentMethods } =
+    useGetPaymentMethods()
 
   const savedCreditDebitOptions =
     paymentMethods?.items?.map((paymentMethod) => ({
@@ -43,10 +46,12 @@ export default function PaymentOptions() {
     },
   ]
 
-  const combinedOptions = [...options, ...savedCreditDebitOptions].map((option, index) => ({
-    ...option,
-    id: index + 1,
-  }))
+  const combinedOptions = [...options, ...savedCreditDebitOptions].map(
+    (option, index) => ({
+      ...option,
+      id: index + 1,
+    })
+  )
 
   useEffect(() => {
     if (selected === null) {
@@ -85,21 +90,23 @@ export default function PaymentOptions() {
       ) : (
         <div>
           <Menu as="div" className="relative">
-          <Menu.Button className="flex items-center justify-between w-full p-4 bg-white border border-primary-600 rounded-md">
-  <div className="flex flex-col text-left">
-    <span className="font-medium">
-      {selected
-        ? combinedOptions.find((option) => option.id === selected)?.name
-        : "Select a payment method"}
-    </span>
-    <p className="text-xs text-gray-500">
-      {selected
-        ? combinedOptions.find((option) => option.id === selected)?.description
-        : "Choose a payment method to see the details."}
-    </p>
-  </div>
-  <ChevronDownIcon className="w-5 h-5 text-gray-400" />
-</Menu.Button>
+            <Menu.Button className="flex items-center justify-between w-full p-4 bg-white border border-primary-600 rounded-md">
+              <div className="flex flex-col text-left">
+                <span className="font-medium">
+                  {selected
+                    ? combinedOptions.find((option) => option.id === selected)
+                        ?.name
+                    : "Select a payment method"}
+                </span>
+                <p className="text-xs text-gray-500">
+                  {selected
+                    ? combinedOptions.find((option) => option.id === selected)
+                        ?.description
+                    : "Choose a payment method to see the details."}
+                </p>
+              </div>
+              <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+            </Menu.Button>
             <Menu.Items className="absolute z-10 mt-2 w-full bg-white border rounded-md shadow-lg">
               {combinedOptions.map((option) => (
                 <Menu.Item key={option.id}>
@@ -111,7 +118,9 @@ export default function PaymentOptions() {
                       }`}
                     >
                       <p className="text-sm font-medium">{option.name}</p>
-                      <p className="text-xs text-gray-500">{option.description}</p>
+                      <p className="text-xs text-gray-500">
+                        {option.description}
+                      </p>
                     </button>
                   )}
                 </Menu.Item>
@@ -119,17 +128,19 @@ export default function PaymentOptions() {
             </Menu.Items>
           </Menu>
 
-          {selected && combinedOptions.find((option) => option.id === selected)?.content && (
-  <div className="mt-4 border border-primary-600 p-4 rounded-md">
-    {combinedOptions
-      .filter((option) => option.id === selected)
-      .map((option) => (
-        <div key={option.id}>
-          <div className="mt-4">{option.content}</div>
-        </div>
-      ))}
-  </div>
-)}
+          {selected &&
+            combinedOptions.find((option) => option.id === selected)
+              ?.content && (
+              <div className="mt-4 border border-primary-600 p-4 rounded-md">
+                {combinedOptions
+                  .filter((option) => option.id === selected)
+                  .map((option) => (
+                    <div key={option.id}>
+                      <div className="mt-4">{option.content}</div>
+                    </div>
+                  ))}
+              </div>
+            )}
         </div>
       )}
     </>
