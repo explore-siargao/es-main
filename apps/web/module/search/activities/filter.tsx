@@ -71,10 +71,7 @@ const ActivitiesFilter = () => {
     router.push(`?${params.toString()}`)
   }
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(allItemCount / 15)
-  )
+  const totalPages = Math.max(1, Math.ceil(allItemCount / 15))
 
   if (isLoading) {
     return (
@@ -101,7 +98,11 @@ const ActivitiesFilter = () => {
             activities &&
             activities?.length > 0 ? (
               <>
-                <Typography className="mb-4"> {allItemCount} {allItemCount > 1 ? "activities" : "activity"} found</Typography>
+                <Typography className="mb-4">
+                  {" "}
+                  {allItemCount} {allItemCount > 1 ? "activities" : "activity"}{" "}
+                  found
+                </Typography>
                 <div className="grid grid-cols-3 gap-6">
                   {activities?.map((item) => (
                     <div key={item._id}>

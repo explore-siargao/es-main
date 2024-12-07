@@ -58,11 +58,14 @@ const AvailableBooking = ({
             <button
               type="button"
               key={unit.id}
-              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${selectedBookableUnit === unit
+              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${
+                selectedBookableUnit === unit
                   ? "bg-primary-200 border-primary-500"
                   : "bg-white hover:bg-text-50 border-text-100"
-                }`}
-              onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
+              }`}
+              onClick={() =>
+                handleSelectUnit(selectedBookableUnit === unit ? null : unit)
+              }
             >
               <div>
                 {unit.photos && unit.photos.length > 0 && (
@@ -88,12 +91,12 @@ const AvailableBooking = ({
                   </div>
                 )}
                 <div className="mt-4">
-                  <Typography variant="h3" fontWeight="semibold">{unit.title}</Typography>
+                  <Typography variant="h3" fontWeight="semibold">
+                    {unit.title}
+                  </Typography>
                   <Typography variant="h5">{bedDisplay}</Typography>
                   {unit.category === "Bed" && (
-                    <Typography variant="h5">
-                      {unit.subtitle}
-                    </Typography>
+                    <Typography variant="h5">{unit.subtitle}</Typography>
                   )}
                   {unit.totalSize && (
                     <Typography variant="h5">
@@ -106,17 +109,21 @@ const AvailableBooking = ({
                   </Typography>
                   <div className="flex gap-2 mt-6">
                     <Button
-                      variant={selectedBookableUnit === unit ? "primary" : "default"}
+                      variant={
+                        selectedBookableUnit === unit ? "primary" : "default"
+                      }
                       size="sm"
-                      onClick={() => handleSelectUnit(selectedBookableUnit === unit ? null : unit)}
+                      onClick={() =>
+                        handleSelectUnit(
+                          selectedBookableUnit === unit ? null : unit
+                        )
+                      }
                     >
-                      {selectedBookableUnit === unit ? "Unselect this unit" : "Select this unit"}
+                      {selectedBookableUnit === unit
+                        ? "Unselect this unit"
+                        : "Select this unit"}
                     </Button>
-                    <Button
-                      variant="link"
-                      size="sm"
-                      className="underline"
-                    >
+                    <Button variant="link" size="sm" className="underline">
                       More information
                     </Button>
                   </div>

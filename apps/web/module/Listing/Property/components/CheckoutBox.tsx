@@ -213,7 +213,7 @@ const CheckoutBox = ({
           className="font-bold"
           onClick={() => handleAddToCartSingleItem(params.propertyId)}
         >
-          <LucideShoppingCart size={20} className="mr-2"/> Add to cart
+          <LucideShoppingCart size={20} className="mr-2" /> Add to cart
         </Button>
       </div>
       <div>

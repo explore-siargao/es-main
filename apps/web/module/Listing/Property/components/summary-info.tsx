@@ -3,7 +3,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { Star } from "lucide-react"
 import { T_BookableUnitType } from "@repo/contract"
 
-const SummaryInfo = ({ bookableUnits, reviews, stars, location}: any) => {
+const SummaryInfo = ({ bookableUnits, reviews, stars, location }: any) => {
   const aggregateDetails = () => {
     if (!bookableUnits) return ""
 

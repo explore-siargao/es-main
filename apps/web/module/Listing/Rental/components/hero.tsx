@@ -26,7 +26,7 @@ const Hero = ({ title, images }: T_Section_Info) => {
         <ImageGallery
           images={images}
           isOpen={galleryModalOpen}
-          openModal={() =>setGalleryModalOpen(!galleryModalOpen)}
+          openModal={() => setGalleryModalOpen(!galleryModalOpen)}
           isViewModal={true}
           isRoundedEdge={true}
         />

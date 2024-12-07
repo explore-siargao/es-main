@@ -7,7 +7,7 @@ import { activities } from "../dummy"
 
 const Builder = () => {
   const params = useParams<{ activityId: string }>()
-  const data: any = { item: null };
+  const data: any = { item: null }
 
   const testSegmentsData = activities.segments
   return (
@@ -60,7 +60,6 @@ const Builder = () => {
           </div>
         </TitleSection>
       </div>
-
     </>
   )
 }

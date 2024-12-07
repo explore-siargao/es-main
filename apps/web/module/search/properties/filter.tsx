@@ -82,10 +82,7 @@ const PropertiesFilter = () => {
     params.set("page", newPage.toString())
     router.push(`?${params.toString()}`)
   }
-  const totalPages = Math.max(
-    1,
-    Math.ceil(allItemCount / 15)
-  )
+  const totalPages = Math.max(1, Math.ceil(allItemCount / 15))
 
   if (isLoading) {
     return (
@@ -112,7 +109,10 @@ const PropertiesFilter = () => {
             propertyUnits &&
             (propertyUnits?.pageItemCount || 0) > 0 ? (
               <>
-                <Typography className="mb-4"> {allItemCount} place{allItemCount > 1 ? "s" : ""} found</Typography>
+                <Typography className="mb-4">
+                  {" "}
+                  {allItemCount} place{allItemCount > 1 ? "s" : ""} found
+                </Typography>
                 <div className="grid grid-cols-3 gap-6">
                   {properties?.map((item) => (
                     <div key={item.listingId}>

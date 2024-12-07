@@ -148,7 +148,6 @@ const ImageGallery = ({
       </div>
     )
   } else {
-
     return (
       <div className="relative" style={{ height: galleryHeight }}>
         <div

@@ -31,7 +31,7 @@ const locations: T_Location[] = [
     streetAddress: "Lagoon View Drive",
     barangay: "Barangay 9",
     latitude: 9.875416,
-    longitude: 126.067020,
+    longitude: 126.06702,
     howToGetThere: "Take a boat to Socorro and explore the lagoon trail.",
     createdAt: "2024-11-27T02:34:07.098352",
     updatedAt: null,
@@ -86,7 +86,7 @@ const locations: T_Location[] = [
     streetAddress: "Hidden Cove Drive",
     barangay: "Barangay 14",
     latitude: 9.847474,
-    longitude: 126.110000,
+    longitude: 126.11,
     howToGetThere: "Follow the signs to Pilar's secret coves.",
     createdAt: "2024-11-27T02:34:07.098429",
     updatedAt: null,
@@ -162,7 +162,7 @@ const locations: T_Location[] = [
     city: "San Isidro",
     streetAddress: "Hilltop Road",
     barangay: "Barangay 16",
-    latitude: 9.941270,
+    latitude: 9.94127,
     longitude: 126.066102,
     howToGetThere: "Hike through San Isidro's scenic hilltop trails.",
     createdAt: "2024-11-27T02:34:07.098451",
@@ -173,7 +173,7 @@ const locations: T_Location[] = [
     city: "San Isidro",
     streetAddress: "Hilltop Road",
     barangay: "Barangay 16",
-    latitude: 9.926870,
+    latitude: 9.92687,
     longitude: 126.102535,
     howToGetThere: "Hike through San Isidro's scenic hilltop trails.",
     createdAt: "2024-11-27T02:34:07.098451",
@@ -191,7 +191,7 @@ const locations: T_Location[] = [
     updatedAt: null,
     deletedAt: null,
   },
-];
+]
 const rentalDetailsItem: T_Rental_Details[] = [
   {
     engineCapacityLiter: 4.5,

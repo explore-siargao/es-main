@@ -50,9 +50,7 @@ export const ActivitySingleView = ({
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
-      {data && (
-        <Hero images={data?.item?.photos} title={data?.item?.title} />
-      )}
+      {data && <Hero images={data?.item?.photos} title={data?.item?.title} />}
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
@@ -203,7 +201,8 @@ export const ActivitySingleView = ({
               descTotalBeforeTaxes: 3000,
               totalBeforeTaxes: 1000,
               titlePrice: activities.price.baseRate,
-              pricePerAdditionalPerson: activities.price.pricePerAdditionalPerson,
+              pricePerAdditionalPerson:
+                activities.price.pricePerAdditionalPerson,
             }}
             timeSlot={activities.timeSlots}
           />
