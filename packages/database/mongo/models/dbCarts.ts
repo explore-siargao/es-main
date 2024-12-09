@@ -1,6 +1,13 @@
 import mongoose from "mongoose"
 const { Schema } = mongoose
 
+const contact = new Schema({
+firstName:String,
+lastName:String,
+phoneNumber:String,
+email:String
+})
+
 const carts = new Schema({
   userId: {
     type: mongoose.Schema.ObjectId,
@@ -49,6 +56,10 @@ const carts = new Schema({
   status: {
     type: String,
     enum: ["Active", "Completed", "Removed"],
+  },
+  contacts:{
+    type:[contact],
+    default:[]
   },
   startDate: {
     type: Date,

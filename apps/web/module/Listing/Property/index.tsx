@@ -205,3 +205,8 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
   )
 }
 export default Property
+export {
+  ratingSummary,
+  userReviews
+}
+

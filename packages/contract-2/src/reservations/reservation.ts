@@ -15,7 +15,7 @@ export class ReservationService {
   constructor(source: "main" | "mock" = "main") {
     this.api = new ApiService(source)
   }
-  async addItem(item: T_Props, type: PaymentMethod) {
+  async addItem(item: T_Props | T_Add_To_Cart[], type: PaymentMethod) {
     console.log(item)
     if (type === "gcash") {
       return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
