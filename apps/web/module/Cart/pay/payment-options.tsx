@@ -82,7 +82,9 @@ export default function PaymentOptions() {
     })
   }
 
-  const selectedOption = combinedOptions?.find((option) => option.id === selected)
+  const selectedOption = combinedOptions?.find(
+    (option) => option.id === selected
+  )
 
   return (
     <>
@@ -96,11 +98,18 @@ export default function PaymentOptions() {
           >
             <option>Select payment method</option>
             {combinedOptions.map((option) => {
-              return <option key={option.id} value={option.id}>{option.name}</option>
+              return (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              )
             })}
           </Select2>
 
-          {selected && selectedOption && selectedOption?.content && typeof selected === "number" ? (
+          {selected &&
+          selectedOption &&
+          selectedOption?.content &&
+          typeof selected === "number" ? (
             <div className="mt-6 rounded-md">
               <div className="mt-4">{selectedOption?.content}</div>
             </div>

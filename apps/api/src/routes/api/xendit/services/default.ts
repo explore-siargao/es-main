@@ -225,9 +225,7 @@ export const cardPayment = async (req: Request, res: Response) => {
       const req = await apiXendit.post(`/payment_requests`, data, false, true)
       res.json(response.success({ item: req }))
     } catch (err: any) {
-      res.json(
-        response.error({ item: req.body, message: err.message })
-      )
+      res.json(response.error({ item: req.body, message: err.message }))
     }
   } else {
     res.json(

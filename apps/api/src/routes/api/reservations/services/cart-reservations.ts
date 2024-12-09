@@ -134,78 +134,76 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         const cardInfo = encryptionService.decrypt(
           paymentMethod?.cardInfo as string
         ) as T_CardInfo
-        if(cardInfo && cardInfo && cardInfo.cvv === cvv){
-          
-        
-        const cardResponse = await fetch(
-          `${API_URL}/api/v1/xendit/card-payment`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              amount: amount,
-              cardNumber: cardInfo.cardNumber,
-              expirationMonth: cardInfo.expirationMonth,
-              expirationYear: cardInfo.expirationYear,
-              cardHolderName: cardInfo.cardholderName,
-              country: cardInfo.country,
-              cvv: cardInfo.cvv,
-              customer: customer,
-              userId: userId,
-            }),
-          }
-        )
+        if (cardInfo && cardInfo && cardInfo.cvv === cvv) {
+          const cardResponse = await fetch(
+            `${API_URL}/api/v1/xendit/card-payment`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                amount: amount,
+                cardNumber: cardInfo.cardNumber,
+                expirationMonth: cardInfo.expirationMonth,
+                expirationYear: cardInfo.expirationYear,
+                cardHolderName: cardInfo.cardholderName,
+                country: cardInfo.country,
+                cvv: cardInfo.cvv,
+                customer: customer,
+                userId: userId,
+              }),
+            }
+          )
 
-        const cardData = await cardResponse.json()
-        if (cardData.item.actions) {
-          const reservationItems = cartItems.map((item) => ({
-            activityIds: item.activityIds || null,
-            rentalIds: item.rentalIds || null,
-            propertyIds: item.propertyIds || null,
-            startDate: item.startDate,
-            endDate: item.endDate,
-            guest: userId,
-            xendItPaymentMethodId: cardData.item.payment_method.id,
-            xendItPaymentRequestId: cardData.item.id,
-            xendItPaymentReferenceId: cardData.item.reference_id,
-            guestCount: item.guestCount,
-            status: 'For-Payment',
-            cartId: item.id,
-          }))
-          const addReservations =
-            await dbReservations.insertMany(reservationItems)
-          if (addReservations) {
-            res.json(
-              response.success({
-                item: {
-                  reservations: addReservations,
-                  action: {
-                    type: 'PAYMENT',
-                    link: cardData.item.actions[0].url,
+          const cardData = await cardResponse.json()
+          if (cardData.item.actions) {
+            const reservationItems = cartItems.map((item) => ({
+              activityIds: item.activityIds || null,
+              rentalIds: item.rentalIds || null,
+              propertyIds: item.propertyIds || null,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              guest: userId,
+              xendItPaymentMethodId: cardData.item.payment_method.id,
+              xendItPaymentRequestId: cardData.item.id,
+              xendItPaymentReferenceId: cardData.item.reference_id,
+              guestCount: item.guestCount,
+              status: 'For-Payment',
+              cartId: item.id,
+            }))
+            const addReservations =
+              await dbReservations.insertMany(reservationItems)
+            if (addReservations) {
+              res.json(
+                response.success({
+                  item: {
+                    reservations: addReservations,
+                    action: {
+                      type: 'PAYMENT',
+                      link: cardData.item.actions[0].url,
+                    },
+                    message: 'Pending payment',
                   },
-                  message: 'Pending payment',
-                },
+                })
+              )
+            } else {
+              res.json(response.error({ message: 'Invalid card details' }))
+            }
+          } else {
+            res.json(
+              response.error({
+                message: cardData.item.message || UNKNOWN_ERROR_OCCURRED,
               })
             )
-          } else {
-            res.json(response.error({ message: 'Invalid card details' }))
           }
         } else {
           res.json(
             response.error({
-              message: cardData.item.message || UNKNOWN_ERROR_OCCURRED,
+              message: 'Invalid card details',
             })
           )
         }
-      } else {
-        res.json(
-          response.error({
-            message: "Invalid card details",
-          })
-        )
-      }
       }
     }
   } catch (err: any) {

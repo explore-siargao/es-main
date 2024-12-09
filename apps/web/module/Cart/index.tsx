@@ -23,37 +23,36 @@ const Cart = () => {
   }
 
   return (
-    <WidthWrapper
-      width="medium"
-      className="mt-6 lg:mt-8"
-    >
-      <Typography variant="h1" fontWeight="semibold">Your cart</Typography>
+    <WidthWrapper width="medium" className="mt-6 lg:mt-8">
+      <Typography variant="h1" fontWeight="semibold">
+        Your cart
+      </Typography>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-4">
-      <div className="lg:col-span-3">
-        {isLoading ? (
-          <Loading />
-        ) : data && data?.items.length > 0 ? (
-          <CartList
-            setSelectedItems={setSelectedItems}
-            selectedItems={selectedItems}
-            items={data?.items}
-          />
-        ) : (
-          <div className="col-span-3 w-full">
-            <h2 className="text-lg mx-auto text-text-300 italic">
-              There are no items in your cart
-            </h2>
-          </div>
-        )}
-      </div>
+        <div className="lg:col-span-3">
+          {isLoading ? (
+            <Loading />
+          ) : data && data?.items.length > 0 ? (
+            <CartList
+              setSelectedItems={setSelectedItems}
+              selectedItems={selectedItems}
+              items={data?.items}
+            />
+          ) : (
+            <div className="col-span-3 w-full">
+              <h2 className="text-lg mx-auto text-text-300 italic">
+                There are no items in your cart
+              </h2>
+            </div>
+          )}
+        </div>
 
-      <div className="col-span-1 relative">
-        <SubTotalBox
-          selectedItemsPrice={selectedItems.map((item) => item.price)}
-          buttonText="Proceed to payment"
-          onButtonClick={handleCheckout}
-        />
-      </div>
+        <div className="col-span-1 relative">
+          <SubTotalBox
+            selectedItemsPrice={selectedItems.map((item) => item.price)}
+            buttonText="Proceed to payment"
+            onButtonClick={handleCheckout}
+          />
+        </div>
       </div>
     </WidthWrapper>
   )

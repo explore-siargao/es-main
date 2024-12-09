@@ -8,7 +8,7 @@ type T_Payment_Method = "gcash" | "card" | "manual"
 type T_Props = {
   cartItems: T_Add_To_Cart[]
   cardInfo?: T_CardInfo | undefined
-  cardId?: string,
+  cardId?: string
   cvv?: string
 }
 

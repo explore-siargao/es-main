@@ -23,7 +23,6 @@ export type T_SectionInfoProps = {
   events?: any
 }
 
-
 const SectionInfo = ({
   title,
   images,

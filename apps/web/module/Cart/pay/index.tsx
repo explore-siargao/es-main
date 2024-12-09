@@ -113,16 +113,20 @@ const Pay = () => {
     return items.map((item) => ({
       ...item,
       guestCount: item.guestCount ?? 0,
-      activityIds: item.activityIds ? {
-        ...item.activityIds,
-        // @ts-expect-error
-        activityId: item.activityIds?.activityId._id ?? null,
-      } : null,
-      rentalIds: item.rentalIds ? {
-        ...item.rentalIds,
-        // @ts-expect-error
-        rentalId: item.rentalIds?.rentalId._id ?? null,
-      } : null,
+      activityIds: item.activityIds
+        ? {
+            ...item.activityIds,
+            // @ts-expect-error
+            activityId: item.activityIds?.activityId._id ?? null,
+          }
+        : null,
+      rentalIds: item.rentalIds
+        ? {
+            ...item.rentalIds,
+            // @ts-expect-error
+            rentalId: item.rentalIds?.rentalId._id ?? null,
+          }
+        : null,
     }))
   }
   const router = useRouter()
@@ -177,22 +181,25 @@ const Pay = () => {
       })
     }
     if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
-      mutateUseAddCardPayment({
-        cartItems: remappedItems,
-        cardId: paymentInfo.paymentMethodId as string,
-        cvv: paymentInfo.cvv as string,
-      }, {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            router.push(data.item.action.link)
-          } else {
-            toast.error(String(data.message))
-          }
+      mutateUseAddCardPayment(
+        {
+          cartItems: remappedItems,
+          cardId: paymentInfo.paymentMethodId as string,
+          cvv: paymentInfo.cvv as string,
         },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      })
+        {
+          onSuccess: (data: any) => {
+            if (!data.error) {
+              router.push(data.item.action.link)
+            } else {
+              toast.error(String(data.message))
+            }
+          },
+          onError: (err: any) => {
+            toast.error(String(err))
+          },
+        }
+      )
     }
   }
 
@@ -200,7 +207,8 @@ const Pay = () => {
     <WidthWrapper width="medium" className="mt-6 lg:mt-8">
       <div className="flex items-center gap-2">
         <Link href="/cart">
-          <LucideChevronLeft className="h-5 w-5 text-text-400 transition hover:text-text-500" /></Link>
+          <LucideChevronLeft className="h-5 w-5 text-text-400 transition hover:text-text-500" />
+        </Link>
         <Typography variant={"h1"} fontWeight="semibold">
           Pay
         </Typography>

@@ -59,7 +59,7 @@ const CartList: React.FC<ICartProps> = ({
   useEffect(() => {
     toggleAllCheckboxes()
   }, [])
-  
+
   return (
     <>
       <div className="flex bg-white-100 mb-8 pb-4 justify-between items-center border-b">
