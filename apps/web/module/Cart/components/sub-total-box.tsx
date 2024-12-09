@@ -1,4 +1,3 @@
-"use client"
 import { Button } from "@/common/components/ui/Button"
 import formatCurrency from "@/common/helpers/formatCurrency"
 import { Typography } from "@/common/components/ui/Typography"
@@ -37,6 +36,7 @@ const SubTotalBox = ({
         variant="primary"
         onClick={onButtonClick}
         disabled={selectedItemsPrice.length === 0}
+        className="font-bold"
       >
         {buttonText}
       </Button>

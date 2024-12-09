@@ -1,12 +1,13 @@
 "use client"
 
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import CartList from "./components/CartList"
-import SubTotalBox from "./components/SubTotalBox"
+import CartList from "./components/cart-list"
+import SubTotalBox from "./components/sub-total-box"
 import useGetCartItems from "@/common/hooks/use-get-cart-items"
 import Loading from "@/app/(accommodation)/loading"
 import { useRouter } from "next/navigation"
 import { useCartStore } from "./stores/cart-stores"
+import { Typography } from "@/common/components/ui/Typography"
 
 const Cart = () => {
   const { data, isLoading } = useGetCartItems()
@@ -18,14 +19,16 @@ const Cart = () => {
       alert("Please select items before proceeding to checkout.")
       return
     }
-    router.push("/cart-summary")
+    router.push("/pay")
   }
 
   return (
     <WidthWrapper
       width="medium"
-      className="grid grid-cols-1 lg:grid-cols-4 gap-12 mt-6 md:mt-8 lg:mt-16"
+      className="mt-6 lg:mt-8"
     >
+      <Typography variant="h1" fontWeight="semibold">Your cart</Typography>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-4">
       <div className="lg:col-span-3">
         {isLoading ? (
           <Loading />
@@ -47,9 +50,10 @@ const Cart = () => {
       <div className="col-span-1 relative">
         <SubTotalBox
           selectedItemsPrice={selectedItems.map((item) => item.price)}
-          buttonText="Checkout"
+          buttonText="Proceed to payment"
           onButtonClick={handleCheckout}
         />
+      </div>
       </div>
     </WidthWrapper>
   )

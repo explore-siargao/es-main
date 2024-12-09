@@ -202,18 +202,9 @@ export const cardPayment = async (req: Request, res: Response) => {
         customer_id: `cust-${userId}`,
         payment_method: {
           type: 'CARD',
-          billing_information: {
-            city: customer.Address.city,
-            country: customer.Address.country,
-            postal_code: String(customer.Address.zipCode),
-            province_state: customer.Address.stateProvince,
-            street_line1: `${customer.Address.streetAddress} ${customer.Address.brangay}`,
-            street_line2: null,
-          },
           card: {
             card_information: {
               cardholder_name: cardHolderName,
-              country: country,
               card_number: cardNumber,
               expiry_month: expirationMonth,
               expiry_year: expirationYear,
@@ -222,6 +213,7 @@ export const cardPayment = async (req: Request, res: Response) => {
             channel_properties: {
               success_return_url: `${WEB_URL}/bookings/${refId}/success-payment`,
               failure_return_url: `${WEB_URL}/bookings/${refId}/error-payment`,
+              cancel_return_url: `${WEB_URL}/bookings/${refId}/cancel-payment`,
             },
           },
           reusability: 'ONE_TIME_USE',
@@ -230,12 +222,11 @@ export const cardPayment = async (req: Request, res: Response) => {
           description: 'Card payment for booking',
         },
       }
-
       const req = await apiXendit.post(`/payment_requests`, data, false, true)
       res.json(response.success({ item: req }))
     } catch (err: any) {
       res.json(
-        response.error({ item: req.body, message: err.message + 'hello' })
+        response.error({ item: req.body, message: err.message })
       )
     }
   } else {

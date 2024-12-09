@@ -107,6 +107,8 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
     const userId = res.locals.user?.id
     const customer = res.locals.user.personalInfo
     const cartItems: T_Add_To_Cart[] = req.body.cartItems
+    const cardId: string = req.body.cardId
+    const cvv: string = req.body.cvv
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else if (!Array.isArray(cartItems)) {
@@ -127,12 +129,14 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         )
 
         const paymentMethod = await dbPaymentMethods.findOne({
-          user: userId,
-          isDefault: true,
+          _id: cardId,
         })
         const cardInfo = encryptionService.decrypt(
           paymentMethod?.cardInfo as string
         ) as T_CardInfo
+        if(cardInfo && cardInfo && cardInfo.cvv === cvv){
+          
+        
         const cardResponse = await fetch(
           `${API_URL}/api/v1/xendit/card-payment`,
           {
@@ -172,7 +176,6 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
           }))
           const addReservations =
             await dbReservations.insertMany(reservationItems)
-
           if (addReservations) {
             res.json(
               response.success({
@@ -196,6 +199,13 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
             })
           )
         }
+      } else {
+        res.json(
+          response.error({
+            message: "Invalid card details",
+          })
+        )
+      }
       }
     }
   } catch (err: any) {
@@ -242,6 +252,18 @@ export const manualCardMultipleCheckout = async (
           0
         )
 
+        const payloadCard = {
+          amount: amount,
+          cardNumber: cardInfo.cardNumber.trim(),
+          expirationMonth: cardInfo.expirationMonth,
+          expirationYear: cardInfo.expirationYear,
+          cardHolderName: cardInfo.cardholderName,
+          country: cardInfo.country,
+          cvv: cardInfo.cvv,
+          customer: customer,
+          userId: userId,
+        }
+
         const cardResponse = await fetch(
           `${API_URL}/api/v1/xendit/card-payment`,
           {
@@ -249,21 +271,12 @@ export const manualCardMultipleCheckout = async (
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              amount: amount,
-              cardNumber: cardInfo.cardNumber.trim(),
-              expirationMonth: cardInfo.expirationMonth,
-              expirationYear: cardInfo.expirationYear,
-              cardHolderName: cardInfo.cardholderName,
-              country: cardInfo.country,
-              cvv: cardInfo.cvv,
-              customer: customer,
-              userId: userId,
-            }),
+            body: JSON.stringify(payloadCard),
           }
         )
 
         const cardData = await cardResponse.json()
+
         if (cardData.item.actions) {
           const reservationItems = cartItems.map((item) => ({
             activityIds: item.activityIds || null,

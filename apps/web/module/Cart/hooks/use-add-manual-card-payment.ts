@@ -9,7 +9,7 @@ type T_Props = {
 }
 export async function addCardPayment(props: T_Props) {
   const reservation = new ReservationService()
-  return await reservation.addItem(props, "manual")
+  return await reservation.payCart(props, "manual")
 }
 
 function useAddManualCardPayment() {
