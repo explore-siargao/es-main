@@ -5,7 +5,7 @@ import Asterisk from "./Asterisk"
 
 export interface SelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label: string
+  label?: string
   errorMessage?: string
   leftIcon?: React.ReactNode
   description?: string
@@ -37,7 +37,8 @@ const Select2 = React.forwardRef<HTMLSelectElement, SelectProps>(
         </Typography>
         <div
           className={cn(
-            "rounded-xl py-3 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 mt-2",
+            "rounded-xl py-3 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600",
+            label || description ? "mt-2" : "",
             className
           )}
         >

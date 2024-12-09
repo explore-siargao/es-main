@@ -1,6 +1,6 @@
 import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Button } from "@/common/components/ui/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import PropertyCartItem from "./property-cart-item"
 import ActivityCartItem from "./activity-cart-item"
@@ -55,6 +55,10 @@ const CartList: React.FC<ICartProps> = ({
       setSelectedItems([...selectedItems, item])
     }
   }
+
+  useEffect(() => {
+    toggleAllCheckboxes()
+  }, [])
 
   return (
     <>

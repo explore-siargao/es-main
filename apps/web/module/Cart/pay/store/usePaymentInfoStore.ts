@@ -4,7 +4,7 @@ import { T_CardInfo } from "@repo/contract"
 type T_Main = T_CardInfo & {
   expirationDate: string
   paymentType: string
-  paymentMethodId: number | null
+  paymentMethodId: number | string | null
   cardInfo: string
   cardType: string
   lastFour: string

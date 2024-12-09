@@ -3,7 +3,6 @@ import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Listing/Property/components/ShareSave"
 import React, { useState } from "react"
 import ImageGallery from "./image-gallery"
-import ImageGalleryModal from "./modals/ImageGalleryModal"
 import { T_SectionInfoProps } from "../types/SectionInfo"
 
 const Hero = ({ title, images }: T_SectionInfoProps) => {

@@ -1,12 +1,10 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import valid, { number } from "card-validator"
-import { ChevronLeft, LucideChevronLeft } from "lucide-react"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
-import PaymentOptions from "./PaymentOptions"
+import React, { useState } from "react"
+import PaymentOptions from "./payment-options"
 import useCheckInOutDateStore from "@/module/Listing/Property/store/useCheckInOutDateStore"
 import useGuestAdd from "@/module/Listing/Property/store/useGuestsStore"
 import CheckInOutModal from "@/module/Listing/Property/components/modals/CheckInOutModal"
@@ -14,24 +12,21 @@ import GuestAddModal from "@/module/Listing/Property/components/modals/GuestAddM
 import { format } from "date-fns"
 import { APP_NAME } from "@repo/constants"
 import ListingPriceDetailsBox from "./ListingPriceDetailsBox"
-import ConfirmPayModal from "./components/modals/ConfirmPayModal"
 import usePaymentInfoStore from "./store/usePaymentInfoStore"
 import { EncryptionService } from "@repo/services/"
-import useSessionStore from "@/common/store/useSessionStore"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
 import toast from "react-hot-toast"
-import { Step, Stepper } from "../components/stepper"
-import SubTotalBox from "../components/SubTotalBox"
+import SubTotalBox from "../components/sub-total-box"
 import { useCartStore } from "../stores/cart-stores"
 import { T_Add_To_Cart } from "@repo/contract-2/cart"
 import useAddGCashPayment from "../hooks/use-add-gcash-payment"
 import { useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { E_PaymentType } from "@repo/contract"
-import { Input } from "@/common/components/ui/Input"
 import GuestSection from "./guest-section"
 import useAddManualCardPayment from "../hooks/use-add-manual-card-payment"
 import useAddCardPayment from "../hooks/use-add-card-payment"
+import { LucideChevronLeft } from "lucide-react"
 
 const encryptionService = new EncryptionService("card")
 
@@ -45,7 +40,6 @@ const Pay = () => {
 
   const { selectedItems } = useCartStore()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
-  const [isConfirmPayModalOpen, setIsConfirmPayModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
 
@@ -119,16 +113,20 @@ const Pay = () => {
     return items.map((item) => ({
       ...item,
       guestCount: item.guestCount ?? 0,
-      activityIds: {
-        ...item.activityIds,
-        // @ts-expect-error
-        activityId: item.activityIds?.activityId._id ?? "",
-      },
-      rentalIds: {
-        ...item.rentalIds,
-        // @ts-expect-error
-        rentalId: item.rentalIds?.rentalId._id ?? "",
-      },
+      activityIds: item.activityIds
+        ? {
+            ...item.activityIds,
+            // @ts-expect-error
+            activityId: item.activityIds?.activityId._id ?? null,
+          }
+        : null,
+      rentalIds: item.rentalIds
+        ? {
+            ...item.rentalIds,
+            // @ts-expect-error
+            rentalId: item.rentalIds?.rentalId._id ?? null,
+          }
+        : null,
     }))
   }
   const router = useRouter()
@@ -169,11 +167,10 @@ const Pay = () => {
         },
         cartItems: remappedItems,
       }
-      // console.log(payload)
       mutateUseAddManualCardPayment(payload, {
         onSuccess: (data: any) => {
           if (!data.error) {
-            // router.push(data.item.action.link)
+            router.push(data.item.action.link)
           } else {
             toast.error(String(data.message))
           }
@@ -182,24 +179,45 @@ const Pay = () => {
           toast.error(String(err))
         },
       })
-      // setIsConfirmPayModalOpen(true)
     }
     if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
-      // mutateUseAddCardPayment()
-      setIsConfirmPayModalOpen(true)
+      mutateUseAddCardPayment(
+        {
+          cartItems: remappedItems,
+          cardId: paymentInfo.paymentMethodId as string,
+          cvv: paymentInfo.cvv as string,
+        },
+        {
+          onSuccess: (data: any) => {
+            if (!data.error) {
+              router.push(data.item.action.link)
+            } else {
+              toast.error(String(data.message))
+            }
+          },
+          onError: (err: any) => {
+            toast.error(String(err))
+          },
+        }
+      )
     }
   }
 
   return (
-    <WidthWrapper width="medium" className="mt-4 md:mt-8 lg:mt-10">
+    <WidthWrapper width="medium" className="mt-6 lg:mt-8">
+      <div className="flex items-center gap-2">
+        <Link href="/cart">
+          <LucideChevronLeft className="h-5 w-5 text-text-400 transition hover:text-text-500" />
+        </Link>
+        <Typography variant={"h1"} fontWeight="semibold">
+          Pay
+        </Typography>
+      </div>
       <div className="flex flex-col xl:flex-row gap-8 xl:gap-16 mt-8">
         <div className="block xl:hidden">
           <ListingPriceDetailsBox items={selectedItems} />
         </div>
         <div className="flex-1 flex flex-col gap-y-4">
-          <Typography variant={"h1"} fontWeight="semibold">
-            Pay
-          </Typography>
           <div className="flex w-full flex-col">
             <div className="flex justify-between w-full">
               <div className="font-semibold">Dates</div>
@@ -279,7 +297,7 @@ const Pay = () => {
             <ListingPriceDetailsBox items={selectedItems} />
             <SubTotalBox
               selectedItemsPrice={selectedItems.map((item) => item.price)}
-              buttonText="Pay Now"
+              buttonText="Pay now"
               onButtonClick={handleProceedToPayment}
             />
           </div>
@@ -293,7 +311,6 @@ const Pay = () => {
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
       />
-      <ConfirmPayModal isOpen={isConfirmPayModalOpen} />
     </WidthWrapper>
   )
 }

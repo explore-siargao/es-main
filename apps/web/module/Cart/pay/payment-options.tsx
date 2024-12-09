@@ -1,13 +1,12 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Menu } from "@headlessui/react"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
 import usePaymentInfoStore from "./store/usePaymentInfoStore"
 import { E_PaymentType } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
-import PaymentSavedForm from "./PaymentSavedForm"
-import { ChevronDownIcon } from "lucide-react"
-import PaymentMethodForm from "./PaymentMethodForm"
+import PaymentSavedForm from "./payment-saved-form"
+import PaymentMethodForm from "./payment-method-form"
+import { Select2 } from "@/common/components/ui/Select2"
 
 export default function PaymentOptions() {
   const updatePaymentInfo = usePaymentInfoStore(
@@ -83,64 +82,38 @@ export default function PaymentOptions() {
     })
   }
 
+  const selectedOption = combinedOptions?.find(
+    (option) => option.id === selected
+  )
+
   return (
     <>
       {isPendingPaymentMethods ? (
         <Spinner variant="primary" />
       ) : (
         <div>
-          <Menu as="div" className="relative">
-            <Menu.Button className="flex items-center justify-between w-full p-4 bg-white border border-primary-600 rounded-md">
-              <div className="flex flex-col text-left">
-                <span className="font-medium">
-                  {selected
-                    ? combinedOptions.find((option) => option.id === selected)
-                        ?.name
-                    : "Select a payment method"}
-                </span>
-                <p className="text-xs text-gray-500">
-                  {selected
-                    ? combinedOptions.find((option) => option.id === selected)
-                        ?.description
-                    : "Choose a payment method to see the details."}
-                </p>
-              </div>
-              <ChevronDownIcon className="w-5 h-5 text-gray-400" />
-            </Menu.Button>
-            <Menu.Items className="absolute z-10 mt-2 w-full bg-white border rounded-md shadow-lg">
-              {combinedOptions.map((option) => (
-                <Menu.Item key={option.id}>
-                  {({ active }) => (
-                    <button
-                      onClick={() => handleSelectionChange(option.id)}
-                      className={`w-full text-left px-4 py-2 ${
-                        active ? "bg-gray-100" : ""
-                      }`}
-                    >
-                      <p className="text-sm font-medium">{option.name}</p>
-                      <p className="text-xs text-gray-500">
-                        {option.description}
-                      </p>
-                    </button>
-                  )}
-                </Menu.Item>
-              ))}
-            </Menu.Items>
-          </Menu>
+          <Select2
+            onChange={(e) => handleSelectionChange(Number(e.target.value))}
+            className="w-1/2"
+          >
+            <option>Select payment method</option>
+            {combinedOptions.map((option) => {
+              return (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              )
+            })}
+          </Select2>
 
           {selected &&
-            combinedOptions.find((option) => option.id === selected)
-              ?.content && (
-              <div className="mt-4 border border-primary-600 p-4 rounded-md">
-                {combinedOptions
-                  .filter((option) => option.id === selected)
-                  .map((option) => (
-                    <div key={option.id}>
-                      <div className="mt-4">{option.content}</div>
-                    </div>
-                  ))}
-              </div>
-            )}
+          selectedOption &&
+          selectedOption?.content &&
+          typeof selected === "number" ? (
+            <div className="mt-6 rounded-md">
+              <div className="mt-4">{selectedOption?.content}</div>
+            </div>
+          ) : null}
         </div>
       )}
     </>
