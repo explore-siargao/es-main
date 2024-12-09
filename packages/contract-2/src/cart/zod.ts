@@ -17,10 +17,10 @@ import {
 } from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
 const Z_Contact = z.object({
-  firstName:z.string(),
-  lastName:z.string(),
-  phoneNumber:z.string(),
-  email:z.string().email()
+  firstName: z.string(),
+  lastName: z.string(),
+  phoneNumber: z.string(),
+  email: z.string().email(),
 })
 export const Z_AddCart = z
   .object({
@@ -68,7 +68,7 @@ export const Z_UpdateCart = z.object({
   startDate: z.string(),
   endDate: z.string(),
   price: z.number(),
-  contacts: z.array(Z_Contact).optional()
+  contacts: z.array(Z_Contact).optional(),
 })
 
 export const Z_Amenities = z.object({

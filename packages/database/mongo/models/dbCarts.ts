@@ -2,10 +2,10 @@ import mongoose from "mongoose"
 const { Schema } = mongoose
 
 const contact = new Schema({
-firstName:String,
-lastName:String,
-phoneNumber:String,
-email:String
+  firstName: String,
+  lastName: String,
+  phoneNumber: String,
+  email: String,
 })
 
 const carts = new Schema({
@@ -57,9 +57,9 @@ const carts = new Schema({
     type: String,
     enum: ["Active", "Completed", "Removed"],
   },
-  contacts:{
-    type:[contact],
-    default:[]
+  contacts: {
+    type: [contact],
+    default: [],
   },
   startDate: {
     type: Date,

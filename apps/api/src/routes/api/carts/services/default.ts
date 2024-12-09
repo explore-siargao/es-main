@@ -198,21 +198,27 @@ export const getAllCarts = async (req: Request, res: Response) => {
     const userId = res.locals.user?.id
     console.log(userId)
     const { page = 1, limit = 15 } = req.pagination || {}
-    const {cartIds} = req.query
-    const query:any = {deletedAt:null,status:"Active", userId:new Types.ObjectId(userId),}
-    if(cartIds!==undefined){
-    const cartIdsArray = String(cartIds).split(',')
-    if(cartIdsArray.length > 0 && cartIds!==null){
-     const newCartIdsArray = cartIdsArray.map((item) => new Types.ObjectId(item));
-      console.log(newCartIdsArray)
-      query._id = {
-        $in:newCartIdsArray
+    const { cartIds } = req.query
+    const query: any = {
+      deletedAt: null,
+      status: 'Active',
+      userId: new Types.ObjectId(userId),
+    }
+    if (cartIds !== undefined) {
+      const cartIdsArray = String(cartIds).split(',')
+      if (cartIdsArray.length > 0 && cartIds !== null) {
+        const newCartIdsArray = cartIdsArray.map(
+          (item) => new Types.ObjectId(item)
+        )
+        console.log(newCartIdsArray)
+        query._id = {
+          $in: newCartIdsArray,
+        }
       }
     }
-  }
     const pipeline: any = [
       {
-        $match: query
+        $match: query,
       },
       {
         $lookup: {
@@ -849,8 +855,7 @@ export const getAllCarts = async (req: Request, res: Response) => {
     ]
 
     const carts = await dbCarts.aggregate(pipeline)
-    const totalCounts = await dbCarts
-      .find(query).countDocuments()
+    const totalCounts = await dbCarts.find(query).countDocuments()
 
     if (!carts || carts.length === 0) {
       res.json(
@@ -880,7 +885,7 @@ export const getAllCarts = async (req: Request, res: Response) => {
 export const updateCartInfo = async (req: Request, res: Response) => {
   const cartId = req.params.cartId
   const userId = res.locals.user?.id
-  const { startDate, endDate, price, contacts} = req.body
+  const { startDate, endDate, price, contacts } = req.body
 
   try {
     const getCart = await dbCarts.findOne({
@@ -940,9 +945,9 @@ export const updateCartInfo = async (req: Request, res: Response) => {
               price: price,
               updatedAt: Date.now(),
             },
-            $push:{
-              contacts:contacts || []
-            }
+            $push: {
+              contacts: contacts || [],
+            },
           })
           res.json(
             response.success({
