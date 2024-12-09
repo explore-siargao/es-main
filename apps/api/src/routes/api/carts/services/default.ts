@@ -193,16 +193,32 @@ export const removeToCart = async (req: Request, res: Response) => {
 }
 
 export const getAllCarts = async (req: Request, res: Response) => {
+  const query: any = req
   try {
     const userId = res.locals.user?.id
+    console.log(userId)
     const { page = 1, limit = 15 } = req.pagination || {}
+    const { cartIds } = req.query
+    const query: any = {
+      deletedAt: null,
+      status: 'Active',
+      userId: new Types.ObjectId(userId),
+    }
+    if (cartIds !== undefined) {
+      const cartIdsArray = String(cartIds).split(',')
+      if (cartIdsArray.length > 0 && cartIds !== null) {
+        const newCartIdsArray = cartIdsArray.map(
+          (item) => new Types.ObjectId(item)
+        )
+        console.log(newCartIdsArray)
+        query._id = {
+          $in: newCartIdsArray,
+        }
+      }
+    }
     const pipeline: any = [
       {
-        $match: {
-          userId: new Types.ObjectId(userId),
-          deletedAt: null,
-          status: 'Active',
-        },
+        $match: query,
       },
       {
         $lookup: {
@@ -345,36 +361,6 @@ export const getAllCarts = async (req: Request, res: Response) => {
               $unwind: {
                 path: '$location',
                 preserveNullAndEmptyArrays: true,
-              },
-            },
-            {
-              $lookup: {
-                from: 'facilities',
-                localField: 'facilities',
-                foreignField: '_id',
-                as: 'facilities',
-                pipeline: [
-                  {
-                    $match: {
-                      isSelected: true,
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              $lookup: {
-                from: 'policies',
-                localField: 'policies',
-                foreignField: '_id',
-                as: 'policies',
-                pipeline: [
-                  {
-                    $match: {
-                      isSelected: true,
-                    },
-                  },
-                ],
               },
             },
             {
@@ -869,9 +855,7 @@ export const getAllCarts = async (req: Request, res: Response) => {
     ]
 
     const carts = await dbCarts.aggregate(pipeline)
-    const totalCounts = await dbCarts
-      .find({ userId: userId, status: 'Active' })
-      .countDocuments()
+    const totalCounts = await dbCarts.find(query).countDocuments()
 
     if (!carts || carts.length === 0) {
       res.json(
@@ -901,7 +885,7 @@ export const getAllCarts = async (req: Request, res: Response) => {
 export const updateCartInfo = async (req: Request, res: Response) => {
   const cartId = req.params.cartId
   const userId = res.locals.user?.id
-  const { startDate, endDate, price } = req.body
+  const { startDate, endDate, price, contacts } = req.body
 
   try {
     const getCart = await dbCarts.findOne({
@@ -913,7 +897,7 @@ export const updateCartInfo = async (req: Request, res: Response) => {
     if (!getCart) {
       res.json(response.error({ message: 'Cart not found or already removed' }))
     } else {
-      if (!startDate || !endDate || !price) {
+      if (!startDate || !endDate || !price || !contacts) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         const cartconflicts = await dbCarts.find({
@@ -960,6 +944,9 @@ export const updateCartInfo = async (req: Request, res: Response) => {
               endDate: parseToUTCDate(endDate),
               price: price,
               updatedAt: Date.now(),
+            },
+            $push: {
+              contacts: contacts || [],
             },
           })
           res.json(
