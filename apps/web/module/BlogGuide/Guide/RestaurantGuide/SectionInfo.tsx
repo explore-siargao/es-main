@@ -2,14 +2,26 @@
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import ImageGallery from "@/module/Listing/Property/components/image-gallery"
-import ImageGalleryModal from "@/module/Listing/Property/components/modals/ImageGalleryModal"
-import { T_SectionInfoProps } from "@/module/Listing/Property/types/SectionInfo"
 import { StarIcon } from "lucide-react"
 import ShareSave from "./components/ShareSave"
 import Link from "next/link"
 import MenuModal from "./components/modals/MenuModal"
 import EventsModal from "./components/modals/EventsModal"
 import formatCurrency from "@/common/helpers/formatCurrency"
+import { T_Photo } from "@repo/contract"
+
+export type T_SectionInfoProps = {
+  title: string
+  images: T_Photo[]
+  ratings?: number
+  reviews?: number
+  priceRangeLow?: number
+  priceRangeHigh?: number
+  location?: string
+  cuisine?: string
+  menus?: any
+  events?: any
+}
 
 const SectionInfo = ({
   title,
@@ -24,9 +36,6 @@ const SectionInfo = ({
   events,
 }: T_SectionInfoProps) => {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
-  const openModal = () => {
-    setGalleryModalOpen(true)
-  }
 
   const [menuModalOpen, setMenuModalOpen] = useState(false)
   const [eventModalOpen, setEventModalOpen] = useState(false)
@@ -84,16 +93,12 @@ const SectionInfo = ({
       <div className="my-6">
         <ImageGallery
           images={images}
-          openModal={openModal}
+          isOpen={galleryModalOpen}
+          openModal={() => setGalleryModalOpen(!galleryModalOpen)}
           isViewModal={true}
           isRoundedEdge={true}
         />
       </div>
-      <ImageGalleryModal
-        images={images}
-        isOpen={galleryModalOpen}
-        onClose={() => setGalleryModalOpen(false)}
-      />
       <MenuModal
         isOpen={menuModalOpen}
         onClose={() => setMenuModalOpen(false)}

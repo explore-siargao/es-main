@@ -6,7 +6,7 @@ import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import OrderSummary from "../components/order-summary"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { useState } from "react"
-import SubTotalBox from "../components/SubTotalBox"
+import SubTotalBox from "../components/sub-total-box"
 import { Step, Stepper } from "../components/stepper"
 
 const CheckoutPage = () => {

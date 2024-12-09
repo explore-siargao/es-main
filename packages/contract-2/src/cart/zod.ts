@@ -21,7 +21,7 @@ export const Z_AddCart = z
   .object({
     id: z.string().optional(),
     _id: z.string().optional(),
-    userId: Z_Host.optional(),
+    userId: z.union([z.string(), Z_Host]).optional(),
     propertyIds: z
       .object({
         propertyId: z.string().optional(),
