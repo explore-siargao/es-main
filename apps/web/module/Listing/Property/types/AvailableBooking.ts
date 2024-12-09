@@ -1,3 +1,4 @@
+import { T_Photo } from "@repo/contract"
 import { T_Image, T_ImagesProps } from "./SectionInfo"
 
 export type T_Bed = {
@@ -19,7 +20,7 @@ export type T_AvailableBookableUnitProps = {
   title: string
   subtitle?: string
   totalSize?: number
-  photos: T_Image[]
+  photos: T_Photo[]
   maxGuests: number
   bedRooms?: T_BedRoom[]
   livingRooms?: T_LivingRoom[]
@@ -30,7 +31,7 @@ export type T_AvailableBookingProps = {
   bookableUnits: T_AvailableBookableUnitProps[]
   propertyType: string
   selectedBookableUnit: T_AvailableBookableUnitProps
-  onSelectBookableUnit: (unit: T_AvailableBookableUnitProps) => void
+  onSelectBookableUnit: (unit: T_AvailableBookableUnitProps | null) => void
 }
 
 export enum PropertyType {

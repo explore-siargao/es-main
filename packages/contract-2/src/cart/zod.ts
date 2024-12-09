@@ -16,12 +16,17 @@ import {
   Z_Activity_Segment,
 } from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
-
+const Z_Contact = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  phoneNumber: z.string(),
+  email: z.string().email(),
+})
 export const Z_AddCart = z
   .object({
     id: z.string().optional(),
     _id: z.string().optional(),
-    userId: Z_Host.optional(),
+    userId: z.union([z.string(), Z_Host]).optional(),
     propertyIds: z
       .object({
         propertyId: z.string().optional(),
@@ -63,6 +68,7 @@ export const Z_UpdateCart = z.object({
   startDate: z.string(),
   endDate: z.string(),
   price: z.number(),
+  contacts: z.array(Z_Contact).optional(),
 })
 
 export const Z_Amenities = z.object({

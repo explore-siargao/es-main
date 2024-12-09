@@ -6,7 +6,7 @@ import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import OrderSummary from "../components/order-summary"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { useState } from "react"
-import SubTotalBox from "../components/SubTotalBox"
+import SubTotalBox from "../components/sub-total-box"
 import { Step, Stepper } from "../components/stepper"
 
 const CheckoutPage = () => {
@@ -39,7 +39,6 @@ const CheckoutPage = () => {
 
   return (
     <WidthWrapper width="medium" className="mt-4 md:mt-8 lg:mt-10">
-      <Stepper steps={steps} />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8">
         <div className="lg:col-span-3">
           <OrderSummary

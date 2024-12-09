@@ -1,16 +1,25 @@
 import { Button } from "@/common/components/ui/Button"
 import Image from "@/common/components/ui/image"
 import { Grip } from "lucide-react"
-import { T_ImagesProps } from "../types/SectionInfo"
 import { Dialog } from "@headlessui/react"
-import { useState } from "react"
 import SliderImages from "@/common/components/SliderImages"
+import { T_Photo } from "@repo/contract"
 
-type ImageGalleryProps = T_ImagesProps & {
+type T_Image_Gallery = {
+  isOpen?: boolean
   galleryHeight?: string
+  openModal: () => void
+  images: T_Photo[]
+  isViewModal: boolean
+  showThreeOnly?: boolean
+  showTwoOnly?: boolean
+  isRoundedEdge?: boolean
+  isImageAllowClickView?: boolean
 }
 
 const ImageGallery = ({
+  isOpen = false,
+  openModal,
   images,
   isViewModal,
   showThreeOnly,
@@ -18,15 +27,13 @@ const ImageGallery = ({
   isImageAllowClickView,
   isRoundedEdge,
   galleryHeight = "600px",
-}: ImageGalleryProps) => {
+}: T_Image_Gallery) => {
   const getImgSrc = (index: number) => {
     const image = images[index]
-    const imgSrc = `/assets/${image?.key ? `${image.key}` : `${image?.image?.filename}` || ""}`
-    const imgAlt = image?.description || image?.image?.alt || ""
+    const imgSrc = `/assets/${image?.key ? `${image.key}` : ""}`
+    const imgAlt = image?.description || ""
     return { src: imgSrc, alt: imgAlt }
   }
-
-  const [isOpen, setIsOpen] = useState(false)
 
   const getRoundedEdgeClass = (
     index: number,
@@ -60,7 +67,7 @@ const ImageGallery = ({
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative ${additionalClasses} w-full h-full`}>
       <Image
-        onClick={() => setIsOpen(true)}
+        onClick={() => openModal()}
         src={images ? getImgSrc(index).src : ""}
         fill
         style={{ objectFit: "cover" }}
@@ -74,7 +81,7 @@ const ImageGallery = ({
     <Button
       variant="shaded"
       className="absolute bottom-2 md:bottom-2 right-2 md:right-2 bg-white px-1 text-[10px] h-6 p-2"
-      onClick={() => setIsOpen(true)}
+      onClick={() => openModal()}
     >
       <Grip className="h-2 w-2 mr-1 mb-0.5" />
       Show all photos
@@ -97,14 +104,12 @@ const ImageGallery = ({
         {isViewModal && renderButton()}
       </div>
     )
-  }
-
-  if (showTwoOnly) {
+  } else if (showTwoOnly) {
     return (
       <div className="relative h-44">
         <div
           className="grid grid-cols-2 h-full gap-2 w-full"
-          onClick={() => setIsOpen(true)}
+          onClick={() => openModal()}
         >
           {renderImage(0, "rounded-lg")}
           {renderImage(1, "rounded-lg")}
@@ -113,13 +118,13 @@ const ImageGallery = ({
         {isImageAllowClickView && (
           <Dialog
             open={isOpen}
-            onClose={() => setIsOpen(false)}
+            onClose={() => openModal()}
             className="fixed inset-0 z-50 flex items-center justify-center"
           >
-            <div className="relative w-full h-full bg-text-950 bg-opacity-70">
+            <div className="relative w-full h-full bg-text-950/30">
               <SliderImages images={images} />
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => openModal()}
                 className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
               >
                 <svg
@@ -142,69 +147,69 @@ const ImageGallery = ({
         )}
       </div>
     )
-  }
-
-  return (
-    <div className="relative" style={{ height: galleryHeight }}>
-      <div
-        className={`grid grid-cols-1 ${!isViewModal ? "border border-primary-500 rounded-xl" : ""} md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-full`}
-      >
-        {renderImage(
-          0,
-          "lg:rounded-tl-xl lg:rounded-bl-xl md:rounded-tl-xl md:rounded-bl-xl sm:rounded-tl-xl sm:rounded-tr-xl rounded-tl-xl rounded-tr-xl"
-        )}
+  } else {
+    return (
+      <div className="relative" style={{ height: galleryHeight }}>
         <div
-          className={`grid ${!isViewModal ? "grid-cols-1" : "grid-cols-2"} gap-2`}
+          className={`grid grid-cols-1 ${!isViewModal ? "border border-primary-500 rounded-xl" : ""} md:grid-cols-2 gap-x-2 gap-y-2 md:gap-y-0 h-full`}
         >
-          {isViewModal && renderImage(1, "")}
           {renderImage(
-            2,
-            "lg-rounded-tr-xl md:rounded-tr-xl md:rounded-bl-none"
+            0,
+            "lg:rounded-tl-xl lg:rounded-bl-xl md:rounded-tl-xl md:rounded-bl-xl sm:rounded-tl-xl sm:rounded-tr-xl rounded-tl-xl rounded-tr-xl"
           )}
-          {isViewModal && renderImage(3, "sm:rounded-bl-xl rounded-bl-xl")}
-          {renderImage(4, "2xl:rounded-br-xl lg:rounded-br-xl rounded-br-xl")}
-        </div>
-      </div>
-      {isViewModal && (
-        <Button
-          variant="shaded"
-          className="absolute bottom-2 md:bottom-4 right-1 md:right-4 bg-white"
-          onClick={() => setIsOpen(true)}
-        >
-          <Grip className="h-4 w-4 mr-2 mb-0.5" />
-          Show all photos
-        </Button>
-      )}
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="fixed inset-0 z-50 flex items-center justify-center"
-      >
-        <div className="relative w-full h-full bg-text-950 bg-opacity-70">
-          <SliderImages images={images} />
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
+          <div
+            className={`grid ${!isViewModal ? "grid-cols-1" : "grid-cols-2"} gap-2`}
           >
-            <svg
-              className="h-6 w-6 text-gray-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+            {isViewModal && renderImage(1, "")}
+            {renderImage(
+              2,
+              "lg-rounded-tr-xl md:rounded-tr-xl md:rounded-bl-none"
+            )}
+            {isViewModal && renderImage(3, "sm:rounded-bl-xl rounded-bl-xl")}
+            {renderImage(4, "2xl:rounded-br-xl lg:rounded-br-xl rounded-br-xl")}
+          </div>
         </div>
-      </Dialog>
-    </div>
-  )
+        {isViewModal && (
+          <Button
+            variant="shaded"
+            className="absolute bottom-2 md:bottom-4 right-1 md:right-4 bg-white"
+            onClick={() => openModal()}
+          >
+            <Grip className="h-4 w-4 mr-2 mb-0.5" />
+            Show all photos
+          </Button>
+        )}
+        <Dialog
+          open={isOpen}
+          onClose={() => openModal()}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+        >
+          <div className="relative w-full h-full bg-text-950/70">
+            <SliderImages images={images} />
+            <button
+              onClick={() => openModal()}
+              className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
+            >
+              <svg
+                className="h-6 w-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </Dialog>
+      </div>
+    )
+  }
 }
 
 export default ImageGallery

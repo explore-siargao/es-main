@@ -6,7 +6,6 @@ import { APP_NAME } from "@repo/constants"
 import Image from "@/common/components/ui/image"
 import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
 import { T_Cart_Item } from "@repo/contract-2/cart"
-import { Clock } from "lucide-react"
 
 interface ListingPriceDetailsBoxProps {
   items: T_Cart_Item[]
@@ -36,8 +35,8 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                     className="block h-full w-full object-cover rounded-md"
                   />
                 </div>
-                <div className="flex flex-col gap-y-1">
-                  <Typography fontWeight="semibold">
+                <div className="flex flex-col">
+                  <Typography variant={"h3"} fontWeight="semibold">
                     {item.rentalIds.rentalId.make}
                   </Typography>
                   <Typography fontWeight="light">
@@ -66,34 +65,20 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                     className="block h-full w-full object-cover rounded-md"
                   />
                 </div>
-                <div className="flex flex-col gap-y-1">
-                  <Typography fontWeight="semibold">
+                <div className="flex flex-col">
+                  <Typography variant={"h3"} fontWeight="semibold">
                     {item.activityIds.activityId.title}
+                  </Typography>
+                  <Typography fontWeight="light">
+                    {item.activityIds.activityId.activityType
+                      .filter((type) => type)
+                      .join(", ")}
                   </Typography>
                   <Typography fontWeight="light">
                     {`${item.activityIds.activityId.meetingPoint?.streetAddress || ""}, ${
                       item.activityIds.activityId.meetingPoint?.barangay || ""
                     }, ${item.activityIds.activityId.meetingPoint?.city || ""}`}
                   </Typography>
-                  {(item.activityIds.activityId.durationHour ||
-                    item.activityIds.activityId.durationMinute) && (
-                    <div className="flex gap-2 items-center">
-                      <Clock height={18} className="text-gray-500" />
-                      <div className="flex gap-1">
-                        {item.activityIds.activityId.durationHour && (
-                          <Typography variant="p" className="text-gray-500">
-                            {item.activityIds.activityId.durationHour}h
-                          </Typography>
-                        )}
-                        {item.activityIds.activityId.durationMinute ||
-                          (item.activityIds.activityId.durationMinute > 0 && (
-                            <Typography variant="p" className="text-gray-500">
-                              {item.activityIds.activityId.durationMinute}m
-                            </Typography>
-                          ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
@@ -109,8 +94,8 @@ const ListingPriceDetailsBox = ({ items }: ListingPriceDetailsBoxProps) => {
                     className="block h-full w-full object-cover rounded-md"
                   />
                 </div>
-                <div className="flex flex-col gap-y-1">
-                  <Typography fontWeight="semibold">
+                <div className="flex flex-col">
+                  <Typography variant={"h4"} fontWeight="semibold">
                     {item.propertyIds.propertyId.title}
                   </Typography>
                   <Typography variant="p" className="text-gray-500">

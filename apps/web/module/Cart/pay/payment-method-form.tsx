@@ -149,7 +149,6 @@ const PaymentMethodForm = () => {
             id="expirationDate"
             placeholder="MM/YY"
             type="text"
-            // disabled={isPending}
             {...register("expirationDate", {
               minLength: 5,
               maxLength: 5,
@@ -160,6 +159,7 @@ const PaymentMethodForm = () => {
                   key: "expirationDate",
                   value: e.target.value,
                 })
+
                 if (e.nativeEvent.inputType === "deleteContentBackward") {
                   value = value.slice(0, -2)
                   setValue("expirationDate", value)
@@ -167,6 +167,7 @@ const PaymentMethodForm = () => {
                   value = value.replace(/\//g, "")
                   const slashValue = value.replace(/(.{2})/g, "$1/")
                   const newValue = String(slashValue).trim()
+
                   if (newValue.length > 5) {
                     setValue("expirationDate", newValue.slice(0, -1))
                     validateExpirationDate()
@@ -174,11 +175,25 @@ const PaymentMethodForm = () => {
                     setValue("expirationDate", newValue.trim())
                     validateExpirationDate()
                   }
+
+                  if (value.length >= 4) {
+                    const expirationMonth = value.slice(0, 2)
+                    const expirationYear = "20" + value.slice(2, 4)
+                    updatePaymentInfo({
+                      key: "expirationMonth",
+                      value: expirationMonth,
+                    })
+                    updatePaymentInfo({
+                      key: "expirationYear",
+                      value: expirationYear,
+                    })
+                  }
                 }
               },
             })}
             required
           />
+
           <Input
             label="CVV"
             id="cvv"

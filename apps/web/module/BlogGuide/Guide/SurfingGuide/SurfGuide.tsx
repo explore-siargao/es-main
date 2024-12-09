@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import ImageGallery from "@/module/Listing/Property/components/ImageGallery"
+import ImageGallery from "@/module/Listing/Property/components/image-gallery"
 import ImageGalleryModal from "@/module/Listing/Property/components/modals/ImageGalleryModal"
 import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Listing/Property/components/ShareSave"

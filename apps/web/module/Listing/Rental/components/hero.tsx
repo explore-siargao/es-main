@@ -2,15 +2,16 @@
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "./ShareSave"
-import { T_SectionInfoProps } from "../types/SectionInfo"
-import ImageGallery from "@/module/Listing/Property/components/ImageGallery"
-import ImageGalleryModal from "@/module/Listing/Property/components/modals/ImageGalleryModal"
+import ImageGallery from "@/module/Listing/Property/components/image-gallery"
+import { T_Photo } from "@repo/contract"
 
-const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
+type T_Section_Info = {
+  title: string
+  images: T_Photo[]
+}
+
+const Hero = ({ title, images }: T_Section_Info) => {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
-  const openModal = () => {
-    setGalleryModalOpen(true)
-  }
   return (
     <>
       <div className="justify-between md:flex text-start items-center">
@@ -24,18 +25,14 @@ const SectionInfo = ({ title, images }: T_SectionInfoProps) => {
       <div className="my-6">
         <ImageGallery
           images={images}
-          openModal={openModal}
+          isOpen={galleryModalOpen}
+          openModal={() => setGalleryModalOpen(!galleryModalOpen)}
           isViewModal={true}
           isRoundedEdge={true}
         />
       </div>
-      <ImageGalleryModal
-        images={images}
-        isOpen={galleryModalOpen}
-        onClose={() => setGalleryModalOpen(false)}
-      />
     </>
   )
 }
 
-export default SectionInfo
+export default Hero
