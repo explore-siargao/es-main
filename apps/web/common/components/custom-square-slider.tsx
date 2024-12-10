@@ -11,7 +11,7 @@ import { ReactNode } from "react"
 interface SliderProps {
   images: {
     key: string
-    alt: string
+    alt: string | undefined
   }[]
 }
 
@@ -80,7 +80,7 @@ const CustomSquareSlider = ({ images }: SliderProps) => {
                 <Image
                   src={`/assets/${image.key}`}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                  alt={image.alt}
+                  alt={image.alt || ""}
                   fill
                   className="object-cover"
                 />

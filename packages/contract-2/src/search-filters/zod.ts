@@ -24,7 +24,8 @@ export const Z_Properties_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
   propertyTypes:z.union([z.nativeEnum(E_Property_Types),
-    z.array(z.nativeEnum(E_Property_Types)).or(z.literal("any"))
+    z.array(z.nativeEnum(E_Property_Types)).or(z.literal("any")),
+    z.string().optional()
   ]),
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
@@ -57,10 +58,12 @@ export const Z_Activities_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
   activityTypes: z.union([z.nativeEnum(E_Activity_Types),
+    z.string().optional(),
     z.array(z.nativeEnum(E_Activity_Types))
   ]).or(z.literal("any")),
   experienceTypes: z.union([z.nativeEnum(E_Experience_Types),
-    z.array(z.nativeEnum(E_Experience_Types))
+    z.array(z.nativeEnum(E_Experience_Types)),
+    z.string().optional(),
   ]).or(z.literal("any")),
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
@@ -82,10 +85,12 @@ export const Z_Rentals_Search = z.object({
   location: z.nativeEnum(E_Location).default(E_Location.any),
   vehicleTypes: z.union([
     z.nativeEnum(E_Vehicle_Type),
-    z.array(z.nativeEnum(E_Vehicle_Type)).or(z.literal("any"))
+    z.array(z.nativeEnum(E_Vehicle_Type)).or(z.literal("any")),
+    z.string().optional()
   ]),
   transmissionTypes: z.union([z.nativeEnum(E_Rental_Vehicle_Transmission),
-    z.array(z.nativeEnum(E_Rental_Vehicle_Transmission))]).or(z.literal("any")),
+    z.array(z.nativeEnum(E_Rental_Vehicle_Transmission)),
+    z.string().optional()]).or(z.literal("any")),
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   seatCount: z.number().min(1).or(z.literal("any")).default(1),
