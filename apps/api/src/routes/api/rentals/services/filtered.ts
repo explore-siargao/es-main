@@ -22,6 +22,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
   const conversionRates = res.locals.currency.conversionRates
   let startDate, endDate
   let filterRentals: T_Rental_Filtered[]
+  let transmissionInput,vehicleInput
   let {
     location,
     vehicleTypes,
@@ -34,11 +35,21 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
     dropOffDate = 'any',
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
+if(transmissionTypes!=="any" && transmissionTypes!==""){
+  transmissionInput = String(transmissionTypes).split(",")
+}else{
+  transmissionInput ="any"
+}
+if(vehicleTypes!=="any" && vehicleTypes!==""){
+vehicleInput = String(vehicleTypes).split(",")
+}else{
+vehicleInput = "any"
+}
   const validateRentalSearch = Z_Rentals_Search.safeParse({
     page: page,
     location: location,
-    vehicleTypes: vehicleTypes,
-    transmissionTypes: transmissionTypes,
+    vehicleTypes: vehicleInput,
+    transmissionTypes: transmissionInput,
     priceFrom: priceFrom,
     priceTo: priceTo,
     seatCount: seatCount,
@@ -65,7 +76,8 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
           .map((t: string) => t.trim())
           .filter((t: string) => t !== '')
           .map((t: string) => new RegExp(`^${t}$`, 'i'))
-        query.transmissionTypes = {
+          console.log(transmissionArray)
+        query.transmission = {
           $in: transmissionArray,
         }
       }
@@ -1078,8 +1090,9 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
       )
     }
   } else {
+    console.error(JSON.parse(validateRentalSearch.error.message))
     res.json(
-      response.error({ items: [], message: 'Invalid search parameters' })
+      response.error({items:[], message: 'Invalid search parameters' })
     )
   }
 }

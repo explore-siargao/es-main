@@ -14,6 +14,7 @@ import { Request, Response } from 'express'
 const response = new ResponseService()
 export const getFilteredProperties = async (req: Request, res: Response) => {
   const preferredCurrency = res.locals.currency.preferred
+  let propertyTypesInput
   const conversionRates = res.locals.currency.conversionRates
   let {
     location,
@@ -33,10 +34,16 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   const { page, limit } = req.pagination || { page: 1, limit: 10 }
   const startIndex = (page - 1) * limit
   const endIndex = startIndex + limit
+
+  if(propertyTypes!=="any" && propertyTypes!==""){
+    propertyTypesInput = String(propertyTypes).split(",").map((item)=>item.trim())
+  }else{
+    propertyTypesInput = "any"
+  }
   const validPropertySearch = Z_Properties_Search.safeParse({
     page,
     location,
-    propertyTypes,
+    propertyTypes:propertyTypesInput,
     priceFrom,
     priceTo,
     bedroomCount,

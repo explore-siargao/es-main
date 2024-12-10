@@ -10,7 +10,7 @@ const seedActivities = async () => {
     const activities: T_Activity[] = [
       {
         title: "Guided City Siargao",
-        activityType: ["Sightseeing", "Tour"],
+        activityType: ["Surfing lessons"],
         experienceType: "Private",
         description:
           "Explore the top attractions of New York with a local guide.",
@@ -147,7 +147,7 @@ const seedActivities = async () => {
       },
       {
         title: "Explore the Wonders of Siargao",
-        activityType: ["Adventure", "Island Tour"],
+        activityType: ["Wakeboarding", "Fishing"],
         experienceType: "Private",
         description: "Discover the unique beauty of Siargao's natural wonders.",
         highLights: [
@@ -232,7 +232,7 @@ const seedActivities = async () => {
       },
       {
         title: "Siargao Island Adventure",
-        activityType: ["Nature", "Eco Tour"],
+        activityType: ["Fishing", "ATV tour"],
         experienceType: "Private",
         description:
           "Experience the lush greens and blue waters of Siargao Island.",
@@ -315,7 +315,7 @@ const seedActivities = async () => {
       },
       {
         title: "Siargao Surfing Adventure",
-        activityType: ["Surfing", "Beach Experience"],
+        activityType: ["Land tour"],
         experienceType: "Private",
         description:
           "Ride the waves at Siargao's famous surf spots with expert guidance.",
@@ -445,7 +445,7 @@ const seedActivities = async () => {
       },
       {
         title: "Siargao Island Hopping Adventure",
-        activityType: ["Adventure", "Boat Tour"],
+        activityType: ["Freediving", "Scuva diving"],
         experienceType: "Private",
         description: "Experience the best island hopping spots in Siargao.",
         highLights: ["Naked Island", "Daku Island", "Guyam Island"],
@@ -574,7 +574,7 @@ const seedActivities = async () => {
       },
       {
         title: "Siargao Mangrove Exploration",
-        activityType: ["Eco Tour", "Nature"],
+        activityType: ["Island hopping"],
         experienceType: "Private",
         description:
           "Explore the serene mangroves of Siargao and learn about its ecosystem.",
@@ -708,7 +708,7 @@ const seedActivities = async () => {
       },
       {
         title: "Siargao Sunset Cruise",
-        activityType: ["Relaxation", "Cruise"],
+        activityType: ["Island hopping", "Wakeboarding"],
         experienceType: "Private",
         description:
           "Unwind with a serene sunset cruise around the stunning waters of Siargao.",
@@ -842,7 +842,7 @@ const seedActivities = async () => {
       },
       {
         title: "Siargao Coconut Forest Bike Tour",
-        activityType: ["Adventure", "Cycling"],
+        activityType: ["Kite surfing", "ATV tour"],
         experienceType: "Private",
         description:
           "Cycle through the iconic coconut forests of Siargao and enjoy breathtaking landscapes.",
