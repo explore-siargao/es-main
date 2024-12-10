@@ -17,7 +17,7 @@ export enum E_Vehicle_Type {
   Bicycle = "bicycle",
 }
 
-export enum E_Property_Types{
+export enum E_Property_Types {
   Hostel = "hostel",
   Hotel = "hotel",
   Apartment = "apartment",
@@ -26,7 +26,7 @@ export enum E_Property_Types{
   Villa = "villa",
   House = "house",
   Bungalow = "bungalow",
-  Cottage= "cottage"
+  Cottage = "cottage",
 }
 
 export enum E_Activity_Types {
@@ -38,10 +38,10 @@ export enum E_Activity_Types {
   ScuvaDiving = "Scuva diving",
   Freediving = "Freediving",
   Fishing = "Fishing",
-  AtvTour = "ATV tour"
+  AtvTour = "ATV tour",
 }
 
 export enum E_Experience_Types {
   Joiner = "joiner",
-  Private = "private"
+  Private = "private",
 }

@@ -7,7 +7,7 @@ import formatCurrency from "@/common/helpers/formatCurrency"
 import NewlyAddedTag from "../components/newly-added-tag"
 import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 
-type imagesType= {
+type imagesType = {
   key: string
   alt: string
 }[]

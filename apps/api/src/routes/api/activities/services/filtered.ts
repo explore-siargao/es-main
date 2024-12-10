@@ -15,7 +15,7 @@ const response = new ResponseService()
 export const getFilteredActivities = async (req: Request, res: Response) => {
   const preferredCurrency = res.locals.currency.preferred
   const conversionRates = res.locals.currency.conversionRates
-  let activityTypesInput,experienceTypeInput
+  let activityTypesInput, experienceTypeInput
   let filteredActivities
   let {
     location,
@@ -30,23 +30,27 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
   const query: any = { deletedAt: null, status: 'Live' }
-  if(activityTypes!=="any" && activityTypes!==""){
-    activityTypesInput = String(activityTypes).split(",").map((item)=>item.trim())
-  }else{
-    activityTypesInput = "any"
+  if (activityTypes !== 'any' && activityTypes !== '') {
+    activityTypesInput = String(activityTypes)
+      .split(',')
+      .map((item) => item.trim())
+  } else {
+    activityTypesInput = 'any'
   }
 
-  if(experienceTypes!=="any" && experienceTypes!==""){
-    experienceTypeInput = String(experienceTypes).split(",").map((item)=>item.trim())
-  }else{
-    experienceTypeInput = "any"
+  if (experienceTypes !== 'any' && experienceTypes !== '') {
+    experienceTypeInput = String(experienceTypes)
+      .split(',')
+      .map((item) => item.trim())
+  } else {
+    experienceTypeInput = 'any'
   }
 
   const validActivitySearch = Z_Activities_Search.safeParse({
     page,
     location,
-    activityTypes:activityTypesInput,
-    experienceTypes:experienceTypeInput,
+    activityTypes: activityTypesInput,
+    experienceTypes: experienceTypeInput,
     priceFrom,
     priceTo,
     durations,
@@ -54,7 +58,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     activityDate,
     numberOfGuest,
   })
-  
+
   if (validActivitySearch.success) {
     try {
       if (!priceFrom || priceFrom === 'any') {
@@ -73,7 +77,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           .map((t: string) => t.trim())
           .filter((t: string) => t !== '')
           .map((t: string) => new RegExp(`^${t}$`, 'i'))
-        query.activityType = {$elemMatch:{$in: newActivityTypesArray }}
+        query.activityType = { $elemMatch: { $in: newActivityTypesArray } }
       }
       if (durations && durations !== 'any') {
         query.durationHour = Number(durations)
@@ -2843,7 +2847,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     }
   } else {
     res.json(
-      response.error({ items: JSON.parse(validActivitySearch.error.message), message: 'Invalid search parameters' })
+      response.error({
+        items: JSON.parse(validActivitySearch.error.message),
+        message: 'Invalid search parameters',
+      })
     )
   }
 }
