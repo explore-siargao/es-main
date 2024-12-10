@@ -1,31 +1,37 @@
 import { z } from "zod"
 
-import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
+import { Z_Rental_Price } from "../rentals"
 import {
-  Z_Rental_PricePerDate,
-  Z_Rental_AddOns,
-  Z_Rental_Details,
-  Z_Rental_Price,
-} from "../rentals"
-import { E_Location } from "./enum"
+  E_Activity_Types,
+  E_Experience_Types,
+  E_Location,
+  E_Property_Types,
+  E_Vehicle_Type,
+} from "./enum"
 import {
   E_Rental_Category,
   E_Rental_Vehicle_Fuel,
   E_Rental_Vehicle_Transmission,
 } from "../rentals/enum"
 import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
-import {
-  Z_Activity_PricePerDate,
-  Z_Activity_Schedule,
-  Z_Activity_Segment,
-} from "../activity"
+
+const objectIdSchema = z
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
 
 export const Z_Properties_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
-  propertyTypes: z.string().default("any"), // TODO: ENUMS
+  propertyTypes: z.union([
+    z.nativeEnum(E_Property_Types),
+    z.array(z.nativeEnum(E_Property_Types)).or(z.literal("any")),
+    z.string().optional(),
+  ]),
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   bedroomCount: z.number().min(1).or(z.literal("any")).default(0),
@@ -56,8 +62,20 @@ export const Z_Properties_Search = z.object({
 export const Z_Activities_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
-  activityTypes: z.string().default("any"), // TODO: ENUMS
-  experienceTypes: z.string().default("any"), // TODO: ENUMS
+  activityTypes: z
+    .union([
+      z.nativeEnum(E_Activity_Types),
+      z.string().optional(),
+      z.array(z.nativeEnum(E_Activity_Types)),
+    ])
+    .or(z.literal("any")),
+  experienceTypes: z
+    .union([
+      z.nativeEnum(E_Experience_Types),
+      z.array(z.nativeEnum(E_Experience_Types)),
+      z.string().optional(),
+    ])
+    .or(z.literal("any")),
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   durations: z.number().min(1).or(z.literal("any")).default(1),
@@ -76,8 +94,18 @@ export const Z_Activities_Search = z.object({
 export const Z_Rentals_Search = z.object({
   page: z.number().min(1).default(1),
   location: z.nativeEnum(E_Location).default(E_Location.any),
-  vehicleTypes: z.string().default("any"), // TODO: ENUMS
-  transmissionTypes: z.string().default("any"), // TODO: ENUMS
+  vehicleTypes: z.union([
+    z.nativeEnum(E_Vehicle_Type),
+    z.array(z.nativeEnum(E_Vehicle_Type)).or(z.literal("any")),
+    z.string().optional(),
+  ]),
+  transmissionTypes: z
+    .union([
+      z.nativeEnum(E_Rental_Vehicle_Transmission),
+      z.array(z.nativeEnum(E_Rental_Vehicle_Transmission)),
+      z.string().optional(),
+    ])
+    .or(z.literal("any")),
   priceFrom: z.number().min(0).or(z.literal("any")).default(0),
   priceTo: z.number().min(0).or(z.literal("any")).default(0),
   seatCount: z.number().min(1).or(z.literal("any")).default(1),
@@ -106,82 +134,39 @@ export const Z_Category_Highest_Price = z.object({
 
 export const Z_Rental_Filtered = z.object({
   // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
-  _id: z.string().optional(),
-  details: Z_Rental_Details.nullable(),
-  pricing: Z_Rental_Price.nullable(),
-  host: Z_Host,
+  _id: objectIdSchema.optional(),
   category: z.nativeEnum(E_Rental_Category),
   make: z.string(),
   modelBadge: z.string().optional().nullable(),
-  bodyType: z.string().optional().nullable(),
-  fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
-  transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
   year: z.string().optional().nullable(),
-  qty: z.number(),
-  addOns: Z_Rental_AddOns.nullable(),
-  photos: z.array(Z_Photo),
   location: Z_Location.nullable(),
-  status: z.string(),
-  finishedSections: z.array(z.string()),
-  qtyIds: z
-    .array(
-      z.object({
-        _id: z.string(),
-        name: z.string(),
-      })
-    )
-    .nullable(),
-  pricePerDates: z.array(Z_Rental_PricePerDate).nullable(),
-  rentalNote: z.string().optional(),
+  pricing: Z_Rental_Price.nullable(),
+  photos: z.array(Z_Photo),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
+  transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
+  fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
 })
+
+export const Z_Rental_Filtered_Result = z.array(Z_Rental_Filtered)
 
 export const Z_Activity_Filtered = z.object({
   // TODO: REMOVE ALL THE UNNECCESSARY DATA, ONLY THE CARD VALUES SAME OF PROPERTY
-  _id: z.string().optional(),
-  host: Z_Host,
+  _id: objectIdSchema.optional(),
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
-  experienceType: z.string(),
-  description: z.string().optional(),
-  highLights: z.array(z.string()).nullable(),
-  durationHour: z.number(),
-  durationMinute: z.number(),
-  languages: z.array(z.string()),
-  isFoodIncluded: z.boolean(),
-  includedFoods: z.array(z.string()),
-  isNonAlcoholicDrinkIncluded: z.boolean(),
-  isAlcoholicDrinkIncluded: z.boolean(),
-  includedAlcoholicDrinks: z.array(z.string()),
-  otherInclusion: z.array(z.string()),
-  notIncluded: z.array(z.string()),
-  whatToBring: z.array(z.string()),
-  notAllowed: z.array(z.string()),
-  policies: z.array(z.string()),
-  isSegmentBuilderEnabled: z.boolean(),
-  segments: z.array(Z_Activity_Segment),
   meetingPoint: Z_Location.nullable(),
   photos: z.array(Z_Photo),
-  slotCapacity: z.object({
-    _id: z.string().optional(),
-    minimum: z.number(),
-    maximum: z.number(),
-  }),
-  schedule: Z_Activity_Schedule.nullable().optional(),
   pricePerPerson: z.number().nullable().optional(),
   pricePerSlot: z.number().nullable().optional(),
-  daysCanCancel: z.number(),
-  status: z.string(),
-  finishedSections: z.array(z.string()),
-  pricePerDates: z.array(Z_Activity_PricePerDate),
-  activityNote: z.string().nullable(),
   average: z.number(),
   reviewsCount: z.number(),
 })
 
+export const Z_Activity_Filtered_Results = z.array(Z_Activity_Filtered)
+
 export const Z_Property_Filtered = z.object({
-  listingId: z.string(),
+  listingId: objectIdSchema,
   type: z.nativeEnum(E_Property_Type),
   wholeplaceType: z.nativeEnum(E_Whole_Place_Property_Type).optional(),
   location: Z_Location,
@@ -192,3 +177,5 @@ export const Z_Property_Filtered = z.object({
   reviewsCount: z.number().optional(),
   price: z.number(),
 })
+
+export const Z_Property_Filtered_Result = z.array(Z_Property_Filtered)

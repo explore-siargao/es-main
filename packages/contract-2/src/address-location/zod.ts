@@ -1,7 +1,13 @@
-import { string, z } from "zod"
+import { z } from "zod"
 
+const objectIdSchema = z
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
 export const Z_Address = z.object({
-  _id: z.string().optional(),
+  _id: objectIdSchema.optional(),
   country: z.string(),
   city: z.string(),
   stateProvince: z.string(),
@@ -13,14 +19,14 @@ export const Z_Address = z.object({
 })
 
 export const Z_Location = z.object({
-  _id: z.string().optional(),
+  _id: objectIdSchema.optional(),
   city: z.string().optional(),
-  streetAddress: z.string(),
-  barangay: z.string(),
+  streetAddress: z.string().optional(),
+  barangay: z.string().optional(),
   longitude: z.union([z.number(), z.string()]).optional(),
   latitude: z.union([z.number(), z.string()]).optional(),
-  howToGetThere: z.string(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
+  howToGetThere: z.string().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).nullable().optional(),
+  deletedAt: z.union([z.string(), z.date()]).nullable().optional(),
 })
