@@ -51,8 +51,10 @@ export const updateActivities = async (req: Request, res: Response) => {
                 durationHour: durationHour,
                 durationMinute: durationMinute,
                 languages: languages,
-                finishedSections: ['basicInfo'],
                 updatedAt: Date.now(),
+              },
+              $addToSet: {
+                finishedSections: 'basicInfo',
               },
             },
             { new: true, runValidators: true }

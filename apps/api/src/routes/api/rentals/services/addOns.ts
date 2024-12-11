@@ -128,7 +128,9 @@ export const updateAddOns = async (req: Request, res: Response) => {
             {
               $set: {
                 AddOns: addOns,
-                finishedSections: ['basicInfo', 'details', 'addOns'],
+              },
+              $addToSet: {
+                finishedSections: 'addOns',
               },
             }
           )

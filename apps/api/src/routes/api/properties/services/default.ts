@@ -244,7 +244,9 @@ export const updatePropertyType = async (req: Request, res: Response) => {
         {
           $set: {
             type: type,
-            finishedSections: ['type'],
+          },
+          $addToSet: {
+            finishedSections: 'type',
           },
         },
         { new: true, runValidators: true, fields: { type: 1 } }
@@ -286,7 +288,9 @@ export const updateWholePlaceType = async (req: Request, res: Response) => {
         {
           $set: {
             wholeplaceType: type,
-            finishedSections: ['type', 'wholePlaceType'],
+          },
+          $addToSet: {
+            finishedSections: 'wholePlaceType',
           },
         },
         { new: true, runValidators: true, fields: { wholeplaceType: 1 } }
@@ -376,8 +380,10 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
           $set: {
             title,
             description,
-            finishedSections: ['type', 'wholePlaceType', 'basicInfo'],
             updatedAt: Date.now(),
+          },
+          $addToSet: {
+            finishedSections: 'basicInfo',
           },
         },
         { new: true }
@@ -456,12 +462,9 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
             {
               $set: {
                 location: newLocation._id,
-                finishedSections: [
-                  'type',
-                  'wholePlaceType',
-                  'basicInfo',
-                  'location',
-                ],
+              },
+              $addToSet: {
+                finishedSections: 'location',
               },
             },
             { new: true }
@@ -480,13 +483,8 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
           await dbProperties.findByIdAndUpdate(
             propertyId,
             {
-              $set: {
-                finishedSections: [
-                  'type',
-                  'wholePlaceType',
-                  'basicInfo',
-                  'location',
-                ],
+              $addToSet: {
+                finishedSections: 'location',
               },
             },
             { new: true }

@@ -80,16 +80,13 @@ export const updateRentalLocation = async (req: Request, res: Response) => {
           await location?.save()
         }
         if (rental) {
-          rental.finishedSections = [
-            'basicInfo',
-            'details',
-            'addOns',
-            'photos',
-            'pricing',
-            'location',
-          ]
           rental.updatedAt = new Date()
           await rental?.save()
+          await dbRentals.findByIdAndUpdate(rental._id, {
+            $addToSet: {
+              finishedSections: 'location',
+            },
+          })
         }
         res.json(
           response.success({

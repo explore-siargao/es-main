@@ -129,20 +129,15 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
             activity?._id,
             {
               $set: {
-                finishedSections: [
-                  'basicInfo',
-                  'itinerary',
-                  'inclusions',
-                  'additionalInfo',
-                  'photos',
-                  'pricing',
-                ],
                 schedule: newSchedule,
                 slotCapacity: slotCapacity,
                 updatedAt: Date.now(),
                 ...(experienceType === 'Private'
                   ? { pricePerSlot: price, pricePerPerson: null }
                   : { pricePerPerson: price, pricePerSlot: null }),
+              },
+              $addToSet: {
+                finishedSections: 'pricing',
               },
             },
             { new: true, runValidators: true }

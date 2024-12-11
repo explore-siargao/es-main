@@ -254,8 +254,10 @@ export const updateItinerary = async (req: Request, res: Response) => {
             activityId,
             {
               $set: {
-                finishedSections: ['basicInfo', 'itinerary'],
                 updatedAt: Date.now(),
+              },
+              $addToSet: {
+                finishedSections: 'itinerary',
               },
             },
             { new: true }
