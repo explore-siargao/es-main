@@ -44,7 +44,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
         const updatedRental = await dbRentals.findByIdAndUpdate(
           rental?._id,
           {
-            $push: {
+            $addToSet: {
               finishedSections: newFinishedSection,
             },
             $set: {

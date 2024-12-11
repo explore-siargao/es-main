@@ -52,7 +52,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
         const updateFinishedSection = await dbProperties.findByIdAndUpdate(
           propertyId,
           {
-            $push: {
+            $addToSet: {
               finishedSections: finishedSections,
             },
             $set: {

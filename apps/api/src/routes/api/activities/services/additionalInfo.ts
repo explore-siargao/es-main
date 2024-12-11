@@ -22,13 +22,10 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
             policies: policies,
             daysCanCancel: cancellationDays,
             updatedAt: Date.now(),
-            finishedSections: [
-              'basicInfo',
-              'itinerary',
-              'inclusions',
-              'additionalInfo',
-            ],
           },
+          $addToSet:{
+            finishedSections:'additionalInfo'
+          }
         },
         { new: true }
       )

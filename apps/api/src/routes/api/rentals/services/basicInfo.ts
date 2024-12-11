@@ -154,11 +154,15 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         }
 
         if (rental) {
-          rental.finishedSections = ['basicInfo']
           rental.updatedAt = new Date()
         }
 
         await rental?.save()
+        await dbRentals.findByIdAndUpdate(rental._id,{
+          $addToSet:{
+            finishedSections:'basicInfo'
+          }
+        })
 
         const basicInfo = {
           category: rental?.category,

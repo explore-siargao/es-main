@@ -35,7 +35,7 @@ export const updateFinishedSections = async (req: Request, res: Response) => {
     const updatedFinishedSections = await dbActivities.findOneAndUpdate(
       { _id: activityId, host: userId },
       {
-        $push: {
+        $addToSet: {
           finishedSections: newFinishedSection,
         },
         $set: {
