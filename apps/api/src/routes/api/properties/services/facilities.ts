@@ -51,9 +51,9 @@ export const updatePropertyFacilities = async (req: Request, res: Response) => {
         $set: {
           facilities: trueFacilities,
         },
-        $addToSet:{
-          finishedSections:'facilities'
-        }
+        $addToSet: {
+          finishedSections: 'facilities',
+        },
       })
       res.json(
         response.success({

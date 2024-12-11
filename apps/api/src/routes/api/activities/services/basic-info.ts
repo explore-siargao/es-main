@@ -53,9 +53,9 @@ export const updateActivities = async (req: Request, res: Response) => {
                 languages: languages,
                 updatedAt: Date.now(),
               },
-              $addToSet:{
-                finishedSections:'basicInfo'
-              }
+              $addToSet: {
+                finishedSections: 'basicInfo',
+              },
             },
             { new: true, runValidators: true }
           )

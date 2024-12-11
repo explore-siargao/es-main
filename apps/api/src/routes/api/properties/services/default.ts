@@ -246,7 +246,7 @@ export const updatePropertyType = async (req: Request, res: Response) => {
             type: type,
           },
           $addToSet: {
-            finishedSections: "type",
+            finishedSections: 'type',
           },
         },
         { new: true, runValidators: true, fields: { type: 1 } }
@@ -290,8 +290,8 @@ export const updateWholePlaceType = async (req: Request, res: Response) => {
             wholeplaceType: type,
           },
           $addToSet: {
-            finishedSections:'wholePlaceType',
-            }
+            finishedSections: 'wholePlaceType',
+          },
         },
         { new: true, runValidators: true, fields: { wholeplaceType: 1 } }
       )
@@ -381,11 +381,11 @@ export const updatePropertyBasicInfo = async (req: Request, res: Response) => {
             title,
             description,
             updatedAt: Date.now(),
+          },
+          $addToSet: {
+            finishedSections: 'basicInfo',
+          },
         },
-        $addToSet: {
-          finishedSections:'basicInfo',
-      },
-    },
         { new: true }
       )
       if (!updatedProperty) {
@@ -464,8 +464,8 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
                 location: newLocation._id,
               },
               $addToSet: {
-                finishedSections:'location'
-              }
+                finishedSections: 'location',
+              },
             },
             { new: true }
           )
@@ -483,9 +483,9 @@ export const updatePropertyLocation = async (req: Request, res: Response) => {
           await dbProperties.findByIdAndUpdate(
             propertyId,
             {
-                $addToSet: {
-                finishedSections:'location',
-              }
+              $addToSet: {
+                finishedSections: 'location',
+              },
             },
             { new: true }
           )

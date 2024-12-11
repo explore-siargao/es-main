@@ -158,10 +158,10 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
         }
 
         await rental?.save()
-        await dbRentals.findByIdAndUpdate(rental._id,{
-          $addToSet:{
-            finishedSections:'basicInfo'
-          }
+        await dbRentals.findByIdAndUpdate(rental._id, {
+          $addToSet: {
+            finishedSections: 'basicInfo',
+          },
         })
 
         const basicInfo = {

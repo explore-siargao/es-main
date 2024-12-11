@@ -136,9 +136,9 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                   ? { pricePerSlot: price, pricePerPerson: null }
                   : { pricePerPerson: price, pricePerSlot: null }),
               },
-              $addToSet:{
-                finishedSections:'pricing'
-              }
+              $addToSet: {
+                finishedSections: 'pricing',
+              },
             },
             { new: true, runValidators: true }
           )

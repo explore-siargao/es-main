@@ -61,9 +61,9 @@ export const updatePolicyByProperty = async (req: Request, res: Response) => {
           $set: {
             policies: truePolicies,
           },
-          $addToSet:{
-            finishedSections:'policies'
-          }
+          $addToSet: {
+            finishedSections: 'policies',
+          },
         })
         res.json(
           response.success({

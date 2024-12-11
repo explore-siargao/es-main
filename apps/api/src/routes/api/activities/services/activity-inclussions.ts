@@ -83,9 +83,9 @@ export const updateActivityInclusions = async (req: Request, res: Response) => {
             otherInclusion: otherInclusion,
             updatedAt: Date.now(),
           },
-          $addToSet:{
-            finishedSections:'inclusions'
-          }
+          $addToSet: {
+            finishedSections: 'inclusions',
+          },
         },
         { new: true }
       )

@@ -256,9 +256,9 @@ export const updateItinerary = async (req: Request, res: Response) => {
               $set: {
                 updatedAt: Date.now(),
               },
-              $addToSet:{
-                finishedSections:'itinerary'
-              }
+              $addToSet: {
+                finishedSections: 'itinerary',
+              },
             },
             { new: true }
           )

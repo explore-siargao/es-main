@@ -88,13 +88,11 @@ export const updateRentalDetails = async (req: Request, res: Response) => {
             rental.updatedAt = new Date()
           }
           await rental?.save()
-          await dbRentals.findByIdAndUpdate(rental._id,
-            {
-              $addToSet:{
-                finishedSections:'details'
-              }
-            }
-          )
+          await dbRentals.findByIdAndUpdate(rental._id, {
+            $addToSet: {
+              finishedSections: 'details',
+            },
+          })
 
           res.json(
             response.success({

@@ -23,9 +23,9 @@ export const updateAdditionalInfo = async (req: Request, res: Response) => {
             daysCanCancel: cancellationDays,
             updatedAt: Date.now(),
           },
-          $addToSet:{
-            finishedSections:'additionalInfo'
-          }
+          $addToSet: {
+            finishedSections: 'additionalInfo',
+          },
         },
         { new: true }
       )

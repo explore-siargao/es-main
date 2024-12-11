@@ -129,9 +129,9 @@ export const updateAddOns = async (req: Request, res: Response) => {
               $set: {
                 AddOns: addOns,
               },
-              $addToSet:{
-                finishedSections:'addOns'
-              }
+              $addToSet: {
+                finishedSections: 'addOns',
+              },
             }
           )
 
