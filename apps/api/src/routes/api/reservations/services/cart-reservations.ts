@@ -64,6 +64,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
             guestCount: item.guestCount,
             status: 'For-Payment',
             cartId: item._id,
+            forPaymenttId:null
           }))
           const addReservations =
             await dbReservations.insertMany(reservationItems)
@@ -107,7 +108,6 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
     const userId = res.locals.user?.id
     const customer = res.locals.user.personalInfo
     const cartItems: T_Add_To_Cart[] = req.body.cartItems
-    const cardId: string = req.body.cardId
     const cvv: string = req.body.cvv
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
@@ -129,8 +129,12 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         )
 
         const paymentMethod = await dbPaymentMethods.findOne({
-          _id: cardId,
+          user:userId,
+          isDefault:true
         })
+        if(!paymentMethod){
+          res.json(response.error({message:"No Card linked setted to default"}))
+      }else{
         const cardInfo = encryptionService.decrypt(
           paymentMethod?.cardInfo as string
         ) as T_CardInfo
@@ -171,6 +175,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
               guestCount: item.guestCount,
               status: 'For-Payment',
               cartId: item.id,
+              forPaymenttId:null
             }))
             const addReservations =
               await dbReservations.insertMany(reservationItems)
@@ -206,6 +211,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         }
       }
     }
+  }
   } catch (err: any) {
     res.json(
       response.error({
@@ -289,6 +295,7 @@ export const manualCardMultipleCheckout = async (
             guestCount: item.guestCount,
             status: 'For-Payment',
             cartId: item.id,
+            forPaymenttId:null
           }))
           const addReservations =
             await dbReservations.insertMany(reservationItems)

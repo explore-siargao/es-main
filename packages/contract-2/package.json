@@ -13,6 +13,11 @@
       "require": "./build/cart/index.js",
       "types": "./build/cart/index.d.ts"
     },
+    "./for-payment-listings": {
+      "import": "./build/for-payment-listings/index.js",
+      "require": "./build/for-payment-listings/index.js",
+      "types": "./build/for-payment-listings/index.d.ts"
+    },
     "./user": {
       "import": "./build/user/index.js",
       "require": "./build/user/index.js",
