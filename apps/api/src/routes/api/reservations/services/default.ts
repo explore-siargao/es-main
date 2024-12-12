@@ -7,7 +7,7 @@ import {
   T_Add_Reservation,
   Z_Add_Reservations,
 } from '@repo/contract-2/reservations'
-import { dbCarts, dbReservations } from '@repo/database'
+import { dbCarts, dbForPaymentListing, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
 const response = new ResponseService()
@@ -596,6 +596,12 @@ export const updateReservationStatusByReferenceId = async (
         { _id: { $in: cartIds } },
         { $set: { status: 'Completed' } }
       )
+      const id = getReservations[0]?.forPaymenttId
+      await dbForPaymentListing.findByIdAndUpdate(id, {
+        $set: {
+          status: 'Completed',
+        },
+      })
 
       res.json(
         response.success({ message: 'Reservation status updated successfully' })

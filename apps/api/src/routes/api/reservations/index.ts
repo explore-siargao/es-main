@@ -29,6 +29,11 @@ import {
   gcashMultipleCheckout,
   manualCardMultipleCheckout,
 } from './services/cart-reservations'
+import {
+  gcashPayment,
+  linkedCardPayment,
+  manualCardPayment,
+} from './services/for-payment-reservation'
 
 const router = express.Router()
 
@@ -162,6 +167,30 @@ router.post(
   isUserLoggedIn,
   isCsrfTokenValid,
   manualCardMultipleCheckout
+)
+
+router.post(
+  '/checkout/gcash',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  gcashPayment
+)
+
+router.post(
+  '/checkout/manual-card',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  manualCardPayment
+)
+
+router.post(
+  '/checkout/card',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  linkedCardPayment
 )
 
 export default router

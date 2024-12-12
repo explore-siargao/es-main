@@ -107,6 +107,12 @@ const reservations = new Schema({
     required: false,
     default: null,
   },
+  forPaymenttId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "ForPaymentListings",
+    required: false,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
