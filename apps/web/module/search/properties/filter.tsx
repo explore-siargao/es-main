@@ -120,6 +120,15 @@ const PropertiesFilter = () => {
                     </div>
                   ))}
                 </div>
+                <Pagination
+                  pageIndex={page - 1}
+                  pageCount={totalPages}
+                  canPreviousPage={page > 1}
+                  canNextPage={page < totalPages}
+                  gotoPage={(newPage) => handlePageChange(newPage + 1)}
+                  previousPage={() => handlePageChange(page - 1)}
+                  nextPage={() => handlePageChange(page + 1)}
+                />
               </>
             ) : null}
 
@@ -142,15 +151,6 @@ const PropertiesFilter = () => {
           </div>
         </div>
       </div>
-      <Pagination
-        pageIndex={page - 1}
-        pageCount={totalPages}
-        canPreviousPage={page > 1}
-        canNextPage={page < totalPages}
-        gotoPage={(newPage) => handlePageChange(newPage + 1)}
-        previousPage={() => handlePageChange(page - 1)}
-        nextPage={() => handlePageChange(page + 1)}
-      />
     </WidthWrapper>
   )
 }

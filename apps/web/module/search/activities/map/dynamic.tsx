@@ -57,7 +57,8 @@ const Dynamic = ({ center, activities, zoom, scrollWheelZoom }: T_Props) => {
       center={center}
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
-      className="h-screen"
+      // 276px is the height of the navigation bar
+      className="h-[calc(100vh-276px)]"
       rounded="rounded-none"
     >
       <MapClickHandler />
