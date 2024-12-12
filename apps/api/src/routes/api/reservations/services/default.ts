@@ -592,19 +592,16 @@ export const updateReservationStatusByReferenceId = async (
     if (!confirmedStatus) {
       res.json(response.error({ message: 'Wrong reference ID' }))
     } else {
-    
       await dbCarts.updateMany(
         { _id: { $in: cartIds } },
         { $set: { status: 'Completed' } }
       )
-      const id =getReservations[0]?.forPaymenttId
-      await dbForPaymentListing.findByIdAndUpdate(id,
-        {
-          $set:{
-            status:"Completed"
-          }
-        }
-      )
+      const id = getReservations[0]?.forPaymenttId
+      await dbForPaymentListing.findByIdAndUpdate(id, {
+        $set: {
+          status: 'Completed',
+        },
+      })
 
       res.json(
         response.success({ message: 'Reservation status updated successfully' })
