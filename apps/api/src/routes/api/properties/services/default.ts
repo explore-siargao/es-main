@@ -91,7 +91,7 @@ export const getPropertiesByHostId = async (req: Request, res: Response) => {
 
 export const getPropertyByIdPublic = async (req: Request, res: Response) => {
   const preferredCurrency = res.locals.currency.preferred
-const conversionRates = res.locals.currency.conversionRates
+  const conversionRates = res.locals.currency.conversionRates
   try {
     const propertyId = req.params.propertyId
     const property = await dbProperties
@@ -123,18 +123,33 @@ const conversionRates = res.locals.currency.conversionRates
       )
     } else {
       const newProperty = property.toObject()
-      const modifiedProperty = newProperty.bookableUnits.map((item:any)=>({
+      const modifiedProperty = newProperty.bookableUnits.map((item: any) => ({
         ...item,
-        unitPrice:{
+        unitPrice: {
           ...item.unitPrice,
-          baseRate:convertPrice(item.unitPrice.baseRate,preferredCurrency,conversionRates),
-          pricePerAdditionalPerson:convertPrice(item.unitPrice.pricePerAdditionalPerson,preferredCurrency,conversionRates),
-          discountedWeeklyRate:convertPrice(item.unitPrice.discountedWeeklyRate,preferredCurrency,conversionRates),
-          discountedMonthlyRate:convertPrice(item.unitPrice.discountedMonthlyRate,preferredCurrency,conversionRates),
-        }
-      })
-    )
-    newProperty.bookableUnits = modifiedProperty
+          baseRate: convertPrice(
+            item.unitPrice.baseRate,
+            preferredCurrency,
+            conversionRates
+          ),
+          pricePerAdditionalPerson: convertPrice(
+            item.unitPrice.pricePerAdditionalPerson,
+            preferredCurrency,
+            conversionRates
+          ),
+          discountedWeeklyRate: convertPrice(
+            item.unitPrice.discountedWeeklyRate,
+            preferredCurrency,
+            conversionRates
+          ),
+          discountedMonthlyRate: convertPrice(
+            item.unitPrice.discountedMonthlyRate,
+            preferredCurrency,
+            conversionRates
+          ),
+        },
+      }))
+      newProperty.bookableUnits = modifiedProperty
       res.json(
         response.success({
           item: newProperty,
@@ -153,7 +168,7 @@ const conversionRates = res.locals.currency.conversionRates
 export const getPropertyById = async (req: Request, res: Response) => {
   const preferredCurrency = res.locals.currency.preferred
   const conversionRates = res.locals.currency.conversionRates
-  console.log(preferredCurrency,conversionRates)
+  console.log(preferredCurrency, conversionRates)
   try {
     const propertyId = req.params.propertyId
     const property = await dbProperties
@@ -174,29 +189,44 @@ export const getPropertyById = async (req: Request, res: Response) => {
       })
       .populate('reservations')
 
-      if (!property) {
-        res.json(
-          response.error({
-            status: 404,
-            message: 'Property with given ID not found!',
-          })
-        )
-      }else{
-        const newProperty = property.toObject()
-      const modifiedProperty = newProperty.bookableUnits.map((item:any)=>({
+    if (!property) {
+      res.json(
+        response.error({
+          status: 404,
+          message: 'Property with given ID not found!',
+        })
+      )
+    } else {
+      const newProperty = property.toObject()
+      const modifiedProperty = newProperty.bookableUnits.map((item: any) => ({
         ...item,
-        unitPrice:{
+        unitPrice: {
           ...item.unitPrice,
-          baseRate:convertPrice(item.unitPrice.baseRate,preferredCurrency,conversionRates),
-          pricePerAdditionalPerson:convertPrice(item.unitPrice.pricePerAdditionalPerson,preferredCurrency,conversionRates),
-          discountedWeeklyRate:convertPrice(item.unitPrice.discountedWeeklyRate,preferredCurrency,conversionRates),
-          discountedMonthlyRate:convertPrice(item.unitPrice.discountedMonthlyRate,preferredCurrency,conversionRates),
-        }
-      })
-    )
-    newProperty.bookableUnits = modifiedProperty
-    res.json(response.success({ item: newProperty }))
-  }
+          baseRate: convertPrice(
+            item.unitPrice.baseRate,
+            preferredCurrency,
+            conversionRates
+          ),
+          pricePerAdditionalPerson: convertPrice(
+            item.unitPrice.pricePerAdditionalPerson,
+            preferredCurrency,
+            conversionRates
+          ),
+          discountedWeeklyRate: convertPrice(
+            item.unitPrice.discountedWeeklyRate,
+            preferredCurrency,
+            conversionRates
+          ),
+          discountedMonthlyRate: convertPrice(
+            item.unitPrice.discountedMonthlyRate,
+            preferredCurrency,
+            conversionRates
+          ),
+        },
+      }))
+      newProperty.bookableUnits = modifiedProperty
+      res.json(response.success({ item: newProperty }))
+    }
   } catch (err: any) {
     res.json(
       response.error({

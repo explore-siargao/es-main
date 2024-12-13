@@ -147,7 +147,9 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
       .populate('host', 'email isHost')
       .populate('meetingPoint')
       .populate('photos')
-      .select('title description status, pricePerPerson, pricePerSlot, schedule')
+      .select(
+        'title description status, pricePerPerson, pricePerSlot, schedule'
+      )
       .exec()
 
     if (!activity) {
@@ -158,9 +160,19 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
-      const newActivity:any = activity.toObject()
-      newActivity.pricePerPerson = convertPrice(newActivity.pricePerPerson,preferredCurrency,conversionRates) || 0
-      newActivity.pricePerSlot = convertPrice(newActivity.pricePerSlot,preferredCurrency,conversionRates) || 0
+      const newActivity: any = activity.toObject()
+      newActivity.pricePerPerson =
+        convertPrice(
+          newActivity.pricePerPerson,
+          preferredCurrency,
+          conversionRates
+        ) || 0
+      newActivity.pricePerSlot =
+        convertPrice(
+          newActivity.pricePerSlot,
+          preferredCurrency,
+          conversionRates
+        ) || 0
       res.json(
         response.success({
           item: newActivity,

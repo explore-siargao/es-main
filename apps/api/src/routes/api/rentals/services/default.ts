@@ -266,10 +266,25 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
-      const newRental:any = rental.toObject()
-     newRental.pricing.dayRate = convertPrice(newRental.pricing.dayRate,preferredCurrency,conversionRates) || 0
-     newRental.pricing.requiredDeposit = convertPrice(newRental.pricing.requiredDeposit,preferredCurrency,conversionRates) || 0
-     newRental.pricing.adminBookingCharge = convertPrice(newRental.pricing.adminBookingCharge,preferredCurrency,conversionRates) || 0
+      const newRental: any = rental.toObject()
+      newRental.pricing.dayRate =
+        convertPrice(
+          newRental.pricing.dayRate,
+          preferredCurrency,
+          conversionRates
+        ) || 0
+      newRental.pricing.requiredDeposit =
+        convertPrice(
+          newRental.pricing.requiredDeposit,
+          preferredCurrency,
+          conversionRates
+        ) || 0
+      newRental.pricing.adminBookingCharge =
+        convertPrice(
+          newRental.pricing.adminBookingCharge,
+          preferredCurrency,
+          conversionRates
+        ) || 0
       res.json(
         response.success({
           item: newRental,
