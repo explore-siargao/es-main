@@ -1,4 +1,5 @@
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
+import { convertPrice } from '@/common/helpers/convert-price'
 import { ResponseService } from '@/common/service/response'
 import {
   T_Property_Basic_Info,
@@ -89,6 +90,8 @@ export const getPropertiesByHostId = async (req: Request, res: Response) => {
 }
 
 export const getPropertyByIdPublic = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+const conversionRates = res.locals.currency.conversionRates
   try {
     const propertyId = req.params.propertyId
     const property = await dbProperties
@@ -119,9 +122,22 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
+      const newProperty = property.toObject()
+      const modifiedProperty = newProperty.bookableUnits.map((item:any)=>({
+        ...item,
+        unitPrice:{
+          ...item.unitPrice,
+          baseRate:convertPrice(item.unitPrice.baseRate,preferredCurrency,conversionRates),
+          pricePerAdditionalPerson:convertPrice(item.unitPrice.pricePerAdditionalPerson,preferredCurrency,conversionRates),
+          discountedWeeklyRate:convertPrice(item.unitPrice.discountedWeeklyRate,preferredCurrency,conversionRates),
+          discountedMonthlyRate:convertPrice(item.unitPrice.discountedMonthlyRate,preferredCurrency,conversionRates),
+        }
+      })
+    )
+    newProperty.bookableUnits = modifiedProperty
       res.json(
         response.success({
-          item: property,
+          item: newProperty,
         })
       )
     }
@@ -135,9 +151,11 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
 }
 
 export const getPropertyById = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
+  console.log(preferredCurrency,conversionRates)
   try {
     const propertyId = req.params.propertyId
-
     const property = await dbProperties
       .findOne({ _id: propertyId })
       .populate({
@@ -156,7 +174,29 @@ export const getPropertyById = async (req: Request, res: Response) => {
       })
       .populate('reservations')
 
-    res.json(response.success({ item: property }))
+      if (!property) {
+        res.json(
+          response.error({
+            status: 404,
+            message: 'Property with given ID not found!',
+          })
+        )
+      }else{
+        const newProperty = property.toObject()
+      const modifiedProperty = newProperty.bookableUnits.map((item:any)=>({
+        ...item,
+        unitPrice:{
+          ...item.unitPrice,
+          baseRate:convertPrice(item.unitPrice.baseRate,preferredCurrency,conversionRates),
+          pricePerAdditionalPerson:convertPrice(item.unitPrice.pricePerAdditionalPerson,preferredCurrency,conversionRates),
+          discountedWeeklyRate:convertPrice(item.unitPrice.discountedWeeklyRate,preferredCurrency,conversionRates),
+          discountedMonthlyRate:convertPrice(item.unitPrice.discountedMonthlyRate,preferredCurrency,conversionRates),
+        }
+      })
+    )
+    newProperty.bookableUnits = modifiedProperty
+    res.json(response.success({ item: newProperty }))
+  }
   } catch (err: any) {
     res.json(
       response.error({

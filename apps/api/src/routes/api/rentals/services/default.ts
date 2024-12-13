@@ -10,6 +10,7 @@ import {
   dbRentals,
 } from '@repo/database'
 import { E_Rental_Category, E_Rental_Status } from '@repo/contract'
+import { convertPrice } from '@/common/helpers/convert-price'
 
 const response = new ResponseService()
 
@@ -233,6 +234,8 @@ export const getRental = async (req: Request, res: Response) => {
 }
 
 export const getRentalByIdPublic = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   try {
     const rentalId = req.params.rentalId
     const rental = await dbRentals
@@ -263,9 +266,13 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
+      const newRental:any = rental.toObject()
+     newRental.pricing.dayRate = convertPrice(newRental.pricing.dayRate,preferredCurrency,conversionRates) || 0
+     newRental.pricing.requiredDeposit = convertPrice(newRental.pricing.requiredDeposit,preferredCurrency,conversionRates) || 0
+     newRental.pricing.adminBookingCharge = convertPrice(newRental.pricing.adminBookingCharge,preferredCurrency,conversionRates) || 0
       res.json(
         response.success({
-          item: rental,
+          item: newRental,
         })
       )
     }
