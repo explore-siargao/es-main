@@ -7,7 +7,7 @@ import {
 } from "../types/AvailableBooking"
 import { TitleSection } from "./TitleSection"
 import ImageGallery from "./image-gallery"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideGrip } from "lucide-react"
@@ -40,9 +40,13 @@ const AvailableBooking = ({
       title = "Available Whole Places"
       break
     default:
-      title = "Available Booking"
+      title = "Available Units"
       break
   }
+
+  useEffect(() => {
+    onSelectBookableUnit(bookableUnits[0] || null);
+  }, []);
 
   return (
     <>

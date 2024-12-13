@@ -1,6 +1,6 @@
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import ContactHost from "./components/ContactHost"
-import CheckoutProcess from "./components/CheckoutBox"
+// import CheckoutProcess from "./components/checkout-box"
 import { LucideChevronLeft } from "lucide-react"
 import Link from "next/link"
 
@@ -21,7 +21,7 @@ const Message = () => {
         </div>
         <div className="md:w-96 md:relative">
           <div className="md:sticky md:top-0">
-            <CheckoutProcess
+            {/* <CheckoutProcess
               checkoutDesc={{
                 id: 1,
                 serviceFee: 1000,
@@ -30,7 +30,7 @@ const Message = () => {
                 totalBeforeTaxes: 126000,
                 titlePrice: 126000,
               }}
-            />
+            /> */}
           </div>
         </div>
       </div>
