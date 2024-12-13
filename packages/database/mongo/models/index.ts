@@ -52,5 +52,5 @@ export {
   dbLocations,
   dbReviews,
   dbCarts,
-  dbForPaymentListing
+  dbForPaymentListing,
 }

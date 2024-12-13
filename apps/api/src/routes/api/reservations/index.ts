@@ -30,7 +30,11 @@ import {
   gcashMultipleCheckout,
   manualCardMultipleCheckout,
 } from './services/cart-reservations'
-import { gcashPayment, linkedCardPayment, manualCardPayment } from './services/for-payment-reservation'
+import {
+  gcashPayment,
+  linkedCardPayment,
+  manualCardPayment,
+} from './services/for-payment-reservation'
 
 const router = express.Router()
 

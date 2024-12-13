@@ -7,7 +7,12 @@ import { bookListing, updateForPayment } from './services/default'
 const router = express.Router()
 
 router.post('/', isOriginValid, isUserLoggedIn, isCsrfTokenValid, bookListing)
-router.patch('/:forPaymentId', isOriginValid, isUserLoggedIn, isCsrfTokenValid, updateForPayment)
-
+router.patch(
+  '/:forPaymentId',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  updateForPayment
+)
 
 export default router

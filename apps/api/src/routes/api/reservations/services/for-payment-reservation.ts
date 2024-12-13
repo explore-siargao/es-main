@@ -282,84 +282,86 @@ export const linkedCardPayment = async (req: Request, res: Response) => {
           isDefault: true,
         })
 
-        if(!paymentMethod){
-            res.json(response.error({message:"No Card linked setted to default"}))
-        }else{
-        const cardInfo = encryptionService.decrypt(
-          paymentMethod?.cardInfo as string
-        ) as T_CardInfo
-        if (cardInfo && cardInfo.cvv === cvv) {
-          const cardResponse = await fetch(
-            `${API_URL}/api/v1/xendit/card-payment`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                amount: price,
-                cardNumber: cardInfo.cardNumber,
-                expirationMonth: cardInfo.expirationMonth,
-                expirationYear: cardInfo.expirationYear,
-                cardHolderName: cardInfo.cardholderName,
-                country: cardInfo.country,
-                cvv: cardInfo.cvv,
-                customer: customer,
-                userId: userId,
-              }),
-            }
+        if (!paymentMethod) {
+          res.json(
+            response.error({ message: 'No Card linked setted to default' })
           )
+        } else {
+          const cardInfo = encryptionService.decrypt(
+            paymentMethod?.cardInfo as string
+          ) as T_CardInfo
+          if (cardInfo && cardInfo.cvv === cvv) {
+            const cardResponse = await fetch(
+              `${API_URL}/api/v1/xendit/card-payment`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  amount: price,
+                  cardNumber: cardInfo.cardNumber,
+                  expirationMonth: cardInfo.expirationMonth,
+                  expirationYear: cardInfo.expirationYear,
+                  cardHolderName: cardInfo.cardholderName,
+                  country: cardInfo.country,
+                  cvv: cardInfo.cvv,
+                  customer: customer,
+                  userId: userId,
+                }),
+              }
+            )
 
-          const cardData = await cardResponse.json()
-          if (cardData.item.actions) {
-            const reservationItem = new dbReservations({
-              activityIds: activityIds || null,
-              rentalIds: rentalIds || null,
-              propertyIds: propertyIds || null,
-              startDate: startDate,
-              endDate: endDate,
-              guest: userId,
-              xendItPaymentMethodId: cardData.item.payment_method.id,
-              xendItPaymentRequestId: cardData.item.id,
-              xendItPaymentReferenceId: cardData.item.reference_id,
-              guestCount: guestCount,
-              status: 'For-Payment',
-              cartId: null,
-              forPaymenttId: id,
-            })
-            const addReservations =
-              await dbReservations.insertMany(reservationItem)
-            if (addReservations) {
-              res.json(
-                response.success({
-                  item: {
-                    reservations: addReservations,
-                    action: {
-                      type: 'PAYMENT',
-                      link: cardData.item.actions[0].url,
+            const cardData = await cardResponse.json()
+            if (cardData.item.actions) {
+              const reservationItem = new dbReservations({
+                activityIds: activityIds || null,
+                rentalIds: rentalIds || null,
+                propertyIds: propertyIds || null,
+                startDate: startDate,
+                endDate: endDate,
+                guest: userId,
+                xendItPaymentMethodId: cardData.item.payment_method.id,
+                xendItPaymentRequestId: cardData.item.id,
+                xendItPaymentReferenceId: cardData.item.reference_id,
+                guestCount: guestCount,
+                status: 'For-Payment',
+                cartId: null,
+                forPaymenttId: id,
+              })
+              const addReservations =
+                await dbReservations.insertMany(reservationItem)
+              if (addReservations) {
+                res.json(
+                  response.success({
+                    item: {
+                      reservations: addReservations,
+                      action: {
+                        type: 'PAYMENT',
+                        link: cardData.item.actions[0].url,
+                      },
+                      message: 'Pending payment',
                     },
-                    message: 'Pending payment',
-                  },
+                  })
+                )
+              } else {
+                res.json(response.error({ message: 'Invalid card details' }))
+              }
+            } else {
+              res.json(
+                response.error({
+                  message: cardData.item.message || UNKNOWN_ERROR_OCCURRED,
                 })
               )
-            } else {
-              res.json(response.error({ message: 'Invalid card details' }))
             }
           } else {
             res.json(
               response.error({
-                message: cardData.item.message || UNKNOWN_ERROR_OCCURRED,
+                message: 'Invalid card details',
               })
             )
           }
-        } else {
-          res.json(
-            response.error({
-              message: 'Invalid card details',
-            })
-          )
         }
-      }
       } else {
         console.error(JSON.parse(validForPaymentInput.error.message))
         res.json(response.error({ message: 'Invalid payloads' }))
