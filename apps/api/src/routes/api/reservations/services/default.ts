@@ -618,3 +618,52 @@ export const updateReservationStatusByReferenceId = async (
     )
   }
 }
+
+export const checkPayments = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const referenceId = req.body.reference_id
+    res.json(response.success({}))
+    // const getReservations = await dbReservations.find({
+    //   xendItPaymentReferenceId: referenceId,
+    //   status: 'For-Payment',
+    // })
+    // const cartIds = getReservations.flatMap((item) => item.cartId)
+    // const confirmedStatus = await dbReservations.updateMany(
+    //   { xendItPaymentReferenceId: referenceId, status: 'For-Payment' },
+    //   {
+    //     $set: { status: 'Confirmed' },
+    //     updatedAt: Date.now(),
+    //   }
+    // )
+    // if (!confirmedStatus) {
+    //   res.json(response.error({ message: 'Wrong reference ID' }))
+    // } else {
+    
+    //   await dbCarts.updateMany(
+    //     { _id: { $in: cartIds } },
+    //     { $set: { status: 'Completed' } }
+    //   )
+    //   const id =getReservations[0]?.forPaymenttId
+    //   await dbForPaymentListing.findByIdAndUpdate(id,
+    //     {
+    //       $set:{
+    //         status:"Completed"
+    //       }
+    //     }
+    //   )
+
+    //   res.json(
+    //     response.success({ message: 'Reservation status updated successfully' })
+    //   )
+    // }
+  } catch (err: any) {
+    res.json(
+      response.error({
+      
+      })
+    )
+  }
+}

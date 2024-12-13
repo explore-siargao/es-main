@@ -21,6 +21,7 @@ import {
 } from './services/activityReservation'
 import paginate from '@/common/middleware/paginations/paginate'
 import {
+  checkPayments,
   getAllReservations,
   updateReservationStatusByReferenceId,
 } from './services/default'
@@ -188,5 +189,7 @@ router.post(
   isCsrfTokenValid,
   linkedCardPayment
 )
+
+router.post('/check-payment', checkPayments)
 
 export default router
