@@ -58,7 +58,7 @@ const CheckoutBox = ({
   const handleAddToCartSingleItem = (propertyId: string) => {
     const payload: T_Add_To_Cart = {
       price: totalBeforeTaxes,
-      propertyIds: { propertyId, unitId: selectedBookableUnit?._id },
+      propertyIds: { propertyId, unitId: selectedBookableUnit?.qtyIds[0]?._id },
       startDate: dateRange.from?.toISOString() || "",
       endDate: dateRange.to?.toISOString() || "",
       guestCount: guestsCount,

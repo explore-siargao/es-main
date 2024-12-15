@@ -1,3 +1,5 @@
+import { APP_NAME, GUEST_COMMISSION_PERCENT } from "@repo/constants"
+
 export * from "./page-titles"
 export * from "./api-routes"
 export * from "./time"
@@ -12,6 +14,8 @@ export const IMAGE_FALLBACK =
   "https://fakeimg.pl/600x400/fdecec/f7b5b6?text=404&font=bebas"
 
 export const ASSET_ROOT = "/assets"
+
+export const GUEST_COMMISSION_TITLE = `${APP_NAME}'s ${GUEST_COMMISSION_PERCENT*100}% commission`
 
 export const MESSAGE_404 =
   "The page you are looking for might be removed or temporarily unavailable."

@@ -26,6 +26,7 @@ function PropertyCartItem({
   setIsDeleteCartItemOpen,
   viewOnly,
 }: ICartProps) {
+  const unitItem = item.propertyIds?.unitId
   const propertyItem = item.propertyIds?.propertyId
   return (
     <div key={propertyItem?._id} className="border rounded-xl p-4 mb-6">
@@ -41,7 +42,7 @@ function PropertyCartItem({
           )}
 
           <img
-            src={`/assets/${propertyItem?.photos && propertyItem?.photos[0]?.key}`}
+            src={`/assets/${unitItem?.photos && unitItem?.photos[0]?.key}`}
             width={140}
             height={140}
             alt="item image"
@@ -49,7 +50,7 @@ function PropertyCartItem({
           />
           <div className="flex-1">
             <Typography variant="h3" fontWeight="semibold">
-              {propertyItem?.title}
+              {unitItem?.title}
             </Typography>
             <Typography variant="p" className="text-gray-500">
               {propertyItem?.location?.streetAddress &&
@@ -60,9 +61,9 @@ function PropertyCartItem({
                 `${propertyItem?.location?.city}`}
             </Typography>
             <Typography variant="p" className="text-gray-500">
-              {`${item.propertyIds?.unitId?.bedRooms?.length ? item.propertyIds?.unitId?.bedRooms?.length : 0} ${item.propertyIds?.unitId?.bedRooms && item.propertyIds?.unitId?.bedRooms?.length > 1 ? "Bedrooms" : "Bedroom"}`}
-              {` · ${item.propertyIds?.unitId?.numBathrooms ? item.propertyIds?.unitId?.numBathrooms : 0} ${item.propertyIds?.unitId?.numBathrooms && item.propertyIds?.unitId?.numBathrooms > 1 ? "Bathrooms" : "Bathroom"}`}
-              {` · ${item.propertyIds?.unitId?.livingRooms?.length ? item.propertyIds?.unitId?.livingRooms?.length : 0} ${item.propertyIds?.unitId?.livingRooms && item.propertyIds?.unitId?.livingRooms?.length > 1 ? "Living rooms" : "Living room"}`}
+              {`${unitItem?.bedRooms?.length ? unitItem?.bedRooms?.length : 0} ${unitItem?.bedRooms && unitItem?.bedRooms?.length > 1 ? "Bedrooms" : "Bedroom"}`}
+              {` · ${unitItem?.numBathrooms ? unitItem?.numBathrooms : 0} ${unitItem?.numBathrooms && unitItem?.numBathrooms > 1 ? "Bathrooms" : "Bathroom"}`}
+              {` · ${unitItem?.livingRooms?.length ? unitItem?.livingRooms?.length : 0} ${unitItem?.livingRooms && unitItem?.livingRooms?.length > 1 ? "Living rooms" : "Living room"}`}
             </Typography>
           </div>
         </div>

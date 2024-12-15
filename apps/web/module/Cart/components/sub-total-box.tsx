@@ -40,6 +40,7 @@ const SubTotalBox = ({
       >
         {buttonText}
       </Button>
+      {buttonText === "Pay now" ? <Typography variant="h6" className="text-text-400 mt-4">When you click the above button, you will be redirected to Xendit's payment portal, you can still cancel the process when you are there.</Typography> : null}
     </div>
   )
 }

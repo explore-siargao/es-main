@@ -77,36 +77,6 @@ const PaymentMethodForm = () => {
 
   return (
     <div className="space-y-2">
-      <div className="flex gap-2">
-        <Image
-          src={mastercard}
-          width={500}
-          height={500}
-          className="h-5 w-auto"
-          alt="mastercard"
-        />
-        <Image
-          src={visa}
-          width={500}
-          height={500}
-          className="h-5 w-auto"
-          alt="visa"
-        />
-        <Image
-          src={amex}
-          width={500}
-          height={500}
-          className="h-5 w-auto"
-          alt="amex"
-        />
-        <Image
-          src={discover}
-          width={500}
-          height={500}
-          className="h-5 w-auto"
-          alt="discover"
-        />
-      </div>
       <div>
         <ErrorMessage
           title="Please check the following errors"

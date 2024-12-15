@@ -3,7 +3,7 @@
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import CartList from "./components/cart-list"
 import SubTotalBox from "./components/sub-total-box"
-import useGetCartItems from "@/common/hooks/use-get-cart-items"
+import useGetCartItems from "./hooks/use-get-cart-items"
 import Loading from "@/app/(accommodation)/loading"
 import { useRouter } from "next/navigation"
 import { useCartStore } from "./stores/cart-stores"
@@ -19,7 +19,7 @@ const Cart = () => {
       alert("Please select items before proceeding to checkout.")
       return
     }
-    router.push("/pay")
+    router.push(`/checkout?cartIds=${selectedItems.map((item) => item._id).join(",")}`)
   }
 
   return (
@@ -49,7 +49,7 @@ const Cart = () => {
         <div className="col-span-1 relative">
           <SubTotalBox
             selectedItemsPrice={selectedItems.map((item) => item.price)}
-            buttonText="Proceed to payment"
+            buttonText="Proceed to checkout"
             onButtonClick={handleCheckout}
           />
         </div>
