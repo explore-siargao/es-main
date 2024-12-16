@@ -15,7 +15,7 @@ const PropertyMoreInfo = ({ items }: T_Property_Price_Details_Box) => {
     <>
       {items.map((item) => {
         const unitId = item.propertyIds?.unitId
-       
+
         // const freeCancelDate = format(
         //   subDays(item.startDate, unitId?.daysCanCancel),
         //   "MMMM dd, yyyy"

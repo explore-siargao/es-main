@@ -4,9 +4,20 @@ import {
 } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
-import { ACTIVITY_HOST_COMMISSION_PERCENT, GUEST_COMMISSION_PERCENT, PROPERTY_HOST_COMMISSION_PERCENT, RENTAL_HOST_COMMISSION_PERCENT } from '@repo/constants'
+import {
+  ACTIVITY_HOST_COMMISSION_PERCENT,
+  GUEST_COMMISSION_PERCENT,
+  PROPERTY_HOST_COMMISSION_PERCENT,
+  RENTAL_HOST_COMMISSION_PERCENT,
+} from '@repo/constants'
 import { Z_AddCart } from '@repo/contract-2/cart'
-import { dbActivities, dbBookableUnitTypes, dbCarts, dbRentals, dbReservations } from '@repo/database'
+import {
+  dbActivities,
+  dbBookableUnitTypes,
+  dbCarts,
+  dbRentals,
+  dbReservations,
+} from '@repo/database'
 import { differenceInCalendarDays } from 'date-fns'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
@@ -114,42 +125,52 @@ export const addToCart = async (req: Request, res: Response) => {
             })
           )
         } else {
-          if(propertyIds){
-            const unit:any = await dbBookableUnitTypes.findOne({qtyIds:{$elemMatch: { _id: propertyIds.unitId }}})
-            .populate("unitPrice")
+          if (propertyIds) {
+            const unit: any = await dbBookableUnitTypes
+              .findOne({ qtyIds: { $elemMatch: { _id: propertyIds.unitId } } })
+              .populate('unitPrice')
             const startDay = new Date(startDate)
             const endDay = new Date(endDate)
-            const countDays = differenceInCalendarDays(endDay,startDay)
-            totalPrice = (unit?.unitPrice.baseRate*guestCount)*countDays
-            hostComission = PROPERTY_HOST_COMMISSION_PERCENT*totalPrice
-          }else if(rentalIds){
-            const rental:any = await dbRentals.findOne({_id:rentalIds.rentalId,qtyIds:{$elemMatch: { _id: rentalIds.qtyIdsId }}})
-            .populate("pricing")
+            const countDays = differenceInCalendarDays(endDay, startDay)
+            totalPrice = unit?.unitPrice.baseRate * guestCount * countDays
+            hostComission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
+          } else if (rentalIds) {
+            const rental: any = await dbRentals
+              .findOne({
+                _id: rentalIds.rentalId,
+                qtyIds: { $elemMatch: { _id: rentalIds.qtyIdsId } },
+              })
+              .populate('pricing')
             const startDay = new Date(startDate)
             const endDay = new Date(endDate)
-            const countDays = differenceInCalendarDays(endDay,startDay)
-            totalPrice = (rental?.pricing.dayRate*guestCount)*countDays
-            hostComission = RENTAL_HOST_COMMISSION_PERCENT*totalPrice
-          }else if(activityIds){
-            const activity = await dbActivities.findOne({_id:activityIds.activityId})
+            const countDays = differenceInCalendarDays(endDay, startDay)
+            totalPrice = rental?.pricing.dayRate * guestCount * countDays
+            hostComission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
+          } else if (activityIds) {
+            const activity = await dbActivities.findOne({
+              _id: activityIds.activityId,
+            })
             const startDay = new Date(startDate)
             const endDay = new Date(endDate)
-            const countDays = differenceInCalendarDays(endDay,startDay)
-            const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
-            if(activity?.pricePerPerson){
-            totalPrice = price*guestCount
-            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
-            }else if(activity?.pricePerSlot){
+            const countDays = differenceInCalendarDays(endDay, startDay)
+            const price =
+              activity?.pricePerPerson || activity?.pricePerSlot || 0
+            if (activity?.pricePerPerson) {
+              totalPrice = price * guestCount
+              hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+            } else if (activity?.pricePerSlot) {
               totalPrice = price
-              hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
-            }else{
-              res.json(response.error({message:"Price is not set on this activity"}))
+              hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+            } else {
+              res.json(
+                response.error({ message: 'Price is not set on this activity' })
+              )
             }
           }
-          const guestComission = (totalPrice || 0)*GUEST_COMMISSION_PERCENT
+          const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
           const newCart = new dbCarts({
             userId,
-            price:totalPrice,
+            price: totalPrice,
             hostComission,
             guestComission,
             propertyIds,
@@ -170,7 +191,7 @@ export const addToCart = async (req: Request, res: Response) => {
               message: 'Cart list  updated successfully',
             })
           )
-      }
+        }
       }
     }
   } catch (err: any) {
@@ -899,8 +920,11 @@ export const getAllCarts = async (req: Request, res: Response) => {
         })
       )
     } else {
-      const totalPrice = carts.reduce((sum,item)=>sum+(item.price || 0),0)
-      const totalGuestComission = carts.reduce((sum,item)=>sum+(item.guestComission || 0),0)
+      const totalPrice = carts.reduce((sum, item) => sum + (item.price || 0), 0)
+      const totalGuestComission = carts.reduce(
+        (sum, item) => sum + (item.guestComission || 0),
+        0
+      )
       res.json(
         response.success({
           items: carts,
@@ -924,9 +948,9 @@ export const updateCartInfo = async (req: Request, res: Response) => {
   const cartId = req.params.cartId
   const userId = res.locals.user?.id
   const { startDate, endDate, price, guestCount, contacts } = req.body
-  let hostComission,totalPrice
+  let hostComission, totalPrice
   try {
-    const getCart:any = await dbCarts.findOne({
+    const getCart: any = await dbCarts.findOne({
       _id: cartId,
       userId: userId,
       status: 'Active',
@@ -938,58 +962,68 @@ export const updateCartInfo = async (req: Request, res: Response) => {
       if (!startDate || !endDate || !guestCount || !contacts) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
-        if(getCart.propertyIds){
-          const unit:any = await dbBookableUnitTypes.findOne({qtyIds:{$elemMatch: { _id: getCart.propertyIds.unitId }}})
-          .populate("unitPrice")
+        if (getCart.propertyIds) {
+          const unit: any = await dbBookableUnitTypes
+            .findOne({
+              qtyIds: { $elemMatch: { _id: getCart.propertyIds.unitId } },
+            })
+            .populate('unitPrice')
           const startDay = new Date(startDate)
           const endDay = new Date(endDate)
-          const countDays = differenceInCalendarDays(endDay,startDay)
-          totalPrice = (unit?.unitPrice.baseRate*guestCount)*countDays
-          hostComission = PROPERTY_HOST_COMMISSION_PERCENT*totalPrice
-        }else if(getCart.rentalIds){
-          const rental:any = await dbRentals.findOne({_id:getCart.rentalIds.rentalId,qtyIds:{$elemMatch: { _id: getCart.rentalIds.qtyIdsId }}})
-          .populate("pricing")
+          const countDays = differenceInCalendarDays(endDay, startDay)
+          totalPrice = unit?.unitPrice.baseRate * guestCount * countDays
+          hostComission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
+        } else if (getCart.rentalIds) {
+          const rental: any = await dbRentals
+            .findOne({
+              _id: getCart.rentalIds.rentalId,
+              qtyIds: { $elemMatch: { _id: getCart.rentalIds.qtyIdsId } },
+            })
+            .populate('pricing')
           const startDay = new Date(startDate)
           const endDay = new Date(endDate)
-          const countDays = differenceInCalendarDays(endDay,startDay)
-          totalPrice = (rental?.pricing.dayRate*guestCount)*countDays
-          hostComission = RENTAL_HOST_COMMISSION_PERCENT*totalPrice
-        }else if(getCart.activityIds){
-          const activity = await dbActivities.findOne({_id:getCart.activityIds.activityId})
+          const countDays = differenceInCalendarDays(endDay, startDay)
+          totalPrice = rental?.pricing.dayRate * guestCount * countDays
+          hostComission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
+        } else if (getCart.activityIds) {
+          const activity = await dbActivities.findOne({
+            _id: getCart.activityIds.activityId,
+          })
           const startDay = new Date(startDate)
           const endDay = new Date(endDate)
-          const countDays = differenceInCalendarDays(endDay,startDay)
+          const countDays = differenceInCalendarDays(endDay, startDay)
           const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
-          if(activity?.pricePerPerson){
-          totalPrice = price*guestCount
-          hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
-          }else if(activity?.pricePerSlot){
+          if (activity?.pricePerPerson) {
+            totalPrice = price * guestCount
+            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+          } else if (activity?.pricePerSlot) {
             totalPrice = price
-            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
-          }else{
-            res.json(response.error({message:"Price is not set on this activity"}))
+            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+          } else {
+            res.json(
+              response.error({ message: 'Price is not set on this activity' })
+            )
           }
         }
-        const guestComission = (totalPrice || 0)*GUEST_COMMISSION_PERCENT
-          const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
-            $set: {
-              startDate: startDate,
-              endDate: endDate,
-              price: totalPrice,
-              guestCount,
-              hostComission,
-              guestComission,
-              updatedAt: Date.now(),
-              contacts: contacts || [],
-            },
+        const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
+        const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+          $set: {
+            startDate: startDate,
+            endDate: endDate,
+            price: totalPrice,
+            guestCount,
+            hostComission,
+            guestComission,
+            updatedAt: Date.now(),
+            contacts: contacts || [],
+          },
+        })
+        res.json(
+          response.success({
+            item: updateCart,
+            message: 'Cart Item information successfully updated',
           })
-          res.json(
-            response.success({
-              item: updateCart,
-              message: 'Cart Item information successfully updated',
-            })
-          )
-        
+        )
       }
     }
   } catch (err: any) {
