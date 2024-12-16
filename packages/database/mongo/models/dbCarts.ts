@@ -53,6 +53,19 @@ const carts = new Schema({
     type: Number,
     required: true,
   },
+  guestCount: {
+    type: Number,
+    required: false,
+    default: 1,
+  },
+  guestComission: {
+    type: Number,
+    required: true,
+  },
+  hostComission: {
+    type: Number,
+    required: true,
+  },
   status: {
     type: String,
     enum: ["Active", "Completed", "Removed"],

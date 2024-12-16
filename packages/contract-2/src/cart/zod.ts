@@ -51,7 +51,7 @@ export const Z_AddCart = z
       .optional()
       .nullable(),
     guestCount: z.number(),
-    price: z.number(),
+    price: z.number().optional(),
     startDate: z.string(),
     endDate: z.string(),
     createdAt: z.string().nullable().optional(),
