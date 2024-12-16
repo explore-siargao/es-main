@@ -10,8 +10,6 @@ import { useParams, useRouter } from "next/navigation"
 import useGuestAdd from "@/module/Listing/Property/store/useGuestsStore"
 import { APP_NAME } from "@repo/constants"
 import { Typography } from "@/common/components/ui/Typography"
-import CheckoutBreakdownModal from "@/module/Listing/Property/components/modals/CheckoutBreakdownModal"
-import CheckInOutModal from "@/module/Listing/Property/components/modals/CheckInOutModal"
 import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
 import GuestAddModal from "@/module/Listing/Property/components/modals/GuestAddModal"
 import { Option, Select } from "@/common/components/ui/Select"
@@ -223,10 +221,10 @@ const CheckoutBox = ({ checkoutDesc, timeSlot }: CheckoutProcessProps) => {
           </div>
         </div>
       </div>
-      <CheckoutBreakdownModal
+      {/* <CheckoutBreakdownModal
         isOpen={isBreakdownModalOpen}
         onClose={() => setIsBreakdownModalOpen(false)}
-      />
+      /> */}
       <CheckoutMoreInfoModal
         isOpen={isMoreInfoModalOpen}
         onClose={() => setIsMoreInfoModalOpen(false)}

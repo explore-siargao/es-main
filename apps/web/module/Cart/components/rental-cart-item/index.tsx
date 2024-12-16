@@ -2,6 +2,7 @@ import { Button } from "@/common/components/ui/Button"
 import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/formatCurrency"
+import transmissionAcronym from "@/module/Admin/Listings/helpers/transmissionAcronym"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format } from "date-fns/format"
 import { Pencil, Trash } from "lucide-react"
@@ -48,10 +49,7 @@ function RentalCartItem({
           />
           <div className="flex-1">
             <Typography variant="h3" fontWeight="semibold">
-              {rentalItem?.make}
-            </Typography>
-            <Typography variant="p" className="text-text-500">
-              {rentalItem?.category}
+              {rentalItem?.make} {rentalItem?.modelBadge}
             </Typography>
             <Typography variant="p" className="text-text-500">
               {rentalItem?.location?.streetAddress &&
@@ -59,6 +57,9 @@ function RentalCartItem({
               {rentalItem?.location?.barangay &&
                 `${rentalItem?.location?.barangay}, `}
               {rentalItem?.location?.city && `${rentalItem?.location?.city}`}
+            </Typography>
+            <Typography variant="p" className="text-text-500">
+              {rentalItem?.transmission} Transmission
             </Typography>
           </div>
         </div>

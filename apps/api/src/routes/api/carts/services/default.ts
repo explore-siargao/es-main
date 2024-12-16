@@ -193,10 +193,8 @@ export const removeToCart = async (req: Request, res: Response) => {
 }
 
 export const getAllCarts = async (req: Request, res: Response) => {
-  const query: any = req
   try {
     const userId = res.locals.user?.id
-    console.log(userId)
     const { page = 1, limit = 15 } = req.pagination || {}
     const { cartIds } = req.query
     const query: any = {
@@ -900,62 +898,76 @@ export const updateCartInfo = async (req: Request, res: Response) => {
       if (!startDate || !endDate || !price || !contacts) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
-        const cartconflicts = await dbCarts.find({
-          $and: [
-            { status: 'Active' },
-            { deletedAt: null },
-            { _id: { $ne: cartId } },
-            {
-              $or: [
-                {
-                  'propertyIds.unitId': getCart.propertyIds?.unitId,
-                  'propertyIds.propertyId': getCart.propertyIds?.propertyId,
-                },
-                {
-                  'rentalIds.rentalId': getCart.rentalIds?.rentalId,
-                  'rentalIds.qtyIdsId': getCart.rentalIds?.qtyIdsId,
-                },
-                {
-                  'activityIds.activityId': getCart.activityIds?.activityId,
-                  'activityIds.dayId': getCart.activityIds?.dayId,
-                  'activityIds.timeSlotId': getCart.activityIds?.timeSlotId,
-                  ...(getCart.activityIds?.slotIdsId && {
-                    'activityIds.slotIdsId': getCart.activityIds?.slotIdsId,
-                  }),
-                },
-              ],
-            },
-            {
-              startDate: { $lte: parseToUTCDate(endDate) },
-              endDate: { $gte: parseToUTCDate(startDate) },
-            },
-          ],
+        // const cartconflicts = await dbCarts.find({
+        //   $and: [
+        //     { status: 'Active' },
+        //     { deletedAt: null },
+        //     { _id: { $ne: cartId } },
+        //     {
+        //       $or: [
+        //         {
+        //           'propertyIds.unitId': getCart.propertyIds?.unitId,
+        //           'propertyIds.propertyId': getCart.propertyIds?.propertyId,
+        //         },
+        //         {
+        //           'rentalIds.rentalId': getCart.rentalIds?.rentalId,
+        //           'rentalIds.qtyIdsId': getCart.rentalIds?.qtyIdsId,
+        //         },
+        //         {
+        //           'activityIds.activityId': getCart.activityIds?.activityId,
+        //           'activityIds.dayId': getCart.activityIds?.dayId,
+        //           'activityIds.timeSlotId': getCart.activityIds?.timeSlotId,
+        //           ...(getCart.activityIds?.slotIdsId && {
+        //             'activityIds.slotIdsId': getCart.activityIds?.slotIdsId,
+        //           }),
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       startDate: { $lte: parseToUTCDate(endDate) },
+        //       endDate: { $gte: parseToUTCDate(startDate) },
+        //     },
+        //   ],
+        // })
+        // if (cartconflicts.length > 0) {
+        //   res.json(
+        //     response.error({
+        //       message: 'Cart conflicts with existing item',
+        //     })
+        //   )
+        // } else {
+        //   const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+        //     $set: {
+        //       startDate: parseToUTCDate(startDate),
+        //       endDate: parseToUTCDate(endDate),
+        //       price: price,
+        //       updatedAt: Date.now(),
+        //       contacts: contacts || [],
+        //     },
+        //   })
+        //   res.json(
+        //     response.success({
+        //       item: updateCart,
+        //       message: 'Cart Item information successfully updated',
+        //     })
+        //   )
+        // }
+        const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+          $set: {
+            // disabled because has errors
+            // startDate: parseToUTCDate(startDate),
+            // endDate: parseToUTCDate(endDate),
+            // price: price,
+            contacts: contacts || [],
+            updatedAt: Date.now(),
+          },
         })
-        if (cartconflicts.length > 0) {
-          res.json(
-            response.error({
-              message: 'Cart conflicts with existing item',
-            })
-          )
-        } else {
-          const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
-            $set: {
-              startDate: parseToUTCDate(startDate),
-              endDate: parseToUTCDate(endDate),
-              price: price,
-              updatedAt: Date.now(),
-            },
-            $push: {
-              contacts: contacts || [],
-            },
+        res.json(
+          response.success({
+            item: updateCart,
+            message: 'Cart Item information successfully updated',
           })
-          res.json(
-            response.success({
-              item: updateCart,
-              message: 'Cart Item information successfully updated',
-            })
-          )
-        }
+        )
       }
     }
   } catch (err: any) {

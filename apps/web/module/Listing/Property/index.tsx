@@ -7,7 +7,7 @@ import Hero from "./components/hero"
 import SummaryInfo from "./components/summary-info"
 import RatingSummary from "./components/Reviews/RatingSummary"
 import UserReviews from "./components/Reviews/UserReviews"
-import CheckoutBox from "./components/CheckoutBox"
+import CheckoutBox from "./components/checkout-box"
 import PlaceOffers from "./components/PlaceOffers"
 import WhereYoullBeDescription from "./components/Map"
 import { Button } from "@/common/components/ui/Button"
@@ -94,23 +94,13 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
         </div>
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
-            {bookableUnit && (
+            {
               <CheckoutBox
-                checkoutDesc={{
-                  pricePerAdditionalPerson:
-                    bookableUnit.unitPrice?.pricePerAdditionalPerson || 0,
-                  serviceFee: bookableUnit ? 1000 : 0,
-                  durationCost: bookableUnit
-                    ? bookableUnit.unitPrice?.baseRate * 5
-                    : 0,
-                  descTotalBeforeTaxes: 3000,
-                  totalBeforeTaxes: 126000,
-                  titlePrice: bookableUnit.unitPrice?.baseRate || 0,
-                }}
-                isSelectedBookableUnit={bookableUnit ? true : false}
-                unit={bookableUnit}
+                selectedBookableUnit={selectedBookableUnit}
+                handleSelectBookableUnit={handleSelectBookableUnit}
+                units={data?.item?.bookableUnits}
               />
-            )}
+            }
             <div>
               <div className="border border-gray-300 rounded-xl p-4 mb-2 flex gap-4">
                 <div className="mt-1">

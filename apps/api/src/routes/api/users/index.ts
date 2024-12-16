@@ -40,6 +40,13 @@ import { getProfile, updateProfile } from './services/userProfile'
 const router = express.Router()
 
 //AUTH
+
+// router.get("/test", (req, res) => {
+//   const cookieValue = req.cookies["cookieName"];
+//   console.log('backed', cookieValue)
+//   res.json({ cookieValue });
+// });
+
 router.post('/auth/manual', isOriginValid, manual)
 router.get('/auth/info', isOriginValid, isUserLoggedIn, info)
 router.post('/auth/register', isOriginValid, register)
