@@ -49,11 +49,11 @@ const CheckoutBox = ({
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
   )
-  const baseRate = selectedBookableUnit?.unitPrice.baseRate || 0;
-  const baseRateGuestsTotal = (baseRate * guestsCount) || 0;
-  const baseRateNightsTotal = (baseRateGuestsTotal * nightCount) || 0;
-  const esCommissionTotal = (baseRateNightsTotal * GUEST_COMMISSION_PERCENT) || 0;
-  const totalBeforeTaxes = (baseRateNightsTotal + esCommissionTotal) || 0;
+  const baseRate = selectedBookableUnit?.unitPrice.baseRate || 0
+  const baseRateGuestsTotal = baseRate * guestsCount || 0
+  const baseRateNightsTotal = baseRateGuestsTotal * nightCount || 0
+  const esCommissionTotal = baseRateNightsTotal * GUEST_COMMISSION_PERCENT || 0
+  const totalBeforeTaxes = baseRateNightsTotal + esCommissionTotal || 0
 
   const handleAddToCartSingleItem = (propertyId: string) => {
     const payload: T_Add_To_Cart = {
@@ -69,7 +69,9 @@ const CheckoutBox = ({
           queryClient.invalidateQueries({
             queryKey: ["get-cart-item"],
           })
-          toast.success((data.message as string) || "Added to cart", { duration: 5000 })
+          toast.success((data.message as string) || "Added to cart", {
+            duration: 5000,
+          })
         } else {
           toast.error(String(data.message))
         }
@@ -97,7 +99,9 @@ const CheckoutBox = ({
         <div className="grid grid-cols-2 gap-3">
           <div
             className="relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() =>setCheckInOutCalendarModalIsOpen(!checkInOutCalendarModalIsOpen)}
+            onClick={() =>
+              setCheckInOutCalendarModalIsOpen(!checkInOutCalendarModalIsOpen)
+            }
           >
             <label
               htmlFor="check-in"
@@ -114,7 +118,9 @@ const CheckoutBox = ({
 
           <div
             className="relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-            onClick={() =>setCheckInOutCalendarModalIsOpen(!checkInOutCalendarModalIsOpen)}
+            onClick={() =>
+              setCheckInOutCalendarModalIsOpen(!checkInOutCalendarModalIsOpen)
+            }
           >
             <label
               htmlFor="checkout"
@@ -129,7 +135,7 @@ const CheckoutBox = ({
         </div>
         <div
           className="relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-          onClick={() =>setIsGuestsModalOpen(!isGuestsModalOpen)}
+          onClick={() => setIsGuestsModalOpen(!isGuestsModalOpen)}
         >
           <label
             htmlFor="guests"
@@ -148,9 +154,7 @@ const CheckoutBox = ({
         >
           <Option value="">Select</Option>
           {units?.map((unit: T_BookableUnitType) => {
-            return (
-              <Option value={unit._id}>{unit.title}</Option>
-            )
+            return <Option value={unit._id}>{unit.title}</Option>
           })}
         </Select>
         <Button
@@ -179,16 +183,12 @@ const CheckoutBox = ({
           <Button
             variant={"ghost"}
             className="underline pl-0"
-            onClick={() =>
-              setIsBreakdownModalOpen(!isBreakdownModalOpen)
-            }
+            onClick={() => setIsBreakdownModalOpen(!isBreakdownModalOpen)}
           >
-            {formatCurrency(baseRateGuestsTotal)} x{" "}
-            {nightCount} night{nightCount > 1 ? "s" : ""}
+            {formatCurrency(baseRateGuestsTotal)} x {nightCount} night
+            {nightCount > 1 ? "s" : ""}
           </Button>
-          <div>
-          {formatCurrency(baseRateNightsTotal)}
-          </div>
+          <div>{formatCurrency(baseRateNightsTotal)}</div>
         </div>
 
         <div className="flex justify-between items-center">
@@ -197,7 +197,7 @@ const CheckoutBox = ({
             className="underline pl-0"
             onClick={() => setIsMoreInfoModalOpen(true)}
           >
-            {APP_NAME}'s {GUEST_COMMISSION_PERCENT*100}% commission
+            {APP_NAME}'s {GUEST_COMMISSION_PERCENT * 100}% commission
           </Button>
           <div>{formatCurrency(esCommissionTotal)}</div>
         </div>
@@ -205,9 +205,7 @@ const CheckoutBox = ({
         <div className="border-b mt-5 mb-5"></div>
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
-          <div>
-            {formatCurrency(totalBeforeTaxes)}
-          </div>
+          <div>{formatCurrency(totalBeforeTaxes)}</div>
         </div>
       </div>
       <CheckoutBreakdownModal

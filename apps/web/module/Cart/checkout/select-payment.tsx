@@ -1,7 +1,13 @@
-import { Typography } from '@/common/components/ui/Typography';
-import { Listbox } from '@headlessui/react';
-import { LucideCheck, LucideChevronDown, LucideCoins, LucideCreditCard, LucideLandmark } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Typography } from "@/common/components/ui/Typography"
+import { Listbox } from "@headlessui/react"
+import {
+  LucideCheck,
+  LucideChevronDown,
+  LucideCoins,
+  LucideCreditCard,
+  LucideLandmark,
+} from "lucide-react"
+import { useEffect, useState } from "react"
 import amex from "@/common/assets/amex.png"
 import discover from "@/common/assets/discover-card.png"
 import mastercard from "@/common/assets/mastercard.png"
@@ -13,7 +19,7 @@ import usePaymentInfoStore from "./store/usePaymentInfoStore"
 import { E_PaymentType } from "@repo/contract"
 import PaymentSavedForm from "./payment-saved-form"
 import PaymentMethodForm from "./payment-method-form"
-import Link from 'next/link';
+import Link from "next/link"
 
 export default function PaymentDropdown() {
   const updatePaymentInfo = usePaymentInfoStore(
@@ -55,7 +61,7 @@ export default function PaymentDropdown() {
     })
   )
 
-  const [selected, setSelected] = useState(combinedOptions[0]);
+  const [selected, setSelected] = useState(combinedOptions[0])
 
   useEffect(() => {
     if (selected !== null) {
@@ -75,7 +81,9 @@ export default function PaymentDropdown() {
       <div className="flex items-center justify-between">
         <div className="flex gap-4 items-center">
           {/* Text */}
-          <Typography variant="h3" fontWeight="semibold">Pay with</Typography>
+          <Typography variant="h3" fontWeight="semibold">
+            Pay with
+          </Typography>
           {/* Icons */}
           <div className="flex gap-2">
             <Image
@@ -127,21 +135,22 @@ export default function PaymentDropdown() {
                 <span className="flex items-center">
                   <span className="mr-2">{selected?.icon}</span>
                   <span className="block truncate">{selected?.name}</span>
-
                 </span>
                 <LucideChevronDown className="ml-2 h-4 w-4" />
               </div>
             </Listbox.Button>
 
             {/* Options */}
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-            >
+            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {combinedOptions.map((option) => (
                 <Listbox.Option
                   key={option.id}
                   value={option}
                   className={({ active }) =>
-                    `cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-primary-100 text-primary-900' : 'text-text-900'
+                    `cursor-pointer select-none py-2 pl-4 pr-4 ${
+                      active
+                        ? "bg-primary-100 text-primary-900"
+                        : "text-text-900"
                     }`
                   }
                 >
@@ -151,15 +160,19 @@ export default function PaymentDropdown() {
                       <div className="flex items-center">
                         <span className="mr-2">{option.icon}</span>
                         <span
-                          className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                            }`}
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
                         >
                           {option.name}
                         </span>
                       </div>
                       {/* Right side: Checkmark */}
                       {selected && (
-                        <LucideCheck className="h-5 w-5 text-info-500" aria-hidden="true" />
+                        <LucideCheck
+                          className="h-5 w-5 text-info-500"
+                          aria-hidden="true"
+                        />
                       )}
                     </div>
                   )}
@@ -169,13 +182,11 @@ export default function PaymentDropdown() {
           </div>
         </Listbox>
       </div>
-      {selected &&
-        selected &&
-        selected?.content ? (
+      {selected && selected && selected?.content ? (
         <div className="mt-2 rounded-md">
           <div className="mt-4">{selected.content}</div>
         </div>
       ) : null}
     </div>
-  );
+  )
 }

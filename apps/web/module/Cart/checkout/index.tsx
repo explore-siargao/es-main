@@ -30,7 +30,7 @@ import { APP_NAME } from "@repo/constants"
 const Checkout = () => {
   const router = useRouter()
   const queryClient = useQueryClient()
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
@@ -41,14 +41,24 @@ const Checkout = () => {
   const { mutate: mutateUseAddCardPayment } = useAddCardPayment()
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const paymentInfo = usePaymentInfoStore((state) => state)
-  const cartIdsSearch = searchParams.get(`cartIds`);
-  const cartIds = cartIdsSearch ? cartIdsSearch.split(",") : [];
+  const cartIdsSearch = searchParams.get(`cartIds`)
+  const cartIds = cartIdsSearch ? cartIdsSearch.split(",") : []
 
   const allItems = data?.items || []
-  const allSelectedItems = allItems.filter((item) => item._id && cartIds.includes(item._id)) || [];
-  const rentalItems = allItems.filter((item) => item._id && cartIds.includes(item._id) && item.rentalIds) || [];
-  const propertyItems = allItems.filter((item) => item._id && cartIds.includes(item._id) && item.propertyIds) || [];
-  const activityItems = allItems.filter((item) => item._id && cartIds.includes(item._id) && item.activityIds) || [];
+  const allSelectedItems =
+    allItems.filter((item) => item._id && cartIds.includes(item._id)) || []
+  const rentalItems =
+    allItems.filter(
+      (item) => item._id && cartIds.includes(item._id) && item.rentalIds
+    ) || []
+  const propertyItems =
+    allItems.filter(
+      (item) => item._id && cartIds.includes(item._id) && item.propertyIds
+    ) || []
+  const activityItems =
+    allItems.filter(
+      (item) => item._id && cartIds.includes(item._id) && item.activityIds
+    ) || []
 
   const remapItems = (items: T_Add_To_Cart[]) => {
     return items.map((item) => ({
@@ -56,17 +66,17 @@ const Checkout = () => {
       guestCount: item.guestCount ?? 0,
       activityIds: item.activityIds
         ? {
-          ...item.activityIds,
-          // @ts-expect-error
-          activityId: item.activityIds?.activityId._id ?? null,
-        }
+            ...item.activityIds,
+            // @ts-expect-error
+            activityId: item.activityIds?.activityId._id ?? null,
+          }
         : null,
       rentalIds: item.rentalIds
         ? {
-          ...item.rentalIds,
-          // @ts-expect-error
-          rentalId: item.rentalIds?.rentalId._id ?? null,
-        }
+            ...item.rentalIds,
+            // @ts-expect-error
+            rentalId: item.rentalIds?.rentalId._id ?? null,
+          }
         : null,
     }))
   }
@@ -154,7 +164,9 @@ const Checkout = () => {
         <div className="flex-1 flex flex-col gap-y-4">
           <SelectPayment />
           <hr className="my-4" />
-          {propertyItems.length > 0 && <PropertyMoreInfo items={propertyItems} />}
+          {propertyItems.length > 0 && (
+            <PropertyMoreInfo items={propertyItems} />
+          )}
           {rentalItems.length > 0 && <RentalMoreInfo items={rentalItems} />}
           <hr className="my-4" />
           <Typography variant="h6" className="text-text-500">
@@ -179,9 +191,15 @@ const Checkout = () => {
         </div>
         <div className="hidden xl:block flex-1 xl:flex-none xl:w-1/3 md:relative">
           <div className="md:sticky top-10 space-y-4">
-            {propertyItems.length > 0 && <PropertyPriceDetailsBox items={propertyItems} />}
-            {activityItems.length > 0 && <ActivityPriceDetailsBox items={activityItems} />}
-            {rentalItems.length > 0 && <RentalPriceDetailsBox items={rentalItems} />}
+            {propertyItems.length > 0 && (
+              <PropertyPriceDetailsBox items={propertyItems} />
+            )}
+            {activityItems.length > 0 && (
+              <ActivityPriceDetailsBox items={activityItems} />
+            )}
+            {rentalItems.length > 0 && (
+              <RentalPriceDetailsBox items={rentalItems} />
+            )}
             <SubTotalBox
               selectedItemsPrice={allSelectedItems.map((item) => item.price)}
               buttonText="Pay now"

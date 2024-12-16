@@ -1,8 +1,8 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import { add, eachDayOfInterval, format } from "date-fns"
-import formatCurrency from '@/common/helpers/formatCurrency';
-import { DateRange } from "react-day-picker";
+import formatCurrency from "@/common/helpers/formatCurrency"
+import { DateRange } from "react-day-picker"
 
 type T_Price_Breakdown_Modal = {
   isOpen: boolean
@@ -19,7 +19,6 @@ const PriceBreakdownModal = ({
   baseRateNightsTotal,
   dateRange,
 }: T_Price_Breakdown_Modal) => {
-
   const today = new Date()
   const daysArr = eachDayOfInterval({
     start: add(dateRange.from ?? new Date(), { days: 1 }),
@@ -42,9 +41,7 @@ const PriceBreakdownModal = ({
         {breakdownArr?.map((data) => (
           <div className="flex justify-between mb-4" key={data.date}>
             <Typography variant="h5">{data.date}</Typography>
-            <Typography variant="h5">
-              {formatCurrency(data.price)}
-            </Typography>
+            <Typography variant="h5">{formatCurrency(data.price)}</Typography>
           </div>
         ))}
         <hr />

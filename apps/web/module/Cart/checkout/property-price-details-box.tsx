@@ -15,10 +15,15 @@ type T_Property_Price_Details_Box = {
 const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
   return (
     <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
-      <Typography variant="h2" fontWeight="semibold">Places</Typography>
+      <Typography variant="h2" fontWeight="semibold">
+        Places
+      </Typography>
       <div className="mt-4 flex flex-col gap-6">
         {items.map((item, index) => {
-          const extractedPriceCommission = extractCommission(item.price || 0, GUEST_COMMISSION_PERCENT)
+          const extractedPriceCommission = extractCommission(
+            item.price || 0,
+            GUEST_COMMISSION_PERCENT
+          )
           const nightCount = differenceInDays(
             item.endDate ?? new Date(),
             item.startDate ?? new Date()
@@ -41,8 +46,9 @@ const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
                       {item.propertyIds.unitId.title}
                     </Typography>
                     <Typography variant="p" className="text-gray-500">
-                      {`${item.propertyIds.propertyId.location?.streetAddress || ""}, ${item.propertyIds.propertyId.location?.barangay || ""
-                        }, ${item.propertyIds.propertyId.location?.city || ""}`}
+                      {`${item.propertyIds.propertyId.location?.streetAddress || ""}, ${
+                        item.propertyIds.propertyId.location?.barangay || ""
+                      }, ${item.propertyIds.propertyId.location?.city || ""}`}
                     </Typography>
                   </div>
                 </div>
@@ -50,18 +56,35 @@ const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
               <hr className="mt-4" />
               <div className="flex flex-col mt-3">
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm">{formatCurrency(extractedPriceCommission.basePrice / nightCount)} x {nightCount} night{nightCount > 1 && "s"}</Typography>
-                  <Typography className="text-sm">{formatCurrency(extractedPriceCommission.basePrice)}</Typography>
+                  <Typography className="text-sm">
+                    {formatCurrency(
+                      extractedPriceCommission.basePrice / nightCount
+                    )}{" "}
+                    x {nightCount} night{nightCount > 1 && "s"}
+                  </Typography>
+                  <Typography className="text-sm">
+                    {formatCurrency(extractedPriceCommission.basePrice)}
+                  </Typography>
                 </div>
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm">{GUEST_COMMISSION_TITLE}</Typography>
-                  <Typography className="text-sm">{formatCurrency(extractedPriceCommission.extractedPercentage)}</Typography>
+                  <Typography className="text-sm">
+                    {GUEST_COMMISSION_TITLE}
+                  </Typography>
+                  <Typography className="text-sm">
+                    {formatCurrency(
+                      extractedPriceCommission.extractedPercentage
+                    )}
+                  </Typography>
                 </div>
               </div>
               <hr className="mt-3" />
               <div className="flex w-full justify-between mt-2">
-                <Typography fontWeight="semibold">Total before taxes</Typography>
-                <Typography fontWeight="semibold">{formatCurrency(item.price)}</Typography>
+                <Typography fontWeight="semibold">
+                  Total before taxes
+                </Typography>
+                <Typography fontWeight="semibold">
+                  {formatCurrency(item.price)}
+                </Typography>
               </div>
             </div>
           )

@@ -23,7 +23,9 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
 
   return (
     <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
-      <Typography variant="h2" fontWeight="semibold">Rentals</Typography>
+      <Typography variant="h2" fontWeight="semibold">
+        Rentals
+      </Typography>
       <div className="mt-4">
         {items.map((item, index) => (
           <div key={index}>
@@ -40,7 +42,8 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
                 </div>
                 <div className="flex flex-col">
                   <Typography variant={"h3"} fontWeight="semibold">
-                    {item.rentalIds.rentalId.make} {item.rentalIds.rentalId.modelBadge}
+                    {item.rentalIds.rentalId.make}{" "}
+                    {item.rentalIds.rentalId.modelBadge}
                   </Typography>
                   <Typography variant="p" className="text-gray-500">
                     {item.rentalIds.rentalId?.location?.streetAddress &&
@@ -79,7 +82,9 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
       <hr className="mt-4" />
       <div className="flex w-full justify-between mt-6">
         <Typography fontWeight="semibold">Total</Typography>
-        <Typography fontWeight="semibold">{formatCurrency(calculateTotalPrice)}</Typography>
+        <Typography fontWeight="semibold">
+          {formatCurrency(calculateTotalPrice)}
+        </Typography>
       </div>
       <CheckoutMoreInfoModal
         isOpen={isMoreInfoModalOpen}

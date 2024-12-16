@@ -19,7 +19,9 @@ const Cart = () => {
       alert("Please select items before proceeding to checkout.")
       return
     }
-    router.push(`/checkout?cartIds=${selectedItems.map((item) => item._id).join(",")}`)
+    router.push(
+      `/checkout?cartIds=${selectedItems.map((item) => item._id).join(",")}`
+    )
   }
 
   return (

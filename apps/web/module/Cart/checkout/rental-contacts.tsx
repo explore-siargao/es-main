@@ -30,19 +30,25 @@ const RentalContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
       {defaultContact && (
         <div className="grid gap-2">
           <div className="grid grid-cols-2">
-            <Typography variant="h5" className="text-text-300">First name</Typography>
+            <Typography variant="h5" className="text-text-300">
+              First name
+            </Typography>
             <Typography variant="h5" className="font-medium text-text-500">
               {defaultContact.firstName}
             </Typography>
           </div>
           <div className="grid grid-cols-2">
-            <Typography variant="h5" className="text-text-300">Last name</Typography>
+            <Typography variant="h5" className="text-text-300">
+              Last name
+            </Typography>
             <Typography variant="h5" className="font-medium text-text-500">
               {defaultContact.lastName}
             </Typography>
           </div>
           <div className="grid grid-cols-2">
-            <Typography variant="h5" className="text-text-300">Phone number</Typography>
+            <Typography variant="h5" className="text-text-300">
+              Phone number
+            </Typography>
             <Typography variant="h5" className="font-medium text-text-500">
               {defaultContact.phoneNumber}
             </Typography>
@@ -52,7 +58,10 @@ const RentalContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
               Email (for updates on your booking)
             </Typography>
             <div className="flex items-center justify-between">
-              <Typography variant="h5" className="font-medium text-text-500 mr-4">
+              <Typography
+                variant="h5"
+                className="font-medium text-text-500 mr-4"
+              >
                 {defaultContact.email}
               </Typography>
             </div>

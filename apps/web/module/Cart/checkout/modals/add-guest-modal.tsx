@@ -15,16 +15,12 @@ type T_Guest = {
 
 type T_Add_Guest_Modal = {
   isOpen: boolean
-  closeModal: () => void 
+  closeModal: () => void
   cartItem: T_Cart_Item
 }
 
-const AddGuestModal = ({
-  isOpen,
-  closeModal,
-  cartItem,
-}: T_Add_Guest_Modal) => {
-  const { mutate, isPending } = useUpdateCartItem();
+const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
+  const { mutate, isPending } = useUpdateCartItem()
   const [formData, setFormData] = useState<T_Guest>({
     firstName: "",
     lastName: "",
@@ -38,7 +34,12 @@ const AddGuestModal = ({
   }
 
   const handleSubmit = () => {
-    if(!formData.firstName || !formData.lastName || !formData.phoneNumber || !formData.email) {
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.phoneNumber ||
+      !formData.email
+    ) {
       toast.error("Please complete all the fields")
     } else {
       const item = {
@@ -48,8 +49,8 @@ const AddGuestModal = ({
         contacts: [
           // @ts-expect-error
           ...cartItem.contacts,
-          formData
-        ]
+          formData,
+        ],
       }
       mutate({ itemId: cartItem._id as string, item })
     }

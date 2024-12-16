@@ -14,31 +14,31 @@ type T_Props = {
 }
 
 type T_Map_Center = {
-  center: [number, number];
-  zoom: number;
-};
+  center: [number, number]
+  zoom: number
+}
 
 const Map = ({ units, location }: T_Props) => {
-  const screenHeight = window.innerHeight;
+  const screenHeight = window.innerHeight
   // keys are the specific screen heights
   // just add a new key if you want to add a new screen height
   const dynamicMapCenter: { [key: number]: T_Map_Center } = {
     857: {
       center: [9.907176747651983, 126.03786003188247] as [number, number],
-      zoom: 10
+      zoom: 10,
     },
     968: {
       center: [9.858985514734842, 126.04518096735858] as [number, number],
-      zoom: 11
+      zoom: 11,
     },
     1328: {
       center: [9.816033649893807, 126.04451542773673] as [number, number],
-      zoom: 11
+      zoom: 11,
     },
   }
   const fallBackMapCenter = {
     center: [9.816033649893807, 126.04451542773673] as [number, number],
-    zoom: 11
+    zoom: 11,
   }
   const locationMap = {
     any: dynamicMapCenter[screenHeight] || fallBackMapCenter,

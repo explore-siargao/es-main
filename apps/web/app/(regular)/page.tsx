@@ -2,7 +2,7 @@ import LandingPage from "@/module/landing-page"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import { HOME } from "@/common/constants"
-import { cookies } from "next/headers";
+import { cookies } from "next/headers"
 
 export const metadata: Metadata = {
   title: `${HOME} - ${APP_NAME}`,

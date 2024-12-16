@@ -45,8 +45,8 @@ const AvailableBooking = ({
   }
 
   useEffect(() => {
-    onSelectBookableUnit(bookableUnits[0] || null);
-  }, []);
+    onSelectBookableUnit(bookableUnits[0] || null)
+  }, [])
 
   return (
     <>
