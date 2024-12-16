@@ -8,9 +8,8 @@ import UserReviews from "./components/Reviews/UserReviews"
 import CheckoutBox from "./components/CheckoutBox"
 import PickUpLocation from "./components/PickUpLocation"
 import { Button } from "@/common/components/ui/Button"
-import { Flag, Tag } from "lucide-react"
+import { Flag } from "lucide-react"
 import { useEffect, useState } from "react"
-import ListingMark from "@/module/Listing/Property/Checkout/ListingMark"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import Requirements from "./components/Requirements"
 import Inclusions from "./components/Inclusions"
@@ -18,6 +17,7 @@ import SimilarRentals from "./components/SimilarRentals"
 import { useParams } from "next/navigation"
 import { T_BookingAboutDescriptionProps } from "./types/BookingAboutDescription"
 import { hostDummy, ratingSummary, userReviews } from "./dummy"
+import PledgeBox from "../pledge-box"
 
 type T_AboutData = T_BookingAboutDescriptionProps["aboutData"]
 type T_RequirementData = {
@@ -95,7 +95,7 @@ export const Rental = ({ rentalData: data }: { rentalData: any }) => {
           </div>
         </div>
 
-        <div className="md:w-96 md:relative">
+        <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
             <CheckoutBox
               checkoutDesc={{
@@ -107,13 +107,7 @@ export const Rental = ({ rentalData: data }: { rentalData: any }) => {
                 downPayment: data?.item?.pricing?.requiredDeposit,
               }}
             />
-            <div>
-              <ListingMark
-                icon={<Tag />}
-                title="Lower Price"
-                desc="Your dates are ₱1,494 less than the avg. nightly rate of the last 60 days."
-              />
-            </div>
+            <PledgeBox/>
 
             <div className="flex justify-center">
               <div className="justify-items-center">

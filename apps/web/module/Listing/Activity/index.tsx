@@ -1,7 +1,5 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import { Button } from "@/common/components/ui/Button"
-import { Flag } from "lucide-react"
 import { useState } from "react"
 import AvatarTitleDescription from "@/module/Listing/Property/components/AvatarTitleDescription"
 import HostInformation from "@/module/Listing/Property/components/HostInformation"
@@ -22,6 +20,7 @@ import CheckoutBox from "./CheckoutBox"
 import Builder from "./Itinerary/Builder"
 import { notFound } from "next/navigation"
 import { activities, hostDummy, ratingSummary, userReviews } from "./dummy"
+import PledgeBox from "../pledge-box"
 
 export const ActivitySingleView = ({
   activityData: data,
@@ -120,7 +119,7 @@ export const ActivitySingleView = ({
           </div>
         </div>
 
-        <div className="md:w-96 md:relative">
+        <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
             <CheckoutBox
               //@ts-ignore
@@ -134,20 +133,7 @@ export const ActivitySingleView = ({
               }}
               timeSlot={undefined}
             />
-
-            <div className="flex justify-center">
-              <div className="justify-items-center">
-                <Button
-                  variant="ghost"
-                  className="underline md:float-right flex gap-1 items-center text-text-400 hover:text-text-600"
-                  size="sm"
-                  onClick={handleOpenModal}
-                >
-                  <Flag className="h-4 w-4" />
-                  Report this listing
-                </Button>
-              </div>
-            </div>
+            <PledgeBox/>
           </div>
         </div>
       </div>
