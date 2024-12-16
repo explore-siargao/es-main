@@ -10,7 +10,7 @@ import CustomSquareSlider from "@/common/components/custom-square-slider"
 import { LucideHeart, LucideStar } from "lucide-react"
 import { BookingProps } from "@/module/Listing/components/ListingItems"
 import { E_Listing_Category } from "@repo/contract"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 
 const BoxContainer = ({
   listingId,

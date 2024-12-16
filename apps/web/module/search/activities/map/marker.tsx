@@ -1,4 +1,4 @@
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { LatLngTuple, divIcon } from "leaflet"
 import { ReactNode, useState } from "react"
 import { Marker as LeafletMarker } from "react-leaflet"

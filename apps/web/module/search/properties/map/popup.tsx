@@ -1,5 +1,5 @@
 import Image from "@/common/components/ui/image"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { LucideStar } from "lucide-react"
 import { Popup as LeafletPopup } from "react-leaflet"
 import Link from "next/link"

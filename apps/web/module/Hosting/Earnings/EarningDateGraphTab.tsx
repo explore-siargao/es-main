@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation"
 import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import Chart, { ChartType } from "./components/Chart"
 import Tabs from "@/common/components/Tabs"

@@ -1,5 +1,5 @@
 import { Button } from "@/common/components/ui/Button"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { Typography } from "@/common/components/ui/Typography"
 
 interface SubTotalBoxProps {

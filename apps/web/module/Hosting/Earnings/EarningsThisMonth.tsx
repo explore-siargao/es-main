@@ -1,6 +1,6 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import ThisMonthChart from "./components/ThisMonthChart"
 
 type T_Prop = {

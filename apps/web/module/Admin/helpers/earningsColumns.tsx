@@ -1,5 +1,5 @@
 import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { createColumnHelper } from "@tanstack/react-table"
 import { PaymentHistoryBookingsData } from "@/common/components/Table/Type"
 import { StatusDot } from "../components/StatusDot"

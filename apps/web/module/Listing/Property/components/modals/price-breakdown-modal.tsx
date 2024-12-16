@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
-import { add, eachDayOfInterval, format } from "date-fns"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import { sub, eachDayOfInterval, format } from "date-fns"
+import formatCurrency from "@/common/helpers/format-currency"
 import { DateRange } from "react-day-picker"
 
 type T_Price_Breakdown_Modal = {
@@ -21,8 +21,10 @@ const PriceBreakdownModal = ({
 }: T_Price_Breakdown_Modal) => {
   const today = new Date()
   const daysArr = eachDayOfInterval({
-    start: add(dateRange.from ?? new Date(), { days: 1 }),
-    end: dateRange.to ?? new Date(today.setDate(today.getDate() + 5)),
+    start: dateRange.from ?? new Date(),
+    end: sub(dateRange.to ?? new Date(today.setDate(today.getDate() + 5)), {
+      days: 1,
+    }),
   })
 
   const breakdownArr = daysArr.map((date) => ({
@@ -33,7 +35,7 @@ const PriceBreakdownModal = ({
   return (
     <ModalContainer
       isOpen={isOpen}
-      title="Basic Price Breakdown"
+      title="Basic price breakdown"
       onClose={onClose}
       size="auto"
     >

@@ -3,7 +3,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
 import CustomSquareSlider from "@/common/components/custom-square-slider"
 import { LucideHeart, LucideStar } from "lucide-react"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import NewlyAddedTag from "../components/newly-added-tag"
 import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 

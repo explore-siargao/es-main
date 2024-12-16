@@ -4,9 +4,9 @@ import { Typography } from "@/common/components/ui/Typography"
 import React, { useState } from "react"
 import { APP_NAME } from "@repo/constants"
 import Image from "@/common/components/ui/image"
-import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/CheckoutMoreInfoModal"
+import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/checkout-more-info-modal"
 import { T_Cart_Item } from "@repo/contract-2/cart"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { GUEST_COMMISSION_TITLE } from "@/common/constants"
 
 type T_Activity_Price_Details_Box = {

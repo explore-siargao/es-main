@@ -11,16 +11,14 @@ import CheckoutBox from "./components/checkout-box"
 import PlaceOffers from "./components/PlaceOffers"
 import WhereYoullBeDescription from "./components/Map"
 import { Button } from "@/common/components/ui/Button"
-import { Flag, LucideHeartHandshake } from "lucide-react"
+import { Flag } from "lucide-react"
 import { useState } from "react"
 import ReportListingModal from "./components/modals/ReportListingModal"
 import AvailableBooking from "./components/available-booking"
 import { T_BookableUnitType } from "@repo/contract"
 import { format, parseISO } from "date-fns"
-import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
-import Link from "next/link"
 import { description, hostDummy, ratingSummary, userReviews } from "./dummy"
+import PledgeBox from "../pledge-box"
 
 export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const [showModal, setShowModal] = useState(false)
@@ -47,10 +45,6 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
     (data?.item?.bookableUnits?.length > 0 && data?.item?.bookableUnits[0])
   const latitude = data?.item?.location?.latitude
   const longitude = data?.item?.location?.longitude
-
-  const current = 450000
-  const goal = 1000000
-  const percentage = Math.min((current / goal) * 100, 100).toFixed(2)
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
@@ -94,48 +88,12 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
         </div>
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
-            {
-              <CheckoutBox
-                selectedBookableUnit={selectedBookableUnit}
-                handleSelectBookableUnit={handleSelectBookableUnit}
-                units={data?.item?.bookableUnits}
-              />
-            }
-            <div>
-              <div className="border border-gray-300 rounded-xl p-4 mb-2 flex gap-4">
-                <div className="mt-1">
-                  <LucideHeartHandshake />
-                </div>
-                <div>
-                  <h3 className="font-semibold">
-                    Pledged to LokalLab by ExploreSiargao
-                  </h3>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div
-                      className="bg-primary-500 h-2 rounded-full"
-                      style={{ width: `${percentage}%` }}
-                    ></div>
-                  </div>
-                  <Typography
-                    variant="h6"
-                    className="text-justify mt-1 text-text-400"
-                  >
-                    {formatCurrency(current)} of {formatCurrency(goal)}
-                  </Typography>
-
-                  <Typography variant="h5" className="mt-1">
-                    Your stay contributes to Siargao's community growth.{" "}
-                    <Link
-                      href="/read-more"
-                      className="underline text-primary-600"
-                    >
-                      Find out more here
-                    </Link>
-                  </Typography>
-                </div>
-              </div>
-            </div>
-
+            <CheckoutBox
+              selectedBookableUnit={selectedBookableUnit}
+              handleSelectBookableUnit={handleSelectBookableUnit}
+              units={data?.item?.bookableUnits}
+            />
+            <PledgeBox />
             <div className="flex justify-center">
               <div className="justify-items-center">
                 <Button

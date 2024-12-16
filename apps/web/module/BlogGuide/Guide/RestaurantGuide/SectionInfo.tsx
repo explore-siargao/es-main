@@ -7,7 +7,7 @@ import ShareSave from "./components/ShareSave"
 import Link from "next/link"
 import MenuModal from "./components/modals/MenuModal"
 import EventsModal from "./components/modals/EventsModal"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { T_Photo } from "@repo/contract"
 
 export type T_SectionInfoProps = {

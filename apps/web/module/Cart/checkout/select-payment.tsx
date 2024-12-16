@@ -12,6 +12,7 @@ import amex from "@/common/assets/amex.png"
 import discover from "@/common/assets/discover-card.png"
 import mastercard from "@/common/assets/mastercard.png"
 import visa from "@/common/assets/visa.png"
+import gcash from "@/common/assets/gcash.png"
 import Image from "@/common/components/ui/image"
 import xendit from "@/common/assets/powered-xendit.png"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
@@ -48,7 +49,15 @@ export default function PaymentDropdown() {
     {
       type: E_PaymentType.GCASH,
       name: "Pay using GCash",
-      icon: <LucideCoins className="text-text-300" />,
+      icon: (
+        <Image
+          src={gcash}
+          width={500}
+          height={500}
+          className="h-5 w-auto"
+          alt="mastercard"
+        />
+      ),
       content: null,
       paymentMethodId: null,
     },
