@@ -4,7 +4,7 @@ import Image from "@/common/components/ui/image"
 import { createColumnHelper } from "@tanstack/react-table"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { Spinner } from "@/common/components/ui/Spinner"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import EarningsTable from "@/common/components/Table"
 
 const EarningBookingsTable = () => {

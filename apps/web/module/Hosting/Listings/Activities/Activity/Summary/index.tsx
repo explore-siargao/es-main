@@ -14,7 +14,7 @@ import { E_Activity_Status } from "@repo/contract/build/Activities/enum"
 import useUpdateActivityStatus from "../../hooks/useUpdateActivityStatus"
 import useGetActivityById from "../../hooks/useGetActivityById"
 import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 interface Slot {
   startTime: string
   endTime: string

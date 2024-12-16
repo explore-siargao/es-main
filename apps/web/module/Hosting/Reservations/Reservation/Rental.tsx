@@ -1,5 +1,5 @@
 import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { format } from "date-fns"
 import React from "react"
 import transmissionAcronym from "../../Listings/helpers/transmissionAcronym"

@@ -2,7 +2,7 @@ import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import useGetUpcomingEarnings from "../hooks/useGetUpcomingEarnings"
 import { Spinner } from "@/common/components/ui/Spinner"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { format } from "date-fns"
 import UpcomingChart from "./components/UpcomingChart"
 

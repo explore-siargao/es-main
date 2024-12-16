@@ -1,10 +1,10 @@
 "use client"
 import PesoSign from "@/common/components/PesoSign"
 import { Button } from "@/common/components/ui/Button"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import CheckoutBreakdownModal from "./modals/price-breakdown-modal"
 import { useState, useEffect } from "react"
-import CheckoutMoreInfoModal from "./modals/CheckoutMoreInfoModal"
+import CheckoutMoreInfoModal from "./modals/checkout-more-info-modal"
 import CheckInOutModal from "./modals/CheckInOutModal"
 import useCheckInOutDateStore from "@/module/Listing/Property/store/useCheckInOutDateStore"
 import Asterisk from "@/common/components/ui/Asterisk"
@@ -197,7 +197,7 @@ const CheckoutBox = ({
             className="underline pl-0"
             onClick={() => setIsMoreInfoModalOpen(true)}
           >
-            {APP_NAME}'s {GUEST_COMMISSION_PERCENT * 100}% commission
+            Service fee
           </Button>
           <div>{formatCurrency(esCommissionTotal)}</div>
         </div>

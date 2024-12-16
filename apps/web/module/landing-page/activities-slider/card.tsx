@@ -2,7 +2,7 @@ import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
 import { LucideStar } from "lucide-react"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 import Image from "@/common/components/ui/image"
 

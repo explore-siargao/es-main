@@ -16,7 +16,7 @@ import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { WEB_URL } from "../constants/ev"
 import Image from "@/common/components/ui/image"
 import { Button } from "./ui/Button"
-import formatCurrency from "../helpers/formatCurrency"
+import formatCurrency from "../helpers/format-currency"
 
 interface SpecificMapProps {
   center: [number, number]

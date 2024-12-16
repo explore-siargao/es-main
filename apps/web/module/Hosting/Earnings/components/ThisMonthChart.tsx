@@ -1,4 +1,4 @@
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import React from "react"
 import {
   BarChart,

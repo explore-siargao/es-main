@@ -3,8 +3,9 @@ import React, { useRef, Fragment } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideX } from "lucide-react"
+import { APP_NAME, GUEST_COMMISSION_PERCENT } from "@repo/constants"
 
-interface CheckoutMoreInfoModalProps {
+type T_Checkout_More_Info_Modal = {
   isOpen: boolean
   onClose: () => void
 }
@@ -12,7 +13,7 @@ interface CheckoutMoreInfoModalProps {
 const CheckoutMoreInfoModal = ({
   isOpen,
   onClose,
-}: CheckoutMoreInfoModalProps) => {
+}: T_Checkout_More_Info_Modal) => {
   const cancelButtonRef = useRef(null)
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -56,8 +57,8 @@ const CheckoutMoreInfoModal = ({
                     </div>
                     <div className="flex-1">
                       <Typography className="w-full place-self-center text-sm ml-2 mt-0.5">
-                        This helps us run our platform and offer services like
-                        24/7 support on your trip.
+                        {APP_NAME} adds {GUEST_COMMISSION_PERCENT * 100}% commission to the booking, this helps us run our platform and offer services like
+                          24/7 support on your trip.
                       </Typography>
                     </div>
                   </div>

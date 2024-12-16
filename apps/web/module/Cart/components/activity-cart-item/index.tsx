@@ -1,7 +1,7 @@
 import { Button } from "@/common/components/ui/Button"
 import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Typography } from "@/common/components/ui/Typography"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format } from "date-fns/format"
 import { Clock, Pencil, Trash } from "lucide-react"

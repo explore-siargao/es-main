@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideGrip } from "lucide-react"
+import formatCurrency from "@/common/helpers/format-currency"
 
 const AvailableBooking = ({
   bookableUnits,
@@ -18,6 +19,7 @@ const AvailableBooking = ({
   onSelectBookableUnit,
   selectedBookableUnit,
 }: T_AvailableBookingProps) => {
+  console.log('eqe', bookableUnits)
   const handleSelectUnit = (unit: T_AvailableBookableUnitProps | null) => {
     onSelectBookableUnit(unit)
   }
@@ -110,6 +112,10 @@ const AvailableBooking = ({
                   )}
                   <Typography variant="h5">
                     Can accommodate maximum of {unit.maxGuests} guests
+                  </Typography>
+                  <Typography variant="h5">
+                    {/* @ts-expect-error */}
+                    {formatCurrency(unit.unitPrice.baseRate)} night
                   </Typography>
                   <div className="flex gap-2 mt-6">
                     <Button

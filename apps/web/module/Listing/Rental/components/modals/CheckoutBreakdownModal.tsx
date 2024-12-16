@@ -27,7 +27,7 @@ const CheckoutBreakdownModal = ({
   return (
     <ModalContainer
       isOpen={isOpen}
-      title="Basic Price Breakdown"
+      title="Basic price breakdown"
       onClose={onClose}
       size="auto"
     >

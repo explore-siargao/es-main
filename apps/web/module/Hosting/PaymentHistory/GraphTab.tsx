@@ -2,7 +2,7 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import OverAllSummary from "./components/OverAllSummary"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 import Graph from "@/module/Hosting/PaymentHistory/Graph"
 import useGetFilteredPaymentHistory from "./hooks/useGetFilteredPaymentHistory"
 import useGetPaymentHistoryReport from "./hooks/useGetPaymentHistoryReport"

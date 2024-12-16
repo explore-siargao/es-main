@@ -33,7 +33,7 @@ function formatCurrency(
     maximumFractionDigits: finalCurrency === "KRW" ? 0 : 2,
   })
 
-  let formattedAmount = formatter.format(amount)
+  let formattedAmount = formatter.format(amount ? amount : 0)
 
   if (finalCurrency === "EUR") {
     formattedAmount = `€${formattedAmount.replace("€", "").trim()}`

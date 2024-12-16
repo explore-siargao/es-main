@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from "react"
 import Image from "@/common/components/ui/image"
 import { Typography } from "../../ui/Typography"
 import imageSrc from "../../../assets/bargraph.png"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 interface BudgetSliderProps {
   title: string
   min: number

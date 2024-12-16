@@ -1,7 +1,7 @@
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { format } from "date-fns"
-import formatCurrency from "@/common/helpers/formatCurrency"
+import formatCurrency from "@/common/helpers/format-currency"
 
 const SummaryDateBox: React.FC = () => {
   const currentDate = new Date()
