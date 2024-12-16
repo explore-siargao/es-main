@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ResponseService } from '@/common/service/response'
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { dbActivities, dbLocations } from '@repo/database'
+import { convertPrice } from '@/common/helpers/convert-price'
 
 const response = new ResponseService()
 
@@ -134,9 +135,11 @@ export const getAllActivitiesByHostId = async (req: Request, res: Response) => {
 }
 
 export const getActivityByIdPublic = async (req: Request, res: Response) => {
+  const preferredCurrency = res.locals.currency.preferred
+  const conversionRates = res.locals.currency.conversionRates
   try {
     const activityId = req.params.activityId
-    const rental = await dbActivities
+    const activity = await dbActivities
       .findOne({
         _id: activityId,
         // status: E_Rental_Status.Pending,
@@ -144,10 +147,12 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
       .populate('host', 'email isHost')
       .populate('meetingPoint')
       .populate('photos')
-      .select('title description status')
+      .select(
+        'title description status, pricePerPerson, pricePerSlot, schedule'
+      )
       .exec()
 
-    if (!rental) {
+    if (!activity) {
       res.json(
         response.error({
           status: 404,
@@ -155,9 +160,22 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
+      const newActivity: any = activity.toObject()
+      newActivity.pricePerPerson =
+        convertPrice(
+          newActivity.pricePerPerson,
+          preferredCurrency,
+          conversionRates
+        ) || 0
+      newActivity.pricePerSlot =
+        convertPrice(
+          newActivity.pricePerSlot,
+          preferredCurrency,
+          conversionRates
+        ) || 0
       res.json(
         response.success({
-          item: rental,
+          item: newActivity,
         })
       )
     }
