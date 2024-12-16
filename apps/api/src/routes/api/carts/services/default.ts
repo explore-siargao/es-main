@@ -4,21 +4,23 @@ import {
 } from '@/common/constants'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
+import { ACTIVITY_HOST_COMMISSION_PERCENT, GUEST_COMMISSION_PERCENT, PROPERTY_HOST_COMMISSION_PERCENT, RENTAL_HOST_COMMISSION_PERCENT } from '@repo/constants'
 import { Z_AddCart } from '@repo/contract-2/cart'
-import { dbCarts, dbReservations } from '@repo/database'
+import { dbActivities, dbBookableUnitTypes, dbCarts, dbRentals, dbReservations } from '@repo/database'
+import { differenceInCalendarDays } from 'date-fns'
 import { Request, Response } from 'express'
 import { Types } from 'mongoose'
-import { pipeline } from 'stream'
 
 const response = new ResponseService()
 export const addToCart = async (req: Request, res: Response) => {
+  let totalPrice, hostComission
   try {
     const userId = res.locals.user?.id
     const {
       propertyIds = null,
       rentalIds = null,
       activityIds = null,
-      price,
+      guestCount,
       startDate,
       endDate,
     } = req.body
@@ -33,7 +35,7 @@ export const addToCart = async (req: Request, res: Response) => {
     } else {
       if (
         (!propertyIds && !rentalIds && !activityIds) ||
-        !price ||
+        !guestCount ||
         !startDate ||
         !endDate
       ) {
@@ -100,7 +102,6 @@ export const addToCart = async (req: Request, res: Response) => {
           ],
         })
         if (existingCart) {
-          existingCart.price = price
           existingCart.updatedAt = new Date()
           existingCart.startDate = new Date(startDate)
           existingCart.endDate = new Date(endDate)
@@ -113,15 +114,51 @@ export const addToCart = async (req: Request, res: Response) => {
             })
           )
         } else {
+          if(propertyIds){
+            const unit:any = await dbBookableUnitTypes.findOne({qtyIds:{$elemMatch: { _id: propertyIds.unitId }}})
+            .populate("unitPrice")
+            const startDay = new Date(startDate)
+            const endDay = new Date(endDate)
+            const countDays = differenceInCalendarDays(endDay,startDay)
+            totalPrice = (unit?.unitPrice.baseRate*guestCount)*countDays
+            hostComission = PROPERTY_HOST_COMMISSION_PERCENT*totalPrice
+          }else if(rentalIds){
+            const rental:any = await dbRentals.findOne({_id:rentalIds.rentalId,qtyIds:{$elemMatch: { _id: rentalIds.qtyIdsId }}})
+            .populate("pricing")
+            const startDay = new Date(startDate)
+            const endDay = new Date(endDate)
+            const countDays = differenceInCalendarDays(endDay,startDay)
+            totalPrice = (rental?.pricing.dayRate*guestCount)*countDays
+            hostComission = RENTAL_HOST_COMMISSION_PERCENT*totalPrice
+          }else if(activityIds){
+            const activity = await dbActivities.findOne({_id:activityIds.activityId})
+            const startDay = new Date(startDate)
+            const endDay = new Date(endDate)
+            const countDays = differenceInCalendarDays(endDay,startDay)
+            const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
+            if(activity?.pricePerPerson){
+            totalPrice = price*guestCount
+            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
+            }else if(activity?.pricePerSlot){
+              totalPrice = price
+              hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
+            }else{
+              res.json(response.error({message:"Price is not set on this activity"}))
+            }
+          }
+          const guestComission = (totalPrice || 0)*GUEST_COMMISSION_PERCENT
           const newCart = new dbCarts({
             userId,
-            price,
+            price:totalPrice,
+            hostComission,
+            guestComission,
             propertyIds,
             rentalIds,
             activityIds,
             status: 'Active',
             startDate: new Date(startDate),
             endDate: new Date(endDate),
+            guestCount,
             createdAt: Date.now(),
             updatedAt: null,
             deletedAt: null,
@@ -133,7 +170,7 @@ export const addToCart = async (req: Request, res: Response) => {
               message: 'Cart list  updated successfully',
             })
           )
-        }
+      }
       }
     }
   } catch (err: any) {
@@ -208,7 +245,6 @@ export const getAllCarts = async (req: Request, res: Response) => {
         const newCartIdsArray = cartIdsArray.map(
           (item) => new Types.ObjectId(item)
         )
-        console.log(newCartIdsArray)
         query._id = {
           $in: newCartIdsArray,
         }
@@ -863,9 +899,13 @@ export const getAllCarts = async (req: Request, res: Response) => {
         })
       )
     } else {
+      const totalPrice = carts.reduce((sum,item)=>sum+(item.price || 0),0)
+      const totalGuestComission = carts.reduce((sum,item)=>sum+(item.guestComission || 0),0)
       res.json(
         response.success({
           items: carts,
+          totalPrice,
+          totalGuestComission,
           pageItemCount: carts.length,
           allItemCount: totalCounts,
         })
@@ -883,10 +923,10 @@ export const getAllCarts = async (req: Request, res: Response) => {
 export const updateCartInfo = async (req: Request, res: Response) => {
   const cartId = req.params.cartId
   const userId = res.locals.user?.id
-  const { startDate, endDate, price, contacts } = req.body
-
+  const { startDate, endDate, price, guestCount, contacts } = req.body
+  let hostComission,totalPrice
   try {
-    const getCart = await dbCarts.findOne({
+    const getCart:any = await dbCarts.findOne({
       _id: cartId,
       userId: userId,
       status: 'Active',
@@ -895,79 +935,61 @@ export const updateCartInfo = async (req: Request, res: Response) => {
     if (!getCart) {
       res.json(response.error({ message: 'Cart not found or already removed' }))
     } else {
-      if (!startDate || !endDate || !price || !contacts) {
+      if (!startDate || !endDate || !guestCount || !contacts) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
-        // const cartconflicts = await dbCarts.find({
-        //   $and: [
-        //     { status: 'Active' },
-        //     { deletedAt: null },
-        //     { _id: { $ne: cartId } },
-        //     {
-        //       $or: [
-        //         {
-        //           'propertyIds.unitId': getCart.propertyIds?.unitId,
-        //           'propertyIds.propertyId': getCart.propertyIds?.propertyId,
-        //         },
-        //         {
-        //           'rentalIds.rentalId': getCart.rentalIds?.rentalId,
-        //           'rentalIds.qtyIdsId': getCart.rentalIds?.qtyIdsId,
-        //         },
-        //         {
-        //           'activityIds.activityId': getCart.activityIds?.activityId,
-        //           'activityIds.dayId': getCart.activityIds?.dayId,
-        //           'activityIds.timeSlotId': getCart.activityIds?.timeSlotId,
-        //           ...(getCart.activityIds?.slotIdsId && {
-        //             'activityIds.slotIdsId': getCart.activityIds?.slotIdsId,
-        //           }),
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       startDate: { $lte: parseToUTCDate(endDate) },
-        //       endDate: { $gte: parseToUTCDate(startDate) },
-        //     },
-        //   ],
-        // })
-        // if (cartconflicts.length > 0) {
-        //   res.json(
-        //     response.error({
-        //       message: 'Cart conflicts with existing item',
-        //     })
-        //   )
-        // } else {
-        //   const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
-        //     $set: {
-        //       startDate: parseToUTCDate(startDate),
-        //       endDate: parseToUTCDate(endDate),
-        //       price: price,
-        //       updatedAt: Date.now(),
-        //       contacts: contacts || [],
-        //     },
-        //   })
-        //   res.json(
-        //     response.success({
-        //       item: updateCart,
-        //       message: 'Cart Item information successfully updated',
-        //     })
-        //   )
-        // }
-        const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
-          $set: {
-            // disabled because has errors
-            // startDate: parseToUTCDate(startDate),
-            // endDate: parseToUTCDate(endDate),
-            // price: price,
-            contacts: contacts || [],
-            updatedAt: Date.now(),
-          },
-        })
-        res.json(
-          response.success({
-            item: updateCart,
-            message: 'Cart Item information successfully updated',
+        if(getCart.propertyIds){
+          const unit:any = await dbBookableUnitTypes.findOne({qtyIds:{$elemMatch: { _id: getCart.propertyIds.unitId }}})
+          .populate("unitPrice")
+          const startDay = new Date(startDate)
+          const endDay = new Date(endDate)
+          const countDays = differenceInCalendarDays(endDay,startDay)
+          totalPrice = (unit?.unitPrice.baseRate*guestCount)*countDays
+          hostComission = PROPERTY_HOST_COMMISSION_PERCENT*totalPrice
+        }else if(getCart.rentalIds){
+          const rental:any = await dbRentals.findOne({_id:getCart.rentalIds.rentalId,qtyIds:{$elemMatch: { _id: getCart.rentalIds.qtyIdsId }}})
+          .populate("pricing")
+          const startDay = new Date(startDate)
+          const endDay = new Date(endDate)
+          const countDays = differenceInCalendarDays(endDay,startDay)
+          totalPrice = (rental?.pricing.dayRate*guestCount)*countDays
+          hostComission = RENTAL_HOST_COMMISSION_PERCENT*totalPrice
+        }else if(getCart.activityIds){
+          const activity = await dbActivities.findOne({_id:getCart.activityIds.activityId})
+          const startDay = new Date(startDate)
+          const endDay = new Date(endDate)
+          const countDays = differenceInCalendarDays(endDay,startDay)
+          const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
+          if(activity?.pricePerPerson){
+          totalPrice = price*guestCount
+          hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
+          }else if(activity?.pricePerSlot){
+            totalPrice = price
+            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT*totalPrice
+          }else{
+            res.json(response.error({message:"Price is not set on this activity"}))
+          }
+        }
+        const guestComission = (totalPrice || 0)*GUEST_COMMISSION_PERCENT
+          const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+            $set: {
+              startDate: startDate,
+              endDate: endDate,
+              price: totalPrice,
+              guestCount,
+              hostComission,
+              guestComission,
+              updatedAt: Date.now(),
+              contacts: contacts || [],
+            },
           })
-        )
+          res.json(
+            response.success({
+              item: updateCart,
+              message: 'Cart Item information successfully updated',
+            })
+          )
+        
       }
     }
   } catch (err: any) {

@@ -6,6 +6,8 @@ export const Z_BackendResponse = z.object({
   item: z.record(z.any()).nullable().optional(),
   items: z.array(z.record(z.any())).nullable().optional(),
   average: z.object({}).optional(),
+  totalPrice:z.number().optional(),
+  totalGuestComission:z.number().optional(),
   overallRating: z.number().optional(),
   pageItemCount: z.number().optional(),
   allItemCount: z.number().optional(),
