@@ -12,6 +12,7 @@ import amex from "@/common/assets/amex.png"
 import discover from "@/common/assets/discover-card.png"
 import mastercard from "@/common/assets/mastercard.png"
 import visa from "@/common/assets/visa.png"
+import gcash from "@/common/assets/gcash.png"
 import Image from "@/common/components/ui/image"
 import xendit from "@/common/assets/powered-xendit.png"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
@@ -48,7 +49,13 @@ export default function PaymentDropdown() {
     {
       type: E_PaymentType.GCASH,
       name: "Pay using GCash",
-      icon: <LucideCoins className="text-text-300" />,
+      icon: <Image
+        src={gcash}
+        width={500}
+        height={500}
+        className="h-5 w-auto"
+        alt="mastercard"
+      />,
       content: null,
       paymentMethodId: null,
     },
@@ -147,10 +154,9 @@ export default function PaymentDropdown() {
                   key={option.id}
                   value={option}
                   className={({ active }) =>
-                    `cursor-pointer select-none py-2 pl-4 pr-4 ${
-                      active
-                        ? "bg-primary-100 text-primary-900"
-                        : "text-text-900"
+                    `cursor-pointer select-none py-2 pl-4 pr-4 ${active
+                      ? "bg-primary-100 text-primary-900"
+                      : "text-text-900"
                     }`
                   }
                 >
@@ -160,9 +166,8 @@ export default function PaymentDropdown() {
                       <div className="flex items-center">
                         <span className="mr-2">{option.icon}</span>
                         <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
+                          className={`block truncate ${selected ? "font-medium" : "font-normal"
+                            }`}
                         >
                           {option.name}
                         </span>
