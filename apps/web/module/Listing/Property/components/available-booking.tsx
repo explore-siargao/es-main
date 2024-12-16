@@ -19,7 +19,7 @@ const AvailableBooking = ({
   onSelectBookableUnit,
   selectedBookableUnit,
 }: T_AvailableBookingProps) => {
-  console.log('eqe', bookableUnits)
+  console.log("eqe", bookableUnits)
   const handleSelectUnit = (unit: T_AvailableBookableUnitProps | null) => {
     onSelectBookableUnit(unit)
   }

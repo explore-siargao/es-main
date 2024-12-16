@@ -22,7 +22,9 @@ const PriceBreakdownModal = ({
   const today = new Date()
   const daysArr = eachDayOfInterval({
     start: dateRange.from ?? new Date(),
-    end: sub(dateRange.to ?? new Date(today.setDate(today.getDate() + 5)), { days: 1 }),
+    end: sub(dateRange.to ?? new Date(today.setDate(today.getDate() + 5)), {
+      days: 1,
+    }),
   })
 
   const breakdownArr = daysArr.map((date) => ({

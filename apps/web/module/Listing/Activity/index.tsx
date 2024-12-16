@@ -133,7 +133,7 @@ export const ActivitySingleView = ({
               }}
               timeSlot={undefined}
             />
-            <PledgeBox/>
+            <PledgeBox />
           </div>
         </div>
       </div>

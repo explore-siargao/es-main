@@ -30,7 +30,11 @@ const CheckoutModal = ({
     items.length > 0
       ? items
           .map((item) => item.price)
-          .reduce((accumulator, currentValue) => (accumulator || 0) + (currentValue || 0), 0)
+          .reduce(
+            (accumulator, currentValue) =>
+              (accumulator || 0) + (currentValue || 0),
+            0
+          )
       : 0
 
   const remapItems = (items: T_Add_To_Cart[]) => {

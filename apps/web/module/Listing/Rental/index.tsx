@@ -107,7 +107,7 @@ export const Rental = ({ rentalData: data }: { rentalData: any }) => {
                 downPayment: data?.item?.pricing?.requiredDeposit,
               }}
             />
-            <PledgeBox/>
+            <PledgeBox />
 
             <div className="flex justify-center">
               <div className="justify-items-center">
