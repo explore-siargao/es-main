@@ -1,4 +1,4 @@
-import { T_Photo } from "@repo/contract"
+import { T_Photo } from "@repo/contract-2/photos"
 import { T_Image, T_ImagesProps } from "./SectionInfo"
 
 export type T_Bed = {

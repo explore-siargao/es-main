@@ -18,6 +18,16 @@ export class CartService {
     return this.api.delete(`${CART_BASE_URL}/${itemId}`)
   }
 
+  /**
+   * Removes multiple items from the cart by their IDs.
+   * 
+   * @param cartIds - An array of cart item IDs to be removed.
+   * @returns A promise resolving to the API response.
+   * 
+   * @example
+   * const cartIds = ['123', '456', '789'];
+   * await removeMultipleItems(cartIds);
+   */
   async removeMultipleItems(cartIds: string[]) {
     return this.api.delete(`${CART_BASE_URL}/remove-multiple`, cartIds)
   }

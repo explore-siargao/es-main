@@ -48,12 +48,12 @@ export const Z_Rental_AddOns = z.object({
   babySeat: z.boolean(),
   dashCam: z.boolean(),
   includesHelmet: z.boolean(),
-  others: z.string().nullable().optional(),
+  others: z.array(z.string()).nullable().optional(),
 })
 
 export const Z_Rental_PricePerDate = z.object({
-  _id: z.string().optional(),
   fromDate: z.string(),
+  _id: z.string().optional(),
   toDate: z.string(),
   price: Z_Rental_Price.nullable().optional(),
 })

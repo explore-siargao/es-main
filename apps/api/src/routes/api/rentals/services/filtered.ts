@@ -1,5 +1,4 @@
 import {
-  REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { convertPrice } from '@/common/helpers/convert-price'
@@ -7,12 +6,9 @@ import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import {
   T_Rental_Filtered,
-  T_Rentals_Search,
-  Z_Rental_Filtered,
   Z_Rental_Filtered_Result,
   Z_Rentals_Search,
 } from '@repo/contract-2/search-filters'
-import { T_Rental_Price } from '@repo/contract-2/rentals'
 import { dbRentals, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
