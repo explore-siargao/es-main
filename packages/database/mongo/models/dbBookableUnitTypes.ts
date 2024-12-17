@@ -134,7 +134,7 @@ const bookableUnitTypes = new Schema({
     default: [],
   },
   daysCanCancel: {
-    type: Number,
+    type: String,
     required: true,
   },
   reviews: {

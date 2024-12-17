@@ -92,7 +92,7 @@ export const Z_Activity = z.object({
   schedule: Z_Activity_Schedule.nullable().optional(),
   pricePerPerson: z.number().nullable().optional(),
   pricePerSlot: z.number().nullable().optional(),
-  daysCanCancel: z.number(),
+  daysCanCancel: z.string(),
   status: z.enum(["Pending", "Incomplete", "Live"]),
   finishedSections: z.array(z.string()),
   pricePerDates: z.array(Z_Activity_PricePerDate),

@@ -70,6 +70,11 @@ const rentals = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "RentalAddOns",
   },
+  policies:{
+    type:[String],
+    default:[]
+  },
+  
   photos: [
     {
       type: mongoose.Schema.ObjectId,
@@ -108,7 +113,7 @@ const rentals = new Schema({
     default: [],
   },
   daysCanCancel: {
-    type: Number,
+    type: String,
     required: true,
   },
   reviews: {

@@ -132,8 +132,7 @@ export const Z_Rental_Basic_Info = z.object({
     .optional()
     .nullable(),
   year: z.string().optional().nullable(),
-  qty: z.number(),
-  daysCanCancel: z.number(),
+  qty: z.number()
 })
 
 export const Z_UpdateRentalLocation = z.object({
@@ -147,4 +146,9 @@ export const Z_UpdateRentalLocation = z.object({
 
 export const Z_Rental_Status = z.object({
   status: z.nativeEnum(E_Rental_Status),
+})
+
+export const Z_Rental_Additional_Info = z.object({
+  policies:z.array(z.string()),
+  daysCanCancel:z.string()
 })

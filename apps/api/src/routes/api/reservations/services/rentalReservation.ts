@@ -177,7 +177,7 @@ export const cancelRentalReservationByHost = async (
         'qtyIds._id': reservation.rentalIds?.qtyIdsId,
       })
       if (rental) {
-        const allowedDaysToCancel = rental?.daysCanCancel
+        const allowedDaysToCancel = Number(rental?.daysCanCancel)
         const currentDate = new Date()
         const reservationDate = reservation.startDate
         reservationDate?.setDate(

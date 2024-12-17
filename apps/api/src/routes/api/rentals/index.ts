@@ -42,6 +42,7 @@ import { getFilteredRentals } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
 import { addRentalReview } from './services/review'
 import { rentalHighestPrice } from './services/highest-price'
+import { updateAdditionalInfo } from './services/additionalInfo'
 
 const router = express.Router()
 
@@ -84,6 +85,15 @@ router.get(
   isUserLoggedIn,
   isHostRentalOwner,
   getRental
+)
+
+//additional info
+router.patch(
+  '/:rentalId/additional-info',
+  isOriginValid,
+  isUserLoggedIn,
+  isHostRentalOwner,
+  updateAdditionalInfo
 )
 
 router.get('/public/:rentalId', isOriginValid, getRentalByIdPublic)

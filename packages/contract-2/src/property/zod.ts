@@ -198,7 +198,7 @@ export const Z_Bookable_Units = z.object({
   bedConfigs: z.array(z.string()).optional(),
   qty: z.number(),
   qtyIds: z.array(z.string()).optional(),
-  daysCanCancel: z.number().optional(),
+  daysCanCancel: z.string().optional(),
   reviews: z.array(z.string()).optional(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),

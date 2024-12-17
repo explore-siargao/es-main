@@ -208,7 +208,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 500,
         pricePerSlot: null,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -304,7 +304,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 700,
         pricePerSlot: null,
-        daysCanCancel: 10,
+        daysCanCancel: "10",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -397,7 +397,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 650,
         pricePerSlot: null,
-        daysCanCancel: 10,
+        daysCanCancel: "10",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -605,7 +605,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 800,
         pricePerSlot: null,
-        daysCanCancel: 10,
+        daysCanCancel: "10",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -811,7 +811,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 750,
         pricePerSlot: null,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -1022,7 +1022,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 700,
         pricePerSlot: null,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -1233,7 +1233,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 900,
         pricePerSlot: null,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -1444,7 +1444,7 @@ const seedJoinerActivities = async () => {
         },
         pricePerPerson: 600,
         pricePerSlot: null,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",

@@ -70,7 +70,6 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
     transmission,
     year,
     qty,
-    daysCanCancel,
   }: T_Rental_Basic_Info = req.body
   const isValidInput = Z_Rental_Basic_Info.safeParse(
     req.body as T_Rental_Basic_Info
@@ -97,7 +96,6 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           rental.transmission = transmission || rental.transmission
           ;(rental.year = year || rental.year), (rental.qty = qty || rental.qty)
           rental.qtyIds = rental.qtyIds
-          rental.daysCanCancel = daysCanCancel || rental.daysCanCancel
 
           // Generate the name based on year, make, modelBadge, and transmission
           const transShort = transmission === 'Manual' ? 'MT' : 'AT'
@@ -133,7 +131,6 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           rental.year = category === 'Motorbike' ? year || rental.year : null
           rental.qty = qty || rental.qty
           rental.qtyIds = rental.qtyIds
-          rental.daysCanCancel = daysCanCancel || rental.daysCanCancel
           // Generate the name based on year, make, modelBadge, and transmission
           const transShort = transmission === 'Manual' ? 'MT' : 'AT'
           const nameBase =
@@ -172,8 +169,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           fuel: rental?.fuel,
           transmission: rental?.transmission,
           year: rental?.year,
-          qty: rental?.qty,
-          daysCanCancel: daysCanCancel,
+          qty: rental?.qty
         }
 
         res.json(

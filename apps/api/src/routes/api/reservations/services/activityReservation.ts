@@ -375,7 +375,7 @@ export const cancelActivityReservation = async (
         const currentDate = new Date()
         const reservationDate = reservation.startDate
         reservationDate?.setDate(
-          reservationDate.getDate() - allowedDaysToCancel
+          reservationDate.getDate() - Number(allowedDaysToCancel)
         )
         const allowedDate = reservationDate
         if (allowedDate != null && currentDate <= allowedDate) {
@@ -424,7 +424,7 @@ export const cancelActivityReservation = async (
           const currentDate = new Date()
           const reservationDate = reservation.startDate
           reservationDate?.setDate(
-            reservationDate.getDate() - allowedDaysToCancel
+            reservationDate.getDate() - Number(allowedDaysToCancel)
           )
           const allowedDate = reservationDate
           if (allowedDate != null && currentDate <= allowedDate) {

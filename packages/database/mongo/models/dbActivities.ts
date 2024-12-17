@@ -284,7 +284,7 @@ const activities = new Schema({
   },
 
   daysCanCancel: {
-    type: Number,
+    type: String,
     required: true,
   },
   status: {
