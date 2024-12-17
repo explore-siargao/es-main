@@ -32,8 +32,11 @@ export const Z_Add_For_Payment = z.object({
 
   guestCount: z.number(),
   price: z.number(),
+  hostComission:z.number(),
+  guestComission:z.number(),
   startDate: z.date(),
   endDate: z.date(),
+  status:z.string(),
   createdAt: z.string().nullable().optional(),
   updatedAt: z.string().nullable().optional(),
   deletedAt: z.string().nullable().optional(),
@@ -43,6 +46,8 @@ export const Z_Update_For_Payment = z.object({
   _id: z.string().optional(),
   guestCount: z.number().optional(),
   price: z.number().optional(),
+  hostComission:z.number(),
+  guestComission:z.number(),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   contacts: z
