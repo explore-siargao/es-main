@@ -132,7 +132,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 500,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -217,7 +217,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 700,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -299,7 +299,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 650,
-        daysCanCancel: 10,
+        daysCanCancel: "10",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -430,7 +430,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 800,
-        daysCanCancel: 10,
+        daysCanCancel: "10",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -559,7 +559,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 750,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -693,7 +693,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 700,
-        daysCanCancel: 10,
+        daysCanCancel: "10",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -827,7 +827,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 900,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",
@@ -961,7 +961,7 @@ const seedActivities = async () => {
         },
         pricePerPerson: null,
         pricePerSlot: 600,
-        daysCanCancel: 5,
+        daysCanCancel: "5",
         status: "Live",
         finishedSections: [
           "basicInfo",

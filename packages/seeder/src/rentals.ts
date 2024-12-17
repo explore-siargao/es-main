@@ -675,7 +675,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-20T08:45:00.000Z",
         qtyIds: [],
-        daysCanCancel: 5,
+        daysCanCancel: "5",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -706,7 +711,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-18T09:00:00.000Z",
         qtyIds: [],
-        daysCanCancel: 3,
+        daysCanCancel: "3",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -738,7 +748,12 @@ const seedRentals = async () => {
         updatedAt: "2024-10-25T07:30:00.000Z",
         qtyIds: [],
         pricePerDates: [],
-        daysCanCancel: 2,
+        daysCanCancel: "2",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -769,7 +784,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-10T06:50:00.000Z",
         qtyIds: [],
-        daysCanCancel: 6,
+        daysCanCancel: "6",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -800,7 +820,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-10-20T08:20:00.000Z",
         qtyIds: [],
-        daysCanCancel: 3,
+        daysCanCancel: "3",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -831,7 +856,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-09-15T07:00:00.000Z",
         qtyIds: [],
-        daysCanCancel: 5,
+        daysCanCancel: "5",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -862,7 +892,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-21T12:30:00.000Z",
         qtyIds: [],
-        daysCanCancel: 2,
+        daysCanCancel: "2",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -893,7 +928,7 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-19T10:45:00.000Z",
         qtyIds: [],
-        daysCanCancel: 2,
+        daysCanCancel: "2",
       },
       {
         details: null,
@@ -924,7 +959,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-01T11:15:00.000Z",
         qtyIds: [],
-        daysCanCancel: 4,
+        daysCanCancel: "4",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -956,7 +996,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-14T10:30:00.000Z",
         qtyIds: [],
-        daysCanCancel: 7,
+        daysCanCancel: "7",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -987,7 +1032,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-10-30T12:40:00.000Z",
         qtyIds: [],
-        daysCanCancel: 3,
+        daysCanCancel: "3",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -1018,7 +1068,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-09-25T10:30:00.000Z",
         qtyIds: [],
-        daysCanCancel: 5,
+        daysCanCancel: "5",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -1049,7 +1104,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-22T14:15:00.000Z",
         qtyIds: [],
-        daysCanCancel: 3,
+        daysCanCancel: "3",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -1080,7 +1140,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-20T16:20:00.000Z",
         qtyIds: [],
-        daysCanCancel: 4,
+        daysCanCancel: "4",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
       {
         details: null,
@@ -1111,7 +1176,12 @@ const seedRentals = async () => {
         reviews: [],
         updatedAt: "2024-11-15T13:00:00.000Z",
         qtyIds: [],
-        daysCanCancel: 5,
+        daysCanCancel: "5",
+        policies: [
+          "Renters must be 18 years or older",
+          "Full payment must be made 24 hours before the start",
+          "The deposit will be returned within 7 days after the rental ends",
+        ],
       },
     ]
 

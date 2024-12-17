@@ -13,6 +13,7 @@ import {
   Z_Calendar_Rental_Reservation,
   Z_Calendar_Car_Rental,
   Z_Calendar_Motor_Rental,
+  Z_Rental_Additional_Info,
 } from "./zod"
 
 export type T_Rentals = z.infer<typeof Z_Rental>
@@ -38,3 +39,5 @@ export type T_Calendar_Rental_Date_Price = z.infer<
 export type T_Calendar_Rental_Reservation = z.infer<
   typeof Z_Calendar_Rental_Reservation
 >
+
+export type T_Rental_Additional_Info = z.infer<typeof Z_Rental_Additional_Info>
