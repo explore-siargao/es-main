@@ -49,13 +49,15 @@ export default function PaymentDropdown() {
     {
       type: E_PaymentType.GCASH,
       name: "Pay using GCash",
-      icon: <Image
-        src={gcash}
-        width={500}
-        height={500}
-        className="h-5 w-auto"
-        alt="mastercard"
-      />,
+      icon: (
+        <Image
+          src={gcash}
+          width={500}
+          height={500}
+          className="h-5 w-auto"
+          alt="mastercard"
+        />
+      ),
       content: null,
       paymentMethodId: null,
     },
@@ -154,9 +156,10 @@ export default function PaymentDropdown() {
                   key={option.id}
                   value={option}
                   className={({ active }) =>
-                    `cursor-pointer select-none py-2 pl-4 pr-4 ${active
-                      ? "bg-primary-100 text-primary-900"
-                      : "text-text-900"
+                    `cursor-pointer select-none py-2 pl-4 pr-4 ${
+                      active
+                        ? "bg-primary-100 text-primary-900"
+                        : "text-text-900"
                     }`
                   }
                 >
@@ -166,8 +169,9 @@ export default function PaymentDropdown() {
                       <div className="flex items-center">
                         <span className="mr-2">{option.icon}</span>
                         <span
-                          className={`block truncate ${selected ? "font-medium" : "font-normal"
-                            }`}
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
                         >
                           {option.name}
                         </span>

@@ -46,8 +46,6 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const latitude = data?.item?.location?.latitude
   const longitude = data?.item?.location?.longitude
 
-
-
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <Hero images={data?.item?.photos} title={data?.item?.title} />
@@ -95,7 +93,7 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
               handleSelectBookableUnit={handleSelectBookableUnit}
               units={data?.item?.bookableUnits}
             />
-            <PledgeBox/>
+            <PledgeBox />
             <div className="flex justify-center">
               <div className="justify-items-center">
                 <Button
