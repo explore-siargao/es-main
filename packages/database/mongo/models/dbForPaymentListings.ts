@@ -69,7 +69,19 @@ const forPaymentListings = new Schema({
     type: Date,
     required: true,
   },
-  guestCount: Number,
+  guestCount: {
+    type:Number,
+    required:true,
+    default:1
+  },
+  guestComission: {
+    type: Number,
+    required: true,
+  },
+  hostComission: {
+    type: Number,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

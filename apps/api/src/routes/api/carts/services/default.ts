@@ -150,9 +150,6 @@ export const addToCart = async (req: Request, res: Response) => {
             const activity = await dbActivities.findOne({
               _id: activityIds.activityId,
             })
-            const startDay = new Date(startDate)
-            const endDay = new Date(endDate)
-            const countDays = differenceInCalendarDays(endDay, startDay)
             const price =
               activity?.pricePerPerson || activity?.pricePerSlot || 0
             if (activity?.pricePerPerson) {
