@@ -70,9 +70,9 @@ const forPaymentListings = new Schema({
     required: true,
   },
   guestCount: {
-    type:Number,
-    required:true,
-    default:1
+    type: Number,
+    required: true,
+    default: 1,
   },
   guestComission: {
     type: Number,

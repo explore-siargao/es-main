@@ -3,19 +3,29 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { ACTIVITY_HOST_COMMISSION_PERCENT, GUEST_COMMISSION_PERCENT, PROPERTY_HOST_COMMISSION_PERCENT, RENTAL_HOST_COMMISSION_PERCENT } from '@repo/constants'
+import {
+  ACTIVITY_HOST_COMMISSION_PERCENT,
+  GUEST_COMMISSION_PERCENT,
+  PROPERTY_HOST_COMMISSION_PERCENT,
+  RENTAL_HOST_COMMISSION_PERCENT,
+} from '@repo/constants'
 import {
   Z_Add_For_Payment,
   Z_Update_For_Payment,
 } from '@repo/contract-2/for-payment-listings'
-import { dbActivities, dbBookableUnitTypes, dbForPaymentListing, dbRentals } from '@repo/database'
+import {
+  dbActivities,
+  dbBookableUnitTypes,
+  dbForPaymentListing,
+  dbRentals,
+} from '@repo/database'
 import { differenceInCalendarDays } from 'date-fns'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
 export const bookListing = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
-  let totalPrice,hostComission
+  let totalPrice, hostComission
   const {
     propertyIds = null,
     rentalIds = null,
@@ -58,8 +68,7 @@ export const bookListing = async (req: Request, res: Response) => {
         const activity = await dbActivities.findOne({
           _id: activityIds.activityId,
         })
-        const price =
-          activity?.pricePerPerson || activity?.pricePerSlot || 0
+        const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
         if (activity?.pricePerPerson) {
           totalPrice = price * guestCount
           hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
@@ -78,11 +87,11 @@ export const bookListing = async (req: Request, res: Response) => {
         propertyIds,
         rentalIds,
         activityIds,
-        price:totalPrice,
+        price: totalPrice,
         guestCount,
         guestComission,
         hostComission,
-        status:"Active",
+        status: 'Active',
         startDate: new Date(startDate),
         endDate: new Date(endDate),
       })
@@ -114,95 +123,98 @@ export const bookListing = async (req: Request, res: Response) => {
 export const updateForPayment = async (req: Request, res: Response) => {
   const forPaymentId = req.params.forPaymentId
   let { guestCount, startDate, endDate, contacts } = req.body
-    let totalPrice,hostComission
- 
+  let totalPrice, hostComission
 
   try {
     if (!guestCount && !contacts && !startDate && !endDate) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else {
-      const forPayment = await dbForPaymentListing.findOne({status:"Active", _id:forPaymentId})
-      if(!forPayment){
-         res.json(response.error({message:"No for payment found"}))
-      }else{
-        if(!startDate){
+      const forPayment = await dbForPaymentListing.findOne({
+        status: 'Active',
+        _id: forPaymentId,
+      })
+      if (!forPayment) {
+        res.json(response.error({ message: 'No for payment found' }))
+      } else {
+        if (!startDate) {
           startDate = forPayment?.startDate
         }
-        if(!endDate){
+        if (!endDate) {
           endDate = forPayment?.endDate
         }
-        if(!guestCount){
+        if (!guestCount) {
           guestCount = forPayment?.guestCount
         }
-      if (forPayment.propertyIds) {
-        const unit: any = await dbBookableUnitTypes
-          .findOne({ qtyIds: { $elemMatch: { _id: forPayment.propertyIds.unitId } } })
-          .populate('unitPrice')
-        const startDay = new Date(startDate)
-        const endDay = new Date(endDate)
-        const countDays = differenceInCalendarDays(endDay, startDay)
-        totalPrice = unit?.unitPrice.baseRate * guestCount * countDays
-        hostComission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
-      } else if (forPayment.rentalIds) {
-        const rental: any = await dbRentals
-          .findOne({
-            _id: forPayment.rentalIds.rentalId,
-            qtyIds: { $elemMatch: { _id: forPayment.rentalIds.qtyIdsId } },
+        if (forPayment.propertyIds) {
+          const unit: any = await dbBookableUnitTypes
+            .findOne({
+              qtyIds: { $elemMatch: { _id: forPayment.propertyIds.unitId } },
+            })
+            .populate('unitPrice')
+          const startDay = new Date(startDate)
+          const endDay = new Date(endDate)
+          const countDays = differenceInCalendarDays(endDay, startDay)
+          totalPrice = unit?.unitPrice.baseRate * guestCount * countDays
+          hostComission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
+        } else if (forPayment.rentalIds) {
+          const rental: any = await dbRentals
+            .findOne({
+              _id: forPayment.rentalIds.rentalId,
+              qtyIds: { $elemMatch: { _id: forPayment.rentalIds.qtyIdsId } },
+            })
+            .populate('pricing')
+          const startDay = new Date(startDate)
+          const endDay = new Date(endDate)
+          const countDays = differenceInCalendarDays(endDay, startDay)
+          totalPrice = rental?.pricing.dayRate * guestCount * countDays
+          hostComission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
+        } else if (forPayment.activityIds) {
+          const activity = await dbActivities.findOne({
+            _id: forPayment.activityIds.activityId,
           })
-          .populate('pricing')
-        const startDay = new Date(startDate)
-        const endDay = new Date(endDate)
-        const countDays = differenceInCalendarDays(endDay, startDay)
-        totalPrice = rental?.pricing.dayRate * guestCount * countDays
-        hostComission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
-      } else if (forPayment.activityIds) {
-        const activity = await dbActivities.findOne({
-          _id: forPayment.activityIds.activityId,
+          const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
+          if (activity?.pricePerPerson) {
+            totalPrice = price * guestCount
+            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+          } else if (activity?.pricePerSlot) {
+            totalPrice = price
+            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+          } else {
+            res.json(
+              response.error({ message: 'Price is not set on this activity' })
+            )
+          }
+        }
+        const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
+        const validForPaymentUpdate = Z_Update_For_Payment.safeParse({
+          _id: String(forPaymentId),
+          guestCount,
+          price: totalPrice,
+          hostComission,
+          guestComission,
+          startDate: startDate ? new Date(startDate) : undefined,
+          endDate: endDate ? new Date(endDate) : undefined,
+          contacts,
         })
-        const price =
-          activity?.pricePerPerson || activity?.pricePerSlot || 0
-        if (activity?.pricePerPerson) {
-          totalPrice = price * guestCount
-          hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
-        } else if (activity?.pricePerSlot) {
-          totalPrice = price
-          hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
-        } else {
-          res.json(
-            response.error({ message: 'Price is not set on this activity' })
+        if (validForPaymentUpdate.success) {
+          const updateForPayment = await dbForPaymentListing.findByIdAndUpdate(
+            forPaymentId,
+            {
+              $set: validForPaymentUpdate.data,
+            }
           )
+          res.json(
+            response.success({
+              item: updateForPayment,
+              message: 'Successfullu updated payment details',
+            })
+          )
+        } else {
+          console.log(JSON.parse(validForPaymentUpdate.error.message))
+          res.json(response.error({ message: 'Invalid payload' }))
         }
       }
-      const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
-      const validForPaymentUpdate = Z_Update_For_Payment.safeParse({
-        _id: String(forPaymentId),
-        guestCount,
-        price:totalPrice,
-        hostComission,
-        guestComission,
-        startDate: startDate ? new Date(startDate) : undefined,
-        endDate: endDate ? new Date(endDate) : undefined,
-        contacts,
-      })
-      if (validForPaymentUpdate.success) {
-        const updateForPayment = await dbForPaymentListing.findByIdAndUpdate(
-          forPaymentId,
-          {
-            $set: validForPaymentUpdate.data,
-          }
-        )
-        res.json(
-          response.success({
-            item: updateForPayment,
-            message: 'Successfullu updated payment details',
-          })
-        )
-      } else {
-        console.log(JSON.parse(validForPaymentUpdate.error.message))
-        res.json(response.error({ message: 'Invalid payload' }))
-      }
     }
-  }
   } catch (err: any) {
     res.json(
       response.error({
@@ -211,4 +223,3 @@ export const updateForPayment = async (req: Request, res: Response) => {
     )
   }
 }
-
