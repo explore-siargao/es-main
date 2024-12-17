@@ -169,7 +169,7 @@ export const updateRentalBasicInfo = async (req: Request, res: Response) => {
           fuel: rental?.fuel,
           transmission: rental?.transmission,
           year: rental?.year,
-          qty: rental?.qty
+          qty: rental?.qty,
         }
 
         res.json(

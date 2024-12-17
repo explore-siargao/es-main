@@ -70,11 +70,11 @@ const rentals = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "RentalAddOns",
   },
-  policies:{
-    type:[String],
-    default:[]
+  policies: {
+    type: [String],
+    default: [],
   },
-  
+
   photos: [
     {
       type: mongoose.Schema.ObjectId,

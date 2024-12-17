@@ -90,12 +90,11 @@ export const Z_Rental = z.object({
   reviewsCount: z.number().optional(),
   reviews: z.array(z.string()).optional().nullable(),
   daysCanCancel: z.string().optional(),
-  policies:z.array(z.string()).optional(),
+  policies: z.array(z.string()).optional(),
   updatedAt: z.string().optional().nullable(),
 })
 
 export const Z_Rental_Additional_Info = z.object({
-  policies:z.array(z.string()),
-  daysCanCancel:z.string()
+  policies: z.array(z.string()),
+  daysCanCancel: z.string(),
 })
-
