@@ -12,11 +12,11 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-interface SharePlaceModalProps {
+interface ShareModalProps {
   isOpen: boolean
   onClose: () => void
 }
-const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
+const ShareModal = ({ isOpen, onClose }: ShareModalProps) => {
   const router = useRouter()
   return (
     <ModalContainer
@@ -128,4 +128,4 @@ const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
   )
 }
 
-export default SharePlaceModal
+export default ShareModal

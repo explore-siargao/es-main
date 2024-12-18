@@ -1,5 +1,5 @@
 import ModalContainer from "@/common/components/ModalContainer"
-import OverallRating from "../Reviews/OverallRating"
+import OverallRating from "./OverallRating"
 import {
   KeyRound,
   SprayCan,
@@ -9,9 +9,9 @@ import {
   Tag,
   LucideStar,
 } from "lucide-react"
-import Category from "../Reviews/Category"
+import Category from "./Category"
 import { Typography } from "@/common/components/ui/Typography"
-import UserReview from "../Reviews/Review"
+import UserReview from "./Review"
 
 interface UserReviewModalProps {
   isOpen: boolean

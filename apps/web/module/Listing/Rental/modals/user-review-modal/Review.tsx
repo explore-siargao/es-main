@@ -1,8 +1,8 @@
 import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
-import UserReviewModal from "../modals/UserReviewModal"
-import AvatarTitleDescription from "../AvatarTitleDescription"
+import UserReviewModal from "../user-review-modal"
+import AvatarTitleDescription from "../../host-information/avatar-title-description"
 import { LucideStar } from "lucide-react"
 
 interface UserReviewProps {

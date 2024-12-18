@@ -1,16 +1,16 @@
-import { MapProps } from "../types/Map"
 import { Typography } from "@/common/components/ui/Typography"
+import { T_Location } from "@repo/contract-2/address-location"
 
 import dynamic from "next/dynamic"
 
 const DynamicMapWithPin = dynamic(
-  () => import("../../../../common/components/Map/MapWithPin"),
+  () => import("../../../common/components/Map/MapWithPin"),
   {
     ssr: false,
   }
 )
 
-const PickUpLocation = ({ mapData }: MapProps) => {
+const PickUpLocation = ({ location }: { location: T_Location | null }) => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex-1 w-full">
@@ -20,7 +20,7 @@ const PickUpLocation = ({ mapData }: MapProps) => {
         <div className="mb-3">
           <DynamicMapWithPin
             center={
-              [mapData?.latitude || 0.0, mapData?.longitude || 0.0] as [
+              [location?.latitude || 0.0, location?.longitude || 0.0] as [
                 number,
                 number,
               ]
@@ -29,14 +29,14 @@ const PickUpLocation = ({ mapData }: MapProps) => {
           />
         </div>
 
-        {mapData?.city && (
+        {location?.city && (
           <div className="text-md font-semibold mb-5">
-            {mapData.city}, Philippines
+            {location.city}, Philippines
           </div>
         )}
-        {mapData?.howToGetThere && (
+        {location?.howToGetThere && (
           <div className="flex text-sm mb-4">
-            <p>{mapData.howToGetThere}</p>
+            <p>{location.howToGetThere}</p>
           </div>
         )}
       </div>

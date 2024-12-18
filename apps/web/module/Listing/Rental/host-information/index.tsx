@@ -1,9 +1,9 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideShield, ShieldCheck, Star, Medal } from "lucide-react"
-import { TitleSection } from "./TitleSection"
+import { TitleSection } from "../title-section"
 import { Button } from "@/common/components/ui/Button"
 import { APP_NAME } from "@repo/constants"
-import AvatarTitleDescription from "./AvatarTitleDescription"
+import AvatarTitleDescription from "./avatar-title-description"
 import { useRouter } from "next/navigation"
 import { T_HostInformationProps } from "../types/HostInformation"
 

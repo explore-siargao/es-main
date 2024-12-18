@@ -28,7 +28,7 @@ const RentalPublicPage = async ({ params: { rentalId } }: T_Props) => {
     throw new Error("Internal Server Error")
   }
 
-  return <Rental rentalData={listing} />
+  return <Rental rental={listing.item} />
 }
 
 export default RentalPublicPage

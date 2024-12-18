@@ -6,7 +6,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { convertPrice } from '@/common/helpers/convert-price'
-import { T_Rental_Price } from '@repo/contract-2/rentals'
+import { T_Rental_Price } from '@repo/contract-2/rental'
 
 const response = new ResponseService()
 
