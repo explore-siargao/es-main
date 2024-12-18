@@ -25,6 +25,7 @@ import dbLocations from "./dbLocations"
 import dbReviews from "./dbReviews"
 import dbCarts from "./dbCarts"
 import dbForPaymentListing from "./dbForPaymentListings"
+import dbTesting from "./dbTestting"
 export {
   dbAddresses,
   dbEmergencyContacts,
@@ -53,4 +54,5 @@ export {
   dbReviews,
   dbCarts,
   dbForPaymentListing,
+  dbTesting
 }
