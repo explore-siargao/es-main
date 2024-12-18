@@ -11,7 +11,7 @@ export class HMACService {
     }
   }
   generateHMAC(payload: T_Payload): string {
-    const hmac = CryptoJS.HmacSHA256(String(payload), String(this.KEY))
+    const hmac = CryptoJS.HmacSHA256(JSON.stringify(payload), String(this.KEY))
     const hmacHex = hmac.toString(CryptoJS.enc.Hex)
     return hmacHex
   }
