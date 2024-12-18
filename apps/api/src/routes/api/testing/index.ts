@@ -3,6 +3,6 @@ import { addTesting } from './default'
 
 const router = express.Router()
 
-router.post('/',addTesting)
+router.post('/', addTesting)
 
 export default router

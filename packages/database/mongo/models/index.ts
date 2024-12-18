@@ -54,5 +54,5 @@ export {
   dbReviews,
   dbCarts,
   dbForPaymentListing,
-  dbTesting
+  dbTesting,
 }
