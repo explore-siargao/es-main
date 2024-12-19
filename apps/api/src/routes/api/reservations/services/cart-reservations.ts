@@ -114,7 +114,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
     const cvv: string = req.body.cvv
     const hmac: string = req.body.hmac
     const expirationDate: string = req.body.expirationDate
-    const paymentMethodId:string = req.body.paymentMethodId
+    const paymentMethodId: string = req.body.paymentMethodId
     if (
       !cartItems ||
       cartItems.length === 0 ||
@@ -151,18 +151,18 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
               (total, item) => total + (item.price || 0),
               0
             )
-            if(!paymentMethodId){
+            if (!paymentMethodId) {
               paymentMethod = await dbPaymentMethods.findOne({
-              user: userId,
-              isDefault: true,
-            })
-          }else{
-            paymentMethod = await dbPaymentMethods.findOne({
-              user: userId,
-              _id:paymentMethodId,
-            })
-          }
-          
+                user: userId,
+                isDefault: true,
+              })
+            } else {
+              paymentMethod = await dbPaymentMethods.findOne({
+                user: userId,
+                _id: paymentMethodId,
+              })
+            }
+
             if (!paymentMethod) {
               res.json(
                 response.error({ message: 'No Card linked setted to default' })

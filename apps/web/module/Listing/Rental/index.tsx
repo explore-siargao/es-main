@@ -16,7 +16,7 @@ import Inclusions from "./inclusions"
 import SimilarRentals from "./similar-rentals"
 import { hostDummy, ratingSummary, userReviews } from "./dummy"
 import PledgeBox from "../pledge-box"
-import { T_Rental } from '@repo/contract-2/rental';
+import { T_Rental } from "@repo/contract-2/rental"
 
 export const Rental = ({ rental }: { rental: T_Rental }) => {
   const [showModal, setShowModal] = useState(false)
@@ -53,7 +53,7 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
             <CheckoutBox rental={rental} />
-            <PledgeBox/>
+            <PledgeBox />
             <div className="flex justify-center">
               <div className="justify-items-center">
                 <Button

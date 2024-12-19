@@ -3,7 +3,7 @@ import { Check } from "lucide-react"
 import { TitleSection } from "./title-section"
 import { E_Rental_Category, T_Rental } from "@repo/contract-2/rental"
 
-type T_Listing = { label: string, text: string | number | undefined | null }
+type T_Listing = { label: string; text: string | number | undefined | null }
 
 const About = ({ rental }: { rental: T_Rental }) => {
   let listing: T_Listing[] = []

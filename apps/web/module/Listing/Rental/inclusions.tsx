@@ -1,7 +1,7 @@
 import React from "react"
 import { Check, X } from "lucide-react"
 import { TitleSection } from "./title-section"
-import { T_Rental } from '@repo/contract-2/rental';
+import { T_Rental } from "@repo/contract-2/rental"
 
 const Inclusions = ({ rental }: { rental: T_Rental }) => {
   const addOns = rental.addOns
@@ -10,7 +10,11 @@ const Inclusions = ({ rental }: { rental: T_Rental }) => {
     { key: "boardRack", label: "Board Rack", selected: addOns?.boardRack },
     { key: "babySeat", label: "Baby Seat", selected: addOns?.babySeat },
     { key: "dashCam", label: "Dash Cam", selected: addOns?.dashCam },
-    { key: "includesHelmet", label: "Includes Helmet", selected: addOns?.includesHelmet },
+    {
+      key: "includesHelmet",
+      label: "Includes Helmet",
+      selected: addOns?.includesHelmet,
+    },
   ]
 
   if (addOns?.others && addOns?.others.length > 0) {

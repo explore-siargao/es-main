@@ -19,25 +19,26 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const dateRange = usePickupDropoffStore((state) => state.dateRange)
-  const updateDateRange = usePickupDropoffStore((state) => state.updateDateRange)
+  const updateDateRange = usePickupDropoffStore(
+    (state) => state.updateDateRange
+  )
   const daysCount = differenceInDays(
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
   )
-  const dayRate = rental.pricing?.dayRate || 0;
+  const dayRate = rental.pricing?.dayRate || 0
   const dayRateTotal = dayRate * daysCount || 0
   const esCommissionTotal = dayRateTotal * GUEST_COMMISSION_PERCENT || 0
   const totalBeforeTaxes = dayRateTotal + esCommissionTotal || 0
 
-
   const generateLocalDateTime = ({ date }: { date: Date }) => {
-    const now = new Date(date || "");
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); 
-    const day = String(now.getDate()).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+    const now = new Date(date || "")
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, "0")
+    const day = String(now.getDate()).padStart(2, "0")
+    const hours = String(now.getHours()).padStart(2, "0")
+    const minutes = String(now.getMinutes()).padStart(2, "0")
+    return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
   return (
@@ -59,12 +60,21 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
               className="w-full border-transparent text-sm p-0"
               type="datetime-local"
               min={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
-              max={format(subDays(new Date(dateRange.to || ""), 1), "yyyy-MM-dd'T'HH:mm")}
-              defaultValue={generateLocalDateTime({ date: dateRange.from || new Date() })}
-              onChange={(e) => updateDateRange({ from: new Date(e.target.value), to: new Date(dateRange.to || "") })}
+              max={format(
+                subDays(new Date(dateRange.to || ""), 1),
+                "yyyy-MM-dd'T'HH:mm"
+              )}
+              defaultValue={generateLocalDateTime({
+                date: dateRange.from || new Date(),
+              })}
+              onChange={(e) =>
+                updateDateRange({
+                  from: new Date(e.target.value),
+                  to: new Date(dateRange.to || ""),
+                })
+              }
             />
           </div>
-
         </div>
         <div className="grid grid-cols-1 gap-3">
           <div className="relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer">
@@ -78,9 +88,16 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
               className="w-full border-transparent text-sm p-0"
               type="datetime-local"
               min={format(new Date(dateRange.from || ""), "yyyy-MM-dd'T'HH:mm")}
-              defaultValue={generateLocalDateTime({ date: dateRange.to || new Date() })}
+              defaultValue={generateLocalDateTime({
+                date: dateRange.to || new Date(),
+              })}
               value={format(new Date(dateRange.to || ""), "yyyy-MM-dd'T'HH:mm")}
-              onChange={(e) => updateDateRange({ from: dateRange.from, to: new Date(e.target.value) })}
+              onChange={(e) =>
+                updateDateRange({
+                  from: dateRange.from,
+                  to: new Date(e.target.value),
+                })
+              }
             />
           </div>
         </div>
@@ -93,7 +110,11 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
         >
           Book now
         </Button>
-        <Button variant="default" className="font-bold" onClick={() => console.log("add to cart")}>
+        <Button
+          variant="default"
+          className="font-bold"
+          onClick={() => console.log("add to cart")}
+        >
           <LucideShoppingCart size={20} className="mr-2" /> Add to cart
         </Button>
       </div>
@@ -104,7 +125,8 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
             className="underline pl-0"
             onClick={() => setIsBreakdownModalOpen(true)}
           >
-            {formatCurrency(dayRate)} x {daysCount} day{daysCount > 1 ? "s" : ""}
+            {formatCurrency(dayRate)} x {daysCount} day
+            {daysCount > 1 ? "s" : ""}
           </Button>
           <div>{formatCurrency(dayRateTotal)}</div>
         </div>
@@ -123,9 +145,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
         <div className="border-b mt-5 mb-5"></div>
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
-          <div>
-            {formatCurrency(totalBeforeTaxes)}
-          </div>
+          <div>{formatCurrency(totalBeforeTaxes)}</div>
         </div>
       </div>
       <PriceBreakdownModal

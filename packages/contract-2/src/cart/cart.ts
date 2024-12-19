@@ -20,10 +20,10 @@ export class CartService {
 
   /**
    * Removes multiple items from the cart by their IDs.
-   * 
+   *
    * @param cartIds - An array of cart item IDs to be removed.
    * @returns A promise resolving to the API response.
-   * 
+   *
    * @example
    * const cartIds = ['123', '456', '789'];
    * await removeMultipleItems(cartIds);
