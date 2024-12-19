@@ -2,7 +2,7 @@ import { Z_CardInfo } from "@repo/contract"
 import { z } from "zod"
 
 export const Z_Add_For_Payment = z.object({
-  _id: z.string().optional(),
+  id: z.string().optional(),
   userId: z.string(),
   propertyIds: z
     .object({
@@ -31,7 +31,7 @@ export const Z_Add_For_Payment = z.object({
     .nullable(),
 
   guestCount: z.number(),
-  price: z.number(),
+  price: z.number().optional(),
   hostComission: z.number().optional(),
   guestComission: z.number().optional(),
   startDate: z.date(),
