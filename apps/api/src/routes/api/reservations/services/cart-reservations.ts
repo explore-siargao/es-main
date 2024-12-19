@@ -10,7 +10,13 @@ import {
   T_Cart_Item,
   Z_Add_CartItems,
 } from '@repo/contract-2/cart'
-import { dbActivities, dbBookableUnitTypes, dbPaymentMethods, dbRentals, dbReservations } from '@repo/database'
+import {
+  dbActivities,
+  dbBookableUnitTypes,
+  dbPaymentMethods,
+  dbRentals,
+  dbReservations,
+} from '@repo/database'
 import { EncryptionService, HMACService } from '@repo/services'
 import { Request, Response } from 'express'
 import { format, differenceInSeconds, differenceInCalendarDays } from 'date-fns'
@@ -26,7 +32,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else if (!Array.isArray(cartItems)) {
-      console.error(typeof cartItems, cartItems);
+      console.error(typeof cartItems, cartItems)
       res.json(response.error({ message: 'Invalid Item on cart' }))
     } else {
       const parseCartItems = Z_Add_CartItems.safeParse(cartItems)
@@ -167,7 +173,6 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
                 response.error({ message: 'No Card linked setted to default' })
               )
             } else {
-             
               const cardInfo = encryptionService.decrypt(
                 paymentMethod?.cardInfo as string
               ) as T_CardInfo
@@ -253,9 +258,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
     console.error(err)
     res.json(
       response.error({
-        message: err.message
-          ? err.message
-          : UNKNOWN_ERROR_OCCURRED,
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }

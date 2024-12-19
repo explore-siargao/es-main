@@ -10,10 +10,7 @@ import {
   Z_Linked_Card_Payment,
   Z_Manual_Card_Payment,
 } from '@repo/contract-2/for-payment-listings'
-import {
-  dbPaymentMethods,
-  dbReservations,
-} from '@repo/database'
+import { dbPaymentMethods, dbReservations } from '@repo/database'
 import { EncryptionService, HMACService } from '@repo/services'
 import { Request, Response } from 'express'
 import { format, differenceInSeconds } from 'date-fns'
@@ -115,7 +112,9 @@ export const gcashPayment = async (req: Request, res: Response) => {
   } catch (err: any) {
     res.json(
       response.error({
-        message: err.message ? err.message+" "+err.stack : UNKNOWN_ERROR_OCCURRED,
+        message: err.message
+          ? err.message + ' ' + err.stack
+          : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
