@@ -10,10 +10,17 @@ import {
   T_Cart_Item,
   Z_Add_CartItems,
 } from '@repo/contract-2/cart'
-import { dbPaymentMethods, dbReservations } from '@repo/database'
+import {
+  dbActivities,
+  dbBookableUnitTypes,
+  dbPaymentMethods,
+  dbRentals,
+  dbReservations,
+} from '@repo/database'
 import { EncryptionService, HMACService } from '@repo/services'
 import { Request, Response } from 'express'
-import { format, differenceInSeconds } from 'date-fns'
+import { format, differenceInSeconds, differenceInCalendarDays } from 'date-fns'
+import { totalPrice } from '../helpers/totalPrice'
 
 const response = new ResponseService()
 const hmacService = new HMACService()
@@ -21,14 +28,16 @@ const encryptionService = new EncryptionService('card')
 export const gcashMultipleCheckout = async (req: Request, res: Response) => {
   try {
     const userId = res.locals.user?.id
-    const cartItems: T_Add_To_Cart[] = req.body
+    const cartItems: T_Add_To_Cart[] = req.body.cartItems
     if (!cartItems || cartItems.length === 0) {
       res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
     } else if (!Array.isArray(cartItems)) {
+      console.error(typeof cartItems, cartItems)
       res.json(response.error({ message: 'Invalid Item on cart' }))
     } else {
       const parseCartItems = Z_Add_CartItems.safeParse(cartItems)
       if (!parseCartItems.success) {
+        console.error(JSON.parse(parseCartItems.error.message))
         res.json(
           response.error({
             items: parseCartItems.error.errors,
@@ -36,10 +45,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
           })
         )
       } else {
-        const amount = cartItems.reduce(
-          (total, item) => total + (item.price || 0),
-          0
-        )
+        const amount = await totalPrice(cartItems)
         const gcashResponse = await fetch(
           `${API_URL}/api/v1/xendit/gcash-create-payment`,
           {
@@ -52,6 +58,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
         )
 
         const gcashData = await gcashResponse.json()
+        console.log(gcashData)
         if (gcashResponse.ok) {
           const reservationItems = cartItems.map((item) => ({
             activityIds: item.activityIds || null,
@@ -65,7 +72,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
             xendItPaymentReferenceId: gcashData.item.reference_id,
             guestCount: item.guestCount,
             status: 'For-Payment',
-            cartId: item._id,
+            cartId: item.id,
             forPaymenttId: null,
           }))
           const addReservations =
@@ -97,6 +104,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
       }
     }
   } catch (err: any) {
+    console.error(err)
     res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
@@ -147,10 +155,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
               })
             )
           } else {
-            const amount = cartItems.reduce(
-              (total, item) => total + (item.price || 0),
-              0
-            )
+            const amount = await totalPrice(cartItems)
             if (!paymentMethodId) {
               paymentMethod = await dbPaymentMethods.findOne({
                 user: userId,
@@ -250,11 +255,10 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
       }
     }
   } catch (err: any) {
+    console.error(err)
     res.json(
       response.error({
-        message: err.message
-          ? err.message + ' ' + err.stack
-          : UNKNOWN_ERROR_OCCURRED,
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
     )
   }
@@ -295,10 +299,7 @@ export const manualCardMultipleCheckout = async (
               })
             )
           } else {
-            const amount = cartItems.reduce(
-              (total, item) => total + (item.price || 0),
-              0
-            )
+            const amount = await totalPrice(cartItems)
 
             const recreateHMAC = hmacService.generateHMAC(decryptCard)
             console.log(recreateHMAC)
