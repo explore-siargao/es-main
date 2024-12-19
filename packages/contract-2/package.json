@@ -33,12 +33,17 @@
       "require": "./build/guest/index.js",
       "types": "./build/guest/index.d.ts"
     },
+    "./photos": {
+      "import": "./build/photos/index.js",
+      "require": "./build/photos/index.js",
+      "types": "./build/photos/index.d.ts"
+    },
     "./search-filters": {
       "import": "./build/search-filters/index.js",
       "require": "./build/search-filters/index.js",
       "types": "./build/search-filters/index.d.ts"
     },
-    "./rentals": {
+    "./rental": {
       "import": "./build/rentals/index.js",
       "require": "./build/rentals/index.js",
       "types": "./build/rentals/index.d.ts"

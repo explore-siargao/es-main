@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import UserReview from "./Review"
 import { Button } from "@/common/components/ui/Button"
-import UserReviewModal from "../modals/UserReviewModal"
+import UserReviewModal from "../user-review-modal"
 import { T_UserReviewsProps } from "../../types/UserReviews"
 
 const UserReviews = ({ reviews }: T_UserReviewsProps) => {

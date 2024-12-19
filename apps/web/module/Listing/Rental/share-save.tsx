@@ -2,7 +2,7 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { Heart, Share } from "lucide-react"
 import React, { useState } from "react"
-import SharePlaceModal from "./modals/SharePlaceModal"
+import ShareModal from "./modals/share-modal"
 
 const ShareSave = () => {
   const [isClicked, setIsClicked] = useState(false)
@@ -32,7 +32,7 @@ const ShareSave = () => {
           </Typography>
         </div>
       </button>
-      <SharePlaceModal
+      <ShareModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
       />

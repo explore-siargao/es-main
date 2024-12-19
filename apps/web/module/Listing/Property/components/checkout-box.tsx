@@ -167,7 +167,7 @@ const CheckoutBox = ({
               : null
           }
         >
-          Book Now
+          Book now
         </Button>
         <Button
           variant="default"

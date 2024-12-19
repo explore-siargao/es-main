@@ -1,33 +1,25 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import HostInformation from "./components/HostInformation"
-import BookingDescription from "./components/BookingDescription"
-import Hero from "./components/hero"
-import RatingSummary from "./components/Reviews/RatingSummary"
-import UserReviews from "./components/Reviews/UserReviews"
-import CheckoutBox from "./components/CheckoutBox"
-import PickUpLocation from "./components/PickUpLocation"
+import HostInformation from "./host-information"
+import About from "./about"
+import Hero from "./hero"
+import RatingSummary from "./modals/user-review-modal/RatingSummary"
+import UserReviews from "./modals/user-review-modal/UserReviews"
+import CheckoutBox from "./checkout-box"
+import PickUpLocation from "./pickup-location"
 import { Button } from "@/common/components/ui/Button"
 import { Flag } from "lucide-react"
-import { useEffect, useState } from "react"
-import ReportListingModal from "./components/modals/ReportListingModal"
-import Requirements from "./components/Requirements"
-import Inclusions from "./components/Inclusions"
-import SimilarRentals from "./components/SimilarRentals"
-import { useParams } from "next/navigation"
-import { T_BookingAboutDescriptionProps } from "./types/BookingAboutDescription"
+import { useState } from "react"
+import ReportListingModal from "./modals/report-listing-modal"
+import Requirements from "./requirements"
+import Inclusions from "./inclusions"
+import SimilarRentals from "./similar-rentals"
 import { hostDummy, ratingSummary, userReviews } from "./dummy"
 import PledgeBox from "../pledge-box"
+import { T_Rental } from "@repo/contract-2/rental"
 
-type T_AboutData = T_BookingAboutDescriptionProps["aboutData"]
-type T_RequirementData = {
-  haveDriverLicense: string | null
-  requiredDeposit: number | null
-}
-
-export const Rental = ({ rentalData: data }: { rentalData: any }) => {
+export const Rental = ({ rental }: { rental: T_Rental }) => {
   const [showModal, setShowModal] = useState(false)
-  const params = useParams<{ rentalId: string }>()
   const handleOpenModal = () => {
     setShowModal(true)
   }
@@ -35,80 +27,33 @@ export const Rental = ({ rentalData: data }: { rentalData: any }) => {
     setShowModal(false)
   }
 
-  const [requirementData, setRequirementData] = useState<T_RequirementData>({
-    haveDriverLicense: "",
-    requiredDeposit: 0,
-  })
-  const [aboutData, setAboutData] = useState<T_AboutData | null>(null)
-
-  useEffect(() => {
-    if (data?.item) {
-      setAboutData({
-        category: data?.item?.category,
-        bodyType: data?.item?.bodyType,
-        transmission: data?.item?.transmission,
-        fuel: data?.item?.fuel || "hello",
-        engineCapacityLiter: data?.item?.details?.engineCapacityLiter,
-        engineCapacityCc: data?.item?.details?.engineCapacityCc,
-        condition: data?.item?.details?.condition,
-        exteriorColor: data?.item?.details?.exteriorColor,
-        interiorColor: data?.item?.details?.interiorColor,
-        seatingCapacity: data?.item?.details?.seatingCapacity,
-        isRegistered: data?.item?.details?.isRegistered,
-        weightCapacityKg: data?.item?.details?.weightCapacityKg,
-      })
-
-      setRequirementData({
-        haveDriverLicense: data?.item?.details?.haveDriverLicense,
-        requiredDeposit: data?.item?.pricing?.requiredDeposit,
-      })
-      const date = new Date(data?.item?.host?.createdAt)
-      hostDummy.hostName = data?.item?.host?.guest?.firstName
-      hostDummy.joinedIn = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    }
-  }, [data])
-
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <div>
         <Hero
-          images={data?.item?.photos}
-          title={`${data?.item?.year ? data?.item?.year : ""} ${data?.item?.make ? data?.item?.make : ""} ${data?.item?.modelBadge ? data?.item?.modelBadge : ""}`}
+          images={rental.photos}
+          title={`${rental?.year ? rental?.year : ""} ${rental?.make ? rental?.make : ""} ${rental?.modelBadge ? rental?.modelBadge : ""}`}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
-            <div className="py-6">
-              <BookingDescription aboutData={aboutData} />
+            <div className="pb-6">
+              <About rental={rental} />
             </div>
             <div className="py-6 ">
-              <Inclusions rentalData={data?.item?.addOns} />
+              <Inclusions rental={rental} />
             </div>
             <div className="py-6 ">
-              <Requirements requirementData={requirementData} />
+              <Requirements rental={rental} />
             </div>
           </div>
         </div>
 
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
-            <CheckoutBox
-              checkoutDesc={{
-                serviceFee: data?.item?.pricing?.dayRate,
-                durationCost: 1500,
-                descTotalBeforeTaxes: data?.item?.pricing?.dayRate,
-                totalBeforeTaxes: 1800,
-                titlePrice: data?.item?.pricing?.dayRate,
-                downPayment: data?.item?.pricing?.requiredDeposit,
-              }}
-            />
+            <CheckoutBox rental={rental} />
             <PledgeBox />
-
             <div className="flex justify-center">
               <div className="justify-items-center">
                 <Button
@@ -127,7 +72,7 @@ export const Rental = ({ rentalData: data }: { rentalData: any }) => {
       </div>
       <div className="divide-y border-t">
         <div className="py-8">
-          <PickUpLocation mapData={data?.item?.location} />
+          <PickUpLocation location={rental.location} />
         </div>
 
         <div className="py-8">

@@ -8,7 +8,7 @@ import Link from "next/link"
 import MenuModal from "./components/modals/MenuModal"
 import EventsModal from "./components/modals/EventsModal"
 import formatCurrency from "@/common/helpers/format-currency"
-import { T_Photo } from "@repo/contract"
+import { T_Photo } from "@repo/contract-2/photos"
 
 export type T_SectionInfoProps = {
   title: string

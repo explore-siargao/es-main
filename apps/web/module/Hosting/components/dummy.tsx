@@ -431,7 +431,7 @@ export const rentalData = {
     babySeat: false,
     dashCam: true,
     includesHelmet: false,
-    others: "",
+    others: [],
     __v: 0,
   },
   photos: [

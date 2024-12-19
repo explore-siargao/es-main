@@ -7,7 +7,7 @@ import {
   T_Rental_AddOns,
   T_Rental_Details,
   T_Rental_Price,
-} from "@repo/contract-2/rentals"
+} from "@repo/contract-2/rental"
 import {
   dbLocations,
   dbPhotos,
@@ -525,7 +525,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: true,
     includesHelmet: false,
-    others: "",
+    others: [],
   },
   {
     roofRack: true,
@@ -533,7 +533,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: true,
     includesHelmet: false,
-    others: "",
+    others: [],
   },
   {
     roofRack: true,
@@ -541,7 +541,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: true,
     includesHelmet: false,
-    others: "",
+    others: [],
   },
   {
     roofRack: true,
@@ -549,7 +549,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: true,
     includesHelmet: false,
-    others: "",
+    others: [],
   },
   {
     roofRack: true,
@@ -557,7 +557,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: true,
     includesHelmet: false,
-    others: "",
+    others: [],
   },
   {
     roofRack: false,
@@ -565,7 +565,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "",
+    others: [],
   },
   {
     roofRack: false,
@@ -573,7 +573,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "",
+    others: [],
   },
   {
     roofRack: false,
@@ -581,7 +581,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "",
+    others: [],
   },
   {
     roofRack: false,
@@ -589,7 +589,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "",
+    others: [],
   },
   {
     roofRack: false,
@@ -597,7 +597,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "",
+    others: [],
   },
   {
     roofRack: false,
@@ -605,7 +605,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "Water",
+    others: ["Water"],
   },
   {
     roofRack: false,
@@ -613,7 +613,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "Water",
+    others: ["Water"],
   },
   {
     roofRack: false,
@@ -621,7 +621,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "Water",
+    others: ["Water"],
   },
   {
     roofRack: false,
@@ -629,7 +629,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "Water",
+    others: ["Water"],
   },
   {
     roofRack: false,
@@ -637,7 +637,7 @@ const addOns: T_Rental_AddOns[] = [
     babySeat: false,
     dashCam: false,
     includesHelmet: true,
-    others: "Water",
+    others: ["Water"],
   },
 ]
 

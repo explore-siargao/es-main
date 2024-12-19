@@ -1,16 +1,16 @@
 "use client"
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "./ShareSave"
+import ShareSave from "./share-save"
 import ImageGallery from "@/module/Listing/Property/components/image-gallery"
-import { T_Photo } from "@repo/contract"
+import { T_Photo } from "@repo/contract-2/photos"
 
-type T_Section_Info = {
+type T_Hero = {
   title: string
   images: T_Photo[]
 }
 
-const Hero = ({ title, images }: T_Section_Info) => {
+const Hero = ({ title, images }: T_Hero) => {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   return (
     <>

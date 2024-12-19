@@ -3,7 +3,7 @@ import Image from "@/common/components/ui/image"
 import { Grip } from "lucide-react"
 import { Dialog } from "@headlessui/react"
 import SliderImages from "@/common/components/SliderImages"
-import { T_Photo } from "@repo/contract"
+import { T_Photo } from "@repo/contract-2/photos"
 
 type T_Image_Gallery = {
   isOpen?: boolean
