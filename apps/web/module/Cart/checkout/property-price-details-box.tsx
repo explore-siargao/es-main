@@ -4,7 +4,6 @@ import { GUEST_COMMISSION_PERCENT } from "@repo/constants"
 import Image from "@/common/components/ui/image"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import formatCurrency from "@/common/helpers/format-currency"
-import { GUEST_COMMISSION_TITLE } from "@/common/constants"
 import { differenceInDays } from "date-fns"
 import extractCommission from "../helpers/extract-commission"
 
@@ -68,7 +67,7 @@ const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
                 </div>
                 <div className="flex w-full justify-between items-center">
                   <Typography className="text-sm">
-                    {GUEST_COMMISSION_TITLE}
+                    Service fee
                   </Typography>
                   <Typography className="text-sm">
                     {formatCurrency(

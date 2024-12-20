@@ -7,7 +7,6 @@ import Image from "@/common/components/ui/image"
 import CheckoutMoreInfoModal from "@/module/Listing/Property/components/modals/checkout-more-info-modal"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import formatCurrency from "@/common/helpers/format-currency"
-import { GUEST_COMMISSION_TITLE } from "@/common/constants"
 
 type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
@@ -74,7 +73,7 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
             className="underline pl-0"
             onClick={() => setIsMoreInfoModalOpen(true)}
           >
-            {GUEST_COMMISSION_TITLE}
+            Service fee
           </Button>
           <Typography className="text-sm">₱1,000.00</Typography>
         </div>

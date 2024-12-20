@@ -15,8 +15,6 @@ export const IMAGE_FALLBACK =
 
 export const ASSET_ROOT = "/assets"
 
-export const GUEST_COMMISSION_TITLE = `${APP_NAME}'s ${GUEST_COMMISSION_PERCENT * 100}% commission`
-
 export const MESSAGE_404 =
   "The page you are looking for might be removed or temporarily unavailable."
 

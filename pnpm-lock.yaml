@@ -11,9 +11,6 @@ importers:
       '@repo/eslint-config':
         specifier: '*'
         version: link:packages/eslint-config
-      '@repo/services':
-        specifier: '*'
-        version: link:packages/services
       '@repo/typescript-config':
         specifier: '*'
         version: link:packages/typescript-config
