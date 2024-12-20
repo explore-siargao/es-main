@@ -7,7 +7,13 @@ import {
   T_Location,
   E_Property_Status,
 } from '@repo/contract'
-import { dbProperties, dbLocations, dbBookableUnitTypes, dbUnitPrices, dbPhotos } from '@repo/database'
+import {
+  dbProperties,
+  dbLocations,
+  dbBookableUnitTypes,
+  dbUnitPrices,
+  dbPhotos,
+} from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -299,31 +305,36 @@ export const updatePropertyType = async (req: Request, res: Response) => {
         })
       )
     } else {
-      const property = await dbProperties.findOne({_id:propertyId})
+      const property = await dbProperties.findOne({ _id: propertyId })
       const units = property?.bookableUnits
-      if(property?.status!==E_Property_Status.live){
-      units?.forEach(async(id)=>{
-       const bookableUnit = await await dbBookableUnitTypes.findOne({_id:id})
-       const priceId = bookableUnit?.unitPrice
-       await dbUnitPrices.findByIdAndDelete(priceId)
-       await dbPhotos.deleteMany({bookableUnitId:id})
-       await dbBookableUnitTypes.findByIdAndDelete(id)
-       await dbProperties.findByIdAndUpdate(propertyId,{
-        $set:{
-          bookableUnits:[]
-        },
-       })
-      })
-      res.json(
-        response.success({
-          item: { type: updatePropertyType?.type },
-          message: 'Property type updated successfully',
+      if (property?.status !== E_Property_Status.live) {
+        units?.forEach(async (id) => {
+          const bookableUnit = await await dbBookableUnitTypes.findOne({
+            _id: id,
+          })
+          const priceId = bookableUnit?.unitPrice
+          await dbUnitPrices.findByIdAndDelete(priceId)
+          await dbPhotos.deleteMany({ bookableUnitId: id })
+          await dbBookableUnitTypes.findByIdAndDelete(id)
+          await dbProperties.findByIdAndUpdate(propertyId, {
+            $set: {
+              bookableUnits: [],
+            },
+          })
         })
-      )
-    }else{
-     res.json(response.error({message:"Property already lived you can change the property type"}))
-    }
-      
+        res.json(
+          response.success({
+            item: { type: updatePropertyType?.type },
+            message: 'Property type updated successfully',
+          })
+        )
+      } else {
+        res.json(
+          response.error({
+            message: 'Property already lived you can change the property type',
+          })
+        )
+      }
     }
   } catch (err: any) {
     res.json(
