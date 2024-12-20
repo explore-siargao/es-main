@@ -8,7 +8,6 @@ import { currencyByCountry } from '@/common/helpers/currencyByCountry'
 import { ResponseService } from '@/common/service/response'
 import { E_RegistrationType, Z_UserRegister } from '@repo/contract'
 import { EncryptionService } from '@repo/services'
-import dayjs from 'dayjs'
 import { Request, Response } from 'express'
 import { capitalize } from 'lodash'
 import redisClient from '@/common/utils/redisClient'
@@ -24,6 +23,7 @@ import randomNumber from '@/common/helpers/randomNumber'
 import { WEB_URL } from '@/common/constants/ev'
 import { AuthEmail, TSendEmailParams } from './authEmail'
 import verifyCaptcha from '@/common/helpers/verifyCaptcha'
+import {format} from "date-fns"
 import {
   dbForgotPasswords,
   dbGuests,
@@ -65,7 +65,7 @@ export const register = async (req: Request, res: Response) => {
           firstName: firstName,
           middleName: '',
           lastName: lastName,
-          birthDate: dayjs(birthDate).format(),
+          birthDate:format(new Date(birthDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
           cellPhone: '',
           phone: '',
           gender: gender,
