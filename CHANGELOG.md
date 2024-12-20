@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.36.0](https://github.com/explore-siargao/es-main/compare/v0.35.0...v0.36.0) (2024-12-19)
+
+### 🚀 Features
+
+- Added gcash logo for listing payment ([11b5c62](https://github.com/explore-siargao/es-main/commit/11b5c62c3d87bcf58ea03477be668aae3bd8cd7e))
+- **api:** Added convertion of prices in all public page categories ([1a8aa15](https://github.com/explore-siargao/es-main/commit/1a8aa151888a56b64406ee122ce72fca8950ae0e))
+- **api:** Added endpoint for book now functions ([d444311](https://github.com/explore-siargao/es-main/commit/d444311e57094d0ee2d2075540bfda23e2fae30a))
+- **api:** Added example code for implementing HMAC ([e472f61](https://github.com/explore-siargao/es-main/commit/e472f61ba97f7c374b99e684430d2e5862940ce3))
+- **api:** Added hmac to manual and linking card in carts to reservation and for payments to reservation ([ac6545e](https://github.com/explore-siargao/es-main/commit/ac6545ee5e7fed10d1d14e89f103c9d6b760b302))
+- **api:** Added rental policies and modified type of daysCanCancel ([cf5322f](https://github.com/explore-siargao/es-main/commit/cf5322f4866fef70fd56fb78ce171f2278f26eb3))
+- **api:** Adjusted cart endpoints added comission and computation of price ([019a618](https://github.com/explore-siargao/es-main/commit/019a61818832f0e740897e9c311f0ccc4bfaf68e))
+- **api:** Adjusted for-payments and add computations ([ff14e4a](https://github.com/explore-siargao/es-main/commit/ff14e4a10979abdf82de3a40774a82bb74fafa18))
+- **api:** Modified the price base of total amount for all payments reservations ([378036d](https://github.com/explore-siargao/es-main/commit/378036d5032d1724687742ea3b55475dc2ae9616))
+- Change pickup and dropoff input to datetime-local ([9df05fd](https://github.com/explore-siargao/es-main/commit/9df05fd18ba59187e9f03d7cc5d678886e9805c3))
+- Complete the process of add to cart from public listing page property ([db69c2b](https://github.com/explore-siargao/es-main/commit/db69c2b4a27976c450489b6b8a9a323a3f4a7992))
+- Pay and checkout UI process ([a4e75f2](https://github.com/explore-siargao/es-main/commit/a4e75f216bd81565ea6f88baf87cdaf380703f0c))
+
+### 🧰 Maintenance
+
+- created separate pledge component ([a038224](https://github.com/explore-siargao/es-main/commit/a03822412aa969cf1bb2b67cbca74a7bc5a1a3e7))
+- Made the map same height as the screen and updated map center depending on the screen height ([8027be3](https://github.com/explore-siargao/es-main/commit/8027be3b3b570a81616d9e73117ad6e7d9bc08d6))
+- Remove unnecessary files in Rentals public listing ([9d0493e](https://github.com/explore-siargao/es-main/commit/9d0493e7053b3087ce151f679fd82e8d18b2f9ec))
+- rename formatCurrency to format-currency ([69665e9](https://github.com/explore-siargao/es-main/commit/69665e9625aae164a440e25d6a8be82a6cb03d39))
+
 ## [0.35.0](https://github.com/explore-siargao/es-main/compare/v0.34.0...v0.35.0) (2024-12-11)
 
 ### 🚀 Features

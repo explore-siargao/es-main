@@ -9,7 +9,7 @@ import useSessionStore from "@/common/store/useSessionStore"
 import useUpdateAccountPassword, {
   T_ChangePassword,
 } from "../hooks/useUpdateAccountPassword"
-import dayjs from "dayjs"
+import { differenceInDays, isValid, parseISO } from "date-fns"
 
 type T_ContentState = {
   isButtonClicked: boolean
@@ -41,13 +41,13 @@ const UpdatePassword = () => {
     mutate({ ...formData }, callBackReq)
   }
   const changePasswordLastUpdated = (changePasswordAt: string): number => {
-    const isDateValid = dayjs(changePasswordAt).isValid()
+    const isDateValid = isValid(new Date(changePasswordAt))
     if (!changePasswordAt && isDateValid) {
       return 0
     }
-    const currentDate = dayjs()
-    const passwordChangeDate = dayjs(changePasswordAt)
-    return currentDate.diff(passwordChangeDate, "day")
+    const currentDate = new Date()
+    const passwordChangeDate = new Date(changePasswordAt)
+    return differenceInDays(currentDate, passwordChangeDate)
   }
   const passwordDuration = changePasswordLastUpdated(
     session.changePasswordAt as string

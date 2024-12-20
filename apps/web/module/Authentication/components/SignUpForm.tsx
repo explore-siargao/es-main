@@ -9,7 +9,6 @@ import { Input } from "@/common/components/ui/Input"
 import { capitalizeFirstLetter } from "@/common/helpers/capitalizeFirstLetter"
 import { useParams, useRouter } from "next/navigation"
 import { APP_NAME, COUNTRIES } from "@repo/constants"
-import dayjs from "dayjs"
 import { Option, Select } from "@/common/components/ui/Select"
 import {
   CALENDAR_DAYS,
@@ -27,7 +26,7 @@ import {
 } from "@repo/contract"
 import { useQueryClient } from "@tanstack/react-query"
 import useRegister2 from "../hooks/useRegister2"
-import { addMinutes } from "date-fns"
+import { addMinutes, format, parse } from "date-fns"
 import { LINK_HOME } from "@/common/constants"
 type Props = {
   isSocial?: boolean
@@ -92,14 +91,15 @@ const SignUpForm = ({ isSocial = false }: Props) => {
       country,
       canReceiveEmail,
     } = formData
-    const birthDate = dayjs(`${month}-${day}-${year}`, "MM-DD-YYYY")
+    const birthDate = parse(`${month}-${day}-${year}`, "MM-dd-yyyy", new Date())
+    const formattedBirthDate = format(birthDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
     const strPassword = encryptionService.encrypt(password as string)
     addUser(
       {
         email,
         firstName,
         lastName,
-        birthDate: birthDate.format(),
+        birthDate: formattedBirthDate,
         password: strPassword,
         registrationType: signUpType as E_RegistrationType,
         country,
