@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.37.0](https://github.com/explore-siargao/es-main/compare/v0.36.0...v0.37.0) (2024-12-20)
+
+
+### 🚀 Features
+
+* **api:** Removed dayjs in basecode and converted it to date-fns ([a0fa888](https://github.com/explore-siargao/es-main/commit/a0fa888dc5dded2dc0aa659d20b85db21293705d))
+
+
+### 🛠 Bug Fixes
+
+* **api:** When changing property types reset units list on that property fixed ([2ab7ed3](https://github.com/explore-siargao/es-main/commit/2ab7ed3ad706f718b55a0ad2cd4aaefa00a65f6f))
+
 ## [0.36.0](https://github.com/explore-siargao/es-main/compare/v0.35.0...v0.36.0) (2024-12-19)
 
 ### 🚀 Features
