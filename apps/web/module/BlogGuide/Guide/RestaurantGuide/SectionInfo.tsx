@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import ImageGallery from "@/module/Listing/Property/components/image-gallery"
+import ImageGallery from "@/module/Listing/property/image-gallery"
 import { StarIcon } from "lucide-react"
 import ShareSave from "./components/ShareSave"
 import Link from "next/link"

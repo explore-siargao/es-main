@@ -3,7 +3,7 @@ import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import { PROPERTY } from "@/common/constants"
 import { notFound } from "next/navigation"
-import Property from "@/module/Listing/Property"
+import Property from "@/module/Listing/property"
 import { getRequest } from "@/common/helpers/getRequest"
 
 export const metadata: Metadata = {

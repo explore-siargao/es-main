@@ -1,24 +1,25 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import ThingsToKnow from "./components/ThingsToKnow"
-import HostInformation from "./components/HostInformation"
-import BookingDescription from "./components/BookingDescription"
-import Hero from "./components/hero"
-import SummaryInfo from "./components/summary-info"
-import RatingSummary from "./components/Reviews/RatingSummary"
-import UserReviews from "./components/Reviews/UserReviews"
-import CheckoutBox from "./components/checkout-box"
-import PlaceOffers from "./components/PlaceOffers"
-import WhereYoullBeDescription from "./components/Map"
+import ThingsToKnow from "./things-to-know"
+import HostInformation from "./host-information"
+import BookingDescription from "./booking-description"
+import Hero from "./hero"
+import SummaryInfo from "./summary-info"
+import RatingSummary from "../reviews/rating-summary"
+import UserReviews from "../reviews/user-reviews"
+import CheckoutBox from "./checkout-box"
+import PlaceOffers from "./place-offers"
+import WhereYoullBeDescription from "./where-you-will-be/map"
 import { Button } from "@/common/components/ui/Button"
 import { Flag } from "lucide-react"
 import { useState } from "react"
-import ReportListingModal from "./components/modals/ReportListingModal"
-import AvailableBooking from "./components/available-booking"
+import ReportListingModal from "../modals/report-listing-modal"
+import AvailableBooking from "./available-booking"
 import { T_BookableUnitType } from "@repo/contract"
 import { format, parseISO } from "date-fns"
 import { description, hostDummy, ratingSummary, userReviews } from "./dummy"
 import PledgeBox from "../pledge-box"
+import HostedBy from "../hosted-by"
 
 export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const [showModal, setShowModal] = useState(false)
@@ -54,6 +55,14 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
             <div className="pb-6">
+              <HostedBy
+                name={data?.item?.offerBy?.guest?.firstName}
+                language={data?.item?.offerBy?.guest?.language}
+                profilePicture={data?.item?.offerBy?.guest?.profilePicture}
+                joinDate={data?.item?.offerBy?.createdAt}
+              />
+            </div>
+            <div className="py-6">
               <SummaryInfo
                 bookableUnits={data?.item?.bookableUnits}
                 reviews={data?.item?.reviews}

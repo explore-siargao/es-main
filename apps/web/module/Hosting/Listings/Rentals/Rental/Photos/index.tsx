@@ -16,7 +16,6 @@ import { E_Rental_Category } from "@repo/contract"
 import useAddRentalPhoto from "../hooks/useAddRentalPhoto"
 import useDeleteRentalPhoto from "../hooks/useDeleteRentalPhoto"
 import useUpdateRentalFinishedSections from "../hooks/useUpdateRentalFinishedSections"
-import Category from "@/module/Listing/Property/components/Reviews/Category"
 
 type Prop = {
   pageType: "setup" | "edit"

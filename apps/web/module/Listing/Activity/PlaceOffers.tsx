@@ -1,4 +1,4 @@
-import { TitleSection } from "@/module/Listing/Property/components/TitleSection"
+import { TitleSection } from "@/module/Listing/title-section"
 import { useState } from "react"
 import { Button } from "@/common/components/ui/Button"
 import { Check, X } from "lucide-react"

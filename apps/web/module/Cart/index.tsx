@@ -4,10 +4,10 @@ import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import CartList from "./components/cart-list"
 import SubTotalBox from "./components/sub-total-box"
 import useGetCartItems from "./hooks/use-get-cart-items"
-import Loading from "@/app/(accommodation)/loading"
 import { useRouter } from "next/navigation"
 import { useCartStore } from "./stores/cart-stores"
 import { Typography } from "@/common/components/ui/Typography"
+import { Spinner } from "@/common/components/ui/Spinner"
 
 const Cart = () => {
   const { data, isLoading } = useGetCartItems()
@@ -32,7 +32,7 @@ const Cart = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-4">
         <div className="lg:col-span-3">
           {isLoading ? (
-            <Loading />
+            <Spinner />
           ) : data && data?.items.length > 0 ? (
             <CartList
               setSelectedItems={setSelectedItems}

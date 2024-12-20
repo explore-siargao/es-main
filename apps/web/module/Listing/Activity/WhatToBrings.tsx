@@ -1,4 +1,4 @@
-import { TitleSection } from "@/module/Listing/Property/components/TitleSection"
+import { TitleSection } from "@/module/Listing/title-section"
 import { Check } from "lucide-react"
 
 const WhatToBrings = ({ whatToBrings }: { whatToBrings: string[] }) => {

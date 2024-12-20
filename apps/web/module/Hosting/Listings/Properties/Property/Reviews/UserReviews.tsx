@@ -1,5 +1,5 @@
-import Review from "@/module/Listing/Property/components/Reviews/Review"
-import { T_UserReviewsProps } from "@/module/Listing/Property/types/UserReviews"
+import Review from "@/module/Listing/reviews/review"
+import { T_UserReviewsProps } from "@/module/Listing/property/types/UserReviews"
 import React, { useState } from "react"
 
 const UserReviews = ({ reviews }: T_UserReviewsProps) => {

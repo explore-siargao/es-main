@@ -1,6 +1,6 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import { MapProps } from "@/module/Listing/Property/types/Map"
+import { MapProps } from "@/module/Listing/property/types/Map"
 import dynamic from "next/dynamic"
 
 const DynamicMapWithPin = dynamic(

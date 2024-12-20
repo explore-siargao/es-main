@@ -1,8 +1,8 @@
 "use client"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "@/module/Listing/Property/components/ShareSave"
+import ShareSave from "@/module/Listing/property/share-save"
 import React, { useState } from "react"
-import ImageGallery from "@/module/Listing/Property/components/image-gallery"
+import ImageGallery from "@/module/Listing/property/image-gallery"
 import { T_Photo } from "@repo/contract-2/photos"
 
 type T_Section_Info = {

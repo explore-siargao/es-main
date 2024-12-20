@@ -1,6 +1,6 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
-import IconTitleDescription from "@/module/Listing/Property/components/IconTitleDescription"
+import IconTitleDescription from "@/module/Listing/property/icon-title-description"
 import { Scroll } from "lucide-react"
 import React from "react"
 
