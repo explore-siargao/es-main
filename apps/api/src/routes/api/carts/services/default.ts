@@ -944,7 +944,7 @@ export const getAllCarts = async (req: Request, res: Response) => {
 export const updateCartInfo = async (req: Request, res: Response) => {
   const cartId = req.params.cartId
   const userId = res.locals.user?.id
-  const { startDate, endDate, price, guestCount, contacts } = req.body
+  const { startDate, endDate, guestCount, contacts } = req.body
   let hostComission, totalPrice
   try {
     const getCart: any = await dbCarts.findOne({
@@ -956,7 +956,7 @@ export const updateCartInfo = async (req: Request, res: Response) => {
     if (!getCart) {
       res.json(response.error({ message: 'Cart not found or already removed' }))
     } else {
-      if (!startDate || !endDate || !guestCount || !contacts) {
+      if (!guestCount || !contacts) {
         res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
       } else {
         if (getCart.propertyIds) {
@@ -986,9 +986,6 @@ export const updateCartInfo = async (req: Request, res: Response) => {
           const activity = await dbActivities.findOne({
             _id: getCart.activityIds.activityId,
           })
-          const startDay = new Date(startDate)
-          const endDay = new Date(endDate)
-          const countDays = differenceInCalendarDays(endDay, startDay)
           const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
           if (activity?.pricePerPerson) {
             totalPrice = price * guestCount
@@ -1005,8 +1002,8 @@ export const updateCartInfo = async (req: Request, res: Response) => {
         const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
         const updateCart = await dbCarts.findByIdAndUpdate(cartId, {
           $set: {
-            startDate: startDate,
-            endDate: endDate,
+            startDate: startDate ? startDate : null,
+            endDate: endDate ? endDate : null,
             price: totalPrice,
             guestCount,
             hostComission,

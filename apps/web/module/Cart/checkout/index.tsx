@@ -4,7 +4,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
 import React, { useState } from "react"
 import useCheckInOutDateStore from "@/module/Listing/Property/store/useCheckInOutDateStore"
-import CheckInOutModal from "@/module/Listing/Property/components/modals/CheckInOutModal"
+import CheckInOutModal from "@/module/Listing/Property/components/modals/check-in-out-modal"
 import GuestAddModal from "@/module/Listing/Property/components/modals/GuestAddModal"
 import PropertyPriceDetailsBox from "./property-price-details-box"
 import RentalPriceDetailsBox from "./rental-price-details-box"
@@ -14,7 +14,6 @@ import SubTotalBox from "../components/sub-total-box"
 import { useCartStore } from "../stores/cart-stores"
 import { T_Add_To_Cart } from "@repo/contract-2/cart"
 import useAddGCashPayment from "../hooks/use-add-gcash-payment"
-import { useQueryClient } from "@tanstack/react-query"
 import { useRouter, useSearchParams } from "next/navigation"
 import { E_PaymentType } from "@repo/contract"
 import useAddManualCardPayment from "../hooks/use-add-manual-card-payment"
@@ -29,7 +28,6 @@ import { APP_NAME } from "@repo/constants"
 
 const Checkout = () => {
   const router = useRouter()
-  const queryClient = useQueryClient()
   const searchParams = useSearchParams()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
@@ -66,17 +64,17 @@ const Checkout = () => {
       guestCount: item.guestCount ?? 0,
       activityIds: item.activityIds
         ? {
-            ...item.activityIds,
-            // @ts-expect-error
-            activityId: item.activityIds?.activityId._id ?? null,
-          }
+          ...item.activityIds,
+          // @ts-expect-error
+          activityId: item.activityIds?.activityId._id ?? null,
+        }
         : null,
       rentalIds: item.rentalIds
         ? {
-            ...item.rentalIds,
-            // @ts-expect-error
-            rentalId: item.rentalIds?.rentalId._id ?? null,
-          }
+          ...item.rentalIds,
+          // @ts-expect-error
+          rentalId: item.rentalIds?.rentalId._id ?? null,
+        }
         : null,
     }))
   }
@@ -88,9 +86,6 @@ const Checkout = () => {
       mutate(remappedItems, {
         onSuccess: (data: any) => {
           if (!data.error) {
-            queryClient.invalidateQueries({
-              queryKey: ["get-cart-item"],
-            })
             router.push(data.item.action.link)
           } else {
             toast.error(String(data.message))
@@ -102,39 +97,20 @@ const Checkout = () => {
       })
     }
     if (paymentInfo.paymentType == E_PaymentType.CreditDebit) {
-      const payload = {
-        cardInfo: {
-          cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ""),
-          expirationMonth: paymentInfo.expirationMonth,
-          expirationYear: paymentInfo.expirationYear,
-          cardholderName: paymentInfo.cardholderName,
-          country: paymentInfo.country,
-          cvv: paymentInfo.cvv,
-          zipCode: paymentInfo.zipCode,
-        },
-        cartItems: remappedItems,
-      }
-      mutateUseAddManualCardPayment(payload, {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            router.push(data.item.action.link)
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
-      })
-    }
-    if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
-      mutateUseAddCardPayment(
-        {
+      if (paymentInfo.cardNumber && paymentInfo.expirationMonth && paymentInfo.expirationYear && paymentInfo.cardholderName && paymentInfo.country && paymentInfo.cvv && paymentInfo.zipCode) {
+        const payload = {
+          cardInfo: {
+            cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ""),
+            expirationMonth: paymentInfo.expirationMonth,
+            expirationYear: paymentInfo.expirationYear,
+            cardholderName: paymentInfo.cardholderName,
+            country: paymentInfo.country,
+            cvv: paymentInfo.cvv,
+            zipCode: paymentInfo.zipCode,
+          },
           cartItems: remappedItems,
-          cardId: paymentInfo.paymentMethodId as string,
-          cvv: paymentInfo.cvv as string,
-        },
-        {
+        }
+        mutateUseAddManualCardPayment(payload, {
           onSuccess: (data: any) => {
             if (!data.error) {
               router.push(data.item.action.link)
@@ -145,8 +121,35 @@ const Checkout = () => {
           onError: (err: any) => {
             toast.error(String(err))
           },
-        }
-      )
+        })
+      } else {
+        toast.error("Please fill up the payment fields")
+      }
+    }
+    if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
+      if (paymentInfo.paymentMethodId && paymentInfo.cvv) {
+        mutateUseAddCardPayment(
+          {
+            cartItems: remappedItems,
+            paymentMethodId: paymentInfo.paymentMethodId as string,
+            cvv: paymentInfo.cvv as string,
+          },
+          {
+            onSuccess: (data: any) => {
+              if (!data.error) {
+                router.push(data.item.action.link)
+              } else {
+                toast.error(String(data.message))
+              }
+            },
+            onError: (err: any) => {
+              toast.error(String(err))
+            },
+          }
+        )
+      } else {
+        toast.error("Please fill up the cvv of your card")
+      }
     }
   }
 

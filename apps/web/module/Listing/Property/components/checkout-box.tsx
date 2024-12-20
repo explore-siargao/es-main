@@ -5,7 +5,7 @@ import formatCurrency from "@/common/helpers/format-currency"
 import CheckoutBreakdownModal from "./modals/price-breakdown-modal"
 import { useState, useEffect } from "react"
 import CheckoutMoreInfoModal from "./modals/checkout-more-info-modal"
-import CheckInOutModal from "./modals/CheckInOutModal"
+import CheckInOutModal from "./modals/check-in-out-modal"
 import useCheckInOutDateStore from "@/module/Listing/Property/store/useCheckInOutDateStore"
 import Asterisk from "@/common/components/ui/Asterisk"
 import { useParams, useRouter } from "next/navigation"
@@ -93,7 +93,7 @@ const CheckoutBox = ({
     >
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
         {formatCurrency(baseRate)}
-        <small className="font-light"> night</small>
+        <small className="font-light"> per night</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
         <div className="grid grid-cols-2 gap-3">

@@ -67,7 +67,7 @@ export const Z_AddCart = z
 export const Z_UpdateCart = z.object({
   startDate: z.string(),
   endDate: z.string(),
-  price: z.number(),
+  guestCount: z.number(),
   contacts: z.array(Z_Contact).optional(),
 })
 

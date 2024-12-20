@@ -5,6 +5,10 @@ import { Button } from "@/common/components/ui/Button"
 import useUpdateCartItem from "../../hooks/use-update-cart-item"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import toast from "react-hot-toast"
+import { CartService } from "@repo/contract-2/cart"
+import { useQueryClient } from "@tanstack/react-query"
+
+const queryKeys = CartService.getQueryKeys()
 
 type T_Guest = {
   firstName: string
@@ -20,6 +24,7 @@ type T_Add_Guest_Modal = {
 }
 
 const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
+  const queryClient = useQueryClient()
   const { mutate, isPending } = useUpdateCartItem()
   const [formData, setFormData] = useState<T_Guest>({
     firstName: "",
@@ -43,7 +48,7 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
       toast.error("Please complete all the fields")
     } else {
       const item = {
-        price: cartItem.price,
+        guestCount: cartItem.guestCount || 1,
         endDate: cartItem.endDate,
         startDate: cartItem.startDate,
         contacts: [
@@ -52,7 +57,23 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
           formData,
         ],
       }
-      mutate({ itemId: cartItem._id as string, item })
+      const callBackReq = {
+        onSuccess: (data: any) => {
+          if (!data.error) {
+            toast.success(String(data.message))
+            queryClient.invalidateQueries({
+              queryKey: [queryKeys.getItems],
+            })
+            closeModal()
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err: any) => {
+          toast.error(String(err))
+        },
+      }
+      mutate({ itemId: cartItem._id as string, item }, callBackReq)
     }
   }
 

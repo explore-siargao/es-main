@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 
 type T_Props = {
   cartItems: T_Add_To_Cart[]
-  cardId: string
+  paymentMethodId: string
   cvv: string
 }
 

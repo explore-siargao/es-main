@@ -15,11 +15,11 @@ const PropertyMoreInfo = ({ items }: T_Property_Price_Details_Box) => {
     <>
       {items.map((item) => {
         const unitId = item.propertyIds?.unitId
-
-        // const freeCancelDate = format(
-        //   subDays(item.startDate, unitId?.daysCanCancel),
-        //   "MMMM dd, yyyy"
-        // )
+        const freeCancelDate = format(
+          // @ts-expect-error
+          subDays(item.startDate, unitId?.daysCanCancel),
+          "MMMM dd, yyyy"
+        )
         return (
           <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
             <Typography variant="h2" fontWeight="semibold">
@@ -49,12 +49,9 @@ const PropertyMoreInfo = ({ items }: T_Property_Price_Details_Box) => {
                   Cancellation policy
                 </Typography>
                 <Typography className="text-text-400">
-                  {/* <span>
+                  <span>
                     Free cancellation before 2:00 PM on {freeCancelDate}.
-                  </span>{" "} */}
-                  Cancel before check-in on{" "}
-                  {format(item.startDate, "MMMM dd, yyyy")} for a partial
-                  refund.{" "}
+                  </span>{" "}
                   <Link className="underline" href="#">
                     Learn more
                   </Link>
