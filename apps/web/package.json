@@ -28,7 +28,6 @@
     "card-validator": "^10.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
     "escape-html": "^1.0.3",
     "geojson": "^0.5.0",
