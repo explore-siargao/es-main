@@ -7,7 +7,13 @@ import {
   T_Location,
   E_Property_Status,
 } from '@repo/contract'
-import { dbProperties, dbLocations } from '@repo/database'
+import {
+  dbProperties,
+  dbLocations,
+  dbBookableUnitTypes,
+  dbUnitPrices,
+  dbPhotos,
+} from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -166,9 +172,6 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
 }
 
 export const getPropertyById = async (req: Request, res: Response) => {
-  const preferredCurrency = res.locals.currency.preferred
-  const conversionRates = res.locals.currency.conversionRates
-  console.log(preferredCurrency, conversionRates)
   try {
     const propertyId = req.params.propertyId
     const property = await dbProperties
@@ -197,35 +200,7 @@ export const getPropertyById = async (req: Request, res: Response) => {
         })
       )
     } else {
-      const newProperty = property.toObject()
-      const modifiedProperty = newProperty.bookableUnits.map((item: any) => ({
-        ...item,
-        unitPrice: {
-          ...item.unitPrice,
-          baseRate: convertPrice(
-            item.unitPrice.baseRate,
-            preferredCurrency,
-            conversionRates
-          ),
-          pricePerAdditionalPerson: convertPrice(
-            item.unitPrice.pricePerAdditionalPerson,
-            preferredCurrency,
-            conversionRates
-          ),
-          discountedWeeklyRate: convertPrice(
-            item.unitPrice.discountedWeeklyRate,
-            preferredCurrency,
-            conversionRates
-          ),
-          discountedMonthlyRate: convertPrice(
-            item.unitPrice.discountedMonthlyRate,
-            preferredCurrency,
-            conversionRates
-          ),
-        },
-      }))
-      newProperty.bookableUnits = modifiedProperty
-      res.json(response.success({ item: newProperty }))
+      res.json(response.success({ item: property }))
     }
   } catch (err: any) {
     res.json(
@@ -330,12 +305,36 @@ export const updatePropertyType = async (req: Request, res: Response) => {
         })
       )
     } else {
-      res.json(
-        response.success({
-          item: { type: updatePropertyType?.type },
-          message: 'Property type updated successfully',
+      const property = await dbProperties.findOne({ _id: propertyId })
+      const units = property?.bookableUnits
+      if (property?.status !== E_Property_Status.live) {
+        units?.forEach(async (id) => {
+          const bookableUnit = await await dbBookableUnitTypes.findOne({
+            _id: id,
+          })
+          const priceId = bookableUnit?.unitPrice
+          await dbUnitPrices.findByIdAndDelete(priceId)
+          await dbPhotos.deleteMany({ bookableUnitId: id })
+          await dbBookableUnitTypes.findByIdAndDelete(id)
+          await dbProperties.findByIdAndUpdate(propertyId, {
+            $set: {
+              bookableUnits: [],
+            },
+          })
         })
-      )
+        res.json(
+          response.success({
+            item: { type: updatePropertyType?.type },
+            message: 'Property type updated successfully',
+          })
+        )
+      } else {
+        res.json(
+          response.error({
+            message: 'Property already lived you can change the property type',
+          })
+        )
+      }
     }
   } catch (err: any) {
     res.json(
