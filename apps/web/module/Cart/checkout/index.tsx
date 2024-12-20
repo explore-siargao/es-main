@@ -60,8 +60,17 @@ const Checkout = () => {
 
   const remapItems = (items: T_Add_To_Cart[]) => {
     return items.map((item) => ({
-      ...item,
+      startDate: item.startDate,
+      endDate: item.endDate,
       guestCount: item.guestCount ?? 0,
+      propertyIds: item.propertyIds
+      ? {
+        // @ts-expect-error
+        propertyId: item.propertyIds?.propertyId._id ?? null,
+        // @ts-expect-error
+        unitId: item.propertyIds?.unitId?.qtyIds[0]._id ?? null,
+      }
+      : null,
       activityIds: item.activityIds
         ? {
           ...item.activityIds,
@@ -71,11 +80,12 @@ const Checkout = () => {
         : null,
       rentalIds: item.rentalIds
         ? {
-          ...item.rentalIds,
           // @ts-expect-error
           rentalId: item.rentalIds?.rentalId._id ?? null,
+          qtyIdsId: item.rentalIds?.qtyIdsId ?? null,
         }
         : null,
+      id: item._id,
     }))
   }
 
@@ -83,7 +93,11 @@ const Checkout = () => {
 
   const handleProceedToPayment = () => {
     if (paymentInfo.paymentType == E_PaymentType.GCASH) {
-      mutate(remappedItems, {
+      const payload = {
+        cartItems: remappedItems,
+      }
+      // @ts-expect-error
+      mutate(payload, {
         onSuccess: (data: any) => {
           if (!data.error) {
             router.push(data.item.action.link)
@@ -110,6 +124,7 @@ const Checkout = () => {
           },
           cartItems: remappedItems,
         }
+        // @ts-expect-error
         mutateUseAddManualCardPayment(payload, {
           onSuccess: (data: any) => {
             if (!data.error) {
@@ -130,6 +145,7 @@ const Checkout = () => {
       if (paymentInfo.paymentMethodId && paymentInfo.cvv) {
         mutateUseAddCardPayment(
           {
+            // @ts-expect-error
             cartItems: remappedItems,
             paymentMethodId: paymentInfo.paymentMethodId as string,
             cvv: paymentInfo.cvv as string,

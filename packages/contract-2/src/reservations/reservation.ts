@@ -29,7 +29,7 @@ export class ReservationService {
     } else if (type === "manual") {
       return this.api.post(
         `${RESERVATION_BASE_URL}/cart/checkout/manual-card`,
-        item
+        { cartItems: item }
       )
     }
   }
