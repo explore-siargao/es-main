@@ -91,8 +91,8 @@ const SignUpForm = ({ isSocial = false }: Props) => {
       country,
       canReceiveEmail,
     } = formData
-    const birthDate = parse(`${month}-${day}-${year}`, "MM-dd-yyyy", new Date());
-    const formattedBirthDate = format(birthDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
+    const birthDate = parse(`${month}-${day}-${year}`, "MM-dd-yyyy", new Date())
+    const formattedBirthDate = format(birthDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
     const strPassword = encryptionService.encrypt(password as string)
     addUser(
       {

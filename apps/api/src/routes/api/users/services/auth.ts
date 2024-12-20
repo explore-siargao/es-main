@@ -23,7 +23,7 @@ import randomNumber from '@/common/helpers/randomNumber'
 import { WEB_URL } from '@/common/constants/ev'
 import { AuthEmail, TSendEmailParams } from './authEmail'
 import verifyCaptcha from '@/common/helpers/verifyCaptcha'
-import {format} from "date-fns"
+import { format } from 'date-fns'
 import {
   dbForgotPasswords,
   dbGuests,
@@ -65,7 +65,10 @@ export const register = async (req: Request, res: Response) => {
           firstName: firstName,
           middleName: '',
           lastName: lastName,
-          birthDate:format(new Date(birthDate), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+          birthDate: format(
+            new Date(birthDate),
+            "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+          ),
           cellPhone: '',
           phone: '',
           gender: gender,
