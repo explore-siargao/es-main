@@ -4,7 +4,7 @@ import { T_Location } from "@repo/contract-2/address-location"
 import dynamic from "next/dynamic"
 
 const DynamicMapWithPin = dynamic(
-  () => import("../../../common/components/Map/MapWithPin"),
+  () => import("@/common/components/Map/MapWithPin"),
   {
     ssr: false,
   }
@@ -26,18 +26,19 @@ const PickUpLocation = ({ location }: { location: T_Location | null }) => {
               ]
             }
             disablePinMovement={true}
+            zoom={11}
           />
         </div>
 
-        {location?.city && (
-          <div className="text-md font-semibold mb-5">
-            {location.city}, Philippines
-          </div>
-        )}
+        {location?.city && location.streetAddress && location.barangay ? (
+          <Typography className="font-semibold">
+            {location.streetAddress}, {location.barangay}, {location.city}, Surigao del Norte
+          </Typography>
+        ) : null}
         {location?.howToGetThere && (
-          <div className="flex text-sm mb-4">
-            <p>{location.howToGetThere}</p>
-          </div>
+          <Typography variant="h5" className="flex mt-2 text-text-400">
+            {location.howToGetThere}
+          </Typography>
         )}
       </div>
     </div>

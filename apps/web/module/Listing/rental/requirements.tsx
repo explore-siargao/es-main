@@ -21,7 +21,7 @@ const Requirements = ({ rental }: { rental: T_Rental }) => {
               {rental.details?.haveDriverLicense === "Yes" && (
                 <>
                   <Check className="text-primary-500 mr-4" />
-                  Driver License
+                  Driver license
                 </>
               )}
             </div>

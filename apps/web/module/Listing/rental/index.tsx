@@ -18,6 +18,7 @@ import { hostDummy, ratingSummary, userReviews } from "./dummy"
 import PledgeBox from "../pledge-box"
 import { T_Rental } from "@repo/contract-2/rental"
 import HostedBy from "../hosted-by"
+import HostPolicies from "./host-policies"
 
 export const Rental = ({ rental }: { rental: T_Rental }) => {
   const [showModal, setShowModal] = useState(false)
@@ -56,6 +57,11 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
             <div className="py-6 ">
               <Requirements rental={rental} />
             </div>
+            {rental?.policies && rental?.policies.length > 0 ? (
+              <div className="py-6">
+                <HostPolicies rental={rental} />
+              </div>
+            ) : null}
           </div>
         </div>
 

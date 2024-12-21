@@ -43,7 +43,7 @@ const HostInformation = ({
           <div className="flex mt-6" key={info.id}>
             <div>
               <Typography variant="h3" fontWeight="semibold">
-                info.title
+                {info.title}
               </Typography>
               <div className="mt-2">
                 <Typography>{info.description}</Typography>
