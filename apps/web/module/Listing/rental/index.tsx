@@ -17,6 +17,7 @@ import SimilarRentals from "./similar-rentals"
 import { hostDummy, ratingSummary, userReviews } from "./dummy"
 import PledgeBox from "../pledge-box"
 import { T_Rental } from "@repo/contract-2/rental"
+import HostedBy from "../hosted-by"
 
 export const Rental = ({ rental }: { rental: T_Rental }) => {
   const [showModal, setShowModal] = useState(false)
@@ -35,10 +36,18 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
           title={`${rental?.year ? rental?.year : ""} ${rental?.make ? rental?.make : ""} ${rental?.modelBadge ? rental?.modelBadge : ""}`}
         />
       </div>
-      <div className="flex flex-col md:flex-row gap-8 md:gap-24 pb-12">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
             <div className="pb-6">
+              <HostedBy
+                name={rental?.host?.guest.firstName || "Unknown"}
+                language={rental?.host?.guest?.language || "Unknown"}
+                profilePicture={"2.jpg"}
+                joinDate={rental?.host?.createdAt || ""}
+              />
+            </div>
+            <div className="py-6">
               <About rental={rental} />
             </div>
             <div className="py-6 ">
