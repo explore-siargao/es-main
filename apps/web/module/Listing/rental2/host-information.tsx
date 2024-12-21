@@ -1,11 +1,10 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideShield, ShieldCheck, Star, Medal } from "lucide-react"
-import { TitleSection } from "../title-section"
 import { Button } from "@/common/components/ui/Button"
 import { APP_NAME } from "@repo/constants"
-import AvatarTitleDescription from "./avatar-title-description"
+import AvatarTitleDescription from "../avatar-title-description"
 import { useRouter } from "next/navigation"
-import { T_HostInformationProps } from "../types/HostInformation"
+import { T_HostInformationProps } from "./types/HostInformation"
 
 const HostInformation = ({
   hostName,
@@ -42,9 +41,14 @@ const HostInformation = ({
         </div>
         {rules.map((info) => (
           <div className="flex mt-6" key={info.id}>
-            <TitleSection title={info.title}>
-              <Typography>{info.description}</Typography>
-            </TitleSection>
+            <div>
+              <Typography variant="h3" fontWeight="semibold">
+                info.title
+              </Typography>
+              <div className="mt-2">
+                <Typography>{info.description}</Typography>
+              </div>
+            </div>
           </div>
         ))}
       </div>

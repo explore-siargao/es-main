@@ -2,7 +2,7 @@ import React from "react"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
 import { RENTAL } from "@/common/constants"
-import Rental from "@/module/Listing/Rental"
+import Rental from "@/module/Listing/rental2"
 import { getRequest } from "@/common/helpers/getRequest"
 import { notFound } from "next/navigation"
 

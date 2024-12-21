@@ -1,7 +1,7 @@
 import React from "react"
 import { Check } from "lucide-react"
-import { TitleSection } from "./title-section"
 import { E_Rental_Category, T_Rental } from "@repo/contract-2/rental"
+import { Typography } from "@/common/components/ui/Typography"
 
 type T_Listing = { label: string; text: string | number | undefined | null }
 
@@ -44,22 +44,27 @@ const About = ({ rental }: { rental: T_Rental }) => {
   }
   return (
     <>
-      <TitleSection size="lg" title="About this rental">
-        <div className="grid grid-cols-2">
-          {listing.map((rental: any, index: number) => (
-            <div key={index} className="flex my-3">
-              <Check className="text-primary-500 mr-2" />
-              {rental.label} {rental.text}
-            </div>
-          ))}
-          {rental.details?.isRegistered === "Yes" && (
-            <div className="flex my-3">
-              <Check className="text-primary-500 mr-4" />
-              Registered
-            </div>
-          )}
+      <div>
+        <Typography variant="h2" fontWeight="semibold">
+          About this rental
+        </Typography>
+        <div className="mt-2">
+          <div className="grid grid-cols-2">
+            {listing.map((rental: any, index: number) => (
+              <div key={index} className="flex my-3">
+                <Check className="text-primary-500 mr-2" />
+                {rental.label} {rental.text}
+              </div>
+            ))}
+            {rental.details?.isRegistered === "Yes" && (
+              <div className="flex my-3">
+                <Check className="text-primary-500 mr-4" />
+                Registered
+              </div>
+            )}
+          </div>
         </div>
-      </TitleSection>
+      </div>
     </>
   )
 }
