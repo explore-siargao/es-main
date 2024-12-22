@@ -1,7 +1,7 @@
 import React from "react"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
-import Activity from "@/module/Listing/Activity"
+import Activity from "@/module/Listing/activity2"
 import { notFound } from "next/navigation"
 import { getRequest } from "@/common/helpers/getRequest"
 
