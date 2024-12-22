@@ -6,7 +6,7 @@ import { Typography } from "@/common/components/ui/Typography"
 const HostPolicies = ({ rental }: { rental: T_Rental }) => {
   return (
     <div>
-      <Typography variant="h2" fontWeight="semibold">
+      <Typography variant="h3" fontWeight="semibold">
         Host policies
       </Typography>
       <div className="mt-2">

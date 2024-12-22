@@ -18,14 +18,14 @@ const BookingDescription = ({
   return (
     <>
       <div className="flex text-md mb-2">{slicedDescription}</div>
-      <Button
+      {/* <Button
         onClick={() => setDescriptionModalOpen(!descriptionModalOpen)}
         className="underline"
         variant="link"
         size="link"
       >
         Show more &gt;
-      </Button>
+      </Button> */}
       <AboutTitleDescriptionModal
         isOpen={descriptionModalOpen}
         onClose={() => setDescriptionModalOpen(false)}

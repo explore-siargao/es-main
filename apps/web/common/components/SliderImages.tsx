@@ -61,8 +61,8 @@ const Slider = ({ images }: SliderProps) => {
             color: black;
             background-color: white;
             border-radius: 50%; 
-            width: 30px; 
-            height: 30px;
+            width: 50px; 
+            height: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -79,7 +79,7 @@ const Slider = ({ images }: SliderProps) => {
           }
           .swiper-button-next:after, 
           .swiper-button-prev:after {
-            font-size: 10px;
+            font-size: 16px;
             font-weight: 600;
           }
           .swiper-pagination-bullet {

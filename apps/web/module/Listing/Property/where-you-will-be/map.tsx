@@ -45,27 +45,25 @@ const Map: React.FC<WhereYoullBeDescriptionProps> = ({
   return (
     <div className="flex flex-col w-full">
       <div className="flex-1 w-full">
-        <Typography variant="h2" fontWeight="semibold" className="mb-5">
+        <Typography variant="h3" fontWeight="semibold" className="mb-5">
           Where you'll be
         </Typography>
-        <div className="mb-5">
-          <DynamicMapWithPin center={coordinates} disablePinMovement={true} />
+        <div>
+          <DynamicMapWithPin center={coordinates} disablePinMovement={true} zoom={11} />
         </div>
 
         {location && (
-          <div className="text-md font-semibold mb-5">
-            <div>
-              {location.streetAddress}, {location.barangay}, {location.city}
-            </div>
-          </div>
+          <Typography className="font-semibold mt-4">
+            {location.streetAddress}, {location.barangay}, {location.city}, Surigao del Norte
+          </Typography>
         )}
         {desc && (
-          <div className="flex text-sm mb-4">
-            <p className="w-full break-words">{slicedDescription}</p>
+          <div className="flex mt-2">
+            <Typography variant="h5" className="w-full break-words text-text-400">{slicedDescription}</Typography>
           </div>
         )}
       </div>
-      <div className="flex w-full">
+      {/* <div className="flex w-full">
         <Button
           onClick={() => setIsModalOpen(true)}
           className="text-sm font-semibold underline mx-0 px-0"
@@ -73,7 +71,7 @@ const Map: React.FC<WhereYoullBeDescriptionProps> = ({
         >
           Show more &gt;
         </Button>
-      </div>
+      </div> */}
       <WhereYouWillBeModal
         center={coordinates}
         isOpen={isModalOpen}

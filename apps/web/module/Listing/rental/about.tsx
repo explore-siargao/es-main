@@ -36,7 +36,7 @@ const About = ({ rental }: { rental: T_Rental }) => {
   }
   return (
     <div>
-      <Typography variant="h2" fontWeight="semibold">
+      <Typography variant="h3" fontWeight="semibold">
         About this rental
       </Typography>
       <div className="mt-2">

@@ -1,10 +1,9 @@
 import React, { useState } from "react"
 import IconDescription from "../icon-description"
-import { Button } from "@/common/components/ui/Button"
-import { TitleSection } from "../title-section"
 import { T_Offer, T_PlaceOfferProps } from "./types/PlaceOffer"
 import { iconMap } from "@/common/helpers/iconMap"
 import PlaceOfferModal from "@/module/Listing/components/modals/PlaceOfferModal"
+import { Typography } from "@/common/components/ui/Typography"
 
 const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
   const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
@@ -60,42 +59,44 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
 
   return (
     <>
-      <TitleSection size="lg" title="What this place offers">
-        <div className="mb-5"></div>
+      <Typography variant="h3" fontWeight="semibold">
+        What this place offers
+      </Typography>
+      <div className="mt-6">
         <div className="grid grid-cols-2 gap-4">
-          <ul className="mb-2">
-            {leftColumn?.map((item: T_Offer) => (
-              <div className="space-y-2" key={item._id}>
-                <IconDescription
-                  key={item._id}
-                  description={`${item.category}\n${item.facility}`}
-                  isNotIncluded={!item.isSelected}
-                  icon={getCategoryIcon(item.category as string)}
-                />
-              </div>
-            ))}
-          </ul>
-          <ul>
-            {rightColumn?.map((item: T_Offer) => (
-              <div className="space-y-2" key={item._id}>
-                <IconDescription
-                  key={item._id}
-                  description={`${item.category}\n${item.facility}`}
-                  isNotIncluded={!item.isSelected}
-                  icon={getCategoryIcon(item.category as string)}
-                />
-              </div>
-            ))}
-          </ul>
-        </div>
-        <Button
-          className="mt-5"
-          variant="outline"
-          onClick={() => setShowMoreModalOpen(!showMoreModalOpen)}
-        >
-          Show all {offers?.length} amenities
-        </Button>
-      </TitleSection>
+            <ul>
+              {leftColumn?.map((item: T_Offer) => (
+                <div className="space-y-2" key={item._id}>
+                  <IconDescription
+                    key={item._id}
+                    description={`${item.category}\n${item.facility}`}
+                    isNotIncluded={!item.isSelected}
+                    icon={getCategoryIcon(item.category as string)}
+                  />
+                </div>
+              ))}
+            </ul>
+            <ul>
+              {rightColumn?.map((item: T_Offer) => (
+                <div className="space-y-2" key={item._id}>
+                  <IconDescription
+                    key={item._id}
+                    description={`${item.category}\n${item.facility}`}
+                    isNotIncluded={!item.isSelected}
+                    icon={getCategoryIcon(item.category as string)}
+                  />
+                </div>
+              ))}
+            </ul>
+          </div>
+          {/* <Button
+            className="mt-5"
+            variant="outline"
+            onClick={() => setShowMoreModalOpen(!showMoreModalOpen)}
+          >
+            Show all {offers?.length} amenities
+          </Button> */}
+      </div>
       <PlaceOfferModal
         isOpen={showMoreModalOpen}
         onClose={() => setShowMoreModalOpen(false)}

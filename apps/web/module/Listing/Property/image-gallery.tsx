@@ -8,7 +8,7 @@ import { T_Photo } from "@repo/contract-2/photos"
 type T_Image_Gallery = {
   isOpen?: boolean
   galleryHeight?: string
-  openModal: () => void
+  openModal: (e?: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => void
   images: T_Photo[]
   isViewModal: boolean
   showThreeOnly?: boolean
@@ -67,7 +67,7 @@ const ImageGallery = ({
   const renderImage = (index: number, additionalClasses: string) => (
     <div className={`relative ${additionalClasses} w-full h-full`}>
       <Image
-        onClick={() => openModal()}
+        onClick={(e) => openModal(e)}
         src={images ? getImgSrc(index).src : ""}
         fill
         style={{ objectFit: "cover" }}
@@ -81,7 +81,7 @@ const ImageGallery = ({
     <Button
       variant="shaded"
       className="absolute bottom-2 md:bottom-2 right-2 md:right-2 bg-white px-1 text-[10px] h-6 p-2"
-      onClick={() => openModal()}
+      onClick={(e) => openModal(e)}
     >
       <Grip className="h-2 w-2 mr-1 mb-0.5" />
       Show all photos
@@ -109,7 +109,7 @@ const ImageGallery = ({
       <div className="relative h-44">
         <div
           className="grid grid-cols-2 h-full gap-2 w-full"
-          onClick={() => openModal()}
+          onClick={(e) => openModal(e)}
         >
           {renderImage(0, "rounded-lg")}
           {renderImage(1, "rounded-lg")}
@@ -121,10 +121,10 @@ const ImageGallery = ({
             onClose={() => openModal()}
             className="fixed inset-0 z-50 flex items-center justify-center"
           >
-            <div className="relative w-full h-full bg-text-950/30">
+            <div className="relative w-full h-full bg-text-950/30" onClick={(e) => e.stopPropagation()}>
               <SliderImages images={images} />
               <button
-                onClick={() => openModal()}
+                onClick={(e) => openModal(e)}
                 className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
               >
                 <svg
@@ -187,7 +187,7 @@ const ImageGallery = ({
           <div className="relative w-full h-full bg-text-950/70">
             <SliderImages images={images} />
             <button
-              onClick={() => openModal()}
+              onClick={(e) => openModal(e)}
               className="absolute top-4 right-4 p-2 bg-text-100 rounded-full hover:bg-text-200 transition focus:outline-none"
             >
               <svg

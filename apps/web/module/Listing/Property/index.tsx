@@ -1,6 +1,5 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import ThingsToKnow from "./things-to-know"
 import HostInformation from "./host-information"
 import BookingDescription from "./booking-description"
 import Hero from "./hero"
@@ -14,12 +13,15 @@ import { Button } from "@/common/components/ui/Button"
 import { Flag } from "lucide-react"
 import { useState } from "react"
 import ReportListingModal from "../modals/report-listing-modal"
-import AvailableBooking from "./available-booking"
+import AvailableBooking from "./available-units"
 import { T_BookableUnitType } from "@repo/contract"
 import { format, parseISO } from "date-fns"
 import { description, hostDummy, ratingSummary, userReviews } from "./dummy"
 import PledgeBox from "../pledge-box"
 import HostedBy from "../hosted-by"
+import SimilarProperties from "./similar-properties"
+import { Typography } from "@/common/components/ui/Typography"
+import HostPolicies from "./host-policies"
 
 export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const [showModal, setShowModal] = useState(false)
@@ -40,10 +42,6 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
   const formattedDate = offerBy?.createdAt
     ? format(parseISO(offerBy.createdAt), "MMMM d, yyyy")
     : ""
-
-  const bookableUnit =
-    selectedBookableUnit ||
-    (data?.item?.bookableUnits?.length > 0 && data?.item?.bookableUnits[0])
   const latitude = data?.item?.location?.latitude
   const longitude = data?.item?.location?.longitude
 
@@ -65,8 +63,6 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
             <div className="py-6">
               <SummaryInfo
                 bookableUnits={data?.item?.bookableUnits}
-                reviews={data?.item?.reviews}
-                stars={data?.item?.stars}
                 location={data?.item?.location}
               />
             </div>
@@ -90,8 +86,11 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
                   imagesAvailable={data?.item?.photos}
                 />
               ) : (
-                <p>No data available for bookable units.</p>
+                <Typography variant="h5" className="text-text-400 italic">No available units for this property</Typography>
               )}
+            </div>
+            <div className="pt-6">
+              <HostPolicies property={data.item} />
             </div>
           </div>
         </div>
@@ -153,8 +152,8 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
             responseTime={""}
           />
         </div>
-        <div className="pt-8">
-          <ThingsToKnow />
+        <div className="py-8">
+          <SimilarProperties />
         </div>
       </div>
       <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
@@ -162,4 +161,3 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
   )
 }
 export default Property
-export { ratingSummary, userReviews }

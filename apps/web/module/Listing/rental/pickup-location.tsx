@@ -14,7 +14,7 @@ const PickUpLocation = ({ location }: { location: T_Location | null }) => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex-1 w-full">
-        <Typography variant="h2" fontWeight="semibold" className="mb-5">
+        <Typography variant="h3" fontWeight="semibold" className="mb-5">
           Pick-up location
         </Typography>
         <div className="mb-3">

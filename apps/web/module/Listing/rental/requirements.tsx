@@ -7,7 +7,7 @@ const Requirements = ({ rental }: { rental: T_Rental }) => {
   return (
     <>
       <div>
-        <Typography variant="h2" fontWeight="semibold">
+        <Typography variant="h3" fontWeight="semibold">
           Requirements
         </Typography>
         <div className="mt-2">

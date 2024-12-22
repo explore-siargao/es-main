@@ -26,7 +26,7 @@ const Inclusions = ({ rental }: { rental: T_Rental }) => {
   return (
     <>
       <div>
-        <Typography variant="h2" fontWeight="semibold">
+        <Typography variant="h3" fontWeight="semibold">
           Inclusions
         </Typography>
         <div className="mt-2">
