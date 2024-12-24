@@ -16,7 +16,7 @@ import ReportListingModal from "../modals/report-listing-modal"
 import AvailableBooking from "./available-units"
 import { T_BookableUnitType } from "@repo/contract"
 import { format, parseISO } from "date-fns"
-import { description, hostDummy, ratingSummary, userReviews } from "./dummy"
+import { description, hostDummy, ratingSummary, userReviews } from "../dummy"
 import PledgeBox from "../pledge-box"
 import HostedBy from "../hosted-by"
 import SimilarProperties from "./similar-properties"
@@ -120,16 +120,6 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
       </div>
       <div className="divide-y border-t">
         <div className="py-8">
-          <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
-          />
-        </div>
-        <div className="py-8">
-          <UserReviews reviews={userReviews} />
-        </div>
-        <div className="py-8">
           {data?.item?.location &&
             typeof latitude === "number" &&
             typeof longitude === "number" && (
@@ -140,6 +130,16 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
                 locationDescription={data?.item?.location.howToGetThere}
               />
             )}
+        </div>
+        <div className="py-8">
+          <RatingSummary
+            ratings={ratingSummary.ratings}
+            reviews={ratingSummary.reviews}
+            categories={ratingSummary.categories}
+          />
+        </div>
+        <div className="py-8">
+          <UserReviews reviews={userReviews} />
         </div>
         <div className="py-8">
           <HostInformation

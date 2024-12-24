@@ -144,12 +144,14 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
         _id: activityId,
         // status: E_Rental_Status.Pending,
       })
-      .populate('host', 'email isHost')
       .populate('meetingPoint')
       .populate('photos')
-      .select(
-        'title description status, pricePerPerson, pricePerSlot, schedule'
-      )
+      .populate({
+        path: 'host',
+        populate: {
+          path: 'guest',
+        },
+      })
       .exec()
 
     if (!activity) {

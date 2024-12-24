@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import { ratingSummary, userReviews } from "@/module/Listing/property/dummy"
+import { ratingSummary, userReviews } from "@/module/Listing/dummy"
 import RatingSummary from "@/module/Listing/reviews/rating-summary"
 import UserReviews from "./UserReviews"
 

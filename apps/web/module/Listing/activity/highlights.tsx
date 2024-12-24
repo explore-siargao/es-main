@@ -1,10 +1,13 @@
+import { Typography } from "@/common/components/ui/Typography"
 import { TitleSection } from "@/module/Listing/title-section"
 import { Check } from "lucide-react"
 
 const Highlights = ({ highlights }: { highlights: string[] }) => {
   return (
     <>
-      <TitleSection size="lg" title="Highlights">
+        <Typography variant="h3" fontWeight="semibold">
+          Highlights
+        </Typography>
         <div className="mb-5"></div>
         <div className="flex flex-col gap-4 w-full">
           {highlights?.map((highlight) => (
@@ -14,7 +17,6 @@ const Highlights = ({ highlights }: { highlights: string[] }) => {
             </div>
           ))}
         </div>
-      </TitleSection>
     </>
   )
 }

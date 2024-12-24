@@ -397,7 +397,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
                 <Typography variant="h4" className="mb-2">
                   {day.charAt(0).toUpperCase() + day.slice(1)}
                 </Typography>
-                {slots.slots.map((slot, index) => (
+                {slots?.slots.map((slot, index) => (
                   <div key={index} className="flex items-center gap-2 mb-2">
                     <Select
                       value={slot.startTime}
@@ -474,7 +474,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
             </Typography>
             <Typography className="text-xs text-gray-500 italic mb-2">
               This corresponds to time slots you put above, this is the minimum
-              and maximum person each can accommodate. Example for this is
+              and maximum person each time slot can accommodate. Example for this is
               "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of
               10 people"
             </Typography>

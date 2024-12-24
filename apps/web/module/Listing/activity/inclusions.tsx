@@ -1,10 +1,7 @@
-import { TitleSection } from "@/module/Listing/title-section"
-import { useState } from "react"
-import { Button } from "@/common/components/ui/Button"
 import { Check, X } from "lucide-react"
-import InclusionsModal from "../components/modals/InclusionsModal"
+import { Typography } from "@/common/components/ui/Typography"
 
-const PlaceOffers = ({
+const Inclusions = ({
   isFoodIncluded,
   isNonAlcoholicDrinkIncluded,
   isAlcoholicDrinkIncluded,
@@ -19,9 +16,11 @@ const PlaceOffers = ({
 }) => {
   return (
     <>
-      <TitleSection size="lg" title="Inclusions">
+        <Typography variant="h3" fontWeight="semibold">
+          Inclusions
+        </Typography>
         <div className="mb-5"></div>
-        <div className="grid grid-cols-2 gap-4 w-full">
+        <div className="grid grid-cols-3 gap-4 w-full">
           {isFoodIncluded && (
             <div className="flex gap-2">
               <Check className="text-primary-700 shrink-0" />
@@ -54,9 +53,8 @@ const PlaceOffers = ({
             </div>
           ))}
         </div>
-      </TitleSection>
     </>
   )
 }
 
-export default PlaceOffers
+export default Inclusions

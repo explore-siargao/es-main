@@ -1,7 +1,7 @@
 import React from "react"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
-import Activity from "@/module/Listing/activity2"
+import Activity from "@/module/Listing/activity"
 import { notFound } from "next/navigation"
 import { getRequest } from "@/common/helpers/getRequest"
 
@@ -27,7 +27,7 @@ const ActivityPublicPage = async ({ params: { activityId } }: T_Props) => {
     throw new Error("Internal Server Error")
   }
 
-  return <Activity activityData={listing} />
+  return <Activity activity={listing.item} />
 }
 
 export default ActivityPublicPage

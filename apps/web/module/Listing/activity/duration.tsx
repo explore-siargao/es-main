@@ -1,3 +1,4 @@
+import { Typography } from "@/common/components/ui/Typography"
 import { TitleSection } from "@/module/Listing/title-section"
 import { Clock } from "lucide-react"
 
@@ -9,8 +10,10 @@ const Duration = ({
   durationMinute: number | null
 }) => {
   return (
-    <>
-      <TitleSection size="lg" title="Activity Duration">
+    <div>
+      <Typography variant="h3" fontWeight="semibold">
+      Activity duration
+        </Typography>
         <div className="mb-5"></div>
         <div className="flex gap-2 w-full items-center">
           <Clock className="text-primary-700" />
@@ -18,8 +21,7 @@ const Duration = ({
             ? `${durationHour} hours and ${durationMinute} minutes`
             : `${durationHour} hours`}
         </div>
-      </TitleSection>
-    </>
+    </div>
   )
 }
 
