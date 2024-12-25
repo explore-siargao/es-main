@@ -51,10 +51,7 @@ const RentalMoreInfo = ({ items }: T_Rental_Price_Details_Box) => {
                 <Typography className="text-text-400">
                   <span>
                     Free cancellation before 2:00 PM on {freeCancelDate}.
-                  </span>{" "}
-                  Cancel before check-in on{" "}
-                  {format(item.startDate, "MMMM dd, yyyy")} for a partial
-                  refund.{" "}
+                  </span>
                   <Link className="underline" href="#">
                     Learn more
                   </Link>
