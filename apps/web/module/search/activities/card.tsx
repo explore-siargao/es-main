@@ -7,16 +7,12 @@ import formatCurrency from "@/common/helpers/format-currency"
 import NewlyAddedTag from "../components/newly-added-tag"
 import { T_Activity_Filtered } from "@repo/contract-2/search-filters"
 
-type imagesType = {
-  key: string
-  alt: string
-}[]
-
 const ActivityCard = (props: T_Activity_Filtered) => {
   const title = props.title
   const location = props.meetingPoint
   const listingId = props._id
-  const price = (props.pricePerPerson ?? props.pricePerSlot) || 0
+  const price = props.pricePerSlot || props.pricePerPerson || 0
+  const priceNoun = props.pricePerSlot ? `slot` : `person`;
   const photos = props.photos.map((photo) => ({
     key: photo.key,
     alt: photo.tags,
@@ -73,7 +69,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
               className="text-text-700 underline truncate"
             >
               From {formatCurrency(price)}{" "}
-              <span className="font-normal">/ person</span>
+              <span className="font-normal">/ {priceNoun}</span>
             </Typography>
           </div>
         </Link>

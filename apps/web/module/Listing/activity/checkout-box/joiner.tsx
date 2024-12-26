@@ -19,11 +19,11 @@ type T_Checkout = {
 
 const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
-  const [guestsCount, setGuestsCount] = useState(1)
   const date = useDateTimeStore((state) => state.date)
   const time = useDateTimeStore((state) => state.time)
   const updateDate = useDateTimeStore((state) => state.updateDate)
   const updateTime = useDateTimeStore((state) => state.updateTime)
+  const [guestsCount, setGuestsCount] = useState(1)
   const slotCapacity = activity.slotCapacity
   const dayOfWeek = format(date, `EEEE`).toLowerCase();
   // @ts-expect-error
@@ -57,7 +57,7 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
             min={format(new Date(), "yyyy-MM-dd")}
             required
             defaultValue={format(date, "yyyy-MM-dd")}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => 
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
               updateDate(new Date(event.target.value))
             }
           />
@@ -89,9 +89,9 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
           label={`Guests`}
           required
         >
-          {Array.from({ length: slotCapacity.maximum - slotCapacity.minimum + 1 }, (_, i) => (
-            <Option key={i + slotCapacity.minimum} value={i + slotCapacity.minimum}>
-              {i + slotCapacity.minimum}
+          {Array.from({ length: slotCapacity.maximum - 1 + 1 }, (_, i) => (
+            <Option key={i + 1} value={i + 1}>
+              {i + 1}
             </Option>
           ))}
         </Select>
@@ -99,18 +99,20 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
         <Button
           variant="primary"
           className="font-bold"
+          disabled={!date || !time}
         >
           Book now
         </Button>
         <Button
           variant="default"
           className="font-bold"
+          disabled={!date || !time}
         >
           <LucideShoppingCart size={20} className="mr-2" /> Add to cart
         </Button>
       </div>
       <div>
-      <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-4">
           <Typography variant="h5">
             {formatCurrency(baseRateGuestsTotal)} x {guestsCount} guest
             {guestsCount > 1 ? "s" : ""}

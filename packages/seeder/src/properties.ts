@@ -15,7 +15,7 @@ import {
   dbUsers,
 } from "@repo/database"
 import { policiesItem } from "./common/constants/properties/policies"
-import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
+import { getRandomPhotoKeys } from "./common/helpers/get-random-photo-keys"
 import { PROPERTY_PHOTO_KEYS } from "./common/constants/photo-keys"
 
 const seedProperties = async () => {

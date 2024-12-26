@@ -18,7 +18,7 @@ import {
   dbUsers,
 } from "@repo/database"
 import mongoose from "mongoose"
-import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
+import { getRandomPhotoKeys } from "./common/helpers/get-random-photo-keys"
 import {
   RENTAL_PHOTO_KEYS_BIKE,
   RENTAL_PHOTO_KEYS_CAR,
