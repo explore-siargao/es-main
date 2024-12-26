@@ -84,7 +84,7 @@ const Dynamic = ({ center, activities, zoom, scrollWheelZoom }: T_Props) => {
             }
             key={index}
             onClick={() => handleMarkerMouseOver(index)}
-            price={(activity.pricePerPerson ?? activity.pricePerSlot) || 0}
+            price={(activity.pricePerPerson || activity.pricePerSlot) || 0}
           >
             <Popup index={index} activity={activity} />
           </Marker>

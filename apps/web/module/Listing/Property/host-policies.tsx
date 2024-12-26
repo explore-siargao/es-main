@@ -35,7 +35,7 @@ const HostPolicies = ({ property }: { property: T_Property }) => {
             <LucideShield /> Safety considerations
           </Typography>
           <ul className="ml-6 mt-4 text-text-400 list-decimal">
-            {safetyConsiderations && safetyConsiderations.length > 0 ? safetyConsiderations.map((policy) => (
+            {thingsToKnow && thingsToKnow.length > 0 ? thingsToKnow.map((policy) => (
               <li>
                 {policy.policy}
               </li>

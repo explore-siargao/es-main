@@ -167,6 +167,7 @@ export const Z_Activity_Filtered_Results = z.array(Z_Activity_Filtered)
 
 export const Z_Property_Filtered = z.object({
   listingId: objectIdSchema,
+  unitId: objectIdSchema,
   type: z.nativeEnum(E_Property_Type),
   wholeplaceType: z.nativeEnum(E_Whole_Place_Property_Type).optional(),
   location: Z_Location,

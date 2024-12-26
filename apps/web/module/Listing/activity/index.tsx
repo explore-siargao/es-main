@@ -1,6 +1,6 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import RatingSummary from "@/module/Listing/reviews/rating-summary"
 import ReportListingModal from "@/module/Listing/modals/report-listing-modal"
 import UserReviews from "../../Hosting/Listings/Properties/Property/Reviews/UserReviews"
@@ -26,6 +26,7 @@ import { Button } from "@/common/components/ui/Button"
 import { LucideFlag } from "lucide-react"
 import { E_Activity_Experience_Type } from "@repo/contract"
 import HostPolicies from "./host-policies"
+import Link from "next/link"
 
 export const Activity = ({
   activity,
@@ -44,6 +45,15 @@ export const Activity = ({
   if (!activity) {
     notFound()
   }
+
+  const targetDivRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (targetDivRef.current) {
+      targetDivRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
@@ -67,7 +77,7 @@ export const Activity = ({
 
             {activity ? (
               <div className="pt-6 pb-8">
-                <Builder segments={activity.segments} />
+                <Builder segments={activity.segments} scrollToMap={handleScroll} />
               </div>
             ) : null}
 
@@ -126,7 +136,7 @@ export const Activity = ({
         </div>
       </div>
       <div className="divide-y border-t">
-        <div className="py-8">
+        <div className="py-8" ref={targetDivRef}>
           <MeetingPoint meetingPoint={activity?.meetingPoint} />
         </div>
         <div className="py-8">

@@ -7,13 +7,13 @@ import CheckoutMoreInfoModal from "./modals/checkout-more-info-modal"
 import CheckInOutModal from "./modals/check-in-out-modal"
 import useCheckInOutDateStore from "@/module/Listing/property/stores/use-check-in-out-date-store"
 import Asterisk from "@/common/components/ui/Asterisk"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import GuestAddModal from "./modals/guest-add-modal"
 import useGuestAdd from "@/module/Listing/property/stores/use-guests-store"
-import { APP_NAME, GUEST_COMMISSION_PERCENT } from "@repo/constants"
+import { GUEST_COMMISSION_PERCENT } from "@repo/constants"
 import { Typography } from "@/common/components/ui/Typography"
 import { T_BookableUnitType } from "@repo/contract"
-import { differenceInDays, format, eachDayOfInterval } from "date-fns"
+import { differenceInDays, format } from "date-fns"
 import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { T_Add_To_Cart } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
@@ -22,18 +22,17 @@ import { LucideShoppingCart } from "lucide-react"
 import { Option, Select } from "@/common/components/ui/Select"
 
 type T_Props = {
-  selectedBookableUnit: T_BookableUnitType
-  handleSelectBookableUnit: (unit: T_BookableUnitType) => void
   units?: T_BookableUnitType[]
+  selectedUnitId: string
+  propertyId: string
 }
 
 const CheckoutBox = ({
-  selectedBookableUnit,
-  handleSelectBookableUnit,
   units,
+  selectedUnitId,
+  propertyId
 }: T_Props) => {
   const router = useRouter()
-  const params = useParams<{ propertyId: string }>()
   const queryClient = useQueryClient()
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
@@ -48,6 +47,7 @@ const CheckoutBox = ({
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
   )
+  const selectedBookableUnit = units?.find((unit) => unit._id === selectedUnitId)
   const baseRate = selectedBookableUnit?.unitPrice.baseRate || 0
   const baseRateGuestsTotal = baseRate * guestsCount || 0
   const baseRateNightsTotal = baseRateGuestsTotal * nightCount || 0
@@ -79,11 +79,6 @@ const CheckoutBox = ({
         toast.error(String(err))
       },
     })
-  }
-
-  const onUnitsChange = (id: string) => {
-    const unit = units?.find((unit) => unit?._id === id)
-    handleSelectBookableUnit(unit ? unit : null)
   }
 
   return (
@@ -148,7 +143,13 @@ const CheckoutBox = ({
         </div>
         <Select
           label="Available units"
-          onChange={(e) => onUnitsChange(e.target.value)}
+          onChange={(e) => {
+            if(e.target.value === "") {
+              router.push(`/listings/properties/${propertyId}`, { scroll: false })
+            } else {
+              router.push(`/listings/properties/${propertyId}/${e.target.value}`, { scroll: false })
+            }
+          }}
           value={selectedBookableUnit?._id || ""}
         >
           <Option value="">Select</Option>
@@ -162,7 +163,7 @@ const CheckoutBox = ({
           disabled={!selectedBookableUnit || isAddToCartPending}
           onClick={() =>
             selectedBookableUnit
-              ? router.push(`/accommodation/${params.propertyId}/checkout`)
+              ? router.push(`/accommodation/${propertyId}/checkout`)
               : null
           }
         >
@@ -172,7 +173,7 @@ const CheckoutBox = ({
           variant="default"
           className="font-bold"
           disabled={!selectedBookableUnit || isAddToCartPending}
-          onClick={() => handleAddToCartSingleItem(params.propertyId)}
+          onClick={() => handleAddToCartSingleItem(propertyId)}
         >
           <LucideShoppingCart size={20} className="mr-2" /> Add to cart
         </Button>

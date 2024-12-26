@@ -43,13 +43,13 @@ const About = ({ rental }: { rental: T_Rental }) => {
         <div className="grid grid-cols-2">
           {listing.map((rental: any, index: number) => (
             <div key={index} className="flex my-3">
-              <Check className="text-primary-500 mr-2" />
+              <Check className="text-primary-700 mr-2" />
               {rental}
             </div>
           ))}
           {rental.details?.isRegistered === "Yes" && (
             <div className="flex my-3">
-              <Check className="text-primary-500 mr-2" /> Up-to-date registration
+              <Check className="text-primary-700 mr-2" /> Up-to-date registration
             </div>
           )}
         </div>

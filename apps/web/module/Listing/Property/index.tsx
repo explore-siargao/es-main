@@ -23,7 +23,7 @@ import SimilarProperties from "./similar-properties"
 import { Typography } from "@/common/components/ui/Typography"
 import HostPolicies from "./host-policies"
 
-export const Property = ({ propertyData: data }: { propertyData: any }) => {
+export const Property = ({ propertyData: data, unitId }: { propertyData: any, unitId: string }) => {
   const [showModal, setShowModal] = useState(false)
   const [selectedBookableUnit, setSelectedBookableUnit] =
     useState<T_BookableUnitType>()
@@ -84,6 +84,8 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
                   onSelectBookableUnit={handleSelectBookableUnit}
                   selectedBookableUnit={selectedBookableUnit}
                   imagesAvailable={data?.item?.photos}
+                  selectedUnitId={unitId}
+                  propertyId={data?.item._id}
                 />
               ) : (
                 <Typography variant="h5" className="text-text-400 italic">No available units for this property</Typography>
@@ -97,8 +99,8 @@ export const Property = ({ propertyData: data }: { propertyData: any }) => {
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
             <CheckoutBox
-              selectedBookableUnit={selectedBookableUnit}
-              handleSelectBookableUnit={handleSelectBookableUnit}
+              selectedUnitId={unitId}
+              propertyId={data?.item._id}
               units={data?.item?.bookableUnits}
             />
             <PledgeBox />

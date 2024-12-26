@@ -5,7 +5,7 @@ import {
   T_AvailableBookableUnitProps,
   T_AvailableBookingProps,
 } from "./types/AvailableBooking"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"
 import { LucideGrip } from "lucide-react"
@@ -14,16 +14,15 @@ import UnitImageGalleryModal from "./modals/unit-image-gallery-modal"
 import Image from "@/common/components/ui/image"
 import { T_Photo } from "@repo/contract-2/photos"
 import UnitMoreInfoModal from "./modals/unit-more-info-modal"
+import { useRouter } from "next/navigation"
 
 const AvailableUnits = ({
   bookableUnits,
   propertyType,
-  onSelectBookableUnit,
-  selectedBookableUnit,
+  selectedUnitId,
+  propertyId,
 }: T_AvailableBookingProps) => {
-  const handleSelectUnit = (unit: T_AvailableBookableUnitProps | null) => {
-    onSelectBookableUnit(unit)
-  }
+  const router = useRouter();
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const [moreInfoModalOpen, setMoreInfoModalOpen] = useState(false)
   const [moreInfoUnit, setMoreInfoUnit] = useState<T_AvailableBookableUnitProps | null>(null)
@@ -49,10 +48,6 @@ const AvailableUnits = ({
       title = "Available Units"
       break
   }
-
-  useEffect(() => {
-    onSelectBookableUnit(bookableUnits[0] || null)
-  }, [])
 
   const getImgSrc = (index: number, images: T_Photo[]) => {
     const image = images[index]
@@ -88,13 +83,13 @@ const AvailableUnits = ({
           return (
             <button
               type="button"
-              key={unit.id}
-              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${selectedBookableUnit === unit
+              key={unit._id}
+              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${selectedUnitId === unit._id
                   ? "bg-primary-200 border-primary-500"
                   : "bg-white hover:bg-text-50 border-text-100"
                 }`}
               onClick={() =>
-                handleSelectUnit(selectedBookableUnit === unit ? null : unit)
+                router.push(`/listings/properties/${propertyId}/${unit._id}`, { scroll: false })
               }
             >
               <div>
@@ -151,17 +146,16 @@ const AvailableUnits = ({
                   <div className="flex gap-2 mt-6">
                     <Button
                       variant={
-                        selectedBookableUnit === unit ? "primary" : "default"
+                        selectedUnitId === unit._id ? "primary" : "default"
                       }
                       size="sm"
+                      disabled={selectedUnitId === unit._id}
                       onClick={() =>
-                        handleSelectUnit(
-                          selectedBookableUnit === unit ? null : unit
-                        )
+                        selectedUnitId !== unit._id ? router.push(`/listings/properties/${propertyId}/${unit._id}`, { scroll: false }) : null
                       }
                     >
-                      {selectedBookableUnit === unit
-                        ? "Unselect this unit"
+                      {selectedUnitId === unit._id
+                        ? "Selected"
                         : "Select this unit"}
                     </Button>
                     <Button 

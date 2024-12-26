@@ -19,7 +19,8 @@ const Popup = ({
   const title = activity.title || "Unknown title"
   const location = activity.meetingPoint
   const listingId = activity._id
-  const price = (activity.pricePerPerson ?? activity.pricePerSlot) || 0
+  const price = (activity.pricePerPerson || activity.pricePerSlot) || 0
+  const priceNoun = activity.pricePerSlot ? `slot` : `person`;
   const photos = activity.photos.map((photo) => ({
     key: photo.key,
     alt: photo.tags,
@@ -69,7 +70,7 @@ const Popup = ({
           </span>
           <span className="text-text-700 underline truncate semibold text-xs">
             {formatCurrency(price)}{" "}
-            <span className="font-normal">/ 24 hours</span>
+            <span className="font-normal">/ {priceNoun}</span>
           </span>
         </div>
       </Link>

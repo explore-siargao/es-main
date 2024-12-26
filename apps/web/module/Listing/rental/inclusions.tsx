@@ -36,9 +36,9 @@ const Inclusions = ({ rental }: { rental: T_Rental }) => {
                 key === "others" ? null : (
                   <div key={key} className="flex my-3">
                     {selected ? (
-                      <LucideCheck className="text-primary-500 mr-4" />
+                      <LucideCheck className="text-primary-700 mr-3" />
                     ) : (
-                      <LucideX className="text-error-500 mr-4" />
+                      <LucideX className="text-error-500 mr-3" />
                     )}
                     {label}
                   </div>

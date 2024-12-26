@@ -2,8 +2,9 @@ import { Typography } from "@/common/components/ui/Typography"
 import { LucideMapPin } from "lucide-react"
 import React from "react"
 import { T_Activity_Segment } from "@repo/contract-2/activity"
+import Link from "next/link"
 
-const Builder = ({ segments = [] }: {segments: T_Activity_Segment[]}) => {
+const Builder = ({ segments = [], scrollToMap }: {segments: T_Activity_Segment[], scrollToMap: (e: React.MouseEvent) => void}) => {
   return (
     <div className="w-1/3">
       <Typography variant="h3" fontWeight="semibold">
@@ -15,9 +16,9 @@ const Builder = ({ segments = [] }: {segments: T_Activity_Segment[]}) => {
           <div className="h-8 w-8 bg-primary-100 text-primary-600 flex items-center justify-center rounded-full">
             <LucideMapPin className="h-5 w-5" />
           </div>
-          <Typography fontWeight="semibold" className="text-text-400">
+          <Link href="#" onClick={scrollToMap} className="text-text-400 font-semibold underline">
             Meeting Point (Map below)
-          </Typography>
+          </Link>
         </div>
         {segments.map((segment) => {
           return (

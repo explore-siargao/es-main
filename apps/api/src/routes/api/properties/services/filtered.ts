@@ -797,6 +797,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
+            unitId: unit._id,
             title: unit.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
@@ -1486,6 +1487,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
+            unitId: unit._id,
             title: unit.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
@@ -2205,6 +2207,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
+            unitId: unit._id,
             title: unit.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
@@ -2933,6 +2936,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
+            unitId: unit._id,
             title: unit.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,

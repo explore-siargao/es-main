@@ -18,7 +18,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
     alt: photo.tags,
   }))
   const average = props.average
-  const type = (props.activityType ?? [])[1] ?? "Unknown type"
+  const type = (props.activityType ?? [])[0] ?? (props.activityType ?? [])[1] ?? "Unknown type"
   const reviewsCount = props.reviewsCount
   return (
     <>
