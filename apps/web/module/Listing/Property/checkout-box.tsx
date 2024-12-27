@@ -27,11 +27,7 @@ type T_Props = {
   propertyId: string
 }
 
-const CheckoutBox = ({
-  units,
-  selectedUnitId,
-  propertyId
-}: T_Props) => {
+const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
@@ -47,7 +43,9 @@ const CheckoutBox = ({
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
   )
-  const selectedBookableUnit = units?.find((unit) => unit._id === selectedUnitId)
+  const selectedBookableUnit = units?.find(
+    (unit) => unit._id === selectedUnitId
+  )
   const baseRate = selectedBookableUnit?.unitPrice.baseRate || 0
   const baseRateGuestsTotal = baseRate * guestsCount || 0
   const baseRateNightsTotal = baseRateGuestsTotal * nightCount || 0
@@ -144,10 +142,15 @@ const CheckoutBox = ({
         <Select
           label="Available units"
           onChange={(e) => {
-            if(e.target.value === "") {
-              router.push(`/listings/properties/${propertyId}`, { scroll: false })
+            if (e.target.value === "") {
+              router.push(`/listings/properties/${propertyId}`, {
+                scroll: false,
+              })
             } else {
-              router.push(`/listings/properties/${propertyId}/${e.target.value}`, { scroll: false })
+              router.push(
+                `/listings/properties/${propertyId}/${e.target.value}`,
+                { scroll: false }
+              )
             }
           }}
           value={selectedBookableUnit?._id || ""}

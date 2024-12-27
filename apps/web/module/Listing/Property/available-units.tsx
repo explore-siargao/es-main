@@ -23,11 +23,12 @@ const AvailableUnits = ({
   selectedUnitId,
   propertyId,
 }: T_AvailableBookingProps) => {
-  const router = useRouter();
+  const router = useRouter()
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const [moreInfoModalOpen, setMoreInfoModalOpen] = useState(false)
-  const [moreInfoUnit, setMoreInfoUnit] = useState<T_AvailableBookableUnitProps | null>(null)
-  const [showAllUnitPhotos, setShowAllUnitPhotos] = useState<T_Photo[]>([]);
+  const [moreInfoUnit, setMoreInfoUnit] =
+    useState<T_AvailableBookableUnitProps | null>(null)
+  const [showAllUnitPhotos, setShowAllUnitPhotos] = useState<T_Photo[]>([])
 
   let title = ""
   switch (propertyType.toUpperCase()) {
@@ -85,12 +86,15 @@ const AvailableUnits = ({
             <button
               type="button"
               key={unit._id}
-              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${selectedUnitId === unit._id
+              className={`w-full rounded-2xl border p-5 cursor-pointer transition text-left ${
+                selectedUnitId === unit._id
                   ? "bg-primary-200 border-primary-500"
                   : "bg-white hover:bg-text-50 border-text-100"
-                }`}
+              }`}
               onClick={() =>
-                router.push(`/listings/properties/${propertyId}/${unit._id}`, { scroll: false })
+                router.push(`/listings/properties/${propertyId}/${unit._id}`, {
+                  scroll: false,
+                })
               }
             >
               <div>
@@ -129,9 +133,12 @@ const AvailableUnits = ({
                 <div className="mt-4">
                   <Typography variant="h3" className="flex justify-between">
                     {/* @ts-expect-error */}
-                    <span className="font-semibold">{unit.title}</span><span>{formatCurrency(unit.unitPrice.baseRate)}</span>
+                    <span className="font-semibold">{unit.title}</span>
+                    <span>{formatCurrency(unit.unitPrice.baseRate)}</span>
                   </Typography>
-                  <Typography variant="h5" className="mt-2">{bedDisplay}</Typography>
+                  <Typography variant="h5" className="mt-2">
+                    {bedDisplay}
+                  </Typography>
                   {unit.category === "Bed" && (
                     <Typography variant="h5">{unit.subtitle}</Typography>
                   )}
@@ -152,14 +159,19 @@ const AvailableUnits = ({
                       size="sm"
                       disabled={selectedUnitId === unit._id}
                       onClick={() =>
-                        selectedUnitId !== unit._id ? router.push(`/listings/properties/${propertyId}/${unit._id}`, { scroll: false }) : null
+                        selectedUnitId !== unit._id
+                          ? router.push(
+                              `/listings/properties/${propertyId}/${unit._id}`,
+                              { scroll: false }
+                            )
+                          : null
                       }
                     >
                       {selectedUnitId === unit._id
                         ? "Selected"
                         : "Select this unit"}
                     </Button>
-                    <Button 
+                    <Button
                       variant="link"
                       size="sm"
                       className="underline"

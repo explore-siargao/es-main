@@ -32,7 +32,8 @@ const PickUpLocation = ({ location }: { location: T_Location | null }) => {
 
         {location?.city && location.streetAddress && location.barangay ? (
           <Typography className="font-semibold">
-            {location.streetAddress}, {location.barangay}, {location.city}, Surigao del Norte
+            {location.streetAddress}, {location.barangay}, {location.city},
+            Surigao del Norte
           </Typography>
         ) : null}
         {location?.howToGetThere && (

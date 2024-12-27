@@ -11,11 +11,13 @@ const HostPolicies = ({ activity }: { activity: T_Activity }) => {
       </Typography>
       <div className="mt-2">
         <div className="grid grid-cols-1">
-          {activity.policies && activity.policies.length > 0 ? activity.policies.map((policy) => (
-            <div className="flex my-3">
-              <LucideInfo className="text-primary-700 mr-3 " /> {policy}
-            </div>
-          ))  : null}
+          {activity.policies && activity.policies.length > 0
+            ? activity.policies.map((policy) => (
+                <div className="flex my-3">
+                  <LucideInfo className="text-primary-700 mr-3 " /> {policy}
+                </div>
+              ))
+            : null}
         </div>
       </div>
     </div>

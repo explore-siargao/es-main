@@ -1,6 +1,9 @@
 import { Typography } from "@/common/components/ui/Typography"
 import useGetListings from "@/module/search/properties/hooks/use-get-listings"
-import { E_Location, T_Property_Filtered } from "@repo/contract-2/search-filters"
+import {
+  E_Location,
+  T_Property_Filtered,
+} from "@repo/contract-2/search-filters"
 import React from "react"
 import PropertyCard from "./card"
 
@@ -40,13 +43,15 @@ function SimilarProperties() {
     if (count > array.length) {
       return []
     }
-    const shuffled = [...array].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
-  const randomItems = getRandomItems(propertiesData, 4);
+    const shuffled = [...array].sort(() => 0.5 - Math.random())
+    return shuffled.slice(0, count)
+  }
+  const randomItems = getRandomItems(propertiesData, 4)
   return (
     <div>
-      <Typography variant="h3" fontWeight="semibold" className="mb-2">Similar places</Typography>
+      <Typography variant="h3" fontWeight="semibold" className="mb-2">
+        Similar places
+      </Typography>
       <div className="grid grid-cols-4 space-x-8 mt-5">
         {randomItems.map((card) => (
           <PropertyCard {...card} />

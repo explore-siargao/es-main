@@ -23,7 +23,13 @@ import SimilarProperties from "./similar-properties"
 import { Typography } from "@/common/components/ui/Typography"
 import HostPolicies from "./host-policies"
 
-export const Property = ({ propertyData: data, unitId }: { propertyData: any, unitId: string }) => {
+export const Property = ({
+  propertyData: data,
+  unitId,
+}: {
+  propertyData: any
+  unitId: string
+}) => {
   const [showModal, setShowModal] = useState(false)
   const [selectedBookableUnit, setSelectedBookableUnit] =
     useState<T_BookableUnitType>()
@@ -88,7 +94,9 @@ export const Property = ({ propertyData: data, unitId }: { propertyData: any, un
                   propertyId={data?.item._id}
                 />
               ) : (
-                <Typography variant="h5" className="text-text-400 italic">No available units for this property</Typography>
+                <Typography variant="h5" className="text-text-400 italic">
+                  No available units for this property
+                </Typography>
               )}
             </div>
             <div className="pt-6">

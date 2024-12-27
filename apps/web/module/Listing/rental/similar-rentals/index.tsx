@@ -33,13 +33,15 @@ function SimilarRentals() {
     if (count > array.length) {
       return []
     }
-    const shuffled = [...array].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
-  const randomItems = getRandomItems(rentalsData, 4);
+    const shuffled = [...array].sort(() => 0.5 - Math.random())
+    return shuffled.slice(0, count)
+  }
+  const randomItems = getRandomItems(rentalsData, 4)
   return (
     <div>
-      <Typography variant="h3" fontWeight="semibold" className="mb-2">Similar rentals</Typography>
+      <Typography variant="h3" fontWeight="semibold" className="mb-2">
+        Similar rentals
+      </Typography>
       <div className="grid grid-cols-4 space-x-8 mt-5">
         {randomItems.map((card) => (
           <RentalCard {...card} />

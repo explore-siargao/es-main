@@ -19,8 +19,8 @@ const Popup = ({
   const title = activity.title || "Unknown title"
   const location = activity.meetingPoint
   const listingId = activity._id
-  const price = (activity.pricePerPerson || activity.pricePerSlot) || 0
-  const priceNoun = activity.pricePerSlot ? `slot` : `person`;
+  const price = activity.pricePerPerson || activity.pricePerSlot || 0
+  const priceNoun = activity.pricePerSlot ? `slot` : `person`
   const photos = activity.photos.map((photo) => ({
     key: photo.key,
     alt: photo.tags,

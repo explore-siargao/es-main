@@ -49,17 +49,27 @@ const Map: React.FC<WhereYoullBeDescriptionProps> = ({
           Where you'll be
         </Typography>
         <div>
-          <DynamicMapWithPin center={coordinates} disablePinMovement={true} zoom={11} />
+          <DynamicMapWithPin
+            center={coordinates}
+            disablePinMovement={true}
+            zoom={11}
+          />
         </div>
 
         {location && (
           <Typography className="font-semibold mt-4">
-            {location.streetAddress}, {location.barangay}, {location.city}, Surigao del Norte
+            {location.streetAddress}, {location.barangay}, {location.city},
+            Surigao del Norte
           </Typography>
         )}
         {desc && (
           <div className="flex mt-2">
-            <Typography variant="h5" className="w-full break-words text-text-400">{slicedDescription}</Typography>
+            <Typography
+              variant="h5"
+              className="w-full break-words text-text-400"
+            >
+              {slicedDescription}
+            </Typography>
           </div>
         )}
       </div>

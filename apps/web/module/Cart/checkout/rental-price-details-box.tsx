@@ -70,9 +70,7 @@ const RentalPriceDetailsBox = ({ items }: T_Rental_Price_Details_Box) => {
                   </Typography>
                 </div>
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm">
-                    Service fee
-                  </Typography>
+                  <Typography className="text-sm">Service fee</Typography>
                   <Typography className="text-sm">
                     {formatCurrency(
                       extractedPriceCommission.extractedPercentage

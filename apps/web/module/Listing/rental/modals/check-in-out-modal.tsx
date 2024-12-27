@@ -39,7 +39,7 @@ const CheckInOutModal = ({ isOpen, onClose }: CheckInOutModalProps) => {
           <Calendar
             mode="range"
             numberOfMonths={2}
-            required 
+            required
             defaultMonth={dateRange?.from}
             selected={dateRange}
             onSelect={(data) => updateDateRange(data as DateRange)}

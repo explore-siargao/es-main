@@ -64,32 +64,32 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
       </Typography>
       <div className="mt-6">
         <div className="grid grid-cols-2 gap-4">
-            <ul>
-              {leftColumn?.map((item: T_Offer) => (
-                <div className="space-y-2" key={item._id}>
-                  <IconDescription
-                    key={item._id}
-                    description={`${item.category}\n${item.facility}`}
-                    isNotIncluded={!item.isSelected}
-                    icon={getCategoryIcon(item.category as string)}
-                  />
-                </div>
-              ))}
-            </ul>
-            <ul>
-              {rightColumn?.map((item: T_Offer) => (
-                <div className="space-y-2" key={item._id}>
-                  <IconDescription
-                    key={item._id}
-                    description={`${item.category}\n${item.facility}`}
-                    isNotIncluded={!item.isSelected}
-                    icon={getCategoryIcon(item.category as string)}
-                  />
-                </div>
-              ))}
-            </ul>
-          </div>
-          {/* <Button
+          <ul>
+            {leftColumn?.map((item: T_Offer) => (
+              <div className="space-y-2" key={item._id}>
+                <IconDescription
+                  key={item._id}
+                  description={`${item.category}\n${item.facility}`}
+                  isNotIncluded={!item.isSelected}
+                  icon={getCategoryIcon(item.category as string)}
+                />
+              </div>
+            ))}
+          </ul>
+          <ul>
+            {rightColumn?.map((item: T_Offer) => (
+              <div className="space-y-2" key={item._id}>
+                <IconDescription
+                  key={item._id}
+                  description={`${item.category}\n${item.facility}`}
+                  isNotIncluded={!item.isSelected}
+                  icon={getCategoryIcon(item.category as string)}
+                />
+              </div>
+            ))}
+          </ul>
+        </div>
+        {/* <Button
             className="mt-5"
             variant="outline"
             onClick={() => setShowMoreModalOpen(!showMoreModalOpen)}

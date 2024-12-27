@@ -11,11 +11,13 @@ const HostPolicies = ({ rental }: { rental: T_Rental }) => {
       </Typography>
       <div className="mt-2">
         <div className="grid grid-cols-2">
-          {rental.policies && rental.policies.length > 0 ? rental.policies.map((policy) => (
-            <div className="flex my-3">
-              <LucideInfo className="text-primary-700 mr-3 " /> {policy}
-            </div>
-          ))  : null}
+          {rental.policies && rental.policies.length > 0
+            ? rental.policies.map((policy) => (
+                <div className="flex my-3">
+                  <LucideInfo className="text-primary-700 mr-3 " /> {policy}
+                </div>
+              ))
+            : null}
         </div>
       </div>
     </div>

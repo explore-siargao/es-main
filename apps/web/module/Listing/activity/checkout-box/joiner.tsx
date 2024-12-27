@@ -25,16 +25,16 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
   const updateTime = useDateTimeStore((state) => state.updateTime)
   const [guestsCount, setGuestsCount] = useState(1)
   const slotCapacity = activity.slotCapacity
-  const dayOfWeek = format(date, `EEEE`).toLowerCase();
+  const dayOfWeek = format(date, `EEEE`).toLowerCase()
   // @ts-expect-error
   const dateSlot = activity?.schedule[dayOfWeek] || []
 
   const filteredTimeSlots = dateSlot?.slots?.map((slot: T_Activity_Slot) => {
     return {
       startTime: slot.startTime,
-      endTime: slot.endTime
+      endTime: slot.endTime,
     }
-  });
+  })
 
   const baseRate = activity?.pricePerPerson || 0
   const baseRateGuestsTotal = baseRate * guestsCount || 0
@@ -47,7 +47,10 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
         {formatCurrency(activity?.pricePerPerson || 0)}
         <small className="font-light"> per person</small>
       </Typography>
-      <Typography variant="h5" className="italic text-text-400 mt-2">This is a {E_Activity_Experience_Type.Joiner} activity and will be priced per person.</Typography>
+      <Typography variant="h5" className="italic text-text-400 mt-2">
+        This is a {E_Activity_Experience_Type.Joiner} activity and will be
+        priced per person.
+      </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full mt-2">
         <div className="grid grid-cols-2 gap-3">
           <Input
@@ -74,11 +77,13 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
             <Option key="__empty__" value="">
               {filteredTimeSlots?.length > 0 ? "Select" : "No time slot"}
             </Option>
-            {filteredTimeSlots?.map((time: { startTime: string, endTime: string }) => (
-              <Option key={time.startTime} value={time.startTime}>
-                {time.startTime} - {time.endTime}
-              </Option>
-            ))}
+            {filteredTimeSlots?.map(
+              (time: { startTime: string; endTime: string }) => (
+                <Option key={time.startTime} value={time.startTime}>
+                  {time.startTime} - {time.endTime}
+                </Option>
+              )
+            )}
           </Select>
         </div>
         <Select
@@ -133,9 +138,7 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
         <div className="border-b mt-5 mb-5"></div>
         <div className="flex justify-between font-semibold">
           <div>Total before taxes</div>
-          <div>
-            {formatCurrency(totalBeforeTaxes)}
-          </div>
+          <div>{formatCurrency(totalBeforeTaxes)}</div>
         </div>
       </div>
       <CheckoutMoreInfoModal

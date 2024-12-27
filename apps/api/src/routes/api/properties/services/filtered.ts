@@ -2955,7 +2955,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             reviewsCount: unit.reviewsCount || 0,
           }))
         )
-        
+
         const paginatedBookableUnits = allBookableUnits.slice(
           startIndex,
           endIndex

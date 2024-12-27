@@ -22,7 +22,7 @@ import combineDateTime from "./helpers/combine-date-time"
 
 const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const router = useRouter()
-  const queryClient = useQueryClient()  
+  const queryClient = useQueryClient()
   const params = useParams<{ listingId: string }>()
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
@@ -30,18 +30,10 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
   const dateRange = usePickupDropoffStore((state) => state.dateRange)
-  const fromTime = usePickupDropoffStore(
-    (state) => state.fromTime
-  )
-  const toTime = usePickupDropoffStore(
-    (state) => state.toTime
-  )
-  const updateFromTime = usePickupDropoffStore(
-    (state) => state.updateFromTime
-  )
-  const updateToTime = usePickupDropoffStore(
-    (state) => state.updateToTime
-  )
+  const fromTime = usePickupDropoffStore((state) => state.fromTime)
+  const toTime = usePickupDropoffStore((state) => state.toTime)
+  const updateFromTime = usePickupDropoffStore((state) => state.updateFromTime)
+  const updateToTime = usePickupDropoffStore((state) => state.updateToTime)
   const daysCount = differenceInDays(
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
@@ -110,23 +102,21 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
             label={"Pick-up time"}
             id="testable"
             className="flex-1"
-            onChange={(e) =>
-              updateFromTime(e.target.value)
-            }
+            onChange={(e) => updateFromTime(e.target.value)}
             defaultValue={fromTime}
             required
           >
-            {Array.from({ length: ((22 - 6) * 2) + 1 }).map((_, index) => {
-              const hours = Math.floor((6 * 60 + index * 30) / 60);
-              const minutes = (index * 30) % 60;
+            {Array.from({ length: (22 - 6) * 2 + 1 }).map((_, index) => {
+              const hours = Math.floor((6 * 60 + index * 30) / 60)
+              const minutes = (index * 30) % 60
               const timeString = `${hours % 12 || 12}:${minutes
                 .toString()
-                .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`; // AM/PM format
+                .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}` // AM/PM format
               return (
                 <Option key={timeString} value={timeString}>
                   {timeString}
                 </Option>
-              );
+              )
             })}
           </Select>
         </div>
@@ -144,9 +134,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
               Drop-off date <Asterisk />
             </label>
             <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-              {dateRange.to
-                ? format(dateRange.to, "MM/dd/yyyy")
-                : "Add date"}
+              {dateRange.to ? format(dateRange.to, "MM/dd/yyyy") : "Add date"}
             </span>
           </div>
           <Select
@@ -157,26 +145,32 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
             defaultValue={toTime}
             required
           >
-            {Array.from({ length: ((22 - 6) * 2) + 1 }).map((_, index) => {
-              const hours = Math.floor((6 * 60 + index * 30) / 60);
-              const minutes = (index * 30) % 60;
+            {Array.from({ length: (22 - 6) * 2 + 1 }).map((_, index) => {
+              const hours = Math.floor((6 * 60 + index * 30) / 60)
+              const minutes = (index * 30) % 60
               const timeString = `${hours % 12 || 12}:${minutes
                 .toString()
-                .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`; // AM/PM format
+                .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}` // AM/PM format
 
               // Use timeString for both value and label
               return (
                 <Option key={timeString} value={timeString}>
                   {timeString}
                 </Option>
-              );
+              )
             })}
           </Select>
         </div>
         <Button
           variant="primary"
           className="font-bold"
-          disabled={!dateRange.from || !dateRange.to || !fromTime || !toTime || isAddToCartPending}
+          disabled={
+            !dateRange.from ||
+            !dateRange.to ||
+            !fromTime ||
+            !toTime ||
+            isAddToCartPending
+          }
           onClick={() =>
             router.push(`/accommodation/${params.listingId}/checkout`)
           }
@@ -186,7 +180,13 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
         <Button
           variant="default"
           className="font-bold"
-          disabled={!dateRange.from || !dateRange.to || !fromTime || !toTime || isAddToCartPending}
+          disabled={
+            !dateRange.from ||
+            !dateRange.to ||
+            !fromTime ||
+            !toTime ||
+            isAddToCartPending
+          }
           onClick={() => handleAddToCartSingleItem()}
         >
           <LucideShoppingCart size={20} className="mr-2" /> Add to cart

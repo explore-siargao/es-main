@@ -18,7 +18,9 @@ type T_Props = {
   }
 }
 
-const PropertyPublicPage = async ({ params: { propertyId, unitId } }: T_Props) => {
+const PropertyPublicPage = async ({
+  params: { propertyId, unitId },
+}: T_Props) => {
   const listing = await getRequest(`/properties/public/${propertyId}`)
 
   if (listing && listing.status === 404) {

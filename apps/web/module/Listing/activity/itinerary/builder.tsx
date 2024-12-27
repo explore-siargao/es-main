@@ -4,7 +4,13 @@ import React from "react"
 import { T_Activity_Segment } from "@repo/contract-2/activity"
 import Link from "next/link"
 
-const Builder = ({ segments = [], scrollToMap }: {segments: T_Activity_Segment[], scrollToMap: (e: React.MouseEvent) => void}) => {
+const Builder = ({
+  segments = [],
+  scrollToMap,
+}: {
+  segments: T_Activity_Segment[]
+  scrollToMap: (e: React.MouseEvent) => void
+}) => {
   return (
     <div className="w-1/3">
       <Typography variant="h3" fontWeight="semibold">
@@ -16,7 +22,11 @@ const Builder = ({ segments = [], scrollToMap }: {segments: T_Activity_Segment[]
           <div className="h-8 w-8 bg-primary-100 text-primary-600 flex items-center justify-center rounded-full">
             <LucideMapPin className="h-5 w-5" />
           </div>
-          <Link href="#" onClick={scrollToMap} className="text-text-400 font-semibold underline">
+          <Link
+            href="#"
+            onClick={scrollToMap}
+            className="text-text-400 font-semibold underline"
+          >
             Meeting Point (Map below)
           </Link>
         </div>

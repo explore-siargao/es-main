@@ -12,13 +12,16 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const location = props.meetingPoint
   const listingId = props._id
   const price = props.pricePerSlot || props.pricePerPerson || 0
-  const priceNoun = props.pricePerSlot ? `slot` : `person`;
+  const priceNoun = props.pricePerSlot ? `slot` : `person`
   const photos = props.photos.map((photo) => ({
     key: photo.key,
     alt: photo.tags,
   }))
   const average = props.average
-  const type = (props.activityType ?? [])[0] ?? (props.activityType ?? [])[1] ?? "Unknown type"
+  const type =
+    (props.activityType ?? [])[0] ??
+    (props.activityType ?? [])[1] ??
+    "Unknown type"
   const reviewsCount = props.reviewsCount
   return (
     <>

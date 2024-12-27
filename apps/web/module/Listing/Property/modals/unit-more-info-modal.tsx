@@ -7,7 +7,11 @@ interface UnitMoreInfoModalProps {
   onClose: () => void
   unit: T_AvailableBookableUnitProps | null
 }
-const UnitMoreInfoModal = ({ isOpen, onClose, unit }: UnitMoreInfoModalProps) => {
+const UnitMoreInfoModal = ({
+  isOpen,
+  onClose,
+  unit,
+}: UnitMoreInfoModalProps) => {
   return (
     <ModalContainer
       isOpen={isOpen}
@@ -15,9 +19,7 @@ const UnitMoreInfoModal = ({ isOpen, onClose, unit }: UnitMoreInfoModalProps) =>
       title={unit?.title}
       size="sm"
     >
-      <div className="px-5 py-6">
-       Show more info here
-      </div>
+      <div className="px-5 py-6">Show more info here</div>
     </ModalContainer>
   )
 }

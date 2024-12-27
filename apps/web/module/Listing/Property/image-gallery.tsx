@@ -121,7 +121,10 @@ const ImageGallery = ({
             onClose={() => openModal()}
             className="fixed inset-0 z-50 flex items-center justify-center"
           >
-            <div className="relative w-full h-full bg-text-950/30" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="relative w-full h-full bg-text-950/30"
+              onClick={(e) => e.stopPropagation()}
+            >
               <SliderImages images={images} />
               <button
                 onClick={(e) => openModal(e)}

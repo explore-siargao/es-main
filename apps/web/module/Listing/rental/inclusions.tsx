@@ -18,9 +18,11 @@ const Inclusions = ({ rental }: { rental: T_Rental }) => {
   ]
 
   if (addOns?.others && addOns?.others.length > 0) {
-    addOns?.others.filter(item => item !== "" && item !== null).forEach((item: string) => {
-      fieldsToDisplay.push({ key: item, label: item, selected: true })
-    })
+    addOns?.others
+      .filter((item) => item !== "" && item !== null)
+      .forEach((item: string) => {
+        fieldsToDisplay.push({ key: item, label: item, selected: true })
+      })
   }
 
   return (
@@ -33,17 +35,17 @@ const Inclusions = ({ rental }: { rental: T_Rental }) => {
           <div className="grid grid-cols-2">
             {rental
               ? fieldsToDisplay.map(({ key, label, selected }) =>
-                key === "others" ? null : (
-                  <div key={key} className="flex my-3">
-                    {selected ? (
-                      <LucideCheck className="text-primary-700 mr-3" />
-                    ) : (
-                      <LucideX className="text-error-500 mr-3" />
-                    )}
-                    {label}
-                  </div>
+                  key === "others" ? null : (
+                    <div key={key} className="flex my-3">
+                      {selected ? (
+                        <LucideCheck className="text-primary-700 mr-3" />
+                      ) : (
+                        <LucideX className="text-error-500 mr-3" />
+                      )}
+                      {label}
+                    </div>
+                  )
                 )
-              )
               : null}
           </div>
         </div>

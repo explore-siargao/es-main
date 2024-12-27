@@ -28,11 +28,7 @@ import { E_Activity_Experience_Type } from "@repo/contract"
 import HostPolicies from "./host-policies"
 import Link from "next/link"
 
-export const Activity = ({
-  activity,
-}: {
-  activity: T_Activity
-}) => {
+export const Activity = ({ activity }: { activity: T_Activity }) => {
   const [showModal, setShowModal] = useState(false)
 
   const handleOpenModal = () => {
@@ -46,18 +42,20 @@ export const Activity = ({
     notFound()
   }
 
-  const targetDivRef = useRef<HTMLDivElement>(null);
+  const targetDivRef = useRef<HTMLDivElement>(null)
 
   const handleScroll = (e: React.MouseEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (targetDivRef.current) {
-      targetDivRef.current.scrollIntoView({ behavior: "smooth" });
+      targetDivRef.current.scrollIntoView({ behavior: "smooth" })
     }
-  };
+  }
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
-      {activity && <Hero images={activity?.photos} title={activity.title || ""} />}
+      {activity && (
+        <Hero images={activity?.photos} title={activity.title || ""} />
+      )}
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
@@ -77,7 +75,10 @@ export const Activity = ({
 
             {activity ? (
               <div className="pt-6 pb-8">
-                <Builder segments={activity.segments} scrollToMap={handleScroll} />
+                <Builder
+                  segments={activity.segments}
+                  scrollToMap={handleScroll}
+                />
               </div>
             ) : null}
 
@@ -91,9 +92,7 @@ export const Activity = ({
                 isNonAlcoholicDrinkIncluded={
                   activity?.isNonAlcoholicDrinkIncluded
                 }
-                isAlcoholicDrinkIncluded={
-                  activity?.isAlcoholicDrinkIncluded
-                }
+                isAlcoholicDrinkIncluded={activity?.isAlcoholicDrinkIncluded}
                 otherInclusion={activity?.otherInclusion}
                 notIncluded={activity?.notIncluded}
               />
@@ -116,8 +115,12 @@ export const Activity = ({
 
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
-            {activity.experienceType === E_Activity_Experience_Type.Private ? <CheckoutBoxPrivate activity={activity} /> : null}
-            {activity.experienceType === E_Activity_Experience_Type.Joiner ? <CheckoutBoxJoiner activity={activity} /> : null}
+            {activity.experienceType === E_Activity_Experience_Type.Private ? (
+              <CheckoutBoxPrivate activity={activity} />
+            ) : null}
+            {activity.experienceType === E_Activity_Experience_Type.Joiner ? (
+              <CheckoutBoxJoiner activity={activity} />
+            ) : null}
             <PledgeBox />
             <div className="flex justify-center">
               <div className="justify-items-center">

@@ -64,26 +64,26 @@ const Checkout = () => {
       endDate: item.endDate,
       guestCount: item.guestCount ?? 0,
       propertyIds: item.propertyIds
-      ? {
-        // @ts-expect-error
-        propertyId: item.propertyIds?.propertyId._id ?? null,
-        // @ts-expect-error
-        unitId: item.propertyIds?.unitId?.qtyIds[0]._id ?? null,
-      }
-      : null,
+        ? {
+            // @ts-expect-error
+            propertyId: item.propertyIds?.propertyId._id ?? null,
+            // @ts-expect-error
+            unitId: item.propertyIds?.unitId?.qtyIds[0]._id ?? null,
+          }
+        : null,
       activityIds: item.activityIds
         ? {
-          ...item.activityIds,
-          // @ts-expect-error
-          activityId: item.activityIds?.activityId._id ?? null,
-        }
+            ...item.activityIds,
+            // @ts-expect-error
+            activityId: item.activityIds?.activityId._id ?? null,
+          }
         : null,
       rentalIds: item.rentalIds
         ? {
-          // @ts-expect-error
-          rentalId: item.rentalIds?.rentalId._id ?? null,
-          qtyIdsId: item.rentalIds?.qtyIdsId ?? null,
-        }
+            // @ts-expect-error
+            rentalId: item.rentalIds?.rentalId._id ?? null,
+            qtyIdsId: item.rentalIds?.qtyIdsId ?? null,
+          }
         : null,
       id: item._id,
     }))
@@ -111,7 +111,15 @@ const Checkout = () => {
       })
     }
     if (paymentInfo.paymentType == E_PaymentType.CreditDebit) {
-      if (paymentInfo.cardNumber && paymentInfo.expirationMonth && paymentInfo.expirationYear && paymentInfo.cardholderName && paymentInfo.country && paymentInfo.cvv && paymentInfo.zipCode) {
+      if (
+        paymentInfo.cardNumber &&
+        paymentInfo.expirationMonth &&
+        paymentInfo.expirationYear &&
+        paymentInfo.cardholderName &&
+        paymentInfo.country &&
+        paymentInfo.cvv &&
+        paymentInfo.zipCode
+      ) {
         const payload = {
           cardInfo: {
             cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ""),

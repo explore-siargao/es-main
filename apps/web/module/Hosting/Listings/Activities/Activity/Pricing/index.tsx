@@ -474,9 +474,9 @@ const ActivityPricing = ({ pageType }: Prop) => {
             </Typography>
             <Typography className="text-xs text-gray-500 italic mb-2">
               This corresponds to time slots you put above, this is the minimum
-              and maximum person each time slot can accommodate. Example for this is
-              "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and maximum of
-              10 people"
+              and maximum person each time slot can accommodate. Example for
+              this is "Friday 1:00 PM to 2:00 PM can handle minimum of 5 and
+              maximum of 10 people"
             </Typography>
             <div className="flex gap-4">
               <div>

@@ -49,7 +49,8 @@ const About = ({ rental }: { rental: T_Rental }) => {
           ))}
           {rental.details?.isRegistered === "Yes" && (
             <div className="flex my-3">
-              <Check className="text-primary-700 mr-2" /> Up-to-date registration
+              <Check className="text-primary-700 mr-2" /> Up-to-date
+              registration
             </div>
           )}
         </div>
