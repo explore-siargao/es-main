@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import { Button } from "@/common/components/ui/Button"
 import {

@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 type T_Props = {
   params: {
     propertyId: string
+    unitId: string
   }
 }
 
-const PropertyPublicPage = async ({ params: { propertyId } }: T_Props) => {
+const PropertyPublicPage = async ({ params: { propertyId, unitId } }: T_Props) => {
   const listing = await getRequest(`/properties/public/${propertyId}`)
 
   if (listing && listing.status === 404) {
@@ -27,7 +28,7 @@ const PropertyPublicPage = async ({ params: { propertyId } }: T_Props) => {
   if ((listing && listing.status === 500) || !listing) {
     throw new Error("Internal Server Error")
   }
-  return <Property propertyData={listing} />
+  return <Property propertyData={listing} unitId={unitId} />
 }
 
 export default PropertyPublicPage
