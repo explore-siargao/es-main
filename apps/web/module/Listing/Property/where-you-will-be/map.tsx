@@ -12,11 +12,12 @@ const DynamicMapWithPin = dynamic(
   }
 )
 
-const Map = ({
-  location,
-}:{ location: T_Location}) => {
+const Map = ({ location }: { location: T_Location }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const coordinates = [location.latitude,location.longitude] as [number, number]
+  const coordinates = [location.latitude, location.longitude] as [
+    number,
+    number,
+  ]
   return (
     <div className="flex flex-col w-full">
       <div className="flex-1 w-full">
@@ -38,10 +39,7 @@ const Map = ({
           </Typography>
         )}
         <div className="flex mt-2">
-          <Typography
-            variant="h5"
-            className="w-full break-words text-text-400"
-          >
+          <Typography variant="h5" className="w-full break-words text-text-400">
             {location.howToGetThere}
           </Typography>
         </div>

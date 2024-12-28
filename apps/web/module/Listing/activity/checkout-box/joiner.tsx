@@ -53,12 +53,19 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
 
   const handleAddToCartSingleItem = () => {
     // this needs to be remove
-    const slot = dateSlot?.slots?.find((slot: T_Activity_Slot) => slot._id === timeSlotId)
+    const slot = dateSlot?.slots?.find(
+      (slot: T_Activity_Slot) => slot._id === timeSlotId
+    )
     const slotIdsId = slot?.slotIdsId[0]._id || ""
-    if(timeSlotId && slotIdsId) {
+    if (timeSlotId && slotIdsId) {
       const payload: T_Add_To_Cart = {
         price: totalBeforeTaxes,
-        activityIds: { activityId: activity._id, dayId: dateSlot._id, timeSlotId, slotIdsId },
+        activityIds: {
+          activityId: activity._id,
+          dayId: dateSlot._id,
+          timeSlotId,
+          slotIdsId,
+        },
         startDate: date?.toISOString() || "",
         endDate: date?.toISOString() || "",
         guestCount: guestsCount,
@@ -81,7 +88,7 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
         },
       })
     } else {
-      toast.error('Please select a time slot')
+      toast.error("Please select a time slot")
     }
   }
 
@@ -122,7 +129,11 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
               {filteredTimeSlots?.length > 0 ? "Select" : "No time slot"}
             </Option>
             {filteredTimeSlots?.map(
-              (time: { timeSlotId: string, startTime: string; endTime: string }) => (
+              (time: {
+                timeSlotId: string
+                startTime: string
+                endTime: string
+              }) => (
                 <Option key={time.startTime} value={time.timeSlotId}>
                   {time.startTime} - {time.endTime}
                 </Option>

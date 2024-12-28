@@ -23,9 +23,11 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
         {items.map((item, index) => {
           let activityBasePrice = 0
           const activity = item.activityIds?.activityId
-          if(activity?.experienceType === E_Activity_Experience_Type.Joiner) {
+          if (activity?.experienceType === E_Activity_Experience_Type.Joiner) {
             activityBasePrice = activity?.pricePerPerson || 0
-          } else if(activity?.experienceType === E_Activity_Experience_Type.Private) {
+          } else if (
+            activity?.experienceType === E_Activity_Experience_Type.Private
+          ) {
             activityBasePrice = activity?.pricePerSlot || 0
           }
           return (
@@ -46,7 +48,8 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
                       {item.activityIds.activityId.title}
                     </Typography>
                     <Typography variant="p" className="text-text-400">
-                      {item.activityIds.activityId?.meetingPoint?.streetAddress &&
+                      {item.activityIds.activityId?.meetingPoint
+                        ?.streetAddress &&
                         `${item.activityIds.activityId?.meetingPoint?.streetAddress}, `}
                       {item.activityIds.activityId?.meetingPoint?.barangay &&
                         `${item.activityIds.activityId?.meetingPoint?.barangay}, `}
@@ -59,17 +62,29 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
               <hr className="mt-4" />
               <div className="flex flex-col mt-3">
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm text-text-400">{formatCurrency(activityBasePrice)} x {item.guestCount || "1"} guest{item.guestCount && item.guestCount > 1 ? "s" : ""}</Typography>
-                  <Typography className="text-sm text-text-400">{formatCurrency(item.price)}</Typography>
+                  <Typography className="text-sm text-text-400">
+                    {formatCurrency(activityBasePrice)} x{" "}
+                    {item.guestCount || "1"} guest
+                    {item.guestCount && item.guestCount > 1 ? "s" : ""}
+                  </Typography>
+                  <Typography className="text-sm text-text-400">
+                    {formatCurrency(item.price)}
+                  </Typography>
                 </div>
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm text-text-400">Service fee</Typography>
-                  <Typography className="text-sm text-text-400">{formatCurrency(item.guestComission)}</Typography>
+                  <Typography className="text-sm text-text-400">
+                    Service fee
+                  </Typography>
+                  <Typography className="text-sm text-text-400">
+                    {formatCurrency(item.guestComission)}
+                  </Typography>
                 </div>
               </div>
               <hr className="mt-3" />
               <div className="flex w-full justify-between mt-2">
-                <Typography fontWeight="semibold">Total before taxes</Typography>
+                <Typography fontWeight="semibold">
+                  Total before taxes
+                </Typography>
                 <Typography fontWeight="semibold">
                   {formatCurrency(item.price + item.guestComission)}
                 </Typography>

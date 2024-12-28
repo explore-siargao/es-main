@@ -64,12 +64,14 @@ function ActivityCartItem({
                 <div className="flex gap-1">
                   {activityItem.durationHour && (
                     <Typography variant="p" className="text-text-400">
-                      {activityItem.durationHour} hour{activityItem.durationHour > 1 ? "s" : ""}
+                      {activityItem.durationHour} hour
+                      {activityItem.durationHour > 1 ? "s" : ""}
                     </Typography>
                   )}
                   {activityItem.durationMinute != 0 && (
                     <Typography variant="p" className="text-text-400">
-                      {activityItem.durationMinute} minute{activityItem.durationMinute > 1 ? "s" : ""}
+                      {activityItem.durationMinute} minute
+                      {activityItem.durationMinute > 1 ? "s" : ""}
                     </Typography>
                   )}
                 </div>

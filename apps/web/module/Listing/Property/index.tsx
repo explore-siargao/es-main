@@ -69,16 +69,11 @@ export const Property = ({
             </div>
 
             <div className="py-6 ">
-              <PlaceOffers
-                offers={property?.facilities}
-              />
+              <PlaceOffers offers={property?.facilities} />
             </div>
             <div className="py-6">
               {property?.bookableUnits?.length > 0 ? (
-                <AvailableBooking
-                  property={property}
-                  selectedUnitId={unitId}
-                />
+                <AvailableBooking property={property} selectedUnitId={unitId} />
               ) : (
                 <Typography variant="h5" className="text-text-400 italic">
                   No available units for this property
@@ -116,9 +111,7 @@ export const Property = ({
       </div>
       <div className="divide-y border-t">
         <div className="py-8">
-          <WhereYoullBeDescription
-            location={property?.location}
-          />
+          <WhereYoullBeDescription location={property?.location} />
         </div>
         <div className="py-8">
           <RatingSummary

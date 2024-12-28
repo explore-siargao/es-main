@@ -21,8 +21,10 @@ const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
             item.endDate ?? new Date(),
             item.startDate ?? new Date()
           )
-          const propertyBasePrice = item.propertyIds?.unitId?.unitPrice?.baseRate || 0;
-          const propertyAllGuestPrice = propertyBasePrice * (item.guestCount || 0) || 0;
+          const propertyBasePrice =
+            item.propertyIds?.unitId?.unitPrice?.baseRate || 0
+          const propertyAllGuestPrice =
+            propertyBasePrice * (item.guestCount || 0) || 0
           return (
             <div key={index}>
               {item.propertyIds?.propertyId && (
@@ -52,21 +54,19 @@ const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
               <div className="flex flex-col mt-3">
                 <div className="flex w-full justify-between items-center">
                   <Typography className="text-sm text-text-400">
-                    {formatCurrency(
-                      propertyAllGuestPrice
-                    )}{" "}
-                    x {nightCount} night{nightCount > 1 && "s"}
+                    {formatCurrency(propertyAllGuestPrice)} x {nightCount} night
+                    {nightCount > 1 && "s"}
                   </Typography>
                   <Typography className="text-sm text-text-400">
                     {formatCurrency(item.price)}
                   </Typography>
                 </div>
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm text-text-400">Service fee</Typography>
                   <Typography className="text-sm text-text-400">
-                    {formatCurrency(
-                      item.guestComission
-                    )}
+                    Service fee
+                  </Typography>
+                  <Typography className="text-sm text-text-400">
+                    {formatCurrency(item.guestComission)}
                   </Typography>
                 </div>
               </div>

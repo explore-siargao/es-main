@@ -21,14 +21,13 @@ const AvailableUnits = ({
   property,
   selectedUnitId,
 }: {
-  property: T_Property,
-  selectedUnitId: string,
+  property: T_Property
+  selectedUnitId: string
 }) => {
   const router = useRouter()
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const [moreInfoModalOpen, setMoreInfoModalOpen] = useState(false)
-  const [moreInfoUnit, setMoreInfoUnit] =
-    useState<T_Bookable_Unit | null>(null)
+  const [moreInfoUnit, setMoreInfoUnit] = useState<T_Bookable_Unit | null>(null)
   const [showAllUnitPhotos, setShowAllUnitPhotos] = useState<T_Photo[]>([])
 
   let title = ""

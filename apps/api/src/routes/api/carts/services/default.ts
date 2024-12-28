@@ -166,7 +166,7 @@ export const addToCart = async (req: Request, res: Response) => {
           const guestCommission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
           const newCart = new dbCarts({
             userId,
-            price: (totalPrice || 0),
+            price: totalPrice || 0,
             // key wrong spelling
             hostComission: hostCommission,
             // key wrong spelling
@@ -998,7 +998,7 @@ export const updateCartInfo = async (req: Request, res: Response) => {
           $set: {
             startDate: startDate ? startDate : null,
             endDate: endDate ? endDate : null,
-            price: (totalPrice || 0),
+            price: totalPrice || 0,
             guestCount,
             // key wrong spelling
             hostComission: hostCommission,
