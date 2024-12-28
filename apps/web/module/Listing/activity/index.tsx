@@ -26,7 +26,6 @@ import { Button } from "@/common/components/ui/Button"
 import { LucideFlag } from "lucide-react"
 import { E_Activity_Experience_Type } from "@repo/contract"
 import HostPolicies from "./host-policies"
-import Link from "next/link"
 
 export const Activity = ({ activity }: { activity: T_Activity }) => {
   const [showModal, setShowModal] = useState(false)

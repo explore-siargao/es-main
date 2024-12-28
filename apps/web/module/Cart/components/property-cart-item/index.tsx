@@ -52,7 +52,7 @@ function PropertyCartItem({
             <Typography variant="h3" fontWeight="semibold">
               {unitItem?.title}
             </Typography>
-            <Typography variant="p" className="text-gray-500">
+            <Typography variant="p" className="text-text-400">
               {propertyItem?.location?.streetAddress &&
                 `${propertyItem?.location?.streetAddress}, `}
               {propertyItem?.location?.barangay &&
@@ -60,7 +60,7 @@ function PropertyCartItem({
               {propertyItem?.location?.city &&
                 `${propertyItem?.location?.city}`}
             </Typography>
-            <Typography variant="p" className="text-gray-500">
+            <Typography variant="p" className="text-text-400">
               {`${unitItem?.bedRooms?.length ? unitItem?.bedRooms?.length : 0} ${unitItem?.bedRooms && unitItem?.bedRooms?.length > 1 ? "Bedrooms" : "Bedroom"}`}
               {` · ${unitItem?.numBathrooms ? unitItem?.numBathrooms : 0} ${unitItem?.numBathrooms && unitItem?.numBathrooms > 1 ? "Bathrooms" : "Bathroom"}`}
               {` · ${unitItem?.livingRooms?.length ? unitItem?.livingRooms?.length : 0} ${unitItem?.livingRooms && unitItem?.livingRooms?.length > 1 ? "Living rooms" : "Living room"}`}
@@ -93,14 +93,14 @@ function PropertyCartItem({
       <div className="border-t my-4"></div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
-          <Typography variant="p" className="text-gray-500">
+          <Typography variant="p" className="text-text-400">
             {item?.startDate && format(item?.startDate, "d MMM, yyyy")}{" "}
             {item?.endDate && `- ${format(item?.endDate, "d MMM, yyyy")}`}
           </Typography>
         </div>
 
         <Typography variant="p" fontWeight="semibold">
-          {formatCurrency(item?.price)}
+          {formatCurrency(item?.price + item.guestComission)}
         </Typography>
       </div>
     </div>

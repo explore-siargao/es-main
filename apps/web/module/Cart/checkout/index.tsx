@@ -57,6 +57,8 @@ const Checkout = () => {
     allItems.filter(
       (item) => item._id && cartIds.includes(item._id) && item.activityIds
     ) || []
+  
+  console.log('delusion', activityItems)
 
   const remapItems = (items: T_Add_To_Cart[]) => {
     return items.map((item) => ({
@@ -228,7 +230,7 @@ const Checkout = () => {
               <RentalPriceDetailsBox items={rentalItems} />
             )}
             <SubTotalBox
-              selectedItemsPrice={allSelectedItems.map((item) => item.price)}
+              selectedItemsPrice={allSelectedItems.map((item) => item.price + item.guestComission)}
               buttonText="Pay now"
               onButtonClick={handleProceedToPayment}
             />

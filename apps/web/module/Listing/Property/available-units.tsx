@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client"
 import { Button } from "@/common/components/ui/Button"
 import {
@@ -16,22 +15,24 @@ import Image from "@/common/components/ui/image"
 import { T_Photo } from "@repo/contract-2/photos"
 import UnitMoreInfoModal from "./modals/unit-more-info-modal"
 import { useRouter } from "next/navigation"
+import { T_Bookable_Unit, T_Property } from "@repo/contract-2/property"
 
 const AvailableUnits = ({
-  bookableUnits,
-  propertyType,
+  property,
   selectedUnitId,
-  propertyId,
-}: T_AvailableBookingProps) => {
+}: {
+  property: T_Property,
+  selectedUnitId: string,
+}) => {
   const router = useRouter()
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const [moreInfoModalOpen, setMoreInfoModalOpen] = useState(false)
   const [moreInfoUnit, setMoreInfoUnit] =
-    useState<T_AvailableBookableUnitProps | null>(null)
+    useState<T_Bookable_Unit | null>(null)
   const [showAllUnitPhotos, setShowAllUnitPhotos] = useState<T_Photo[]>([])
 
   let title = ""
-  switch (propertyType.toUpperCase()) {
+  switch (property.type.toUpperCase()) {
     case PropertyType.HOTEL:
       title = "Available Rooms"
       break
@@ -70,15 +71,17 @@ const AvailableUnits = ({
     </div>
   )
 
+  const propertyId = property._id
+
   return (
     <>
       <Typography variant="h3" fontWeight="semibold">
         {title}
       </Typography>
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-6">
-        {bookableUnits.map((unit: T_AvailableBookableUnitProps) => {
+        {property?.bookableUnits?.map((unit: T_Bookable_Unit) => {
           const bedDisplay = getCombinedBedDisplay(
-            unit.bedRooms,
+            unit.bedRooms || [],
             unit.livingRooms
           )
 
@@ -132,7 +135,6 @@ const AvailableUnits = ({
                 )}
                 <div className="mt-4">
                   <Typography variant="h3" className="flex justify-between">
-                    {/* @ts-expect-error */}
                     <span className="font-semibold">{unit.title}</span>
                     <span>{formatCurrency(unit.unitPrice.baseRate)}</span>
                   </Typography>

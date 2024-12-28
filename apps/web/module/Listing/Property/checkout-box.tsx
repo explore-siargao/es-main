@@ -15,17 +15,20 @@ import { Typography } from "@/common/components/ui/Typography"
 import { T_BookableUnitType } from "@repo/contract"
 import { differenceInDays, format } from "date-fns"
 import useAddToCart from "@/common/hooks/use-add-to-cart"
-import { T_Add_To_Cart } from "@repo/contract-2/cart"
+import { CartService, T_Add_To_Cart } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { LucideShoppingCart } from "lucide-react"
 import { Option, Select } from "@/common/components/ui/Select"
+import { T_Bookable_Unit } from "@repo/contract-2/property"
 
 type T_Props = {
-  units?: T_BookableUnitType[]
+  units?: T_Bookable_Unit[]
   selectedUnitId: string
   propertyId: string
 }
+
+const queryKeys = CartService.getQueryKeys()
 
 const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
   const router = useRouter()
@@ -64,7 +67,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
       onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["get-cart-item"],
+            queryKey: [queryKeys.getItems],
           })
           toast.success((data.message as string) || "Added to cart", {
             duration: 5000,

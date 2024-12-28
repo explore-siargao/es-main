@@ -1,10 +1,9 @@
 "use client"
-
-import { Button } from "@/common/components/ui/Button"
 import WhereYouWillBeModal from "./modal"
 import { Typography } from "@/common/components/ui/Typography"
 import { useState } from "react"
 import dynamic from "next/dynamic"
+import { T_Location } from "@repo/contract-2/address-location"
 
 const DynamicMapWithPin = dynamic(
   () => import("../../../../common/components/Map/MapWithPin"),
@@ -13,35 +12,11 @@ const DynamicMapWithPin = dynamic(
   }
 )
 
-interface ILocation {
-  city: string
-  streetAddress: string
-  barangay: string
-  longitude: number
-  latitude: number
-}
-
-interface MapProps {
-  coordinates: [number, number]
-  desc: string
-  locationDescription: string
-}
-
-interface WhereYoullBeDescriptionProps extends MapProps {
-  location: ILocation
-}
-
-const Map: React.FC<WhereYoullBeDescriptionProps> = ({
+const Map = ({
   location,
-  coordinates,
-  desc,
-  locationDescription,
-}) => {
+}:{ location: T_Location}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const maxLength = 600
-  const slicedDescription =
-    desc?.length > maxLength ? desc.slice(0, maxLength) + "...." : desc
-
+  const coordinates = [location.latitude,location.longitude] as [number, number]
   return (
     <div className="flex flex-col w-full">
       <div className="flex-1 w-full">
@@ -62,16 +37,14 @@ const Map: React.FC<WhereYoullBeDescriptionProps> = ({
             Surigao del Norte
           </Typography>
         )}
-        {desc && (
-          <div className="flex mt-2">
-            <Typography
-              variant="h5"
-              className="w-full break-words text-text-400"
-            >
-              {slicedDescription}
-            </Typography>
-          </div>
-        )}
+        <div className="flex mt-2">
+          <Typography
+            variant="h5"
+            className="w-full break-words text-text-400"
+          >
+            {location.howToGetThere}
+          </Typography>
+        </div>
       </div>
       {/* <div className="flex w-full">
         <Button
@@ -86,7 +59,7 @@ const Map: React.FC<WhereYoullBeDescriptionProps> = ({
         center={coordinates}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        locationDescription={locationDescription}
+        locationDescription={location.howToGetThere}
       />
     </div>
   )

@@ -51,14 +51,14 @@ function RentalCartItem({
             <Typography variant="h3" fontWeight="semibold">
               {rentalItem?.make} {rentalItem?.modelBadge}
             </Typography>
-            <Typography variant="p" className="text-text-500">
+            <Typography variant="p" className="text-text-400">
               {rentalItem?.location?.streetAddress &&
                 `${rentalItem?.location?.streetAddress}, `}
               {rentalItem?.location?.barangay &&
                 `${rentalItem?.location?.barangay}, `}
               {rentalItem?.location?.city && `${rentalItem?.location?.city}`}
             </Typography>
-            <Typography variant="p" className="text-text-500">
+            <Typography variant="p" className="text-text-400">
               {rentalItem?.transmission} Transmission
             </Typography>
           </div>
@@ -96,7 +96,7 @@ function RentalCartItem({
         </div>
 
         <Typography variant="p" fontWeight="semibold">
-          {formatCurrency(item?.price)}
+          {formatCurrency(item?.price + item.guestComission)}
         </Typography>
       </div>
     </div>

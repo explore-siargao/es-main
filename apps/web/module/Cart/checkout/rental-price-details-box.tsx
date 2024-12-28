@@ -1,10 +1,8 @@
 import { Typography } from "@/common/components/ui/Typography"
 import React from "react"
-import { GUEST_COMMISSION_PERCENT } from "@repo/constants"
 import Image from "@/common/components/ui/image"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import formatCurrency from "@/common/helpers/format-currency"
-import extractCommission from "../helpers/extract-commission"
 import { differenceInDays } from "date-fns"
 
 type T_Rental_Price_Details_Box = {
@@ -19,14 +17,11 @@ const RentalPriceDetailsBox = ({ items }: T_Rental_Price_Details_Box) => {
       </Typography>
       <div className="mt-4 flex flex-col gap-6">
         {items.map((item, index) => {
-          const extractedPriceCommission = extractCommission(
-            item.price || 0,
-            GUEST_COMMISSION_PERCENT
-          )
           const daysCount = differenceInDays(
             item.endDate ?? new Date(),
             item.startDate ?? new Date()
           )
+          const rentalBasePrice = item.rentalIds?.rentalId?.pricing?.dayRate || 0;
           return (
             <div key={index}>
               {item.rentalIds?.rentalId && (
@@ -45,7 +40,7 @@ const RentalPriceDetailsBox = ({ items }: T_Rental_Price_Details_Box) => {
                       {item.rentalIds.rentalId.make}{" "}
                       {item.rentalIds.rentalId.modelBadge}
                     </Typography>
-                    <Typography variant="p" className="text-gray-500">
+                    <Typography variant="p" className="text-text-400">
                       {item.rentalIds.rentalId?.location?.streetAddress &&
                         `${item.rentalIds.rentalId?.location?.streetAddress}, `}
                       {item.rentalIds.rentalId?.location?.barangay &&
@@ -59,21 +54,21 @@ const RentalPriceDetailsBox = ({ items }: T_Rental_Price_Details_Box) => {
               <hr className="mt-4" />
               <div className="flex flex-col mt-3">
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm">
+                  <Typography className="text-sm text-text-400">
                     {formatCurrency(
-                      extractedPriceCommission.basePrice / daysCount
+                      rentalBasePrice
                     )}{" "}
                     x {daysCount} day{daysCount > 1 && "s"}
                   </Typography>
-                  <Typography className="text-sm">
-                    {formatCurrency(extractedPriceCommission.basePrice)}
+                  <Typography className="text-sm text-text-400">
+                    {formatCurrency(item.price)}
                   </Typography>
                 </div>
                 <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm">Service fee</Typography>
-                  <Typography className="text-sm">
+                  <Typography className="text-sm text-text-400">Service fee</Typography>
+                  <Typography className="text-sm text-text-400">
                     {formatCurrency(
-                      extractedPriceCommission.extractedPercentage
+                      item.guestComission
                     )}
                   </Typography>
                 </div>
@@ -84,7 +79,7 @@ const RentalPriceDetailsBox = ({ items }: T_Rental_Price_Details_Box) => {
                   Total before taxes
                 </Typography>
                 <Typography fontWeight="semibold">
-                  {formatCurrency(item.price)}
+                  {formatCurrency(item.price + item.guestComission)}
                 </Typography>
               </div>
             </div>

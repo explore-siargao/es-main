@@ -14,11 +14,13 @@ import PriceBreakdownModal from "./modals/price-breakdown-modal"
 import usePickupDropoffStore from "./stores/use-pickup-dropoff-store"
 import { Option, Select } from "@/common/components/ui/Select"
 import CheckInOutModal from "./modals/check-in-out-modal"
-import { T_Add_To_Cart } from "@repo/contract-2/cart"
+import { CartService, T_Add_To_Cart } from "@repo/contract-2/cart"
 import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import combineDateTime from "./helpers/combine-date-time"
+
+const queryKeys = CartService.getQueryKeys()
 
 const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const router = useRouter()
@@ -57,7 +59,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
       onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
-            queryKey: ["get-cart-item"],
+            queryKey: [queryKeys.getItems],
           })
           toast.success((data.message as string) || "Added to cart", {
             duration: 5000,

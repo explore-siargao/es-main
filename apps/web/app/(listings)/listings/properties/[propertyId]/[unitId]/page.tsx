@@ -30,7 +30,7 @@ const PropertyPublicPage = async ({
   if ((listing && listing.status === 500) || !listing) {
     throw new Error("Internal Server Error")
   }
-  return <Property propertyData={listing} unitId={unitId} />
+  return <Property property={listing.item} unitId={unitId} />
 }
 
 export default PropertyPublicPage

@@ -1,11 +1,10 @@
 import ModalContainer from "@/common/components/ModalContainer"
-import { T_AvailableBookableUnitProps } from "../types/AvailableBooking"
-import HostPolicies from "../host-policies"
+import { T_Bookable_Unit } from "@repo/contract-2/property"
 
 interface UnitMoreInfoModalProps {
   isOpen: boolean
   onClose: () => void
-  unit: T_AvailableBookableUnitProps | null
+  unit: T_Bookable_Unit | null
 }
 const UnitMoreInfoModal = ({
   isOpen,

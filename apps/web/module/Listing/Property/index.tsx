@@ -14,7 +14,6 @@ import { Flag } from "lucide-react"
 import { useState } from "react"
 import ReportListingModal from "../modals/report-listing-modal"
 import AvailableBooking from "./available-units"
-import { T_BookableUnitType } from "@repo/contract"
 import { format, parseISO } from "date-fns"
 import { description, hostDummy, ratingSummary, userReviews } from "../dummy"
 import PledgeBox from "../pledge-box"
@@ -22,54 +21,47 @@ import HostedBy from "../hosted-by"
 import SimilarProperties from "./similar-properties"
 import { Typography } from "@/common/components/ui/Typography"
 import HostPolicies from "./host-policies"
+import { T_Property } from "@repo/contract-2/property"
 
 export const Property = ({
-  propertyData: data,
+  property,
   unitId,
 }: {
-  propertyData: any
+  property: T_Property
   unitId: string
 }) => {
-  const [showModal, setShowModal] = useState(false)
-  const [selectedBookableUnit, setSelectedBookableUnit] =
-    useState<T_BookableUnitType>()
-
-  const handleSelectBookableUnit = (bookableUnit: T_BookableUnitType) => {
-    setSelectedBookableUnit(bookableUnit)
-  }
+  const [showReportModal, setShowReportModal] = useState(false)
 
   const handleOpenModal = () => {
-    setShowModal(true)
+    setShowReportModal(true)
   }
   const handleCloseModal = () => {
-    setShowModal(false)
+    setShowReportModal(false)
   }
-  const offerBy = data?.item
+  const offerBy = property
   const formattedDate = offerBy?.createdAt
     ? format(parseISO(offerBy.createdAt), "MMMM d, yyyy")
     : ""
-  const latitude = data?.item?.location?.latitude
-  const longitude = data?.item?.location?.longitude
 
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
-      <Hero images={data?.item?.photos} title={data?.item?.title} />
+      <Hero images={property?.photos} title={property?.title} />
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
             <div className="pb-6">
               <HostedBy
-                name={data?.item?.offerBy?.guest?.firstName}
-                language={data?.item?.offerBy?.guest?.language}
-                profilePicture={data?.item?.offerBy?.guest?.profilePicture}
-                joinDate={data?.item?.offerBy?.createdAt}
+                name={property?.offerBy?.guest?.firstName}
+                language={property?.offerBy?.guest?.language}
+                profilePicture={property?.offerBy?.profilePicture}
+                joinDate={property?.offerBy?.createdAt || ""}
               />
             </div>
             <div className="py-6">
               <SummaryInfo
-                bookableUnits={data?.item?.bookableUnits}
-                location={data?.item?.location}
+                bookableUnits={property?.bookableUnits}
+                location={property?.location}
               />
             </div>
             <div className="py-6">
@@ -78,20 +70,14 @@ export const Property = ({
 
             <div className="py-6 ">
               <PlaceOffers
-                offers={data?.item?.facilities}
-                group={data?.item?.facilities}
+                offers={property?.facilities}
               />
             </div>
             <div className="py-6">
-              {data?.item?.bookableUnits?.length > 0 ? (
+              {property?.bookableUnits?.length > 0 ? (
                 <AvailableBooking
-                  bookableUnits={data?.item?.bookableUnits}
-                  propertyType={data?.item?.type}
-                  onSelectBookableUnit={handleSelectBookableUnit}
-                  selectedBookableUnit={selectedBookableUnit}
-                  imagesAvailable={data?.item?.photos}
+                  property={property}
                   selectedUnitId={unitId}
-                  propertyId={data?.item._id}
                 />
               ) : (
                 <Typography variant="h5" className="text-text-400 italic">
@@ -100,7 +86,7 @@ export const Property = ({
               )}
             </div>
             <div className="pt-6">
-              <HostPolicies property={data.item} />
+              <HostPolicies property={property} />
             </div>
           </div>
         </div>
@@ -108,8 +94,8 @@ export const Property = ({
           <div className="md:sticky md:top-6">
             <CheckoutBox
               selectedUnitId={unitId}
-              propertyId={data?.item._id}
-              units={data?.item?.bookableUnits}
+              propertyId={property?._id}
+              units={property?.bookableUnits}
             />
             <PledgeBox />
             <div className="flex justify-center">
@@ -130,16 +116,9 @@ export const Property = ({
       </div>
       <div className="divide-y border-t">
         <div className="py-8">
-          {data?.item?.location &&
-            typeof latitude === "number" &&
-            typeof longitude === "number" && (
-              <WhereYoullBeDescription
-                location={data.item.location}
-                coordinates={[latitude, longitude]}
-                desc={data.item.location.howToGetThere}
-                locationDescription={data?.item?.location.howToGetThere}
-              />
-            )}
+          <WhereYoullBeDescription
+            location={property?.location}
+          />
         </div>
         <div className="py-8">
           <RatingSummary
@@ -166,7 +145,7 @@ export const Property = ({
           <SimilarProperties />
         </div>
       </div>
-      <ReportListingModal isOpen={showModal} onClose={handleCloseModal} />
+      <ReportListingModal isOpen={showReportModal} onClose={handleCloseModal} />
     </WidthWrapper>
   )
 }

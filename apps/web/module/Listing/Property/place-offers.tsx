@@ -1,12 +1,12 @@
-import React, { useState } from "react"
+import React from "react"
 import IconDescription from "../icon-description"
-import { T_Offer, T_PlaceOfferProps } from "./types/PlaceOffer"
 import { iconMap } from "@/common/helpers/iconMap"
-import PlaceOfferModal from "@/module/Listing/components/modals/PlaceOfferModal"
+// import PlaceOfferModal from "@/module/Listing/components/modals/PlaceOfferModal"
 import { Typography } from "@/common/components/ui/Typography"
+import { T_Facility } from "@repo/contract-2/property"
 
-const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
-  const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
+const PlaceOffers = ({ offers }: { offers: T_Facility[] }) => {
+  // const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
 
   const getCategoryIcon = (
     category: string
@@ -48,7 +48,7 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
     }
   }
 
-  const splitOffersIntoColumns = (offers: T_Offer[]) => {
+  const splitOffersIntoColumns = (offers: T_Facility[]) => {
     const middleIndex = Math.ceil(offers?.length / 2)
     const leftColumn = offers?.slice(0, middleIndex).slice(0, 4)
     const rightColumn = offers?.slice(middleIndex).slice(0, 4)
@@ -65,7 +65,7 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
       <div className="mt-6">
         <div className="grid grid-cols-2 gap-4">
           <ul>
-            {leftColumn?.map((item: T_Offer) => (
+            {leftColumn?.map((item: T_Facility) => (
               <div className="space-y-2" key={item._id}>
                 <IconDescription
                   key={item._id}
@@ -77,7 +77,7 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
             ))}
           </ul>
           <ul>
-            {rightColumn?.map((item: T_Offer) => (
+            {rightColumn?.map((item: T_Facility) => (
               <div className="space-y-2" key={item._id}>
                 <IconDescription
                   key={item._id}
@@ -97,11 +97,11 @@ const PlaceOffers = ({ offers, group }: T_PlaceOfferProps) => {
             Show all {offers?.length} amenities
           </Button> */}
       </div>
-      <PlaceOfferModal
+      {/* <PlaceOfferModal
         isOpen={showMoreModalOpen}
         onClose={() => setShowMoreModalOpen(false)}
         group={group}
-      />
+      /> */}
     </>
   )
 }

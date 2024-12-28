@@ -51,23 +51,25 @@ function ActivityCartItem({
             <Typography variant="h3" fontWeight="semibold">
               {activityItem?.title}
             </Typography>
-            <Typography variant="p" className="text-gray-500">
-              {`${activityItem?.meetingPoint?.streetAddress}, `}
-              {`${activityItem?.meetingPoint?.barangay}, `}
-              {`${activityItem?.meetingPoint?.city}`}
+            <Typography variant="p" className="text-text-400">
+              {activityItem?.meetingPoint?.streetAddress &&
+                `${activityItem?.meetingPoint?.streetAddress}, `}
+              {activityItem?.meetingPoint?.barangay &&
+                `${activityItem?.meetingPoint?.barangay}, `}
+              {activityItem?.meetingPoint?.city &&
+                `${activityItem?.meetingPoint?.city}`}
             </Typography>
             {(activityItem?.durationHour || activityItem?.durationMinute) && (
               <div className="flex gap-2 items-center justify-start">
-                <Clock height={18} className="text-gray-500" />
                 <div className="flex gap-1">
                   {activityItem.durationHour && (
-                    <Typography variant="p" className="text-gray-500">
-                      {activityItem.durationHour}h
+                    <Typography variant="p" className="text-text-400">
+                      {activityItem.durationHour} hour{activityItem.durationHour > 1 ? "s" : ""}
                     </Typography>
                   )}
                   {activityItem.durationMinute != 0 && (
-                    <Typography variant="p" className="text-gray-500">
-                      {activityItem.durationMinute}m
+                    <Typography variant="p" className="text-text-400">
+                      {activityItem.durationMinute} minute{activityItem.durationMinute > 1 ? "s" : ""}
                     </Typography>
                   )}
                 </div>
@@ -101,14 +103,13 @@ function ActivityCartItem({
       <div className="border-t my-4"></div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
-          <Typography variant="p" className="text-gray-500">
-            {item.startDate && format(item.startDate, "d MMM, yyyy")}{" "}
-            {item?.endDate && `- ${format(item?.endDate, "d MMM, yyyy")}`}
+          <Typography variant="p" className="text-text-400">
+            {item.startDate && format(item.startDate, "MMMM d, yyyy")}
           </Typography>
         </div>
 
         <Typography variant="p" fontWeight="semibold">
-          {formatCurrency(item.price)}
+          {formatCurrency(item.price + item.guestComission)}
         </Typography>
       </div>
     </div>

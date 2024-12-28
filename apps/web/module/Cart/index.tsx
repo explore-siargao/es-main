@@ -50,7 +50,7 @@ const Cart = () => {
 
         <div className="col-span-1 relative">
           <SubTotalBox
-            selectedItemsPrice={selectedItems.map((item) => item.price)}
+            selectedItemsPrice={selectedItems.map((item) => item.price + item.guestComission)}
             buttonText="Proceed to checkout"
             onButtonClick={handleCheckout}
           />

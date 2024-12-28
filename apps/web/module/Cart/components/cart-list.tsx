@@ -8,13 +8,13 @@ import RentalCartItem from "./rental-cart-item"
 import DeleteCartItemModal from "./delete-cart-item-modal"
 import DeleteAllSelectedItems from "./delete-all-selected-items-modal"
 
-interface ICartProps {
+type T_Cart_Props = {
   items: T_Cart_Item[]
   setSelectedItems: (items: T_Cart_Item[]) => void
   selectedItems: T_Cart_Item[]
 }
 
-const CartList: React.FC<ICartProps> = ({
+const CartList: React.FC<T_Cart_Props> = ({
   items,
   setSelectedItems,
   selectedItems,
@@ -42,8 +42,8 @@ const CartList: React.FC<ICartProps> = ({
   }
 
   const toggleCheckbox = (id: string) => {
-    const item = items.find((cartItem) => cartItem._id === id)
-    if (!item) return
+    const cartItem = items.find((cartItem) => cartItem._id === id)
+    if (!cartItem) return
 
     if (selectedItemsIds.includes(id)) {
       setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id))
@@ -52,7 +52,7 @@ const CartList: React.FC<ICartProps> = ({
       )
     } else {
       setSelectedItemsIds([...selectedItemsIds, id])
-      setSelectedItems([...selectedItems, item])
+      setSelectedItems([...selectedItems, cartItem])
     }
   }
 
