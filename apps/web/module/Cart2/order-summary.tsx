@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { T_Cart_Item } from "@repo/contract-2/cart"
-import PropertyCartItem from "./property-cart-item"
-import ActivityCartItem from "./activity-cart-item"
-import RentalCartItem from "./rental-cart-item"
+import PropertyCartItem from "./lists/property-item"
+import ActivityCartItem from "./lists/activity-item"
+import RentalCartItem from "./lists/rental-item"
 
 interface ICartProps {
   items: T_Cart_Item[]

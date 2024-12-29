@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation"
 import { useCartStore } from "../stores/cart-stores"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import OrderSummary from "../components/order-summary"
+import OrderSummary from "../order-summary"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { useState } from "react"
-import SubTotalBox from "../components/sub-total-box"
-import { Step, Stepper } from "../components/stepper"
+import SubTotalBox from "../sub-total-box"
+import { Step, Stepper } from "../stepper"
 
 const CheckoutPage = () => {
   const { selectedItems } = useCartStore()

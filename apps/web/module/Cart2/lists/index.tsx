@@ -2,11 +2,11 @@ import InputCheckbox from "@/common/components/ui/InputCheckbox"
 import { Button } from "@/common/components/ui/Button"
 import { useEffect, useState } from "react"
 import { T_Cart_Item } from "@repo/contract-2/cart"
-import PropertyCartItem from "./property-cart-item"
-import ActivityCartItem from "./activity-cart-item"
-import RentalCartItem from "./rental-cart-item"
-import DeleteCartItemModal from "./delete-cart-item-modal"
-import DeleteAllSelectedItems from "./delete-all-selected-items-modal"
+import PropertyCartItem from "./property-item"
+import ActivityCartItem from "./activity-item"
+import RentalCartItem from "./rental-item"
+import DeleteCartItemModal from "../modals/delete-cart-item-modal"
+import DeleteAllSelectedItems from "../modals/delete-all-selected-items-modal"
 
 type T_Cart_Props = {
   items: T_Cart_Item[]

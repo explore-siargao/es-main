@@ -7,42 +7,36 @@ import { format } from "date-fns/format"
 import { Pencil, Trash } from "lucide-react"
 import React from "react"
 
-interface ICartProps {
+type T_Props = {
   item: T_Cart_Item
   selectedItems: string[]
   index: number
   toggleCheckbox: (id: string, price: number) => void
   setItemId: (value: string) => void
   setIsDeleteCartItemOpen: (value: boolean) => void
-  viewOnly?: boolean
 }
 
-function PropertyCartItem({
+function RentalItem({
   item,
   selectedItems,
   index,
   toggleCheckbox,
   setItemId,
   setIsDeleteCartItemOpen,
-  viewOnly,
-}: ICartProps) {
-  const unitItem = item.propertyIds?.unitId
-  const propertyItem = item.propertyIds?.propertyId
+}: T_Props) {
+  const rentalItem = item.rentalIds?.rentalId
   return (
-    <div key={propertyItem?._id} className="border rounded-xl p-4 mb-6">
+    <div key={rentalItem?._id} className="border rounded-xl p-4 mb-6">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-4">
-          {viewOnly ? null : (
-            <InputCheckbox
-              id={item._id || index}
-              colorVariant="secondary"
-              checked={selectedItems.includes(item._id || "")}
-              onChange={() => toggleCheckbox(item._id || "", item.price)}
-            />
-          )}
-
+          <InputCheckbox
+            id={item._id || index}
+            colorVariant="secondary"
+            checked={selectedItems.includes(item._id || "")}
+            onChange={() => toggleCheckbox(item._id || "", item.price)}
+          />
           <img
-            src={`/assets/${unitItem?.photos && unitItem?.photos[0]?.key}`}
+            src={`/assets/${rentalItem?.photos && rentalItem?.photos[0]?.key}`}
             width={140}
             height={140}
             alt="item image"
@@ -50,24 +44,20 @@ function PropertyCartItem({
           />
           <div className="flex-1">
             <Typography variant="h3" fontWeight="semibold">
-              {unitItem?.title}
+              {rentalItem?.make} {rentalItem?.modelBadge}
             </Typography>
             <Typography variant="p" className="text-text-400">
-              {propertyItem?.location?.streetAddress &&
-                `${propertyItem?.location?.streetAddress}, `}
-              {propertyItem?.location?.barangay &&
-                `${propertyItem?.location?.barangay}, `}
-              {propertyItem?.location?.city &&
-                `${propertyItem?.location?.city}`}
+              {rentalItem?.location?.streetAddress &&
+                `${rentalItem?.location?.streetAddress}, `}
+              {rentalItem?.location?.barangay &&
+                `${rentalItem?.location?.barangay}, `}
+              {rentalItem?.location?.city && `${rentalItem?.location?.city}`}
             </Typography>
             <Typography variant="p" className="text-text-400">
-              {`${unitItem?.bedRooms?.length ? unitItem?.bedRooms?.length : 0} ${unitItem?.bedRooms && unitItem?.bedRooms?.length > 1 ? "Bedrooms" : "Bedroom"}`}
-              {` · ${unitItem?.numBathrooms ? unitItem?.numBathrooms : 0} ${unitItem?.numBathrooms && unitItem?.numBathrooms > 1 ? "Bathrooms" : "Bathroom"}`}
-              {` · ${unitItem?.livingRooms?.length ? unitItem?.livingRooms?.length : 0} ${unitItem?.livingRooms && unitItem?.livingRooms?.length > 1 ? "Living rooms" : "Living room"}`}
+              {rentalItem?.transmission} Transmission
             </Typography>
           </div>
         </div>
-        {viewOnly ? null : (
           <div className="flex items-end">
             <Button
               variant="link"
@@ -88,12 +78,11 @@ function PropertyCartItem({
               Remove
             </Button>
           </div>
-        )}
       </div>
       <div className="border-t my-4"></div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
-          <Typography variant="p" className="text-text-400">
+          <Typography variant="p" className="text-gray-500">
             {item?.startDate && format(item?.startDate, "d MMM, yyyy")}{" "}
             {item?.endDate && `- ${format(item?.endDate, "d MMM, yyyy")}`}
           </Typography>
@@ -107,4 +96,4 @@ function PropertyCartItem({
   )
 }
 
-export default PropertyCartItem
+export default RentalItem

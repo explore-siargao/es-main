@@ -1,8 +1,8 @@
 "use client"
 
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import CartList from "./components/cart-list"
-import SubTotalBox from "./components/sub-total-box"
+import CartList from "./lists"
+import SubTotalBox from "./sub-total-box"
 import useGetCartItems from "./hooks/use-get-cart-items"
 import { useRouter } from "next/navigation"
 import { useCartStore } from "./stores/cart-stores"
