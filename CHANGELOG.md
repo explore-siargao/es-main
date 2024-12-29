@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.37.0](https://github.com/explore-siargao/es-main/compare/v0.36.0...v0.37.0) (2024-12-29)
+
+
+### 🚀 Features
+
+* Added add to cart function for activity public listing ([f6a7311](https://github.com/explore-siargao/es-main/commit/f6a7311cb7f92214ab42e48784acd169a39a1752))
+* Added add to cart function for private activity ([47f537e](https://github.com/explore-siargao/es-main/commit/47f537eff5f30a13a2ade1217d7fd78094caad5d))
+* Added rental pickup dropoff calendar function and ui ([5c1d459](https://github.com/explore-siargao/es-main/commit/5c1d459ab463101bf6e7853351bf1fc3a7dcb3fa))
+* Added update contact info in checkout items ([8d4837e](https://github.com/explore-siargao/es-main/commit/8d4837ef140eb60fc6f1dc375aa96a4afc609ab0))
+* **api:** Removed dayjs in basecode and converted it to date-fns ([a0fa888](https://github.com/explore-siargao/es-main/commit/a0fa888dc5dded2dc0aa659d20b85db21293705d))
+* Cleanup public listing activity page ([107e841](https://github.com/explore-siargao/es-main/commit/107e841f4022d2272b75904bd7040614f2dfd4df))
+* Made property selected unit base on the url and cleanup activities ([8e9acbc](https://github.com/explore-siargao/es-main/commit/8e9acbc7e08f58a4d67a147d28aa3f545d4e056d))
+
+
+### 🛠 Bug Fixes
+
+* **api:** When changing property types reset units list on that property fixed ([2ab7ed3](https://github.com/explore-siargao/es-main/commit/2ab7ed3ad706f718b55a0ad2cd4aaefa00a65f6f))
+
+
+### 🧰 Maintenance
+
+* adjust checkout function to fit to backend ([e7d78e9](https://github.com/explore-siargao/es-main/commit/e7d78e9eeebea83d8ce9094eee6cd9a0c5cb89f0))
+* change Cart module folder name to lowercase ([3af6277](https://github.com/explore-siargao/es-main/commit/3af6277b9887661060706fb87872c1aa0f8f415a))
+* cleanup and add info in property public listing ([cf685c6](https://github.com/explore-siargao/es-main/commit/cf685c6a714ee1f89ba1a0fe5e0ead5b809cea28))
+* cleanup cart module ([f1a1895](https://github.com/explore-siargao/es-main/commit/f1a1895772c91e6e79dac84045ffdd7ea4555a45))
+* Cleanup property and rental module ([d35cc50](https://github.com/explore-siargao/es-main/commit/d35cc50478e6103e29ba686e00868e1e850af4fa))
+* Cleanup rental info ([6559626](https://github.com/explore-siargao/es-main/commit/655962696dac46ccae6e1f69fe4a91b4e54182ef))
+* Cleanup rentals and change folders to lowercase ([75d2144](https://github.com/explore-siargao/es-main/commit/75d2144ccbff46144f0cb2aed18044c690a70cfb))
+* update activity seeder to have multiple time slots ([d9f1292](https://github.com/explore-siargao/es-main/commit/d9f12921d51468dc316c519deb8c01d09af583b8))
+* update commission text ([eba3697](https://github.com/explore-siargao/es-main/commit/eba3697d88e12aee33da8ab240310deac132353b))
+* Update home page slider button and Calendar range picker ([1e37fbc](https://github.com/explore-siargao/es-main/commit/1e37fbc76c21ea5c4b7dd2407116924e8976b94b))
+* update property filtered title to unit title ([7d2007b](https://github.com/explore-siargao/es-main/commit/7d2007b9db33496b53a85405fc958f322f84980b))
+* update text for cancellation policy checkout for rental ([c0c15c0](https://github.com/explore-siargao/es-main/commit/c0c15c05c1dc9722229b34dd24db5b503fb5ce21))
+
 ## [0.36.0](https://github.com/explore-siargao/es-main/compare/v0.35.0...v0.36.0) (2024-12-19)
 
 ### 🚀 Features
