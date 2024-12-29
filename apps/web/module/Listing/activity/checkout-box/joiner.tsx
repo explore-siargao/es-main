@@ -16,7 +16,6 @@ import { CartService, T_Add_To_Cart } from "@repo/contract-2/cart"
 import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { sl } from "date-fns/locale"
 
 type T_Checkout = {
   activity: T_Activity

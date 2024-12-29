@@ -12,15 +12,23 @@ import { LucideShoppingCart } from "lucide-react"
 import useDateTimeStore from "../stores/use-date-time-store"
 import { T_Activity, T_Activity_Slot } from "@repo/contract-2/activity"
 import { E_Activity_Experience_Type } from "@repo/contract"
+import useAddToCart from "@/common/hooks/use-add-to-cart"
+import { useQueryClient } from "@tanstack/react-query"
+import { CartService, T_Add_To_Cart } from "@repo/contract-2/cart"
+import toast from "react-hot-toast"
 
 type T_Checkout = {
   activity: T_Activity
 }
 
+const queryKeys = CartService.getQueryKeys()
+
 const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
+  const queryClient = useQueryClient()
+  const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const date = useDateTimeStore((state) => state.date)
-  const time = useDateTimeStore((state) => state.time)
+  const timeSlotId = useDateTimeStore((state) => state.timeSlotId)
   const updateDate = useDateTimeStore((state) => state.updateDate)
   const updateTime = useDateTimeStore((state) => state.updateTime)
   const dayOfWeek = format(date, `EEEE`).toLowerCase()
@@ -29,6 +37,7 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
 
   const filteredTimeSlots = dateSlot?.slots?.map((slot: T_Activity_Slot) => {
     return {
+      timeSlotId: slot._id,
       startTime: slot.startTime,
       endTime: slot.endTime,
     }
@@ -37,6 +46,47 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
   const baseRate = activity?.pricePerSlot || 0
   const esCommissionTotal = baseRate * GUEST_COMMISSION_PERCENT || 0
   const totalBeforeTaxes = baseRate + esCommissionTotal || 0
+
+  const handleAddToCartSingleItem = () => {
+    // this needs to be remove
+    const slot = dateSlot?.slots?.find(
+      (slot: T_Activity_Slot) => slot._id === timeSlotId
+    )
+    const slotIdsId = slot?.slotIdsId[0]._id || ""
+    if (timeSlotId && slotIdsId) {
+      const payload: T_Add_To_Cart = {
+        price: totalBeforeTaxes,
+        activityIds: {
+          activityId: activity._id,
+          dayId: dateSlot._id,
+          timeSlotId,
+          slotIdsId,
+        },
+        startDate: date?.toISOString() || "",
+        endDate: date?.toISOString() || "",
+        guestCount: 1,
+      }
+      addToCart(payload, {
+        onSuccess: (data) => {
+          if (!data.error) {
+            queryClient.invalidateQueries({
+              queryKey: [queryKeys.getItems],
+            })
+            toast.success((data.message as string) || "Added to cart", {
+              duration: 5000,
+            })
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err) => {
+          toast.error(String(err))
+        },
+      })
+    } else {
+      toast.error("Please select a time slot")
+    }
+  }
 
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
@@ -67,7 +117,7 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
               updateTime(event.target.value)
             }
-            defaultValue={time}
+            defaultValue={timeSlotId}
             disabled={!filteredTimeSlots || filteredTimeSlots?.length === 0}
             label={`Time slot`}
             required
@@ -76,8 +126,8 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
               {filteredTimeSlots?.length > 0 ? "Select" : "No time slot"}
             </Option>
             {filteredTimeSlots?.map(
-              (time: { startTime: string; endTime: string }) => (
-                <Option key={time.startTime} value={time.startTime}>
+              (time: { timeSlotId: string, startTime: string; endTime: string }) => (
+                <Option key={time.startTime} value={time.timeSlotId}>
                   {time.startTime} - {time.endTime}
                 </Option>
               )
@@ -88,14 +138,15 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
         <Button
           variant="primary"
           className="font-bold"
-          disabled={!date || !time}
+          disabled={!date || !timeSlotId || isAddToCartPending}
         >
           Book now
         </Button>
         <Button
           variant="default"
           className="font-bold"
-          disabled={!date || !time}
+          disabled={!date || !timeSlotId || isAddToCartPending}
+          onClick={() => handleAddToCartSingleItem()}
         >
           <LucideShoppingCart size={20} className="mr-2" /> Add to cart
         </Button>

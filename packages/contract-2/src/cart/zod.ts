@@ -22,7 +22,7 @@ const Z_Contact = z.object({
   phoneNumber: z.string(),
   email: z.string().email(),
 })
-export const Z_AddCart = z
+export const Z_Add_To_Cart = z
   .object({
     id: z.string().optional(),
     _id: z.string().optional(),
@@ -52,8 +52,8 @@ export const Z_AddCart = z
       .nullable(),
     guestCount: z.number(),
     price: z.number().optional(),
-    hostComission: z.number(),
-    guestComission: z.number(),
+    hostComission: z.number().optional(),
+    guestComission: z.number().optional(),
     startDate: z.string(),
     endDate: z.string(),
     createdAt: z.string().nullable().optional(),
@@ -66,7 +66,7 @@ export const Z_AddCart = z
     path: ["propertyIds", "rentalIds", "activityIds"],
   })
 
-export const Z_UpdateCart = z.object({
+export const Z_Update_Cart = z.object({
   startDate: z.string(),
   endDate: z.string(),
   guestCount: z.number(),
@@ -134,7 +134,7 @@ export const Z_Review = z.object({
   deletedAt: z.string().nullable().optional(),
 })
 
-export const Z_CartItem = z.object({
+export const Z_Cart_Item = z.object({
   _id: z.string().optional(),
   userId: Z_Host.optional(),
   propertyIds: z
@@ -346,5 +346,3 @@ export const Z_CartItem = z.object({
   updatedAt: z.string().nullable().optional(),
   deletedAt: z.string().nullable().optional(),
 })
-
-export const Z_Add_CartItems = z.array(Z_AddCart)

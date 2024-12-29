@@ -6,6 +6,7 @@ import CheckoutMoreInfoModal from "@/module/Listing/property/modals/checkout-mor
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import formatCurrency from "@/common/helpers/format-currency"
 import { E_Activity_Experience_Type } from "@repo/contract"
+import exp from 'constants';
 
 type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
@@ -19,7 +20,7 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
       <Typography variant="h2" fontWeight="semibold">
         Activities
       </Typography>
-      <div className="mt-4">
+      <div className="mt-4 flex flex-col gap-6">
         {items.map((item, index) => {
           let activityBasePrice = 0
           const activity = item.activityIds?.activityId
@@ -61,16 +62,27 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
               )}
               <hr className="mt-4" />
               <div className="flex flex-col mt-3">
-                <div className="flex w-full justify-between items-center">
-                  <Typography className="text-sm text-text-400">
-                    {formatCurrency(activityBasePrice)} x{" "}
-                    {item.guestCount || "1"} guest
-                    {item.guestCount && item.guestCount > 1 ? "s" : ""}
-                  </Typography>
-                  <Typography className="text-sm text-text-400">
-                    {formatCurrency(item.price)}
-                  </Typography>
-                </div>
+                {item.activityIds?.activityId?.experienceType === E_Activity_Experience_Type.Joiner ? (
+                  <div className="flex w-full justify-between items-center">
+                    <Typography className="text-sm text-text-400">
+                      {formatCurrency(activityBasePrice)} x{" "}
+                      {item.guestCount || "1"} guest
+                      {item.guestCount && item.guestCount > 1 ? "s" : ""}
+                    </Typography>
+                    <Typography className="text-sm text-text-400">
+                      {formatCurrency(item.price)}
+                    </Typography>
+                  </div>
+                ) : (
+                  <div className="flex w-full justify-between items-center">
+                    <Typography className="text-sm text-text-400">
+                      Slot
+                    </Typography>
+                    <Typography className="text-sm text-text-400">
+                      {formatCurrency(item.price)}
+                    </Typography>
+                  </div>
+                )}
                 <div className="flex w-full justify-between items-center">
                   <Typography className="text-sm text-text-400">
                     Service fee

@@ -48,7 +48,6 @@ const OrderSummary: React.FC<ICartProps> = ({
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
-              viewOnly={true}
             />
           )
         } else if (cartItem.activityIds) {
@@ -60,7 +59,6 @@ const OrderSummary: React.FC<ICartProps> = ({
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
-              viewOnly={true}
             />
           )
         } else if (cartItem.rentalIds) {
@@ -72,7 +70,6 @@ const OrderSummary: React.FC<ICartProps> = ({
               toggleCheckbox={toggleCheckbox}
               setIsDeleteCartItemOpen={setIsDeleteCartItemOpen}
               setItemId={setItemId}
-              viewOnly={true}
             />
           )
         }

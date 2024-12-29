@@ -2,7 +2,6 @@ import {
   REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
-import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
 import {
   ACTIVITY_HOST_COMMISSION_PERCENT,
@@ -10,7 +9,7 @@ import {
   PROPERTY_HOST_COMMISSION_PERCENT,
   RENTAL_HOST_COMMISSION_PERCENT,
 } from '@repo/constants'
-import { Z_AddCart } from '@repo/contract-2/cart'
+import { Z_Add_To_Cart } from '@repo/contract-2/cart'
 import {
   dbActivities,
   dbBookableUnitTypes,
@@ -34,7 +33,7 @@ export const addToCart = async (req: Request, res: Response) => {
       startDate,
       endDate,
     } = req.body
-    const parseCartItem = Z_AddCart.safeParse(req.body)
+    const parseCartItem = Z_Add_To_Cart.safeParse(req.body)
     if (!parseCartItem.success) {
       res.json(
         response.error({

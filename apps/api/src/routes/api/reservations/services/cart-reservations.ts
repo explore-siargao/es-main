@@ -7,14 +7,10 @@ import { ResponseService } from '@/common/service/response'
 import { T_CardInfo, Z_CardInfo } from '@repo/contract'
 import {
   T_Add_To_Cart,
-  T_Cart_Item,
-  Z_Add_CartItems,
+  Z_Add_To_Cart,
 } from '@repo/contract-2/cart'
 import {
-  dbActivities,
-  dbBookableUnitTypes,
   dbPaymentMethods,
-  dbRentals,
   dbReservations,
 } from '@repo/database'
 import { EncryptionService, HMACService } from '@repo/services'
@@ -35,7 +31,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
       console.error(typeof cartItems, cartItems)
       res.json(response.error({ message: 'Invalid Item on cart' }))
     } else {
-      const parseCartItems = Z_Add_CartItems.safeParse(cartItems)
+      const parseCartItems = Z_Add_To_Cart.safeParse(cartItems)
       if (!parseCartItems.success) {
         console.error(JSON.parse(parseCartItems.error.message))
         res.json(
@@ -146,7 +142,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         if (computedDate > 30) {
           res.json(response.error({ message: 'Request expired' }))
         } else {
-          const parseCartItems = Z_Add_CartItems.safeParse(cartItems)
+          const parseCartItems = Z_Add_To_Cart.safeParse(cartItems)
           if (!parseCartItems.success) {
             res.json(
               response.error({
@@ -290,7 +286,7 @@ export const manualCardMultipleCheckout = async (
         } else if (!Array.isArray(cartItems)) {
           res.json(response.error({ message: 'Invalid Item on cart' }))
         } else {
-          const parseCartItems = Z_Add_CartItems.safeParse(cartItems)
+          const parseCartItems = Z_Add_To_Cart.safeParse(cartItems)
           if (!parseCartItems.success) {
             res.json(
               response.error({
