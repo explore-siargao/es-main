@@ -51,10 +51,7 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
         startDate: cartItem.startDate,
         endDate: cartItem.endDate,
         guestCount: cartItem.guestCount || 0,
-        contacts: [
-          ...(cartItem.contacts || []),
-          formData,
-        ],
+        contacts: [...(cartItem.contacts || []), formData],
       }
       const callBackReq = {
         onSuccess: (data: any) => {

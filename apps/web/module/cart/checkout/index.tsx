@@ -192,7 +192,9 @@ const Checkout = () => {
             <PropertyMoreInfo items={propertyItems} />
           )}
           {rentalItems.length > 0 && <RentalMoreInfo items={rentalItems} />}
-          {activityItems.length > 0 && <ActivityMoreInfo items={activityItems} />}
+          {activityItems.length > 0 && (
+            <ActivityMoreInfo items={activityItems} />
+          )}
           <hr className="my-4" />
           <Typography variant="h6" className="text-text-500">
             By selecting the Pay now button on this page, I agree to the{" "}

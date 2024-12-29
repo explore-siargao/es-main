@@ -24,10 +24,15 @@ type T_Edit_Guest_Modal = {
   contactIndex: number
 }
 
-const EditGuestModal = ({ isOpen, closeModal, cartItem, contactIndex }: T_Edit_Guest_Modal) => {
+const EditGuestModal = ({
+  isOpen,
+  closeModal,
+  cartItem,
+  contactIndex,
+}: T_Edit_Guest_Modal) => {
   const queryClient = useQueryClient()
   const { mutate, isPending } = useUpdateCartItem()
-  const contact = cartItem.contacts?.[contactIndex];
+  const contact = cartItem.contacts?.[contactIndex]
   const [formData, setFormData] = useState<T_Guest>({
     firstName: contact?.firstName || "",
     lastName: contact?.lastName || "",
@@ -51,7 +56,7 @@ const EditGuestModal = ({ isOpen, closeModal, cartItem, contactIndex }: T_Edit_G
     } else {
       const updatedContacts = cartItem.contacts?.map((contact, i) =>
         i === contactIndex ? formData : contact
-      );
+      )
       const item: T_Update_Cart = {
         startDate: cartItem.startDate,
         endDate: cartItem.endDate,
