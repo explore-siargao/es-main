@@ -37,9 +37,8 @@ const BasicInfo = ({ pageType }: Prop) => {
   const [cancellationDaysCount, setCancellationDaysCount] = useState<number>(
     Number(data?.item?.daysCanCancel) || 1
   )
-  console.log(cancellationDaysCount)
+
   const onSubmit = (formData: T_Rental_Basic_Info) => {
-    formData.daysCanCancel = cancellationDaysCount
     console.log("Submitting data:", formData)
     const callBackReq = {
       onSuccess: (data: any) => {

@@ -1,7 +1,7 @@
 import React from "react"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
-import Cart from "@/module/Cart"
+import Cart from "@/module/cart"
 
 export const metadata: Metadata = {
   title: `Cart - ${APP_NAME}`,

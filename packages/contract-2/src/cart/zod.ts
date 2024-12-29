@@ -16,13 +16,13 @@ import {
   Z_Activity_Segment,
 } from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
-const Z_Contact = z.object({
+export const Z_Contact = z.object({
   firstName: z.string(),
   lastName: z.string(),
   phoneNumber: z.string(),
   email: z.string().email(),
 })
-export const Z_AddCart = z
+export const Z_Add_To_Cart = z
   .object({
     id: z.string().optional(),
     _id: z.string().optional(),
@@ -52,6 +52,8 @@ export const Z_AddCart = z
       .nullable(),
     guestCount: z.number(),
     price: z.number().optional(),
+    hostComission: z.number().optional(),
+    guestComission: z.number().optional(),
     startDate: z.string(),
     endDate: z.string(),
     createdAt: z.string().nullable().optional(),
@@ -64,10 +66,10 @@ export const Z_AddCart = z
     path: ["propertyIds", "rentalIds", "activityIds"],
   })
 
-export const Z_UpdateCart = z.object({
+export const Z_Update_Cart = z.object({
   startDate: z.string(),
   endDate: z.string(),
-  price: z.number(),
+  guestCount: z.number(),
   contacts: z.array(Z_Contact).optional(),
 })
 
@@ -132,7 +134,7 @@ export const Z_Review = z.object({
   deletedAt: z.string().nullable().optional(),
 })
 
-export const Z_CartItem = z.object({
+export const Z_Cart_Item = z.object({
   _id: z.string().optional(),
   userId: Z_Host.optional(),
   propertyIds: z
@@ -335,12 +337,13 @@ export const Z_CartItem = z.object({
     .optional(),
   guestCount: z.number().optional(),
   price: z.number(),
+  hostComission: z.number(),
+  guestComission: z.number(),
   endDate: z.string(),
   startDate: z.string(),
+  contacts: z.array(Z_Contact).optional(),
   status: z.enum(["Active", "Completed", "Removed"]),
   createdAt: z.string().optional(),
   updatedAt: z.string().nullable().optional(),
   deletedAt: z.string().nullable().optional(),
 })
-
-export const Z_Add_CartItems = z.array(Z_AddCart)

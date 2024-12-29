@@ -11,9 +11,6 @@ importers:
       '@repo/eslint-config':
         specifier: '*'
         version: link:packages/eslint-config
-      '@repo/services':
-        specifier: '*'
-        version: link:packages/services
       '@repo/typescript-config':
         specifier: '*'
         version: link:packages/typescript-config
@@ -74,9 +71,6 @@ importers:
       date-fns-tz:
         specifier: ^3.1.3
         version: 3.1.3(date-fns@4.1.0)
-      dayjs:
-        specifier: ^1.11.10
-        version: 1.11.13
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -277,9 +271,6 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-      dayjs:
-        specifier: ^1.11.10
-        version: 1.11.13
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -522,6 +513,9 @@ importers:
       '@repo/database':
         specifier: '*'
         version: link:../database
+      '@repo/services':
+        specifier: '*'
+        version: link:../services
       '@types/node':
         specifier: ^17.0.12
         version: 17.0.45
@@ -6853,10 +6847,6 @@ packages:
 
   /dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
-    dev: false
-
-  /dayjs@1.11.13:
-    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
     dev: false
 
   /debounce-fn@4.0.0:

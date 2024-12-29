@@ -117,6 +117,7 @@ export const exploreSiargaoIsland = [
 export const HOME_SLIDER_CUSTOM_STYLE = `
   .slider-item .swiper {
     position: relative;
+    padding-right: 20px;
   }
   .slider-item .swiper-button-prev,
   .slider-item .swiper-button-next {
@@ -132,18 +133,16 @@ export const HOME_SLIDER_CUSTOM_STYLE = `
     cursor: pointer;
     position: absolute;
     top: 50%;
-    margin-left: -5px;
-    margin-right: -5px;
     transform: translateY(-50%);
     transition: opacity 0.3s ease-in-out;
+    z-index: 999;
   }
   .slider-item .swiper-button-next {
     opacity: 1; 
-    right: 10px; 
+    right: 2px; 
   }
   .slider-item .swiper-button-prev {
     opacity: 0;
-    left: 10px; 
   }
   .slider-item .swiper-button-prev.swiper-button-disabled {
     opacity: 0; 

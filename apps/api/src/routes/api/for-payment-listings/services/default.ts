@@ -25,7 +25,7 @@ import { Request, Response } from 'express'
 const response = new ResponseService()
 export const bookListing = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
-  let totalPrice, hostComission
+  let totalPrice, hostCommission
   const {
     propertyIds = null,
     rentalIds = null,
@@ -51,7 +51,7 @@ export const bookListing = async (req: Request, res: Response) => {
         const endDay = new Date(endDate)
         const countDays = differenceInCalendarDays(endDay, startDay)
         totalPrice = unit?.unitPrice.baseRate * guestCount * countDays
-        hostComission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
+        hostCommission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
       } else if (rentalIds) {
         const rental: any = await dbRentals
           .findOne({
@@ -63,7 +63,7 @@ export const bookListing = async (req: Request, res: Response) => {
         const endDay = new Date(endDate)
         const countDays = differenceInCalendarDays(endDay, startDay)
         totalPrice = rental?.pricing.dayRate * guestCount * countDays
-        hostComission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
+        hostCommission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
       } else if (activityIds) {
         const activity = await dbActivities.findOne({
           _id: activityIds.activityId,
@@ -71,26 +71,28 @@ export const bookListing = async (req: Request, res: Response) => {
         const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
         if (activity?.pricePerPerson) {
           totalPrice = price * guestCount
-          hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+          hostCommission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
         } else if (activity?.pricePerSlot) {
           totalPrice = price
-          hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+          hostCommission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
         } else {
           res.json(
             response.error({ message: 'Price is not set on this activity' })
           )
         }
       }
-      const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
+      const guestCommission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
       const validForPaymentInput = Z_Add_For_Payment.safeParse({
         userId: userId,
         propertyIds,
         rentalIds,
         activityIds,
-        price: totalPrice,
+        price: (totalPrice || 0) + guestCommission,
         guestCount,
-        guestComission,
-        hostComission,
+        // key wrong spelling
+        guestComission: guestCommission,
+        // key wrong spelling
+        hostComission: hostCommission,
         status: 'Active',
         startDate: new Date(startDate),
         endDate: new Date(endDate),
@@ -123,7 +125,7 @@ export const bookListing = async (req: Request, res: Response) => {
 export const updateForPayment = async (req: Request, res: Response) => {
   const forPaymentId = req.params.forPaymentId
   let { guestCount, startDate, endDate, contacts } = req.body
-  let totalPrice, hostComission
+  let totalPrice, hostCommission
 
   try {
     if (!guestCount && !contacts && !startDate && !endDate) {
@@ -155,7 +157,7 @@ export const updateForPayment = async (req: Request, res: Response) => {
           const endDay = new Date(endDate)
           const countDays = differenceInCalendarDays(endDay, startDay)
           totalPrice = unit?.unitPrice.baseRate * guestCount * countDays
-          hostComission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
+          hostCommission = PROPERTY_HOST_COMMISSION_PERCENT * totalPrice
         } else if (forPayment.rentalIds) {
           const rental: any = await dbRentals
             .findOne({
@@ -167,7 +169,7 @@ export const updateForPayment = async (req: Request, res: Response) => {
           const endDay = new Date(endDate)
           const countDays = differenceInCalendarDays(endDay, startDay)
           totalPrice = rental?.pricing.dayRate * guestCount * countDays
-          hostComission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
+          hostCommission = RENTAL_HOST_COMMISSION_PERCENT * totalPrice
         } else if (forPayment.activityIds) {
           const activity = await dbActivities.findOne({
             _id: forPayment.activityIds.activityId,
@@ -175,23 +177,25 @@ export const updateForPayment = async (req: Request, res: Response) => {
           const price = activity?.pricePerPerson || activity?.pricePerSlot || 0
           if (activity?.pricePerPerson) {
             totalPrice = price * guestCount
-            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+            hostCommission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
           } else if (activity?.pricePerSlot) {
             totalPrice = price
-            hostComission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
+            hostCommission = ACTIVITY_HOST_COMMISSION_PERCENT * totalPrice
           } else {
             res.json(
               response.error({ message: 'Price is not set on this activity' })
             )
           }
         }
-        const guestComission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
+        const guestCommission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
         const validForPaymentUpdate = Z_Update_For_Payment.safeParse({
           _id: String(forPaymentId),
           guestCount,
-          price: totalPrice,
-          hostComission,
-          guestComission,
+          price: (totalPrice || 0) + guestCommission,
+          // key wrong spelling
+          hostComission: hostCommission,
+          // key wrong spelling
+          guestComission: guestCommission,
           startDate: startDate ? new Date(startDate) : undefined,
           endDate: endDate ? new Date(endDate) : undefined,
           contacts,

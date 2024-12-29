@@ -1,7 +1,7 @@
 import React from "react"
 import { APP_NAME } from "@repo/constants"
 import { Metadata } from "next"
-import Checkout from "@/module/Cart/checkout"
+import Checkout from "@/module/cart/checkout"
 
 export const metadata: Metadata = {
   title: `Checkout - ${APP_NAME}`,

@@ -1,5 +1,5 @@
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import ContactHost from "./components/ContactHost"
+import ContactHost from "./contact-host"
 // import CheckoutProcess from "./components/checkout-box"
 import { LucideChevronLeft } from "lucide-react"
 import Link from "next/link"

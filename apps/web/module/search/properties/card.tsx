@@ -25,7 +25,10 @@ const PropertyCard = (props: T_Property_Filtered) => {
   return (
     <>
       <li className="relative overflow-hidden h-full list-none">
-        <Link href={`/listings/properties/${listingId}`} target="_blank">
+        <Link
+          href={`/listings/properties/${listingId}/${props.unitId}`}
+          target="_blank"
+        >
           <div className="h-auto w-full relative">
             {reviewsCount < 1 ? <NewlyAddedTag /> : null}
             <button

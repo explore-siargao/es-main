@@ -12,6 +12,7 @@
     "@repo/database": "*",
     "@repo/contract": "*",
     "@repo/contract-2": "*",
+    "@repo/services": "*",
     "ts-node": "^9.1.1"
   }
 }

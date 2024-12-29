@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import React from "react"
-import { TitleSection } from "../../../Listing/Property/components/TitleSection"
-import IconDescription from "../../../Listing/Property/components/IconDescription"
+import { TitleSection } from "../../title-section"
+import IconDescription from "../../icon-description"
 import { Typography } from "@/common/components/ui/Typography"
 
 interface IconDescription {

@@ -61,7 +61,7 @@ export const Z_Activity_PricePerDate = z.object({
 
 export const Z_Activity = z.object({
   _id: z.string().optional(),
-  host: z.union([Z_Host, z.string()]).nullable().optional(),
+  host: Z_Host.nullable().optional(),
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
   experienceType: z.enum(["Joiner", "Private"]),

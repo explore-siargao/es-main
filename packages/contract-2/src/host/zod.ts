@@ -7,6 +7,7 @@ export const Z_Host = z.object({
   email: z.string().optional(),
   role: z.string(),
   isHost: z.boolean(),
+  profilePicture: z.string(),
   guest: z.object({
     _id: z.string(),
     firstName: z.string(),

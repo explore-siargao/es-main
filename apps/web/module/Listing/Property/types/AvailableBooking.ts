@@ -32,6 +32,8 @@ export type T_AvailableBookingProps = {
   propertyType: string
   selectedBookableUnit: T_AvailableBookableUnitProps
   onSelectBookableUnit: (unit: T_AvailableBookableUnitProps | null) => void
+  selectedUnitId: string
+  propertyId: string
 }
 
 export enum PropertyType {

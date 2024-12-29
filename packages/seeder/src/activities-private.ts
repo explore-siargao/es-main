@@ -2,7 +2,8 @@ import { T_Activity } from "@repo/contract-2/activity"
 import { T_Location } from "@repo/contract-2/address-location"
 import { dbActivities, dbLocations, dbPhotos, dbUsers } from "@repo/database"
 import { ACTIVITY_PHOTO_KEYS } from "./common/constants/photo-keys"
-import { getRandomPhotoKeys } from "./common/helpers/getRandomPhotoKeys"
+import { getRandomPhotoKeys } from "./common/helpers/get-random-photo-keys"
+import generateSchedule from "./common/helpers/generate-schedule"
 
 const seedActivities = async () => {
   try {
@@ -65,71 +66,7 @@ const seedActivities = async () => {
           minimum: 5,
           maximum: 20,
         },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-          tuesday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-          wednesday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-          thursday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-          friday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-          saturday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-          sunday: {
-            slots: [
-              {
-                startTime: "12:00 PM",
-                endTime: "3:00 PM",
-                note: "",
-              },
-            ],
-          },
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 500,
         daysCanCancel: "5",
@@ -198,23 +135,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 5, maximum: 20 },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          tuesday: null,
-          wednesday: null,
-          thursday: null,
-          friday: null,
-          saturday: null,
-          sunday: null,
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 700,
         daysCanCancel: "5",
@@ -280,23 +201,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 6, maximum: 18 },
-        schedule: {
-          monday: null,
-          tuesday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "1:30 PM",
-                note: "",
-              },
-            ],
-          },
-          wednesday: null,
-          thursday: null,
-          friday: null,
-          saturday: null,
-          sunday: null,
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 650,
         daysCanCancel: "10",
@@ -363,71 +268,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 5, maximum: 20 },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          tuesday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          wednesday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          thursday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          friday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          saturday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-          sunday: {
-            slots: [
-              {
-                startTime: "9:00 AM",
-                endTime: "1:00 PM",
-                note: "",
-              },
-            ],
-          },
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 800,
         daysCanCancel: "10",
@@ -492,71 +333,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 5, maximum: 20 },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          tuesday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          wednesday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          thursday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          friday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          saturday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          sunday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "1:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 750,
         daysCanCancel: "5",
@@ -626,71 +403,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 4, maximum: 15 },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          tuesday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          wednesday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          thursday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          friday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          saturday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-          sunday: {
-            slots: [
-              {
-                startTime: "8:30 AM",
-                endTime: "12:30 PM",
-                note: "Morning tour.",
-              },
-            ],
-          },
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 700,
         daysCanCancel: "10",
@@ -760,71 +473,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 4, maximum: 12 },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-          tuesday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-          wednesday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-          thursday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-          friday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-          saturday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-          sunday: {
-            slots: [
-              {
-                startTime: "4:00 PM",
-                endTime: "7:00 PM",
-                note: "Sunset cruise timing.",
-              },
-            ],
-          },
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 900,
         daysCanCancel: "5",
@@ -894,71 +543,7 @@ const seedActivities = async () => {
         meetingPoint: null,
         photos: [],
         slotCapacity: { minimum: 3, maximum: 10 },
-        schedule: {
-          monday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-          tuesday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-          wednesday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-          thursday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-          friday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-          saturday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-          sunday: {
-            slots: [
-              {
-                startTime: "8:00 AM",
-                endTime: "12:00 PM",
-                note: "Morning cycling tour.",
-              },
-            ],
-          },
-        },
+        schedule: generateSchedule(),
         pricePerPerson: null,
         pricePerSlot: 600,
         daysCanCancel: "5",

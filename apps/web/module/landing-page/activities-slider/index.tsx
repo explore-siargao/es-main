@@ -75,6 +75,7 @@ const ActivitiesSlider = ({ itemsNumber, isLastItemFull }: SliderProps) => {
     1536: { slidesPerView: isLastItemFull ? itemsNumber : itemsNumber - 0.5 },
   }
   const activitiesData = activityUnits?.items || []
+
   return (
     <div className="slider-item mb-5">
       <div className="mb-8">

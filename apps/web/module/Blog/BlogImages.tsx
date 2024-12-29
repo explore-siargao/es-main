@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import data from "./data.json"
-import ImageGallery from "@/module/Listing/Property/components/image-gallery"
+import ImageGallery from "@/module/Listing/property/image-gallery"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "@/module/Listing/Property/components/ShareSave"
-import ImageGalleryModal from "@/module/Listing/Property/components/modals/ImageGalleryModal"
+import ShareSave from "@/module/Listing/property/share-save"
+import ImageGalleryModal from "@/module/Listing/property/modals/image-gallery-modal"
 
 type T_Props = {
   readonly title: string

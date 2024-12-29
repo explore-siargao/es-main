@@ -5,8 +5,6 @@ import "swiper/css/navigation"
 import "swiper/css/pagination"
 import Image from "./ui/image"
 import { IMAGE_FALLBACK } from "../constants"
-import { Typography } from "./ui/Typography"
-import { ReactNode } from "react"
 
 interface SliderProps {
   images: {
