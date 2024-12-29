@@ -58,26 +58,26 @@ function RentalItem({
             </Typography>
           </div>
         </div>
-          <div className="flex items-end">
-            <Button
-              variant="link"
-              className="hover:underline text-info-500 hover:cursor-pointer flex items-center"
-            >
-              <Pencil height={18} />
-              Modify
-            </Button>
-            <Button
-              variant="link"
-              className="hover:underline text-error-500 hover:cursor-pointer flex items-center"
-              onClick={() => {
-                setItemId(item._id || "")
-                setIsDeleteCartItemOpen(true)
-              }}
-            >
-              <Trash height={18} />
-              Remove
-            </Button>
-          </div>
+        <div className="flex items-end">
+          <Button
+            variant="link"
+            className="hover:underline text-info-500 hover:cursor-pointer flex items-center"
+          >
+            <Pencil height={18} />
+            Modify
+          </Button>
+          <Button
+            variant="link"
+            className="hover:underline text-error-500 hover:cursor-pointer flex items-center"
+            onClick={() => {
+              setItemId(item._id || "")
+              setIsDeleteCartItemOpen(true)
+            }}
+          >
+            <Trash height={18} />
+            Remove
+          </Button>
+        </div>
       </div>
       <div className="border-t my-4"></div>
       <div className="flex justify-between items-center">
