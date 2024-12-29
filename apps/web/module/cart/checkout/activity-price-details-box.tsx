@@ -6,7 +6,7 @@ import CheckoutMoreInfoModal from "@/module/Listing/property/modals/checkout-mor
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import formatCurrency from "@/common/helpers/format-currency"
 import { E_Activity_Experience_Type } from "@repo/contract"
-import exp from 'constants';
+import exp from "constants"
 
 type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
@@ -62,7 +62,8 @@ const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
               )}
               <hr className="mt-4" />
               <div className="flex flex-col mt-3">
-                {item.activityIds?.activityId?.experienceType === E_Activity_Experience_Type.Joiner ? (
+                {item.activityIds?.activityId?.experienceType ===
+                E_Activity_Experience_Type.Joiner ? (
                   <div className="flex w-full justify-between items-center">
                     <Typography className="text-sm text-text-400">
                       {formatCurrency(activityBasePrice)} x{" "}

@@ -126,7 +126,11 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
               {filteredTimeSlots?.length > 0 ? "Select" : "No time slot"}
             </Option>
             {filteredTimeSlots?.map(
-              (time: { timeSlotId: string, startTime: string; endTime: string }) => (
+              (time: {
+                timeSlotId: string
+                startTime: string
+                endTime: string
+              }) => (
                 <Option key={time.startTime} value={time.timeSlotId}>
                   {time.startTime} - {time.endTime}
                 </Option>
