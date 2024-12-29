@@ -1,11 +1,13 @@
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
 import { T_Cart_Item } from "@repo/contract-2/cart"
-import AddGuestModal from "./modals/add-guest-modal"
+import AddGuestModal from "../../modals/add-guest-modal"
+import EditGuestModal from "../../modals/edit-guest-modal"
 
 const PropertyContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
   const [isAddGuestModalOpen, setIsAddGuestModalOpen] = useState(false)
-  // const [isEditGuestModalOpen, setIsEditGuestModalOpen] = useState(false)
+  const [isEditGuestModalOpen, setIsEditGuestModalOpen] = useState(false)
+  const [contactIndex, setContactIndex] = useState(0)
 
   const defaultContact = {
     firstName: cartItem.userId?.guest.firstName,
@@ -88,8 +90,7 @@ const PropertyContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
           </div>
         </div>
       )}
-      {/* @ts-expect-error */}
-      {cartItem?.contacts.map((contact) => (
+      {cartItem.contacts?.map((contact, index) => (
         <div className="grid gap-2">
           <div className="grid grid-cols-2">
             <Typography variant="h5" className="text-text-300">
@@ -126,27 +127,25 @@ const PropertyContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
               >
                 {contact.email}
               </Typography>
-              {/* <button
+              <button
                 className="font-medium underline transition hover:text-primary-500"
-                onClick={() => setIsEditGuestModalOpen(true)}
+                onClick={() => {
+                  setContactIndex(index)
+                  setIsEditGuestModalOpen(true)
+                }}
               >
                 Edit
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
       ))}
-
-      {/* <EditAddGuestModal
-        isOpen={isEditAddGuestModalOpen}
-        action={modalAction}
-        guest={
-          modalAction === "EDIT" && selectedGuestIndex !== null
-            ? guests[selectedGuestIndex]
-            : undefined
-        }
-        onSubmit={handleModalSubmit}
-      /> */}
+      <EditGuestModal
+        isOpen={isEditGuestModalOpen}
+        closeModal={() => setIsEditGuestModalOpen(false)}
+        cartItem={cartItem}
+        contactIndex={contactIndex}
+      />
       <AddGuestModal
         isOpen={isAddGuestModalOpen}
         closeModal={() => setIsAddGuestModalOpen(false)}

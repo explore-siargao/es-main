@@ -4,18 +4,17 @@ import Link from "next/link"
 import React from "react"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format, subDays } from "date-fns"
-import PropertyContacts from "./property-contacts"
-import RentalContacts from "./rental-contacts"
+import RentalContacts from "./contacts"
 
-type T_Rental_Price_Details_Box = {
+type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
 }
 
-const RentalMoreInfo = ({ items }: T_Rental_Price_Details_Box) => {
+const ActivityMoreInfo = ({ items }: T_Activity_Price_Details_Box) => {
   return (
     <>
       {items.map((item) => {
-        const rental = item.rentalIds?.rentalId
+        const activity = item.activityIds?.activityId
         const freeCancelDate = format(
           subDays(item.startDate, 3),
           "MMMM dd, yyyy"
@@ -23,22 +22,17 @@ const RentalMoreInfo = ({ items }: T_Rental_Price_Details_Box) => {
         return (
           <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
             <Typography variant="h2" fontWeight="semibold">
-              {rental?.make} {rental?.modelBadge}
+              {activity?.title}
             </Typography>
             <div className="mt-4">
               <div className="flex w-full flex-col">
                 <Typography variant={"h3"} fontWeight="semibold">
-                  Dates
+                  Date
                 </Typography>
                 <Typography className="mt-2 text-text-400">
-                  From{" "}
                   {item.startDate
-                    ? format(new Date(item.startDate), "MMMM dd")
-                    : "Date from"}{" "}
-                  to{" "}
-                  {item.endDate
-                    ? format(new Date(item.endDate), "MMMM dd, y")
-                    : "Date to"}
+                    ? format(new Date(item.startDate), "MMMM dd, yyyy")
+                    : "Date from"}
                 </Typography>
               </div>
               <hr className="my-4" />
@@ -48,14 +42,16 @@ const RentalMoreInfo = ({ items }: T_Rental_Price_Details_Box) => {
                 <Typography variant={"h3"} fontWeight="semibold">
                   Cancellation policy
                 </Typography>
-                <Typography className="text-text-400">
-                  <span>
-                    Free cancellation before 2:00 PM on {freeCancelDate}.
-                  </span>
-                  <Link className="underline" href="#">
+                <div className="flex gap-2">
+                  <Typography className="text-text-400">
+                    <span>
+                      Free cancellation before 2:00 PM on {freeCancelDate}.
+                    </span>
+                  </Typography>
+                  <Link className="underline text-text-400" href="#">
                     Learn more
                   </Link>
-                </Typography>
+                </div>
               </div>
             </div>
           </div>
@@ -65,4 +61,4 @@ const RentalMoreInfo = ({ items }: T_Rental_Price_Details_Box) => {
   )
 }
 
-export default RentalMoreInfo
+export default ActivityMoreInfo

@@ -4,7 +4,7 @@ import Link from "next/link"
 import React from "react"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format, subDays } from "date-fns"
-import PropertyContacts from "./property-contacts"
+import PropertyContacts from "./contacts"
 
 type T_Property_Price_Details_Box = {
   items: T_Cart_Item[]
@@ -48,14 +48,16 @@ const PropertyMoreInfo = ({ items }: T_Property_Price_Details_Box) => {
                 <Typography variant={"h3"} fontWeight="semibold">
                   Cancellation policy
                 </Typography>
-                <Typography className="text-text-400">
-                  <span>
-                    Free cancellation before 2:00 PM on {freeCancelDate}.
-                  </span>{" "}
-                  <Link className="underline" href="#">
+                <div className="flex gap-2">
+                  <Typography className="text-text-400">
+                    <span>
+                      Free cancellation before 2:00 PM on {freeCancelDate}.
+                    </span>
+                  </Typography>
+                  <Link className="underline text-text-400" href="#">
                     Learn more
                   </Link>
-                </Typography>
+                </div>
               </div>
               <hr className="my-4" />
               <div className="flex flex-col gap-y-4">

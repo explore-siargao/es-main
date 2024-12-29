@@ -17,20 +17,22 @@ type T_Guest = {
   email: string
 }
 
-type T_Add_Guest_Modal = {
+type T_Edit_Guest_Modal = {
   isOpen: boolean
   closeModal: () => void
   cartItem: T_Cart_Item
+  contactIndex: number
 }
 
-const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
+const EditGuestModal = ({ isOpen, closeModal, cartItem, contactIndex }: T_Edit_Guest_Modal) => {
   const queryClient = useQueryClient()
   const { mutate, isPending } = useUpdateCartItem()
+  const contact = cartItem.contacts?.[contactIndex];
   const [formData, setFormData] = useState<T_Guest>({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    email: "",
+    firstName: contact?.firstName || "",
+    lastName: contact?.lastName || "",
+    phoneNumber: contact?.phoneNumber || "",
+    email: contact?.email || "",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,14 +49,14 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
     ) {
       toast.error("Please complete all the fields")
     } else {
+      const updatedContacts = cartItem.contacts?.map((contact, i) =>
+        i === contactIndex ? formData : contact
+      );
       const item: T_Update_Cart = {
         startDate: cartItem.startDate,
         endDate: cartItem.endDate,
         guestCount: cartItem.guestCount || 0,
-        contacts: [
-          ...(cartItem.contacts || []),
-          formData,
-        ],
+        contacts: updatedContacts,
       }
       const callBackReq = {
         onSuccess: (data: any) => {
@@ -130,7 +132,7 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
         </div>
         <div className="flex justify-end">
           <Button variant="primary" onClick={handleSubmit} disabled={isPending}>
-            Save
+            Update
           </Button>
         </div>
       </div>
@@ -138,4 +140,4 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
   )
 }
 
-export default AddGuestModal
+export default EditGuestModal

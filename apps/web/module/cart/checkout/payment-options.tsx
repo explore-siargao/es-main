@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import useGetPaymentMethods from "@/module/AccountSettings/hooks/useGetPaymentMethods"
-import usePaymentInfoStore from "./store/usePaymentInfoStore"
+import usePaymentInfoStore from "./stores/use-payment-info-store"
 import { E_PaymentType } from "@repo/contract"
 import { Spinner } from "@/common/components/ui/Spinner"
 import PaymentSavedForm from "./payment-saved-form"

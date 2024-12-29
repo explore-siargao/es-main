@@ -4,7 +4,7 @@ import ErrorMessage from "@/module/AccountSettings/PaymentPayout/ErrorMessage"
 import Link from "next/link"
 import valid from "card-validator"
 import { useForm } from "react-hook-form"
-import usePaymentInfoStore from "./store/usePaymentInfoStore"
+import usePaymentInfoStore from "./stores/use-payment-info-store"
 
 const PaymentSavedForm = () => {
   const updatePaymentInfo = usePaymentInfoStore(

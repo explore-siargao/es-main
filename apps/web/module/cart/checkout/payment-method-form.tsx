@@ -14,7 +14,7 @@ import ErrorMessage from "@/module/AccountSettings/PaymentPayout/ErrorMessage"
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
 import { T_CardInfo } from "@repo/contract"
-import usePaymentInfoStore from "./store/usePaymentInfoStore"
+import usePaymentInfoStore from "./stores/use-payment-info-store"
 
 const PaymentMethodForm = () => {
   const updatePaymentInfo = usePaymentInfoStore(

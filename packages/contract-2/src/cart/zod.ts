@@ -16,7 +16,7 @@ import {
   Z_Activity_Segment,
 } from "../activity"
 const numberOrString = z.union([z.number(), z.string()])
-const Z_Contact = z.object({
+export const Z_Contact = z.object({
   firstName: z.string(),
   lastName: z.string(),
   phoneNumber: z.string(),
@@ -341,6 +341,7 @@ export const Z_Cart_Item = z.object({
   guestComission: z.number(),
   endDate: z.string(),
   startDate: z.string(),
+  contacts: z.array(Z_Contact).optional(),
   status: z.enum(["Active", "Completed", "Removed"]),
   createdAt: z.string().optional(),
   updatedAt: z.string().nullable().optional(),

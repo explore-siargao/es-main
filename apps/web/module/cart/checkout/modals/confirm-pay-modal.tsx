@@ -6,8 +6,8 @@ import { useParams } from "next/navigation"
 import { Spinner } from "@/common/components/ui/Spinner"
 import useCheckInOutDateStore from "@/module/Listing/property/stores/use-check-in-out-date-store"
 import useGuestsStore from "@/module/Listing/property/stores/use-guests-store"
-import usePaymentInfoStore from "../store/usePaymentInfoStore"
-import useAddBooking from "../hooks/useAddBooking"
+import usePaymentInfoStore from "../stores/use-payment-info-store"
+import useAddBooking from "../hooks/use-add-booking"
 
 interface ConfirmPayModalProps {
   isOpen: boolean

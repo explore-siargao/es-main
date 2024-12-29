@@ -3,15 +3,13 @@ import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { Typography } from "@/common/components/ui/Typography"
 import Link from "next/link"
 import React, { useState } from "react"
-import useCheckInOutDateStore from "@/module/Listing/property/stores/use-check-in-out-date-store"
 import CheckInOutModal from "@/module/Listing/property/modals/check-in-out-modal"
 import GuestAddModal from "@/module/Listing/property/modals/guest-add-modal"
-import PropertyPriceDetailsBox from "./property-price-details-box"
-import RentalPriceDetailsBox from "./rental-price-details-box"
-import usePaymentInfoStore from "./store/usePaymentInfoStore"
+import PropertyPriceDetailsBox from "./price-details-box/property"
+import RentalPriceDetailsBox from "./price-details-box/rental"
+import usePaymentInfoStore from "./stores/use-payment-info-store"
 import toast from "react-hot-toast"
 import SubTotalBox from "../sub-total-box"
-import { useCartStore } from "../stores/cart-stores"
 import { T_Add_To_Cart } from "@repo/contract-2/cart"
 import useAddGCashPayment from "../hooks/use-add-gcash-payment"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -20,10 +18,11 @@ import useAddManualCardPayment from "../hooks/use-add-manual-card-payment"
 import useAddCardPayment from "../hooks/use-add-card-payment"
 import { LucideChevronLeft } from "lucide-react"
 import useGetCartItems from "../hooks/use-get-cart-items"
-import ActivityPriceDetailsBox from "./activity-price-details-box"
+import ActivityPriceDetailsBox from "./price-details-box/activity"
 import SelectPayment from "./select-payment"
-import PropertyMoreInfo from "./property-more-info"
-import RentalMoreInfo from "./rental-more-info"
+import ActivityMoreInfo from "./more-info/activity"
+import PropertyMoreInfo from "./more-info/property"
+import RentalMoreInfo from "./more-info/rental"
 import { APP_NAME } from "@repo/constants"
 
 const Checkout = () => {
@@ -33,11 +32,9 @@ const Checkout = () => {
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
   const { data, isLoading } = useGetCartItems()
-  const { selectedItems } = useCartStore()
   const { mutate, isPending } = useAddGCashPayment()
   const { mutate: mutateUseAddManualCardPayment } = useAddManualCardPayment()
   const { mutate: mutateUseAddCardPayment } = useAddCardPayment()
-  const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const paymentInfo = usePaymentInfoStore((state) => state)
   const cartIdsSearch = searchParams.get(`cartIds`)
   const cartIds = cartIdsSearch ? cartIdsSearch.split(",") : []
@@ -57,8 +54,6 @@ const Checkout = () => {
     allItems.filter(
       (item) => item._id && cartIds.includes(item._id) && item.activityIds
     ) || []
-
-  console.log("delusion", activityItems)
 
   const remapItems = (items: T_Add_To_Cart[]) => {
     return items.map((item) => ({
@@ -197,6 +192,7 @@ const Checkout = () => {
             <PropertyMoreInfo items={propertyItems} />
           )}
           {rentalItems.length > 0 && <RentalMoreInfo items={rentalItems} />}
+          {activityItems.length > 0 && <ActivityMoreInfo items={activityItems} />}
           <hr className="my-4" />
           <Typography variant="h6" className="text-text-500">
             By selecting the Pay now button on this page, I agree to the{" "}
