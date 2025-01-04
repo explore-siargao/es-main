@@ -16,10 +16,7 @@ interface SliderProps {
   itemsNumber: number
 }
 
-const Slider = ({
-  cards,
-  itemsNumber,
-}: SliderProps) => {
+const Slider = ({ cards, itemsNumber }: SliderProps) => {
   return (
     <div className="es-island-slider-item">
       <Swiper

@@ -14,10 +14,7 @@ type TravelSliderProps = {
   itemsNumber: number
 }
 
-const TravelStyleSlider = ({
-  groupCards,
-  itemsNumber,
-}: TravelSliderProps) => {
+const TravelStyleSlider = ({ groupCards, itemsNumber }: TravelSliderProps) => {
   const formattedGroupCards = groupCards.map((card) => ({
     ...card,
     subTitle: card.subTitle || "",
@@ -34,10 +31,7 @@ const TravelStyleSlider = ({
         </Typography>
       </div>
       <div>
-        <Slider
-          cards={formattedGroupCards}
-          itemsNumber={itemsNumber}
-        />
+        <Slider cards={formattedGroupCards} itemsNumber={itemsNumber} />
       </div>
     </div>
   )

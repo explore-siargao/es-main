@@ -28,16 +28,10 @@ const LandingPage = () => {
     <>
       <WidthWrapper width="home" className="mb-24 lg:mt-6">
         <div className="sm:mt-24 pl-4">
-          <EsIslandSlider
-            groupCards={exploreSiargaoIsland}
-            itemsNumber={6}
-          />
+          <EsIslandSlider groupCards={exploreSiargaoIsland} itemsNumber={6} />
         </div>
         <div className="sm:mt-14 pl-4">
-          <TravelStyleSlider
-            groupCards={travelStyle}
-            itemsNumber={4}
-          />
+          <TravelStyleSlider groupCards={travelStyle} itemsNumber={4} />
         </div>
         <div className="sm:mt-14 pl-4">
           <SliderItemProperty itemsNumber={4} isLastItemFull />

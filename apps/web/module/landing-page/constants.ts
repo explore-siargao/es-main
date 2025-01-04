@@ -253,4 +253,3 @@ export const ES_ISLAND_HOME_SLIDER_CUSTOM_STYLE = `
     opacity: 1;
   }
 `
-
