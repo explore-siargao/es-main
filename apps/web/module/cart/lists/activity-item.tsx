@@ -70,9 +70,9 @@ function ActivityItem({
                       {activityItem.durationMinute > 1 ? "s" : ""}
                     </Typography>
                   )}
-                    <Typography variant="p" className="text-text-400">
-                      duration
-                    </Typography>
+                  <Typography variant="p" className="text-text-400">
+                    duration
+                  </Typography>
                 </div>
               </div>
             )}
