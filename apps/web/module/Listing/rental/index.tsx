@@ -43,7 +43,7 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
             <div className="pb-6">
               <HostedBy
                 name={rental?.host?.guest.firstName || "Unknown"}
-                language={rental?.host?.guest?.language || "Unknown"}
+                language={rental?.host?.guest?.language}
                 profilePicture={"2.jpg"}
                 joinDate={rental?.host?.createdAt || ""}
               />
