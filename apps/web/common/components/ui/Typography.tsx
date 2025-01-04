@@ -20,14 +20,10 @@ const typographyVariants = cva("", {
       light: "font-light",
       extralight: "font-extralight",
     },
-    capitalization: {
-      uppercaseFirstLetter: "first-letter:uppercase",
-    },
   },
   defaultVariants: {
     variant: "p",
     fontWeight: "normal",
-    capitalization: "uppercaseFirstLetter",
   },
 })
 export interface TypographyProps
