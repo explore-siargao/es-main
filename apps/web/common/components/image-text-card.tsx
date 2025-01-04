@@ -21,14 +21,14 @@ const ImageTextCard = ({
   url,
 }: T_Card_Item) => {
   return (
-    <div className="bg-white rounded-xl mx-auto border border-solid border-text-50 border-1">
+    <div className="bg-white rounded-2xl mx-auto border border-solid border-text-50 border-1">
       <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-56">
         <Image
           src={`/assets/${imageKey}`}
           fill
           alt={title}
           style={{ objectFit: "cover" }}
-          className="rounded-t-lg"
+          className="rounded-t-2xl"
         />
       </div>
       <div className="flex flex-col space-y-4 p-4 sm:p-6 md:p-6 lg:p-6">

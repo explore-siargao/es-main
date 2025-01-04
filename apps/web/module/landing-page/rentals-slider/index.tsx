@@ -5,7 +5,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { E_Location } from "@repo/contract-2/search-filters"
 import RentalCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
-import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
+import { LISTING_SLIDER_CUSTOM_STYLE } from "../constants"
 import useGetRentalListings from "@/module/search/rentals/hooks/use-get-listings"
 
 type SliderProps = {
@@ -78,7 +78,7 @@ const RentalsSlider = ({ itemsNumber, isLastItemFull }: SliderProps) => {
   }
   const rentalsData = rentalUnits?.items || []
   return (
-    <div className="slider-item mb-5">
+    <div className="listing-slider-item mb-5">
       <div className="mb-8">
         <Typography variant="h2" fontWeight="semibold" className="text-left">
           Reliable cars, motorbikes and more
@@ -98,7 +98,7 @@ const RentalsSlider = ({ itemsNumber, isLastItemFull }: SliderProps) => {
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-          <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
+          <style>{LISTING_SLIDER_CUSTOM_STYLE}</style>
           {rentalsData.map((card) => (
             <SwiperSlide
               key={`${card.make}-${card.modelBadge}-${card.category}`}
