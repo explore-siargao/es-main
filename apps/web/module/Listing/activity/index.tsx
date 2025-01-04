@@ -62,7 +62,7 @@ export const Activity = ({ activity }: { activity: T_Activity }) => {
             <div className="pb-6">
               <HostedBy
                 name={activity?.host?.guest.firstName || "Unknown"}
-                language={activity?.host?.guest?.language || "Unknown"}
+                language={activity?.host?.guest?.language}
                 profilePicture={"2.jpg"}
                 joinDate={activity?.host?.createdAt || ""}
               />

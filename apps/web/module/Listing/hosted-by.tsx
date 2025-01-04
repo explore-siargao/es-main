@@ -40,7 +40,7 @@ const HostedBy = ({
   joinDate,
 }: {
   name: string
-  language: string
+  language?: string
   profilePicture: string
   joinDate: string
 }) => {
@@ -50,9 +50,11 @@ const HostedBy = ({
         <Typography variant="h4">
           Hosted by <span className="font-semibold">{name}</span>
         </Typography>
-        <Typography variant="h5" className="text-text-300">
-          Speak {language} · {getRelativeDifference(joinDate)} hosting
-        </Typography>
+        
+          <Typography variant="h5" className="text-text-300">
+          {language && `Speaks ${language} · `}{getRelativeDifference(joinDate)} hosting
+          </Typography>
+        
       </div>
       <div className={cn(`rounded-full h-12 w-12`)}>
         <Image
