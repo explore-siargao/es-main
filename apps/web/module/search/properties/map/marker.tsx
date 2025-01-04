@@ -35,7 +35,7 @@ const Marker = ({
       font-weight: bold;
       color: ${isClicked ? "white" : "black"};
       text-align: center;
-    ">${formatCurrency(price)}</div>`,
+    ">${formatCurrency(price, { noDecimals: true })}</div>`,
     iconSize: [50, 30],
   })
 

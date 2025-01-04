@@ -94,7 +94,7 @@ const CheckoutBoxJoiner = ({ activity }: T_Checkout) => {
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold">
-        {formatCurrency(activity?.pricePerPerson || 0)}
+        {formatCurrency(activity?.pricePerPerson || 0, { noDecimals: true })}
         <small className="font-light"> per person</small>
       </Typography>
       <Typography variant="h5" className="italic text-text-400 mt-2">

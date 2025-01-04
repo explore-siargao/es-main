@@ -71,7 +71,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
               variant="h5"
               className="text-text-700 underline truncate"
             >
-              From {formatCurrency(price)}{" "}
+              From {formatCurrency(price, { noDecimals: true })}{" "}
               <span className="font-normal">/ {priceNoun}</span>
             </Typography>
           </div>

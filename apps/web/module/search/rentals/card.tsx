@@ -80,7 +80,7 @@ const RentalCard = (props: T_Rental_Filtered) => {
               variant="h5"
               className="text-text-700 underline truncate"
             >
-              {formatCurrency(price)}{" "}
+              {formatCurrency(price, { noDecimals: true })}{" "}
               <span className="font-normal">/ 24 hours</span>
             </Typography>
           </div>
