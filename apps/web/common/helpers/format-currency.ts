@@ -7,10 +7,7 @@ type T_Options = {
   currencyCode?: E_Supported_Currencies
   noDecimals?: boolean
 }
-function formatCurrency(
-  amount: number,
-  options?: T_Options
-): string {
+function formatCurrency(amount: number, options?: T_Options): string {
   const { currencyCode, noDecimals } = options || {}
   const storedCurrency = localStorage.getItem(
     "currency"
