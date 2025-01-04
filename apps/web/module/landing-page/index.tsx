@@ -2,13 +2,14 @@
 import React, { useEffect } from "react"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import useOptMessageStore from "@/common/store/useOptMessageStore"
-import TravelSlider from "./slider/travel-slider"
 import ImageTextCard from "@/common/components/image-text-card"
 import { Typography } from "@/common/components/ui/Typography"
 import { exploreSiargaoIsland, travelStyle } from "./constants"
 import SliderItemProperty from "./properties-slider"
 import ActivitiesSlider from "./activities-slider"
 import RentalsSlider from "./rentals-slider"
+import TravelStyleSlider from "./travel-style-slider"
+import EsIslandSlider from "./es-island-slider"
 
 const LandingPage = () => {
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
@@ -25,36 +26,23 @@ const LandingPage = () => {
 
   return (
     <>
-      <WidthWrapper width="medium" className="mb-24 lg:mt-6">
-        <div className="sm:mt-24">
-          <TravelSlider
-            title="Explore Siargao Island"
-            description="Essential travel information for your island vacation"
-            groupCards={exploreSiargaoIsland}
-            isGuide={true}
-            itemsNumber={6}
-          />
+      <WidthWrapper width="home" className="mb-24 lg:mt-6">
+        <div className="sm:mt-24 pl-4">
+          <EsIslandSlider groupCards={exploreSiargaoIsland} itemsNumber={6} />
         </div>
-        <div className="sm:mt-14">
-          <TravelSlider
-            title="What's your travel style?"
-            description="Browse by property type to find the perfect space"
-            groupCards={travelStyle}
-            isGuide={true}
-            itemsNumber={4}
-            isLastItemFull
-          />
+        <div className="sm:mt-14 pl-4">
+          <TravelStyleSlider groupCards={travelStyle} itemsNumber={4} />
         </div>
-        <div className="sm:mt-14">
+        <div className="sm:mt-14 pl-4">
           <SliderItemProperty itemsNumber={4} isLastItemFull />
         </div>
-        <div className="sm:mt-14">
+        <div className="sm:mt-14 pl-4">
           <ActivitiesSlider itemsNumber={4} isLastItemFull />
         </div>
-        <div className="sm:mt-14">
+        <div className="sm:mt-14 pl-4">
           <RentalsSlider itemsNumber={4} isLastItemFull />
         </div>
-        <div className="sm:mt-14 mb-8">
+        <div className="sm:mt-14 pl-4 mb-8">
           <Typography variant="h2" fontWeight="semibold" className="text-left">
             Inspiration for your trip
           </Typography>
@@ -62,7 +50,8 @@ const LandingPage = () => {
             Let us help you make the most out of your time in Siargao island
           </Typography>
         </div>
-        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-10 md:gap-4 pr-0">
+        {/* padding right 5 is important here because it give the illusion of next buttons for swiper  */}
+        <div className="flex items-center justify-center gap-10 pl-4 pr-5">
           <ImageTextCard
             imageKey={`restaurants.jpg`}
             title={"Restaurants, cafes & bars"}

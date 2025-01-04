@@ -12,7 +12,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const listingId = props._id
   const price = props.pricePerSlot || props.pricePerPerson || 0
   const priceNoun = props.pricePerSlot ? `slot` : `person`
-  const photos = props.photos.map((photo) => ({
+  const photos = props.photos?.map((photo) => ({
     key: photo.key,
     alt: photo.tags,
   }))

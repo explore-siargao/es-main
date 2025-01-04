@@ -5,7 +5,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import { E_Location } from "@repo/contract-2/search-filters"
 import PropertyCard from "./card"
 import { Typography } from "@/common/components/ui/Typography"
-import { HOME_SLIDER_CUSTOM_STYLE } from "../constants"
+import { LISTING_SLIDER_CUSTOM_STYLE } from "../constants"
 import useGetListings from "@/module/search/properties/hooks/use-get-listings"
 
 type SliderProps = {
@@ -85,7 +85,7 @@ const SliderItemProperty = ({ itemsNumber, isLastItemFull }: SliderProps) => {
   }
   const propertiesData = propertyUnits?.items || []
   return (
-    <div className="slider-item mb-5">
+    <div className="listing-slider-item mb-5">
       <div className="mb-8">
         <Typography variant="h2" fontWeight="semibold" className="text-left">
           Recommended places to stay
@@ -105,7 +105,7 @@ const SliderItemProperty = ({ itemsNumber, isLastItemFull }: SliderProps) => {
           breakpoints={slidesPerViewBreakpoints}
           spaceBetween={40}
         >
-          <style>{HOME_SLIDER_CUSTOM_STYLE}</style>
+          <style>{LISTING_SLIDER_CUSTOM_STYLE}</style>
           {propertiesData.map((card) => (
             <SwiperSlide key={card.title}>
               <PropertyCard {...card} />
