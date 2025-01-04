@@ -91,7 +91,7 @@ const CheckoutBoxPrivate = ({ activity }: T_Checkout) => {
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold">
-        {formatCurrency(activity?.pricePerSlot || 0)}
+        {formatCurrency(activity?.pricePerSlot || 0, { noDecimals: true })}
         <small className="font-light"> per slot</small>
       </Typography>
       <Typography variant="h6" className="italic text-text-400 mt-2">

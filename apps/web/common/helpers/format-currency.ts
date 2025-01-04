@@ -3,10 +3,15 @@ import {
   Z_Supported_Currency,
 } from "@repo/contract-2/currency"
 
+type T_Options = {
+  currencyCode?: E_Supported_Currencies
+  noDecimals?: boolean
+}
 function formatCurrency(
   amount: number,
-  currencyCode?: E_Supported_Currencies
+  options?: T_Options
 ): string {
+  const { currencyCode, noDecimals } = options || {}
   const storedCurrency = localStorage.getItem(
     "currency"
   ) as E_Supported_Currencies | null
@@ -29,8 +34,8 @@ function formatCurrency(
   const formatter = new Intl.NumberFormat(locale, {
     style: "currency",
     currency: finalCurrency,
-    minimumFractionDigits: finalCurrency === "KRW" ? 0 : 2,
-    maximumFractionDigits: finalCurrency === "KRW" ? 0 : 2,
+    minimumFractionDigits: noDecimals || finalCurrency === "KRW" ? 0 : 2,
+    maximumFractionDigits: noDecimals || finalCurrency === "KRW" ? 0 : 2,
   })
 
   let formattedAmount = formatter.format(amount ? amount : 0)

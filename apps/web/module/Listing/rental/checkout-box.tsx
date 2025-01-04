@@ -77,7 +77,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
-        {formatCurrency(dayRate)}
+        {formatCurrency(dayRate, { noDecimals: true })}
         <small className="font-light"> per day</small>
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full">
