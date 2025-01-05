@@ -232,6 +232,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
       <GuestAddModal
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
+        maximumCapacity={selectedBookableUnit?.unitPrice.maximumCapacity}
       />
     </div>
   )
