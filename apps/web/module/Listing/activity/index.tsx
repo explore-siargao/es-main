@@ -26,6 +26,7 @@ import { Button } from "@/common/components/ui/Button"
 import { LucideFlag } from "lucide-react"
 import { E_Activity_Experience_Type } from "@repo/contract"
 import HostPolicies from "./host-policies"
+import CheckoutBox from "./checkout-box"
 
 export const Activity = ({ activity }: { activity: T_Activity }) => {
   const [showModal, setShowModal] = useState(false)
@@ -114,12 +115,13 @@ export const Activity = ({ activity }: { activity: T_Activity }) => {
 
         <div className="md:w-[27rem] md:relative">
           <div className="md:sticky md:top-6">
-            {activity.experienceType === E_Activity_Experience_Type.Private ? (
+            {/* {activity.experienceType === E_Activity_Experience_Type.Private ? (
               <CheckoutBoxPrivate activity={activity} />
             ) : null}
             {activity.experienceType === E_Activity_Experience_Type.Joiner ? (
               <CheckoutBoxJoiner activity={activity} />
-            ) : null}
+            ) : null} */}
+            <CheckoutBox activity={activity} />
             <PledgeBox />
             <div className="flex justify-center">
               <div className="justify-items-center">
