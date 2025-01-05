@@ -22,7 +22,7 @@ const PriceBreakdownModal = ({
   const today = new Date()
 
   const breakdownArr = [...Array(guestCount)].map((_, index) => ({
-    name: `Guest ${index+1}`,
+    name: `Guest ${index + 1}`,
     price: dayRate,
   }))
 

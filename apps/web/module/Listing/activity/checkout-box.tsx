@@ -58,7 +58,7 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
     [E_Activity_Experience_Type.Private]: activity?.pricePerSlot,
   }
 
-  const activityPrice = priceMap[activity.experienceType];
+  const activityPrice = priceMap[activity.experienceType]
 
   const baseRate = activityPrice || 0
   const baseRateGuestsTotal = baseRate * guestsCount || 0
@@ -154,25 +154,21 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
           </Select>
         </div>
         <div
-          className={cn("relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer")}
+          className={cn(
+            "relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
+          )}
           onClick={() => setIsGuestsModalOpen(!isGuestsModalOpen)}
         >
           <label
             htmlFor="guests"
-            className={
-              cn(
-                "block text-xs font-medium text-text-900",
-              )
-            }
+            className={cn("block text-xs font-medium text-text-900")}
           >
             Guests <Asterisk />
           </label>
-          <span 
-            className={
-              cn(
-                "block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50",
-              )
-            }
+          <span
+            className={cn(
+              "block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50"
+            )}
           >
             {`${guestsCount} guest${guestsCount > 1 ? "s" : ""}`}
           </span>
