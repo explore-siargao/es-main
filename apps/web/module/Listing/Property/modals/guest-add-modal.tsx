@@ -122,8 +122,8 @@ const GuestAddModal = ({
           </div>
         </div>
         <Typography variant="h6" className="px-4 py-2">
-          This place has a maximum of {maximumCapacity || 0} guests, not including
-          infants. Pets aren't allowed.
+          This place has a maximum of {maximumCapacity || 0} guests, not
+          including infants. Pets aren't allowed.
         </Typography>
       </div>
     </ModalContainer>
