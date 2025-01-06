@@ -798,7 +798,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
-            title: unit.title || null,
+            title: property.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
             wholePlaceType: unit.wholePlaceType,
@@ -816,7 +816,21 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             reviewsCount: unit.reviewsCount || 0,
           }))
         )
-        const paginatedBookableUnits = allBookableUnits.slice(
+
+        // Reduce to ensure only one entry per `listingId` with the lowest price
+        const uniqueBookableUnits = Object.values(
+          allBookableUnits.reduce(
+            (acc:any, unit:any) => {
+              const { listingId, price } = unit
+              if (!acc[listingId] || price < acc[listingId].price) {
+                acc[listingId] = unit // Keep the unit with the lowest price
+              }
+              return acc
+            },
+            {} as Record<string, (typeof allBookableUnits)[number]>
+          )
+        )
+        const paginatedBookableUnits = uniqueBookableUnits.slice(
           startIndex,
           endIndex
         )
@@ -828,7 +842,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             response.success({
               items: validBookableUnits.data,
               pageItemCount: paginatedBookableUnits.length,
-              allItemCount: allBookableUnits.length,
+              allItemCount: uniqueBookableUnits.length,
             })
           )
         } else {
@@ -1488,7 +1502,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
-            title: unit.title || null,
+            title: property.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
             wholePlaceType: unit.wholePlaceType,
@@ -1506,7 +1520,21 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             reviewsCount: unit.reviewsCount || 0,
           }))
         )
-        const paginatedBookableUnits = allBookableUnits.slice(
+
+         // Reduce to ensure only one entry per `listingId` with the lowest price
+         const uniqueBookableUnits = Object.values(
+          allBookableUnits.reduce(
+            (acc:any, unit:any) => {
+              const { listingId, price } = unit
+              if (!acc[listingId] || price < acc[listingId].price) {
+                acc[listingId] = unit // Keep the unit with the lowest price
+              }
+              return acc
+            },
+            {} as Record<string, (typeof allBookableUnits)[number]>
+          )
+        )
+        const paginatedBookableUnits = uniqueBookableUnits.slice(
           startIndex,
           endIndex
         )
@@ -1519,7 +1547,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             response.success({
               items: validBookableUnits.data,
               pageItemCount: paginatedBookableUnits.length,
-              allItemCount: allBookableUnits.length,
+              allItemCount: uniqueBookableUnits.length,
             })
           )
         } else {
@@ -2208,7 +2236,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
-            title: unit.title || null,
+            title: property.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
             wholePlaceType: unit.wholePlaceType,
@@ -2226,7 +2254,21 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             reviewsCount: unit.reviewsCount || 0,
           }))
         )
-        const paginatedBookableUnits = allBookableUnits.slice(
+
+        // Reduce to ensure only one entry per `listingId` with the lowest price
+        const uniqueBookableUnits = Object.values(
+          allBookableUnits.reduce(
+            (acc:any, unit:any) => {
+              const { listingId, price } = unit
+              if (!acc[listingId] || price < acc[listingId].price) {
+                acc[listingId] = unit // Keep the unit with the lowest price
+              }
+              return acc
+            },
+            {} as Record<string, (typeof allBookableUnits)[number]>
+          )
+        )
+        const paginatedBookableUnits = uniqueBookableUnits.slice(
           startIndex,
           endIndex
         )
@@ -2239,7 +2281,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             response.success({
               items: validBookableUnits.data,
               pageItemCount: paginatedBookableUnits.length,
-              allItemCount: allBookableUnits.length,
+              allItemCount: uniqueBookableUnits.length,
             })
           )
         } else {
@@ -2937,7 +2979,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           property.bookableUnits.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
-            title: unit.title || null,
+            title: property.title || null,
             subtitle: unit.subtitle || null,
             type: property.type,
             wholePlaceType: unit.wholePlaceType,
@@ -2955,8 +2997,19 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             reviewsCount: unit.reviewsCount || 0,
           }))
         )
-
-        const paginatedBookableUnits = allBookableUnits.slice(
+        const uniqueBookableUnits = Object.values(
+          allBookableUnits.reduce(
+            (acc:any, unit:any) => {
+              const { listingId, price } = unit
+              if (!acc[listingId] || price < acc[listingId].price) {
+                acc[listingId] = unit // Keep the unit with the lowest price
+              }
+              return acc
+            },
+            {} as Record<string, (typeof allBookableUnits)[number]>
+          )
+        )
+        const paginatedBookableUnits = uniqueBookableUnits.slice(
           startIndex,
           endIndex
         )
@@ -2969,7 +3022,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             response.success({
               items: validBookableUnits.data,
               pageItemCount: paginatedBookableUnits.length,
-              allItemCount: allBookableUnits.length,
+              allItemCount: uniqueBookableUnits.length,
             })
           )
         } else {
