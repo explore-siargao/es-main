@@ -1,6 +1,5 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import React, { useEffect, useState } from "react"
-import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import { T_Update_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import toast from "react-hot-toast"

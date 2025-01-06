@@ -4,7 +4,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/format-currency"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format } from "date-fns/format"
-import { Pencil, Trash } from "lucide-react"
+import { Trash } from "lucide-react"
 import React from "react"
 import UpdatePropertyItemModal from "../modals/update-property-item-modal"
 
