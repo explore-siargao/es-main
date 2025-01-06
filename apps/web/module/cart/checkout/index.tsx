@@ -55,35 +55,36 @@ const Checkout = () => {
       (item) => item._id && cartIds.includes(item._id) && item.activityIds
     ) || []
 
-    const remapItems = (items: T_Cart_Item[]) => {
-      return items.map((item) => ({
-        startDate: item.startDate,
-        endDate: item.endDate,
-        guestCount: item.guestCount ?? 0, 
-        propertyIds: item.propertyIds
+  const remapItems = (items: T_Cart_Item[]) => {
+    return items.map((item) => ({
+      startDate: item.startDate,
+      endDate: item.endDate,
+      guestCount: item.guestCount ?? 0,
+      propertyIds: item.propertyIds
         ? {
             propertyId: item.propertyIds.propertyId?._id ?? null,
-            unitId: Array.isArray(item.propertyIds.unitId?.qtyIds) && item.propertyIds.unitId?.qtyIds?.[0]
-              ? item.propertyIds.unitId.qtyIds[0]._id ?? null
-              : null,
+            unitId:
+              Array.isArray(item.propertyIds.unitId?.qtyIds) &&
+              item.propertyIds.unitId?.qtyIds?.[0]
+                ? (item.propertyIds.unitId.qtyIds[0]._id ?? null)
+                : null,
           }
         : null,
-        activityIds: item.activityIds
-          ? {
-              ...item.activityIds,
-              activityId: item.activityIds.activityId?._id ?? null,
-            }
-          : null,
-        rentalIds: item.rentalIds
-          ? {
-              rentalId: item.rentalIds.rentalId?._id ?? null, 
-              qtyIdsId: item.rentalIds.qtyIdsId ?? undefined, 
-            }
-          : undefined, 
-        id: item._id,
-      }));
-    };
-    
+      activityIds: item.activityIds
+        ? {
+            ...item.activityIds,
+            activityId: item.activityIds.activityId?._id ?? null,
+          }
+        : null,
+      rentalIds: item.rentalIds
+        ? {
+            rentalId: item.rentalIds.rentalId?._id ?? null,
+            qtyIdsId: item.rentalIds.qtyIdsId ?? undefined,
+          }
+        : undefined,
+      id: item._id,
+    }))
+  }
 
   const remappedItems = remapItems(allSelectedItems)
   const handleProceedToPayment = () => {
@@ -91,7 +92,7 @@ const Checkout = () => {
       const payload = {
         cartItems: remappedItems as T_Add_To_Cart[],
       }
-     
+
       mutate(payload, {
         onSuccess: (data: any) => {
           if (!data.error) {
@@ -104,7 +105,6 @@ const Checkout = () => {
           toast.error(String(err))
         },
       })
- 
     }
     if (paymentInfo.paymentType == E_PaymentType.CreditDebit) {
       if (

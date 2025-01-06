@@ -67,8 +67,8 @@ export const Z_Add_To_Cart = z
     path: ["propertyIds", "rentalIds", "activityIds"],
   })
 
-  export const Z_Add_To_Carts = z.array(Z_Add_To_Cart)
-  
+export const Z_Add_To_Carts = z.array(Z_Add_To_Cart)
+
 export const Z_Update_Cart = z.object({
   startDate: z.string(),
   endDate: z.string(),
