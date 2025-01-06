@@ -820,7 +820,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         // Reduce to ensure only one entry per `listingId` with the lowest price
         const uniqueBookableUnits = Object.values(
           allBookableUnits.reduce(
-            (acc:any, unit:any) => {
+            (acc: any, unit: any) => {
               const { listingId, price } = unit
               if (!acc[listingId] || price < acc[listingId].price) {
                 acc[listingId] = unit // Keep the unit with the lowest price
@@ -1521,10 +1521,10 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           }))
         )
 
-         // Reduce to ensure only one entry per `listingId` with the lowest price
-         const uniqueBookableUnits = Object.values(
+        // Reduce to ensure only one entry per `listingId` with the lowest price
+        const uniqueBookableUnits = Object.values(
           allBookableUnits.reduce(
-            (acc:any, unit:any) => {
+            (acc: any, unit: any) => {
               const { listingId, price } = unit
               if (!acc[listingId] || price < acc[listingId].price) {
                 acc[listingId] = unit // Keep the unit with the lowest price
@@ -2258,7 +2258,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         // Reduce to ensure only one entry per `listingId` with the lowest price
         const uniqueBookableUnits = Object.values(
           allBookableUnits.reduce(
-            (acc:any, unit:any) => {
+            (acc: any, unit: any) => {
               const { listingId, price } = unit
               if (!acc[listingId] || price < acc[listingId].price) {
                 acc[listingId] = unit // Keep the unit with the lowest price
@@ -2999,7 +2999,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         )
         const uniqueBookableUnits = Object.values(
           allBookableUnits.reduce(
-            (acc:any, unit:any) => {
+            (acc: any, unit: any) => {
               const { listingId, price } = unit
               if (!acc[listingId] || price < acc[listingId].price) {
                 acc[listingId] = unit // Keep the unit with the lowest price
