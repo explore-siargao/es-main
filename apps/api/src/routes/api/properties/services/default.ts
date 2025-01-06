@@ -294,15 +294,14 @@ export const updatePropertyType = async (req: Request, res: Response) => {
         {
           $set: {
             type: type,
-            title:"",
-            description:"",
-            location:null,
-            facilities:[],
-            photos:[],
-            policies:[],
-            finishedSections:['type']
+            title: '',
+            description: '',
+            location: null,
+            facilities: [],
+            photos: [],
+            policies: [],
+            finishedSections: ['type'],
           },
-         
         },
         { new: true, runValidators: true, fields: { type: 1 } }
       )
