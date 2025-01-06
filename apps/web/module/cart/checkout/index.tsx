@@ -10,7 +10,7 @@ import RentalPriceDetailsBox from "./price-details-box/rental"
 import usePaymentInfoStore from "./stores/use-payment-info-store"
 import toast from "react-hot-toast"
 import SubTotalBox from "../sub-total-box"
-import { T_Add_To_Cart } from "@repo/contract-2/cart"
+import { T_Add_To_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import useAddGCashPayment from "../hooks/use-add-gcash-payment"
 import { useRouter, useSearchParams } from "next/navigation"
 import { E_PaymentType } from "@repo/contract"
@@ -55,45 +55,44 @@ const Checkout = () => {
       (item) => item._id && cartIds.includes(item._id) && item.activityIds
     ) || []
 
-  const remapItems = (items: T_Add_To_Cart[]) => {
+  const remapItems = (items: T_Cart_Item[]) => {
     return items.map((item) => ({
       startDate: item.startDate,
       endDate: item.endDate,
       guestCount: item.guestCount ?? 0,
       propertyIds: item.propertyIds
         ? {
-            // @ts-expect-error
-            propertyId: item.propertyIds?.propertyId._id ?? null,
-            // @ts-expect-error
-            unitId: item.propertyIds?.unitId?.qtyIds[0]._id ?? null,
+            propertyId: item.propertyIds.propertyId?._id ?? null,
+            unitId:
+              Array.isArray(item.propertyIds.unitId?.qtyIds) &&
+              item.propertyIds.unitId?.qtyIds?.[0]
+                ? (item.propertyIds.unitId.qtyIds[0]._id ?? null)
+                : null,
           }
         : null,
       activityIds: item.activityIds
         ? {
             ...item.activityIds,
-            // @ts-expect-error
-            activityId: item.activityIds?.activityId._id ?? null,
+            activityId: item.activityIds.activityId?._id ?? null,
           }
         : null,
       rentalIds: item.rentalIds
         ? {
-            // @ts-expect-error
-            rentalId: item.rentalIds?.rentalId._id ?? null,
-            qtyIdsId: item.rentalIds?.qtyIdsId ?? null,
+            rentalId: item.rentalIds.rentalId?._id ?? null,
+            qtyIdsId: item.rentalIds.qtyIdsId ?? undefined,
           }
-        : null,
+        : undefined,
       id: item._id,
     }))
   }
 
-  const remappedItems = remapItems(allSelectedItems as T_Add_To_Cart[])
-
+  const remappedItems = remapItems(allSelectedItems)
   const handleProceedToPayment = () => {
     if (paymentInfo.paymentType == E_PaymentType.GCASH) {
       const payload = {
-        cartItems: remappedItems,
+        cartItems: remappedItems as T_Add_To_Cart[],
       }
-      // @ts-expect-error
+
       mutate(payload, {
         onSuccess: (data: any) => {
           if (!data.error) {
