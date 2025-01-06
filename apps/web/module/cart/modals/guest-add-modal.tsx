@@ -20,15 +20,21 @@ const GuestAddModal = ({
   const incrementGuest = useGuestAdd((state) => state.incrementGuest)
   const decrementGuest = useGuestAdd((state) => state.decrementGuest)
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
-  const updateGuests = ({type, category}: {type: 'increase' | 'decrease', category: 'adults' | 'children' | 'infants'}) => {
-    const total = adults+children+infants;
-    if(total > (maximumCapacity || 0)) {
+  const updateGuests = ({
+    type,
+    category,
+  }: {
+    type: "increase" | "decrease"
+    category: "adults" | "children" | "infants"
+  }) => {
+    const total = adults + children + infants
+    if (total > (maximumCapacity || 0)) {
       toast.error(`Exceeds capacity of ${maximumCapacity}`)
     } else {
-      if(type === 'increase') {
+      if (type === "increase") {
         incrementGuest(category)
       }
-      if(type === 'decrease') {
+      if (type === "decrease") {
         decrementGuest(category)
       }
     }
@@ -46,7 +52,8 @@ const GuestAddModal = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={() => {
-                if (adults > 1) updateGuests({ type: 'decrease', category: 'adults' })
+                if (adults > 1)
+                  updateGuests({ type: "decrease", category: "adults" })
               }}
             >
               <MinusCircle
@@ -62,7 +69,7 @@ const GuestAddModal = ({
             </Typography>
             <button
               onClick={() => {
-                updateGuests({ type: 'increase', category: 'adults' })
+                updateGuests({ type: "increase", category: "adults" })
               }}
             >
               <PlusCircle className="h-8 w-8" strokeWidth={0.5} />
@@ -79,7 +86,8 @@ const GuestAddModal = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={() => {
-                if (children > 0) updateGuests({ type: 'decrease', category: 'children' })
+                if (children > 0)
+                  updateGuests({ type: "decrease", category: "children" })
               }}
             >
               <MinusCircle
@@ -95,7 +103,7 @@ const GuestAddModal = ({
             </Typography>
             <button
               onClick={() => {
-                updateGuests({ type: 'increase', category: 'children' })
+                updateGuests({ type: "increase", category: "children" })
               }}
             >
               <PlusCircle className="h-8 w-8" strokeWidth={0.5} />
@@ -112,7 +120,8 @@ const GuestAddModal = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={() => {
-                if (infants > 0) updateGuests({ type: 'decrease', category: 'infants' })
+                if (infants > 0)
+                  updateGuests({ type: "decrease", category: "infants" })
               }}
             >
               <MinusCircle
@@ -128,7 +137,7 @@ const GuestAddModal = ({
             </Typography>
             <button
               onClick={() => {
-                updateGuests({ type: 'increase', category: 'infants' })
+                updateGuests({ type: "increase", category: "infants" })
               }}
             >
               <PlusCircle className="h-8 w-8" strokeWidth={0.5} />

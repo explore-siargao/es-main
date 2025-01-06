@@ -61,10 +61,7 @@ function RentalItem({
           </div>
         </div>
         <div className="flex items-end">
-          <UpdateRentalItemModal
-            cartItem={item}
-            itemTitle={title}
-          />
+          <UpdateRentalItemModal cartItem={item} itemTitle={title} />
           <Button
             variant="link"
             className="hover:underline text-error-500 hover:cursor-pointer flex items-center"

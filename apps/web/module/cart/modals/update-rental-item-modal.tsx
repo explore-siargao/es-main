@@ -24,29 +24,23 @@ type T_Edit_Guest_Modal = {
 
 export const modalKey = `update-cart-rental-item`
 
-const UpdateRentalItemModal = ({
-  cartItem,
-  itemTitle,
-}: T_Edit_Guest_Modal) => {
+const UpdateRentalItemModal = ({ cartItem, itemTitle }: T_Edit_Guest_Modal) => {
   const queryClient = useQueryClient()
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
   const dateRange = usePickupDropoffStore((state) => state.dateRange)
-  const updateDateRange = usePickupDropoffStore((state) => state.updateDateRange)
+  const updateDateRange = usePickupDropoffStore(
+    (state) => state.updateDateRange
+  )
   const fromTime = usePickupDropoffStore((state) => state.fromTime)
   const toTime = usePickupDropoffStore((state) => state.toTime)
   const updateFromTime = usePickupDropoffStore((state) => state.updateFromTime)
   const updateToTime = usePickupDropoffStore((state) => state.updateToTime)
-  const { modal, setModal } = useModalStore((state) => state);
+  const { modal, setModal } = useModalStore((state) => state)
   const { mutate, isPending } = useUpdateCartItem()
 
   const handleSubmit = () => {
-    if (
-      !dateRange.from ||
-      !dateRange.to ||
-      !fromTime ||
-      !toTime
-    ) {
+    if (!dateRange.from || !dateRange.to || !fromTime || !toTime) {
       toast.error("Please complete all the fields")
     } else {
       const from = combineDateTime(dateRange.from!, fromTime)
@@ -78,8 +72,11 @@ const UpdateRentalItemModal = ({
   }
 
   useEffect(() => {
-    if(modal === modalKey) {
-      updateDateRange({ from: new Date(cartItem.startDate), to: new Date(cartItem.endDate) })
+    if (modal === modalKey) {
+      updateDateRange({
+        from: new Date(cartItem.startDate),
+        to: new Date(cartItem.endDate),
+      })
     }
   }, [modal])
 
@@ -155,9 +152,7 @@ const UpdateRentalItemModal = ({
                 Checkout <Asterisk />
               </label>
               <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-                {dateRange.to
-                  ? format(dateRange.to, "MM/dd/yyyy")
-                  : "Add date"}
+                {dateRange.to ? format(dateRange.to, "MM/dd/yyyy") : "Add date"}
               </span>
             </div>
             <Select
@@ -185,7 +180,11 @@ const UpdateRentalItemModal = ({
             </Select>
           </div>
           <div className="flex justify-end">
-            <Button variant="primary" onClick={handleSubmit} disabled={isPending}>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              disabled={isPending}
+            >
               Update
             </Button>
           </div>

@@ -28,7 +28,7 @@ export const modalKey = `update-cart-property-item`
 const UpdatePropertyItemModal = ({
   cartItem,
   itemTitle,
-  itemGuestsMaxCapacity
+  itemGuestsMaxCapacity,
 }: T_Edit_Guest_Modal) => {
   const queryClient = useQueryClient()
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
@@ -37,16 +37,17 @@ const UpdatePropertyItemModal = ({
   const updateAdults = useGuestsStore((state) => state.updateAdults)
   const { adults, children, infants } = useGuestsStore((state) => state.guest)
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
-  const updateDateRange = useCheckInOutDateStore((state) => state.updateDateRange)
-  const { modal, setModal } = useModalStore((state) => state);
+  const updateDateRange = useCheckInOutDateStore(
+    (state) => state.updateDateRange
+  )
+  const { modal, setModal } = useModalStore((state) => state)
   const { mutate, isPending } = useUpdateCartItem()
 
   const handleSubmit = () => {
     if (
       !dateRange.from ||
       !dateRange.to ||
-      (adults === 0 &&
-        children === 0 && infants === 0)
+      (adults === 0 && children === 0 && infants === 0)
     ) {
       toast.error("Please complete all the fields")
     } else {
@@ -54,7 +55,7 @@ const UpdatePropertyItemModal = ({
         ...cartItem,
         startDate: new Date(dateRange.from).toISOString(),
         endDate: new Date(dateRange.to).toISOString(),
-        guestCount: (adults+children+infants) || 0,
+        guestCount: adults + children + infants || 0,
       }
       const callBackReq = {
         onSuccess: (data: any) => {
@@ -77,11 +78,14 @@ const UpdatePropertyItemModal = ({
   }
 
   useEffect(() => {
-    updateDateRange({ from: new Date(cartItem.startDate), to: new Date(cartItem.endDate) })
+    updateDateRange({
+      from: new Date(cartItem.startDate),
+      to: new Date(cartItem.endDate),
+    })
     updateAdults(cartItem.guestCount || 0)
   }, [modal])
 
-  const guestsCount = adults+children+infants;
+  const guestsCount = adults + children + infants
 
   return (
     <>
@@ -132,28 +136,30 @@ const UpdatePropertyItemModal = ({
                 Checkout <Asterisk />
               </label>
               <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-                {dateRange.to
-                  ? format(dateRange.to, "MM/dd/yyyy")
-                  : "Add date"}
+                {dateRange.to ? format(dateRange.to, "MM/dd/yyyy") : "Add date"}
               </span>
             </div>
           </div>
           <div
-          className="relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
-          onClick={() => setIsGuestsModalOpen(!isGuestsModalOpen)}
-        >
-          <label
-            htmlFor="guests"
-            className="block text-xs font-medium text-text-900 hover:cursor-pointer"
+            className="relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600 hover:cursor-pointer"
+            onClick={() => setIsGuestsModalOpen(!isGuestsModalOpen)}
           >
-            Guests <Asterisk />
-          </label>
-          <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-            {`${guestsCount} guest${guestsCount > 1 ? "s" : ""}`}
-          </span>
-        </div>
+            <label
+              htmlFor="guests"
+              className="block text-xs font-medium text-text-900 hover:cursor-pointer"
+            >
+              Guests <Asterisk />
+            </label>
+            <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
+              {`${guestsCount} guest${guestsCount > 1 ? "s" : ""}`}
+            </span>
+          </div>
           <div className="flex justify-end">
-            <Button variant="primary" onClick={handleSubmit} disabled={isPending}>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              disabled={isPending}
+            >
               Update
             </Button>
           </div>

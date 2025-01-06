@@ -13,9 +13,7 @@ type T_Cart_Props = {
   items: T_Cart_Item[]
 }
 
-const CartList: React.FC<T_Cart_Props> = ({
-  items,
-}) => {
+const CartList: React.FC<T_Cart_Props> = ({ items }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [selectedItemsIds, setSelectedItemsIds] = useState<string[]>([])
   const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] =
@@ -57,7 +55,7 @@ const CartList: React.FC<T_Cart_Props> = ({
   useEffect(() => {
     toggleAllCheckboxes()
   }, [])
-  
+
   return (
     <>
       <div className="flex bg-white-100 mb-8 pb-4 justify-between items-center border-b">
