@@ -283,16 +283,26 @@ export const updatePropertyType = async (req: Request, res: Response) => {
   const { type } = req.body
 
   try {
+    const property = await dbProperties.findOne({ _id: propertyId })
+    await dbLocations.findByIdAndDelete(property?.location)
+    property?.photos.forEach(async (id) => {
+      await dbPhotos.findByIdAndDelete(id)
+    })
     const updatePropertyType = await dbProperties
       .findOneAndUpdate(
         { _id: propertyId, offerBy: hostId },
         {
           $set: {
             type: type,
+            title:"",
+            description:"",
+            location:null,
+            facilities:[],
+            photos:[],
+            policies:[],
+            finishedSections:['type']
           },
-          $addToSet: {
-            finishedSections: 'type',
-          },
+         
         },
         { new: true, runValidators: true, fields: { type: 1 } }
       )
@@ -305,7 +315,6 @@ export const updatePropertyType = async (req: Request, res: Response) => {
         })
       )
     } else {
-      const property = await dbProperties.findOne({ _id: propertyId })
       const units = property?.bookableUnits
       if (property?.status !== E_Property_Status.live) {
         units?.forEach(async (id) => {
