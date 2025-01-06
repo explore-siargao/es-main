@@ -5,7 +5,7 @@ import {
 import { API_URL } from '@/common/constants/ev'
 import { ResponseService } from '@/common/service/response'
 import { T_CardInfo, Z_CardInfo } from '@repo/contract'
-import { T_Add_To_Cart, Z_Add_To_Cart } from '@repo/contract-2/cart'
+import { T_Add_To_Cart, Z_Add_To_Cart, Z_Add_To_Carts } from '@repo/contract-2/cart'
 import { dbPaymentMethods, dbReservations } from '@repo/database'
 import { EncryptionService, HMACService } from '@repo/services'
 import { Request, Response } from 'express'
@@ -25,7 +25,7 @@ export const gcashMultipleCheckout = async (req: Request, res: Response) => {
       console.error(typeof cartItems, cartItems)
       res.json(response.error({ message: 'Invalid Item on cart' }))
     } else {
-      const parseCartItems = Z_Add_To_Cart.safeParse(cartItems)
+      const parseCartItems = Z_Add_To_Carts.safeParse(cartItems)
       if (!parseCartItems.success) {
         console.error(JSON.parse(parseCartItems.error.message))
         res.json(
