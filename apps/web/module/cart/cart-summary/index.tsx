@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useCartStore } from "../stores/cart-stores"
+import { useCartStore } from "../stores/use-cart-store"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import OrderSummary from "../order-summary"
 import { T_Cart_Item } from "@repo/contract-2/cart"

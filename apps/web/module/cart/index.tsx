@@ -5,7 +5,7 @@ import CartList from "./lists"
 import SubTotalBox from "./sub-total-box"
 import useGetCartItems from "./hooks/use-get-cart-items"
 import { useRouter } from "next/navigation"
-import { useCartStore } from "./stores/cart-stores"
+import { useCartStore } from "./stores/use-cart-store"
 import { Typography } from "@/common/components/ui/Typography"
 import { Spinner } from "@/common/components/ui/Spinner"
 
