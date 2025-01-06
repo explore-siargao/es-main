@@ -56,7 +56,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     durations,
     starRating,
     activityDate,
-    numberOfGuest,
+    numberOfGuest: numberOfGuest === 'any' ? 'any' : Number(numberOfGuest),
   })
 
   if (validActivitySearch.success) {
