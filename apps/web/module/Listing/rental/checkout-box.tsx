@@ -13,12 +13,12 @@ import { GUEST_COMMISSION_PERCENT } from "@repo/constants"
 import PriceBreakdownModal from "./modals/price-breakdown-modal"
 import usePickupDropoffStore from "./stores/use-pickup-dropoff-store"
 import { Option, Select } from "@/common/components/ui/Select"
-import CheckInOutModal from "./modals/check-in-out-modal"
+import PickUpDropoffModal from "./modals/pick-up-drop-off-modal"
 import { CartService, T_Add_To_Cart } from "@repo/contract-2/cart"
 import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import combineDateTime from "./helpers/combine-date-time"
+import combineDateTime from "@/common/helpers/combine-date-time"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -231,7 +231,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
         dayRateTotal={dayRateTotal}
         dateRange={dateRange}
       />
-      <CheckInOutModal
+      <PickUpDropoffModal
         isOpen={checkInOutCalendarModalIsOpen}
         onClose={() => setCheckInOutCalendarModalIsOpen(false)}
       />

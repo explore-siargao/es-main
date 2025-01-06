@@ -6,12 +6,12 @@ import useCheckInOutDateStore from "../stores/use-pickup-dropoff-store"
 import { Calendar } from "@/common/components/ui/Calendar"
 import { differenceInDays, format } from "date-fns"
 
-interface CheckInOutModalProps {
+interface PickUpDropoffModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-const CheckInOutModal = ({ isOpen, onClose }: CheckInOutModalProps) => {
+const PickUpDropoffModal = ({ isOpen, onClose }: PickUpDropoffModalProps) => {
   const dateRange = useCheckInOutDateStore((state) => state.dateRange)
   const updateDateRange = useCheckInOutDateStore(
     (state) => state.updateDateRange
@@ -70,4 +70,4 @@ const CheckInOutModal = ({ isOpen, onClose }: CheckInOutModalProps) => {
     </ModalContainer>
   )
 }
-export default CheckInOutModal
+export default PickUpDropoffModal
