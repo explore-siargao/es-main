@@ -4,8 +4,9 @@ import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/format-currency"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format } from "date-fns/format"
-import { Pencil, Trash } from "lucide-react"
+import { Trash } from "lucide-react"
 import React from "react"
+import UpdatePropertyItemModal from "../modals/update-property-item-modal"
 
 type T_Props = {
   item: T_Cart_Item
@@ -63,13 +64,11 @@ function PropertyItem({
           </div>
         </div>
         <div className="flex items-end">
-          <Button
-            variant="link"
-            className="hover:underline text-info-500 hover:cursor-pointer flex items-center"
-          >
-            <Pencil height={18} />
-            Modify
-          </Button>
+          <UpdatePropertyItemModal
+            cartItem={item}
+            itemTitle={unitItem?.title || "Unknown"}
+            itemGuestsMaxCapacity={unitItem?.unitPrice?.maximumCapacity || 0}
+          />
           <Button
             variant="link"
             className="hover:underline text-error-500 hover:cursor-pointer flex items-center"
@@ -87,8 +86,8 @@ function PropertyItem({
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <Typography variant="p" className="text-text-400">
-            {item?.startDate && format(item?.startDate, "d MMM, yyyy")}{" "}
-            {item?.endDate && `- ${format(item?.endDate, "d MMM, yyyy")}`}
+            {item?.startDate && format(item?.startDate, "MMMM dd, yyyy")}{" "}
+            {item?.endDate && `- ${format(item?.endDate, "MMMM dd, yyyy")}`}
           </Typography>
         </div>
 

@@ -6,6 +6,7 @@ import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format } from "date-fns/format"
 import { Pencil, Trash } from "lucide-react"
 import React from "react"
+import UpdateRentalItemModal from "../modals/update-rental-item-modal"
 
 type T_Props = {
   item: T_Cart_Item
@@ -25,6 +26,7 @@ function RentalItem({
   setIsDeleteCartItemOpen,
 }: T_Props) {
   const rentalItem = item.rentalIds?.rentalId
+  const title = `${rentalItem?.year ? rentalItem?.year : ""} ${rentalItem?.make ? rentalItem?.make : ""} ${rentalItem?.modelBadge ? rentalItem?.modelBadge : "Unknown"}`
   return (
     <div key={rentalItem?._id} className="border rounded-xl p-4 mb-6">
       <div className="flex justify-between items-start">
@@ -44,7 +46,7 @@ function RentalItem({
           />
           <div className="flex-1">
             <Typography variant="h3" fontWeight="semibold">
-              {rentalItem?.make} {rentalItem?.modelBadge}
+              {title}
             </Typography>
             <Typography variant="p" className="text-text-400">
               {rentalItem?.location?.streetAddress &&
@@ -59,13 +61,7 @@ function RentalItem({
           </div>
         </div>
         <div className="flex items-end">
-          <Button
-            variant="link"
-            className="hover:underline text-info-500 hover:cursor-pointer flex items-center"
-          >
-            <Pencil height={18} />
-            Modify
-          </Button>
+          <UpdateRentalItemModal cartItem={item} itemTitle={title} />
           <Button
             variant="link"
             className="hover:underline text-error-500 hover:cursor-pointer flex items-center"

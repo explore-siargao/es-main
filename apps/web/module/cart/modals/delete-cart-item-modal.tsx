@@ -2,33 +2,33 @@ import ModalContainer from "@/common/components/ModalContainer"
 import React from "react"
 import toast from "react-hot-toast"
 import ModalContainerFooter from "@/common/components/ModalContainer/ModalContainerFooter"
+import useRemoveItemFromCart from "../hooks/use-remove-item-from-cart"
 import { useQueryClient } from "@tanstack/react-query"
-import useRemoveMultipleItemsFromCart from "../../hooks/use-delete-multiple-items-from-cart"
 
-interface DeleteAllSelectedItemsProps {
+interface DeleteCartItemModalProps {
   isOpen: boolean
   onClose: () => void
-  itemIds: string[]
+  itemId: string
 }
 
-const DeleteAllSelectedItems = ({
+const DeleteCartItemModal = ({
   isOpen: openModal,
   onClose: closeModal,
-  itemIds,
-}: DeleteAllSelectedItemsProps) => {
+  itemId,
+}: DeleteCartItemModalProps) => {
   const queryClient = useQueryClient()
-  const { mutate, isPending } = useRemoveMultipleItemsFromCart()
+  const { mutate, isPending } = useRemoveItemFromCart()
 
   return (
     <ModalContainer
-      title="Remove items from cart"
+      title="Remove item from cart"
       onClose={closeModal}
       isOpen={openModal}
       size="auto"
     >
       <div className="p-6">
         <p className="text-text-400 font-light">
-          Are you sure you want to remove the selected items from your cart?
+          Are you sure you want to remove this item from your cart?
         </p>
       </div>
       <ModalContainerFooter
@@ -38,7 +38,7 @@ const DeleteAllSelectedItems = ({
         isSubmit={false}
         onClose={closeModal}
         buttonFn={() => {
-          mutate(itemIds, {
+          mutate(itemId, {
             onSuccess: (data: any) => {
               if (!data.error) {
                 queryClient.invalidateQueries({
@@ -60,4 +60,4 @@ const DeleteAllSelectedItems = ({
   )
 }
 
-export default DeleteAllSelectedItems
+export default DeleteCartItemModal

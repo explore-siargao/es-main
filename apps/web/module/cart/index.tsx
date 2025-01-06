@@ -5,13 +5,13 @@ import CartList from "./lists"
 import SubTotalBox from "./sub-total-box"
 import useGetCartItems from "./hooks/use-get-cart-items"
 import { useRouter } from "next/navigation"
-import { useCartStore } from "./stores/cart-stores"
+import { useCartStore } from "./stores/use-cart-store"
 import { Typography } from "@/common/components/ui/Typography"
 import { Spinner } from "@/common/components/ui/Spinner"
 
 const Cart = () => {
   const { data, isLoading } = useGetCartItems()
-  const { selectedItems, setSelectedItems } = useCartStore()
+  const { selectedItems } = useCartStore()
   const router = useRouter()
 
   const handleCheckout = () => {
@@ -34,11 +34,7 @@ const Cart = () => {
           {isLoading ? (
             <Spinner />
           ) : data && data?.items.length > 0 ? (
-            <CartList
-              setSelectedItems={setSelectedItems}
-              selectedItems={selectedItems}
-              items={data?.items}
-            />
+            <CartList items={data?.items} />
           ) : (
             <div className="col-span-3 w-full">
               <h2 className="text-lg mx-auto text-text-300 italic">

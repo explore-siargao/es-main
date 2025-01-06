@@ -2,7 +2,7 @@ import ModalContainer from "@/common/components/ModalContainer"
 import { DateRange } from "react-day-picker"
 import { Typography } from "@/common/components/ui/Typography"
 import { Button } from "@/common/components/ui/Button"
-import useCheckInOutDateStore from "../stores/use-pickup-dropoff-store"
+import useCheckInOutDateStore from "../stores/use-check-in-out-date-store"
 import { Calendar } from "@/common/components/ui/Calendar"
 import { differenceInDays, format } from "date-fns"
 
@@ -24,7 +24,7 @@ const CheckInOutModal = ({ isOpen, onClose }: CheckInOutModalProps) => {
     <ModalContainer size="auto" isOpen={isOpen} onClose={onClose}>
       <div className="pt-6 pb-14 px-5">
         <Typography variant="h2" fontWeight="semibold" className="mb-1">
-          {nights} day{nights > 1 && `s`}
+          {nights} night{nights > 1 && `s`}
         </Typography>
         <Typography variant="h5" className="mb-4">
           {dateRange?.from != undefined

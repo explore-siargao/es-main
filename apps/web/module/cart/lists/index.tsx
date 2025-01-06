@@ -7,24 +7,20 @@ import ActivityCartItem from "./activity-item"
 import RentalCartItem from "./rental-item"
 import DeleteCartItemModal from "../modals/delete-cart-item-modal"
 import DeleteAllSelectedItems from "../modals/delete-all-selected-items-modal"
+import { useCartStore } from "../stores/use-cart-store"
 
 type T_Cart_Props = {
   items: T_Cart_Item[]
-  setSelectedItems: (items: T_Cart_Item[]) => void
-  selectedItems: T_Cart_Item[]
 }
 
-const CartList: React.FC<T_Cart_Props> = ({
-  items,
-  setSelectedItems,
-  selectedItems,
-}) => {
+const CartList: React.FC<T_Cart_Props> = ({ items }) => {
   const [selectAll, setSelectAll] = useState(false)
   const [selectedItemsIds, setSelectedItemsIds] = useState<string[]>([])
   const [isDeleteCartItemOpen, setIsDeleteCartItemOpen] =
     useState<boolean>(false)
   const [isDeleteMultipleCartItemOpen, setIsDeleteMultipleCartItemOpen] =
     useState<boolean>(false)
+  const { selectedItems, setSelectedItems } = useCartStore()
 
   const [itemId, setItemId] = useState<string>("")
 
