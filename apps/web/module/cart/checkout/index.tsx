@@ -27,8 +27,6 @@ import { APP_NAME } from "@repo/constants"
 import { HMACService } from "@repo/services"
 import { add } from "date-fns"
 
-
-
 const Checkout = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -154,14 +152,14 @@ const Checkout = () => {
       if (paymentInfo.paymentMethodId && paymentInfo.cvv) {
         const cvv = paymentInfo.cvv
         const cvvHMAC = hmacService.generateHMAC({ cvv })
-        
+
         mutateUseAddCardPayment(
           {
             cartItems: remappedItems,
             paymentMethodId: paymentInfo.paymentMethodId as string,
             cvv: paymentInfo.cvv as string,
             hmac: cvvHMAC,
-            expirationDate: add(new Date(), { seconds: 30 })
+            expirationDate: add(new Date(), { seconds: 30 }),
           },
           {
             onSuccess: (data: any) => {
