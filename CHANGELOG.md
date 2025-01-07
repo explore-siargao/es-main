@@ -2,29 +2,28 @@
 
 ## [0.38.0](https://github.com/explore-siargao/es-main/compare/v0.37.0...v0.38.0) (2025-01-07)
 
-
 ### 🚀 Features
 
-* add guest management modals and store for activity listings ([28fe55c](https://github.com/explore-siargao/es-main/commit/28fe55c3ac0b0de1afe945fe1c8a05356c9b632c))
-* added modify property item in cart ([aa6ed3f](https://github.com/explore-siargao/es-main/commit/aa6ed3ff593460a999ff2fc715afa56987f0d807)) ([fb0ef64](https://github.com/explore-siargao/es-main/commit/fb0ef646adf5da82ae57e8183f31e774886bb204))
-* added modify rental item in cart ([ce7b111](https://github.com/explore-siargao/es-main/commit/ce7b1118fdf0cc39ce925b79bad39c98d3b17b1a))
-* **api:** Added schedule to req body on update cart ([d9c448c](https://github.com/explore-siargao/es-main/commit/d9c448c744c42c95c6e95009ba1fc1a5c29e2ec1))
-* **api:** Modified property filter endpoint ([3bd383a](https://github.com/explore-siargao/es-main/commit/3bd383a6360ec6a3b6e736e457da47f9b21095db))
-* **api:** Reset all data when changing property type ([763ca58](https://github.com/explore-siargao/es-main/commit/763ca58dfd31a01d2055f7146a63782f26b47c9f))
-* checkout using gcash ([e2d9044](https://github.com/explore-siargao/es-main/commit/e2d9044edbdde1462979f3955697f48641a2e47c))
-* checkout using saved card ([6e0cd27](https://github.com/explore-siargao/es-main/commit/6e0cd27a98a48417edd302ee7ca92b80a538f32a))
+- add guest management modals and store for activity listings ([28fe55c](https://github.com/explore-siargao/es-main/commit/28fe55c3ac0b0de1afe945fe1c8a05356c9b632c))
+- added modify property item in cart ([aa6ed3f](https://github.com/explore-siargao/es-main/commit/aa6ed3ff593460a999ff2fc715afa56987f0d807)) ([fb0ef64](https://github.com/explore-siargao/es-main/commit/fb0ef646adf5da82ae57e8183f31e774886bb204))
+- added modify rental item in cart ([ce7b111](https://github.com/explore-siargao/es-main/commit/ce7b1118fdf0cc39ce925b79bad39c98d3b17b1a))
+- **api:** Added schedule to req body on update cart ([d9c448c](https://github.com/explore-siargao/es-main/commit/d9c448c744c42c95c6e95009ba1fc1a5c29e2ec1))
+- **api:** Modified property filter endpoint ([3bd383a](https://github.com/explore-siargao/es-main/commit/3bd383a6360ec6a3b6e736e457da47f9b21095db))
+- **api:** Reset all data when changing property type ([763ca58](https://github.com/explore-siargao/es-main/commit/763ca58dfd31a01d2055f7146a63782f26b47c9f))
+- checkout using gcash ([e2d9044](https://github.com/explore-siargao/es-main/commit/e2d9044edbdde1462979f3955697f48641a2e47c))
+- checkout using saved card ([6e0cd27](https://github.com/explore-siargao/es-main/commit/6e0cd27a98a48417edd302ee7ca92b80a538f32a))
 
 ### 🛠 Bug Fixes
 
-* **api:** Fixed error on searching activity with numberOfGuest ([dd8a997](https://github.com/explore-siargao/es-main/commit/dd8a997e8c1414e55096dec5ac5421ecd839c5e5))
+- **api:** Fixed error on searching activity with numberOfGuest ([dd8a997](https://github.com/explore-siargao/es-main/commit/dd8a997e8c1414e55096dec5ac5421ecd839c5e5))
 
 ### 🧰 Maintenance
 
-* added "duration" in cart activity hours and minutes ([7228c8b](https://github.com/explore-siargao/es-main/commit/7228c8b5ffa2c6cd7e2728c1646a1b388ba08ca0))
-* Added special margin for home page for slider next button ([4ce7270](https://github.com/explore-siargao/es-main/commit/4ce7270c236cd665ee62ba55d2e28a19b2725a62))
-* Update formatCurrency to accept options for noDecimals and apply in multiple components ([83ba72d](https://github.com/explore-siargao/es-main/commit/83ba72db6cd143c43bbf4c5ef2b3858d02feab25))
-* update guest capacity handling in checkout and guest add modal ([1412d3e](https://github.com/explore-siargao/es-main/commit/1412d3eb60e89ac742135e61c1ab86fec1192fef))
-* update language prop to be optional and handle undefined values in HostedBy component ([e368913](https://github.com/explore-siargao/es-main/commit/e368913f5b2357cc8a6f81d711737cf137fe8502))
+- added "duration" in cart activity hours and minutes ([7228c8b](https://github.com/explore-siargao/es-main/commit/7228c8b5ffa2c6cd7e2728c1646a1b388ba08ca0))
+- Added special margin for home page for slider next button ([4ce7270](https://github.com/explore-siargao/es-main/commit/4ce7270c236cd665ee62ba55d2e28a19b2725a62))
+- Update formatCurrency to accept options for noDecimals and apply in multiple components ([83ba72d](https://github.com/explore-siargao/es-main/commit/83ba72db6cd143c43bbf4c5ef2b3858d02feab25))
+- update guest capacity handling in checkout and guest add modal ([1412d3e](https://github.com/explore-siargao/es-main/commit/1412d3eb60e89ac742135e61c1ab86fec1192fef))
+- update language prop to be optional and handle undefined values in HostedBy component ([e368913](https://github.com/explore-siargao/es-main/commit/e368913f5b2357cc8a6f81d711737cf137fe8502))
 
 ## [0.37.0](https://github.com/explore-siargao/es-main/compare/v0.36.0...v0.37.0) (2024-12-29)
 
