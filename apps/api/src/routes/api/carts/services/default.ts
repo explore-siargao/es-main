@@ -22,9 +22,9 @@ import { Types } from 'mongoose'
 
 const response = new ResponseService()
 type T_Schedule = {
-  dayId:string,
-  timeSlotId:string,
-  slotIdsId:string | undefined
+  dayId: string
+  timeSlotId: string
+  slotIdsId: string | undefined
 }
 export const addToCart = async (req: Request, res: Response) => {
   let totalPrice, hostCommission
@@ -943,7 +943,7 @@ export const updateCartInfo = async (req: Request, res: Response) => {
   const cartId = req.params.cartId
   const userId = res.locals.user?.id
   const { startDate, endDate, guestCount, contacts } = req.body
-  const schedule:T_Schedule = req.body.schedule || undefined
+  const schedule: T_Schedule = req.body.schedule || undefined
   let hostCommission, totalPrice
   try {
     const getCart: any = await dbCarts.findOne({
@@ -1000,41 +1000,41 @@ export const updateCartInfo = async (req: Request, res: Response) => {
         }
         const guestCommission = (totalPrice || 0) * GUEST_COMMISSION_PERCENT
         let updateCart
-        if (!getCart.activityIds && schedule===undefined) {
-        updateCart = await dbCarts.findByIdAndUpdate(cartId, {
-          $set: {
-            startDate: startDate ? startDate : null,
-            endDate: endDate ? endDate : null,
-            price: totalPrice || 0,
-            guestCount,
-            // key wrong spelling
-            hostComission: hostCommission,
-            // key wrong spelling
-            guestComission: guestCommission,
-            updatedAt: Date.now(),
-            contacts: contacts || [],
-          },
-        })
-      }else{
-       updateCart = await dbCarts.findByIdAndUpdate(cartId, {
-          $set: {
-            "activityIds.activityId":getCart.activityIds.activityId,
-            "activityIds.dayId":schedule.dayId,
-            "activityIds.timeSlotId":schedule.timeSlotId,
-            "activityIds.slotIdsId":schedule.slotIdsId,
-            startDate: startDate ? startDate : null,
-            endDate: endDate ? endDate : null,
-            price: totalPrice || 0,
-            guestCount,
-            // key wrong spelling
-            hostComission: hostCommission,
-            // key wrong spelling
-            guestComission: guestCommission,
-            updatedAt: Date.now(),
-            contacts: contacts || [],
-          },
-        })
-      }
+        if (!getCart.activityIds && schedule === undefined) {
+          updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+            $set: {
+              startDate: startDate ? startDate : null,
+              endDate: endDate ? endDate : null,
+              price: totalPrice || 0,
+              guestCount,
+              // key wrong spelling
+              hostComission: hostCommission,
+              // key wrong spelling
+              guestComission: guestCommission,
+              updatedAt: Date.now(),
+              contacts: contacts || [],
+            },
+          })
+        } else {
+          updateCart = await dbCarts.findByIdAndUpdate(cartId, {
+            $set: {
+              'activityIds.activityId': getCart.activityIds.activityId,
+              'activityIds.dayId': schedule.dayId,
+              'activityIds.timeSlotId': schedule.timeSlotId,
+              'activityIds.slotIdsId': schedule.slotIdsId,
+              startDate: startDate ? startDate : null,
+              endDate: endDate ? endDate : null,
+              price: totalPrice || 0,
+              guestCount,
+              // key wrong spelling
+              hostComission: hostCommission,
+              // key wrong spelling
+              guestComission: guestCommission,
+              updatedAt: Date.now(),
+              contacts: contacts || [],
+            },
+          })
+        }
         res.json(
           response.success({
             item: updateCart,
