@@ -45,6 +45,7 @@ module.exports = {
     PASSWORD_ENCRYPT_KEY: process.env.PASSWORD_ENCRYPT_KEY,
     WINDY_KEY: process.env.WINDY_KEY,
     PAYLOAD_URL: process.env.PAYLOAD_URL,
+    API_REQ_HMAC_ENCRYPT_KEY: process.env.API_REQ_HMAC_ENCRYPT_KEY || "",
   },
   images: {
     remotePatterns: [

@@ -6,6 +6,8 @@ type T_Props = {
   cartItems: T_Add_To_Cart[]
   paymentMethodId: string
   cvv: string
+  hmac: string
+  expirationDate: Date
 }
 
 export async function addCardPayment(props: T_Props) {

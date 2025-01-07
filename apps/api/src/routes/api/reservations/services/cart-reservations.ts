@@ -129,7 +129,6 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
       res.json(response.error({ message: 'Invalid Item on cart' }))
     } else {
       const recreateHMAC = hmacService.generateHMAC({ cvv })
-      console.log(recreateHMAC)
       const currentDate = new Date()
       const utcDate = format(currentDate, "yyyy-MM-dd'T'HH:mm:ss'Z'")
       const expiredDate = format(expirationDate, "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -140,7 +139,7 @@ export const cardMultipleCheckout = async (req: Request, res: Response) => {
         if (computedDate > 30) {
           res.json(response.error({ message: 'Request expired' }))
         } else {
-          const parseCartItems = Z_Add_To_Cart.safeParse(cartItems)
+          const parseCartItems = Z_Add_To_Carts.safeParse(cartItems)
           if (!parseCartItems.success) {
             res.json(
               response.error({
