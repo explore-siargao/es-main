@@ -6,8 +6,7 @@
 ### 🚀 Features
 
 * add guest management modals and store for activity listings ([28fe55c](https://github.com/explore-siargao/es-main/commit/28fe55c3ac0b0de1afe945fe1c8a05356c9b632c))
-* added modify property item in cart ([aa6ed3f](https://github.com/explore-siargao/es-main/commit/aa6ed3ff593460a999ff2fc715afa56987f0d807))
-* added modify property item in cart ([fb0ef64](https://github.com/explore-siargao/es-main/commit/fb0ef646adf5da82ae57e8183f31e774886bb204))
+* added modify property item in cart ([aa6ed3f](https://github.com/explore-siargao/es-main/commit/aa6ed3ff593460a999ff2fc715afa56987f0d807)) ([fb0ef64](https://github.com/explore-siargao/es-main/commit/fb0ef646adf5da82ae57e8183f31e774886bb204))
 * added modify rental item in cart ([ce7b111](https://github.com/explore-siargao/es-main/commit/ce7b1118fdf0cc39ce925b79bad39c98d3b17b1a))
 * **api:** Added schedule to req body on update cart ([d9c448c](https://github.com/explore-siargao/es-main/commit/d9c448c744c42c95c6e95009ba1fc1a5c29e2ec1))
 * **api:** Modified property filter endpoint ([3bd383a](https://github.com/explore-siargao/es-main/commit/3bd383a6360ec6a3b6e736e457da47f9b21095db))
@@ -15,11 +14,9 @@
 * checkout using gcash ([e2d9044](https://github.com/explore-siargao/es-main/commit/e2d9044edbdde1462979f3955697f48641a2e47c))
 * checkout using saved card ([6e0cd27](https://github.com/explore-siargao/es-main/commit/6e0cd27a98a48417edd302ee7ca92b80a538f32a))
 
-
 ### 🛠 Bug Fixes
 
 * **api:** Fixed error on searching activity with numberOfGuest ([dd8a997](https://github.com/explore-siargao/es-main/commit/dd8a997e8c1414e55096dec5ac5421ecd839c5e5))
-
 
 ### 🧰 Maintenance
 
