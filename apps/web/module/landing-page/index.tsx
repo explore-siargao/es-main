@@ -10,10 +10,12 @@ import ActivitiesSlider from "./activities-slider"
 import RentalsSlider from "./rentals-slider"
 import TravelStyleSlider from "./travel-style-slider"
 import EsIslandSlider from "./es-island-slider"
+import { HMACService } from "@repo/services"
 
 const LandingPage = () => {
   const setIsOpen = useOptMessageStore((state) => state.setIsOpen)
-
+  const hmac = new HMACService()
+  console.log(hmac.KEY)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const welcome = localStorage.getItem("welcome")
