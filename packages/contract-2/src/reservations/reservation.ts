@@ -14,6 +14,8 @@ type T_Props = {
   cardInfo?: T_CardInfo | undefined
   cardId?: string
   cvv?: string
+  hmac?: string
+  expirationDate?: Date
 }
 
 export class ReservationService {

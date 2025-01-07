@@ -4,7 +4,7 @@ import { API_REQ_HMAC_ENCRYPT_KEY } from "./config"
 type T_Payload = { [key: string]: unknown }
 
 export class HMACService {
-  public KEY: string | undefined
+  private KEY: string | undefined
   constructor(type: "apiRequest" = "apiRequest") {
     if (type === "apiRequest") {
       this.KEY = API_REQ_HMAC_ENCRYPT_KEY

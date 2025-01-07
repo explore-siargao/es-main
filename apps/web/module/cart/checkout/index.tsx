@@ -24,6 +24,10 @@ import ActivityMoreInfo from "./more-info/activity"
 import PropertyMoreInfo from "./more-info/property"
 import RentalMoreInfo from "./more-info/rental"
 import { APP_NAME } from "@repo/constants"
+import { HMACService } from "@repo/services"
+import { add } from "date-fns"
+
+
 
 const Checkout = () => {
   const router = useRouter()
@@ -38,6 +42,7 @@ const Checkout = () => {
   const paymentInfo = usePaymentInfoStore((state) => state)
   const cartIdsSearch = searchParams.get(`cartIds`)
   const cartIds = cartIdsSearch ? cartIdsSearch.split(",") : []
+  const hmacService = new HMACService()
 
   const allItems = data?.items || []
   const allSelectedItems =
@@ -62,23 +67,23 @@ const Checkout = () => {
       guestCount: item.guestCount ?? 0,
       propertyIds: item.propertyIds
         ? {
-            propertyId: item.propertyIds.propertyId?._id ?? null,
+            propertyId: item.propertyIds.propertyId?._id ?? undefined,
             unitId:
               Array.isArray(item.propertyIds.unitId?.qtyIds) &&
               item.propertyIds.unitId?.qtyIds?.[0]
-                ? (item.propertyIds.unitId.qtyIds[0]._id ?? null)
-                : null,
+                ? (item.propertyIds.unitId.qtyIds[0]._id ?? undefined)
+                : undefined,
           }
         : null,
       activityIds: item.activityIds
         ? {
             ...item.activityIds,
-            activityId: item.activityIds.activityId?._id ?? null,
+            activityId: item.activityIds.activityId?._id ?? undefined,
           }
         : null,
       rentalIds: item.rentalIds
         ? {
-            rentalId: item.rentalIds.rentalId?._id ?? null,
+            rentalId: item.rentalIds.rentalId?._id ?? undefined,
             qtyIdsId: item.rentalIds.qtyIdsId ?? undefined,
           }
         : undefined,
@@ -147,12 +152,16 @@ const Checkout = () => {
     }
     if (paymentInfo.paymentType == E_PaymentType.SavedCreditDebit) {
       if (paymentInfo.paymentMethodId && paymentInfo.cvv) {
+        const cvv = paymentInfo.cvv
+        const cvvHMAC = hmacService.generateHMAC({ cvv })
+        
         mutateUseAddCardPayment(
           {
-            // @ts-expect-error
             cartItems: remappedItems,
             paymentMethodId: paymentInfo.paymentMethodId as string,
             cvv: paymentInfo.cvv as string,
+            hmac: cvvHMAC,
+            expirationDate: add(new Date(), { seconds: 30 })
           },
           {
             onSuccess: (data: any) => {
