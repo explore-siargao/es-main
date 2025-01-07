@@ -30,7 +30,8 @@ export class ReservationService {
       return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/card`, item)
     } else if (type === "manual") {
       return this.api.post(
-        `${RESERVATION_BASE_URL}/cart/checkout/manual-card`, item 
+        `${RESERVATION_BASE_URL}/cart/checkout/manual-card`,
+        item
       )
     }
   }

@@ -41,7 +41,7 @@ const Checkout = () => {
   const cartIdsSearch = searchParams.get(`cartIds`)
   const cartIds = cartIdsSearch ? cartIdsSearch.split(",") : []
   const hmacService = new HMACService()
-  const encryptionService = new EncryptionService('card')
+  const encryptionService = new EncryptionService("card")
   const allItems = data?.items || []
   const allSelectedItems =
     allItems.filter((item) => item._id && cartIds.includes(item._id)) || []
@@ -126,7 +126,7 @@ const Checkout = () => {
           cardholderName: paymentInfo.cardholderName,
           country: paymentInfo.country,
           cvv: paymentInfo.cvv,
-          zipCode: paymentInfo.zipCode
+          zipCode: paymentInfo.zipCode,
         }
         const encryptCardInfo = encryptionService.encrypt(cardInfo)
         const cardInfoHMAC = hmacService.generateHMAC(cardInfo)
