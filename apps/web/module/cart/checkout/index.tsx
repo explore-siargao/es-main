@@ -24,7 +24,7 @@ import ActivityMoreInfo from "./more-info/activity"
 import PropertyMoreInfo from "./more-info/property"
 import RentalMoreInfo from "./more-info/rental"
 import { APP_NAME } from "@repo/constants"
-import { HMACService } from "@repo/services"
+import { EncryptionService, HMACService } from "@repo/services"
 import { add } from "date-fns"
 
 const Checkout = () => {
@@ -41,7 +41,7 @@ const Checkout = () => {
   const cartIdsSearch = searchParams.get(`cartIds`)
   const cartIds = cartIdsSearch ? cartIdsSearch.split(",") : []
   const hmacService = new HMACService()
-
+  const encryptionService = new EncryptionService('card')
   const allItems = data?.items || []
   const allSelectedItems =
     allItems.filter((item) => item._id && cartIds.includes(item._id)) || []
@@ -119,19 +119,23 @@ const Checkout = () => {
         paymentInfo.cvv &&
         paymentInfo.zipCode
       ) {
-        const payload = {
-          cardInfo: {
-            cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ""),
-            expirationMonth: paymentInfo.expirationMonth,
-            expirationYear: paymentInfo.expirationYear,
-            cardholderName: paymentInfo.cardholderName,
-            country: paymentInfo.country,
-            cvv: paymentInfo.cvv,
-            zipCode: paymentInfo.zipCode,
-          },
-          cartItems: remappedItems,
+        const cardInfo = {
+          cardNumber: paymentInfo.cardNumber.replace(/\s+/g, ""),
+          expirationMonth: paymentInfo.expirationMonth,
+          expirationYear: paymentInfo.expirationYear,
+          cardholderName: paymentInfo.cardholderName,
+          country: paymentInfo.country,
+          cvv: paymentInfo.cvv,
+          zipCode: paymentInfo.zipCode
         }
-        // @ts-expect-error
+        const encryptCardInfo = encryptionService.encrypt(cardInfo)
+        const cardInfoHMAC = hmacService.generateHMAC(cardInfo)
+        const payload = {
+          cardInfo: encryptCardInfo,
+          cartItems: remappedItems,
+          hmac: cardInfoHMAC,
+          expirationDate: add(new Date(), { seconds: 30 }),
+        }
         mutateUseAddManualCardPayment(payload, {
           onSuccess: (data: any) => {
             if (!data.error) {
