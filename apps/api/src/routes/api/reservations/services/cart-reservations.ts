@@ -283,7 +283,7 @@ export const manualCardMultipleCheckout = async (
         } else if (!Array.isArray(cartItems)) {
           res.json(response.error({ message: 'Invalid Item on cart' }))
         } else {
-          const parseCartItems = Z_Add_To_Cart.safeParse(cartItems)
+          const parseCartItems = Z_Add_To_Carts.safeParse(cartItems)
           if (!parseCartItems.success) {
             res.json(
               response.error({

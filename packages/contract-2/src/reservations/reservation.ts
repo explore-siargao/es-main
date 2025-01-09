@@ -11,7 +11,7 @@ type T_Payment_Method = "gcash" | "card" | "manual"
 
 type T_Props = {
   cartItems: T_Add_To_Cart[]
-  cardInfo?: T_CardInfo | undefined
+  cardInfo?: string | undefined
   cardId?: string
   cvv?: string
   hmac?: string
@@ -31,7 +31,7 @@ export class ReservationService {
     } else if (type === "manual") {
       return this.api.post(
         `${RESERVATION_BASE_URL}/cart/checkout/manual-card`,
-        { cartItems: item }
+        item
       )
     }
   }
