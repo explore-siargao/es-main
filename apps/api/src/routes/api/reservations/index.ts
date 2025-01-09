@@ -34,6 +34,7 @@ import {
   linkedCardPayment,
   manualCardPayment,
 } from './services/for-payment-reservation'
+import { guestGroupReservations } from './services/guest-reservations'
 
 const router = express.Router()
 
@@ -191,6 +192,14 @@ router.post(
   isUserLoggedIn,
   isCsrfTokenValid,
   linkedCardPayment
+)
+
+router.get('/lists',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  paginate(15),
+  guestGroupReservations
 )
 
 export default router
