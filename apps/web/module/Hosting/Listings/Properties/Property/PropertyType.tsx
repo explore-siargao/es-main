@@ -16,6 +16,7 @@ import useUpdatePropertyType from "../hooks/useUpdatePropertyType"
 import toast from "react-hot-toast"
 import { cn } from "@/common/helpers/cn"
 import useGetPropertyById from "../hooks/useGetPropertyById"
+import PropertyTypeChangeModal from "../modals/property-type-change-modal"
 
 type Prop = {
   pageType: "setup" | "edit"
@@ -27,39 +28,60 @@ const PropertyType = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
-  const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
+  const {
+    data,
+    isPending: typeIsPending,
+  } = useGetPropertyById(listingId)
   const [selectedProperty, setSelectedProperty] = useState("")
+  const [PropertyTypeChangeModalOpen, setPropertyTypeChangeModalOpen] =
+    useState(false)
   useEffect(() => {
     if (!typeIsPending && data?.item?.type) {
       setSelectedProperty(data.item.type)
     }
   }, [typeIsPending, data])
+
+  const callBackReq = {
+    onSuccess: (data: any) => {
+      if (!data.error) {
+        toast.success(data.message)
+        queryClient.invalidateQueries({
+          queryKey: ["property-finished-sections", listingId],
+        })
+        if (pageType === "setup") {
+          router.push(
+            `/hosting/listings/properties/setup/${listingId}/${selectedProperty === "WHOLE_PLACE" ? "whole-place-type" : "basic-info"}`
+          )
+        }
+      } else {
+        toast.error(String(data.message))
+      }
+    },
+    onError: (err: any) => {
+      toast.error(String(err))
+    },
+  }
   const handleSave = () => {
     if (selectedProperty) {
-      const callBackReq = {
-        onSuccess: (data: any) => {
-          if (!data.error) {
-            toast.success(data.message)
-            queryClient.invalidateQueries({
-              queryKey: ["property-finished-sections", listingId],
-            })
-            if (pageType === "setup") {
-              router.push(
-                `/hosting/listings/properties/setup/${listingId}/${selectedProperty === "WHOLE_PLACE" ? "whole-place-type" : "basic-info"}`
-              )
-            }
-          } else {
-            toast.error(String(data.message))
-          }
-        },
-        onError: (err: any) => {
-          toast.error(String(err))
-        },
+      if (data?.item?.type !== selectedProperty) {
+        setPropertyTypeChangeModalOpen(true)
+      } else {
+        mutate({ type: selectedProperty }, callBackReq)
       }
-      mutate({ type: selectedProperty }, callBackReq)
     } else {
       toast.error("Please select Property Type first")
     }
+  }
+
+  const handleConfirmYes = () => {
+    console.log("yes")
+    setPropertyTypeChangeModalOpen(false)
+    mutate({ type: selectedProperty }, callBackReq)
+  }
+
+  const handleConfirmNo = () => {
+    setPropertyTypeChangeModalOpen(false)
+    setSelectedProperty(data?.item?.type)
   }
 
   const PROPERTY_TYPES = [
@@ -169,6 +191,12 @@ const PropertyType = ({ pageType }: Prop) => {
           </Button>
         </div>
       )}
+      <PropertyTypeChangeModal
+        isModalOpen={PropertyTypeChangeModalOpen}
+        onClose={() => setPropertyTypeChangeModalOpen(false)}
+        onConfirmYes={handleConfirmYes}
+        onConfirmNo={handleConfirmNo}
+      />
     </div>
   )
 }
