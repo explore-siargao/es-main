@@ -736,19 +736,18 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const changePrices = bookableUnits[0].results.map(
           (item: T_Property) => ({
             ...item,
-            bookableUnits: item.bookableUnits.map((item) => ({
+            bookableUnits: item.bookableUnits?.map((item) => ({
               ...item,
               unitPrice: {
                 ...item.unitPrice,
-                baseRate: !item.unitPrice.baseRate
+                baseRate: !item.unitPrice?.baseRate
                   ? 0
                   : convertPrice(
                       item.unitPrice.baseRate,
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item.unitPrice
-                  .pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item.unitPrice?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice.pricePerAdditionalPerson,
@@ -795,7 +794,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })
         )
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          property.bookableUnits?.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
             title: property.title || null,
@@ -1440,22 +1439,21 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const changePrices = bookableUnits[0].results.map(
           (item: T_Property) => ({
             ...item,
-            bookableUnits: item.bookableUnits.map((item) => ({
+            bookableUnits: item.bookableUnits?.map((item) => ({
               ...item,
               unitPrice: {
                 ...item.unitPrice,
-                baseRate: !item.unitPrice.baseRate
+                baseRate: !item.unitPrice?.baseRate
                   ? 0
                   : convertPrice(
                       item.unitPrice.baseRate,
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item.unitPrice
-                  .pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item.unitPrice?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
-                      item.unitPrice.pricePerAdditionalPerson,
+                      item.unitPrice?.pricePerAdditionalPerson,
                       preferredCurrency,
                       conversionRates
                     ),
@@ -1499,7 +1497,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })
         )
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          property.bookableUnits?.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
             title: property.title || null,
@@ -2174,19 +2172,18 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const changePrices = bookableUnits[0].results.map(
           (item: T_Property) => ({
             ...item,
-            bookableUnits: item.bookableUnits.map((item) => ({
+            bookableUnits: item.bookableUnits?.map((item) => ({
               ...item,
               unitPrice: {
                 ...item.unitPrice,
-                baseRate: !item.unitPrice.baseRate
+                baseRate: !item.unitPrice?.baseRate
                   ? 0
                   : convertPrice(
                       item.unitPrice.baseRate,
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item.unitPrice
-                  .pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item?.unitPrice?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice.pricePerAdditionalPerson,
@@ -2233,7 +2230,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })
         )
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          property.bookableUnits?.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
             title: property.title || null,
@@ -2917,19 +2914,18 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         const changePrices = bookableUnits[0].results.map(
           (item: T_Property) => ({
             ...item,
-            bookableUnits: item.bookableUnits.map((item) => ({
+            bookableUnits: item.bookableUnits?.map((item) => ({
               ...item,
               unitPrice: {
                 ...item.unitPrice,
-                baseRate: !item.unitPrice.baseRate
+                baseRate: !item.unitPrice?.baseRate
                   ? 0
                   : convertPrice(
                       item.unitPrice.baseRate,
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item.unitPrice
-                  .pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item?.unitPrice?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice.pricePerAdditionalPerson,
@@ -2976,7 +2972,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           })
         )
         const allBookableUnits = changePrices.flatMap((property: T_Property) =>
-          property.bookableUnits.map((unit: T_BookableUnitType) => ({
+          property.bookableUnits?.map((unit: T_BookableUnitType) => ({
             listingId: property._id,
             unitId: unit._id,
             title: property.title || null,

@@ -8,15 +8,23 @@ import {
   E_Whole_Place_Property_Type,
 } from "./enum"
 
+
+const objectIdSchema = z
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
+
 export const Z_Unit_Price = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   baseRate: z.number(),
   baseRateMaxCapacity: z.number(),
   maximumCapacity: z.number(),
   pricePerAdditionalPerson: z.number(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime().nullable().optional(),
-  deletedAt: z.string().datetime().nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
+  deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
   discountedWeeklyRate: z.number().nullable().optional(),
   discountedMonthlyRate: z.number().nullable().optional(),
 })
@@ -37,7 +45,7 @@ export const Z_Amenity = z.object({
 })
 
 export const Z_Facility = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   index: z.number().optional(),
   category: z.string(),
   facility: z.string(),
@@ -46,7 +54,7 @@ export const Z_Facility = z.object({
 })
 
 export const Z_Policy = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   index: z.number().optional(),
   category: z.string(),
   reason: z.string().nullable(),
@@ -57,13 +65,13 @@ export const Z_Policy = z.object({
 export const Z_Bed = z.object({
   name: z.string(),
   qty: z.number(),
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
 })
 
 export const Z_Bedroom = z.object({
   roomName: z.string(),
   beds: z.array(Z_Bed),
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
 })
 
 export const Z_Add_Property = z.object({
@@ -103,13 +111,17 @@ export const Z_Add_Property = z.object({
 })
 
 export const Z_Bookable_Unit = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   category: z.enum(["Bed", "Room", "Whole-Place"]),
   title: z.string().optional(),
+  description:z.string().nullable().optional(),
   subtitle: z.string().nullable(),
   totalSize: z.number(),
+  isHaveSharedAmenities:z.string().nullable().optional(),
   isHaveSharedBathRoom: z.string().nullable().optional(),
-  unitPrice: Z_Unit_Price,
+  isSmokingAllowed:z.string().nullable().optional(),
+  unitPrice: Z_Unit_Price.nullable(),
+  bed: z.string().nullable().optional(),
   amenities: z.array(Z_Amenity),
   photos: z.array(Z_Photo),
   isPrivate: z.boolean(),
@@ -122,23 +134,29 @@ export const Z_Bookable_Unit = z.object({
   numBathrooms: z.number().optional(),
   qty: z.number(),
   pricePerDates: z.array(Z_Bookable_PricePerDate),
-  livingRooms: z.array(Z_Bedroom),
-  bedroomStudio: z.array(Z_Bedroom),
+  singleLivingRoom:Z_Bedroom.optional().nullable(),
+  singleBedRoom:Z_Bedroom.optional().nullable(),
+  livingRooms: z.array(Z_Bedroom).optional().nullable(),
+  bedroomStudio: z.array(Z_Bedroom).optional().nullable(),
+  bedConfigs: z.array(z.string()).optional(),
   qtyIds: z.array(
     z.object({
-      _id: z.string(),
+      _id: z.union([z.string(), objectIdSchema]),
       name: z.string(),
     })
   ),
-  average: z.number(),
-  reviewsCount: z.number(),
-  createdAt: z.string().nullable().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
+  reviews: z.array(z.string()).optional(),
+  average: z.number().optional(),
+  reviewsCount: z.number().optional(),
+  daysCanCancel: z.string().optional(),
+  unitNote:z.string().nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
+  deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
 })
 
 export const Z_Property = z.object({
-  _id: z.string(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   offerBy: Z_Host,
   status: z.enum(["Pending", "Incomplete", "Live"]),
   title: z.string(),
@@ -149,23 +167,23 @@ export const Z_Property = z.object({
   phone: z.string().nullable(),
   email: z.string().nullable(),
   location: Z_Location,
-  checkInTime: z.string().nullable(),
-  checkOutTime: z.string().nullable(),
+  checkInTime: z.union([z.string(), z.date()]).nullable(),
+  checkOutTime: z.union([z.string(), z.date()]).nullable(),
   isLateCheckOutAllowed: z.boolean(),
   lateCheckOutType: z.string().nullable(),
   lateCheckOutValue: z.number().nullable(),
   termsAndConditions: z.string().nullable(),
-  taxId: z.string().nullable(),
-  taxId2: z.string().nullable(),
+  taxId: z.union([z.string(), z.number()]).nullable(),
+  taxId2: z.union([z.string(), z.number()]).nullable(),
   companyLegalName: z.string().nullable(),
   type: z.string(),
   wholeplaceType: z.string().nullable(),
   facilities: z.array(Z_Facility),
   policies: z.array(Z_Policy),
-  bookableUnits: z.array(Z_Bookable_Unit),
-  createdAt: z.string().nullable().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
+  bookableUnits: z.array(Z_Bookable_Unit).optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
+  deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
 })
 
 export const Z_Bookable_Units = z.object({
@@ -200,7 +218,7 @@ export const Z_Bookable_Units = z.object({
   qtyIds: z.array(z.string()).optional(),
   daysCanCancel: z.string().optional(),
   reviews: z.array(z.string()).optional(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
-  deletedAt: z.string().nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional(),
+  deletedAt: z.union([z.string(), z.date()]).optional(),
 })

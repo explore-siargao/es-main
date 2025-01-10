@@ -1,6 +1,6 @@
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
-import { E_ReservationStatus } from '@repo/contract-2/reservations'
+import { E_ReservationStatus, Z_Reservations } from '@repo/contract-2/reservations'
 import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { buildCancelledReservationsPipeline } from './pipelines/cancelled-reservation'
@@ -14,7 +14,6 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
   const user = res.locals.user.id
   const timeZone = req.header('time-zone')
   const { page = 1, limit = 15} = req.query
-  let query: any
 
   if (!timeZone) {
     res.json(response.error({ message: 'time-zone header is required' }))
@@ -31,6 +30,8 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
       const totalCounts = await dbReservations
         .find({ status: 'Cancelled', guest: user })
         .countDocuments()
+      const validReservations = Z_Reservations.safeParse(cancelledReservations)
+      if(validReservations.success){
       res.json(
         response.success({
           items: cancelledReservations,
@@ -39,11 +40,16 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
           message: 'Cancelled reservations successfully fetched',
         })
       )
+    }else{
+      console.error(validReservations.error.message)
+      res.json(response.error({ message: 'Invalid reservation data' }))
+    }
     } else if (status === 'Done') {
       const pipeline = buildFinishReservationsPipeline(user, dateNow,page as number,limit as number)
       const finishReservations = await dbReservations.aggregate(pipeline)
       const totalCounts = await dbReservations.find({status:'Confirmed',guest:user,endDate:{$lt:dateNow}}).countDocuments()
-
+      const validReservations = Z_Reservations.safeParse(finishReservations)
+      if(validReservations.success){
       res.json(
         response.success({
           items: finishReservations,
@@ -52,11 +58,16 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
           message: 'Finish reservations successfully fetched',
         })
       )
+    }else{
+      console.error(validReservations.error.message)
+      res.json(response.error({ message: 'Invalid reservation data' }))
+    }
     } else if (status === 'Active') {
       const pipeline = buildActiveReservationsPipeline(user, dateNow,page as number, limit as number)
       const activeReservations = await dbReservations.aggregate(pipeline)
       const totalCounts = await dbReservations.find({status:'Confirmed',guest:user,endDate:{$gte:dateNow}}).countDocuments()
-
+      const validReservations = Z_Reservations.safeParse(activeReservations)
+      if(validReservations.success){
       res.json(
         response.success({
           items: activeReservations,
@@ -65,6 +76,10 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
           message: 'Finish reservations successfully fetched',
         })
       )
+    }else{
+      console.error(validReservations.error.message)
+      res.json(response.error({ message: 'Invalid reservation data' }))
+    }
     } else {
       res.json(response.error({ message: 'status is required' }))
     }

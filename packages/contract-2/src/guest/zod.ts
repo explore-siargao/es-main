@@ -1,8 +1,16 @@
 import { string, z } from "zod"
 import { E_RegistrationType, E_UserRole } from "./enum"
+import { Z_Address } from "../address-location"
+
+const objectIdSchema = z
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
 
 export const Z_Guest = z.object({
-  _id: z.string().optional(),
+  _id: objectIdSchema.optional(),
   firstName: z.string(),
   middleName: z.string().optional(),
   lastName: z.string(),
@@ -13,9 +21,9 @@ export const Z_Guest = z.object({
   cellPhone: z.string().optional(),
   governmentId: z.array(z.string()).optional(),
   country: z.string().optional(),
-  address: z.string().optional(),
+  address: z.union([z.string(), Z_Address]).optional(),
   emergencyContacts: z.array(z.string()).optional(),
-  birthDate: z.string().optional(),
+  birthDate: z.union([z.string(), z.date()]).optional(),
   documentType: z.string().optional(),
   documentNumber: z.string().optional(),
   documentIssueDate: z.string().optional(),
@@ -25,7 +33,7 @@ export const Z_Guest = z.object({
   companyName: z.string().optional(),
   confirm: z.string().optional(),
   profile: z.string().optional(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
-  deletedAt: z.string().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional(),
+  deletedAt: z.union([z.string(), z.date()]).optional(),
 })

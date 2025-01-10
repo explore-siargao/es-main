@@ -16,7 +16,7 @@ const objectIdSchema = z
   .transform((val) => val.toString())
 
 export const Z_Rental_Details = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   engineCapacityLiter: z.number().nullable(),
   engineCapacityCc: z.number().nullable(),
   condition: z.string(),
@@ -26,9 +26,9 @@ export const Z_Rental_Details = z.object({
   isRegistered: z.string().optional(),
   haveDriverLicense: z.string().optional(),
   weightCapacityKg: z.number().nullable(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().nullable().optional(),
-  deletedAt: z.string().nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
+  deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
 })
 
 export const Z_Rental_Price = z.object({
@@ -42,7 +42,7 @@ export const Z_Rental_Price = z.object({
 })
 
 export const Z_Rental_AddOns = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   roofRack: z.boolean(),
   boardRack: z.boolean(),
   babySeat: z.boolean(),
@@ -59,7 +59,7 @@ export const Z_Rental_PricePerDate = z.object({
 })
 
 export const Z_Rental = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(),objectIdSchema]).optional(),
   details: Z_Rental_Details.nullable(),
   pricing: Z_Rental_Price.nullable(),
   host: Z_Host.nullable().optional(),
@@ -79,7 +79,7 @@ export const Z_Rental = z.object({
   qtyIds: z
     .array(
       z.object({
-        _id: z.string(),
+        _id: objectIdSchema,
         name: z.string(),
       })
     )
@@ -91,7 +91,7 @@ export const Z_Rental = z.object({
   reviews: z.array(z.string()).optional().nullable(),
   daysCanCancel: z.string().optional(),
   policies: z.array(z.string()).optional(),
-  updatedAt: z.string().optional().nullable(),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable()
 })
 
 export const Z_Rental_Additional_Info = z.object({
