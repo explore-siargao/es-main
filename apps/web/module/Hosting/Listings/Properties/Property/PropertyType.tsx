@@ -28,10 +28,7 @@ const PropertyType = ({ pageType }: Prop) => {
   const params = useParams<{ listingId: string }>()
   const listingId = String(params.listingId)
   const { mutate, isPending } = useUpdatePropertyType(listingId)
-  const {
-    data,
-    isPending: typeIsPending,
-  } = useGetPropertyById(listingId)
+  const { data, isPending: typeIsPending } = useGetPropertyById(listingId)
   const [selectedProperty, setSelectedProperty] = useState("")
   const [PropertyTypeChangeModalOpen, setPropertyTypeChangeModalOpen] =
     useState(false)
