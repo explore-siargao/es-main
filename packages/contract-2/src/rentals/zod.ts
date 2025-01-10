@@ -59,7 +59,7 @@ export const Z_Rental_PricePerDate = z.object({
 })
 
 export const Z_Rental = z.object({
-  _id: z.union([z.string(),objectIdSchema]).optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   details: Z_Rental_Details.nullable(),
   pricing: Z_Rental_Price.nullable(),
   host: Z_Host.nullable().optional(),
@@ -91,7 +91,7 @@ export const Z_Rental = z.object({
   reviews: z.array(z.string()).optional().nullable(),
   daysCanCancel: z.string().optional(),
   policies: z.array(z.string()).optional(),
-  updatedAt: z.union([z.string(), z.date()]).optional().nullable()
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
 })
 
 export const Z_Rental_Additional_Info = z.object({

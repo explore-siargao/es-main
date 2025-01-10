@@ -74,62 +74,77 @@ export const Z_Add_Reservation = z.object({
 export const Z_Add_Reservations = z.array(Z_Add_Reservation)
 
 export const Z_Reservation = z.object({
-  _id:objectIdSchema,
-  propertyIds:z.object({
-    _id: objectIdSchema,
-    unitId:Z_Bookable_Unit,
-    propertyId:Z_Property
-  }).nullable().optional(),
-  
-  activityIds:z.object({
-    _id:objectIdSchema,
-    activityId:Z_Activity,
-    dayId:objectIdSchema,
-    timeSlotId:objectIdSchema,
-    slotIdsId:objectIdSchema.optional(),
-  }).nullable().optional(),
+  _id: objectIdSchema,
+  propertyIds: z
+    .object({
+      _id: objectIdSchema,
+      unitId: Z_Bookable_Unit,
+      propertyId: Z_Property,
+    })
+    .nullable()
+    .optional(),
 
-  rentalIds:z.object({
-    _id:objectIdSchema,
-    rentalId:Z_Rental,
-    qtyIdsId:objectIdSchema,
-  }).nullable().optional(),
-  startDate:z.union([z.string(),z.date()]),
-  endDate:z.union([z.string(),z.date()]),
-  guestName:z.string().optional().nullable(),
-  paymentMethod:z.string().optional().nullable(),
-  xendItPaymentMethodId:z.string().optional().nullable(),
-  xendItPaymentRequestId:z.string().optional().nullable(),
-  xendItPaymentReferenceId:z.string().optional().nullable(),
-  guestCount:z.number(),
-  status:z.nativeEnum(E_ReservationStatus),
-  hostHavePenalty:z.boolean().optional(),
-  cancelledBy:z.nativeEnum(UserRole).optional().nullable(),
-  cancellationDate:z.union([z.string(),z.date()]).optional().nullable(),
-  cartId:objectIdSchema.optional().nullable(),
-  forPaymenttId:objectIdSchema.optional().nullable(),
-  createdAt:z.union([z.string(),z.date()]).optional().nullable(),
-  userId:z.object({
-    _id:objectIdSchema,
-    email:z.string().email(),
-    role:z.string(),
-    isHost:z.boolean(),
-    deactivated:z.boolean(),
-    guest:Z_Guest,
-    profilePicture:z.string().optional(),
-    updatedAt:z.union([z.string(),z.date()]).optional().nullable()
-  }).optional().nullable(),
-  price:z.number().optional(),
-  guestComission:z.number().optional(),
-  hostComission:z.number().optional(),
-  contacts:z.array(z.object({
-    _id:objectIdSchema,
-    firstName:z.string(),
-    lastName:z.string(),
-    phoneNumber:z.string(),
-    email:z.string().email(),
+  activityIds: z
+    .object({
+      _id: objectIdSchema,
+      activityId: Z_Activity,
+      dayId: objectIdSchema,
+      timeSlotId: objectIdSchema,
+      slotIdsId: objectIdSchema.optional(),
+    })
+    .nullable()
+    .optional(),
 
-  })).optional()
+  rentalIds: z
+    .object({
+      _id: objectIdSchema,
+      rentalId: Z_Rental,
+      qtyIdsId: objectIdSchema,
+    })
+    .nullable()
+    .optional(),
+  startDate: z.union([z.string(), z.date()]),
+  endDate: z.union([z.string(), z.date()]),
+  guestName: z.string().optional().nullable(),
+  paymentMethod: z.string().optional().nullable(),
+  xendItPaymentMethodId: z.string().optional().nullable(),
+  xendItPaymentRequestId: z.string().optional().nullable(),
+  xendItPaymentReferenceId: z.string().optional().nullable(),
+  guestCount: z.number(),
+  status: z.nativeEnum(E_ReservationStatus),
+  hostHavePenalty: z.boolean().optional(),
+  cancelledBy: z.nativeEnum(UserRole).optional().nullable(),
+  cancellationDate: z.union([z.string(), z.date()]).optional().nullable(),
+  cartId: objectIdSchema.optional().nullable(),
+  forPaymenttId: objectIdSchema.optional().nullable(),
+  createdAt: z.union([z.string(), z.date()]).optional().nullable(),
+  userId: z
+    .object({
+      _id: objectIdSchema,
+      email: z.string().email(),
+      role: z.string(),
+      isHost: z.boolean(),
+      deactivated: z.boolean(),
+      guest: Z_Guest,
+      profilePicture: z.string().optional(),
+      updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
+    })
+    .optional()
+    .nullable(),
+  price: z.number().optional(),
+  guestComission: z.number().optional(),
+  hostComission: z.number().optional(),
+  contacts: z
+    .array(
+      z.object({
+        _id: objectIdSchema,
+        firstName: z.string(),
+        lastName: z.string(),
+        phoneNumber: z.string(),
+        email: z.string().email(),
+      })
+    )
+    .optional(),
 })
 
 export const Z_Reservations = z.array(Z_Reservation)

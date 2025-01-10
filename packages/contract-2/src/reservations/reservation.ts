@@ -20,7 +20,6 @@ type T_Props = {
   expirationDate?: Date
 }
 
-
 export class ReservationService {
   private api: ApiService
   constructor(source: "main" | "mock" = "main") {
@@ -55,13 +54,18 @@ export class ReservationService {
     }
   }
 
-  async getCancelledReservations(status:T_Reservation_Status="Active",page:number=1) {
-  return this.api.get<{ items: T_Reservations }>(`${RESERVATION_BASE_URL}/?status=${status}&page=${page}`)
+  async getCancelledReservations(
+    status: T_Reservation_Status = "Active",
+    page: number = 1
+  ) {
+    return this.api.get<{ items: T_Reservations }>(
+      `${RESERVATION_BASE_URL}/?status=${status}&page=${page}`
+    )
   }
 
   static getQueryKeys() {
     return {
-      getItems: "get-reservation-item"
+      getItems: "get-reservation-item",
     }
   }
 }

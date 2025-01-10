@@ -194,7 +194,8 @@ router.post(
   linkedCardPayment
 )
 
-router.get('/lists',
+router.get(
+  '/lists',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,

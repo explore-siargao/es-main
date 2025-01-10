@@ -747,7 +747,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item.unitPrice?.pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item.unitPrice
+                  ?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice.pricePerAdditionalPerson,
@@ -1450,7 +1451,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item.unitPrice?.pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item.unitPrice
+                  ?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice?.pricePerAdditionalPerson,
@@ -2183,7 +2185,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item?.unitPrice?.pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item?.unitPrice
+                  ?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice.pricePerAdditionalPerson,
@@ -2925,7 +2928,8 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       preferredCurrency,
                       conversionRates
                     ),
-                pricePerAdditionalPerson: !item?.unitPrice?.pricePerAdditionalPerson
+                pricePerAdditionalPerson: !item?.unitPrice
+                  ?.pricePerAdditionalPerson
                   ? 0
                   : convertPrice(
                       item.unitPrice.pricePerAdditionalPerson,

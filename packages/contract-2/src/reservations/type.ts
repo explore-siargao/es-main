@@ -4,7 +4,7 @@ import {
   Z_Add_Reservation,
   Z_Add_Reservations,
   Z_Reservation,
-  Z_Reservations
+  Z_Reservations,
 } from "./zod"
 
 export type T_ReservationCalendar = z.infer<typeof Z_ReservationCalendar>

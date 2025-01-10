@@ -8,7 +8,6 @@ import {
   E_Whole_Place_Property_Type,
 } from "./enum"
 
-
 const objectIdSchema = z
   .any()
   .refine((val) => typeof val === "object" && val.toString().length === 24, {
@@ -114,12 +113,12 @@ export const Z_Bookable_Unit = z.object({
   _id: z.union([z.string(), objectIdSchema]).optional(),
   category: z.enum(["Bed", "Room", "Whole-Place"]),
   title: z.string().optional(),
-  description:z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
   subtitle: z.string().nullable(),
   totalSize: z.number(),
-  isHaveSharedAmenities:z.string().nullable().optional(),
+  isHaveSharedAmenities: z.string().nullable().optional(),
   isHaveSharedBathRoom: z.string().nullable().optional(),
-  isSmokingAllowed:z.string().nullable().optional(),
+  isSmokingAllowed: z.string().nullable().optional(),
   unitPrice: Z_Unit_Price.nullable(),
   bed: z.string().nullable().optional(),
   amenities: z.array(Z_Amenity),
@@ -134,8 +133,8 @@ export const Z_Bookable_Unit = z.object({
   numBathrooms: z.number().optional(),
   qty: z.number(),
   pricePerDates: z.array(Z_Bookable_PricePerDate),
-  singleLivingRoom:Z_Bedroom.optional().nullable(),
-  singleBedRoom:Z_Bedroom.optional().nullable(),
+  singleLivingRoom: Z_Bedroom.optional().nullable(),
+  singleBedRoom: Z_Bedroom.optional().nullable(),
   livingRooms: z.array(Z_Bedroom).optional().nullable(),
   bedroomStudio: z.array(Z_Bedroom).optional().nullable(),
   bedConfigs: z.array(z.string()).optional(),
@@ -149,7 +148,7 @@ export const Z_Bookable_Unit = z.object({
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
   daysCanCancel: z.string().optional(),
-  unitNote:z.string().nullable().optional(),
+  unitNote: z.string().nullable().optional(),
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
   deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
