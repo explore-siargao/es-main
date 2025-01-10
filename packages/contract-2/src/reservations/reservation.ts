@@ -5,9 +5,11 @@ import {
   T_Add_For_Payment,
   T_Linked_Card_Payment,
 } from "../for-payment-listings"
+import { T_Reservations } from "./type"
 
 const RESERVATION_BASE_URL = `/reservations`
 type T_Payment_Method = "gcash" | "card" | "manual"
+type T_Reservation_Status = "Cancelled" | "Done" | "Active"
 
 type T_Props = {
   cartItems: T_Add_To_Cart[]
@@ -50,6 +52,15 @@ export class ReservationService {
         item
       )
     }
+  }
+
+  async getCancelledReservations(
+    status: T_Reservation_Status = "Active",
+    page: number = 1
+  ) {
+    return this.api.get<{ items: T_Reservations }>(
+      `${RESERVATION_BASE_URL}/?status=${status}&page=${page}`
+    )
   }
 
   static getQueryKeys() {

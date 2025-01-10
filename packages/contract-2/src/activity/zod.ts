@@ -3,8 +3,15 @@ import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 
+const objectIdSchema = z
+  .any()
+  .refine((val) => typeof val === "object" && val.toString().length === 24, {
+    message: "Invalid ObjectId",
+  })
+  .transform((val) => val.toString())
+
 export const Z_Activity_Segment = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   index: z.number(),
   activities: z.array(z.string()),
   durationHour: z.number(),
@@ -18,7 +25,7 @@ export const Z_Activity_Segment = z.object({
 })
 
 export const Z_Activity_Slot = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   startTime: z.string(),
   endTime: z.string(),
   note: z.string(),
@@ -26,7 +33,7 @@ export const Z_Activity_Slot = z.object({
     .array(
       z
         .object({
-          _id: z.string().optional(),
+          _id: z.union([z.string(), objectIdSchema]).optional(),
           name: z.string(),
         })
         .nullable()
@@ -37,12 +44,12 @@ export const Z_Activity_Slot = z.object({
 })
 
 export const Z_Activity_Day = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   slots: z.array(Z_Activity_Slot).nullable().optional(),
 })
 
 export const Z_Activity_Schedule = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   monday: Z_Activity_Day.nullable().optional(),
   tuesday: Z_Activity_Day.nullable().optional(),
   wednesday: Z_Activity_Day.nullable().optional(),
@@ -60,7 +67,7 @@ export const Z_Activity_PricePerDate = z.object({
 })
 
 export const Z_Activity = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   host: Z_Host.nullable().optional(),
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
@@ -85,7 +92,7 @@ export const Z_Activity = z.object({
   meetingPoint: Z_Location.nullable(),
   photos: z.array(Z_Photo),
   slotCapacity: z.object({
-    _id: z.string().optional(),
+    _id: z.union([z.string(), objectIdSchema]).optional(),
     minimum: z.number(),
     maximum: z.number(),
   }),

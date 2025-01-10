@@ -14,8 +14,8 @@ export const Z_Address = z.object({
   streetAddress: z.string().nullable().optional(),
   aptSuite: z.string().nullable().optional(),
   zipCode: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string().nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
 })
 
 export const Z_Location = z.object({
