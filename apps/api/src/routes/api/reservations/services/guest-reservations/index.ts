@@ -7,7 +7,7 @@ import {
 import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { buildCancelledReservationsPipeline } from './pipelines/cancelled-reservation'
-import { format, toZonedTime } from 'date-fns-tz'
+import { toZonedTime } from 'date-fns-tz'
 import { buildFinishReservationsPipeline } from './pipelines/finish-reservation'
 import { buildActiveReservationsPipeline } from './pipelines/active-reservation'
 
@@ -20,91 +20,98 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
 
   if (!timeZone) {
     res.json(response.error({ message: 'time-zone header is required' }))
-  }
-  try {
-    const dateNow = toZonedTime(new Date(), timeZone as string)
-    if (status === E_ReservationStatus.Cancelled) {
-      const pipeline = buildCancelledReservationsPipeline(
-        user,
-        page as number,
-        limit as number
-      )
-      const cancelledReservations = await dbReservations.aggregate(pipeline)
-      const totalCounts = await dbReservations
-        .find({ status: 'Cancelled', guest: user })
-        .countDocuments()
-      const validReservations = Z_Reservations.safeParse(cancelledReservations)
-      if (validReservations.success) {
-        res.json(
-          response.success({
-            items: cancelledReservations,
-            pageItemCount: cancelledReservations.length,
-            allItemCount: totalCounts,
-            message: 'Cancelled reservations successfully fetched',
-          })
+  } else {
+    try {
+      const dateNow = toZonedTime(new Date(), timeZone as string)
+      if (status === E_ReservationStatus.Cancelled) {
+        const pipeline = buildCancelledReservationsPipeline(
+          user,
+          page as number,
+          limit as number
         )
-      } else {
-        console.error(validReservations.error.message)
-        res.json(response.error({ message: 'Invalid reservation data' }))
-      }
-    } else if (status === 'Done') {
-      const pipeline = buildFinishReservationsPipeline(
-        user,
-        dateNow,
-        page as number,
-        limit as number
-      )
-      const finishReservations = await dbReservations.aggregate(pipeline)
-      const totalCounts = await dbReservations
-        .find({ status: 'Confirmed', guest: user, endDate: { $lt: dateNow } })
-        .countDocuments()
-      const validReservations = Z_Reservations.safeParse(finishReservations)
-      if (validReservations.success) {
-        res.json(
-          response.success({
-            items: finishReservations,
-            pageItemCount: finishReservations.length,
-            allItemCount: totalCounts,
-            message: 'Finish reservations successfully fetched',
-          })
+        const cancelledReservations = await dbReservations.aggregate(pipeline)
+        const totalCounts = await dbReservations
+          .find({ status: 'Cancelled', guest: user })
+          .countDocuments()
+        const validReservations = Z_Reservations.safeParse(
+          cancelledReservations
         )
-      } else {
-        console.error(validReservations.error.message)
-        res.json(response.error({ message: 'Invalid reservation data' }))
-      }
-    } else if (status === 'Active') {
-      const pipeline = buildActiveReservationsPipeline(
-        user,
-        dateNow,
-        page as number,
-        limit as number
-      )
-      const activeReservations = await dbReservations.aggregate(pipeline)
-      const totalCounts = await dbReservations
-        .find({ status: 'Confirmed', guest: user, endDate: { $gte: dateNow } })
-        .countDocuments()
-      const validReservations = Z_Reservations.safeParse(activeReservations)
-      if (validReservations.success) {
-        res.json(
-          response.success({
-            items: activeReservations,
-            pageItemCount: activeReservations.length,
-            allItemCount: totalCounts,
-            message: 'Finish reservations successfully fetched',
-          })
+        if (validReservations.success) {
+          res.json(
+            response.success({
+              items: cancelledReservations,
+              pageItemCount: cancelledReservations.length,
+              allItemCount: totalCounts,
+              message: 'Cancelled reservations successfully fetched',
+            })
+          )
+        } else {
+          console.error(validReservations.error.message)
+          res.json(response.error({ message: 'Invalid reservation data' }))
+        }
+      } else if (status === 'Done') {
+        const pipeline = buildFinishReservationsPipeline(
+          user,
+          dateNow,
+          page as number,
+          limit as number
         )
+        const finishReservations = await dbReservations.aggregate(pipeline)
+        const totalCounts = await dbReservations
+          .find({ status: 'Confirmed', guest: user, endDate: { $lt: dateNow } })
+          .countDocuments()
+        const validReservations = Z_Reservations.safeParse(finishReservations)
+        if (validReservations.success) {
+          res.json(
+            response.success({
+              items: finishReservations,
+              pageItemCount: finishReservations.length,
+              allItemCount: totalCounts,
+              message: 'Finish reservations successfully fetched',
+            })
+          )
+        } else {
+          console.error(validReservations.error.message)
+          res.json(response.error({ message: 'Invalid reservation data' }))
+        }
+      } else if (status === 'Active') {
+        const pipeline = buildActiveReservationsPipeline(
+          user,
+          dateNow,
+          page as number,
+          limit as number
+        )
+        const activeReservations = await dbReservations.aggregate(pipeline)
+        const totalCounts = await dbReservations
+          .find({
+            status: 'Confirmed',
+            guest: user,
+            endDate: { $gte: dateNow },
+          })
+          .countDocuments()
+        const validReservations = Z_Reservations.safeParse(activeReservations)
+        if (validReservations.success) {
+          res.json(
+            response.success({
+              items: activeReservations,
+              pageItemCount: activeReservations.length,
+              allItemCount: totalCounts,
+              message: 'Finish reservations successfully fetched',
+            })
+          )
+        } else {
+          console.error(validReservations.error.message)
+          res.json(response.error({ message: 'Invalid reservation data' }))
+        }
       } else {
-        console.error(validReservations.error.message)
-        res.json(response.error({ message: 'Invalid reservation data' }))
+        res.json(response.error({ message: 'status is required' }))
       }
-    } else {
-      res.json(response.error({ message: 'status is required' }))
+    } catch (err: any) {
+      res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      )
     }
-  } catch (err: any) {
-    res.json(
-      response.error({
-        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-      })
-    )
   }
 }

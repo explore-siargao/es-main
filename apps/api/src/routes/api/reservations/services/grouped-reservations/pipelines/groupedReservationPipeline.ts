@@ -1,85 +1,34 @@
-import { E_ReservationStatus } from '@repo/contract-2/reservations'
 import { Types } from 'mongoose'
+import { E_ReservationStatus } from '@repo/contract-2/reservations'
 
-export const buildCancelledReservationsPipeline = (
+export const getGroupedReservationPipeline = (
   userId: string,
+  dateNow: Date,
   page: number,
   limit: number
 ) => {
   const query = {
-    status: E_ReservationStatus.Cancelled,
-    guest: new Types.ObjectId(userId),
-    deletedAt: null,
+    $and: [
+      { guest: new Types.ObjectId(userId) },
+      {
+        $or: [
+          { status: E_ReservationStatus.Confirmed },
+          { status: E_ReservationStatus.CheckedOut },
+        ],
+      },
+      { endDate: { $lt: dateNow } },
+    ],
   }
-
   return [
     {
       $match: query,
     },
     {
       $lookup: {
-        from: 'carts',
-        localField: 'cartId',
-        foreignField: '_id',
-        as: 'cart',
-        pipeline: [
-          {
-            $project: {
-              userId: 0,
-              propertyIds: 0,
-              rentalIds: 0,
-              activityIds: 0,
-              startDate: 0,
-              endDate: 0,
-              createdAt: 0,
-              updatedAt: 0,
-              deletedAt: 0,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $unwind: {
-        path: '$cart',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: 'forpaymentlistings',
-        localField: 'forPaymenttId',
-        foreignField: '_id',
-        as: 'forpayment',
-        pipeline: [
-          {
-            $project: {
-              userId: 0,
-              propertyIds: 0,
-              rentalIds: 0,
-              activityIds: 0,
-              startDate: 0,
-              endDate: 0,
-              createdAt: 0,
-              updatedAt: 0,
-              deletedAt: 0,
-            },
-          },
-        ],
-      },
-    },
-    {
-      $unwind: {
-        path: '$forpayment',
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
         from: 'users',
         localField: 'guest',
         foreignField: '_id',
-        as: 'userId',
+        as: 'user',
         pipeline: [
           {
             $lookup: {
@@ -124,8 +73,54 @@ export const buildCancelledReservationsPipeline = (
       },
     },
     {
+      $lookup: {
+        from: 'carts',
+        localField: 'cartId',
+        foreignField: '_id',
+        as: 'cart',
+        pipeline: [
+          {
+            $project: {
+              userId: 0,
+              propertyIds: 0,
+              rentalIds: 0,
+              activityIds: 0,
+              startDate: 0,
+              endDate: 0,
+              createdAt: 0,
+              updatedAt: 0,
+              deletedAt: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: 'forpaymentlistings',
+        localField: 'forPaymenttId',
+        foreignField: '_id',
+        as: 'forpayment',
+        pipeline: [
+          {
+            $project: {
+              userId: 0,
+              propertyIds: 0,
+              rentalIds: 0,
+              activityIds: 0,
+              startDate: 0,
+              endDate: 0,
+              createdAt: 0,
+              updatedAt: 0,
+              deletedAt: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
       $unwind: {
-        path: '$userId',
+        path: '$forpayment',
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -691,6 +686,12 @@ export const buildCancelledReservationsPipeline = (
       },
     },
     {
+      $unwind: {
+        path: '$cart',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
       $addFields: {
         price: { $ifNull: ['$cart.price', '$forpayment.price'] },
         guestComission: {
@@ -703,6 +704,12 @@ export const buildCancelledReservationsPipeline = (
       },
     },
     {
+      $unwind: {
+        path: '$user',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
       $project: {
         guest: 0,
         property: 0,
@@ -711,6 +718,25 @@ export const buildCancelledReservationsPipeline = (
         rentals: 0,
         cart: 0,
         forpayment: 0,
+      },
+    },
+    {
+      $group: {
+        _id: '$xendItPaymentReferenceId', // Group by xendItPaymentReferenceId
+        reservations: { $push: '$$ROOT' }, // Collect all reservations in this group,
+        totalPrice: { $sum: { $ifNull: ['$price', 0] } },
+        totalGuestComission: { $sum: { $ifNull: ['$guestComission', 0] } },
+        totalHostComission: { $sum: { $ifNull: ['$hostComission', 0] } },
+      },
+    },
+    {
+      $project: {
+        referenceId: '$_id',
+        _id: 0, // Keep the group ID (xendItPaymentReferenceId)
+        reservations: 1, // Include the grouped reservations
+        totalPrice: 1,
+        totalGuestComission: 1,
+        totalHostComission: 1,
       },
     },
     { $skip: (page - 1) * limit },

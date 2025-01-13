@@ -5,7 +5,7 @@ import {
   T_Add_For_Payment,
   T_Linked_Card_Payment,
 } from "../for-payment-listings"
-import { T_Reservations } from "./type"
+import { T_Grouped_Reservations, T_Reservations } from "./type"
 
 const RESERVATION_BASE_URL = `/reservations`
 type T_Payment_Method = "gcash" | "card" | "manual"
@@ -54,18 +54,25 @@ export class ReservationService {
     }
   }
 
-  async getCancelledReservations(
+  async getReservations(
     status: T_Reservation_Status = "Active",
     page: number = 1
   ) {
     return this.api.get<{ items: T_Reservations }>(
-      `${RESERVATION_BASE_URL}/?status=${status}&page=${page}`
+      `${RESERVATION_BASE_URL}/lists?status=${status}&page=${page}`
+    )
+  }
+
+  async getGroupedReservations(page: number) {
+    return this.api.get<{ items: T_Grouped_Reservations }>(
+      `${RESERVATION_BASE_URL}/grouped?page=${page}`
     )
   }
 
   static getQueryKeys() {
     return {
       getItems: "get-reservation-item",
+      getGroupedReservations: "get-grouped-reservations",
     }
   }
 }

@@ -50,6 +50,35 @@ export const buildActiveReservationsPipeline = (
     },
     {
       $lookup: {
+        from: 'forpaymentlistings',
+        localField: 'forPaymenttId',
+        foreignField: '_id',
+        as: 'forpayment',
+        pipeline: [
+          {
+            $project: {
+              userId: 0,
+              propertyIds: 0,
+              rentalIds: 0,
+              activityIds: 0,
+              startDate: 0,
+              endDate: 0,
+              createdAt: 0,
+              updatedAt: 0,
+              deletedAt: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: '$forpayment',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
         from: 'users',
         localField: 'guest',
         foreignField: '_id',
@@ -666,10 +695,14 @@ export const buildActiveReservationsPipeline = (
     },
     {
       $addFields: {
-        price: '$cart.price',
-        guestComission: '$cart.guestComission',
-        hostComission: '$cart.hostComission',
-        contacts: '$cart.contacts',
+        price: { $ifNull: ['$cart.price', '$forpayment.price'] },
+        guestComission: {
+          $ifNull: ['$cart.guestComission', '$forpayment.guestComission'],
+        },
+        hostComission: {
+          $ifNull: ['$cart.hostComission', '$forpayment.hostComission'],
+        },
+        contacts: { $ifNull: ['$cart.contacts', '$forpayment.contacts'] },
       },
     },
     {
@@ -680,6 +713,7 @@ export const buildActiveReservationsPipeline = (
         activity: 0,
         rentals: 0,
         cart: 0,
+        forpayment: 0,
       },
     },
     { $skip: (page - 1) * limit },

@@ -35,6 +35,7 @@ import {
   manualCardPayment,
 } from './services/for-payment-reservation'
 import { guestGroupReservations } from './services/guest-reservations'
+import { getReservationsGroupedByReferenceId } from './services/grouped-reservations'
 
 const router = express.Router()
 
@@ -201,6 +202,15 @@ router.get(
   isCsrfTokenValid,
   paginate(15),
   guestGroupReservations
+)
+
+router.get(
+  '/grouped',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  paginate(15),
+  getReservationsGroupedByReferenceId
 )
 
 export default router
