@@ -148,3 +148,13 @@ export const Z_Reservation = z.object({
 })
 
 export const Z_Reservations = z.array(Z_Reservation)
+
+export const Z_Grouped_Reservation = z.object({
+  reservations:Z_Reservations,
+  totalPrice:z.number().nullable(),
+  totalGuestComission:z.number().nullable(),
+  totalHostComission:z.number().nullable(),
+  referenceId:z.string()
+})
+
+export const Z_Grouped_Reservations = z.array(Z_Grouped_Reservation)

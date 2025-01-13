@@ -7,7 +7,7 @@ import {
 import { dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 import { buildCancelledReservationsPipeline } from './pipelines/cancelled-reservation'
-import { format, toZonedTime } from 'date-fns-tz'
+import { toZonedTime } from 'date-fns-tz'
 import { buildFinishReservationsPipeline } from './pipelines/finish-reservation'
 import { buildActiveReservationsPipeline } from './pipelines/active-reservation'
 
@@ -20,7 +20,7 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
 
   if (!timeZone) {
     res.json(response.error({ message: 'time-zone header is required' }))
-  }
+  }else{
   try {
     const dateNow = toZonedTime(new Date(), timeZone as string)
     if (status === E_ReservationStatus.Cancelled) {
@@ -107,4 +107,5 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
       })
     )
   }
+}
 }
