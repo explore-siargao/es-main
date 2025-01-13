@@ -63,7 +63,7 @@ export class ReservationService {
     )
   }
 
-  async getGroupedReservations(page:number) {
+  async getGroupedReservations(page: number) {
     return this.api.get<{ items: T_Grouped_Reservations }>(
       `${RESERVATION_BASE_URL}/grouped?page=${page}`
     )

@@ -693,8 +693,12 @@ export const buildCancelledReservationsPipeline = (
     {
       $addFields: {
         price: { $ifNull: ['$cart.price', '$forpayment.price'] },
-        guestComission: { $ifNull: ['$cart.guestComission', '$forpayment.guestComission'] },
-        hostComission: { $ifNull: ['$cart.hostComission', '$forpayment.hostComission'] },
+        guestComission: {
+          $ifNull: ['$cart.guestComission', '$forpayment.guestComission'],
+        },
+        hostComission: {
+          $ifNull: ['$cart.hostComission', '$forpayment.hostComission'],
+        },
         contacts: { $ifNull: ['$cart.contacts', '$forpayment.contacts'] },
       },
     },
@@ -706,7 +710,7 @@ export const buildCancelledReservationsPipeline = (
         activity: 0,
         rentals: 0,
         cart: 0,
-        forpayment:0
+        forpayment: 0,
       },
     },
     { $skip: (page - 1) * limit },

@@ -6,7 +6,7 @@ import {
   Z_Reservation,
   Z_Reservations,
   Z_Grouped_Reservation,
-  Z_Grouped_Reservations
+  Z_Grouped_Reservations,
 } from "./zod"
 
 export type T_ReservationCalendar = z.infer<typeof Z_ReservationCalendar>
