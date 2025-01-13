@@ -1,5 +1,5 @@
 import ModalContainer from "@/common/components/ModalContainer"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Input } from "@/common/components/ui/Input"
 import { Button } from "@/common/components/ui/Button"
 import useUpdateCartItem from "../../hooks/use-update-cart-item"
@@ -7,6 +7,7 @@ import { T_Update_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import toast from "react-hot-toast"
 import { CartService } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
+import { countryCodes, PhoneInput } from "../components/phoneInput"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -39,12 +40,26 @@ const EditGuestModal = ({
     phoneNumber: contact?.phoneNumber || "",
     email: contact?.email || "",
   })
+  const [countryCode, setCountryCode] = useState("+63")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
     setFormData((prev) => ({ ...prev, [id]: value }))
   }
 
+  const handlePhoneChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: prev.phoneNumber.split(" ")[0] + " " + value.trim(),
+    }))
+  }
+
+  const handleCountryCodeChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: value + " " + (prev.phoneNumber.split(" ")[1] || ""),
+    }))
+  }
   const handleSubmit = () => {
     if (
       !formData.firstName ||
@@ -83,6 +98,25 @@ const EditGuestModal = ({
     }
   }
 
+  useEffect(() => {
+    if (contact) {
+      let formattedPhoneNumber = contact.phoneNumber
+      const countryCode =
+        countryCodes.find((cc) => contact.phoneNumber.startsWith(cc.code))
+          ?.code || "+63"
+      if (countryCode) {
+        formattedPhoneNumber = `${countryCode} ${contact.phoneNumber.slice(countryCode.length).trim()}`
+      }
+
+      setFormData({
+        firstName: contact.firstName || "",
+        lastName: contact.lastName || "",
+        phoneNumber: formattedPhoneNumber,
+        email: contact.email || "",
+      })
+    }
+  }, [contact])
+
   return (
     <ModalContainer
       isOpen={isOpen}
@@ -114,13 +148,11 @@ const EditGuestModal = ({
           </div>
         </div>
         <div className="space-y-2">
-          <Input
-            id="phoneNumber"
-            type="tel"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            className="border-gray-300"
-            label="Phone number *"
+          <PhoneInput
+            countryCode={formData.phoneNumber.split(" ")[0] || "+63"}
+            phoneNumber={formData.phoneNumber.split(" ")[1] || ""}
+            onCountryCodeChange={handleCountryCodeChange}
+            onPhoneNumberChange={handlePhoneChange}
             disabled={isPending}
           />
         </div>
