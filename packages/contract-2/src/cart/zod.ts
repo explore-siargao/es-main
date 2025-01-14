@@ -74,6 +74,7 @@ export const Z_Update_Cart = z.object({
   endDate: z.string(),
   guestCount: z.number(),
   contacts: z.array(Z_Contact).optional(),
+  schedule: Z_Activity_Schedule.optional(),
 })
 
 export const Z_Amenities = z.object({
