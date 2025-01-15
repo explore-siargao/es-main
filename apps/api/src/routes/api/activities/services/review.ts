@@ -3,6 +3,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
+import { Z_Add_Review } from '@repo/contract-2/review'
 import { dbActivities, dbReviews } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
@@ -18,6 +19,9 @@ export const addActivityReview = async (req: Request, res: Response) => {
       valueRates,
       comment,
     } = req.body
+
+    const validAddReview = Z_Add_Review.safeParse(req.body)
+    if(validAddReview.success){
     const getActivity = await dbActivities.findOne({
       _id: activityId,
       deletedAt: null,
@@ -76,6 +80,10 @@ export const addActivityReview = async (req: Request, res: Response) => {
         )
       }
     }
+  }else{
+    console.error(validAddReview.error.message)
+    res.json(response.error({message:"Invalid input"}))
+  }
   } catch (err: any) {
     res.json(
       response.error({

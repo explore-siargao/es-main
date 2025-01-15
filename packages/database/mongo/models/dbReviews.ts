@@ -23,6 +23,10 @@ const reviews = new Schema({
     type: Number,
     required: true,
   },
+  locationRates:{
+    type: Number,
+    required: false,
+  },
   valueRates: {
     type: Number,
     required: true,
@@ -68,5 +72,16 @@ const reviews = new Schema({
   updatedAt: Date,
   deletedAt: Date,
 })
+
+reviews.virtual('reviewer', {
+  ref: 'Users',
+  localField: 'reviewerId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+// Enable virtuals in JSON output
+reviews.set('toJSON', { virtuals: true });
+reviews.set('toObject', { virtuals: true });
 
 export default mongoose.model("Reviews", reviews)
