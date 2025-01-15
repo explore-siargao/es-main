@@ -17,8 +17,8 @@ export const getReservationsGroupedByReferenceId = async (
   res: Response
 ) => {
   const userId = res.locals.user.id
-  const timeZone = req.header('time-zone')
-  const { page = 1, limit = 15 } = req.query
+   const timeZone = "Asia/Manila"
+  const { page = 1, limit = 15, referenceId} = req.query
   if (!timeZone) {
     res.json(response.error({ message: 'time-zone header is required' }))
   } else {
@@ -28,7 +28,8 @@ export const getReservationsGroupedByReferenceId = async (
         userId,
         dateNow,
         page as number,
-        limit as number
+        limit as number,
+        referenceId as string | undefined
       )
       const reservations = await dbReservations.aggregate(pipelines)
       const validGroupedReservations =
@@ -36,7 +37,7 @@ export const getReservationsGroupedByReferenceId = async (
       const totalCounts = await dbReservations.find({
         status: 'Confirmed',
         guest: userId,
-        endDate: { $lt: dateNow },
+        endDate: { $lt: dateNow }
       })
       const groupedByReferenceId = totalCounts.reduce((acc: any, item: any) => {
         const referenceId = item.xendItPaymentReferenceId
@@ -55,14 +56,23 @@ export const getReservationsGroupedByReferenceId = async (
         })
       )
       if (validGroupedReservations.success) {
-        res.json(
-          response.success({
-            items: reservations,
-            pageItemCount: reservations.length,
-            allItemCount: groupedArray.length,
-            message: 'Reservations successfully fetched',
-          })
-        )
+        if (reservations.length === 1) {
+          res.json(
+            response.success({
+              item: reservations[0], 
+              message: 'Reservation successfully fetched',
+            })
+          );
+        } else {
+          res.json(
+            response.success({
+              items: reservations,
+              pageItemCount: reservations.length,
+              allItemCount: groupedArray.length,
+              message: 'Reservations successfully fetched',
+            })
+          );
+        }
       } else {
         console.error(validGroupedReservations.error.message)
         res.json(response.error({ message: 'Invalid reservation data' }))

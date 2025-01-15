@@ -8,9 +8,10 @@ import RentalContacts from "./contacts"
 
 type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
+  isViewOnly: boolean
 }
 
-const ActivityMoreInfo = ({ items }: T_Activity_Price_Details_Box) => {
+const ActivityMoreInfo = ({ items,isViewOnly }: T_Activity_Price_Details_Box) => {
   return (
     <>
       {items.map((item) => {
@@ -36,7 +37,7 @@ const ActivityMoreInfo = ({ items }: T_Activity_Price_Details_Box) => {
                 </Typography>
               </div>
               <hr className="my-4" />
-              <RentalContacts cartItem={item} />
+              <RentalContacts cartItem={item} isViewOnly={isViewOnly}/>
               <hr className="my-4" />
               <div className="flex flex-col gap-y-4">
                 <Typography variant={"h3"} fontWeight="semibold">

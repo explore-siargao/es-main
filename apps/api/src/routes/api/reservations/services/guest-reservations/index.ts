@@ -15,7 +15,7 @@ const response = new ResponseService()
 export const guestGroupReservations = async (req: Request, res: Response) => {
   const status = req.query.status
   const user = res.locals.user.id
-  const timeZone = req.header('time-zone')
+  const timeZone = "Asia/Manila"
   const { page = 1, limit = 15 } = req.query
 
   if (!timeZone) {

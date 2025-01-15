@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const BookingsPage = () => {
-  return <Bookings />
+  return <Bookings status={"Done"} />
 }
 
 export default BookingsPage

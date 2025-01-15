@@ -5,7 +5,8 @@ export const getGroupedReservationPipeline = (
   userId: string,
   dateNow: Date,
   page: number,
-  limit: number
+  limit: number,
+  referenceId?: string
 ) => {
   const query = {
     $and: [
@@ -17,8 +18,10 @@ export const getGroupedReservationPipeline = (
         ],
       },
       { endDate: { $lt: dateNow } },
+      ...(referenceId ? [{ xendItPaymentReferenceId: referenceId }] : []),
     ],
-  }
+  };
+  
   return [
     {
       $match: query,
