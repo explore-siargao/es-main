@@ -20,66 +20,68 @@ export const addRentalReview = async (req: Request, res: Response) => {
       comment,
     } = req.body
     const validAddReview = Z_Add_Review.safeParse(req.body)
-    if(validAddReview.success){
-    const getRental = await dbRentals.findOne({
-      _id: rentalId,
-      deletedAt: null,
-    })
-    if (!getRental) {
-      res.json(
-        response.error({ message: 'This rental not exists or already deleted' })
-      )
-    } else {
-      if (
-        !cleanlinessRates ||
-        !accuracyRates ||
-        !checkInRates ||
-        !valueRates ||
-        !communicationRates
-      ) {
-        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-      } else {
-        const ratings = [
-          cleanlinessRates,
-          accuracyRates,
-          checkInRates,
-          communicationRates,
-          valueRates,
-        ]
-        const averageRating =
-          ratings.reduce((sum, rate) => sum + rate, 0) / ratings.length
-        let message = ''
-        if (!comment) {
-          comment = message
-        }
-        const newRentalReview = new dbReviews({
-          reviewerId: userId,
-          rental: rentalId,
-          cleanlinessRates,
-          accuracyRates,
-          checkInRates,
-          communicationRates,
-          valueRates,
-          comment,
-          totalRates: averageRating,
-        })
-        const review = await newRentalReview.save()
-        await dbRentals.findByIdAndUpdate(rentalId, {
-          $push: {
-            reviews: review._id,
-          },
-        })
+    if (validAddReview.success) {
+      const getRental = await dbRentals.findOne({
+        _id: rentalId,
+        deletedAt: null,
+      })
+      if (!getRental) {
         res.json(
-          response.success({
-            item: newRentalReview,
-            message: 'Your review successfully added',
+          response.error({
+            message: 'This rental not exists or already deleted',
           })
         )
+      } else {
+        if (
+          !cleanlinessRates ||
+          !accuracyRates ||
+          !checkInRates ||
+          !valueRates ||
+          !communicationRates
+        ) {
+          res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+        } else {
+          const ratings = [
+            cleanlinessRates,
+            accuracyRates,
+            checkInRates,
+            communicationRates,
+            valueRates,
+          ]
+          const averageRating =
+            ratings.reduce((sum, rate) => sum + rate, 0) / ratings.length
+          let message = ''
+          if (!comment) {
+            comment = message
+          }
+          const newRentalReview = new dbReviews({
+            reviewerId: userId,
+            rental: rentalId,
+            cleanlinessRates,
+            accuracyRates,
+            checkInRates,
+            communicationRates,
+            valueRates,
+            comment,
+            totalRates: averageRating,
+          })
+          const review = await newRentalReview.save()
+          await dbRentals.findByIdAndUpdate(rentalId, {
+            $push: {
+              reviews: review._id,
+            },
+          })
+          res.json(
+            response.success({
+              item: newRentalReview,
+              message: 'Your review successfully added',
+            })
+          )
+        }
       }
-    }
-    }else{
+    } else {
       console.error(validAddReview.error.message)
-      res.json(response.error({message:"Invalid payload"}))
+      res.json(response.error({ message: 'Invalid payload' }))
     }
   } catch (err: any) {
     res.json(
