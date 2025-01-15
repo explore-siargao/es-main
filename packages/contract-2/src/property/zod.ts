@@ -145,7 +145,9 @@ export const Z_Bookable_Unit = z.object({
       name: z.string(),
     })
   ),
-  reviews: z.union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())]).optional(),
+  reviews: z
+    .union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())])
+    .optional(),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
   daysCanCancel: z.string().optional(),
@@ -192,7 +194,6 @@ export const Z_Bookable_Units = z.object({
   deletedAt: z.union([z.string(), z.date()]).optional(),
 })
 
-
 export const Z_Property = z.object({
   _id: z.union([z.string(), objectIdSchema]).optional(),
   offerBy: Z_Host,
@@ -219,9 +220,8 @@ export const Z_Property = z.object({
   facilities: z.array(Z_Facility),
   policies: z.array(Z_Policy),
   bookableUnits: z.array(Z_Bookable_Unit).optional(),
-  reviews:Z_Reviews.optional(),
+  reviews: Z_Reviews.optional(),
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
   deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
 })
-

@@ -23,7 +23,7 @@ const reviews = new Schema({
     type: Number,
     required: true,
   },
-  locationRates:{
+  locationRates: {
     type: Number,
     required: false,
   },
@@ -73,15 +73,15 @@ const reviews = new Schema({
   deletedAt: Date,
 })
 
-reviews.virtual('reviewer', {
-  ref: 'Users',
-  localField: 'reviewerId',
-  foreignField: '_id',
+reviews.virtual("reviewer", {
+  ref: "Users",
+  localField: "reviewerId",
+  foreignField: "_id",
   justOne: true,
-});
+})
 
 // Enable virtuals in JSON output
-reviews.set('toJSON', { virtuals: true });
-reviews.set('toObject', { virtuals: true });
+reviews.set("toJSON", { virtuals: true })
+reviews.set("toObject", { virtuals: true })
 
 export default mongoose.model("Reviews", reviews)
