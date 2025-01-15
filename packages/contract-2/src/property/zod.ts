@@ -7,6 +7,7 @@ import {
   E_Property_Type,
   E_Whole_Place_Property_Type,
 } from "./enum"
+import { Z_Reviews } from "../review"
 
 const objectIdSchema = z
   .any()
@@ -36,7 +37,7 @@ export const Z_Bookable_PricePerDate = z.object({
 })
 
 export const Z_Amenity = z.object({
-  _id: z.string().optional(),
+  _id: z.union([z.string(), objectIdSchema]).optional(),
   index: z.number().optional(),
   category: z.string(),
   amenity: z.string(),
@@ -68,8 +69,8 @@ export const Z_Bed = z.object({
 })
 
 export const Z_Bedroom = z.object({
-  roomName: z.string(),
-  beds: z.array(Z_Bed),
+  roomName: z.string().optional(),
+  beds: z.array(Z_Bed).optional(),
   _id: z.union([z.string(), objectIdSchema]).optional(),
 })
 
@@ -144,42 +145,11 @@ export const Z_Bookable_Unit = z.object({
       name: z.string(),
     })
   ),
-  reviews: z.array(z.string()).optional(),
+  reviews: z.union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())]).optional(),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
   daysCanCancel: z.string().optional(),
   unitNote: z.string().nullable().optional(),
-  createdAt: z.union([z.string(), z.date()]).optional(),
-  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
-  deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
-})
-
-export const Z_Property = z.object({
-  _id: z.union([z.string(), objectIdSchema]).optional(),
-  offerBy: Z_Host,
-  status: z.enum(["Pending", "Incomplete", "Live"]),
-  title: z.string(),
-  description: z.string(),
-  currency: z.string().nullable(),
-  primaryLanguage: z.string().nullable(),
-  photos: z.array(Z_Photo),
-  phone: z.string().nullable(),
-  email: z.string().nullable(),
-  location: Z_Location,
-  checkInTime: z.union([z.string(), z.date()]).nullable(),
-  checkOutTime: z.union([z.string(), z.date()]).nullable(),
-  isLateCheckOutAllowed: z.boolean(),
-  lateCheckOutType: z.string().nullable(),
-  lateCheckOutValue: z.number().nullable(),
-  termsAndConditions: z.string().nullable(),
-  taxId: z.union([z.string(), z.number()]).nullable(),
-  taxId2: z.union([z.string(), z.number()]).nullable(),
-  companyLegalName: z.string().nullable(),
-  type: z.string(),
-  wholeplaceType: z.string().nullable(),
-  facilities: z.array(Z_Facility),
-  policies: z.array(Z_Policy),
-  bookableUnits: z.array(Z_Bookable_Unit).optional(),
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
   deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
@@ -216,8 +186,42 @@ export const Z_Bookable_Units = z.object({
   qty: z.number(),
   qtyIds: z.array(z.string()).optional(),
   daysCanCancel: z.string().optional(),
-  reviews: z.array(z.string()).optional(),
+  reviews: z.union([Z_Reviews, objectIdSchema, z.array(z.string())]).optional(),
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional(),
   deletedAt: z.union([z.string(), z.date()]).optional(),
 })
+
+
+export const Z_Property = z.object({
+  _id: z.union([z.string(), objectIdSchema]).optional(),
+  offerBy: Z_Host,
+  status: z.enum(["Pending", "Incomplete", "Live"]),
+  title: z.string(),
+  description: z.string(),
+  currency: z.string().nullable(),
+  primaryLanguage: z.string().nullable(),
+  photos: z.array(Z_Photo),
+  phone: z.string().nullable(),
+  email: z.string().nullable(),
+  location: Z_Location,
+  checkInTime: z.union([z.string(), z.date()]).nullable(),
+  checkOutTime: z.union([z.string(), z.date()]).nullable(),
+  isLateCheckOutAllowed: z.boolean(),
+  lateCheckOutType: z.string().nullable(),
+  lateCheckOutValue: z.number().nullable(),
+  termsAndConditions: z.string().nullable(),
+  taxId: z.union([z.string(), z.number()]).nullable(),
+  taxId2: z.union([z.string(), z.number()]).nullable(),
+  companyLegalName: z.string().nullable(),
+  type: z.string(),
+  wholeplaceType: z.string().nullable(),
+  facilities: z.array(Z_Facility),
+  policies: z.array(Z_Policy),
+  bookableUnits: z.array(Z_Bookable_Unit).optional(),
+  reviews:Z_Reviews.optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
+  deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
+})
+

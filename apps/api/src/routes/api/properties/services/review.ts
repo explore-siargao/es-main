@@ -5,8 +5,9 @@ import {
 import { ResponseService } from '@/common/service/response'
 import { dbBookableUnitTypes, dbProperties, dbReviews } from '@repo/database'
 import { Request, Response } from 'express'
+import {Z_Add_Review} from "@repo/contract-2/review"
 const response = new ResponseService()
-export const addUnitReview = async (req: Request, res: Response) => {
+export const addPropertyReview = async (req: Request, res: Response) => {
   try {
     const userId = res.locals.user.id
     const propertyId = req.params.propertyId
@@ -16,9 +17,12 @@ export const addUnitReview = async (req: Request, res: Response) => {
       checkInRates,
       communicationRates,
       valueRates,
+      locationRates,
       comment,
       bookableUnitId,
     } = req.body
+    const validAddReview = Z_Add_Review.safeParse(req.body)
+    if(validAddReview.success){
     const getProperty = await dbProperties.findOne({
       _id: propertyId,
       deletedAt: null,
@@ -35,6 +39,7 @@ export const addUnitReview = async (req: Request, res: Response) => {
         !accuracyRates ||
         !checkInRates ||
         !valueRates ||
+        !locationRates ||
         !communicationRates ||
         !bookableUnitId
       ) {
@@ -56,6 +61,7 @@ export const addUnitReview = async (req: Request, res: Response) => {
             accuracyRates,
             checkInRates,
             communicationRates,
+            locationRates,
             valueRates,
           ]
           const averageRating =
@@ -75,11 +81,17 @@ export const addUnitReview = async (req: Request, res: Response) => {
             checkInRates,
             communicationRates,
             valueRates,
+            locationRates,
             comment,
             totalRates: averageRating,
           })
           const review = await newBookableUnitReview.save()
           await dbBookableUnitTypes.findByIdAndUpdate(bookableUnitId, {
+            $push: {
+              reviews: review._id,
+            },
+          })
+          await dbProperties.findByIdAndUpdate(propertyId,{
             $push: {
               reviews: review._id,
             },
@@ -93,6 +105,10 @@ export const addUnitReview = async (req: Request, res: Response) => {
         }
       }
     }
+  }else{
+    console.error(validAddReview.error.message)
+    res.json(response.error({message:"Invalid payload"}))
+  }
   } catch (err: any) {
     res.json(
       response.error({
@@ -101,3 +117,4 @@ export const addUnitReview = async (req: Request, res: Response) => {
     )
   }
 }
+

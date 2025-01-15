@@ -7,6 +7,7 @@ import {
 } from "./enum"
 import { Z_Photo } from "../photos"
 import { Z_Location } from "../address-location"
+import { Z_Reviews } from "../review"
 
 const objectIdSchema = z
   .any()
@@ -88,7 +89,7 @@ export const Z_Rental = z.object({
   rentalNote: z.string().optional(),
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
-  reviews: z.array(z.string()).optional().nullable(),
+  reviews: z.union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())]).optional(),
   daysCanCancel: z.string().optional(),
   policies: z.array(z.string()).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional().nullable(),

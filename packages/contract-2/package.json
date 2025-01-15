@@ -87,6 +87,11 @@
       "import": "./build/activity/index.js",
       "require": "./build/activity/index.js",
       "types": "./build/activity/index.d.ts"
+    },
+    "./review": {
+      "import": "./build/review/index.js",
+      "require": "./build/review/index.js",
+      "types": "./build/review/index.d.ts"
     }
   },
   "scripts": {
