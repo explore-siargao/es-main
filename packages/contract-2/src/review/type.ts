@@ -1,7 +1,5 @@
 import z from "zod"
-import {
- Z_Review, Z_Reviewer,Z_Reviews,Z_Add_Review
-} from "./zod"
+import { Z_Review, Z_Reviewer, Z_Reviews, Z_Add_Review } from "./zod"
 
 export type T_Review = z.infer<typeof Z_Review>
 export type T_Reviewer = z.infer<typeof Z_Reviewer>

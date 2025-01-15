@@ -1,7 +1,7 @@
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { convertPrice } from '@/common/helpers/convert-price'
 import { ResponseService } from '@/common/service/response'
-import {format} from "date-fns"
+import { format } from 'date-fns'
 import {
   T_Property_Basic_Info,
   Z_Property_Basic_Info,
@@ -109,14 +109,16 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
       })
       .populate({
         path: 'offerBy',
-        select: "guest email createdAt",
-        populate: [{ 
-          path: 'guest',
-          populate:{
-            path:"address",
-            model:"Addresses"
-          }
-        }],
+        select: 'guest email createdAt',
+        populate: [
+          {
+            path: 'guest',
+            populate: {
+              path: 'address',
+              model: 'Addresses',
+            },
+          },
+        ],
       })
       .populate('photos')
       .populate('location')
@@ -130,21 +132,24 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
       })
       .populate('reservations')
       .populate({
-        path:"reviews",
-        select:"reviewerId cleanlinessRates accuracyRates checkInRates communicationRates valueRates comment totalRates createdAt",
-        populate:{
-          path:"reviewer",
-          model:"Users",
-          select: "email guest",
-          populate: [{ 
-            path: 'guest',
-            select:"firstName middleName lastName address",
-            populate:{
-              path:"address",
-              model:"Addresses",
-            }
-          }],
-        }
+        path: 'reviews',
+        select:
+          'reviewerId cleanlinessRates accuracyRates checkInRates communicationRates valueRates comment totalRates createdAt',
+        populate: {
+          path: 'reviewer',
+          model: 'Users',
+          select: 'email guest',
+          populate: [
+            {
+              path: 'guest',
+              select: 'firstName middleName lastName address',
+              populate: {
+                path: 'address',
+                model: 'Addresses',
+              },
+            },
+          ],
+        },
       })
     if (!property) {
       res.json(
@@ -154,67 +159,81 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
-      let averageTotalRates:number
-      let totalReviewCount:number
-      let averageCleanlinessRates:number
-      let averageAccuracyRates:number
-      let averageCheckInRates:number
-      let averageCommunicationRates:number
-      let averageValueRates:number
-      let averageLocationRates:number
+      let averageTotalRates: number
+      let totalReviewCount: number
+      let averageCleanlinessRates: number
+      let averageAccuracyRates: number
+      let averageCheckInRates: number
+      let averageCommunicationRates: number
+      let averageValueRates: number
+      let averageLocationRates: number
       const newProperty = property.toObject()
-      if(newProperty.reviews && newProperty.reviews.length > 0)
-      {
-       totalReviewCount = newProperty.reviews.length;
-      averageTotalRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.totalRates, 0) /
-      totalReviewCount;
+      if (newProperty.reviews && newProperty.reviews.length > 0) {
+        totalReviewCount = newProperty.reviews.length
+        averageTotalRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.totalRates,
+            0
+          ) / totalReviewCount
 
-      averageCleanlinessRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.cleanlinessRates, 0) /
-      totalReviewCount;
+        averageCleanlinessRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.cleanlinessRates,
+            0
+          ) / totalReviewCount
 
-      averageAccuracyRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.accuracyRates, 0) /
-      totalReviewCount;
+        averageAccuracyRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.accuracyRates,
+            0
+          ) / totalReviewCount
 
-      averageCheckInRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.checkInRates, 0) /
-      totalReviewCount;
+        averageCheckInRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.checkInRates,
+            0
+          ) / totalReviewCount
 
-      averageCommunicationRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.communicationRates, 0) /
-      totalReviewCount;
+        averageCommunicationRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.communicationRates,
+            0
+          ) / totalReviewCount
 
-      averageValueRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.valueRates, 0) /
-      totalReviewCount;
+        averageValueRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.valueRates,
+            0
+          ) / totalReviewCount
 
-      averageLocationRates =
-      newProperty.reviews.reduce((sum, review:any) => sum + review.valueRates, 0) /
-      totalReviewCount;
+        averageLocationRates =
+          newProperty.reviews.reduce(
+            (sum, review: any) => sum + review.valueRates,
+            0
+          ) / totalReviewCount
 
-      //@ts-ignore
-      newProperty.averageReviews = {
-        totalReview:totalReviewCount,
-        averageTotalRates:parseFloat(averageTotalRates.toFixed(2)),
-        cleanliness:averageCleanlinessRates,
-        accuracy:averageAccuracyRates,
-        checkIn:averageCheckInRates,
-        communication:averageCommunicationRates,
-        value:averageValueRates,
-        location:averageLocationRates
-      };
+        //@ts-ignore
+        newProperty.averageReviews = {
+          totalReview: totalReviewCount,
+          averageTotalRates: parseFloat(averageTotalRates.toFixed(2)),
+          cleanliness: averageCleanlinessRates,
+          accuracy: averageAccuracyRates,
+          checkIn: averageCheckInRates,
+          communication: averageCommunicationRates,
+          value: averageValueRates,
+          location: averageLocationRates,
+        }
       }
       //@ts-ignore
-      newProperty.reviews = newProperty.reviews?.map((item)=>{
+      newProperty.reviews = newProperty.reviews?.map((item) => {
         //@ts-ignore
-        const formatDate = format(new Date(item.createdAt), "MMMM dd, yyyy")
+        const formatDate = format(new Date(item.createdAt), 'MMMM dd, yyyy')
         console.log(formatDate)
-        return{
-        ...item,
-        createdAt:formatDate
-    }})
+        return {
+          ...item,
+          createdAt: formatDate,
+        }
+      })
       const modifiedProperty = newProperty.bookableUnits.map((item: any) => ({
         ...item,
         unitPrice: {
@@ -240,26 +259,25 @@ export const getPropertyByIdPublic = async (req: Request, res: Response) => {
             conversionRates
           ),
         },
-        
       }))
       newProperty.bookableUnits = modifiedProperty
-     
+
       const validProperty = Z_Property.safeParse(newProperty)
-      if(validProperty.success){
-      res.json(
-        response.success({
-          item: newProperty,
-        })
-      )
-    }else{
-      console.error(validProperty.error.message)
-      res.json(
-        response.error({
-         message:"Invalid property data"
-        })
-      )
+      if (validProperty.success) {
+        res.json(
+          response.success({
+            item: newProperty,
+          })
+        )
+      } else {
+        console.error(validProperty.error.message)
+        res.json(
+          response.error({
+            message: 'Invalid property data',
+          })
+        )
+      }
     }
-  }
   } catch (err: any) {
     res.json(
       response.error({

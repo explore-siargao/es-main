@@ -14,6 +14,7 @@ import {
   dbReservations,
   dbUnitPrices,
   dbUsers,
+  dbReviews,
   initMongo,
 } from "@repo/database"
 import seedUsers from "./src/users"
@@ -23,6 +24,7 @@ import seedReservations from "./src/reservations"
 import seedJoinerActivities from "./src/activities-joiner"
 import seedActivities from "./src/activities-private"
 import locationSeeder from "./src/location"
+import seedReview from "./src/reviews"
 
 initMongo()
 
@@ -44,6 +46,7 @@ const seedAll = async () => {
     await dbEmergencyContacts.deleteMany({})
     await dbUnitPrices.deleteMany({})
     await dbReservations.deleteMany({})
+    await dbReviews.deleteMany({})
     // Run individual seeders
     await seedUsers()
     await locationSeeder()
@@ -52,6 +55,7 @@ const seedAll = async () => {
     await seedProperties()
     await seedRentals()
     await seedReservations()
+    await seedReview()
     // Add more seeders here as needed
     console.log("All seeders executed successfully!")
   } catch (error) {

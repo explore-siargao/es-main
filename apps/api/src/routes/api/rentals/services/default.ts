@@ -11,7 +11,7 @@ import {
 } from '@repo/database'
 import { E_Rental_Category, E_Rental_Status } from '@repo/contract'
 import { convertPrice } from '@/common/helpers/convert-price'
-import {format} from "date-fns"
+import { format } from 'date-fns'
 import { Z_Rental } from '@repo/contract-2/rental'
 const response = new ResponseService()
 
@@ -300,7 +300,7 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
       let averageValueRates: number
       let averageLocationRates: number
       const newRental: any = rental.toObject()
-      
+
       if (newRental.reviews && newRental.reviews.length > 0) {
         totalReviewCount = newRental.reviews.length
         averageTotalRates =
@@ -385,18 +385,18 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
           preferredCurrency,
           conversionRates
         ) || 0
-        
-        const validRental = Z_Rental.safeParse(newRental)
-        if(validRental.success){
-      res.json(
-        response.success({
-          item: newRental,
-        })
-      )
-    }else{
-      console.error(validRental.error.message)
-      res.json(response.error({message:"Invalid data of rentals"}))
-    }
+
+      const validRental = Z_Rental.safeParse(newRental)
+      if (validRental.success) {
+        res.json(
+          response.success({
+            item: newRental,
+          })
+        )
+      } else {
+        console.error(validRental.error.message)
+        res.json(response.error({ message: 'Invalid data of rentals' }))
+      }
     }
   } catch (err: any) {
     res.json(
