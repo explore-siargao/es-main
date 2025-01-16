@@ -23,16 +23,12 @@ const GroupBookings = () => {
   const page = 1;
   const referenceId = searchParams?.get("referenceId") || "";
   const { data, isPending } = useGetGroupedReservations(page, referenceId)
-  console.log(data)
 
   return (
     <WidthWrapper width="medium" className="mt-6 lg:mt-8">
       <div className="flex items-center gap-2">
-        <Link href="/cart">
-          <LucideChevronLeft className="h-5 w-5 text-text-400 transition hover:text-text-500" />
-        </Link>
         <Typography variant={"h1"} fontWeight="semibold">
-          Group Bookings
+          Group bookings
         </Typography>
       </div>
       {isPending ? (
@@ -40,17 +36,30 @@ const GroupBookings = () => {
       )  :
       <div className="flex flex-col xl:flex-row gap-8 xl:gap-12 mt-8">
         <div className="flex-1 flex flex-col gap-y-4">
-          <ViewPayment />
+          <ViewPayment paymentDetails={data?.item?.paymentDetails} />
           <hr className="my-4" />
-          {data?.item?.reservations?.some((reservation: T_Reservation) => reservation.propertyIds) && (
-           <PropertyMoreInfo items={data.item.reservations} isViewOnly={true} />
-          )}
-           {data?.item?.reservations?.some((reservation: T_Reservation) => reservation.rentalIds) && (
-           <RentalMoreInfo items={data.item.reservations} isViewOnly={true} />
-          )}
-           {data?.item?.reservations?.some((reservation: T_Reservation) => reservation.activityIds) && (
-           <ActivityMoreInfo items={data.item.reservations} isViewOnly={true} />
-          )}
+          {data?.item?.reservations && (
+  <>
+    {data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds).length > 0 && (
+      <PropertyMoreInfo
+        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds)}
+        isViewOnly={true}
+      />
+    )}
+    {data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds).length > 0 && (
+      <RentalMoreInfo
+        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds)}
+        isViewOnly={true}
+      />
+    )}
+    {data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds).length > 0 && (
+      <ActivityMoreInfo
+        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds)}
+        isViewOnly={true}
+      />
+    )}
+  </>
+)}
           <hr className="my-4" />
           <Typography variant="h6" className="text-text-500">
             By selecting the Pay now button on this page, I agree to the{" "}
@@ -74,15 +83,27 @@ const GroupBookings = () => {
         </div>
         <div className="hidden xl:block flex-1 xl:flex-none xl:w-1/3 md:relative">
           <div className="md:sticky top-10 space-y-4">
-          {data?.item?.reservations?.some((reservation: T_Reservation) => reservation.propertyIds) && (
-          <PropertyPriceDetailsBox items={data?.item?.reservations} />
-          )}
-            {data?.item?.reservations?.some((reservation: T_Reservation) => reservation.activityIds) && (
-              <ActivityPriceDetailsBox items={data?.item?.reservations} />
-            )}
-           {data?.item?.reservations?.some((reservation: T_Reservation) => reservation.rentalIds) && (
-              <RentalPriceDetailsBox items={data?.item?.reservations} />
-            )}
+          {data?.item?.reservations && (
+  <>
+    {data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds).length > 0 && (
+      <PropertyPriceDetailsBox
+        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds)}
+      />
+    )}
+    {data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds).length > 0 && (
+      <ActivityPriceDetailsBox
+        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds)}
+      />
+    )}
+    {data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds).length > 0 && (
+      <RentalPriceDetailsBox
+        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds)}
+      />
+    )}
+  </>
+)}
+
+            
             <SubTotalBox
               selectedItemsPrice={data?.item?.totalPrice + data?.item?.totalGuestComission}
             />

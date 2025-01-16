@@ -1,6 +1,8 @@
 import { string, z } from "zod"
 import { E_RegistrationType, E_UserRole } from "./enum"
 import { Z_Address } from "../address-location"
+import { Z_GovernmentId } from "../government-id"
+import { Z_EmergencyContact } from "@repo/contract"
 
 const objectIdSchema = z
   .any()
@@ -19,10 +21,10 @@ export const Z_Guest = z.object({
   gender: z.string().optional(),
   phone: z.string().optional(),
   cellPhone: z.string().optional(),
-  governmentId: z.array(z.string()).optional(),
+  governmentId: z.union([z.array(z.string()), z.array(objectIdSchema),z.array(Z_GovernmentId)]).optional(),
   country: z.string().optional(),
   address: z.union([z.string(), Z_Address]).optional(),
-  emergencyContacts: z.array(z.string()).optional(),
+  emergencyContacts: z.union([z.array(z.string()), z.array(objectIdSchema), z.array(Z_EmergencyContact)]).optional(),
   birthDate: z.union([z.string(), z.date()]).optional(),
   documentType: z.string().optional(),
   documentNumber: z.string().optional(),

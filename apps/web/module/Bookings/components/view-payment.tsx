@@ -1,34 +1,45 @@
 import { Typography } from "@/common/components/ui/Typography"
-import { Listbox } from "@headlessui/react"
 import {
-  LucideCheck,
-  LucideChevronDown,
-  LucideCoins,
   LucideCreditCard,
-  LucideLandmark,
 } from "lucide-react"
-import { useEffect, useState } from "react"
-import amex from "@/common/assets/amex.png"
-import discover from "@/common/assets/discover-card.png"
-import mastercard from "@/common/assets/mastercard.png"
-import visa from "@/common/assets/visa.png"
 import gcash from "@/common/assets/gcash.png"
 import Image from "@/common/components/ui/image"
 import xendit from "@/common/assets/powered-xendit.png"
 import Link from "next/link"
-import { E_PaymentType } from "@repo/contract"
+import _ from "lodash";
 
-export default function PaymentDropdown() {
-
-  const options = [
-    {
-      type: E_PaymentType.CreditDebit,
-      name: "Paid using Credit or Debit card",
-      icon: <LucideLandmark className="text-text-300" />,
-      paymentMethodId: null,
+interface ViewPaymentProps {
+  paymentDetails: {
+    type: "CARD" | "EWALLET"; 
+    cardDetails?: {
+      cardType: string,
+      maskedCardNumber: string,
+      network: string,
     },
-    {
-      type: E_PaymentType.GCASH,
+    ewallet: {
+      channelCode: string,
+    }
+  }
+}
+
+
+
+const ViewPayment = ({
+  paymentDetails,
+}: ViewPaymentProps) => {
+
+  
+  function extractLastDigits(maskedCardNumber:string) {
+    return maskedCardNumber ? maskedCardNumber.match(/\d+$/)?.[0] || "" : "";
+  }
+  const options = {
+    CARD: {
+      name: paymentDetails.cardDetails
+        ? `Paid using ${_.capitalize(paymentDetails.cardDetails.cardType)} ${_.capitalize(paymentDetails.cardDetails.network)} ending with ${extractLastDigits(paymentDetails.cardDetails.maskedCardNumber)}`
+        : "Paid using Credit or Debit card",
+      icon: <LucideCreditCard className="text-text-300" />,
+    },
+    EWALLET: {
       name: "Paid using GCash",
       icon: (
         <Image
@@ -36,20 +47,24 @@ export default function PaymentDropdown() {
           width={500}
           height={500}
           className="h-5 w-auto"
-          alt="mastercard"
+          alt="gcash"
         />
       ),
-      paymentMethodId: null,
     },
-  ]
+  };
+
+  const selectedPayment = options[paymentDetails.type] || {
+    name: "Unknown Payment Method",
+    icon: null,
+  };
 
   return (
     <div className="w-full">
       <div className="flex items-center justify-between">
         <div className="flex gap-4 items-center">
-          {options[1]?.icon}
-          <Typography variant="h3" fontWeight="semibold">    
-          {options[1]?.name}
+          {selectedPayment.icon}
+          <Typography variant="h3" fontWeight="semibold">
+            {selectedPayment.name}
           </Typography>
         </div>
         <Link href="https://xendit.co/" target="_blank">
@@ -58,11 +73,13 @@ export default function PaymentDropdown() {
             width={500}
             height={500}
             className="h-10 w-auto"
-            alt="mastercard"
+            alt="powered by xendit"
           />
         </Link>
       </div>
-
     </div>
-  )
-}
+  );
+};
+
+export default ViewPayment;
+

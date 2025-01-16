@@ -54,7 +54,7 @@ const Bookings = ({ status }: BookingsProps) => {
 
 
         return (
-        // <Link href="/profile">
+        <Link href={`/bookings/${listingRow._id}`}>
           <div className="flex items-center gap-5">
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
               <Image
@@ -70,7 +70,7 @@ const Bookings = ({ status }: BookingsProps) => {
               </Typography>
             </span>
           </div>
-        // </Link>
+        </Link>
       )},
     }),
     columnHelper.accessor("guestCount", {
