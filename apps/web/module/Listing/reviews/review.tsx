@@ -8,7 +8,7 @@ import { LucideStar } from "lucide-react"
 interface UserReviewProps {
   avatarKey: string
   name: string
-  origin: string
+  origin: any
   rate: number
   date: string
   review: string
@@ -34,7 +34,7 @@ const Review = ({
   }
 
   const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
-
+console.log(origin, "origin")
   const openShowMoreModal = () => {
     setShowMoreModalOpen(true)
   }

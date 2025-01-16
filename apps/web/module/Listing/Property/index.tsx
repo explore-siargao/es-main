@@ -40,9 +40,8 @@ export const Property = ({
   }
   const offerBy = property
   const formattedDate = offerBy?.createdAt
-    ? format(parseISO(offerBy.createdAt), "MMMM d, yyyy")
+    ? format(parseISO(offerBy.createdAt as string), "MMMM d, yyyy")
     : ""
-
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <Hero images={property?.photos} title={property?.title} />
@@ -55,7 +54,11 @@ export const Property = ({
                 name={property?.offerBy?.guest?.firstName}
                 language={property?.offerBy?.guest?.language}
                 profilePicture={property?.offerBy?.profilePicture}
-                joinDate={property?.offerBy?.createdAt || ""}
+                joinDate={
+                  property?.createdAt
+                    ? format(property.createdAt, "MMMM d, yyyy")
+                    : ""
+                }
               />
             </div>
             <div className="py-6">
@@ -121,7 +124,7 @@ export const Property = ({
           />
         </div>
         <div className="py-8">
-          <UserReviews reviews={userReviews} />
+          <UserReviews reviews={property?.reviews} />
         </div>
         <div className="py-8">
           <HostInformation
