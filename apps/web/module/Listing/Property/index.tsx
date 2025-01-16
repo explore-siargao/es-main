@@ -22,6 +22,7 @@ import SimilarProperties from "./similar-properties"
 import { Typography } from "@/common/components/ui/Typography"
 import HostPolicies from "./host-policies"
 import { T_Property } from "@repo/contract-2/property"
+import { T_Reviews } from "@repo/contract-2/review"
 
 export const Property = ({
   property,
@@ -124,7 +125,7 @@ export const Property = ({
           />
         </div>
         <div className="py-8">
-          <UserReviews reviews={property?.reviews} />
+          <UserReviews reviews={property.reviews as T_Reviews} />
         </div>
         <div className="py-8">
           <HostInformation
