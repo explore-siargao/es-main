@@ -1,6 +1,5 @@
 import React, { useState } from "react"
-import data from "./data.json"
-import ImageGallery from "@/module/Listing/property/image-gallery"
+import ImageGallery from "./image-gallery"
 import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Listing/property/share-save"
 import ImageGalleryModal from "@/module/Listing/property/modals/image-gallery-modal"

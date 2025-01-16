@@ -10,7 +10,7 @@ export const sideContent: Field = {
       type: "array",
       label: "Popular Blogs",
       minRows: 2,
-      maxRows: 10,
+      maxRows: 5,
       labels: {
         singular: "Blog",
         plural: "Blogs",
@@ -30,10 +30,9 @@ export const sideContent: Field = {
     },
     {
       name: "pageSummary",
+      required: false,
       type: "array",
       label: "Page Summary",
-      minRows: 2,
-      maxRows: 10,
       labels: {
         singular: "Page Summary",
         plural: "Page Summary",

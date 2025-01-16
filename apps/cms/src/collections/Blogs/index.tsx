@@ -1,9 +1,10 @@
 import type { CollectionConfig } from "payload/types"
-
+import React from 'react';
 import { slugField } from "../../fields/slug"
 import { hero } from "../../fields/blogs/hero"
 import { content } from "../../fields/blogs/content"
 import { sideContent } from "../../fields/blogs/sideContent"
+import useField from "payload/dist/admin/components/forms/useField";
 
 export const Blogs: CollectionConfig = {
   slug: "blogs",
@@ -38,6 +39,45 @@ export const Blogs: CollectionConfig = {
         const [category] = data.docs
 
         return [category.id]
+      },
+    },
+    {
+      name: "customButton",
+      type: "ui",
+      admin: {
+        position: "sidebar",
+        components: {
+          Field: (props) => {
+            const {
+              value: slug,
+            } = useField({ path: "slug" });
+            const {
+              value: status,
+            } = useField({ path: "_status" });
+            if (status === "published") {
+              const externalUrl = `http://localhost:3000/blogs/${slug}`;
+              return (
+                <button
+                  type="button"
+                  onClick={() => window.open(externalUrl, "_blank")}
+                  style={{
+                    display: "block",
+                    margin: "1rem 0",
+                    padding: "10px 15px",
+                    background: "white",
+                    color: "black",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Preview blog
+                </button>
+              );
+            }
+            return null
+          },
+        },
       },
     },
     {

@@ -6,8 +6,8 @@ interface YMarginWrapperProps {
 }
 
 const roleMap = {
-  host: "mt-64",
-  guest: "mt-64",
+  host: "mt-60",
+  guest: "mt-60",
 }
 
 const YMarginWrapper = React.forwardRef<HTMLDivElement, YMarginWrapperProps>(
