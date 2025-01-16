@@ -3,6 +3,7 @@ import {
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { ResponseService } from '@/common/service/response'
+import { Z_Add_Review } from '@repo/contract-2/review'
 import { dbRentals, dbReviews } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
@@ -18,61 +19,69 @@ export const addRentalReview = async (req: Request, res: Response) => {
       valueRates,
       comment,
     } = req.body
-    const getRental = await dbRentals.findOne({
-      _id: rentalId,
-      deletedAt: null,
-    })
-    if (!getRental) {
-      res.json(
-        response.error({ message: 'This rental not exists or already deleted' })
-      )
-    } else {
-      if (
-        !cleanlinessRates ||
-        !accuracyRates ||
-        !checkInRates ||
-        !valueRates ||
-        !communicationRates
-      ) {
-        res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
-      } else {
-        const ratings = [
-          cleanlinessRates,
-          accuracyRates,
-          checkInRates,
-          communicationRates,
-          valueRates,
-        ]
-        const averageRating =
-          ratings.reduce((sum, rate) => sum + rate, 0) / ratings.length
-        let message = ''
-        if (!comment) {
-          comment = message
-        }
-        const newRentalReview = new dbReviews({
-          reviewerId: userId,
-          rental: rentalId,
-          cleanlinessRates,
-          accuracyRates,
-          checkInRates,
-          communicationRates,
-          valueRates,
-          comment,
-          totalRates: averageRating,
-        })
-        const review = await newRentalReview.save()
-        await dbRentals.findByIdAndUpdate(rentalId, {
-          $push: {
-            reviews: review._id,
-          },
-        })
+    const validAddReview = Z_Add_Review.safeParse(req.body)
+    if (validAddReview.success) {
+      const getRental = await dbRentals.findOne({
+        _id: rentalId,
+        deletedAt: null,
+      })
+      if (!getRental) {
         res.json(
-          response.success({
-            item: newRentalReview,
-            message: 'Your review successfully added',
+          response.error({
+            message: 'This rental not exists or already deleted',
           })
         )
+      } else {
+        if (
+          !cleanlinessRates ||
+          !accuracyRates ||
+          !checkInRates ||
+          !valueRates ||
+          !communicationRates
+        ) {
+          res.json(response.error({ message: REQUIRED_VALUE_EMPTY }))
+        } else {
+          const ratings = [
+            cleanlinessRates,
+            accuracyRates,
+            checkInRates,
+            communicationRates,
+            valueRates,
+          ]
+          const averageRating =
+            ratings.reduce((sum, rate) => sum + rate, 0) / ratings.length
+          let message = ''
+          if (!comment) {
+            comment = message
+          }
+          const newRentalReview = new dbReviews({
+            reviewerId: userId,
+            rental: rentalId,
+            cleanlinessRates,
+            accuracyRates,
+            checkInRates,
+            communicationRates,
+            valueRates,
+            comment,
+            totalRates: averageRating,
+          })
+          const review = await newRentalReview.save()
+          await dbRentals.findByIdAndUpdate(rentalId, {
+            $push: {
+              reviews: review._id,
+            },
+          })
+          res.json(
+            response.success({
+              item: newRentalReview,
+              message: 'Your review successfully added',
+            })
+          )
+        }
       }
+    } else {
+      console.error(validAddReview.error.message)
+      res.json(response.error({ message: 'Invalid payload' }))
     }
   } catch (err: any) {
     res.json(

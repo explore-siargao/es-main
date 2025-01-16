@@ -11,7 +11,8 @@ import {
 } from '@repo/database'
 import { E_Rental_Category, E_Rental_Status } from '@repo/contract'
 import { convertPrice } from '@/common/helpers/convert-price'
-
+import { format } from 'date-fns'
+import { Z_Rental } from '@repo/contract-2/rental'
 const response = new ResponseService()
 
 export const getAllRentals = async (req: Request, res: Response) => {
@@ -245,10 +246,14 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
       })
       .populate({
         path: 'host',
-        select: 'guest createdAt',
+        select: 'email guest createdAt',
         populate: {
           path: 'guest',
-          select: 'firstName lastName',
+          select: 'firstName middleName lastName address',
+          populate: {
+            path: 'address',
+            model: 'Addresses',
+          },
         },
       })
       .populate('details')
@@ -256,6 +261,26 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
       .populate('addOns')
       .populate('pricing')
       .populate('location')
+      .populate({
+        path: 'reviews',
+        select:
+          'reviewerId cleanlinessRates accuracyRates checkInRates communicationRates valueRates comment totalRates createdAt',
+        populate: {
+          path: 'reviewer',
+          model: 'Users',
+          select: 'email guest',
+          populate: [
+            {
+              path: 'guest',
+              select: 'firstName middleName lastName address',
+              populate: {
+                path: 'address',
+                model: 'Addresses',
+              },
+            },
+          ],
+        },
+      })
       .exec()
 
     if (!rental) {
@@ -266,7 +291,82 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
+      let averageTotalRates: number
+      let totalReviewCount: number
+      let averageCleanlinessRates: number
+      let averageAccuracyRates: number
+      let averageCheckInRates: number
+      let averageCommunicationRates: number
+      let averageValueRates: number
+      let averageLocationRates: number
       const newRental: any = rental.toObject()
+
+      if (newRental.reviews && newRental.reviews.length > 0) {
+        totalReviewCount = newRental.reviews.length
+        averageTotalRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.totalRates,
+            0
+          ) / totalReviewCount
+
+        averageCleanlinessRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.cleanlinessRates,
+            0
+          ) / totalReviewCount
+
+        averageAccuracyRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.accuracyRates,
+            0
+          ) / totalReviewCount
+
+        averageCheckInRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.checkInRates,
+            0
+          ) / totalReviewCount
+
+        averageCommunicationRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.communicationRates,
+            0
+          ) / totalReviewCount
+
+        averageValueRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.valueRates,
+            0
+          ) / totalReviewCount
+
+        averageLocationRates =
+          newRental.reviews.reduce(
+            (sum: any, review: any) => sum + review.valueRates,
+            0
+          ) / totalReviewCount
+
+        //@ts-ignore
+        newRental.averageReviews = {
+          totalReview: totalReviewCount,
+          averageTotalRates: parseFloat(averageTotalRates.toFixed(2)),
+          cleanliness: averageCleanlinessRates,
+          accuracy: averageAccuracyRates,
+          checkIn: averageCheckInRates,
+          communication: averageCommunicationRates,
+          value: averageValueRates,
+          location: averageLocationRates,
+        }
+      }
+      //@ts-ignore
+      newRental.reviews = newRental.reviews?.map((item) => {
+        //@ts-ignore
+        const formatDate = format(new Date(item.createdAt), 'MMMM dd, yyyy')
+        console.log(formatDate)
+        return {
+          ...item,
+          createdAt: formatDate,
+        }
+      })
       newRental.pricing.dayRate =
         convertPrice(
           newRental.pricing.dayRate,
@@ -285,11 +385,18 @@ export const getRentalByIdPublic = async (req: Request, res: Response) => {
           preferredCurrency,
           conversionRates
         ) || 0
-      res.json(
-        response.success({
-          item: newRental,
-        })
-      )
+
+      const validRental = Z_Rental.safeParse(newRental)
+      if (validRental.success) {
+        res.json(
+          response.success({
+            item: newRental,
+          })
+        )
+      } else {
+        console.error(validRental.error.message)
+        res.json(response.error({ message: 'Invalid data of rentals' }))
+      }
     }
   } catch (err: any) {
     res.json(

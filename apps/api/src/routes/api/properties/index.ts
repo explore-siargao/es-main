@@ -64,7 +64,7 @@ import {
 } from './services/calendar'
 import { getFilteredProperties } from './services/filtered'
 import paginate from '@/common/middleware/paginations/paginate'
-import { addUnitReview } from './services/review'
+import { addPropertyReview } from './services/review'
 import { unitHighestPrice } from './services/highest-price'
 
 const router = express.Router()
@@ -415,7 +415,7 @@ router.post(
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
-  addUnitReview
+  addPropertyReview
 )
 
 export default router

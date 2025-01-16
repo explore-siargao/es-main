@@ -101,6 +101,12 @@ const properties = new Schema({
       ref: "Reservations",
     },
   ],
+  reviews: {
+    type: [Schema.Types.ObjectId],
+    ref: "Reviews",
+    required: false,
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
