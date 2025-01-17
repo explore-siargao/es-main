@@ -103,7 +103,8 @@ function ActivityItem({
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <Typography variant="p" className="text-text-400">
-            {item.startDate && format(item.startDate, "MMMM d, yyyy")}
+            {item.startDate && format(item.startDate, "MMMM d, yyyy hh:mm a")}{" "}
+            {item?.endDate && `- ${format(item?.endDate, "hh:mm a")}`}
           </Typography>
         </div>
 
