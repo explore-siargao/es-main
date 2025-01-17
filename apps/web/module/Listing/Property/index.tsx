@@ -43,6 +43,49 @@ export const Property = ({
   const formattedDate = offerBy?.createdAt
     ? format(parseISO(offerBy.createdAt as string), "MMMM d, yyyy")
     : ""
+
+  const categories = [
+    {
+      title: "Cleanliness",
+      rating: property?.averageReviews?.cleanliness,
+      isHorizontal: false,
+    },
+    {
+      title: "Accuracy",
+      rating: property?.averageReviews?.accuracy,
+      isHorizontal: false,
+    },
+    {
+      title: "Check-in",
+      rating: property?.averageReviews?.checkIn,
+      isHorizontal: false,
+    },
+    {
+      title: "Communication",
+      rating: property?.averageReviews?.communication,
+      isHorizontal: false,
+    },
+    {
+      title: "Location",
+      rating: property?.averageReviews?.location,
+      isHorizontal: false,
+    },
+    {
+      title: "Value",
+      rating: property?.averageReviews?.value,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: property?.averageReviews?.totalReview,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: property?.averageReviews?.averageTotalRates,
+      isHorizontal: false,
+    },
+  ]
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <Hero images={property?.photos} title={property?.title} />
@@ -54,7 +97,7 @@ export const Property = ({
               <HostedBy
                 name={property?.offerBy?.guest?.firstName}
                 language={property?.offerBy?.guest?.language}
-                profilePicture={property?.offerBy?.profilePicture}
+                profilePicture={""}
                 joinDate={
                   property?.createdAt
                     ? format(property.createdAt, "MMMM d, yyyy")
@@ -117,23 +160,28 @@ export const Property = ({
         <div className="py-8">
           <WhereYoullBeDescription location={property?.location} />
         </div>
+
         <div className="py-8">
           <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
+            ratings={property?.averageReviews?.averageTotalRates as number}
+            reviews={property?.averageReviews?.totalReview as number}
+            categories={categories}
+            totalRating={property?.reviews as T_Reviews}
           />
         </div>
         <div className="py-8">
-          <UserReviews reviews={property.reviews as T_Reviews} />
+          <UserReviews
+            reviews={property.reviews as T_Reviews}
+            categories={categories}
+          />
         </div>
         <div className="py-8">
           <HostInformation
             hostName={`${offerBy?.offerBy?.guest?.firstName || ""} ${offerBy?.offerBy?.guest?.middleName || ""} ${offerBy?.offerBy?.guest?.lastName || ""}`}
-            hostProfilePic={hostDummy.hostProfilePic}
+            hostProfilePic={hostDummy?.hostProfilePic}
             joinedIn={formattedDate}
             countReviews={0}
-            rules={hostDummy.rules}
+            rules={hostDummy?.rules}
             responseRate={0}
             responseTime={""}
           />

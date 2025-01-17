@@ -1,6 +1,6 @@
 export type T_Categories = {
   title: string
-  rating: string
+  rating: string | number | undefined
   isHorizontal: boolean
 }
 
