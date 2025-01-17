@@ -4,11 +4,10 @@ import { Typography } from "@/common/components/ui/Typography"
 import formatCurrency from "@/common/helpers/format-currency"
 import { T_Cart_Item } from "@repo/contract-2/cart"
 import { format } from "date-fns/format"
-import { Clock, Pencil, Trash } from "lucide-react"
+import { Pencil, Trash } from "lucide-react"
 import React, { useState } from "react"
-import DeleteCartItemModal from "../modals/delete-cart-item-modal"
 import UpdateActivityItemModal from "../modals/update-activity-item-modal"
-import { set } from "react-hook-form"
+import { useModalStore } from "@/common/store/use-modal-store"
 
 type T_Props = {
   item: T_Cart_Item
@@ -18,6 +17,8 @@ type T_Props = {
   setItemId: (value: string) => void
   setIsDeleteCartItemOpen: (value: boolean) => void
 }
+
+export const modalKey = `update-cart-activity-item`
 
 function ActivityItem({
   item,
@@ -29,7 +30,7 @@ function ActivityItem({
 }: T_Props) {
   const activityItem = item.activityIds?.activityId
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
-
+  const { setModal } = useModalStore((state) => state)
   return (
     <div key={activityItem?._id} className="border rounded-xl p-4 mb-6">
       <div className="flex justify-between items-start">
@@ -86,7 +87,7 @@ function ActivityItem({
           <Button
             variant="link"
             className="hover:underline text-info-500 hover:cursor-pointer flex items-center"
-            onClick={() => setIsUpdateModalOpen(true)}
+            onClick={() => setModal(modalKey)}
           >
             <Pencil height={18} />
             Modify
@@ -120,8 +121,6 @@ function ActivityItem({
         cartItem={item}
         itemTitle={activityItem?.title || "Unknown Activity"}
         itemGuestsMaxCapacity={activityItem?.slotCapacity?.maximum || 0}
-        isOpen={isUpdateModalOpen}
-        onClose={() => setIsUpdateModalOpen(false)}
       />
     </div>
   )

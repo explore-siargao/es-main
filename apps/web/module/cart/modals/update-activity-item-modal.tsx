@@ -11,11 +11,11 @@ import useUpdateCartItem from "../hooks/use-update-cart-item"
 import { useModalStore } from "@/common/store/use-modal-store"
 import { format } from "date-fns"
 import Asterisk from "@/common/components/ui/Asterisk"
-import useGuestsStore from "../stores/use-guests-store"
-import GuestAddModal from "./guest-add-modal"
+import ActivityGuestAddModal from "./activity-guest-add-modal"
 import useDateTimeStore from "@/module/Listing/activity/stores/use-date-time-store"
 import { T_Activity_Slot } from "@repo/contract-2/activity"
 import useCheckInOutDateStore from "../stores/use-check-in-out-date-store"
+import useActivityGuestsStore from "../stores/use-activity-guests-store"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -23,8 +23,6 @@ type T_Edit_Activity_Modal = {
   cartItem: T_Cart_Item
   itemTitle: string
   itemGuestsMaxCapacity: number
-  isOpen: boolean
-  onClose: () => void
 }
 
 export const modalKey = `update-cart-activity-item`
@@ -33,14 +31,12 @@ const UpdateActivityItemModal = ({
   cartItem,
   itemTitle,
   itemGuestsMaxCapacity,
-  isOpen,
-  onClose,
 }: T_Edit_Activity_Modal) => {
   const queryClient = useQueryClient()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
-  const updateAdults = useGuestsStore((state) => state.updateAdults)
-  const { adults, children, infants } = useGuestsStore((state) => state.guest)
-  const { modal } = useModalStore((state) => state)
+  const updateAdults = useActivityGuestsStore((state) => state.updateAdults)
+  const { adults, children, infants } = useActivityGuestsStore((state) => state.guest)
+  const { modal, setModal } = useModalStore((state) => state)
   const { mutate, isPending } = useUpdateCartItem()
   const date = useDateTimeStore((state) => state.date)
   const timeSlotId = useDateTimeStore((state) => state.timeSlotId)
@@ -67,7 +63,6 @@ const UpdateActivityItemModal = ({
     null
 
   const dateString = format(date, "yyyy-MM-dd")
-  const guestCounts = adults + children + infants
   const handleSubmit = () => {
     if (
       !dateRange.from ||
@@ -83,7 +78,7 @@ const UpdateActivityItemModal = ({
             queryClient.invalidateQueries({
               queryKey: [queryKeys.getItems],
             })
-            onClose()
+           setModal(null)
           } else {
             toast.error(String(data.message))
           }
@@ -95,13 +90,13 @@ const UpdateActivityItemModal = ({
 
       mutate(
         {
-          itemId: String(cartItem._id),
+          itemId: cartItem._id as string,
           item: {
+            ...cartItem,
             startDate: dateString,
             endDate: dateString,
-            guestCount: guestCounts,
+            guestCount: adults + children + infants || 0,
             schedule: selectedTimeSlot,
-            contacts: cartItem.contacts,
           },
         },
         callBackReq
@@ -128,13 +123,15 @@ const UpdateActivityItemModal = ({
     updateAdults(cartItem.guestCount || 0)
   }, [modal])
 
+  const guestCounts = adults + children + infants
+
   return (
     <>
       <ModalContainer
-        isOpen={isOpen}
+        isOpen={modalKey === modal}
         size="sm"
         title={itemTitle}
-        onClose={onClose}
+        onClose={() => setModal(null)}
       >
         <div className="space-y-4 p-5">
           <div className="grid grid-cols-2 gap-3">
@@ -156,7 +153,6 @@ const UpdateActivityItemModal = ({
               }
               value={timeSlotId}
               disabled={!filteredTimeSlots || filteredTimeSlots?.length === 0}
-              // disabled
               label={`Time slot`}
               required
             >
@@ -198,7 +194,7 @@ const UpdateActivityItemModal = ({
           </div>
         </div>
       </ModalContainer>
-      <GuestAddModal
+      <ActivityGuestAddModal
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
         maximumCapacity={itemGuestsMaxCapacity}

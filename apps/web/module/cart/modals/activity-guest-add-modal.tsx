@@ -3,7 +3,7 @@ import { Typography } from "@/common/components/ui/Typography"
 import { cn } from "@/common/helpers/cn"
 import { MinusCircle, PlusCircle } from "lucide-react"
 import toast from "react-hot-toast"
-import useGuestsStore from "../stores/use-guests-store"
+import useActivityGuestsStore from "../stores/use-activity-guests-store"
 
 interface GuestAddModalProps {
   isOpen: boolean
@@ -16,10 +16,10 @@ const GuestAddModal = ({
   onClose,
   maximumCapacity,
 }: GuestAddModalProps) => {
-  const guest = useGuestsStore((state) => state.guest)
-  const incrementGuest = useGuestsStore((state) => state.incrementGuest)
-  const decrementGuest = useGuestsStore((state) => state.decrementGuest)
-  const { adults, children, infants } = useGuestsStore((state) => state.guest)
+  const guest = useActivityGuestsStore((state) => state.guest)
+  const incrementGuest = useActivityGuestsStore((state) => state.incrementGuest)
+  const decrementGuest = useActivityGuestsStore((state) => state.decrementGuest)
+  const { adults, children, infants } = useActivityGuestsStore((state) => state.guest)
   const updateGuests = ({
     type,
     category,
