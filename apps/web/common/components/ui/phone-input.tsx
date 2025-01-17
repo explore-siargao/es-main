@@ -91,34 +91,33 @@ export function PhoneInput({
   disabled = false,
 }: PhoneInputProps) {
   return (
-    <div className="flex w-full">
-      <div className="grid grid-cols-[120px_1fr] w-full">
-        <Select
-          value={countryCode}
-          onChange={(e) => onCountryCodeChange(e.target.value)}
-          disabled={disabled}
-          label="Country code"
-          className=" rounded-r-none border-r-0"
-        >
-          {countryCodes.map((country) => (
-            <Option key={country.code} value={country.code}>
-              {country.code} ({country.country})
-            </Option>
-          ))}
-        </Select>
-        <Input
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => {
-            const numericValue = e.target.value.replace(/[^0-9]/g, "")
-            onPhoneNumberChange(numericValue)
-          }}
-          className="flex-1 rounded-l-none"
-          placeholder="Phone number"
-          disabled={disabled}
-          label="Phone number"
-        />
-      </div>
+    <div className="grid grid-cols-[120px,1fr]">
+      <Select
+        value={countryCode}
+        onChange={(e) => onCountryCodeChange(e.target.value)}
+        disabled={disabled}
+        label="Code"
+        className="rounded-r-none border-r-0"
+      >
+        {countryCodes.map((country) => (
+          <Option key={country.code} value={country.code}>
+            {country.code} ({country.country})
+          </Option>
+        ))}
+      </Select>
+      <Input
+        type="tel"
+        value={phoneNumber}
+        onChange={(e) => {
+          const numericValue = e.target.value.replace(/[^0-9]/g, "")
+          onPhoneNumberChange(numericValue)
+        }}
+        className="rounded-l-none"
+        placeholder="Phone number"
+        disabled={disabled}
+        label="Phone number"
+        required
+      />
     </div>
   )
 }

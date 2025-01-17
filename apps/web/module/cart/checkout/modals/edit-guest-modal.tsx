@@ -7,7 +7,7 @@ import { T_Update_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import toast from "react-hot-toast"
 import { CartService } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
-import { countryCodes, PhoneInput } from "../components/phoneInput"
+import { countryCodes, PhoneInput } from "@/common/components/ui/phone-input"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -40,7 +40,6 @@ const EditGuestModal = ({
     phoneNumber: contact?.phoneNumber || "",
     email: contact?.email || "",
   })
-  const [countryCode, setCountryCode] = useState("+63")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
@@ -131,7 +130,6 @@ const EditGuestModal = ({
               id="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="border-gray-300"
               label="First name *"
               disabled={isPending}
             />
@@ -141,7 +139,6 @@ const EditGuestModal = ({
               id="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="border-gray-300"
               label="Last name *"
               disabled={isPending}
             />
@@ -162,7 +159,6 @@ const EditGuestModal = ({
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="border-gray-300"
             label="Email * (for updates on your booking)"
             disabled={isPending}
           />

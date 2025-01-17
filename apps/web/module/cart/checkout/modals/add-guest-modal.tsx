@@ -7,7 +7,7 @@ import { T_Update_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import toast from "react-hot-toast"
 import { CartService } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
-import { PhoneInput } from "../components/phoneInput"
+import { PhoneInput } from "@/common/components/ui/phone-input"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -104,30 +104,28 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
       title={"Add contact"}
       onClose={closeModal}
     >
-      <div className="space-y-4 p-5">
+      <div className="space-y-4 p-5 w-full">
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
+          <div>
             <Input
               id="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="border-gray-300"
               label="First name *"
               disabled={isPending}
             />
           </div>
-          <div className="space-y-2">
+          <div>
             <Input
               id="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="border-gray-300"
               label="Last name *"
               disabled={isPending}
             />
           </div>
         </div>
-        <div className="space-y-2 ">
+        <div>
           <PhoneInput
             countryCode={countryCode}
             phoneNumber={formData.phoneNumber.replace(/^\+\d+/, "")}
@@ -136,13 +134,12 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
             disabled={isPending}
           />
         </div>
-        <div className="space-y-2">
+        <div>
           <Input
             id="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="border-gray-300"
             label="Email * (for updates on your booking)"
             disabled={isPending}
           />
