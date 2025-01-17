@@ -82,7 +82,7 @@ function PropertySearchBar() {
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <div
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer"
+        className="ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer w-[23rem] 4xl:w-[28rem]"
         onClick={openGuestModal}
       >
         <Typography variant="h6" fontWeight="semibold">
