@@ -19,7 +19,9 @@ const GuestAddModal = ({
   const guest = useActivityGuestsStore((state) => state.guest)
   const incrementGuest = useActivityGuestsStore((state) => state.incrementGuest)
   const decrementGuest = useActivityGuestsStore((state) => state.decrementGuest)
-  const { adults, children, infants } = useActivityGuestsStore((state) => state.guest)
+  const { adults, children, infants } = useActivityGuestsStore(
+    (state) => state.guest
+  )
   const updateGuests = ({
     type,
     category,
