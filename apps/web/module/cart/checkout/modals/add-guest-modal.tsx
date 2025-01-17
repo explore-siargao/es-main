@@ -7,6 +7,7 @@ import { T_Update_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import toast from "react-hot-toast"
 import { CartService } from "@repo/contract-2/cart"
 import { useQueryClient } from "@tanstack/react-query"
+import { PhoneInput } from "@/common/components/ui/phone-input"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -29,13 +30,29 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
   const [formData, setFormData] = useState<T_Guest>({
     firstName: "",
     lastName: "",
-    phoneNumber: "",
+    phoneNumber: "+63 ",
     email: "",
   })
+  const [countryCode, setCountryCode] = useState("+63")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
     setFormData((prev) => ({ ...prev, [id]: value }))
+  }
+
+  const handlePhoneChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: prev.phoneNumber.split(" ")[0] + " " + value.trim(),
+    }))
+  }
+
+  const handleCountryCodeChange = (value: string) => {
+    setCountryCode(value)
+    setFormData((prev) => ({
+      ...prev,
+      phoneNumber: value + " " + (prev.phoneNumber.split(" ")[1] || ""),
+    }))
   }
 
   const handleSubmit = () => {
@@ -60,7 +77,14 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
             queryClient.invalidateQueries({
               queryKey: [queryKeys.getItems],
             })
+
             closeModal()
+            setFormData({
+              firstName: "",
+              lastName: "",
+              phoneNumber: "+63 ",
+              email: "",
+            })
           } else {
             toast.error(String(data.message))
           }
@@ -80,47 +104,42 @@ const AddGuestModal = ({ isOpen, closeModal, cartItem }: T_Add_Guest_Modal) => {
       title={"Add contact"}
       onClose={closeModal}
     >
-      <div className="space-y-4 p-5">
+      <div className="space-y-4 p-5 w-full">
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
+          <div>
             <Input
               id="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="border-gray-300"
               label="First name *"
               disabled={isPending}
             />
           </div>
-          <div className="space-y-2">
+          <div>
             <Input
               id="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="border-gray-300"
               label="Last name *"
               disabled={isPending}
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <Input
-            id="phoneNumber"
-            type="tel"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            className="border-gray-300"
-            label="Phone number *"
+        <div>
+          <PhoneInput
+            countryCode={countryCode}
+            phoneNumber={formData.phoneNumber.replace(/^\+\d+/, "")}
+            onCountryCodeChange={handleCountryCodeChange}
+            onPhoneNumberChange={handlePhoneChange}
             disabled={isPending}
           />
         </div>
-        <div className="space-y-2">
+        <div>
           <Input
             id="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="border-gray-300"
             label="Email * (for updates on your booking)"
             disabled={isPending}
           />
