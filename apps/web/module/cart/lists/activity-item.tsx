@@ -116,15 +116,13 @@ function ActivityItem({
           {formatCurrency(item.price + item.guestComission)}
         </Typography>
       </div>
-      {isUpdateModalOpen && (
-        <UpdateActivityItemModal
-          cartItem={item}
-          itemTitle={activityItem?.title || "Unknown Activity"}
-          itemGuestsMaxCapacity={activityItem?.slotCapacity?.maximum || 0}
-          isOpen={isUpdateModalOpen}
-          onClose={() => setIsUpdateModalOpen(false)}
-        />
-      )}
+      <UpdateActivityItemModal
+        cartItem={item}
+        itemTitle={activityItem?.title || "Unknown Activity"}
+        itemGuestsMaxCapacity={activityItem?.slotCapacity?.maximum || 0}
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+      />
     </div>
   )
 }

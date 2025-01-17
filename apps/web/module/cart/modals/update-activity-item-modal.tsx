@@ -40,7 +40,7 @@ const UpdateActivityItemModal = ({
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const updateAdults = useGuestsStore((state) => state.updateAdults)
   const { adults, children, infants } = useGuestsStore((state) => state.guest)
-  const { modal, setModal } = useModalStore((state) => state)
+  const { modal } = useModalStore((state) => state)
   const { mutate, isPending } = useUpdateCartItem()
   const date = useDateTimeStore((state) => state.date)
   const timeSlotId = useDateTimeStore((state) => state.timeSlotId)
@@ -67,7 +67,7 @@ const UpdateActivityItemModal = ({
     null
 
   const dateString = format(date, "yyyy-MM-dd")
-  const guestCounts = Number(adults + Number(children) + Number(infants))
+  const guestCounts = adults + children + infants
   const handleSubmit = () => {
     if (
       !dateRange.from ||
@@ -184,9 +184,7 @@ const UpdateActivityItemModal = ({
               Guests <Asterisk />
             </label>
             <span className="block w-full border-0 p-0 text-text-900 placeholder:text-text-400 focus:ring-0 sm:text-sm sm:leading-6 bg-transparent disabled:opacity-50">
-              {cartItem && cartItem.guestCount !== undefined
-                ? `${cartItem.guestCount} guest${cartItem.guestCount > 1 ? "s" : ""}`
-                : "0 guests"}
+              {`${guestCounts} guest${guestCounts > 1 ? "s" : ""}`}
             </span>
           </div>
           <div className="flex justify-end">
