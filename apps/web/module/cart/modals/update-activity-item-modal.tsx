@@ -35,7 +35,9 @@ const UpdateActivityItemModal = ({
   const queryClient = useQueryClient()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const updateAdults = useActivityGuestsStore((state) => state.updateAdults)
-  const { adults, children, infants } = useActivityGuestsStore((state) => state.guest)
+  const { adults, children, infants } = useActivityGuestsStore(
+    (state) => state.guest
+  )
   const { modal, setModal } = useModalStore((state) => state)
   const { mutate, isPending } = useUpdateCartItem()
   const date = useDateTimeStore((state) => state.date)
@@ -78,7 +80,7 @@ const UpdateActivityItemModal = ({
             queryClient.invalidateQueries({
               queryKey: [queryKeys.getItems],
             })
-           setModal(null)
+            setModal(null)
           } else {
             toast.error(String(data.message))
           }

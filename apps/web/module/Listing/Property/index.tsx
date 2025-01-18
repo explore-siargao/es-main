@@ -40,7 +40,7 @@ export const Property = ({
   }
   const offerBy = property
   const formattedDate = offerBy?.createdAt
-    ? format(parseISO(offerBy.createdAt), "MMMM d, yyyy")
+    ? format(parseISO(String(offerBy.createdAt)), "MMMM d, yyyy")
     : ""
 
   return (
@@ -54,8 +54,8 @@ export const Property = ({
               <HostedBy
                 name={property?.offerBy?.guest?.firstName}
                 language={property?.offerBy?.guest?.language}
-                profilePicture={property?.offerBy?.profilePicture}
-                joinDate={property?.offerBy?.createdAt || ""}
+                profilePicture={property?.offerBy?.profilePicture ?? ""}
+                joinDate={String(property?.offerBy?.createdAt) || ""}
               />
             </div>
             <div className="py-6">
@@ -72,7 +72,8 @@ export const Property = ({
               <PlaceOffers offers={property?.facilities} />
             </div>
             <div className="py-6">
-              {property?.bookableUnits?.length > 0 ? (
+              {property?.bookableUnits &&
+              property?.bookableUnits?.length > 0 ? (
                 <AvailableBooking property={property} selectedUnitId={unitId} />
               ) : (
                 <Typography variant="h5" className="text-text-400 italic">

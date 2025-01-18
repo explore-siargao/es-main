@@ -5,10 +5,9 @@ import { ResponseService } from '@/common/service/response'
 import {
   T_Activity_Filtered,
   Z_Activities_Search,
-  Z_Activity_Filtered,
   Z_Activity_Filtered_Results,
 } from '@repo/contract-2/search-filters'
-import { dbActivities, dbLocations, dbReservations } from '@repo/database'
+import { dbActivities, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -799,6 +798,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -1461,6 +1461,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -2119,6 +2120,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -2786,6 +2788,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,

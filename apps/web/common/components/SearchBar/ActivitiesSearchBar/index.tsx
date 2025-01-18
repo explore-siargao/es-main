@@ -42,7 +42,7 @@ function ActivitiesSearchBar() {
   return (
     <div className="flex gap-2 w-full justify-between items-center rounded-full pr-3 border bg-white border-gray-300 mb-4">
       <Select
-        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
+        className="w-64 border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
         label={"Location"}
         {...register("location")}
         id="testable"
@@ -57,14 +57,14 @@ function ActivitiesSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-[12rem] 4xl:w-[18rem] ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-[12rem] 4xl:w-[18rem] border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Date"}
         {...register("activityDate")}
         min={dateToday}
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8 mx-5" />
       <div
-        className="w-[23rem] 4xl:w-[28rem] ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer"
+        className="w-[23rem] 4xl:w-[28rem] border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer"
         onClick={openGuestModal}
       >
         <Typography variant="h6" fontWeight="semibold">

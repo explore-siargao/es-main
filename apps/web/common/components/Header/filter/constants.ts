@@ -58,8 +58,8 @@ export const activityTypes: T_Filter_Type[] = [
 
 export const experienceTypes: T_Filter_Type[] = [
   { value: "any", label: "Any type" },
-  { value: "joiner", label: "Joiner" },
-  { value: "private", label: "Private" },
+  { value: "Joiner", label: "Joiner" },
+  { value: "Private", label: "Private" },
 ]
 
 export const durationTypes: T_Filter_Type[] = [
