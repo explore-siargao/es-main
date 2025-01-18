@@ -28,7 +28,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
       <li className="relative rounded-xl overflow-hidden h-full list-none">
         <Link href={`/listings/activities/${listingId}`} target="_blank">
           <div className="h-auto w-full relative">
-            {reviewsCount < 1 ? <NewlyAddedTag /> : null}
+            {reviewsCount < 1 ? (<div className="flex gap-2"><NewlyAddedTag /><NewlyAddedTag /></div> ) : null}
             <button
               onClick={(e) => console.log("clicked heart")}
               className="absolute top-3 right-3 z-40"
