@@ -3,7 +3,7 @@ import { ResponseService } from '@/common/service/response'
 import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { dbActivities, dbLocations } from '@repo/database'
 import { convertPrice } from '@/common/helpers/convert-price'
-
+import { format } from 'date-fns'
 const response = new ResponseService()
 
 export const addActivity = async (req: Request, res: Response) => {
@@ -148,8 +148,33 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
       .populate('photos')
       .populate({
         path: 'host',
+        select: 'guest email createdAt',
         populate: {
           path: 'guest',
+          populate: {
+            path: 'address',
+            model: 'Addresses',
+          },
+        },
+      })
+      .populate({
+        path: 'reviews',
+        select:
+          'reviewerId cleanlinessRates accuracyRates checkInRates communicationRates valueRates comment totalRates createdAt',
+        populate: {
+          path: 'reviewer',
+          model: 'Users',
+          select: 'email guest',
+          populate: [
+            {
+              path: 'guest',
+              select: 'firstName middleName lastName address',
+              populate: {
+                path: 'address',
+                model: 'Addresses',
+              },
+            },
+          ],
         },
       })
       .exec()
@@ -162,7 +187,81 @@ export const getActivityByIdPublic = async (req: Request, res: Response) => {
         })
       )
     } else {
+      let averageTotalRates: number
+      let totalReviewCount: number
+      let averageCleanlinessRates: number
+      let averageAccuracyRates: number
+      let averageCheckInRates: number
+      let averageCommunicationRates: number
+      let averageValueRates: number
+      let averageLocationRates: number
       const newActivity: any = activity.toObject()
+      if (newActivity.reviews && newActivity.reviews.length > 0) {
+        totalReviewCount = newActivity.reviews.length
+        averageTotalRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.totalRates,
+            0
+          ) / totalReviewCount
+
+        averageCleanlinessRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.cleanlinessRates,
+            0
+          ) / totalReviewCount
+
+        averageAccuracyRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.accuracyRates,
+            0
+          ) / totalReviewCount
+
+        averageCheckInRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.checkInRates,
+            0
+          ) / totalReviewCount
+
+        averageCommunicationRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.communicationRates,
+            0
+          ) / totalReviewCount
+
+        averageValueRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.valueRates,
+            0
+          ) / totalReviewCount
+
+        averageLocationRates =
+          newActivity.reviews.reduce(
+            (sum: any, review: any) => sum + review.valueRates,
+            0
+          ) / totalReviewCount
+
+        //@ts-ignore
+        newActivity.averageReviews = {
+          totalReview: totalReviewCount,
+          averageTotalRates: parseFloat(averageTotalRates.toFixed(2)),
+          cleanliness: averageCleanlinessRates,
+          accuracy: averageAccuracyRates,
+          checkIn: averageCheckInRates,
+          communication: averageCommunicationRates,
+          value: averageValueRates,
+          location: averageLocationRates,
+        }
+      }
+      //@ts-ignore
+      newActivity.reviews = newActivity.reviews?.map((item) => {
+        //@ts-ignore
+        const formatDate = format(new Date(item.createdAt), 'MMMM dd, yyyy')
+        console.log(formatDate)
+        return {
+          ...item,
+          createdAt: formatDate,
+        }
+      })
       newActivity.pricePerPerson =
         convertPrice(
           newActivity.pricePerPerson,
