@@ -51,7 +51,7 @@ function PropertySearchBar() {
   return (
     <div className="flex w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
       <Select
-        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
+        className="w-64 border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
         label={"Location"}
         {...register("location")}
         id="testable"
@@ -66,7 +66,7 @@ function PropertySearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-full border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Check in"}
         {...register("checkIn")}
         min={dateToday}
@@ -74,7 +74,7 @@ function PropertySearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-full border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Check out"}
         {...register("checkOut")}
         disabled={!watch("checkIn")}
@@ -82,7 +82,7 @@ function PropertySearchBar() {
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <div
-        className="ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer w-[23rem] 4xl:w-[28rem]"
+        className="border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer w-[23rem] 4xl:w-[28rem]"
         onClick={openGuestModal}
       >
         <Typography variant="h6" fontWeight="semibold">
