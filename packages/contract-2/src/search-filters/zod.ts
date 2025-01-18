@@ -4,8 +4,6 @@ import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 import { Z_Rental_Price } from "../rentals"
 import {
-  E_Activity_Types,
-  E_Experience_Types,
   E_Location,
   E_Property_Types,
   E_Vehicle_Type,
@@ -16,6 +14,7 @@ import {
   E_Rental_Vehicle_Transmission,
 } from "../rentals/enum"
 import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
+import { E_Activity_Types, E_Experience_Types } from "../activity/enum"
 
 const objectIdSchema = z
   .any()
@@ -142,8 +141,8 @@ export const Z_Rental_Filtered = z.object({
   location: Z_Location.nullable(),
   pricing: Z_Rental_Price.nullable(),
   photos: z.array(Z_Photo),
-  average: z.number().optional(),
   reviewsCount: z.number().optional(),
+  average: z.number().optional(),
   transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
   fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
 })
@@ -156,6 +155,7 @@ export const Z_Activity_Filtered = z.object({
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
   meetingPoint: Z_Location.nullable(),
+  experienceType: z.nativeEnum(E_Experience_Types),
   photos: z.array(Z_Photo),
   pricePerPerson: z.number().nullable().optional(),
   pricePerSlot: z.number().nullable().optional(),
