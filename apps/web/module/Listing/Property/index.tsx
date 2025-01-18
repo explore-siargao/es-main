@@ -72,7 +72,8 @@ export const Property = ({
               <PlaceOffers offers={property?.facilities} />
             </div>
             <div className="py-6">
-              {property?.bookableUnits && property?.bookableUnits?.length > 0 ? (
+              {property?.bookableUnits &&
+              property?.bookableUnits?.length > 0 ? (
                 <AvailableBooking property={property} selectedUnitId={unitId} />
               ) : (
                 <Typography variant="h5" className="text-text-400 italic">

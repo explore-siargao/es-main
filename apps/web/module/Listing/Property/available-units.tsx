@@ -1,8 +1,6 @@
 "use client"
 import { Button } from "@/common/components/ui/Button"
-import {
-  PropertyType,
-} from "./types/AvailableBooking"
+import { PropertyType } from "./types/AvailableBooking"
 import { useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"

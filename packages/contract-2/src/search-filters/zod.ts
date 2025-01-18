@@ -3,11 +3,7 @@ import { z } from "zod"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 import { Z_Rental_Price } from "../rentals"
-import {
-  E_Location,
-  E_Property_Types,
-  E_Vehicle_Type,
-} from "./enum"
+import { E_Location, E_Property_Types, E_Vehicle_Type } from "./enum"
 import {
   E_Rental_Category,
   E_Rental_Vehicle_Fuel,

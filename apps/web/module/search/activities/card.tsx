@@ -28,10 +28,14 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const generateCardTag = () => {
     // This is a hierarchical tag, it needs to have 1 at a time
     // If you will add another here, make sure you decided the hierarchy
-    if(reviewsCount < 1) {
+    if (reviewsCount < 1) {
       return <NewlyAddedTag />
-    } else  {
-      return <ExperienceTypeTag isPrivate={props.experienceType === E_Experience_Types.Private} />
+    } else {
+      return (
+        <ExperienceTypeTag
+          isPrivate={props.experienceType === E_Experience_Types.Private}
+        />
+      )
     }
   }
   return (
