@@ -28,7 +28,6 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const generateCardTag = () => {
     // This is a hierarchical tag, it needs to have 1 at a time
     // If you will add another here, make sure you decided the hierarchy
-    console.log('yyy', reviewsCount)
     if (reviewsCount < 2) {
       return <NewlyAddedTag />
     } else {
