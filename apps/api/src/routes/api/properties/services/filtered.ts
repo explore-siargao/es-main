@@ -1,5 +1,4 @@
 import {
-  REQUIRED_VALUE_EMPTY,
   UNKNOWN_ERROR_OCCURRED,
 } from '@/common/constants'
 import { convertPrice } from '@/common/helpers/convert-price'
@@ -9,7 +8,6 @@ import { T_BookableUnitType, T_Photo } from '@repo/contract'
 import { T_Property } from '@repo/contract-2/property'
 import {
   Z_Properties_Search,
-  Z_Property_Filtered,
   Z_Property_Filtered_Result,
 } from '@repo/contract-2/search-filters'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
@@ -46,6 +44,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   } else {
     propertyTypesInput = 'any'
   }
+  const guestNumber = numberOfGuest === 'any' ? 0 : Number(numberOfGuest)
   const validPropertySearch = Z_Properties_Search.safeParse({
     page,
     location,
@@ -60,7 +59,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     starRating,
     checkIn,
     checkOut,
-    numberOfGuest,
+    numberOfGuest: guestNumber,
   })
   const query: any = {
     bookableUnits: { $exists: true, $not: { $size: 0 } },
@@ -110,7 +109,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         checkIn === 'any' ? 'any' : parseToUTCDate(checkIn as string)
       const endDate =
         checkOut === 'any' ? 'any' : parseToUTCDate(checkOut as string)
-      const guestNumber = numberOfGuest === 'any' ? 0 : Number(numberOfGuest)
       const getUnitReservations = await dbReservations.aggregate([
         {
           $match: {
