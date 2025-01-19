@@ -112,7 +112,7 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
         From {formatCurrency(activityPrice || 0, { noDecimals: true })}
       </Typography>
       <Typography variant="h5" className="italic text-text-400 mt-2">
-        This is a {E_Activity_Experience_Type.Joiner} activity.
+        This is a {activity.experienceType} activity.
       </Typography>
       <div className="font-semibold grid grid-cols-1 gap-3 w-full mt-2">
         <div className="grid grid-cols-2 gap-3">
