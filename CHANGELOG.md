@@ -2,39 +2,31 @@
 
 ## [0.39.0](https://github.com/explore-siargao/es-main/compare/v0.38.0...v0.39.0) (2025-01-19)
 
-
 ### 🚀 Features
 
-* **api, web:** add experience type filtering and add it to activity card tag ([2fac995](https://github.com/explore-siargao/es-main/commit/2fac9956b0769412420b6bc31fca7dfaf182115b))
-* **api:** Added endpoint for getting guest list reservations separated by cancelled, done and active reservations ([4901788](https://github.com/explore-siargao/es-main/commit/490178809e0f65924d8511925b89c0235223c597))
-* **api:** Added endpoint for getting guest reservations list for Done, Active and Cancelled ([bbd353d](https://github.com/explore-siargao/es-main/commit/bbd353d5a50dd9876d05e18e6056de957e979f93))
-* **api:** Added endpoint for grouped by xenditReferenceId reservations ([9f36418](https://github.com/explore-siargao/es-main/commit/9f364186deb6f75e8d86c1589d8360c1183aad83))
-* **api:** Added reviews return to public properties rentals and activities and modified add review endpoint ([538f751](https://github.com/explore-siargao/es-main/commit/538f751221acfb550642145e6ced5b908d1da351))
-* **api:** Added seeder for reviews ([ae59afc](https://github.com/explore-siargao/es-main/commit/ae59afc655312ed082c0d5d43c45d2911e27566d))
-* checkout using manual card ([580c24f](https://github.com/explore-siargao/es-main/commit/580c24fb47b0d6851082d27a74fb7e6454b8688f))
-* **web:** added country code dropdown ([d68a82f](https://github.com/explore-siargao/es-main/commit/d68a82fbeb42e772accc5e33161bd3d4ebe0d863))
-* **web:** added country code dropdown ([2292abe](https://github.com/explore-siargao/es-main/commit/2292abe6e8c5dbd9437688bb23ce7a7c4272bbed))
-* **web:** added guestModal ([c35d40d](https://github.com/explore-siargao/es-main/commit/c35d40dd05df13f62147d8640b3d473dfe2178b2))
-* **web:** added guestModal ([733c985](https://github.com/explore-siargao/es-main/commit/733c985daa0224b10c351c68d5e3baded4a57772))
-* **web:** added PropertyTypeChangeModal and update handlesave logic ([a529497](https://github.com/explore-siargao/es-main/commit/a529497d10b92d6ff8ee328b158e244a93b40961))
-* **web:** added startDate time and endDate time ([c2d39a7](https://github.com/explore-siargao/es-main/commit/c2d39a78a226fd84b2fec38b87f5f1037cee6ef6))
-* **web:** added update modal for activity categery ([d81a979](https://github.com/explore-siargao/es-main/commit/d81a979dba90a0b2bdc25c61c407b6ca54646337))
-* **web:** added update modal for activity categery ([60fffd2](https://github.com/explore-siargao/es-main/commit/60fffd21c55e47dae787c4ff0607847cbb761598))
-* **web:** added update modal for activity categery ([bd7187c](https://github.com/explore-siargao/es-main/commit/bd7187ca9626970dac2f061a040c9f81b4bdf5c8))
-
+- **api, web:** Add experience type filtering and add it to activity card tag ([2fac995](https://github.com/explore-siargao/es-main/commit/2fac9956b0769412420b6bc31fca7dfaf182115b))
+- **api:** Added endpoint for getting guest list reservations separated by cancelled, done, and active reservations ([4901788](https://github.com/explore-siargao/es-main/commit/490178809e0f65924d8511925b89c0235223c597)) ([bbd353d](https://github.com/explore-siargao/es-main/commit/bbd353d5a50dd9876d05e18e6056de957e979f93))
+- **api:** Added endpoint for grouped by `xenditReferenceId` reservations ([9f36418](https://github.com/explore-siargao/es-main/commit/9f364186deb6f75e8d86c1589d8360c1183aad83))
+- **api:** Added reviews return to public properties rentals and activities and modified add review endpoint ([538f751](https://github.com/explore-siargao/es-main/commit/538f751221acfb550642145e6ced5b908d1da351))
+- **api:** Added seeder for reviews ([ae59afc](https://github.com/explore-siargao/es-main/commit/ae59afc655312ed082c0d5d43c45d2911e27566d))
+- Checkout using manual card ([580c24f](https://github.com/explore-siargao/es-main/commit/580c24fb47b0d6851082d27a74fb7e6454b8688f))
+- **web:** Added country code dropdown ([d68a82f](https://github.com/explore-siargao/es-main/commit/d68a82fbeb42e772accc5e33161bd3d4ebe0d863)) ([2292abe](https://github.com/explore-siargao/es-main/commit/2292abe6e8c5dbd9437688bb23ce7a7c4272bbed))
+- **web:** Added guestModal ([c35d40d](https://github.com/explore-siargao/es-main/commit/c35d40dd05df13f62147d8640b3d473dfe2178b2)) ([733c985](https://github.com/explore-siargao/es-main/commit/733c985daa0224b10c351c68d5e3baded4a57772))
+- **web:** Added `PropertyTypeChangeModal` and update handleSave logic ([a529497](https://github.com/explore-siargao/es-main/commit/a529497d10b92d6ff8ee328b158e244a93b40961))
+- **web:** Added startDate time and endDate time ([c2d39a7](https://github.com/explore-siargao/es-main/commit/c2d39a78a226fd84b2fec38b87f5f1037cee6ef6))
+- **web:** Added update modal for activity category ([d81a979](https://github.com/explore-siargao/es-main/commit/d81a979dba90a0b2bdc25c61c407b6ca54646337)) ([60fffd2](https://github.com/explore-siargao/es-main/commit/60fffd21c55e47dae787c4ff0607847cbb761598)) ([bd7187c](https://github.com/explore-siargao/es-main/commit/bd7187ca9626970dac2f061a040c9f81b4bdf5c8))
 
 ### 🛠 Bug Fixes
 
-* **activity:** update experience type display in checkout box ([e42af4b](https://github.com/explore-siargao/es-main/commit/e42af4be7d3310ef721e163eed2a72faddc22da1))
-* **seeder:** update experienceType to use E_Experience_Types for joiner and private activities ([139c075](https://github.com/explore-siargao/es-main/commit/139c0753f866fd3af91bc2e88d1b7334c77d9651))
-* **web:** improve null handling and type safety in property components ([0ec193d](https://github.com/explore-siargao/es-main/commit/0ec193df991495cc71957c0a87ebfcb4d83900db))
-* **web:** update input classes to remove ring styles for better UI consistency ([5dd9c9b](https://github.com/explore-siargao/es-main/commit/5dd9c9b90db0ed21b757c2c196c8c9446d8169ef))
-* **web:** update review count condition for Newly Added tag display ([73f84b3](https://github.com/explore-siargao/es-main/commit/73f84b30138a80e624352ae390be18b773f673ee))
-
+- **activity:** Update experience type display in checkout box ([e42af4b](https://github.com/explore-siargao/es-main/commit/e42af4be7d3310ef721e163eed2a72faddc22da1))
+- **seeder:** Update experienceType to use `E_Experience_Types` for joiner and private activities ([139c075](https://github.com/explore-siargao/es-main/commit/139c0753f866fd3af91bc2e88d1b7334c77d9651))
+- **web:** Improve null handling and type safety in property components ([0ec193d](https://github.com/explore-siargao/es-main/commit/0ec193df991495cc71957c0a87ebfcb4d83900db))
+- **web:** Update input classes to remove ring styles for better UI consistency ([5dd9c9b](https://github.com/explore-siargao/es-main/commit/5dd9c9b90db0ed21b757c2c196c8c9446d8169ef))
+- **web:** Update review count condition for "Newly Added" tag display ([73f84b3](https://github.com/explore-siargao/es-main/commit/73f84b30138a80e624352ae390be18b773f673ee))
 
 ### 🧰 Maintenance
 
-* **api:** remove unit price service and update guest number handling in filters ([3574d9b](https://github.com/explore-siargao/es-main/commit/3574d9bf57fc086058a1c64c963d74a379f6db2d))
+- **api:** Remove unit price service and update guest number handling in filters ([3574d9b](https://github.com/explore-siargao/es-main/commit/3574d9bf57fc086058a1c64c963d74a379f6db2d))
 
 ## [0.38.0](https://github.com/explore-siargao/es-main/compare/v0.37.0...v0.38.0) (2025-01-07)
 
