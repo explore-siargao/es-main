@@ -749,7 +749,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               key: photo.key,
               alt: '',
             })),
-            facilities:property.facilities,
+            facilities: property.facilities,
             location: {
               city: property.location.city,
               latitude: property.location.latitude,
