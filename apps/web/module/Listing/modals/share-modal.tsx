@@ -18,7 +18,7 @@ interface SharePlaceModalProps {
   onClose: () => void
 }
 const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
-  const currentLink = window.location.href;
+  const currentLink = window.location.href
   return (
     <ModalContainer
       isOpen={isOpen}
@@ -58,7 +58,11 @@ const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
                 size={"lg"}
                 variant={"shaded"}
                 className="py-8  w-full space-x-2 pl-5 justify-start"
-                onClick={() => window.open(`https://www.facebook.com/dialog/send?app_id=${FACEBOOK_CLIENT_ID}&link=${encodeURIComponent(currentLink)}&redirect_uri=${encodeURIComponent(WEB_URL)}`, '_blank')
+                onClick={() =>
+                  window.open(
+                    `https://www.facebook.com/dialog/send?app_id=${FACEBOOK_CLIENT_ID}&link=${encodeURIComponent(currentLink)}&redirect_uri=${encodeURIComponent(WEB_URL)}`,
+                    "_blank"
+                  )
                 }
               >
                 <LucideMessageCircleReply size={"30px"} />
@@ -71,7 +75,10 @@ const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
                 variant={"shaded"}
                 className="py-8  w-full space-x-2 pl-5 justify-start"
                 onClick={() =>
-                  window.open(`https://twitter.com/intent/post?url=${encodeURIComponent(currentLink)}`, '_blank')
+                  window.open(
+                    `https://twitter.com/intent/post?url=${encodeURIComponent(currentLink)}`,
+                    "_blank"
+                  )
                 }
               >
                 <LucideTwitter size={"30px"} />
@@ -86,7 +93,7 @@ const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
                 variant={"shaded"}
                 className="py-8  w-full space-x-2 pl-5 justify-start"
                 onClick={() =>
-                  window.location.href = `mailto:?subject=${encodeURIComponent("ExploreSiargao Listing")}&body=${currentLink}`
+                  (window.location.href = `mailto:?subject=${encodeURIComponent("ExploreSiargao Listing")}&body=${currentLink}`)
                 }
               >
                 <LucideMail size={"30px"} />
@@ -98,7 +105,9 @@ const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
                 size={"lg"}
                 variant={"shaded"}
                 className="py-8  w-full space-x-2 pl-5 justify-start"
-                onClick={() => window.open(`https://wa.me/?text=${currentLink}`, '_blank')}
+                onClick={() =>
+                  window.open(`https://wa.me/?text=${currentLink}`, "_blank")
+                }
               >
                 <LucideMessageSquareCode size={"30px"} />
                 <Typography fontWeight={"semibold"}>WhatsApp</Typography>
@@ -110,7 +119,10 @@ const SharePlaceModal = ({ isOpen, onClose }: SharePlaceModalProps) => {
                 variant={"shaded"}
                 className="py-8  w-full space-x-2 pl-5 justify-start"
                 onClick={() =>
-                  window.open(`https://www.facebook.com/sharer.php?u=${currentLink}`, '_blank')
+                  window.open(
+                    `https://www.facebook.com/sharer.php?u=${currentLink}`,
+                    "_blank"
+                  )
                 }
               >
                 <LucideFacebook size={"30px"} />
