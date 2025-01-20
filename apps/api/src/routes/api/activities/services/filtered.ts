@@ -221,20 +221,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -884,20 +874,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -1543,20 +1523,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -2211,20 +2181,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
