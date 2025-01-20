@@ -1,25 +1,20 @@
+import React from "react"
 import ModalContainer from "@/common/components/ModalContainer"
 import { Typography } from "@/common/components/ui/Typography"
 import { cn } from "@/common/helpers/cn"
+import useGuestAdd from "@/module/cart/stores/use-guests-store"
 import { MinusCircle, PlusCircle } from "lucide-react"
 import toast from "react-hot-toast"
-import useGuestsStore from "../stores/use-guests-store"
 
 interface GuestAddModalProps {
   isOpen: boolean
   onClose: () => void
-  maximumCapacity?: number
 }
 
-const GuestAddModal = ({
-  isOpen,
-  onClose,
-  maximumCapacity,
-}: GuestAddModalProps) => {
-  const guest = useGuestsStore((state) => state.guest)
-  const incrementGuest = useGuestsStore((state) => state.incrementGuest)
-  const decrementGuest = useGuestsStore((state) => state.decrementGuest)
-  const { adults, children, infants } = useGuestsStore((state) => state.guest)
+const GuestAddModal: React.FC<GuestAddModalProps> = ({ isOpen, onClose }) => {
+  const { guest, incrementGuest, decrementGuest } = useGuestAdd()
+  const { adults, children, infants } = guest
+
   const updateGuests = ({
     type,
     category,
@@ -28,17 +23,15 @@ const GuestAddModal = ({
     category: "adults" | "children" | "infants"
   }) => {
     const total = adults + children + infants
-    if (total > (maximumCapacity || 0)) {
-      toast.error(`Exceeds capacity of ${maximumCapacity}`)
-    } else {
-      if (type === "increase") {
-        incrementGuest(category)
-      }
-      if (type === "decrease") {
-        decrementGuest(category)
-      }
+
+    if (type === "increase") {
+      incrementGuest(category)
+    }
+    if (type === "decrease") {
+      decrementGuest(category)
     }
   }
+
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose} size="auto">
       <div className="py-2">
@@ -52,20 +45,20 @@ const GuestAddModal = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={() => {
-                if (adults > 1)
+                if (adults > 0)
                   updateGuests({ type: "decrease", category: "adults" })
               }}
             >
               <MinusCircle
                 className={cn(
                   `h-8 w-8`,
-                  adults < 2 && "opacity-50 cursor-not-allowed"
+                  adults < 1 && "opacity-50 cursor-not-allowed"
                 )}
                 strokeWidth={0.5}
               />
             </button>
             <Typography variant="h5" fontWeight="semibold" className="mt-1">
-              {guest.adults}
+              {adults}
             </Typography>
             <button
               onClick={() => {
@@ -99,7 +92,7 @@ const GuestAddModal = ({
               />
             </button>
             <Typography variant="h5" fontWeight="semibold" className="mt-1">
-              {guest.children}
+              {children}
             </Typography>
             <button
               onClick={() => {
@@ -133,7 +126,7 @@ const GuestAddModal = ({
               />
             </button>
             <Typography variant="h5" fontWeight="semibold" className="mt-1">
-              {guest.infants}
+              {infants}
             </Typography>
             <button
               onClick={() => {
@@ -145,8 +138,8 @@ const GuestAddModal = ({
           </div>
         </div>
         <Typography variant="h6" className="px-4 py-2">
-          This place has a maximum of {maximumCapacity || 0} guests, not
-          including infants. Pets aren't allowed.
+          This place has no maximum of guests, not including infants. Pets
+          aren't allowed.
         </Typography>
       </div>
     </ModalContainer>

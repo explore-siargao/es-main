@@ -65,7 +65,7 @@ export const Activity = ({ activity }: { activity: T_Activity }) => {
                 name={activity?.host?.guest.firstName || "Unknown"}
                 language={activity?.host?.guest?.language}
                 profilePicture={"2.jpg"}
-                joinDate={activity?.host?.createdAt || ""}
+                joinDate={String(activity?.host?.createdAt) || ""}
               />
             </div>
 

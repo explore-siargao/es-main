@@ -21,7 +21,7 @@ function RentalsSearchBar() {
   return (
     <div className="flex gap-2 w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
       <Select
-        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
+        className="w-64 border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
         label={"Location"}
         {...register("location")}
         id="testable"
@@ -35,7 +35,7 @@ function RentalsSearchBar() {
       </Select>
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Select
-        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-64 border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Vehicle type"}
         {...register("vehicleType")}
       >
@@ -49,7 +49,7 @@ function RentalsSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-full border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Pick-up date"}
         {...register("pickUpDate")}
         min={dateToday}
@@ -57,7 +57,7 @@ function RentalsSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-full border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Drop-off date"}
         {...register("dropOffDate")}
         disabled={!watch("pickUpDate")}

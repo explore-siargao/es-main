@@ -45,7 +45,7 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
                 name={rental?.host?.guest.firstName || "Unknown"}
                 language={rental?.host?.guest?.language}
                 profilePicture={"2.jpg"}
-                joinDate={rental?.host?.createdAt || ""}
+                joinDate={String(rental?.host?.createdAt) || ""}
               />
             </div>
             <div className="py-6">
