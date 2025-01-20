@@ -994,30 +994,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                 },
                 {
                   $addFields: {
-                    average: {
-                      $cond: {
-                        if: { $gt: [{ $size: '$reviews' }, 0] },
-                        then: { $avg: '$reviews.totalRates' },
-                        else: 0,
-                      },
-                    },
-                    reviewsCount: { $size: '$reviews' },
-                  },
-                },
-                ...(Number(starRating) > 0
-                  ? [
-                      {
-                        $match: {
-                          average: {
-                            $gte: Number(starRating),
-                            $lt: Number(starRating) + 1,
-                          },
-                        },
-                      },
-                    ]
-                  : []),
-                {
-                  $addFields: {
                     qtyIds: {
                       $filter: {
                         input: '$qtyIds',

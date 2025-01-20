@@ -32,14 +32,14 @@ export const Z_Properties_Search = z.object({
     z.array(z.nativeEnum(E_Property_Types)).or(z.literal("any")),
     z.string().optional(),
   ]),
-  priceFrom: z.number().min(0).or(z.literal("any")).default(0),
-  priceTo: z.number().min(0).or(z.literal("any")).default(0),
-  bedroomCount: z.number().min(1).or(z.literal("any")).default(0),
-  bedCount: z.number().min(1).or(z.literal("any")).default(0),
-  bathroomCount: z.number().min(1).or(z.literal("any")).default(0),
+  priceFrom: z.union([z.number().min(1),z.string()]).or(z.literal("any")).default(0),
+  priceTo: z.union([z.number().min(1),z.string()]).or(z.literal("any")).default(0),
+  bedroomCount: z.union([z.number().min(1),z.string()]).or(z.literal("any")).default(0),
+  bedCount: z.union([z.number().min(1),z.string()]).or(z.literal("any")).default(0),
+  bathroomCount: z.union([z.number().min(1),z.string()]).or(z.literal("any")).default(0),
   facilities: z.string().default("any"),
   amenities: z.string().default("any"),
-  starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
+  starRating: z.union([z.number().int().min(1).max(5),z.string()]).or(z.literal("any")).default(1),
   checkIn: z
     .union([
       z.literal("any"),
@@ -56,7 +56,7 @@ export const Z_Properties_Search = z.object({
       }),
     ])
     .default("any"),
-  numberOfGuest: z.number().min(1).or(z.literal("any")).default("any"),
+  numberOfGuest: z.union([z.number().min(1),z.string()]).or(z.literal("any")).default("any"),
 })
 
 export const Z_Activities_Search = z.object({
