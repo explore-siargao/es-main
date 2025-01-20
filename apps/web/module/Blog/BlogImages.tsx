@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import ImageGallery from "./image-gallery"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "@/module/Listing/property/share-save"
+import ShareSave from "@/module/Listing/share-save"
 import ImageGalleryModal from "@/module/Listing/property/modals/image-gallery-modal"
 
 type T_Props = {

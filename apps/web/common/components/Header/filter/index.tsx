@@ -29,7 +29,7 @@ function FilterHeader({
 }) {
   const links = [
     {
-      href: buildPropertySearchURL({ page: "1" }),
+      href: buildPropertySearchURL({ page: "1", numberOfGuest: "1" }),
       icon: House,
       category: "Places to stay",
     },

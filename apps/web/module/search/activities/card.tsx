@@ -13,8 +13,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const title = props.title
   const location = props.meetingPoint
   const listingId = props._id
-  const price = props.pricePerSlot || props.pricePerPerson || 0
-  const priceNoun = props.pricePerSlot ? `slot` : `person`
+  const price = props.pricePerPerson || 0
   const photos = props.photos?.map((photo) => ({
     key: photo.key,
     alt: photo.tags,
@@ -28,7 +27,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
   const generateCardTag = () => {
     // This is a hierarchical tag, it needs to have 1 at a time
     // If you will add another here, make sure you decided the hierarchy
-    if (reviewsCount < 1) {
+    if (reviewsCount < 2) {
       return <NewlyAddedTag />
     } else {
       return (
@@ -87,7 +86,7 @@ const ActivityCard = (props: T_Activity_Filtered) => {
               className="text-text-700 underline truncate"
             >
               From {formatCurrency(price, { noDecimals: true })}{" "}
-              <span className="font-normal">/ {priceNoun}</span>
+              <span className="font-normal">/ person</span>
             </Typography>
           </div>
         </Link>

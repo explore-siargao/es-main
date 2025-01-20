@@ -1,7 +1,4 @@
-import {
-  REQUIRED_VALUE_EMPTY,
-  UNKNOWN_ERROR_OCCURRED,
-} from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { convertPrice } from '@/common/helpers/convert-price'
 import { parseToUTCDate } from '@/common/helpers/dateToUTC'
 import { ResponseService } from '@/common/service/response'
@@ -9,7 +6,6 @@ import { T_BookableUnitType, T_Photo } from '@repo/contract'
 import { T_Property } from '@repo/contract-2/property'
 import {
   Z_Properties_Search,
-  Z_Property_Filtered,
   Z_Property_Filtered_Result,
 } from '@repo/contract-2/search-filters'
 import { dbProperties, dbReservations, dbUnitPrices } from '@repo/database'
@@ -46,6 +42,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   } else {
     propertyTypesInput = 'any'
   }
+  const guestNumber = numberOfGuest === 'any' ? 1 : Number(numberOfGuest)
   const validPropertySearch = Z_Properties_Search.safeParse({
     page,
     location,
@@ -60,7 +57,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
     starRating,
     checkIn,
     checkOut,
-    numberOfGuest,
+    numberOfGuest: guestNumber,
   })
   const query: any = {
     bookableUnits: { $exists: true, $not: { $size: 0 } },
@@ -110,7 +107,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
         checkIn === 'any' ? 'any' : parseToUTCDate(checkIn as string)
       const endDate =
         checkOut === 'any' ? 'any' : parseToUTCDate(checkOut as string)
-      const guestNumber = numberOfGuest === 'any' ? 0 : Number(numberOfGuest)
       const getUnitReservations = await dbReservations.aggregate([
         {
           $match: {
@@ -224,25 +220,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             $unwind: {
               path: '$location',
               preserveNullAndEmptyArrays: true,
-            },
-          },
-          {
-            $lookup: {
-              from: 'facilities',
-              localField: 'facilities',
-              foreignField: '_id',
-              as: 'facilities',
-            },
-          },
-          {
-            $addFields: {
-              facilities: {
-                $filter: {
-                  input: '$facilities',
-                  as: 'facility',
-                  cond: { $eq: ['$$facility.isSelected', true] }, // Only include facilities where isSelected is true
-                },
-              },
             },
           },
           {
@@ -397,14 +374,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
           {
             $lookup: {
-              from: 'amenities',
-              localField: 'bookableUnits.amenities',
-              foreignField: '_id',
-              as: 'amenities',
-            },
-          },
-          {
-            $lookup: {
               from: 'photos',
               localField: 'bookableUnits.photos',
               foreignField: '_id',
@@ -434,20 +403,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                             0,
                           ],
-                        },
-                      },
-                      {
-                        amenities: {
-                          $filter: {
-                            input: '$amenities', // This is the lookup result for amenities
-                            as: 'amenity',
-                            cond: {
-                              $and: [
-                                { $in: ['$$amenity._id', '$$unit.amenities'] },
-                                { $eq: ['$$amenity.isSelected', true] },
-                              ],
-                            },
-                          },
                         },
                       },
                       {
@@ -500,14 +455,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   else: '$bookableUnits',
                 },
               },
-            },
-          },
-          {
-            $match: {
-              $or: [
-                { $expr: { $eq: [amenities, 'any'] } }, // Skip empty check if the amenities variable is "any"
-                { bookableUnits: { $ne: [] } }, // Otherwise, only keep documents with non-empty bookableUnits
-              ],
             },
           },
           {
@@ -684,9 +631,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.companyLegalName': 1,
               'results.type': 1,
               'results.wholeplaceType': 1,
-              'results.facilities._id': 1,
-              'results.facilities.category': 1,
-              'results.facilities.facility': 1,
+              'results.facilities': 1,
               'results.policies._id': 1,
               'results.policies.category': 1,
               'results.policies.policy': 1,
@@ -698,9 +643,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.bookableUnits.numBathRooms': 1,
               'results.bookableUnits.totalSize': 1,
               'results.bookableUnits.unitPrice': 1,
-              'results.bookableUnits.amenities._id': 1,
-              'results.bookableUnits.amenities.category': 1,
-              'results.bookableUnits.amenities.amenity': 1,
+              'results.bookableUnits.amenities': 1,
               'results.bookableUnits.photos': 1,
               'results.bookableUnits.isPrivate': 1,
               'results.bookableUnits.maxGuests': 1,
@@ -806,6 +749,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               key: photo.key,
               alt: '',
             })),
+            facilities: property.facilities,
             location: {
               city: property.location.city,
               latitude: property.location.latitude,
@@ -923,25 +867,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             },
           },
           {
-            $lookup: {
-              from: 'facilities',
-              localField: 'facilities',
-              foreignField: '_id',
-              as: 'facilities',
-            },
-          },
-          {
-            $addFields: {
-              facilities: {
-                $filter: {
-                  input: '$facilities',
-                  as: 'facility',
-                  cond: { $eq: ['$$facility.isSelected', true] }, // Only include facilities where isSelected is true
-                },
-              },
-            },
-          },
-          {
             $match: {
               $or: [
                 { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -992,30 +917,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                     as: 'reviews',
                   },
                 },
-                {
-                  $addFields: {
-                    average: {
-                      $cond: {
-                        if: { $gt: [{ $size: '$reviews' }, 0] },
-                        then: { $avg: '$reviews.totalRates' },
-                        else: 0,
-                      },
-                    },
-                    reviewsCount: { $size: '$reviews' },
-                  },
-                },
-                ...(Number(starRating) > 0
-                  ? [
-                      {
-                        $match: {
-                          average: {
-                            $gte: Number(starRating),
-                            $lt: Number(starRating) + 1,
-                          },
-                        },
-                      },
-                    ]
-                  : []),
                 {
                   $addFields: {
                     qtyIds: {
@@ -1093,14 +994,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
           {
             $lookup: {
-              from: 'amenities',
-              localField: 'bookableUnits.amenities',
-              foreignField: '_id',
-              as: 'amenities',
-            },
-          },
-          {
-            $lookup: {
               from: 'photos',
               localField: 'bookableUnits.photos',
               foreignField: '_id',
@@ -1130,20 +1023,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                             0,
                           ],
-                        },
-                      },
-                      {
-                        amenities: {
-                          $filter: {
-                            input: '$amenities', // This is the lookup result for amenities
-                            as: 'amenity',
-                            cond: {
-                              $and: [
-                                { $in: ['$$amenity._id', '$$unit.amenities'] },
-                                { $eq: ['$$amenity.isSelected', true] },
-                              ],
-                            },
-                          },
                         },
                       },
                       {
@@ -1193,17 +1072,9 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       },
                     },
                   },
-                  else: '$bookableUnits', // If amenities is "any", retain all bookableUnits
+                  else: '$bookableUnits',
                 },
               },
-            },
-          },
-          {
-            $match: {
-              $or: [
-                { $expr: { $eq: [amenities, 'any'] } }, // Skip empty check if the amenities variable is "any"
-                { bookableUnits: { $ne: [] } }, // Otherwise, only keep documents with non-empty bookableUnits
-              ],
             },
           },
           {
@@ -1388,9 +1259,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.companyLegalName': 1,
               'results.type': 1,
               'results.wholeplaceType': 1,
-              'results.facilities._id': 1,
-              'results.facilities.category': 1,
-              'results.facilities.facility': 1,
+              'results.facilities': 1,
               'results.policies._id': 1,
               'results.policies.category': 1,
               'results.policies.policy': 1,
@@ -1402,9 +1271,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.bookableUnits.numBathRooms': 1,
               'results.bookableUnits.totalSize': 1,
               'results.bookableUnits.unitPrice': 1,
-              'results.bookableUnits.amenities._id': 1,
-              'results.bookableUnits.amenities.category': 1,
-              'results.bookableUnits.amenities.amenity': 1,
+              'results.bookableUnits.amenities': 1,
               'results.bookableUnits.photos': 1,
               'results.bookableUnits.isPrivate': 1,
               'results.bookableUnits.maxGuests': 1,
@@ -1665,25 +1532,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             },
           },
           {
-            $lookup: {
-              from: 'facilities',
-              localField: 'facilities',
-              foreignField: '_id',
-              as: 'facilities',
-            },
-          },
-          {
-            $addFields: {
-              facilities: {
-                $filter: {
-                  input: '$facilities',
-                  as: 'facility',
-                  cond: { $eq: ['$$facility.isSelected', true] }, // Only include facilities where isSelected is true
-                },
-              },
-            },
-          },
-          {
             $match: {
               $or: [
                 { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -1875,20 +1723,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                         },
                       },
                       {
-                        amenities: {
-                          $filter: {
-                            input: '$amenities', // This is the lookup result for amenities
-                            as: 'amenity',
-                            cond: {
-                              $and: [
-                                { $in: ['$$amenity._id', '$$unit.amenities'] },
-                                { $eq: ['$$amenity.isSelected', true] },
-                              ],
-                            },
-                          },
-                        },
-                      },
-                      {
                         photos: {
                           $filter: {
                             input: '$photos', // This is the lookup result for amenities
@@ -1935,17 +1769,9 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                       },
                     },
                   },
-                  else: '$bookableUnits', // If amenities is "any", retain all bookableUnits
+                  else: '$bookableUnits',
                 },
               },
-            },
-          },
-          {
-            $match: {
-              $or: [
-                { $expr: { $eq: [amenities, 'any'] } }, // Skip empty check if the amenities variable is "any"
-                { bookableUnits: { $ne: [] } }, // Otherwise, only keep documents with non-empty bookableUnits
-              ],
             },
           },
           {
@@ -2122,9 +1948,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.companyLegalName': 1,
               'results.type': 1,
               'results.wholeplaceType': 1,
-              'results.facilities._id': 1,
-              'results.facilities.category': 1,
-              'results.facilities.facility': 1,
+              'results.facilities': 1,
               'results.policies._id': 1,
               'results.policies.category': 1,
               'results.policies.policy': 1,
@@ -2136,9 +1960,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.bookableUnits.numBathRooms': 1,
               'results.bookableUnits.totalSize': 1,
               'results.bookableUnits.unitPrice': 1,
-              'results.bookableUnits.amenities._id': 1,
-              'results.bookableUnits.amenities.category': 1,
-              'results.bookableUnits.amenities.amenity': 1,
+              'results.bookableUnits.amenities': 1,
               'results.bookableUnits.photos': 1,
               'results.bookableUnits.isPrivate': 1,
               'results.bookableUnits.maxGuests': 1,
@@ -2400,25 +2222,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             },
           },
           {
-            $lookup: {
-              from: 'facilities',
-              localField: 'facilities',
-              foreignField: '_id',
-              as: 'facilities',
-            },
-          },
-          {
-            $addFields: {
-              facilities: {
-                $filter: {
-                  input: '$facilities',
-                  as: 'facility',
-                  cond: { $eq: ['$$facility.isSelected', true] }, // Only include facilities where isSelected is true
-                },
-              },
-            },
-          },
-          {
             $match: {
               $or: [
                 { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
@@ -2570,14 +2373,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
           },
           {
             $lookup: {
-              from: 'amenities',
-              localField: 'bookableUnits.amenities',
-              foreignField: '_id',
-              as: 'amenities',
-            },
-          },
-          {
-            $lookup: {
               from: 'photos',
               localField: 'bookableUnits.photos',
               foreignField: '_id',
@@ -2607,20 +2402,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                             },
                             0,
                           ],
-                        },
-                      },
-                      {
-                        amenities: {
-                          $filter: {
-                            input: '$amenities', // This is the lookup result for amenities
-                            as: 'amenity',
-                            cond: {
-                              $and: [
-                                { $in: ['$$amenity._id', '$$unit.amenities'] },
-                                { $eq: ['$$amenity.isSelected', true] },
-                              ],
-                            },
-                          },
                         },
                       },
                       {
@@ -2673,14 +2454,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   else: '$bookableUnits',
                 },
               },
-            },
-          },
-          {
-            $match: {
-              $or: [
-                { $expr: { $eq: [amenities, 'any'] } }, // Skip empty check if the amenities variable is "any"
-                { bookableUnits: { $ne: [] } }, // Otherwise, only keep documents with non-empty bookableUnits
-              ],
             },
           },
           {
@@ -2865,9 +2638,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.companyLegalName': 1,
               'results.type': 1,
               'results.wholeplaceType': 1,
-              'results.facilities._id': 1,
-              'results.facilities.category': 1,
-              'results.facilities.facility': 1,
+              'results.facilities': 1,
               'results.policies._id': 1,
               'results.policies.category': 1,
               'results.policies.policy': 1,
@@ -2879,9 +2650,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.bookableUnits.numBathRooms': 1,
               'results.bookableUnits.totalSize': 1,
               'results.bookableUnits.unitPrice': 1,
-              'results.bookableUnits.amenities._id': 1,
-              'results.bookableUnits.amenities.category': 1,
-              'results.bookableUnits.amenities.amenity': 1,
+              'results.bookableUnits.amenities': 1,
               'results.bookableUnits.photos': 1,
               'results.bookableUnits.isPrivate': 1,
               'results.bookableUnits.maxGuests': 1,

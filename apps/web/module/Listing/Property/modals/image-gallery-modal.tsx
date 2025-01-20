@@ -1,7 +1,7 @@
 import ModalContainer from "@/common/components/ModalContainer"
 import Image from "@/common/components/ui/image"
-import ShareSave from "../share-save"
 import { T_ImageGalleryModalProps } from "../../types/SectionInfo"
+import ShareSave from "@/module/Listing/share-save"
 
 const ImageGalleryModal = ({
   images,
