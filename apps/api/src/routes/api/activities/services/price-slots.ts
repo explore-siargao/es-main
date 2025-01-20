@@ -134,7 +134,10 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                 slotCapacity: slotCapacity,
                 updatedAt: Date.now(),
                 ...(experienceType === 'Private'
-                  ? { pricePerSlot: pricePerSlot, pricePerPerson: pricePerPerson }
+                  ? {
+                      pricePerSlot: pricePerSlot,
+                      pricePerPerson: pricePerPerson,
+                    }
                   : { pricePerPerson: pricePerPerson, pricePerSlot: 0 }),
               },
               $addToSet: {

@@ -28,7 +28,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     numberOfGuest = 'any',
   } = req.query
   const { page, limit } = req.pagination || { page: 1, limit: 15 }
-  const query: any = { deletedAt: null,status:"Live" }
+  const query: any = { deletedAt: null, status: 'Live' }
   if (activityTypes !== 'any' && activityTypes !== '') {
     activityTypesInput = String(activityTypes)
       .split(',')
@@ -221,11 +221,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
+            },
           },
           {
             $lookup: {
@@ -874,10 +874,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -1523,12 +1523,12 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                }
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
+          },
           {
             $lookup: {
               from: 'reviews',
@@ -2181,12 +2181,11 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-                
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
+            },
           },
           {
             $lookup: {

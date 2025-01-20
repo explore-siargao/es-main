@@ -202,7 +202,7 @@ export const Z_Update_Activity_Pice_Slots = z.object({
     maximum: z.number(),
   }),
   pricePerSlot: z.number().optional(),
-  pricePerPerson:z.number().optional()
+  pricePerPerson: z.number().optional(),
 })
 
 export const Z_Activity_Status = z.object({
