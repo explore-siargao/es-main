@@ -15,7 +15,8 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
     experienceType,
     schedule,
     slotCapacity,
-    price,
+    pricePerSlot,
+    pricePerPerson,
   }: T_Update_Activity_Price_Slots = req.body
   const isHost = res.locals.user?.isHost
   const activityId = req.params.activityId
@@ -133,8 +134,8 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
                 slotCapacity: slotCapacity,
                 updatedAt: Date.now(),
                 ...(experienceType === 'Private'
-                  ? { pricePerSlot: price, pricePerPerson: null }
-                  : { pricePerPerson: price, pricePerSlot: null }),
+                  ? { pricePerSlot: pricePerSlot, pricePerPerson: pricePerPerson }
+                  : { pricePerPerson: pricePerPerson, pricePerSlot: 0 }),
               },
               $addToSet: {
                 finishedSections: 'pricing',
