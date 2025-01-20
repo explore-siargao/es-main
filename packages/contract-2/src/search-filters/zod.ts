@@ -9,7 +9,7 @@ import {
   E_Rental_Vehicle_Fuel,
   E_Rental_Vehicle_Transmission,
 } from "../rentals/enum"
-import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
+import { E_Property_Type, E_Whole_Place_Property_Type, Z_Facility } from "../property"
 import { E_Activity_Types, E_Experience_Types } from "../activity/enum"
 
 const objectIdSchema = z
