@@ -42,7 +42,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
   } else {
     propertyTypesInput = 'any'
   }
-  const guestNumber = numberOfGuest === 'any' ? 0 : Number(numberOfGuest)
+  const guestNumber = numberOfGuest === 'any' ? 1 : Number(numberOfGuest)
   const validPropertySearch = Z_Properties_Search.safeParse({
     page,
     location,
@@ -223,14 +223,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
             },
           },
           {
-            $lookup: {
-              from: 'facilities',
-              localField: 'facilities',
-              foreignField: '_id',
-              as: 'facilities',
-            },
-          },
-          {
             $addFields: {
               facilities: {
                 $filter: {
@@ -239,23 +231,6 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
                   cond: { $eq: ['$$facility.isSelected', true] }, // Only include facilities where isSelected is true
                 },
               },
-            },
-          },
-          {
-            $match: {
-              $or: [
-                { 'facilities.facility': { $exists: true } }, // Allow documents with facilities
-                { $expr: { $eq: [facilitiesArray.length, 0] } }, // Ignore match if facilitiesArray is empty
-              ],
-              ...(facilitiesArray.length > 0 && facilitiesArray[0] !== 'any'
-                ? {
-                    'facilities.facility': {
-                      $in: facilitiesArray.map(
-                        (facility) => new RegExp(`^${facility}$`, 'i')
-                      ),
-                    },
-                  }
-                : {}),
             },
           },
           {
@@ -680,9 +655,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               'results.companyLegalName': 1,
               'results.type': 1,
               'results.wholeplaceType': 1,
-              'results.facilities._id': 1,
-              'results.facilities.category': 1,
-              'results.facilities.facility': 1,
+              'results.facilities':1,
               'results.policies._id': 1,
               'results.policies.category': 1,
               'results.policies.policy': 1,
@@ -807,6 +780,7 @@ export const getFilteredProperties = async (req: Request, res: Response) => {
               latitude: property.location.latitude,
               longitude: property.location.longitude,
             },
+            facilities:property.facilities,
             price: unit.unitPrice?.baseRate || 0,
             average: unit.average || 0,
             reviewsCount: unit.reviewsCount || 0,
