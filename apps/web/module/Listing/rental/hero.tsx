@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "./share-save"
+import ShareSave from "@/module/Listing/share-save"
 import ImageGallery from "@/module/Listing/property/image-gallery"
 import { T_Photo } from "@repo/contract-2/photos"
 
