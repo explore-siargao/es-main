@@ -53,7 +53,6 @@ const router = express.Router()
 router.get(
   '/highest-price',
   isOriginValid,
-  isCsrfTokenValid,
   activityHighestPrice
 )
 
