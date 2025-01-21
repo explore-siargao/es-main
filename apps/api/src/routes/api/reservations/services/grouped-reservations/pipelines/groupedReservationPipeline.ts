@@ -136,6 +136,13 @@ export const getGroupedReservationPipeline = (
             $match: {
               $expr: { $eq: ['$_id', '$$propertyId'] }, // Match the `_id` field in `properties` with `propertyId`
             },
+            
+          },
+          {
+            $project: {
+              reviews: 0
+            },
+            
           },
           {
             $lookup: {
@@ -238,6 +245,11 @@ export const getGroupedReservationPipeline = (
             },
           },
           {
+            $project: {
+              reviews: 0
+            },
+          },
+          {
             $lookup: {
               from: 'unitprices',
               localField: 'unitPrice',
@@ -274,76 +286,76 @@ export const getGroupedReservationPipeline = (
               ],
             },
           },
-          {
-            $lookup: {
-              from: 'reviews',
-              localField: 'reviews',
-              foreignField: '_id',
-              as: 'reviews',
-              pipeline: [
-                {
-                  $lookup: {
-                    from: 'users',
-                    localField: 'reviewerId',
-                    foreignField: '_id',
-                    as: 'reviewerId',
-                    pipeline: [
-                      {
-                        $lookup: {
-                          from: 'guests',
-                          localField: 'guest',
-                          foreignField: '_id',
-                          as: 'guest',
-                          pipeline: [
-                            {
-                              $project: {
-                                emergencyContacts: 0,
-                              },
-                            },
-                            {
-                              $lookup: {
-                                from: 'addresses',
-                                localField: 'address',
-                                foreignField: '_id',
-                                as: 'address',
-                              },
-                            },
-                            {
-                              $unwind: {
-                                path: '$address',
-                                preserveNullAndEmptyArrays: true,
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        $unwind: {
-                          path: '$guest',
-                          preserveNullAndEmptyArrays: true,
-                        },
-                      },
-                      {
-                        $project: {
-                          password: 0,
-                          changePasswordAt: 0,
-                          registrationType: 0,
-                          deactivated: 0,
-                          canReceiveEmail: 0,
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  $unwind: {
-                    path: '$reviewerId',
-                    preserveNullAndEmptyArrays: true,
-                  },
-                },
-              ],
-            },
-          },
+          // {
+          //   $lookup: {
+          //     from: 'reviews',
+          //     localField: 'reviews',
+          //     foreignField: '_id',
+          //     as: 'reviews',
+          //     pipeline: [
+          //       {
+          //         $lookup: {
+          //           from: 'users',
+          //           localField: 'reviewerId',
+          //           foreignField: '_id',
+          //           as: 'reviewerId',
+          //           pipeline: [
+          //             {
+          //               $lookup: {
+          //                 from: 'guests',
+          //                 localField: 'guest',
+          //                 foreignField: '_id',
+          //                 as: 'guest',
+          //                 pipeline: [
+          //                   {
+          //                     $project: {
+          //                       emergencyContacts: 0,
+          //                     },
+          //                   },
+          //                   {
+          //                     $lookup: {
+          //                       from: 'addresses',
+          //                       localField: 'address',
+          //                       foreignField: '_id',
+          //                       as: 'address',
+          //                     },
+          //                   },
+          //                   {
+          //                     $unwind: {
+          //                       path: '$address',
+          //                       preserveNullAndEmptyArrays: true,
+          //                     },
+          //                   },
+          //                 ],
+          //               },
+          //             },
+          //             {
+          //               $unwind: {
+          //                 path: '$guest',
+          //                 preserveNullAndEmptyArrays: true,
+          //               },
+          //             },
+          //             {
+          //               $project: {
+          //                 password: 0,
+          //                 changePasswordAt: 0,
+          //                 registrationType: 0,
+          //                 deactivated: 0,
+          //                 canReceiveEmail: 0,
+          //               },
+          //             },
+          //           ],
+          //         },
+          //       },
+          //       {
+          //         $unwind: {
+          //           path: '$reviewerId',
+          //           preserveNullAndEmptyArrays: true,
+          //         },
+          //       },
+          //     ],
+          //   },
+          // },
         ],
         as: 'bookableUnit', // Temporary field to store matching documents
       },
@@ -412,6 +424,11 @@ export const getGroupedReservationPipeline = (
                   },
                 },
               ],
+            },
+          },
+          {
+            $project: {
+              reviews: 0
             },
           },
           {
@@ -484,6 +501,11 @@ export const getGroupedReservationPipeline = (
               localField: 'details',
               foreignField: '_id',
               as: 'details',
+            },
+          },
+          {
+            $project: {
+              reviews: 0
             },
           },
           {
@@ -597,76 +619,80 @@ export const getGroupedReservationPipeline = (
               preserveNullAndEmptyArrays: true,
             },
           },
-          {
-            $lookup: {
-              from: 'reviews',
-              localField: 'reviews',
-              foreignField: '_id',
-              as: 'reviews',
-              pipeline: [
-                {
-                  $lookup: {
-                    from: 'users',
-                    localField: 'reviewerId',
-                    foreignField: '_id',
-                    as: 'reviewerId',
-                    pipeline: [
-                      {
-                        $lookup: {
-                          from: 'guests',
-                          localField: 'guest',
-                          foreignField: '_id',
-                          as: 'guest',
-                          pipeline: [
-                            {
-                              $project: {
-                                emergencyContacts: 0,
-                              },
-                            },
-                            {
-                              $lookup: {
-                                from: 'addresses',
-                                localField: 'address',
-                                foreignField: '_id',
-                                as: 'address',
-                              },
-                            },
-                            {
-                              $unwind: {
-                                path: '$address',
-                                preserveNullAndEmptyArrays: true,
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        $unwind: {
-                          path: '$guest',
-                          preserveNullAndEmptyArrays: true,
-                        },
-                      },
-                      {
-                        $project: {
-                          password: 0,
-                          changePasswordAt: 0,
-                          registrationType: 0,
-                          deactivated: 0,
-                          canReceiveEmail: 0,
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  $unwind: {
-                    path: '$reviewerId',
-                    preserveNullAndEmptyArrays: true,
-                  },
-                },
-              ],
-            },
-          },
+          // {
+          //   $lookup: {
+          //     from: 'reviews',
+          //     localField: 'reviews',
+          //     foreignField: '_id',
+          //     as: 'reviews',
+          //     pipeline: [
+          //       {
+          //         $lookup: {
+          //           from: 'users',
+          //           localField: 'reviewerId',
+          //           foreignField: '_id',
+          //           as: 'reviewer',
+          //           pipeline: [
+          //             {
+          //               $lookup: {
+          //                 from: 'guests',
+          //                 localField: 'guest',
+          //                 foreignField: '_id',
+          //                 as: 'guest',
+          //                 pipeline: [
+          //                   {
+          //                     $project: {
+          //                       emergencyContacts: 0,
+          //                     },
+          //                   },
+          //                   {
+          //                     $lookup: {
+          //                       from: 'addresses',
+          //                       localField: 'address',
+          //                       foreignField: '_id',
+          //                       as: 'address',
+          //                     },
+          //                   },
+          //                   {
+          //                     $unwind: {
+          //                       path: '$address',
+          //                       preserveNullAndEmptyArrays: true,
+          //                     },
+          //                   },
+          //                 ],
+          //               },
+          //             },
+          //             {
+          //               $unwind: {
+          //                 path: '$guest',
+          //                 preserveNullAndEmptyArrays: true,
+          //               },
+          //             },
+          //             {
+          //               $project: {
+          //                 isHost: 0,
+          //                 role:0,
+          //                 createdAt: 0,
+          //                 deletedAt: 0,
+          //                 password: 0,
+          //                 changePasswordAt: 0,
+          //                 registrationType: 0,
+          //                 deactivated: 0,
+          //                 canReceiveEmail: 0,
+          //               },
+          //             },
+          //           ],
+          //         },
+          //       },
+          //       {
+          //         $unwind: {
+          //           path: '$reviewerId',
+          //           preserveNullAndEmptyArrays: true,
+          //         },
+          //       },
+          //     ],
+          //   },
+          // },
         ],
       },
     },

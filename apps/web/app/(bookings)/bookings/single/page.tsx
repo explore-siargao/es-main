@@ -1,6 +1,7 @@
 import { APP_NAME } from "@repo/constants"
 import { BOOKINGS } from "@/common/constants"
 import { Metadata } from "next"
+import SingleBooking from "@/module/Bookings/single"
 
 export const metadata: Metadata = {
   title: `${BOOKINGS} - ${APP_NAME}`,
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const BookingsPage = () => {
-  return <div>TEST</div>
+  return <SingleBooking/>
 }
 
 export default BookingsPage

@@ -4,12 +4,14 @@ import { Types } from 'mongoose'
 export const buildCancelledReservationsPipeline = (
   userId: string,
   page: number,
-  limit: number
+  limit: number,
+  referenceId?: string
 ) => {
   const query = {
     status: E_ReservationStatus.Cancelled,
     guest: new Types.ObjectId(userId),
     deletedAt: null,
+    ...(referenceId === "undefined" ? [] : [{ _id: new Types.ObjectId(referenceId) }]),
   }
 
   return [

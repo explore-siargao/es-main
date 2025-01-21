@@ -5,13 +5,15 @@ export const buildActiveReservationsPipeline = (
   userId: string,
   dateNow: Date,
   page: number,
-  limit: number
+  limit: number,
+  referenceId?: string
 ) => {
   const query = {
     $and: [
       { guest: new Types.ObjectId(userId) },
       { status: E_ReservationStatus.Confirmed },
       { endDate: { $gte: dateNow } },
+      ...(referenceId === "undefined" ? [] : [{ _id: new Types.ObjectId(referenceId) }]),
     ],
   }
 

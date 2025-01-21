@@ -16,8 +16,8 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
   const status = req.query.status
   const user = res.locals.user.id
   const timeZone = "Asia/Manila"
-  const { page = 1, limit = 15 } = req.query
-
+  const { page = 1, limit = 15, referenceId } = req.query
+  console.log(req.query)
   if (!timeZone) {
     res.json(response.error({ message: 'time-zone header is required' }))
   } else {
@@ -27,7 +27,8 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
         const pipeline = buildCancelledReservationsPipeline(
           user,
           page as number,
-          limit as number
+          limit as number,
+           referenceId as string | undefined
         )
         const cancelledReservations = await dbReservations.aggregate(pipeline)
         const totalCounts = await dbReservations
@@ -54,7 +55,8 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
           user,
           dateNow,
           page as number,
-          limit as number
+          limit as number,
+          referenceId as string | undefined
         )
         const finishReservations = await dbReservations.aggregate(pipeline)
         const totalCounts = await dbReservations
@@ -79,7 +81,8 @@ export const guestGroupReservations = async (req: Request, res: Response) => {
           user,
           dateNow,
           page as number,
-          limit as number
+          limit as number,
+          referenceId as string | undefined
         )
         const activeReservations = await dbReservations.aggregate(pipeline)
         const totalCounts = await dbReservations

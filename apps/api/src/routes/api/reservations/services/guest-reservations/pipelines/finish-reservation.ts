@@ -5,7 +5,8 @@ export const buildFinishReservationsPipeline = (
   userId: string,
   dateNow: Date,
   page: number,
-  limit: number
+  limit: number,
+  referenceId?: string
 ) => {
   const query = {
     $and: [
@@ -17,6 +18,7 @@ export const buildFinishReservationsPipeline = (
         ],
       },
       { endDate: { $lt: dateNow } },
+      ...(referenceId === "undefined" ? [] : [{ _id: new Types.ObjectId(referenceId) }]),
     ],
   }
 
