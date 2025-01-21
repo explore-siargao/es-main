@@ -44,10 +44,10 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
     location: location,
     vehicleTypes: vehicleInput,
     transmissionTypes: transmissionInput,
-    priceFrom: priceFrom,
-    priceTo: priceTo,
-    seatCount: seatCount,
-    starRating: starRating,
+    priceFrom: Number(priceFrom) || "any",
+    priceTo: Number(priceTo) || "any",
+    seatCount: Number(seatCount) || "any",
+    starRating: Number(starRating) || "any",
     pickUpDate: pickUpDate,
     dropOffDate: dropOffDate,
   })
@@ -162,7 +162,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               $expr: {
                 $or: [
                   { $eq: [seatCount, 'any'] },
-                  { $eq: ['$details.seatingCapacity', Number(seatCount)] },
+                  { $gte: ['$details.seatingCapacity', Number(seatCount)] },
                 ],
               },
             },
@@ -393,7 +393,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               $expr: {
                 $or: [
                   { $eq: [seatCount, 'any'] },
-                  { $eq: ['$details.seatingCapacity', Number(seatCount)] },
+                  { $gte: ['$details.seatingCapacity', Number(seatCount)] },
                 ],
               },
             },
@@ -630,7 +630,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               $expr: {
                 $or: [
                   { $eq: [seatCount, 'any'] },
-                  { $eq: ['$details.seatingCapacity', Number(seatCount)] },
+                  { $gte: ['$details.seatingCapacity', Number(seatCount)] },
                 ],
               },
             },
@@ -862,7 +862,7 @@ export const getFilteredRentals = async (req: Request, res: Response) => {
               $expr: {
                 $or: [
                   { $eq: [seatCount, 'any'] },
-                  { $eq: ['$details.seatingCapacity', Number(seatCount)] },
+                  { $gte: ['$details.seatingCapacity', Number(seatCount)] },
                 ],
               },
             },
