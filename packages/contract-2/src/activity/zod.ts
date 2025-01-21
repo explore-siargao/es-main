@@ -2,6 +2,7 @@ import z from "zod"
 import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
+import { E_Experience_Types } from "./enum"
 
 const objectIdSchema = z
   .any()
@@ -71,7 +72,7 @@ export const Z_Activity = z.object({
   host: Z_Host.nullable().optional(),
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
-  experienceType: z.enum(["Joiner", "Private"]),
+  experienceType: z.nativeEnum(E_Experience_Types),
   description: z.string().optional(),
   highLights: z.array(z.string()).nullable(),
   durationHour: z.number(),

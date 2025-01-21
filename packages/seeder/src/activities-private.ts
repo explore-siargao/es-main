@@ -1,4 +1,4 @@
-import { T_Activity } from "@repo/contract-2/activity"
+import { E_Experience_Types, T_Activity } from "@repo/contract-2/activity"
 import { T_Location } from "@repo/contract-2/address-location"
 import { dbActivities, dbLocations, dbPhotos, dbUsers } from "@repo/database"
 import { ACTIVITY_PHOTO_KEYS } from "./common/constants/photo-keys"
@@ -12,7 +12,7 @@ const seedActivities = async () => {
       {
         title: "Guided City Siargao",
         activityType: ["Surfing lessons"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description:
           "Explore the top attractions of New York with a local guide.",
         highLights: [
@@ -67,7 +67,7 @@ const seedActivities = async () => {
           maximum: 20,
         },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 100,
         pricePerSlot: 500,
         daysCanCancel: "5",
         status: "Live",
@@ -85,7 +85,7 @@ const seedActivities = async () => {
       {
         title: "Explore the Wonders of Siargao",
         activityType: ["Wakeboarding", "Fishing"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description: "Discover the unique beauty of Siargao's natural wonders.",
         highLights: [
           "Sugba Lagoon",
@@ -136,7 +136,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 5, maximum: 20 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 200,
         pricePerSlot: 700,
         daysCanCancel: "5",
         status: "Live",
@@ -154,7 +154,7 @@ const seedActivities = async () => {
       {
         title: "Siargao Island Adventure",
         activityType: ["Fishing", "ATV tour"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description:
           "Experience the lush greens and blue waters of Siargao Island.",
         highLights: ["Naked Island", "Daku Island", "Guyam Island"],
@@ -202,7 +202,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 6, maximum: 18 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 150,
         pricePerSlot: 650,
         daysCanCancel: "10",
         status: "Live",
@@ -221,7 +221,7 @@ const seedActivities = async () => {
       {
         title: "Siargao Surfing Adventure",
         activityType: ["Land tour"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description:
           "Ride the waves at Siargao's famous surf spots with expert guidance.",
         highLights: ["Cloud 9 Surf Spot", "Secret Surf Beach", "Surf Village"],
@@ -269,7 +269,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 5, maximum: 20 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 300,
         pricePerSlot: 800,
         daysCanCancel: "10",
         status: "Live",
@@ -287,7 +287,7 @@ const seedActivities = async () => {
       {
         title: "Siargao Island Hopping Adventure",
         activityType: ["Freediving", "Scuva diving"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description: "Experience the best island hopping spots in Siargao.",
         highLights: ["Naked Island", "Daku Island", "Guyam Island"],
         durationHour: 5,
@@ -334,7 +334,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 5, maximum: 20 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 120,
         pricePerSlot: 750,
         daysCanCancel: "5",
         status: "Live",
@@ -352,7 +352,7 @@ const seedActivities = async () => {
       {
         title: "Siargao Mangrove Exploration",
         activityType: ["Island hopping"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description:
           "Explore the serene mangroves of Siargao and learn about its ecosystem.",
         highLights: [
@@ -404,7 +404,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 4, maximum: 15 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 120,
         pricePerSlot: 700,
         daysCanCancel: "10",
         status: "Live",
@@ -422,7 +422,7 @@ const seedActivities = async () => {
       {
         title: "Siargao Sunset Cruise",
         activityType: ["Island hopping", "Wakeboarding"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description:
           "Unwind with a serene sunset cruise around the stunning waters of Siargao.",
         highLights: [
@@ -474,7 +474,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 4, maximum: 12 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 250,
         pricePerSlot: 900,
         daysCanCancel: "5",
         status: "Live",
@@ -492,7 +492,7 @@ const seedActivities = async () => {
       {
         title: "Siargao Coconut Forest Bike Tour",
         activityType: ["Kite surfing", "ATV tour"],
-        experienceType: "Private",
+        experienceType: E_Experience_Types.Private,
         description:
           "Cycle through the iconic coconut forests of Siargao and enjoy breathtaking landscapes.",
         highLights: [
@@ -544,7 +544,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 3, maximum: 10 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 150,
         pricePerSlot: 600,
         daysCanCancel: "5",
         status: "Live",

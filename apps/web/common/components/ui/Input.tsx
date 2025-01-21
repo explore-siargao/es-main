@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div>
         <div
           className={cn(
-            "relative rounded-xl px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-text-200 focus-within:z-10 focus-within:ring-2 focus-within:ring-text-600",
+            "relative rounded-xl px-3 pb-1.5 pt-2.5 border ring-0 border-text-200 focus-within:z-10 focus-within:border-text-600",
             className
           )}
         >

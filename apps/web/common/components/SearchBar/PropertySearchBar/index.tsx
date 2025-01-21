@@ -9,12 +9,18 @@ import { format, isAfter } from "date-fns"
 import { locations } from "../../Header/filter/constants"
 import { Spinner } from "../../ui/Spinner"
 import { useSearchParams } from "next/navigation"
+import useGuestsStore from "@/module/cart/stores/use-guests-store"
+
+import { Typography } from "../../ui/Typography"
+import GuestAddModal from "../guest-add-modal"
 
 function PropertySearchBar() {
   const searchParams = useSearchParams()
   const { register, watch, setValue, getValues } = useFormContext()
   const [isLoading, setIsLoading] = useState(false)
   const dateToday = format(new Date(), "yyyy-MM-dd")
+  const { guest } = useGuestsStore()
+  const [isGuestModalOpen, setIsGuestModalOpen] = useState(false)
 
   useEffect(() => {
     const checkInDate = getValues("checkIn")
@@ -28,10 +34,24 @@ function PropertySearchBar() {
     if (isLoading) setIsLoading(false)
   }, [searchParams])
 
+  const openGuestModal = () => {
+    setIsGuestModalOpen(true)
+  }
+
+  const closeGuestModal = () => {
+    setIsGuestModalOpen(false)
+  }
+
+  const totalGuests = guest.adults + guest.children
+
+  useEffect(() => {
+    setValue("numberOfGuest", totalGuests)
+  }, [totalGuests, setValue])
+
   return (
     <div className="flex w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
       <Select
-        className="w-64 ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
+        className="w-64 border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
         label={"Location"}
         {...register("location")}
         id="testable"
@@ -46,7 +66,7 @@ function PropertySearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-full border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Check in"}
         {...register("checkIn")}
         min={dateToday}
@@ -54,20 +74,24 @@ function PropertySearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-full border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Check out"}
         {...register("checkOut")}
         disabled={!watch("checkIn")}
         min={watch("checkIn")}
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
-      <Input
-        type="number"
-        className="w-full ring-0 bg-inherit focus-within:ring-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
-        label={"Number of guest/s"}
-        placeholder="Add guests"
-        {...register("numberOfGuest")}
-      />
+      <div
+        className="border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer w-[23rem] 4xl:w-[28rem]"
+        onClick={openGuestModal}
+      >
+        <Typography variant="h6" fontWeight="semibold">
+          Number of guest/s
+        </Typography>
+        <Typography variant="h6">
+          {totalGuests > 0 ? `${totalGuests}` : "Add guests"}
+        </Typography>
+      </div>
       <Button
         variant={"primary"}
         className="h-full px-4 py-3 justify-center items-center rounded-full gap-x-2"
@@ -80,6 +104,7 @@ function PropertySearchBar() {
         )}
         {!isLoading ? "Search" : "Searching"}
       </Button>
+      <GuestAddModal isOpen={isGuestModalOpen} onClose={closeGuestModal} />
     </div>
   )
 }

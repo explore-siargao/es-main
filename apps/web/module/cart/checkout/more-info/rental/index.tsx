@@ -14,14 +14,17 @@ type T_Rental_Price_Details_Box = {
 const RentalMoreInfo = ({ items, isViewOnly }: T_Rental_Price_Details_Box) => {
   return (
     <>
-      {items.map((item) => {
+      {items.map((item, index) => {
         const rental = item.rentalIds?.rentalId
         const freeCancelDate = format(
           subDays(item.startDate, 3),
           "MMMM dd, yyyy"
         )
         return (
-          <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
+          <div
+            key={index}
+            className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky"
+          >
             <Typography variant="h2" fontWeight="semibold">
               {rental?.make} {rental?.modelBadge}
             </Typography>

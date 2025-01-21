@@ -3,19 +3,18 @@ import { z } from "zod"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 import { Z_Rental_Price } from "../rentals"
-import {
-  E_Activity_Types,
-  E_Experience_Types,
-  E_Location,
-  E_Property_Types,
-  E_Vehicle_Type,
-} from "./enum"
+import { E_Location, E_Property_Types, E_Vehicle_Type } from "./enum"
 import {
   E_Rental_Category,
   E_Rental_Vehicle_Fuel,
   E_Rental_Vehicle_Transmission,
 } from "../rentals/enum"
-import { E_Property_Type, E_Whole_Place_Property_Type } from "../property"
+import {
+  E_Property_Type,
+  E_Whole_Place_Property_Type,
+  Z_Facility,
+} from "../property"
+import { E_Activity_Types, E_Experience_Types } from "../activity/enum"
 
 const objectIdSchema = z
   .any()
@@ -32,14 +31,32 @@ export const Z_Properties_Search = z.object({
     z.array(z.nativeEnum(E_Property_Types)).or(z.literal("any")),
     z.string().optional(),
   ]),
-  priceFrom: z.number().min(0).or(z.literal("any")).default(0),
-  priceTo: z.number().min(0).or(z.literal("any")).default(0),
-  bedroomCount: z.number().min(1).or(z.literal("any")).default(0),
-  bedCount: z.number().min(1).or(z.literal("any")).default(0),
-  bathroomCount: z.number().min(1).or(z.literal("any")).default(0),
+  priceFrom: z
+    .union([z.number().min(1), z.string()])
+    .or(z.literal("any"))
+    .default(0),
+  priceTo: z
+    .union([z.number().min(1), z.string()])
+    .or(z.literal("any"))
+    .default(0),
+  bedroomCount: z
+    .union([z.number().min(1), z.string()])
+    .or(z.literal("any"))
+    .default(0),
+  bedCount: z
+    .union([z.number().min(1), z.string()])
+    .or(z.literal("any"))
+    .default(0),
+  bathroomCount: z
+    .union([z.number().min(1), z.string()])
+    .or(z.literal("any"))
+    .default(0),
   facilities: z.string().default("any"),
   amenities: z.string().default("any"),
-  starRating: z.number().int().min(1).max(5).or(z.literal("any")).default(1),
+  starRating: z
+    .union([z.number().int().min(1).max(5), z.string()])
+    .or(z.literal("any"))
+    .default(1),
   checkIn: z
     .union([
       z.literal("any"),
@@ -56,7 +73,10 @@ export const Z_Properties_Search = z.object({
       }),
     ])
     .default("any"),
-  numberOfGuest: z.number().min(1).or(z.literal("any")).default("any"),
+  numberOfGuest: z
+    .union([z.number().min(1), z.string()])
+    .or(z.literal("any"))
+    .default("any"),
 })
 
 export const Z_Activities_Search = z.object({
@@ -142,8 +162,8 @@ export const Z_Rental_Filtered = z.object({
   location: Z_Location.nullable(),
   pricing: Z_Rental_Price.nullable(),
   photos: z.array(Z_Photo),
-  average: z.number().optional(),
   reviewsCount: z.number().optional(),
+  average: z.number().optional(),
   transmission: z.nativeEnum(E_Rental_Vehicle_Transmission).nullable(),
   fuel: z.nativeEnum(E_Rental_Vehicle_Fuel).nullable(),
 })
@@ -156,6 +176,7 @@ export const Z_Activity_Filtered = z.object({
   title: z.string().optional(),
   activityType: z.array(z.string()).nullable(),
   meetingPoint: Z_Location.nullable(),
+  experienceType: z.nativeEnum(E_Experience_Types),
   photos: z.array(Z_Photo),
   pricePerPerson: z.number().nullable().optional(),
   pricePerSlot: z.number().nullable().optional(),

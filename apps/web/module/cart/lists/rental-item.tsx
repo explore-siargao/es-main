@@ -79,8 +79,9 @@ function RentalItem({
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <Typography variant="p" className="text-gray-500">
-            {item?.startDate && format(item?.startDate, "d MMM, yyyy")}{" "}
-            {item?.endDate && `- ${format(item?.endDate, "d MMM, yyyy")}`}
+            {item?.startDate && format(item?.startDate, "d MMM, yyyy hh:mm a")}{" "}
+            {item?.endDate &&
+              `- ${format(item?.endDate, "d MMM, yyyy hh:mm a")}`}
           </Typography>
         </div>
 

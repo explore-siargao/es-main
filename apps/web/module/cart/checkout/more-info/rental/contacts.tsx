@@ -88,7 +88,7 @@ const RentalContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
       )}
 
       {cartItem.contacts?.map((contact, index) => (
-        <div className="grid gap-2">
+        <div key={index} className="grid gap-2">
           <div className="grid grid-cols-2">
             <Typography variant="h5" className="text-text-300">
               First name
