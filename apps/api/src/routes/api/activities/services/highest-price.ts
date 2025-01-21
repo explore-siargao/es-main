@@ -19,8 +19,8 @@ export const activityHighestPrice = async (req: Request, res: Response) => {
       {
         $limit: 1, // Limit to the highest price
       },
-    ]);
-    
+    ])
+
     const valid = Z_Category_Highest_Price.safeParse(getHighestPrice[0])
     if (valid.success) {
       res.json(response.success({ item: getHighestPrice[0] }))

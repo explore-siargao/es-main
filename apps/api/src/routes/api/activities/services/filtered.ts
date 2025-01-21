@@ -52,10 +52,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     experienceTypes: experienceTypeInput,
     priceFrom,
     priceTo,
-    durations:Number(durations) || "any",
-    starRating:Number(starRating) || "any",
+    durations: Number(durations) || 'any',
+    starRating: Number(starRating) || 'any',
     activityDate,
-    numberOfGuest: Number(numberOfGuest) || "any"
+    numberOfGuest: Number(numberOfGuest) || 'any',
   })
 
   if (validActivitySearch.success) {
@@ -826,7 +826,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
             response.success({
               items: validFilteredActivities.data,
               pageItemCount: activities[0].pageItemCount || 0,
-              allItemCount: activities[0].allItemsCount || 0
+              allItemCount: activities[0].allItemsCount || 0,
             })
           )
         } else {

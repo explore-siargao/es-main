@@ -165,7 +165,7 @@ export const updatePriceAndSlots = async (req: Request, res: Response) => {
     console.error(isValidInput.error.message)
     res.json(
       response.error({
-        message: "Invalid payload",
+        message: 'Invalid payload',
       })
     )
   }
