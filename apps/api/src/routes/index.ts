@@ -14,7 +14,7 @@ import ReservationRoute from '@/routes/api/reservations'
 import CartRoute from '@/routes/api/carts'
 import XenditRoute from '@/routes/api/xendit'
 import ForPaymentRoute from '@/routes/api/for-payment-listings'
-import WishListRoute from "@/routes/api/wishlists"
+import WishListRoute from '@/routes/api/wishlists'
 
 // mock
 import MockUsersRoute from '@/routes/mock/users'

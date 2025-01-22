@@ -7,6 +7,12 @@ import { addToWishList } from './services/default'
 
 const router = express.Router()
 
-router.post("/:category",isOriginValid, isCsrfTokenValid, isUserLoggedIn, addToWishList)
+router.post(
+  '/:category',
+  isOriginValid,
+  isCsrfTokenValid,
+  isUserLoggedIn,
+  addToWishList
+)
 
 export default router
