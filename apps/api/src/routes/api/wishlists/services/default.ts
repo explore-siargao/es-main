@@ -93,3 +93,50 @@ export const addToWishList = async (req: Request, res: Response) => {
     }
   }
 }
+
+export const getAllWishlistbyCategory = async (req: Request, res: Response) => {
+  const userId = res.locals.user.id
+  const category = req.params.category
+  const smallCategory = String(category).toLowerCase()
+  const capitalizedCategory = capitalizeFirstLetter(smallCategory)
+  const page = Number(req.query.page) || 1
+  const limit = 15
+  const skip = (page - 1) * limit
+  try {
+    const getWishlist = async () => {
+      const wishlist = await dbWishlists
+        .find({
+          userId: userId,
+          category: capitalizedCategory,
+          deletedAt: null,
+        })
+        .skip(skip)
+        .limit(limit)
+      const wishlistCounts = await dbWishlists
+        .find({
+          userId: userId,
+          category: capitalizedCategory,
+          deletedAt: null,
+        })
+        .countDocuments()
+      res.json(
+        response.success({
+          items: wishlist,
+          pageItemCount: wishlist.length,
+          allItemCount: wishlistCounts,
+        })
+      )
+    }
+    if(capitalizedCategory === 'Properties' || capitalizedCategory === 'Activities' || capitalizedCategory === 'Rentals') {
+      getWishlist()
+    }else{
+        res.json(response.error({ message: 'Invalid category' }))
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
