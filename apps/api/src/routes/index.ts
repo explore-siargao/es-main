@@ -14,6 +14,7 @@ import ReservationRoute from '@/routes/api/reservations'
 import CartRoute from '@/routes/api/carts'
 import XenditRoute from '@/routes/api/xendit'
 import ForPaymentRoute from '@/routes/api/for-payment-listings'
+import WishListRoute from "@/routes/api/wishlists"
 
 // mock
 import MockUsersRoute from '@/routes/mock/users'
@@ -43,6 +44,7 @@ export default function (app: Application) {
   app.use(`${API_ROOT}/carts`, CartRoute)
   app.use(`${API_ROOT}/xendit`, XenditRoute)
   app.use(`${API_ROOT}/for-payment`, ForPaymentRoute)
+  app.use(`${API_ROOT}/wishlists`, WishListRoute)
 
   // MOCK
   app.use(`${MOCK_ROOT}/users`, MockUsersRoute)
