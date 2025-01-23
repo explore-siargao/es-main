@@ -9,13 +9,13 @@ export class WishlistService {
     this.api = new ApiService(source)
   }
   async addToWishlist(item: T_Add_Wishlist) {
-      return this.api.post(`${WISHLIST_BASE_URL}/${item.category.toLowerCase()}`, item)
+    return this.api.post(
+      `${WISHLIST_BASE_URL}/${item.category.toLowerCase()}`,
+      item
+    )
   }
 
-  async getWishlist(
-    category: E_Listing_Category,
-    page: number = 1
-  ) {
+  async getWishlist(category: E_Listing_Category, page: number = 1) {
     return this.api.get<{ items: T_Wishlists }>(
       `${WISHLIST_BASE_URL}/${category.toLowerCase()}?page=${page}`
     )
@@ -23,7 +23,7 @@ export class WishlistService {
 
   static getQueryKeys() {
     return {
-        getWishlist: "get-wishlists",
+      getWishlist: "get-wishlists",
     }
   }
 }

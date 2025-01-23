@@ -27,75 +27,75 @@ export const addToWishList = async (req: Request, res: Response) => {
     try {
       const formattedCategory = capitalizeFirstLetter(smallCategory)
       const validWishlist = Z_Add_Wishlist.safeParse({
-        category:formattedCategory,
+        category: formattedCategory,
         listingId,
       })
-      if(validWishlist.success){
-      const createWishlist = async () => {
-        const existing = await dbWishlists.findOne({
-          userId: userId,
-          listingId: listingId,
-          deletedAt: null,
-        })
-        if (!existing) {
-          const newWishList = new dbWishlists({
-            userId,
-            category: formattedCategory,
-            listingId,
-            createdAt: Date.now(),
-            updatedAt: null,
+      if (validWishlist.success) {
+        const createWishlist = async () => {
+          const existing = await dbWishlists.findOne({
+            userId: userId,
+            listingId: listingId,
             deletedAt: null,
           })
-          await newWishList.save()
-          res.json(
-            response.success({
-              item: newWishList,
-              message: 'Item added to wishlist',
+          if (!existing) {
+            const newWishList = new dbWishlists({
+              userId,
+              category: formattedCategory,
+              listingId,
+              createdAt: Date.now(),
+              updatedAt: null,
+              deletedAt: null,
             })
-          )
-        } else {
-          res.json(
-            response.error({ message: 'Item already exist on your wishlist' })
-          )
+            await newWishList.save()
+            res.json(
+              response.success({
+                item: newWishList,
+                message: 'Item added to wishlist',
+              })
+            )
+          } else {
+            res.json(
+              response.error({ message: 'Item already exist on your wishlist' })
+            )
+          }
         }
-      }
-      if (formattedCategory === 'Properties') {
-        const checkProperty = await dbProperties.findOne({
-          _id: listingId,
-          deletedAt: null,
-        })
-        if (!checkProperty) {
-          res.json(response.error({ message: 'Invalid listingId' }))
+        if (formattedCategory === 'Properties') {
+          const checkProperty = await dbProperties.findOne({
+            _id: listingId,
+            deletedAt: null,
+          })
+          if (!checkProperty) {
+            res.json(response.error({ message: 'Invalid listingId' }))
+          } else {
+            createWishlist()
+          }
+        } else if (formattedCategory === 'Activities') {
+          const checkActivity = await dbActivities.findOne({
+            _id: listingId,
+            deletedAt: null,
+          })
+          if (!checkActivity) {
+            res.json(response.error({ message: 'Invalid listingId' }))
+          } else {
+            createWishlist()
+          }
+        } else if (formattedCategory === 'Rentals') {
+          const checkRentals = await dbRentals.findOne({
+            _id: listingId,
+            deletedAt: null,
+          })
+          if (!checkRentals) {
+            res.json(response.error({ message: 'Invalid listingId' }))
+          } else {
+            createWishlist()
+          }
         } else {
-          createWishlist()
-        }
-      } else if (formattedCategory === 'Activities') {
-        const checkActivity = await dbActivities.findOne({
-          _id: listingId,
-          deletedAt: null,
-        })
-        if (!checkActivity) {
-          res.json(response.error({ message: 'Invalid listingId' }))
-        } else {
-          createWishlist()
-        }
-      } else if (formattedCategory === 'Rentals') {
-        const checkRentals = await dbRentals.findOne({
-          _id: listingId,
-          deletedAt: null,
-        })
-        if (!checkRentals) {
-          res.json(response.error({ message: 'Invalid listingId' }))
-        } else {
-          createWishlist()
+          res.json(response.error({ message: 'Invalid category' }))
         }
       } else {
-        res.json(response.error({ message: 'Invalid category' }))
+        console.error(validWishlist.error.message)
+        res.json(response.error({ message: 'Invalid payload' }))
       }
-    }else{
-      console.error(validWishlist.error.message)
-      res.json(response.error({message:"Invalid payload"}))
-    }
     } catch (err: any) {
       res.json(
         response.error({
@@ -164,7 +164,7 @@ export const getAllWishlistbyCategory = async (req: Request, res: Response) => {
         return {
           ...item,
           listing: {
-            _id:item.listing._id,
+            _id: item.listing._id,
             title:
               capitalizedCategory === 'Properties' ||
               capitalizedCategory === 'Activities'
@@ -180,49 +180,58 @@ export const getAllWishlistbyCategory = async (req: Request, res: Response) => {
                   : capitalizedCategory === 'Rentals'
                     ? `${item.listing.category} in ${item.listing.location.city}`
                     : null,
-             subTitle2:
+            subTitle2:
               capitalizedCategory === 'Rentals'
-              ? `${item.listing.fuel} - ${item.listing.transmission}` : null,
-              price:convertPrice(capitalizedCategory === "Properties" ?
-              item.listing.bookableUnits.reduce((min:any,unit:any)=>{
-                return unit.unitPrice.baseRate < min ? unit.unitPrice.baseRate :min
-              }, Infinity) :
-              capitalizedCategory === "Activities" ?
-              item.listing.experienceType === "Private" ? item.listing.pricePerSlot : item.listing.pricePerPerson 
-              : item.listing.pricing.dayRate,preferredCurrency,conversionRates),
-              photos:item.listing.photos
+                ? `${item.listing.fuel} - ${item.listing.transmission}`
+                : null,
+            price: convertPrice(
+              capitalizedCategory === 'Properties'
+                ? item.listing.bookableUnits.reduce((min: any, unit: any) => {
+                    return unit.unitPrice.baseRate < min
+                      ? unit.unitPrice.baseRate
+                      : min
+                  }, Infinity)
+                : capitalizedCategory === 'Activities'
+                  ? item.listing.experienceType === 'Private'
+                    ? item.listing.pricePerSlot
+                    : item.listing.pricePerPerson
+                  : item.listing.pricing.dayRate,
+              preferredCurrency,
+              conversionRates
+            ),
+            photos: item.listing.photos,
           },
         }
       })
       const validWishlists = Z_Wishlists.safeParse(modifiedWishlist)
-      if(validWishlists.success){
-      res.json(
-        response.success({
-          items: modifiedWishlist,
-          pageItemCount: wishlist.length,
-          allItemCount: wishlistCounts,
-        })
-      )
-    }else{
-      console.error(validWishlists.error.message)
-      res.json(response.error({message:"Invalid wishlist data"}))
-    }
+      if (validWishlists.success) {
+        res.json(
+          response.success({
+            items: modifiedWishlist,
+            pageItemCount: wishlist.length,
+            allItemCount: wishlistCounts,
+          })
+        )
+      } else {
+        console.error(validWishlists.error.message)
+        res.json(response.error({ message: 'Invalid wishlist data' }))
+      }
     }
     if (
       capitalizedCategory === 'Properties' ||
       capitalizedCategory === 'Activities' ||
       capitalizedCategory === 'Rentals'
     ) {
-    if (
-      capitalizedCategory === 'Properties' ||
-      capitalizedCategory === 'Activities' ||
-      capitalizedCategory === 'Rentals'
-    ) {
-      getWishlist()
-    } else {
-      res.json(response.error({ message: 'Invalid category' }))
+      if (
+        capitalizedCategory === 'Properties' ||
+        capitalizedCategory === 'Activities' ||
+        capitalizedCategory === 'Rentals'
+      ) {
+        getWishlist()
+      } else {
+        res.json(response.error({ message: 'Invalid category' }))
+      }
     }
-  }
   } catch (err: any) {
     res.json(
       response.error({
