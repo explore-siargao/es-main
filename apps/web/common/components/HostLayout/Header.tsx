@@ -20,6 +20,8 @@ import useSessionStore from "@/common/store/useSessionStore"
 import { Button } from "@/common/components/ui/Button"
 import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
 import { Typography } from "../ui/Typography"
+import { useModalStore } from "@/common/store/use-modal-store"
+import TermsAndConditionsModal from "@/module/Listing/modals/terms-and-conditions-modal"
 
 const unAuthMenus = [
   {
@@ -66,7 +68,9 @@ function Header({
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
   const current = "Hosting Account"
+  const { setModal } = useModalStore((state) => state)
 
+  const modalKey = `terms-and-conditions-listing`
   const renderTransition = (children: React.ReactNode) => (
     <Transition
       as={Fragment}
@@ -154,7 +158,7 @@ function Header({
             <Button
               variant="primary"
               size="sm"
-              onClick={() => setIsSelectListingTypeModalOpen(true)}
+              onClick={() => setModal(modalKey)}
               className="flex gap-2"
             >
               <LucidePlus className="h-4 w-4" /> New listing
@@ -201,6 +205,9 @@ function Header({
           onClose={() =>
             setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
           }
+        />
+        <TermsAndConditionsModal
+          onAgree={() => setIsSelectListingTypeModalOpen(true)}
         />
       </WidthWrapper>
     </header>
