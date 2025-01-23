@@ -4,12 +4,16 @@ import { Types } from 'mongoose'
 export const buildCancelledReservationsPipeline = (
   userId: string,
   page: number,
-  limit: number
+  limit: number,
+  referenceId?: string
 ) => {
   const query = {
     status: E_ReservationStatus.Cancelled,
     guest: new Types.ObjectId(userId),
     deletedAt: null,
+    ...(referenceId === 'undefined'
+      ? []
+      : [{ _id: new Types.ObjectId(referenceId) }]),
   }
 
   return [
@@ -140,6 +144,11 @@ export const buildCancelledReservationsPipeline = (
             },
           },
           {
+            $project: {
+              reviews: 0,
+            },
+          },
+          {
             $lookup: {
               from: 'users',
               localField: 'offerBy',
@@ -237,6 +246,11 @@ export const buildCancelledReservationsPipeline = (
               $expr: {
                 $in: ['$$unitId', { $ifNull: ['$qtyIds._id', []] }], // Match unitId to qtyIds._id array
               },
+            },
+          },
+          {
+            $project: {
+              reviews: 0,
             },
           },
           {
@@ -417,6 +431,11 @@ export const buildCancelledReservationsPipeline = (
             },
           },
           {
+            $project: {
+              reviews: 0,
+            },
+          },
+          {
             $unwind: {
               path: '$host',
               preserveNullAndEmptyArrays: true,
@@ -486,6 +505,11 @@ export const buildCancelledReservationsPipeline = (
               localField: 'details',
               foreignField: '_id',
               as: 'details',
+            },
+          },
+          {
+            $project: {
+              reviews: 0,
             },
           },
           {

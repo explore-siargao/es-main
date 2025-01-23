@@ -4,7 +4,12 @@ import { T_Cart_Item } from "@repo/contract-2/cart"
 import AddGuestModal from "../../modals/add-guest-modal"
 import EditGuestModal from "../../modals/edit-guest-modal"
 
-const RentalContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
+type ContactsProps = {
+  cartItem: T_Cart_Item
+  isViewOnly?: boolean
+}
+
+const RentalContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
   const [isAddGuestModalOpen, setIsAddGuestModalOpen] = useState(false)
   const [isEditGuestModalOpen, setIsEditGuestModalOpen] = useState(false)
   const [contactIndex, setContactIndex] = useState(0)
@@ -23,23 +28,25 @@ const RentalContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
       </Typography>
 
       {/* Contact Chips */}
-      <div className="flex flex-wrap items-center gap-2">
-        <div
-          className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
-        >
-          <span className="text-sm">{`${defaultContact.firstName} ${defaultContact.lastName}`}</span>
+      {!isViewOnly && (
+        <div className="flex flex-wrap items-center gap-2">
+          <div
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
+          >
+            <span className="text-sm">{`${defaultContact.firstName} ${defaultContact.lastName}`}</span>
+          </div>
+          <button
+            onClick={() => setIsAddGuestModalOpen(true)}
+            className="inline-flex items-center gap-1 text-sm rounded-full border-2 border-primary-200 border-dashed px-3 py-1 text-primary-900 hover:bg-primary-100 transition"
+          >
+            <span>+</span>
+            <span>Add</span>
+          </button>
         </div>
-        <button
-          onClick={() => setIsAddGuestModalOpen(true)}
-          className="inline-flex items-center gap-1 text-sm rounded-full border-2 border-primary-200 border-dashed px-3 py-1 text-primary-900 hover:bg-primary-100 transition"
-        >
-          <span>+</span>
-          <span>Add</span>
-        </button>
-      </div>
+      )}
 
       {/* Contact Info */}
-      {defaultContact && (
+      {!isViewOnly && defaultContact && (
         <div className="grid gap-2">
           <div className="grid grid-cols-2">
             <Typography variant="h5" className="text-text-300">
@@ -118,15 +125,17 @@ const RentalContacts = ({ cartItem }: { cartItem: T_Cart_Item }) => {
               >
                 {contact.email}
               </Typography>
-              <button
-                className="font-medium underline transition hover:text-primary-500"
-                onClick={() => {
-                  setContactIndex(index)
-                  setIsEditGuestModalOpen(true)
-                }}
-              >
-                Edit
-              </button>
+              {!isViewOnly && (
+                <button
+                  className="font-medium underline transition hover:text-primary-500"
+                  onClick={() => {
+                    setContactIndex(index)
+                    setIsEditGuestModalOpen(true)
+                  }}
+                >
+                  Edit
+                </button>
+              )}
             </div>
           </div>
         </div>

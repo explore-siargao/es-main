@@ -52,10 +52,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     experienceTypes: experienceTypeInput,
     priceFrom,
     priceTo,
-    durations,
-    starRating,
+    durations: Number(durations) || 'any',
+    starRating: Number(starRating) || 'any',
     activityDate,
-    numberOfGuest: numberOfGuest === 'any' ? 'any' : Number(numberOfGuest),
+    numberOfGuest: Number(numberOfGuest) || 'any',
   })
 
   if (validActivitySearch.success) {
@@ -253,7 +253,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -767,7 +766,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $facet: {
-              totalCount: [{ $count: 'count' }],
+              totalCount: [{ $count: 'count' }], // Compute total count separately
               paginatedResults: [
                 { $skip: (page - 1) * limit },
                 { $limit: limit },
@@ -906,7 +905,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -1555,7 +1553,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -2213,7 +2210,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -2809,9 +2805,9 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       )
     }
   } else {
+    console.error(validActivitySearch.error.message)
     res.json(
       response.error({
-        items: JSON.parse(validActivitySearch.error.message),
         message: 'Invalid search parameters',
       })
     )

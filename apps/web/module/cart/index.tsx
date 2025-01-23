@@ -33,7 +33,7 @@ const Cart = () => {
         <div className="lg:col-span-3">
           {isLoading ? (
             <Spinner />
-          ) : data && data?.items.length > 0 ? (
+          ) : data && data?.items?.length > 0 ? (
             <CartList items={data?.items} />
           ) : (
             <div className="col-span-3 w-full">

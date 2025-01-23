@@ -474,7 +474,7 @@ const seedActivities = async () => {
         photos: [],
         slotCapacity: { minimum: 4, maximum: 12 },
         schedule: generateSchedule(),
-        pricePerPerson: null,
+        pricePerPerson: 250,
         pricePerSlot: 900,
         daysCanCancel: "5",
         status: "Live",
