@@ -22,6 +22,8 @@ import { useParams } from "next/navigation"
 import SelectListingTypeModal from "@/module/Hosting/Listings/components/modals/SelectListingTypeModal"
 import transmissionAcronym from "@/module/Hosting/Listings/helpers/transmissionAcronym"
 import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
+import { useModalStore } from "@/common/store/use-modal-store"
+import TermsAndConditionsModal from "@/module/Listing/modals/terms-and-conditions-modal"
 
 const unAuthMenus = [
   {
@@ -57,6 +59,8 @@ function ListingRentalHeader({
   const params = useParams<{ listingId: string }>()
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
+   const { setModal } = useModalStore((state) => state)
+        const modalKey = `terms-and-conditions-listing`
   const listingId = String(params.listingId)
   const { data } = useGetRentalById(listingId)
   const rental = data?.item
@@ -117,7 +121,7 @@ function ListingRentalHeader({
             <Button
               variant="primary"
               size="sm"
-              onClick={() => setIsSelectListingTypeModalOpen(true)}
+              onClick={() => setModal(modalKey)}
               className="flex gap-2"
             >
               <LucidePlus className="h-4 w-4" /> New listing
@@ -165,6 +169,7 @@ function ListingRentalHeader({
             setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
           }
         />
+         <TermsAndConditionsModal onAgree={() => setIsSelectListingTypeModalOpen(true)} />
       </WidthWrapper>
     </header>
   )

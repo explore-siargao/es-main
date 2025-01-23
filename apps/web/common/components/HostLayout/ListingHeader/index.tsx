@@ -31,6 +31,8 @@ import listingCategoryPluralMap from "@/common/helpers/listingCategoryPluralMap"
 import transmissionAcronym from "@/module/Hosting/Listings/helpers/transmissionAcronym"
 import useGetRentalById from "@/module/Hosting/Listings/hooks/useGetRentalById"
 import useGetActivityById from "@/module/Hosting/Listings/Activities/hooks/useGetActivityById"
+import { useModalStore } from "@/common/store/use-modal-store"
+import TermsAndConditionsModal from "@/module/Listing/modals/terms-and-conditions-modal"
 
 const unAuthMenus = [
   {
@@ -70,6 +72,8 @@ function ListingHeader({
   const params = useParams<{ listingId: string }>()
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
+    const { setModal } = useModalStore((state) => state)
+      const modalKey = `terms-and-conditions-listing`
   const listingId = String(params.listingId)
   const getListingHookMap = {
     [E_Listing_Category.Property]: useGetPropertyById,
@@ -156,7 +160,7 @@ function ListingHeader({
               <Button
                 variant="primary"
                 size="sm"
-                onClick={() => setIsSelectListingTypeModalOpen(true)}
+                onClick={() => setModal(modalKey)}
                 className="flex gap-2"
               >
                 <LucidePlus className="h-4 w-4" /> New listing
@@ -205,6 +209,7 @@ function ListingHeader({
             setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
           }
         />
+        <TermsAndConditionsModal onAgree={() => setIsSelectListingTypeModalOpen(true)} />
       </WidthWrapper>
     </header>
   )
