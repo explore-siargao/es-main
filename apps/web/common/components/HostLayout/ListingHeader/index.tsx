@@ -72,8 +72,8 @@ function ListingHeader({
   const params = useParams<{ listingId: string }>()
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
-    const { setModal } = useModalStore((state) => state)
-      const modalKey = `terms-and-conditions-listing`
+  const { setModal } = useModalStore((state) => state)
+  const modalKey = `terms-and-conditions-listing`
   const listingId = String(params.listingId)
   const getListingHookMap = {
     [E_Listing_Category.Property]: useGetPropertyById,
@@ -209,7 +209,9 @@ function ListingHeader({
             setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
           }
         />
-        <TermsAndConditionsModal onAgree={() => setIsSelectListingTypeModalOpen(true)} />
+        <TermsAndConditionsModal
+          onAgree={() => setIsSelectListingTypeModalOpen(true)}
+        />
       </WidthWrapper>
     </header>
   )

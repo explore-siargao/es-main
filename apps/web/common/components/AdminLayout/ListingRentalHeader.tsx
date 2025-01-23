@@ -59,8 +59,8 @@ function ListingRentalHeader({
   const params = useParams<{ listingId: string }>()
   const session = useSessionStore()
   const ASSET_ROOT = "/assets"
-   const { setModal } = useModalStore((state) => state)
-        const modalKey = `terms-and-conditions-listing`
+  const { setModal } = useModalStore((state) => state)
+  const modalKey = `terms-and-conditions-listing`
   const listingId = String(params.listingId)
   const { data } = useGetRentalById(listingId)
   const rental = data?.item
@@ -169,7 +169,9 @@ function ListingRentalHeader({
             setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
           }
         />
-         <TermsAndConditionsModal onAgree={() => setIsSelectListingTypeModalOpen(true)} />
+        <TermsAndConditionsModal
+          onAgree={() => setIsSelectListingTypeModalOpen(true)}
+        />
       </WidthWrapper>
     </header>
   )

@@ -158,7 +158,7 @@ function Header({
             <Button
               variant="primary"
               size="sm"
-               onClick={() => setModal(modalKey)}
+              onClick={() => setModal(modalKey)}
               className="flex gap-2"
             >
               <LucidePlus className="h-4 w-4" /> New listing
@@ -206,7 +206,9 @@ function Header({
             setIsSelectListingTypeModalOpen(!isSelectListingTypeModalOpen)
           }
         />
-          <TermsAndConditionsModal onAgree={() => setIsSelectListingTypeModalOpen(true)} />
+        <TermsAndConditionsModal
+          onAgree={() => setIsSelectListingTypeModalOpen(true)}
+        />
       </WidthWrapper>
     </header>
   )
