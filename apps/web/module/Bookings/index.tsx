@@ -9,13 +9,13 @@ import { Button } from "@/common/components/ui/Button"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { createColumnHelper } from "@tanstack/react-table"
 import Tabs from "@/common/components/Tabs"
-import bookingTabs from "./components/booking-tabs"
 import useGetReservations, {
   T_Reservation_Status,
 } from "./hooks/use-get-reservations"
 import { T_Photo } from "@repo/contract"
 import { isArray } from "lodash"
 import { useRouter, useSearchParams } from "next/navigation"
+import bookingTabs from "./booking-tabs"
 
 interface BookingsProps {
   status: T_Reservation_Status

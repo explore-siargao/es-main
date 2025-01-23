@@ -7,17 +7,14 @@ import PropertyMoreInfo from "@/module/cart/checkout/more-info/property"
 import PropertyPriceDetailsBox from "@/module/cart/checkout/price-details-box/property"
 import ActivityPriceDetailsBox from "@/module/cart/checkout/price-details-box/activity"
 import RentalPriceDetailsBox from "@/module/cart/checkout/price-details-box/rental"
-import SubTotalBox from "../components/sub-total-box"
 import { T_Reservation } from "@repo/contract-2/reservations"
 import RentalMoreInfo from "@/module/cart/checkout/more-info/rental"
 import ActivityMoreInfo from "@/module/cart/checkout/more-info/activity"
 import Link from "next/link"
-import ViewPayment from "../components/view-payment"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useGetReservations, {
-  T_Reservation_Status,
-} from "../hooks/use-get-reservations"
 import { LucideChevronLeft } from "lucide-react"
+import useGetReservations, { T_Reservation_Status } from "./hooks/use-get-reservations"
+import ViewPayment from "./view-payment"
 
 const SingleBooking = () => {
   const searchParams = useSearchParams()
