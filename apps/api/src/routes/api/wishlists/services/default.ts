@@ -213,10 +213,16 @@ export const getAllWishlistbyCategory = async (req: Request, res: Response) => {
       capitalizedCategory === 'Activities' ||
       capitalizedCategory === 'Rentals'
     ) {
+    if (
+      capitalizedCategory === 'Properties' ||
+      capitalizedCategory === 'Activities' ||
+      capitalizedCategory === 'Rentals'
+    ) {
       getWishlist()
     } else {
       res.json(response.error({ message: 'Invalid category' }))
     }
+  }
   } catch (err: any) {
     res.json(
       response.error({

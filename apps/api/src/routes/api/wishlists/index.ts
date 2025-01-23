@@ -15,6 +15,11 @@ router.post(
   addToWishList
 )
 
-router.get('/:category', isOriginValid, isUserLoggedIn, getAllWishlistbyCategory)
+router.get(
+  '/:category',
+  isOriginValid,
+  isUserLoggedIn,
+  getAllWishlistbyCategory
+)
 
 export default router
