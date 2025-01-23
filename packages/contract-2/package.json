@@ -92,6 +92,11 @@
       "import": "./build/review/index.js",
       "require": "./build/review/index.js",
       "types": "./build/review/index.d.ts"
+    },
+    "./wishlist": {
+      "import": "./build/wishlist/index.js",
+      "require": "./build/wishlist/index.js",
+      "types": "./build/wishlist/index.d.ts"
     }
   },
   "scripts": {

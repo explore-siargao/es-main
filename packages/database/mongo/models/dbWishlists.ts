@@ -26,4 +26,15 @@ const wishList = new Schema({
   deletedAt: Date,
 })
 
+wishList.virtual("listing", {
+  refPath: "category",
+  localField: "listingId",
+  foreignField: "_id",
+  justOne: true,
+})
+
+// Enable virtuals in JSON output
+wishList.set("toJSON", { virtuals: true })
+wishList.set("toObject", { virtuals: true })
+
 export default mongoose.model("WishList", wishList)
