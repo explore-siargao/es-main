@@ -18,7 +18,9 @@ export const buildFinishReservationsPipeline = (
         ],
       },
       { endDate: { $lt: dateNow } },
-      ...(referenceId === "undefined" ? [] : [{ _id: new Types.ObjectId(referenceId) }]),
+      ...(referenceId === 'undefined'
+        ? []
+        : [{ _id: new Types.ObjectId(referenceId) }]),
     ],
   }
 
@@ -151,7 +153,7 @@ export const buildFinishReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -256,7 +258,7 @@ export const buildFinishReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -438,7 +440,7 @@ export const buildFinishReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -515,7 +517,7 @@ export const buildFinishReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {

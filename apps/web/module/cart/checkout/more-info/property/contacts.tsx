@@ -5,9 +5,9 @@ import AddGuestModal from "../../modals/add-guest-modal"
 import EditGuestModal from "../../modals/edit-guest-modal"
 
 type ContactsProps = {
-  cartItem: T_Cart_Item;
-  isViewOnly?: boolean;
-};
+  cartItem: T_Cart_Item
+  isViewOnly?: boolean
+}
 
 const PropertyContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
   const [isAddGuestModalOpen, setIsAddGuestModalOpen] = useState(false)
@@ -28,32 +28,34 @@ const PropertyContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
       </Typography>
 
       {/* Contact Chips */}
-      {!isViewOnly && <div className="flex flex-wrap items-center gap-2">
-        <div
-          className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
-        >
-          <span className="text-sm">{`${defaultContact.firstName} ${defaultContact.lastName}`}</span>
-        </div>
-        {/* @ts-expect-error */}
-        {cartItem?.contacts.map((guest, index) => (
+      {!isViewOnly && (
+        <div className="flex flex-wrap items-center gap-2">
           <div
-            key={index}
             className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
           >
-            <span className="text-sm">{`${guest.firstName} ${guest.lastName}`}</span>
+            <span className="text-sm">{`${defaultContact.firstName} ${defaultContact.lastName}`}</span>
           </div>
-        ))}
-        <button
-          onClick={() => setIsAddGuestModalOpen(true)}
-          className="inline-flex items-center gap-1 text-sm rounded-full border-2 border-primary-200 border-dashed px-3 py-1 text-primary-900 hover:bg-primary-100 transition"
-        >
-          <span>+</span>
-          <span>Add</span>
-        </button>
-      </div>}
+          {/* @ts-expect-error */}
+          {cartItem?.contacts.map((guest, index) => (
+            <div
+              key={index}
+              className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
+            >
+              <span className="text-sm">{`${guest.firstName} ${guest.lastName}`}</span>
+            </div>
+          ))}
+          <button
+            onClick={() => setIsAddGuestModalOpen(true)}
+            className="inline-flex items-center gap-1 text-sm rounded-full border-2 border-primary-200 border-dashed px-3 py-1 text-primary-900 hover:bg-primary-100 transition"
+          >
+            <span>+</span>
+            <span>Add</span>
+          </button>
+        </div>
+      )}
 
       {/* Contact Info */}
-      {(!isViewOnly && defaultContact) && (
+      {!isViewOnly && defaultContact && (
         <div className="grid gap-2">
           <div className="grid grid-cols-2">
             <Typography variant="h5" className="text-text-300">
@@ -131,15 +133,17 @@ const PropertyContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
               >
                 {contact.email}
               </Typography>
-              {!isViewOnly && <button
-                className="font-medium underline transition hover:text-primary-500"
-                onClick={() => {
-                  setContactIndex(index)
-                  setIsEditGuestModalOpen(true)
-                }}
-              >
-                Edit
-              </button>}
+              {!isViewOnly && (
+                <button
+                  className="font-medium underline transition hover:text-primary-500"
+                  onClick={() => {
+                    setContactIndex(index)
+                    setIsEditGuestModalOpen(true)
+                  }}
+                >
+                  Edit
+                </button>
+              )}
             </div>
           </div>
         </div>

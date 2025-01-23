@@ -11,7 +11,10 @@ type T_Property_Price_Details_Box = {
   isViewOnly?: boolean
 }
 
-const PropertyMoreInfo = ({ items, isViewOnly }: T_Property_Price_Details_Box) => {
+const PropertyMoreInfo = ({
+  items,
+  isViewOnly,
+}: T_Property_Price_Details_Box) => {
   return (
     <>
       {items.map((item) => {

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const BookingsPage = () => {
-  return <GroupBookings/>
+  return <GroupBookings />
 }
 
 export default BookingsPage

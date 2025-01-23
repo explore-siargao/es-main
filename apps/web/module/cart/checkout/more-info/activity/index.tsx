@@ -11,7 +11,10 @@ type T_Activity_Price_Details_Box = {
   isViewOnly?: boolean
 }
 
-const ActivityMoreInfo = ({ items,isViewOnly }: T_Activity_Price_Details_Box) => {
+const ActivityMoreInfo = ({
+  items,
+  isViewOnly,
+}: T_Activity_Price_Details_Box) => {
   return (
     <>
       {items.map((item) => {
@@ -37,7 +40,7 @@ const ActivityMoreInfo = ({ items,isViewOnly }: T_Activity_Price_Details_Box) =>
                 </Typography>
               </div>
               <hr className="my-4" />
-              <RentalContacts cartItem={item} isViewOnly={isViewOnly}/>
+              <RentalContacts cartItem={item} isViewOnly={isViewOnly} />
               <hr className="my-4" />
               <div className="flex flex-col gap-y-4">
                 <Typography variant={"h3"} fontWeight="semibold">

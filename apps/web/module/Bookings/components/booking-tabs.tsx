@@ -1,9 +1,14 @@
-import { Group, LucideCalendarCheck, LucideCheckCircle, LucideXCircle } from "lucide-react";
+import {
+  Group,
+  LucideCalendarCheck,
+  LucideCheckCircle,
+  LucideXCircle,
+} from "lucide-react"
 
 const bookingTabs = [
   {
     name: "Active Bookings",
-    icon: <LucideCalendarCheck className="w-5" />, 
+    icon: <LucideCalendarCheck className="w-5" />,
     link: "/bookings/active",
   },
   {
@@ -13,9 +18,9 @@ const bookingTabs = [
   },
   {
     name: "Cancelled Bookings",
-    icon: <LucideXCircle className="w-5" />, 
+    icon: <LucideXCircle className="w-5" />,
     link: "/bookings/cancelled",
-  }
-];
+  },
+]
 
-export default bookingTabs;
+export default bookingTabs

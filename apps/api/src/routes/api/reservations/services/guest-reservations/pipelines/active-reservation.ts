@@ -13,7 +13,9 @@ export const buildActiveReservationsPipeline = (
       { guest: new Types.ObjectId(userId) },
       { status: E_ReservationStatus.Confirmed },
       { endDate: { $gte: dateNow } },
-      ...(referenceId === "undefined" ?  [] : [{ _id: new Types.ObjectId(referenceId) }]),
+      ...(referenceId === 'undefined'
+        ? []
+        : [{ _id: new Types.ObjectId(referenceId) }]),
     ],
   }
 
@@ -146,7 +148,7 @@ export const buildActiveReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -251,7 +253,7 @@ export const buildActiveReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -433,7 +435,7 @@ export const buildActiveReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -510,7 +512,7 @@ export const buildActiveReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {

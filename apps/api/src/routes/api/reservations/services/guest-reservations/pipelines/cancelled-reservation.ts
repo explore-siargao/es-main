@@ -11,10 +11,11 @@ export const buildCancelledReservationsPipeline = (
     status: E_ReservationStatus.Cancelled,
     guest: new Types.ObjectId(userId),
     deletedAt: null,
-    ...(referenceId === "undefined" ? [] : [{ _id: new Types.ObjectId(referenceId) }]),
+    ...(referenceId === 'undefined'
+      ? []
+      : [{ _id: new Types.ObjectId(referenceId) }]),
   }
 
-  
   return [
     {
       $match: query,
@@ -144,7 +145,7 @@ export const buildCancelledReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -249,7 +250,7 @@ export const buildCancelledReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -431,7 +432,7 @@ export const buildCancelledReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -508,7 +509,7 @@ export const buildCancelledReservationsPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {

@@ -10,32 +10,33 @@ import { Spinner } from "@/common/components/ui/Spinner"
 import { createColumnHelper } from "@tanstack/react-table"
 import Tabs from "@/common/components/Tabs"
 import bookingTabs from "./components/booking-tabs"
-import useGetReservations, { T_Reservation_Status } from "./hooks/use-get-reservations"
+import useGetReservations, {
+  T_Reservation_Status,
+} from "./hooks/use-get-reservations"
 import { T_Photo } from "@repo/contract"
 import { isArray } from "lodash"
 import { useRouter, useSearchParams } from "next/navigation"
 
 interface BookingsProps {
-  status: T_Reservation_Status;
+  status: T_Reservation_Status
 }
 
 const Bookings = ({ status }: BookingsProps) => {
-  const searchParams = useSearchParams();
-  const page = Number(searchParams?.get("page")) || 1;
+  const searchParams = useSearchParams()
+  const page = Number(searchParams?.get("page")) || 1
   const { data, isPending } = useGetReservations(status, page)
   const router = useRouter()
-  const params = new URLSearchParams(searchParams.toString());  
+  const params = new URLSearchParams(searchParams.toString())
 
   const nextPage = () => {
-    params.set("page", String(page + 1));
-    router.push(`?${params.toString()}`);
-  };
+    params.set("page", String(page + 1))
+    router.push(`?${params.toString()}`)
+  }
 
   const previousPage = () => {
-    params.set("page", String(page - 1 > 0 ? page - 1 : 1));
-    router.push(`?${params.toString()}`);
-  };
-  
+    params.set("page", String(page - 1 > 0 ? page - 1 : 1))
+    router.push(`?${params.toString()}`)
+  }
 
   const columnHelper = createColumnHelper<any>()
   const columns = [
@@ -44,34 +45,46 @@ const Bookings = ({ status }: BookingsProps) => {
       cell: (listing) => {
         const listingRow = listing.row.original
         const listingData = listingRow.propertyIds
-        ? listingRow.propertyIds?.unitId : listingRow.rentalIds 
-        ? listingRow.rentalIds?.rentalId : listingRow.activityIds ? listingRow.activityIds?.activityId : null
+          ? listingRow.propertyIds?.unitId
+          : listingRow.rentalIds
+            ? listingRow.rentalIds?.rentalId
+            : listingRow.activityIds
+              ? listingRow.activityIds?.activityId
+              : null
 
         const photo =
-        listing && isArray(listingData?.photos)
-                    ? listingData?.photos.find((photo: T_Photo) => photo.isMain)
-                    : ""
-
+          listing && isArray(listingData?.photos)
+            ? listingData?.photos.find((photo: T_Photo) => photo.isMain)
+            : ""
 
         return (
-        <Link href={`/bookings/single?status=${status}&referenceId=${listingRow._id}`}>
-          <div className="flex items-center gap-5">
-            <div className="relative w-24 h-16 rounded-xl overflow-hidden">
-              <Image
-                src={`/assets/${photo.key}`}
-                alt="Image"
-                fill
-                style={{ objectFit: "cover" }}
-              />
+          <Link
+            href={`/bookings/single?status=${status}&referenceId=${listingRow._id}`}
+          >
+            <div className="flex items-center gap-5">
+              <div className="relative w-24 h-16 rounded-xl overflow-hidden">
+                <Image
+                  src={`/assets/${photo.key}`}
+                  alt="Image"
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <span>
+                <Typography variant="p">
+                  {listingData?.title
+                    ? listingData?.title
+                    : listingData?.year +
+                      " " +
+                      listingData?.make +
+                      " " +
+                      listingData?.modelBadge}
+                </Typography>
+              </span>
             </div>
-            <span>
-              <Typography variant="p">
-                {listingData?.title ? listingData?.title : listingData?.year + " " + listingData?.make + " " + listingData?.modelBadge} 
-              </Typography>
-            </span>
-          </div>
-        </Link>
-      )},
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor("guestCount", {
       header: "Guest Count",
@@ -98,23 +111,26 @@ const Bookings = ({ status }: BookingsProps) => {
     }),
     columnHelper.accessor("", {
       header: "Location",
-      cell: (location) => 
-       { const locationRow = location.row.original
-        const locationData = locationRow.propertyIds 
-        ? locationRow.propertyIds?.propertyId?.location : locationRow.rentalIds 
-        ? locationRow.rentalIds?.rentalId?.location : locationRow.activityIds ? locationRow.activityIds?.activityId?.meetingPoint : null
+      cell: (location) => {
+        const locationRow = location.row.original
+        const locationData = locationRow.propertyIds
+          ? locationRow.propertyIds?.propertyId?.location
+          : locationRow.rentalIds
+            ? locationRow.rentalIds?.rentalId?.location
+            : locationRow.activityIds
+              ? locationRow.activityIds?.activityId?.meetingPoint
+              : null
 
         const formattedAddress = [
           locationData?.streetAddress,
           locationData?.barangay,
-          locationData?.city
+          locationData?.city,
         ]
           .filter(Boolean)
-          .join(", ");
+          .join(", ")
 
-        return(
-        <Typography variant="p">{formattedAddress}</Typography>
-      )},
+        return <Typography variant="p">{formattedAddress}</Typography>
+      },
     }),
     columnHelper.accessor("price", {
       header: "Total Cost",
@@ -137,42 +153,40 @@ const Bookings = ({ status }: BookingsProps) => {
     }),
   ]
 
-
-
   return (
     <WidthWrapper width="medium" className="mt-10 w-full">
-          <div className="mb-12">
-            <Typography
-              variant="h1"
-              fontWeight="semibold"
-              className="flex justify-between items-center"
-            >
-              Your bookings
-            </Typography>
-          </div>
-          <div className="mb-12">
-          <Tabs tabs={bookingTabs} />
-          </div>
+      <div className="mb-12">
+        <Typography
+          variant="h1"
+          fontWeight="semibold"
+          className="flex justify-between items-center"
+        >
+          Your bookings
+        </Typography>
+      </div>
+      <div className="mb-12">
+        <Tabs tabs={bookingTabs} />
+      </div>
       {isPending ? (
         <Spinner size="md">Loading...</Spinner>
       ) : data?.items?.length !== 0 ? (
         <div>
-      
-          <Table data={data?.items || []} columns={columns} 
-              pageIndex={page -1}
-              pageCount={Math.ceil((data?.allItemCount || 0) / 15) }
-              canPreviousPage={page - 1 > 0}
-              canNextPage={
-                page < Math.ceil((data?.allItemCount || 0) / 15)
-              }
-              previousPage={previousPage}
-              nextPage={nextPage}
-              pageSize={15} />
+          <Table
+            data={data?.items || []}
+            columns={columns}
+            pageIndex={page - 1}
+            pageCount={Math.ceil((data?.allItemCount || 0) / 15)}
+            canPreviousPage={page - 1 > 0}
+            canNextPage={page < Math.ceil((data?.allItemCount || 0) / 15)}
+            previousPage={previousPage}
+            nextPage={nextPage}
+            pageSize={15}
+          />
         </div>
       ) : (
         <div>
           <Typography variant="h1" fontWeight="semibold">
-          No listing booked...yet
+            No listing booked...yet
           </Typography>
           <Typography
             variant="h4"
@@ -182,9 +196,9 @@ const Bookings = ({ status }: BookingsProps) => {
             Time to dust off your bags and start planning your next adventure
           </Typography>
           <Link href={`/search/properties`}>
-          <Button variant="outline" size="lg" className="mt-3 font-semibold">
-            Start searching
-          </Button>
+            <Button variant="outline" size="lg" className="mt-3 font-semibold">
+              Start searching
+            </Button>
           </Link>
           <hr className="mt-12 mb-5"></hr>
           <Typography

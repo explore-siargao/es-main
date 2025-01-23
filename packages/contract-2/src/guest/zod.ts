@@ -21,10 +21,22 @@ export const Z_Guest = z.object({
   gender: z.string().optional(),
   phone: z.string().optional(),
   cellPhone: z.string().optional(),
-  governmentId: z.union([z.array(z.string()), z.array(objectIdSchema),z.array(Z_GovernmentId)]).optional(),
+  governmentId: z
+    .union([
+      z.array(z.string()),
+      z.array(objectIdSchema),
+      z.array(Z_GovernmentId),
+    ])
+    .optional(),
   country: z.string().optional(),
   address: z.union([z.string(), Z_Address]).optional(),
-  emergencyContacts: z.union([z.array(z.string()), z.array(objectIdSchema), z.array(Z_EmergencyContact)]).optional(),
+  emergencyContacts: z
+    .union([
+      z.array(z.string()),
+      z.array(objectIdSchema),
+      z.array(Z_EmergencyContact),
+    ])
+    .optional(),
   birthDate: z.union([z.string(), z.date()]).optional(),
   documentType: z.string().optional(),
   documentNumber: z.string().optional(),

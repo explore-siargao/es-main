@@ -18,74 +18,80 @@ export const getReservationsGroupedByReferenceId = async (
   req: Request,
   res: Response
 ) => {
-  const userId = res.locals.user.id;
-  const timeZone = "Asia/Manila";
-  const { page = 1, limit = 15, referenceId } = req.query;
+  const userId = res.locals.user.id
+  const timeZone = 'Asia/Manila'
+  const { page = 1, limit = 15, referenceId } = req.query
 
   if (!timeZone) {
-    res.json(response.error({ message: 'time-zone header is required' }));
+    res.json(response.error({ message: 'time-zone header is required' }))
   }
 
   try {
-    const dateNow = toZonedTime(new Date(), timeZone as string);
+    const dateNow = toZonedTime(new Date(), timeZone as string)
     const pipelines = getGroupedReservationPipeline(
       userId,
       dateNow,
       page as number,
       limit as number,
       referenceId as string | undefined
-    );
+    )
 
-    const reservations = await dbReservations.aggregate(pipelines);
+    const reservations = await dbReservations.aggregate(pipelines)
 
     // Validate reservations
     const validGroupedReservations =
-      Z_Grouped_Reservations.safeParse(reservations);
+      Z_Grouped_Reservations.safeParse(reservations)
 
-
-    const fetchPaymentMethodDetails = async (xendItPaymentRequestId: string) => {
+    const fetchPaymentMethodDetails = async (
+      xendItPaymentRequestId: string
+    ) => {
       const paymentRequestResponse = await fetch(
         `${API_URL}/api/v1/xendit/payment-request?id=${xendItPaymentRequestId}`,
         {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         }
-      );
-      const paymentRequestData = await paymentRequestResponse.json();
+      )
+      const paymentRequestData = await paymentRequestResponse.json()
       return {
         type: paymentRequestData.item.payment_method.type,
-        ewallet:{
-          channelCode: paymentRequestData.item.payment_method.ewallet?.channel_code,
+        ewallet: {
+          channelCode:
+            paymentRequestData.item.payment_method.ewallet?.channel_code,
         },
         cardDetails: {
           maskedCardNumber:
-            paymentRequestData.item.payment_method.card?.card_information?.masked_card_number,
-          cardType: paymentRequestData.item.payment_method.card?.card_information?.type,
-          network: paymentRequestData.item.payment_method.card?.card_information?.network,
+            paymentRequestData.item.payment_method.card?.card_information
+              ?.masked_card_number,
+          cardType:
+            paymentRequestData.item.payment_method.card?.card_information?.type,
+          network:
+            paymentRequestData.item.payment_method.card?.card_information
+              ?.network,
         },
-      };
-    };
+      }
+    }
 
     if (validGroupedReservations.success) {
       if (reservations.length === 1) {
         const paymentDetails = await fetchPaymentMethodDetails(
           reservations[0].reservations[0].xendItPaymentRequestId
-        );
+        )
         res.json(
           response.success({
             item: { ...reservations[0], paymentDetails },
             message: 'Reservation successfully fetched',
           })
-        );
+        )
       } else {
         const enrichedItems = await Promise.all(
           reservations.map(async (reservationGroup) => {
             const paymentDetails = await fetchPaymentMethodDetails(
               reservationGroup.xendItPaymentReferenceId
-            );
-            return { ...reservationGroup, ...paymentDetails };
+            )
+            return { ...reservationGroup, ...paymentDetails }
           })
-        );
+        )
 
         res.json(
           response.success({
@@ -94,19 +100,17 @@ export const getReservationsGroupedByReferenceId = async (
             allItemCount: reservations.length,
             message: 'Reservations successfully fetched',
           })
-        );
+        )
       }
     } else {
-      console.error(validGroupedReservations.error.message);
-      res.json(response.error({ message: 'Invalid reservation data' }));
+      console.error(validGroupedReservations.error.message)
+      res.json(response.error({ message: 'Invalid reservation data' }))
     }
   } catch (err: any) {
     res.json(
       response.error({
         message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
-    );
+    )
   }
-};
-
-
+}

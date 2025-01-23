@@ -20,8 +20,8 @@ export const getGroupedReservationPipeline = (
       { endDate: { $lt: dateNow } },
       ...(referenceId ? [{ xendItPaymentReferenceId: referenceId }] : []),
     ],
-  };
-  
+  }
+
   return [
     {
       $match: query,
@@ -136,13 +136,11 @@ export const getGroupedReservationPipeline = (
             $match: {
               $expr: { $eq: ['$_id', '$$propertyId'] }, // Match the `_id` field in `properties` with `propertyId`
             },
-            
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
-            
           },
           {
             $lookup: {
@@ -246,7 +244,7 @@ export const getGroupedReservationPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -428,7 +426,7 @@ export const getGroupedReservationPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {
@@ -505,7 +503,7 @@ export const getGroupedReservationPipeline = (
           },
           {
             $project: {
-              reviews: 0
+              reviews: 0,
             },
           },
           {

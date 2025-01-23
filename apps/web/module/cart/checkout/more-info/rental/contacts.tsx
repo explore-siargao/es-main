@@ -5,9 +5,9 @@ import AddGuestModal from "../../modals/add-guest-modal"
 import EditGuestModal from "../../modals/edit-guest-modal"
 
 type ContactsProps = {
-  cartItem: T_Cart_Item;
-  isViewOnly?: boolean;
-};
+  cartItem: T_Cart_Item
+  isViewOnly?: boolean
+}
 
 const RentalContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
   const [isAddGuestModalOpen, setIsAddGuestModalOpen] = useState(false)
@@ -28,21 +28,22 @@ const RentalContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
       </Typography>
 
       {/* Contact Chips */}
-    {!isViewOnly && 
-    <div className="flex flex-wrap items-center gap-2">
-        <div
-          className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
-        >
-          <span className="text-sm">{`${defaultContact.firstName} ${defaultContact.lastName}`}</span>
+      {!isViewOnly && (
+        <div className="flex flex-wrap items-center gap-2">
+          <div
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 cursor-pointer bg-primary-200 text-primary-900`}
+          >
+            <span className="text-sm">{`${defaultContact.firstName} ${defaultContact.lastName}`}</span>
+          </div>
+          <button
+            onClick={() => setIsAddGuestModalOpen(true)}
+            className="inline-flex items-center gap-1 text-sm rounded-full border-2 border-primary-200 border-dashed px-3 py-1 text-primary-900 hover:bg-primary-100 transition"
+          >
+            <span>+</span>
+            <span>Add</span>
+          </button>
         </div>
-        <button
-          onClick={() => setIsAddGuestModalOpen(true)}
-          className="inline-flex items-center gap-1 text-sm rounded-full border-2 border-primary-200 border-dashed px-3 py-1 text-primary-900 hover:bg-primary-100 transition"
-        >
-          <span>+</span>
-          <span>Add</span>
-        </button>
-      </div>}
+      )}
 
       {/* Contact Info */}
       {!isViewOnly && defaultContact && (
@@ -124,16 +125,17 @@ const RentalContacts = ({ cartItem, isViewOnly }: ContactsProps) => {
               >
                 {contact.email}
               </Typography>
-              {!isViewOnly  && <button
-                className="font-medium underline transition hover:text-primary-500"
-                onClick={() => {
-                  setContactIndex(index)
-                  setIsEditGuestModalOpen(true)
-                }}
-              >
-                Edit
-              </button>}
-            
+              {!isViewOnly && (
+                <button
+                  className="font-medium underline transition hover:text-primary-500"
+                  onClick={() => {
+                    setContactIndex(index)
+                    setIsEditGuestModalOpen(true)
+                  }}
+                >
+                  Edit
+                </button>
+              )}
             </div>
           </div>
         </div>

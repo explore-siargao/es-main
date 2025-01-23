@@ -1,36 +1,28 @@
 import { Typography } from "@/common/components/ui/Typography"
-import {
-  LucideCreditCard,
-} from "lucide-react"
+import { LucideCreditCard } from "lucide-react"
 import gcash from "@/common/assets/gcash.png"
 import Image from "@/common/components/ui/image"
 import xendit from "@/common/assets/powered-xendit.png"
 import Link from "next/link"
-import _ from "lodash";
+import _ from "lodash"
 
 interface ViewPaymentProps {
   paymentDetails: {
-    type: "CARD" | "EWALLET"; 
+    type: "CARD" | "EWALLET"
     cardDetails?: {
-      cardType: string,
-      maskedCardNumber: string,
-      network: string,
-    },
+      cardType: string
+      maskedCardNumber: string
+      network: string
+    }
     ewallet: {
-      channelCode: string,
+      channelCode: string
     }
   }
 }
 
-
-
-const ViewPayment = ({
-  paymentDetails,
-}: ViewPaymentProps) => {
-
-  
-  function extractLastDigits(maskedCardNumber:string) {
-    return maskedCardNumber ? maskedCardNumber.match(/\d+$/)?.[0] || "" : "";
+const ViewPayment = ({ paymentDetails }: ViewPaymentProps) => {
+  function extractLastDigits(maskedCardNumber: string) {
+    return maskedCardNumber ? maskedCardNumber.match(/\d+$/)?.[0] || "" : ""
   }
   const options = {
     CARD: {
@@ -51,12 +43,12 @@ const ViewPayment = ({
         />
       ),
     },
-  };
+  }
 
   const selectedPayment = options[paymentDetails.type] || {
     name: "Unknown Payment Method",
     icon: null,
-  };
+  }
 
   return (
     <div className="w-full">
@@ -78,8 +70,7 @@ const ViewPayment = ({
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ViewPayment;
-
+export default ViewPayment
