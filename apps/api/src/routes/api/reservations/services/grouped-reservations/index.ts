@@ -13,6 +13,7 @@ import { getGroupedReservationPipeline } from './pipelines/groupedReservationPip
 import { API_URL } from '@/common/constants/ev'
 
 const response = new ResponseService()
+
 export const getReservationsGroupedByReferenceId = async (
   req: Request,
   res: Response

@@ -8,7 +8,7 @@ import RentalContacts from "./contacts"
 
 type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
-  isViewOnly: boolean
+  isViewOnly?: boolean
 }
 
 const ActivityMoreInfo = ({ items,isViewOnly }: T_Activity_Price_Details_Box) => {

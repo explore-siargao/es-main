@@ -54,7 +54,7 @@ const Bookings = ({ status }: BookingsProps) => {
 
 
         return (
-        <Link href={`/bookings/${listingRow._id}`}>
+        <Link href={`/bookings/single?status=${status}&referenceId=${listingRow._id}`}>
           <div className="flex items-center gap-5">
             <div className="relative w-24 h-16 rounded-xl overflow-hidden">
               <Image
@@ -141,10 +141,6 @@ const Bookings = ({ status }: BookingsProps) => {
 
   return (
     <WidthWrapper width="medium" className="mt-10 w-full">
-      {isPending ? (
-        <Spinner size="md">Loading...</Spinner>
-      ) : data?.items?.length !== 0 ? (
-        <div>
           <div className="mb-12">
             <Typography
               variant="h1"
@@ -157,6 +153,11 @@ const Bookings = ({ status }: BookingsProps) => {
           <div className="mb-12">
           <Tabs tabs={bookingTabs} />
           </div>
+      {isPending ? (
+        <Spinner size="md">Loading...</Spinner>
+      ) : data?.items?.length !== 0 ? (
+        <div>
+      
           <Table data={data?.items || []} columns={columns} 
               pageIndex={page -1}
               pageCount={Math.ceil((data?.allItemCount || 0) / 15) }
@@ -169,13 +170,9 @@ const Bookings = ({ status }: BookingsProps) => {
               pageSize={15} />
         </div>
       ) : (
-        <div className="px-12">
+        <div>
           <Typography variant="h1" fontWeight="semibold">
-            Trips
-          </Typography>
-          <hr className="mt-5 mb-5"></hr>
-          <Typography variant="h1" fontWeight="semibold">
-            No trips booked...yet!
+          No listing booked...yet
           </Typography>
           <Typography
             variant="h4"
@@ -184,9 +181,11 @@ const Bookings = ({ status }: BookingsProps) => {
           >
             Time to dust off your bags and start planning your next adventure
           </Typography>
+          <Link href={`/search/properties`}>
           <Button variant="outline" size="lg" className="mt-3 font-semibold">
             Start searching
           </Button>
+          </Link>
           <hr className="mt-12 mb-5"></hr>
           <Typography
             variant="h4"

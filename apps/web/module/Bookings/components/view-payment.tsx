@@ -34,7 +34,7 @@ const ViewPayment = ({
   }
   const options = {
     CARD: {
-      name: paymentDetails.cardDetails
+      name: paymentDetails?.cardDetails
         ? `Paid using ${_.capitalize(paymentDetails.cardDetails.cardType)} ${_.capitalize(paymentDetails.cardDetails.network)} ending with ${extractLastDigits(paymentDetails.cardDetails.maskedCardNumber)}`
         : "Paid using Credit or Debit card",
       icon: <LucideCreditCard className="text-text-300" />,

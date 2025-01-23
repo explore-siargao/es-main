@@ -1,9 +1,7 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { Typography } from "@/common/components/ui/Typography"
-import useGetGroupedReservations from "../hooks/use-get-group-reservations"
 import { useSearchParams } from "next/navigation"
-import { LucideChevronLeft } from "lucide-react"
 import { APP_NAME } from "@repo/constants"
 import PropertyMoreInfo from "@/module/cart/checkout/more-info/property"
 import PropertyPriceDetailsBox from "@/module/cart/checkout/price-details-box/property"
@@ -16,21 +14,35 @@ import ActivityMoreInfo from "@/module/cart/checkout/more-info/activity"
 import Link from "next/link"
 import ViewPayment from "../components/view-payment"
 import { Spinner } from "@/common/components/ui/Spinner"
-import useGetReservations from "../hooks/use-get-reservations"
+import useGetReservations, { T_Reservation_Status } from "../hooks/use-get-reservations"
+import { LucideChevronLeft } from "lucide-react"
 
 
 const SingleBooking = () => {
   const searchParams = useSearchParams();
   const page = 1;
   const referenceId = searchParams?.get("referenceId") || "";
-  const { data, isPending } = useGetReservations("Active", page, referenceId)
-  console.log(data)
-  console.log(referenceId)
+  const status = searchParams?.get("status") as T_Reservation_Status || "";
+  const { data, isPending } = useGetReservations(status, page, referenceId)
+
+  const enhancedItem = {
+    ...data?.item,
+    status: data?.item?.status || "Active", 
+    price: data?.item?.price || 0,
+    startDate: data?.item?.startDate || "",
+    endDate: data?.item?.endDate || "",
+    guestComission: data?.item?.guestComission || 0,
+    hostComission: data?.item?.hostComission || 0,
+  };
+
   return (
     <WidthWrapper width="medium" className="mt-6 lg:mt-8">
       <div className="flex items-center gap-2">
+      <Link href={`/bookings/${status === "Done" ? "finished" : status.toLowerCase()}`}>
+          <LucideChevronLeft className="h-5 w-5 text-text-400 transition hover:text-text-500" />
+        </Link>
         <Typography variant={"h1"} fontWeight="semibold">
-          Group bookings
+         {status === "Done" ? "Finished" : status} booking
         </Typography>
       </div>
       {isPending ? (
@@ -40,75 +52,60 @@ const SingleBooking = () => {
         <div className="flex-1 flex flex-col gap-y-4">
           <ViewPayment paymentDetails={data?.item?.paymentDetails} />
           <hr className="my-4" />
-          {data?.item?.reservations && (
+          {data?.item && (
   <>
-    {data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds).length > 0 && (
+    {data.item.propertyIds && (
       <PropertyMoreInfo
-        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds)}
+        items={[enhancedItem]} 
         isViewOnly={true}
       />
     )}
-    {data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds).length > 0 && (
+    {data.item.rentalIds && (
       <RentalMoreInfo
-        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds)}
+        items={[enhancedItem]}
         isViewOnly={true}
       />
     )}
-    {data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds).length > 0 && (
+    {data.item.activityIds && (
       <ActivityMoreInfo
-        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds)}
+        items={[enhancedItem]} 
         isViewOnly={true}
       />
     )}
   </>
 )}
-          <hr className="my-4" />
-          <Typography variant="h6" className="text-text-500">
-            By selecting the Pay now button on this page, I agree to the{" "}
-            <Link className="font-semibold underline" href="#">
-              Host's House Rules
-            </Link>
-            ,{" "}
-            <Link className="font-semibold underline" href="#">
-              Ground rules for guests
-            </Link>
-            ,{" "}
-            <Link className="font-semibold underline" href="#">
-              {APP_NAME}'s Rebooking and Refund Policy
-            </Link>
-            , and that {APP_NAME} can{" "}
-            <Link className="font-semibold underline" href="#">
-              charge my payment method
-            </Link>{" "}
-            if I’m responsible for damage.
-          </Typography>
+          
+ 
         </div>
         <div className="hidden xl:block flex-1 xl:flex-none xl:w-1/3 md:relative">
           <div className="md:sticky top-10 space-y-4">
-          {data?.item?.reservations && (
+          {data?.item && (
   <>
-    {data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds).length > 0 && (
+    {data.item.propertyIds && (
       <PropertyPriceDetailsBox
-        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.propertyIds)}
+       singleView={true}
+        items={[enhancedItem]} 
       />
     )}
-    {data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds).length > 0 && (
+    {data.item.activityIds && (
       <ActivityPriceDetailsBox
-        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.activityIds)}
+      singleView={true}
+        items={[enhancedItem]}
       />
     )}
-    {data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds).length > 0 && (
+    {data.item.rentalIds && (
       <RentalPriceDetailsBox
-        items={data.item.reservations.filter((reservation: T_Reservation) => reservation.rentalIds)}
+      singleView={true}
+        items={[enhancedItem]} 
       />
     )}
   </>
 )}
-
-            
-            <SubTotalBox
-              selectedItemsPrice={data?.item?.totalPrice + data?.item?.totalGuestComission}
-            />
+<div className="my-4">
+              <Link className="font-semibold underline" href={`/bookings/group?referenceId=${data?.item?.xendItPaymentReferenceId}`}>
+              View group booking
+            </Link>
+            </div>
           </div>
         </div>
       </div>
