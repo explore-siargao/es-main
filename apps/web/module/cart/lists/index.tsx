@@ -41,29 +41,27 @@ const CartList: React.FC<T_Cart_Props> = ({ items }) => {
     const cartItem = items.find((cartItem) => cartItem._id === id)
     if (!cartItem) return
 
+    let updatedSelectedItemsIds: string[]
+    let updatedSelectedItems: T_Cart_Item[]
+
     if (selectedItemsIds.includes(id)) {
-      setSelectedItemsIds(selectedItemsIds.filter((itemId) => itemId !== id))
-      setSelectedItems(
-        selectedItems.filter((selectedItem) => selectedItem._id !== id)
+      updatedSelectedItemsIds = selectedItemsIds.filter((itemId) => itemId !== id)
+      updatedSelectedItems = selectedItems.filter(
+        (selectedItem) => selectedItem._id !== id
       )
     } else {
-      setSelectedItemsIds([...selectedItemsIds, id])
-      setSelectedItems([...selectedItems, cartItem])
+      updatedSelectedItemsIds = [...selectedItemsIds, id]
+      updatedSelectedItems = [...selectedItems, cartItem]
     }
+    setSelectedItemsIds(updatedSelectedItemsIds)
+    setSelectedItems(updatedSelectedItems)
+    setSelectAll(updatedSelectedItemsIds.length === items.length)
   }
 
   useEffect(() => {
     toggleAllCheckboxes()
   }, [])
 
-  useEffect(() => {
-  if (selectedItemsIds.length === items.length) {
-      setSelectAll(true)
-    }
-    else{
-      setSelectAll(false)
-    }
-  }, [selectedItemsIds, items.length])
 
   return (
     <>
