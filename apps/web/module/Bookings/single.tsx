@@ -13,7 +13,9 @@ import ActivityMoreInfo from "@/module/cart/checkout/more-info/activity"
 import Link from "next/link"
 import { Spinner } from "@/common/components/ui/Spinner"
 import { LucideChevronLeft } from "lucide-react"
-import useGetReservations, { T_Reservation_Status } from "./hooks/use-get-reservations"
+import useGetReservations, {
+  T_Reservation_Status,
+} from "./hooks/use-get-reservations"
 import ViewPayment from "./view-payment"
 
 const SingleBooking = () => {
