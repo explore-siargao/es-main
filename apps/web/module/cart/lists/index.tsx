@@ -21,7 +21,7 @@ const CartList: React.FC<T_Cart_Props> = ({ items }) => {
   const [isDeleteMultipleCartItemOpen, setIsDeleteMultipleCartItemOpen] =
     useState<boolean>(false)
   const { selectedItems, setSelectedItems } = useCartStore()
-
+  
   const [itemId, setItemId] = useState<string>("")
 
   const toggleAllCheckboxes = () => {
@@ -55,6 +55,15 @@ const CartList: React.FC<T_Cart_Props> = ({ items }) => {
   useEffect(() => {
     toggleAllCheckboxes()
   }, [])
+
+  useEffect(() => {
+  if (selectedItemsIds.length === items.length) {
+      setSelectAll(true)
+    }
+    else{
+      setSelectAll(false)
+    }
+  }, [selectedItemsIds, items.length])
 
   return (
     <>
