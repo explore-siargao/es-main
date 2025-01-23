@@ -56,16 +56,17 @@ export class ReservationService {
 
   async getReservations(
     status: T_Reservation_Status = "Active",
-    page: number = 1
+    page: number = 1,
+    referenceId?: string
   ) {
     return this.api.get<{ items: T_Reservations }>(
-      `${RESERVATION_BASE_URL}/lists?status=${status}&page=${page}`
+      `${RESERVATION_BASE_URL}/lists?status=${status}&page=${page}&referenceId=${referenceId}`
     )
   }
 
-  async getGroupedReservations(page: number) {
+  async getGroupedReservations(page: number, referenceId: string) {
     return this.api.get<{ items: T_Grouped_Reservations }>(
-      `${RESERVATION_BASE_URL}/grouped?page=${page}`
+      `${RESERVATION_BASE_URL}/grouped?page=${page}&referenceId=${referenceId}`
     )
   }
 

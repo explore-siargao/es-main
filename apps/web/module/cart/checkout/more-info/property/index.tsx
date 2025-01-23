@@ -8,9 +8,13 @@ import PropertyContacts from "./contacts"
 
 type T_Property_Price_Details_Box = {
   items: T_Cart_Item[]
+  isViewOnly?: boolean
 }
 
-const PropertyMoreInfo = ({ items }: T_Property_Price_Details_Box) => {
+const PropertyMoreInfo = ({
+  items,
+  isViewOnly,
+}: T_Property_Price_Details_Box) => {
   return (
     <>
       {items.map((item) => {
@@ -42,7 +46,7 @@ const PropertyMoreInfo = ({ items }: T_Property_Price_Details_Box) => {
                 </Typography>
               </div>
               <hr className="my-4" />
-              <PropertyContacts cartItem={item} />
+              <PropertyContacts cartItem={item} isViewOnly={isViewOnly} />
               <hr className="my-4" />
               <div className="flex flex-col gap-y-4">
                 <Typography variant={"h3"} fontWeight="semibold">

@@ -7,13 +7,17 @@ import { differenceInDays } from "date-fns"
 
 type T_Property_Price_Details_Box = {
   items: T_Cart_Item[]
+  singleView?: boolean
 }
 
-const PropertyPriceDetailsBox = ({ items }: T_Property_Price_Details_Box) => {
+const PropertyPriceDetailsBox = ({
+  items,
+  singleView,
+}: T_Property_Price_Details_Box) => {
   return (
     <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
       <Typography variant="h2" fontWeight="semibold">
-        Places
+        {singleView ? "Place" : "Places"}
       </Typography>
       <div className="mt-4 flex flex-col gap-6">
         {items.map((item, index) => {
