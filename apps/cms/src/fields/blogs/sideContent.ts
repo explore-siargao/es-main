@@ -17,10 +17,10 @@ export const sideContent: Field = {
       },
       fields: [
         {
-          name: 'blog',
-          label: 'Select a blog',
-          type: 'relationship',
-          relationTo: 'blogs', // Slug of the target collection
+          name: "blog",
+          label: "Select a blog",
+          type: "relationship",
+          relationTo: "blogs", // Slug of the target collection
         },
       ],
     },

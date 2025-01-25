@@ -1,12 +1,12 @@
 import type { CollectionConfig } from "payload/types"
-import React from 'react';
+import React from "react"
 import { slugField } from "../../fields/slug"
 import { hero } from "../../fields/blogs/hero"
 import { content } from "../../fields/blogs/content"
 import { sideContent } from "../../fields/blogs/sideContent"
-import useField from "payload/dist/admin/components/forms/useField";
+import useField from "payload/dist/admin/components/forms/useField"
 
-const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
+const webUrl = process.env.NEXT_PUBLIC_WEB_URL
 
 export const Blogs: CollectionConfig = {
   slug: "blogs",
@@ -50,15 +50,11 @@ export const Blogs: CollectionConfig = {
         position: "sidebar",
         components: {
           Field: (props) => {
-            const {
-              value: slug,
-            } = useField({ path: "slug" });
-            const {
-              value: status,
-            } = useField({ path: "_status" });
+            const { value: slug } = useField({ path: "slug" })
+            const { value: status } = useField({ path: "_status" })
             if (status === "published") {
-              const baseDomain = window.location.origin;
-              const externalUrl = `${baseDomain}/blogs/${slug}`;
+              const baseDomain = window.location.origin
+              const externalUrl = `${baseDomain}/blogs/${slug}`
               return (
                 <button
                   type="button"
@@ -76,7 +72,7 @@ export const Blogs: CollectionConfig = {
                 >
                   Preview blog
                 </button>
-              );
+              )
             }
             return null
           },
