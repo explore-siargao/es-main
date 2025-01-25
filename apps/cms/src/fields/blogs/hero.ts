@@ -10,7 +10,8 @@ export const hero: Field = {
       name: "images",
       label: "Images",
       required: true,
-      minRows: 5,
+      minRows: 3,
+      maxRows: 5,
       fields: [
         {
           type: "upload",

@@ -6,6 +6,8 @@ import { content } from "../../fields/blogs/content"
 import { sideContent } from "../../fields/blogs/sideContent"
 import useField from "payload/dist/admin/components/forms/useField";
 
+const webUrl = process.env.NEXT_PUBLIC_WEB_URL;
+
 export const Blogs: CollectionConfig = {
   slug: "blogs",
   admin: {
@@ -55,7 +57,8 @@ export const Blogs: CollectionConfig = {
               value: status,
             } = useField({ path: "_status" });
             if (status === "published") {
-              const externalUrl = `http://localhost:3000/blogs/${slug}`;
+              const baseDomain = window.location.origin;
+              const externalUrl = `${baseDomain}/blogs/${slug}`;
               return (
                 <button
                   type="button"
