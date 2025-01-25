@@ -114,7 +114,7 @@ const ActivityPricing = ({ pageType }: Prop) => {
           minimum: minCapacity,
           maximum: maxCapacity,
         },
-        price: price,
+        pricePerPerson: price,
       }
 
       try {
