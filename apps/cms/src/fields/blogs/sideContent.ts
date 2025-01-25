@@ -9,31 +9,26 @@ export const sideContent: Field = {
       name: "popularBlogs",
       type: "array",
       label: "Popular Blogs",
-      minRows: 2,
-      maxRows: 10,
+      // minRows: 2,
+      // maxRows: 5,
       labels: {
         singular: "Blog",
         plural: "Blogs",
       },
       fields: [
         {
-          name: "title",
-          type: "text",
-        },
-        {
-          name: "image",
-          type: "upload",
-          relationTo: "media",
-          required: true,
+          name: "blog",
+          label: "Select a blog",
+          type: "relationship",
+          relationTo: "blogs", // Slug of the target collection
         },
       ],
     },
     {
       name: "pageSummary",
+      required: false,
       type: "array",
       label: "Page Summary",
-      minRows: 2,
-      maxRows: 10,
       labels: {
         singular: "Page Summary",
         plural: "Page Summary",
