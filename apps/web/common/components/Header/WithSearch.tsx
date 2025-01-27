@@ -67,7 +67,7 @@ function WithSearch({
               alt={APP_NAME}
             />
           </Link>
-          <SearchBarByState isNavCenter={true} />
+      
           <div className="hidden lg:flex lg:justify-end space-x-3 items-center relative min-w-64">
             <div className="flex gap-2 rounded-full items-center px-2 py-1">
               <GuidesMenu />
@@ -95,6 +95,7 @@ function WithSearch({
             {session.id && <LoggedInUserDropdown />}
           </div>
         </nav>
+        <SearchBarByState isNavCenter={true} />
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
       {withFilters ? <FilterHeader /> : null}

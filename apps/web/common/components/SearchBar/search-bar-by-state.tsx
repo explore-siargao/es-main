@@ -96,7 +96,7 @@ const SearchBarByState = ({
   }
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 -mt-16">
       <div
         className={cn(
           `space-x-8 flex mb-3`,
