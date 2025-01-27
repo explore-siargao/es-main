@@ -13,14 +13,13 @@ import Category from "../reviews/category"
 import { Typography } from "@/common/components/ui/Typography"
 import UserReview from "../reviews/review"
 import { T_Reviews } from "@repo/contract-2/review"
-import { T_Categories } from "../Property/types/RatingSummary"
 import { userReviews } from "../dummy"
-import RatingDistribution from "../reviews/overall-review"
+import { T_Review_Category } from "@/common/types/global"
 interface UserReviewModalProps {
   isOpen: boolean
   onClose: () => void
   reviews?: T_Reviews
-  categories?: T_Categories[]
+  categories?: T_Review_Category[]
 }
 
 const UserReviewModal = ({

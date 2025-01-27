@@ -201,3 +201,9 @@ export interface IPhotos {
   file: File
   isMain: boolean
 }
+
+export type T_Review_Category = {
+  title: string
+  rating: string | number | undefined
+  isHorizontal: boolean
+}

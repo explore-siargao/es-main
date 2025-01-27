@@ -10,17 +10,13 @@ import {
   LucideStar,
 } from "lucide-react"
 import { Typography } from "@/common/components/ui/Typography"
-import {
-  T_Categories,
-  T_RatingSummaryProps,
-} from "../property/types/RatingSummary"
 import { T_Reviews } from "@repo/contract-2/review"
-import RatingDistribution from "./overall-review"
+import { T_Review_Category } from "@/common/types/global"
 
 type T_HeadReviewProps = {
   ratings: number
   reviews: number
-  categories: T_Categories[]
+  categories: T_Review_Category[]
   totalRating: T_Reviews
 }
 const HeadReview = ({

@@ -4,11 +4,11 @@ import { Button } from "@/common/components/ui/Button"
 import UserReviewModal from "../modals/user-review-modal"
 import { T_Reviews, T_Review } from "@repo/contract-2/review"
 import { userReviews } from "../dummy"
-import { T_Categories } from "../Property/types/RatingSummary"
+import { T_Review_Category } from "@/common/types/global"
 
 type T_Props = {
   reviews: T_Reviews
-  categories?: T_Categories[]
+  categories?: T_Review_Category[]
 }
 const UserReviews = ({ reviews, categories }: T_Props) => {
   const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
