@@ -9,8 +9,26 @@ export const content: Field = {
     {
       type: "richText",
       name: "mainContent",
-      editor: slateEditor({}),
       required: true,
+      editor: slateEditor({
+        admin: {
+          elements: [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "blockquote",
+            "ul",
+            "ol",
+            "indent",
+            "link",
+            "upload",
+          ],
+          leaves: ["bold", "italic", "underline", "strikethrough"], // Omit "code"
+        },
+      }),
     },
   ],
 }

@@ -15,6 +15,7 @@ import {
   dbUnitPrices,
   dbUsers,
   dbReviews,
+  dbWishlists,
   initMongo,
 } from "@repo/database"
 import seedUsers from "./src/users"
@@ -25,6 +26,7 @@ import seedJoinerActivities from "./src/activities-joiner"
 import seedActivities from "./src/activities-private"
 import locationSeeder from "./src/location"
 import seedReview from "./src/reviews"
+import seedWishlist from "./src/wishlist"
 
 initMongo()
 
@@ -47,6 +49,7 @@ const seedAll = async () => {
     await dbUnitPrices.deleteMany({})
     await dbReservations.deleteMany({})
     await dbReviews.deleteMany({})
+    await dbWishlists.deleteMany({})
     // Run individual seeders
     await seedUsers()
     await locationSeeder()
@@ -56,6 +59,7 @@ const seedAll = async () => {
     await seedRentals()
     await seedReservations()
     await seedReview()
+    await seedWishlist()
     // Add more seeders here as needed
     console.log("All seeders executed successfully!")
   } catch (error) {

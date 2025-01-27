@@ -5,7 +5,8 @@ export const buildFinishReservationsPipeline = (
   userId: string,
   dateNow: Date,
   page: number,
-  limit: number
+  limit: number,
+  referenceId?: string
 ) => {
   const query = {
     $and: [
@@ -17,6 +18,9 @@ export const buildFinishReservationsPipeline = (
         ],
       },
       { endDate: { $lt: dateNow } },
+      ...(referenceId === 'undefined'
+        ? []
+        : [{ _id: new Types.ObjectId(referenceId) }]),
     ],
   }
 
@@ -148,6 +152,11 @@ export const buildFinishReservationsPipeline = (
             },
           },
           {
+            $project: {
+              reviews: 0,
+            },
+          },
+          {
             $lookup: {
               from: 'users',
               localField: 'offerBy',
@@ -245,6 +254,11 @@ export const buildFinishReservationsPipeline = (
               $expr: {
                 $in: ['$$unitId', { $ifNull: ['$qtyIds._id', []] }], // Match unitId to qtyIds._id array
               },
+            },
+          },
+          {
+            $project: {
+              reviews: 0,
             },
           },
           {
@@ -425,6 +439,11 @@ export const buildFinishReservationsPipeline = (
             },
           },
           {
+            $project: {
+              reviews: 0,
+            },
+          },
+          {
             $unwind: {
               path: '$host',
               preserveNullAndEmptyArrays: true,
@@ -494,6 +513,11 @@ export const buildFinishReservationsPipeline = (
               localField: 'details',
               foreignField: '_id',
               as: 'details',
+            },
+          },
+          {
+            $project: {
+              reviews: 0,
             },
           },
           {

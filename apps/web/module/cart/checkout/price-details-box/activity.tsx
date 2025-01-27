@@ -10,15 +10,19 @@ import exp from "constants"
 
 type T_Activity_Price_Details_Box = {
   items: T_Cart_Item[]
+  singleView?: boolean
 }
 
-const ActivityPriceDetailsBox = ({ items }: T_Activity_Price_Details_Box) => {
+const ActivityPriceDetailsBox = ({
+  items,
+  singleView,
+}: T_Activity_Price_Details_Box) => {
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
 
   return (
     <div className="border rounded-xl px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto sticky">
       <Typography variant="h2" fontWeight="semibold">
-        Activities
+        {singleView ? "Activity" : "Activities"}
       </Typography>
       <div className="mt-4 flex flex-col gap-6">
         {items.map((item, index) => {

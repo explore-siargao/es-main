@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.40.0](https://github.com/explore-siargao/es-main/compare/v0.39.0...v0.40.0) (2025-01-25)
+
+### 🚀 Features
+
+- **api:** Added endpoint for adding wishlist and create database for wishlist ([0404603](https://github.com/explore-siargao/es-main/commit/0404603204c212a9da2e51b9f9132cce1fe74249))
+- **api:** Added endpoint for get wishlist by category ([52b1307](https://github.com/explore-siargao/es-main/commit/52b1307ed20d2cf5c837aec952ee56af74515b9d), [6a6b9c4](https://github.com/explore-siargao/es-main/commit/6a6b9c4fd657707631ba41054f43da1ed35b9344), [255de0d](https://github.com/explore-siargao/es-main/commit/255de0d4cf8bd8c38b1cd5af0632ed94a3343fd8))
+- **api:** Added seeder for wishlist ([269c8fb](https://github.com/explore-siargao/es-main/commit/269c8fbd775bf67190929981f66b9b642c5f81d4))
+- Before creating a listing, host need to agree to the TC ([8814974](https://github.com/explore-siargao/es-main/commit/88149743e01307fb8c2a3bbd95aaa7bf234c7f9a))
+- **blogs:** Update blog external URL generation and enhance content fields ([fa83d2d](https://github.com/explore-siargao/es-main/commit/fa83d2d74d425549821225f5613ff87aa8e0f4c4))
+- Cart select all button is always selected ([1fab3dd](https://github.com/explore-siargao/es-main/commit/1fab3dd0f378afe1a6b7ea6de0a62e5d986a87d7), [a50146e](https://github.com/explore-siargao/es-main/commit/a50146e354cfa71e2df814191b29609a2a7d1c39))
+- Consolidate ShareSave component imports and remove redundant file ([c23bf4e](https://github.com/explore-siargao/es-main/commit/c23bf4e1e5cfe8808a43a8e22ddf95eed08c0f10))
+- Create booking list UI to separate active/finished/cancelled bookings ([334fee8](https://github.com/explore-siargao/es-main/commit/334fee89dda013c7fa9dca8a5871be47e6a44ea4), [eafbfd8](https://github.com/explore-siargao/es-main/commit/eafbfd8d1e3a0685bf53eb101efc2a236264ad1f))
+
+### 🛠 Bug Fixes
+
+- **api:** Filter/search properties ([46cf5e0](https://github.com/explore-siargao/es-main/commit/46cf5e09249bf95314d23687357131bad1ae32a6), [fb89700](https://github.com/explore-siargao/es-main/commit/fb89700c9fc4e55f0afd6935dec89b9576425670))
+- **api:** Fix error on filter/search properties ([484d87b](https://github.com/explore-siargao/es-main/commit/484d87bfffd8bfdf243f15053f967912688a944a))
+- **api:** Fixed activities filtering endpoint and adjusted pricePerPerson types ([ae706fc](https://github.com/explore-siargao/es-main/commit/ae706fcab3bc6100519f6e0074ba5b806a67d686))
+- **api:** Fixed error on filtering rentals ([db640b6](https://github.com/explore-siargao/es-main/commit/db640b6ad818a299711a4b91fd9135c14601682d))
+- File management and remove comments ([fe0f75f](https://github.com/explore-siargao/es-main/commit/fe0f75f31f13d8186a4b4a568e9c10a2c6bd3df7))
+- **pricing:** Rename price to pricePerPerson for clarity ([7143e87](https://github.com/explore-siargao/es-main/commit/7143e87adafbeff7121a7dc8f64f70714c350017))
+
+### 🧰 Maintenance
+
+- Update padding values for width variants ([1376ada](https://github.com/explore-siargao/es-main/commit/1376adada52c200f4557e2d2d29f9561481bc533))
+- Update payment information in SubTotalBox component ([bedc6ab](https://github.com/explore-siargao/es-main/commit/bedc6ab7a6cd69a23f0f901d39c7d92dae174d52))
+- Update pricing display to consistently show price per person ([40c8bda](https://github.com/explore-siargao/es-main/commit/40c8bdadc71e7e9eacf1d392a99447f285d3c1e7))
+
 ## [0.39.0](https://github.com/explore-siargao/es-main/compare/v0.38.0...v0.39.0) (2025-01-19)
 
 ### 🚀 Features

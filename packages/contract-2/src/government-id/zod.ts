@@ -10,6 +10,6 @@ const objectIdSchema = z
 export const Z_GovernmentId = z.object({
   fileKey: z.string(),
   type: z.string(),
-  createdAt: z.union([z.string(), z.date()]),
-  _id:  z.union([z.string(), objectIdSchema]),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  _id: z.union([z.string(), objectIdSchema])
 })
