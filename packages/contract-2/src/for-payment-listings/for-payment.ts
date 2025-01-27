@@ -16,6 +16,9 @@ export class ForPaymentService {
     return this.api.patch(`${FOR_PAYMENT_BASE_URL}/${itemId}`, item)
   }
 
+  async getForPayment(itemId: string) {
+    return this.api.get(`${FOR_PAYMENT_BASE_URL}/${itemId}`)
+  }
   static getQueryKeys() {
     return {
       getItems: "get-for-payment-listings",

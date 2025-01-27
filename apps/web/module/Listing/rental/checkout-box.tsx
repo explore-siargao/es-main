@@ -19,6 +19,8 @@ import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import combineDateTime from "@/common/helpers/combine-date-time"
+import { T_Add_For_Payment } from "@repo/contract-2/for-payment-listings"
+import useAddForPayment from "../hooks/use-add-for-payment"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -31,6 +33,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
+  const { mutate: addForPayment, isPending: isAddForPaymentPending } = useAddForPayment()
   const dateRange = usePickupDropoffStore((state) => state.dateRange)
   const fromTime = usePickupDropoffStore((state) => state.fromTime)
   const toTime = usePickupDropoffStore((state) => state.toTime)
@@ -74,6 +77,35 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
     })
   }
 
+  const handleAddForPayment = () => {
+    const from = combineDateTime(dateRange.from!, fromTime)
+    const to = combineDateTime(dateRange.to!, fromTime)
+    const payload: T_Add_For_Payment = {
+      userId: "",
+      price: totalBeforeTaxes,
+      rentalIds: { rentalId: rental._id, qtyIdsId: rental.qtyIds![0]?._id },
+      startDate: from || new Date(),
+      endDate: to || new Date(),  
+      guestCount: 1,
+    }
+    addForPayment(payload, {
+     onSuccess: (data) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.getItems],
+          })
+          console.log(data?.item?._id)
+           router.push(`/book-now?listingId=${data?.item?._id}`)
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err) => {
+        toast.error(String(err))
+      },
+    })
+  }
+  
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
@@ -174,7 +206,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
             isAddToCartPending
           }
           onClick={() =>
-            router.push(`/accommodation/${params.listingId}/checkout`)
+            handleAddForPayment()
           }
         >
           Book now
