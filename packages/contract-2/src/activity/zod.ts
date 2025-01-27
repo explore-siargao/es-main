@@ -108,19 +108,19 @@ export const Z_Activity = z.object({
   activityNote: z.string().nullable(),
   average: z.number().optional(),
   reviews: z
-  .union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())])
-  .optional(),
+    .union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())])
+    .optional(),
   reviewsCount: z.number().optional(),
-      averageReviews: z
-        .object({
-          totalReview: z.number(),
-          averageTotalRates: z.number(),
-          cleanliness: z.number(),
-          accuracy: z.number(),
-          checkIn: z.number(),
-          communication: z.number(),
-          value: z.number(),
-          location: z.number(),
-        })
-        .optional(),
+  averageReviews: z
+    .object({
+      totalReview: z.number(),
+      averageTotalRates: z.number(),
+      cleanliness: z.number(),
+      accuracy: z.number(),
+      checkIn: z.number(),
+      communication: z.number(),
+      value: z.number(),
+      location: z.number(),
+    })
+    .optional(),
 })

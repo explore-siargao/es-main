@@ -187,14 +187,15 @@ export const Activity = ({ activity }: { activity: T_Activity }) => {
           <MeetingPoint meetingPoint={activity?.meetingPoint} />
         </div>
         <div className="py-8">
-        <RatingSummary
-           ratings={activity?.averageReviews?.averageTotalRates as number}
-           reviews={activity?.averageReviews?.totalReview as number}
-            categories={categories} 
-            totalRating={activity?.reviews as T_Reviews}/>
+          <RatingSummary
+            ratings={activity?.averageReviews?.averageTotalRates as number}
+            reviews={activity?.averageReviews?.totalReview as number}
+            categories={categories}
+            totalRating={activity?.reviews as T_Reviews}
+          />
         </div>
         <div className="py-8">
-        <UserReviews
+          <UserReviews
             reviews={activity.reviews as T_Reviews}
             categories={categories}
           />

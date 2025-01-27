@@ -90,23 +90,23 @@ export const Z_Rental = z.object({
   average: z.number().optional(),
   reviewsCount: z.number().optional(),
   reviews: z
-        .union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())])
-        .optional(),
+    .union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())])
+    .optional(),
   daysCanCancel: z.string().optional(),
   policies: z.array(z.string()).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
-    averageReviews: z
-      .object({
-        totalReview: z.number(),
-        averageTotalRates: z.number(),
-        cleanliness: z.number(),
-        accuracy: z.number(),
-        checkIn: z.number(),
-        communication: z.number(),
-        value: z.number(),
-        location: z.number(),
-      })
-      .optional(),
+  averageReviews: z
+    .object({
+      totalReview: z.number(),
+      averageTotalRates: z.number(),
+      cleanliness: z.number(),
+      accuracy: z.number(),
+      checkIn: z.number(),
+      communication: z.number(),
+      value: z.number(),
+      location: z.number(),
+    })
+    .optional(),
 })
 
 export const Z_Rental_Additional_Info = z.object({

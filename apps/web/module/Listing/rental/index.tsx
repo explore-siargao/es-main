@@ -134,13 +134,14 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
 
         <div className="py-8">
           <RatingSummary
-           ratings={rental?.averageReviews?.averageTotalRates as number}
-           reviews={rental?.averageReviews?.totalReview as number}
-            categories={categories} 
-            totalRating={rental?.reviews as T_Reviews}/>
+            ratings={rental?.averageReviews?.averageTotalRates as number}
+            reviews={rental?.averageReviews?.totalReview as number}
+            categories={categories}
+            totalRating={rental?.reviews as T_Reviews}
+          />
         </div>
         <div className="py-8">
-        <UserReviews
+          <UserReviews
             reviews={rental.reviews as T_Reviews}
             categories={categories}
           />
