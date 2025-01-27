@@ -62,11 +62,13 @@ const ActivityPricing = ({ pageType }: Prop) => {
       toast.error("Please add at least one time slot for any day.")
     } else if (minCapacity > maxCapacity) {
       toast.error("Minimum capacity must be less than or equal to Max capacity")
-    } else if (pricePerPerson < 1 ) {
+    } else if (pricePerPerson < 1) {
       toast.error("Price per person must be greater than 0")
-    }
-      else if (experienceType === E_Activity_Experience_Type.Private  && pricePerSlot < 1) {
-        toast.error("Price per slot must be greater than 0")
+    } else if (
+      experienceType === E_Activity_Experience_Type.Private &&
+      pricePerSlot < 1
+    ) {
+      toast.error("Price per slot must be greater than 0")
     } else {
       console.log(experienceType === E_Activity_Experience_Type.Private)
       const pricingData = {
@@ -120,7 +122,9 @@ const ActivityPricing = ({ pageType }: Prop) => {
           maximum: maxCapacity,
         },
         pricePerPerson,
-        ...(experienceType === E_Activity_Experience_Type.Private ? { pricePerSlot } : {})
+        ...(experienceType === E_Activity_Experience_Type.Private
+          ? { pricePerSlot }
+          : {}),
       }
 
       try {
@@ -169,7 +173,6 @@ const ActivityPricing = ({ pageType }: Prop) => {
       setPricePerPerson(pricingData?.pricePerPerson)
       setPricePerSlot(pricingData?.pricePerSlot)
     }
-     
   }, [data])
 
   const addOneHour = (time: string): string => {
@@ -532,24 +535,24 @@ const ActivityPricing = ({ pageType }: Prop) => {
               </div>
             </div>
           </div>
-          {experienceType === E_Activity_Experience_Type.Private &&
-          <div className="mb-4">
-            <Input2
-              disabled={isPending}
-              id="pricePerSlot"
-              type="number"
-              value={pricePerSlot}
-              label="Price per slot"
-              description={priceInputDescMap[experienceType]}
-              step=".01"
-              required
-              onChange={(e) => setPricePerSlot(Number(e.target.value))}
-              defaultValue={data?.item?.pricePerSlot}
-              className="lg:max-w-72"
-              leftIcon={<span className="text-text-300">₱</span>}
-            />
-          </div>
-}
+          {experienceType === E_Activity_Experience_Type.Private && (
+            <div className="mb-4">
+              <Input2
+                disabled={isPending}
+                id="pricePerSlot"
+                type="number"
+                value={pricePerSlot}
+                label="Price per slot"
+                description={priceInputDescMap[experienceType]}
+                step=".01"
+                required
+                onChange={(e) => setPricePerSlot(Number(e.target.value))}
+                defaultValue={data?.item?.pricePerSlot}
+                className="lg:max-w-72"
+                leftIcon={<span className="text-text-300">₱</span>}
+              />
+            </div>
+          )}
           <div className="mb-4">
             <Input2
               disabled={isPending}
@@ -566,8 +569,6 @@ const ActivityPricing = ({ pageType }: Prop) => {
               leftIcon={<span className="text-text-300">₱</span>}
             />
           </div>
-
-     
         </div>
       </div>
       <div className="fixed bottom-0 bg-text-50 w-full p-4 bg-opacity-60">
