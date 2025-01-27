@@ -31,7 +31,7 @@ const Map = ({ rentals, location }: T_Props) => {
         zoom: 11,
       }
     } else {
-      return  {
+      return {
         center: [9.816033649893807, 126.04451542773673] as [number, number],
         zoom: 11,
       }
