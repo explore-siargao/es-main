@@ -50,12 +50,7 @@ const router = express.Router()
 
 //activity
 //highest price
-router.get(
-  '/highest-price',
-  isOriginValid,
-  isCsrfTokenValid,
-  activityHighestPrice
-)
+router.get('/highest-price', isOriginValid, activityHighestPrice)
 
 //filted data
 router.get('/filtered', isOriginValid, paginate(15), getFilteredActivities)

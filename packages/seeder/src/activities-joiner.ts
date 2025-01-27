@@ -1,4 +1,4 @@
-import { T_Activity } from "@repo/contract-2/activity"
+import { E_Experience_Types, T_Activity } from "@repo/contract-2/activity"
 import { T_Location } from "@repo/contract-2/address-location"
 import { dbActivities, dbLocations, dbPhotos, dbUsers } from "@repo/database"
 import { getRandomPhotoKeys } from "./common/helpers/get-random-photo-keys"
@@ -11,7 +11,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Hidden Waterfalls Trekking in Siargao",
         activityType: ["Island hopping", "Wakeboarding"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description:
           "Explore the top attractions of New York with a local guide.",
         highLights: [
@@ -84,7 +84,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Sunrise Paddleboarding Adventure",
         activityType: ["Kite surfing"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description: "Discover the unique beauty of Siargao's natural wonders.",
         highLights: [
           "Sugba Lagoon",
@@ -153,7 +153,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Siargao Eco-Friendly Beach Cleanup Experience",
         activityType: ["Scuva diving", "Freediving"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description:
           "Experience the lush greens and blue waters of Siargao Island.",
         highLights: ["Naked Island", "Daku Island", "Guyam Island"],
@@ -220,7 +220,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Cultural Immersion: Siargao's Local Villages",
         activityType: ["Fishing", "Land tour"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description:
           "Ride the waves at Siargao's famous surf spots with expert guidance.",
         highLights: ["Cloud 9 Surf Spot", "Secret Surf Beach", "Surf Village"],
@@ -286,7 +286,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Siargao Night Sky Stargazing Tour",
         activityType: ["Surfing lessons"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description: "Experience the best island hopping spots in Siargao.",
         highLights: ["Naked Island", "Daku Island", "Guyam Island"],
         durationHour: 5,
@@ -351,7 +351,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Seaweed Farming and Coastal Life Exploration",
         activityType: ["Wakeboarding"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description:
           "Explore the serene mangroves of Siargao and learn about its ecosystem.",
         highLights: [
@@ -421,7 +421,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Island Picnic Escape with Secret Coves",
         activityType: ["Kite surfing"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description:
           "Unwind with a serene sunset cruise around the stunning waters of Siargao.",
         highLights: [
@@ -491,7 +491,7 @@ const seedJoinerActivities = async () => {
       {
         title: "Adrenaline Rush: Cliff Diving and Rock Climbing",
         activityType: ["Land tour", "Kite surfing"],
-        experienceType: "Joiner",
+        experienceType: E_Experience_Types.Joiner,
         description:
           "Cycle through the iconic coconut forests of Siargao and enjoy breathtaking landscapes.",
         highLights: [

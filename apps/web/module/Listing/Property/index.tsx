@@ -41,7 +41,7 @@ export const Property = ({
   }
   const offerBy = property
   const formattedDate = offerBy?.createdAt
-    ? format(parseISO(offerBy.createdAt as string), "MMMM d, yyyy")
+    ? format(parseISO(String(offerBy.createdAt)), "MMMM d, yyyy")
     : ""
 
   const categories = [
@@ -89,7 +89,7 @@ export const Property = ({
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <Hero images={property?.photos} title={property?.title} />
-
+{/*       
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
@@ -97,12 +97,8 @@ export const Property = ({
               <HostedBy
                 name={property?.offerBy?.guest?.firstName}
                 language={property?.offerBy?.guest?.language}
-                profilePicture={""}
-                joinDate={
-                  property?.createdAt
-                    ? format(property.createdAt, "MMMM d, yyyy")
-                    : ""
-                }
+                profilePicture={property?.offerBy?.profilePicture ?? ""}
+                joinDate={String(property?.offerBy?.createdAt) || ""}
               />
             </div>
             <div className="py-6">
@@ -119,7 +115,8 @@ export const Property = ({
               <PlaceOffers offers={property?.facilities} />
             </div>
             <div className="py-6">
-              {property?.bookableUnits?.length > 0 ? (
+              {property?.bookableUnits &&
+              property?.bookableUnits?.length > 0 ? (
                 <AvailableBooking property={property} selectedUnitId={unitId} />
               ) : (
                 <Typography variant="h5" className="text-text-400 italic">
@@ -189,7 +186,7 @@ export const Property = ({
         <div className="py-8">
           <SimilarProperties />
         </div>
-      </div>
+      </div> */}
       <ReportListingModal isOpen={showReportModal} onClose={handleCloseModal} />
     </WidthWrapper>
   )

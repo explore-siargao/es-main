@@ -1,10 +1,6 @@
 "use client"
 import { Button } from "@/common/components/ui/Button"
-import {
-  PropertyType,
-  T_AvailableBookableUnitProps,
-  T_AvailableBookingProps,
-} from "./types/AvailableBooking"
+import { PropertyType } from "./types/AvailableBooking"
 import { useState } from "react"
 import { getCombinedBedDisplay } from "./helpers/get-combined-bed-display"
 import { Typography } from "@/common/components/ui/Typography"
@@ -80,7 +76,8 @@ const AvailableUnits = ({
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 mt-6">
         {property?.bookableUnits?.map((unit: T_Bookable_Unit) => {
           const bedDisplay = getCombinedBedDisplay(
-            unit.bedRooms || [],
+            // @ts-expect-error
+            unit.bedRooms || 0,
             unit.livingRooms
           )
 
@@ -135,7 +132,7 @@ const AvailableUnits = ({
                 <div className="mt-4">
                   <Typography variant="h3" className="flex justify-between">
                     <span className="font-semibold">{unit.title}</span>
-                    <span>{formatCurrency(unit.unitPrice.baseRate)}</span>
+                    <span>{formatCurrency(unit.unitPrice?.baseRate ?? 0)}</span>
                   </Typography>
                   <Typography variant="h5" className="mt-2">
                     {bedDisplay}

@@ -49,7 +49,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
   const selectedBookableUnit = units?.find(
     (unit) => unit._id === selectedUnitId
   )
-  const baseRate = selectedBookableUnit?.unitPrice.baseRate || 0
+  const baseRate = selectedBookableUnit?.unitPrice?.baseRate || 0
   const baseRateGuestsTotal = baseRate * guestsCount || 0
   const baseRateNightsTotal = baseRateGuestsTotal * nightCount || 0
   const esCommissionTotal = baseRateNightsTotal * GUEST_COMMISSION_PERCENT || 0
@@ -232,7 +232,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
       <GuestAddModal
         isOpen={isGuestsModalOpen}
         onClose={() => setIsGuestsModalOpen(false)}
-        maximumCapacity={selectedBookableUnit?.unitPrice.maximumCapacity}
+        maximumCapacity={selectedBookableUnit?.unitPrice?.maximumCapacity}
       />
     </div>
   )

@@ -5,10 +5,9 @@ import { ResponseService } from '@/common/service/response'
 import {
   T_Activity_Filtered,
   Z_Activities_Search,
-  Z_Activity_Filtered,
   Z_Activity_Filtered_Results,
 } from '@repo/contract-2/search-filters'
-import { dbActivities, dbLocations, dbReservations } from '@repo/database'
+import { dbActivities, dbReservations } from '@repo/database'
 import { Request, Response } from 'express'
 
 const response = new ResponseService()
@@ -53,10 +52,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
     experienceTypes: experienceTypeInput,
     priceFrom,
     priceTo,
-    durations,
-    starRating,
+    durations: Number(durations) || 'any',
+    starRating: Number(starRating) || 'any',
     activityDate,
-    numberOfGuest: numberOfGuest === 'any' ? 'any' : Number(numberOfGuest),
+    numberOfGuest: Number(numberOfGuest) || 'any',
   })
 
   if (validActivitySearch.success) {
@@ -222,20 +221,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -264,7 +253,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -778,7 +766,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $facet: {
-              totalCount: [{ $count: 'count' }],
+              totalCount: [{ $count: 'count' }], // Compute total count separately
               paginatedResults: [
                 { $skip: (page - 1) * limit },
                 { $limit: limit },
@@ -799,6 +787,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -884,20 +873,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -926,7 +905,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -1461,6 +1439,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -1542,20 +1521,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -1584,7 +1553,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -2119,6 +2087,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -2209,20 +2178,10 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
           },
           {
             $match: {
-              $or: [
-                {
-                  pricePerPerson: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-                {
-                  pricePerSlot: {
-                    $gte: Number(priceFrom),
-                    $lte: Number(priceTo),
-                  },
-                },
-              ],
+              pricePerPerson: {
+                $gte: Number(priceFrom),
+                $lte: Number(priceTo),
+              },
             },
           },
           {
@@ -2251,7 +2210,6 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
                   $match: {
                     average: {
                       $gte: Number(starRating),
-                      $lt: Number(starRating) + 1,
                     },
                   },
                 },
@@ -2786,6 +2744,7 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
               'results._id': 1,
               'results.title': 1,
               'results.activityType': 1,
+              'results.experienceType': 1,
               'results.pricePerPerson': 1,
               'results.pricePerSlot': 1,
               'results.meetingPoint': 1,
@@ -2846,9 +2805,9 @@ export const getFilteredActivities = async (req: Request, res: Response) => {
       )
     }
   } else {
+    console.error(validActivitySearch.error.message)
     res.json(
       response.error({
-        items: JSON.parse(validActivitySearch.error.message),
         message: 'Invalid search parameters',
       })
     )

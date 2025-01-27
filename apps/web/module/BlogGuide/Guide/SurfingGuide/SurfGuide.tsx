@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import ImageGallery from "@/module/Listing/property/image-gallery"
 import ImageGalleryModal from "@/module/Listing/property/modals/image-gallery-modal"
 import { Typography } from "@/common/components/ui/Typography"
-import ShareSave from "@/module/Listing/property/share-save"
+import ShareSave from "@/module/Listing/share-save"
 
 type T_Props = {
   readonly title: string

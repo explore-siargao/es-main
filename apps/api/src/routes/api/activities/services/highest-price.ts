@@ -10,16 +10,17 @@ export const activityHighestPrice = async (req: Request, res: Response) => {
       {
         $project: {
           _id: 0,
-          amount: { $max: ['$pricePerPerson', '$pricePerSlots'] },
+          amount: '$pricePerPerson', // Only include pricePerPerson
         },
       },
       {
-        $sort: { amount: -1 },
+        $sort: { amount: -1 }, // Sort by amount in descending order
       },
       {
-        $limit: 1,
+        $limit: 1, // Limit to the highest price
       },
     ])
+
     const valid = Z_Category_Highest_Price.safeParse(getHighestPrice[0])
     if (valid.success) {
       res.json(response.success({ item: getHighestPrice[0] }))
