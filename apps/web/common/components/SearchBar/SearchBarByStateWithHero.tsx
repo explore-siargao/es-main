@@ -26,7 +26,7 @@ function SearchBarByStateWithHero() {
           Find your island vibe
         </Typography>
       </WidthWrapper>
-      <div className="mt-6">
+      <div className="mt-20">
         <SearchBarByState isDark />
       </div>
       <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
