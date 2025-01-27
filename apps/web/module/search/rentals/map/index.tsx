@@ -22,7 +22,11 @@ const Map = ({ rentals, location }: T_Props) => {
   const dynamicMapCenter: { [key: number]: T_Map_Center } = {
     857: {
       center: [9.907176747651983, 126.03786003188247] as [number, number],
-      zoom: 10,
+      zoom: 11,
+    },
+    934: {
+      center: [9.858985514734842, 126.04518096735858] as [number, number],
+      zoom: 11,
     },
     968: {
       center: [9.858985514734842, 126.04518096735858] as [number, number],

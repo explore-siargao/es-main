@@ -55,10 +55,10 @@ function WithSearch({
       </div>
       <WidthWrapper width={contentWidth}>
         <nav
-          className="flex items-start justify-between py-2 my-2 w-full"
+          className="flex items-start justify-between pt-4 w-full"
           aria-label="Global"
         >
-          <Link href={LINK_HOME} className="gap-2 items-center min-w-64">
+          <Link href={LINK_HOME} className="gap-2 items-center min-w-64 z-0">
             <Image
               className="h-12 w-fit"
               src={Logo}

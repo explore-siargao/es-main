@@ -1,6 +1,6 @@
 "use client"
-import React, { useEffect } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import React from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
 import { T_Search, useSearchStore } from "../../store/useSearchStore"
 import PropertySearchBar from "./PropertySearchBar"
@@ -27,7 +27,6 @@ const SearchBarByState = ({
   isDark?: boolean
 }) => {
   const router = useRouter()
-  const path = usePathname()
   const searchParams = useSearchParams()
   const page = searchParams.get("page")
   const location = searchParams.get("location")
@@ -96,7 +95,7 @@ const SearchBarByState = ({
   }
 
   return (
-    <div className="flex-1 -mt-16">
+    <div className="flex-1 -mt-11 pb-3">
       <div
         className={cn(
           `space-x-8 flex mb-3`,
