@@ -19,6 +19,7 @@ import PledgeBox from "../pledge-box"
 import { T_Rental } from "@repo/contract-2/rental"
 import HostedBy from "../hosted-by"
 import HostPolicies from "./host-policies"
+import { T_Reviews } from "@repo/contract-2/review"
 
 export const Rental = ({ rental }: { rental: T_Rental }) => {
   const [showModal, setShowModal] = useState(false)
@@ -28,7 +29,48 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
   const handleCloseModal = () => {
     setShowModal(false)
   }
-
+  const categories = [
+    {
+      title: "Cleanliness",
+      rating: rental?.averageReviews?.cleanliness,
+      isHorizontal: false,
+    },
+    {
+      title: "Accuracy",
+      rating: rental?.averageReviews?.accuracy,
+      isHorizontal: false,
+    },
+    {
+      title: "Check-in",
+      rating: rental?.averageReviews?.checkIn,
+      isHorizontal: false,
+    },
+    {
+      title: "Communication",
+      rating: rental?.averageReviews?.communication,
+      isHorizontal: false,
+    },
+    {
+      title: "Location",
+      rating: rental?.averageReviews?.location,
+      isHorizontal: false,
+    },
+    {
+      title: "Value",
+      rating: rental?.averageReviews?.value,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: rental?.averageReviews?.totalReview,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: rental?.averageReviews?.averageTotalRates,
+      isHorizontal: false,
+    },
+  ]
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <div>
@@ -92,13 +134,16 @@ export const Rental = ({ rental }: { rental: T_Rental }) => {
 
         <div className="py-8">
           <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
-          />
+           ratings={rental?.averageReviews?.averageTotalRates as number}
+           reviews={rental?.averageReviews?.totalReview as number}
+            categories={categories} 
+            totalRating={rental?.reviews as T_Reviews}/>
         </div>
         <div className="py-8">
-          <UserReviews reviews={userReviews} />
+        <UserReviews
+            reviews={rental.reviews as T_Reviews}
+            categories={categories}
+          />
         </div>
         <div className="py-8">
           <HostInformation {...hostDummy} />

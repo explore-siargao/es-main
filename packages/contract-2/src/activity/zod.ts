@@ -3,6 +3,7 @@ import { Z_Host } from "../host"
 import { Z_Location } from "../address-location"
 import { Z_Photo } from "../photos"
 import { E_Experience_Types } from "./enum"
+import { Z_Reviews } from "../review"
 
 const objectIdSchema = z
   .any()
@@ -106,5 +107,20 @@ export const Z_Activity = z.object({
   pricePerDates: z.array(Z_Activity_PricePerDate),
   activityNote: z.string().nullable(),
   average: z.number().optional(),
+  reviews: z
+  .union([Z_Reviews, z.array(objectIdSchema), z.array(z.string())])
+  .optional(),
   reviewsCount: z.number().optional(),
+      averageReviews: z
+        .object({
+          totalReview: z.number(),
+          averageTotalRates: z.number(),
+          cleanliness: z.number(),
+          accuracy: z.number(),
+          checkIn: z.number(),
+          communication: z.number(),
+          value: z.number(),
+          location: z.number(),
+        })
+        .optional(),
 })

@@ -32,7 +32,7 @@ export const Property = ({
   unitId: string
 }) => {
   const [showReportModal, setShowReportModal] = useState(false)
-
+  console.log(property)
   const handleOpenModal = () => {
     setShowReportModal(true)
   }
@@ -89,7 +89,7 @@ export const Property = ({
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <Hero images={property?.photos} title={property?.title} />
-{/*       
+      
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 pb-12">
         <div className="flex-1 md:w-1/2 2xl:w-full">
           <div className="divide-y">
@@ -186,7 +186,7 @@ export const Property = ({
         <div className="py-8">
           <SimilarProperties />
         </div>
-      </div> */}
+      </div>
       <ReportListingModal isOpen={showReportModal} onClose={handleCloseModal} />
     </WidthWrapper>
   )

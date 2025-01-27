@@ -3,7 +3,6 @@ import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import { useRef, useState } from "react"
 import RatingSummary from "@/module/Listing/reviews/rating-summary"
 import ReportListingModal from "@/module/Listing/modals/report-listing-modal"
-import UserReviews from "../../Hosting/Listings/Properties/Property/Reviews/UserReviews"
 import Hero from "./hero"
 import Inclusions from "./inclusions"
 import Languages from "./languages"
@@ -27,16 +26,60 @@ import { LucideFlag } from "lucide-react"
 import { E_Activity_Experience_Type } from "@repo/contract"
 import HostPolicies from "./host-policies"
 import CheckoutBox from "./checkout-box"
+import { T_Reviews } from "@repo/contract-2/review"
+import UserReviews from "../reviews/user-reviews"
 
 export const Activity = ({ activity }: { activity: T_Activity }) => {
   const [showModal, setShowModal] = useState(false)
-
   const handleOpenModal = () => {
     setShowModal(true)
   }
   const handleCloseModal = () => {
     setShowModal(false)
   }
+
+  const categories = [
+    {
+      title: "Cleanliness",
+      rating: activity?.averageReviews?.cleanliness,
+      isHorizontal: false,
+    },
+    {
+      title: "Accuracy",
+      rating: activity?.averageReviews?.accuracy,
+      isHorizontal: false,
+    },
+    {
+      title: "Check-in",
+      rating: activity?.averageReviews?.checkIn,
+      isHorizontal: false,
+    },
+    {
+      title: "Communication",
+      rating: activity?.averageReviews?.communication,
+      isHorizontal: false,
+    },
+    {
+      title: "Location",
+      rating: activity?.averageReviews?.location,
+      isHorizontal: false,
+    },
+    {
+      title: "Value",
+      rating: activity?.averageReviews?.value,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: activity?.averageReviews?.totalReview,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: activity?.averageReviews?.averageTotalRates,
+      isHorizontal: false,
+    },
+  ]
 
   if (!activity) {
     notFound()
@@ -144,14 +187,17 @@ export const Activity = ({ activity }: { activity: T_Activity }) => {
           <MeetingPoint meetingPoint={activity?.meetingPoint} />
         </div>
         <div className="py-8">
-          <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
-          />
+        <RatingSummary
+           ratings={activity?.averageReviews?.averageTotalRates as number}
+           reviews={activity?.averageReviews?.totalReview as number}
+            categories={categories} 
+            totalRating={activity?.reviews as T_Reviews}/>
         </div>
         <div className="py-8">
-          <UserReviews reviews={userReviews} />
+        <UserReviews
+            reviews={activity.reviews as T_Reviews}
+            categories={categories}
+          />
         </div>
 
         <div className="py-8">
