@@ -43,19 +43,11 @@ const BookNow = () => {
   const hmacService = new HMACService()
   const encryptionService = new EncryptionService("card")
   const allItems = data?.item ? [data.item as T_Cart_Item] : []
-  const allSelectedItems = allItems.filter(
-    (item) => item._id && item.rentalIds
-  )
-  const rentalItems = allItems.filter(
-    (item) => item._id && item.rentalIds
-  )
-  const propertyItems = allItems.filter(
-    (item) => item._id && item.propertyIds
-  )
-  const activityItems = allItems.filter(
-    (item) => item._id && item.activityIds
-  )
-  
+  const allSelectedItems = allItems.filter((item) => item._id && item.rentalIds)
+  const rentalItems = allItems.filter((item) => item._id && item.rentalIds)
+  const propertyItems = allItems.filter((item) => item._id && item.propertyIds)
+  const activityItems = allItems.filter((item) => item._id && item.activityIds)
+
   const remapItem = (item: T_Cart_Item) => {
     return {
       startDate: item.startDate,
@@ -67,7 +59,7 @@ const BookNow = () => {
             unitId:
               Array.isArray(item.propertyIds.unitId?.qtyIds) &&
               item.propertyIds.unitId?.qtyIds?.[0]
-                ? item.propertyIds.unitId.qtyIds[0]._id ?? undefined
+                ? (item.propertyIds.unitId.qtyIds[0]._id ?? undefined)
                 : undefined,
           }
         : null,
@@ -84,13 +76,12 @@ const BookNow = () => {
           }
         : undefined,
       id: item._id,
-    };
-  };
+    }
+  }
 
-  
   const handleProceedToPayment = () => {
     const remappedItem = remapItem(data?.item as T_Cart_Item)
-  
+
     if (paymentInfo.paymentType == E_PaymentType.GCASH) {
       mutate(remappedItem as T_Add_For_Payment, {
         onSuccess: (data: any) => {
@@ -152,7 +143,7 @@ const BookNow = () => {
       if (paymentInfo.paymentMethodId && paymentInfo.cvv) {
         const cvv = paymentInfo.cvv
         const cvvHMAC = hmacService.generateHMAC({ cvv })
-        
+
         mutateUseAddCardPayment(
           {
             ...remappedItem,

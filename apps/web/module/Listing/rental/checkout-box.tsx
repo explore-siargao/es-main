@@ -33,7 +33,8 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
-  const { mutate: addForPayment, isPending: isAddForPaymentPending } = useAddForPayment()
+  const { mutate: addForPayment, isPending: isAddForPaymentPending } =
+    useAddForPayment()
   const dateRange = usePickupDropoffStore((state) => state.dateRange)
   const fromTime = usePickupDropoffStore((state) => state.fromTime)
   const toTime = usePickupDropoffStore((state) => state.toTime)
@@ -85,17 +86,17 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
       price: totalBeforeTaxes,
       rentalIds: { rentalId: rental._id, qtyIdsId: rental.qtyIds![0]?._id },
       startDate: from || new Date(),
-      endDate: to || new Date(),  
+      endDate: to || new Date(),
       guestCount: 1,
     }
     addForPayment(payload, {
-     onSuccess: (data) => {
+      onSuccess: (data) => {
         if (!data.error) {
           queryClient.invalidateQueries({
             queryKey: [queryKeys.getItems],
           })
           console.log(data?.item?._id)
-           router.push(`/book-now?listingId=${data?.item?._id}`)
+          router.push(`/book-now?listingId=${data?.item?._id}`)
         } else {
           toast.error(String(data.message))
         }
@@ -105,7 +106,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
       },
     })
   }
-  
+
   return (
     <div className="border rounded-xl shadow-lg px-6 pb-6 pt-5 flex flex-col divide-text-100 overflow-y-auto mb-5">
       <Typography variant="h2" fontWeight="semibold" className="mb-4">
@@ -205,9 +206,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
             !toTime ||
             isAddToCartPending
           }
-          onClick={() =>
-            handleAddForPayment()
-          }
+          onClick={() => handleAddForPayment()}
         >
           Book now
         </Button>

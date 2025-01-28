@@ -240,7 +240,7 @@ export const getBookListing = async (req: Request, res: Response) => {
       userId: new Types.ObjectId(userId),
     }
     if (id) {
-      query._id = new Types.ObjectId(id);
+      query._id = new Types.ObjectId(id)
     }
     const pipeline: any = [
       {
@@ -883,14 +883,14 @@ export const getBookListing = async (req: Request, res: Response) => {
     const result = await dbForPaymentListing.aggregate(pipeline)
 
     if (id) {
-      const item = result.length > 0 ? result[0] : null;
+      const item = result.length > 0 ? result[0] : null
       if (!item) {
-       res.json(
+        res.json(
           response.success({
             item: null,
             message: 'No item found with the provided ID',
           })
-        );
+        )
       }
 
       res.json(
@@ -898,7 +898,7 @@ export const getBookListing = async (req: Request, res: Response) => {
           item,
           message: 'Item retrieved successfully',
         })
-      );
+      )
     }
   } catch (err: any) {
     res.json(
