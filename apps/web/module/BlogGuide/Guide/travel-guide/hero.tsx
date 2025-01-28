@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import ImageGallery from "@/module/Listing/property/image-gallery"
+import ImageGallery from "./image-gallery"
 import { Typography } from "@/common/components/ui/Typography"
 import ShareSave from "@/module/Listing/share-save"
 import ImageGalleryModal from "@/module/Listing/property/modals/image-gallery-modal"
@@ -9,7 +9,7 @@ type T_Props = {
   readonly images: any
 }
 
-function TravelBlog({ title, images }: T_Props) {
+function GeneralBlog({ title, images }: T_Props) {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
   const openModal = () => {
     setGalleryModalOpen(true)
@@ -42,4 +42,4 @@ function TravelBlog({ title, images }: T_Props) {
   )
 }
 
-export default TravelBlog
+export default GeneralBlog

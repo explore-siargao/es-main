@@ -11,11 +11,11 @@ import { buildConfig } from "payload/config"
 import Users from "./collections/Users"
 import Surfs from "./collections/Surfs"
 import Restaurants from "./collections/Restaurants"
-import Locations from "./collections/Locations"
 import Categories from "./collections/Categories"
 import { Media } from "./collections/Media"
 import Legal from "./collections/Legal"
 import Blogs from "./collections/Blogs"
+import Travels from "./collections/travels"
 
 export default buildConfig({
   admin: {
@@ -31,7 +31,7 @@ export default buildConfig({
     Blogs,
     Surfs,
     Restaurants,
-    Locations,
+    Travels,
     Legal,
     Media,
     Categories,
