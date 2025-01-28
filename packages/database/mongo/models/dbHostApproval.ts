@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 const { Schema } = mongoose
 const genderEnum = ["M", "F", "N/A"]
 
+const status = ["Approved", "Pending", "Rejected"]
 const businessPermit = new Schema({
   fileKey: String,
   createdAt: Date,
@@ -19,6 +20,17 @@ const hostApproval = new Schema({
   photocopyBusinessPermit: {
     type: businessPermit,
     required: false,
+  },
+  status: {
+    type: String,
+    enum: status,
+    default: "Pending",
+  },
+  approvedBy: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Users",
+    required: false,
+    default: null,
   },
   createdAt: {
     type: Date,

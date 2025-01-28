@@ -97,6 +97,11 @@
       "import": "./build/wishlist/index.js",
       "require": "./build/wishlist/index.js",
       "types": "./build/wishlist/index.d.ts"
+    },
+    "./host-approval": {
+      "import": "./build/host-approval/index.js",
+      "require": "./build/host-approval/index.js",
+      "types": "./build/host-approval/index.d.ts"
     }
   },
   "scripts": {
