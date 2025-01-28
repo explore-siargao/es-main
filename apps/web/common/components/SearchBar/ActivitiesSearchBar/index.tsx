@@ -57,14 +57,14 @@ function ActivitiesSearchBar() {
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <Input
         type="date"
-        className="w-[12rem] 4xl:w-[18rem] border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
+        className="w-[16rem] 4xl:w-[20rem] border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition"
         label={"Date"}
         {...register("activityDate")}
         min={dateToday}
       />
-      <Separator orientation="vertical" className="bg-gray-300 h-8 mx-5" />
+      <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <div
-        className="w-[23rem] 4xl:w-[28rem] border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer"
+        className="w-[23rem] 4xl:w-[28rem] border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-4 px-6 rounded-full transition cursor-pointer"
         onClick={openGuestModal}
       >
         <Typography variant="h6" fontWeight="semibold">
