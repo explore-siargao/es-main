@@ -49,7 +49,7 @@ function PropertySearchBar() {
   }, [totalGuests, setValue])
 
   return (
-    <div className="flex w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
+    <div className="flex gap-2 w-full justify-between rounded-full items-center pr-3 border bg-white border-gray-300 mb-4">
       <Select
         className="w-64 border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-4 rounded-full transition"
         label={"Location"}
@@ -82,7 +82,7 @@ function PropertySearchBar() {
       />
       <Separator orientation="vertical" className="bg-gray-300 h-8" />
       <div
-        className="border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-3 px-6 rounded-full transition cursor-pointer w-[23rem] 4xl:w-[28rem]"
+        className="border-0 bg-inherit focus-within:border-0 hover:bg-gray-200 py-4 px-6 rounded-full transition cursor-pointer w-[16rem] 4xl:w-[20rem]"
         onClick={openGuestModal}
       >
         <Typography variant="h6" fontWeight="semibold">

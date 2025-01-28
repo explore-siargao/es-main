@@ -6,21 +6,21 @@ export const sideContent: Field = {
   type: "group",
   fields: [
     {
-      name: "popularBlogs",
+      name: "popularTravels",
       type: "array",
-      label: "Popular Blogs",
+      label: "Popular Travel",
       minRows: 1,
       maxRows: 3,
       labels: {
-        singular: "Blog",
-        plural: "Blogs",
+        singular: "Travel",
+        plural: "Travels",
       },
       fields: [
         {
-          name: "blog",
-          label: "Select a blog",
+          name: "travel",
+          label: "Select a travel",
           type: "relationship",
-          relationTo: "blogs", // Slug of the target collection
+          relationTo: "travels", // Slug of the target collection
         },
       ],
     },
