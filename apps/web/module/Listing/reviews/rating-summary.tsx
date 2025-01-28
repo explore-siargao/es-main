@@ -10,9 +10,22 @@ import {
   LucideStar,
 } from "lucide-react"
 import { Typography } from "@/common/components/ui/Typography"
-import { T_RatingSummaryProps } from "../property/types/RatingSummary"
+import { T_Reviews } from "@repo/contract-2/review"
+import { T_Review_Category } from "@/common/types/global"
 
-const HeadReview = ({ ratings, reviews, categories }: T_RatingSummaryProps) => {
+type T_HeadReviewProps = {
+  ratings: number
+  reviews: number
+  categories: T_Review_Category[]
+  totalRating: T_Reviews
+}
+const HeadReview = ({
+  ratings,
+  reviews,
+  categories,
+  totalRating,
+}: T_HeadReviewProps) => {
+  console.log(totalRating, "totalRating")
   return (
     <>
       <div className="flex mb-4 space-x-2">
@@ -23,11 +36,12 @@ const HeadReview = ({ ratings, reviews, categories }: T_RatingSummaryProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 lg:gap-x-6 gap-y-5 lg:gap-y-0 lg:divide-x divide-y lg:divide-y-0">
         <div className="md:col-span-2 lg:col-span-2">
-          <OverallRating />
+          <OverallRating reviews={totalRating} />
         </div>
         <div className="md:col-span-3 lg:col-span-10">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-full md:items-center lg:divide-x">
             {categories.map((category) => {
+              if (!category.title) return
               return (
                 <Category
                   title={category.title}

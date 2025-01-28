@@ -2,8 +2,8 @@ import { Typography } from "@/common/components/ui/Typography"
 import React from "react"
 
 interface CategoryProps {
-  title: string
-  rating: string
+  title: string | undefined
+  rating: string | number | undefined
   isHorizontal: boolean
   icon: React.ReactNode
 }
