@@ -21,7 +21,7 @@ const hostApproval = new Schema({
     type: businessPermit,
     required: false,
   },
-  status:{
+  status: {
     type: String,
     enum: status,
     default: "Pending",

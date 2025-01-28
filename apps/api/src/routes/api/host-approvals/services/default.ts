@@ -16,42 +16,43 @@ export const addHostApproval = async (req: Request, res: Response) => {
     const upload = await fileService.upload({ files })
 
     const validHostApproval = Z_Add_Host_Approval.safeParse({
-      businessType:businessType,
-      companyName:companyName,
-      brn:brn,
-      registeredAddress:registeredAddress,
-      photocopyBusinessPermit:JSON.stringify(
-        { fileKey: upload.key, createdAt: new Date() },
-      ),
+      businessType: businessType,
+      companyName: companyName,
+      brn: brn,
+      registeredAddress: registeredAddress,
+      photocopyBusinessPermit: JSON.stringify({
+        fileKey: upload.key,
+        createdAt: new Date(),
+      }),
     })
-    if(validHostApproval.success){
-    const newHostApproval = new dbHostApproval({
-      userId,
-      businessType,
-      companyName,
-      brn,
-      registeredAddress,
-      createdAt: Date.now(),
-    })
-    
-    await newHostApproval.save()
-    await dbHostApproval.findByIdAndUpdate(newHostApproval._id, {
-      $set: {
-        photocopyBusinessPermit: JSON.stringify([
-          { fileKey: upload.key, createdAt: new Date() },
-        ]),
-      },
-    })
-    res.json(
-      response.success({
-        item: newHostApproval,
-        message: 'Host approval request has been submitted',
+    if (validHostApproval.success) {
+      const newHostApproval = new dbHostApproval({
+        userId,
+        businessType,
+        companyName,
+        brn,
+        registeredAddress,
+        createdAt: Date.now(),
       })
-    )
-  }else{
-    console.error(validHostApproval.error.message)
-    res.json(response.error({message:"Invalid payload"}))
-  }
+
+      await newHostApproval.save()
+      await dbHostApproval.findByIdAndUpdate(newHostApproval._id, {
+        $set: {
+          photocopyBusinessPermit: JSON.stringify([
+            { fileKey: upload.key, createdAt: new Date() },
+          ]),
+        },
+      })
+      res.json(
+        response.success({
+          item: newHostApproval,
+          message: 'Host approval request has been submitted',
+        })
+      )
+    } else {
+      console.error(validHostApproval.error.message)
+      res.json(response.error({ message: 'Invalid payload' }))
+    }
   } catch (err: any) {
     res.json(
       response.error({
