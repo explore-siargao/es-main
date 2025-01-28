@@ -26,6 +26,7 @@ import useGetForPayment from "../hooks/use-get-for-payment"
 import useAddCardForPayment from "../hooks/use-add-card-for-payment"
 import useAddGCashForPayment from "../hooks/use-add-gcash-for-payment"
 import useAddManualCardForPayment from "../hooks/use-add-manual-card-for-payment"
+import { T_Add_For_Payment } from "@repo/contract-2/for-payment-listings"
 
 const BookNow = () => {
   const router = useRouter()
@@ -91,7 +92,7 @@ const BookNow = () => {
     const remappedItem = remapItem(data?.item as T_Cart_Item)
   
     if (paymentInfo.paymentType == E_PaymentType.GCASH) {
-      mutate(remappedItem, {
+      mutate(remappedItem as T_Add_For_Payment, {
         onSuccess: (data: any) => {
           if (!data.error) {
             router.push(data.item.action.link)

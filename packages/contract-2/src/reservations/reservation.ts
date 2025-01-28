@@ -4,6 +4,7 @@ import { ApiService } from "../common/services/api"
 import {
   T_Add_For_Payment,
   T_Linked_Card_Payment,
+  T_Manual_Card_Payment,
 } from "../for-payment-listings"
 import { T_Grouped_Reservations, T_Reservations } from "./type"
 
@@ -39,7 +40,7 @@ export class ReservationService {
   }
 
   async payForPayment(
-    item: T_Add_For_Payment | T_Payment_Method | T_Linked_Card_Payment,
+    item: T_Add_For_Payment | T_Manual_Card_Payment | T_Linked_Card_Payment,
     type: T_Payment_Method
   ) {
     if (type === "gcash") {
