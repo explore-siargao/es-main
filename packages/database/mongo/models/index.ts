@@ -27,6 +27,8 @@ import dbCarts from "./dbCarts"
 import dbForPaymentListing from "./dbForPaymentListings"
 import dbTesting from "./dbTestting"
 import dbWishlists from "./dbWishlists"
+import dbHostApproval from "./dbHostApproval"
+
 export {
   dbAddresses,
   dbEmergencyContacts,
@@ -57,4 +59,5 @@ export {
   dbForPaymentListing,
   dbTesting,
   dbWishlists,
+  dbHostApproval
 }
