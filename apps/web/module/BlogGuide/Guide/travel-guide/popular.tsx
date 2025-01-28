@@ -26,7 +26,6 @@ type T_Props = {
 }
 
 function PopularBlogs({ data }: T_Props) {
-
   return (
     <div className="mb-6">
       <Typography variant="h2" fontWeight="semibold" className="mb-2">
@@ -46,7 +45,8 @@ function PopularBlogs({ data }: T_Props) {
                 style={{ objectFit: "cover" }}
                 src={`/assets/${item.travel.hero.images[0]?.image.filename}`}
                 alt={
-                  item.travel.hero.images[0]?.image.alt || `Travel image ${index}`
+                  item.travel.hero.images[0]?.image.alt ||
+                  `Travel image ${index}`
                 }
                 className="rounded-lg"
               />
