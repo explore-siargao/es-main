@@ -2,18 +2,14 @@ import { T_Add_To_Cart } from "@repo/contract-2/cart"
 import { ReservationService } from "@repo/contract-2/reservations"
 import { useMutation } from "@tanstack/react-query"
 
-type T_Props = {
-  cartItems: T_Add_To_Cart[]
-}
-
-export async function addGCashForPayment(props: T_Props) {
+export async function addGCashForPayment(props: any) {
   const reservation = new ReservationService()
   return await reservation.payForPayment(props, "gcash")
 }
 
 function useAddGCashForPayment() {
   const query = useMutation({
-    mutationFn: (props: T_Props) => addGCashForPayment(props),
+    mutationFn: (props: T_Add_To_Cart) => addGCashForPayment(props),
   })
   return query
 }

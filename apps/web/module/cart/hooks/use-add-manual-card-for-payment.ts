@@ -3,20 +3,16 @@ import { T_Add_For_Payment } from "@repo/contract-2/for-payment-listings"
 import { ReservationService } from "@repo/contract-2/reservations"
 import { useMutation } from "@tanstack/react-query"
 
-type T_Props = {
-  cartItems: T_Add_For_Payment[]
-  cardInfo: string | undefined
-}
-export async function addCardPayment(props: T_Props) {
+export async function addCardForPayment(props: any) {
   const reservation = new ReservationService()
   return await reservation.payForPayment(props, "manual")
 }
 
-function useAddManualCardPayment() {
+function useAddManualCardForPayment() {
   const query = useMutation({
-    mutationFn: (props: T_Props) => addCardPayment(props),
+    mutationFn: (props: any) => addCardForPayment(props),
   })
   return query
 }
 
-export default useAddManualCardPayment
+export default useAddManualCardForPayment

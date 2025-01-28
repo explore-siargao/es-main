@@ -13,7 +13,6 @@ import SubTotalBox from "../sub-total-box"
 import { T_Add_To_Cart, T_Cart_Item } from "@repo/contract-2/cart"
 import { useRouter, useSearchParams } from "next/navigation"
 import { E_PaymentType } from "@repo/contract"
-import useAddManualCardPayment from "../hooks/use-add-manual-card-payment"
 import { LucideChevronLeft } from "lucide-react"
 import ActivityPriceDetailsBox from "./price-details-box/activity"
 import ActivityMoreInfo from "./more-info/activity"
@@ -26,6 +25,7 @@ import SelectPayment from "./select-payment"
 import useGetForPayment from "../hooks/use-get-for-payment"
 import useAddCardForPayment from "../hooks/use-add-card-for-payment"
 import useAddGCashForPayment from "../hooks/use-add-gcash-for-payment"
+import useAddManualCardForPayment from "../hooks/use-add-manual-card-for-payment"
 
 const BookNow = () => {
   const router = useRouter()
@@ -34,7 +34,7 @@ const BookNow = () => {
   const [checkInOutCalendarModalIsOpen, setCheckInOutCalendarModalIsOpen] =
     useState(false)
   const { mutate } = useAddGCashForPayment()
-  const { mutate: mutateUseAddManualCardPayment } = useAddManualCardPayment()
+  const { mutate: mutateUseAddManualCardPayment } = useAddManualCardForPayment()
   const { mutate: mutateUseAddCardPayment } = useAddCardForPayment()
   const paymentInfo = usePaymentInfoStore((state) => state)
   const forPaymentId = searchParams.get(`listingId`)
@@ -54,7 +54,6 @@ const BookNow = () => {
   const activityItems = allItems.filter(
     (item) => item._id && item.activityIds
   )
-
   
   const remapItem = (item: T_Cart_Item) => {
     return {
@@ -86,10 +85,11 @@ const BookNow = () => {
       id: item._id,
     };
   };
-  
 
-  const remappedItem = remapItem(data?.item)
+  
   const handleProceedToPayment = () => {
+    const remappedItem = remapItem(data?.item as T_Cart_Item)
+  
     if (paymentInfo.paymentType == E_PaymentType.GCASH) {
       mutate(remappedItem, {
         onSuccess: (data: any) => {
@@ -126,8 +126,8 @@ const BookNow = () => {
         const encryptCardInfo = encryptionService.encrypt(cardInfo)
         const cardInfoHMAC = hmacService.generateHMAC(cardInfo)
         const payload = {
+          ...remappedItem,
           cardInfo: encryptCardInfo,
-          cartItems: remappedItem,
           hmac: cardInfoHMAC,
           expirationDate: add(new Date(), { seconds: 30 }),
         }
@@ -151,10 +151,10 @@ const BookNow = () => {
       if (paymentInfo.paymentMethodId && paymentInfo.cvv) {
         const cvv = paymentInfo.cvv
         const cvvHMAC = hmacService.generateHMAC({ cvv })
-
+        
         mutateUseAddCardPayment(
           {
-            cartItems: remappedItem,
+            ...remappedItem,
             paymentMethodId: paymentInfo.paymentMethodId as string,
             cvv: paymentInfo.cvv as string,
             hmac: cvvHMAC,

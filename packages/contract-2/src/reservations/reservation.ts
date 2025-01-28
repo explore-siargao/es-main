@@ -43,12 +43,12 @@ export class ReservationService {
     type: T_Payment_Method
   ) {
     if (type === "gcash") {
-      return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
+      return this.api.post(`${RESERVATION_BASE_URL}/checkout/gcash`, item)
     } else if (type === "card") {
-      return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/card`, item)
+      return this.api.post(`${RESERVATION_BASE_URL}/checkout/card`, item)
     } else if (type === "manual") {
       return this.api.post(
-        `${RESERVATION_BASE_URL}/cart/checkout/manual-card`,
+        `${RESERVATION_BASE_URL}/checkout/manual-card`,
         item
       )
     }
