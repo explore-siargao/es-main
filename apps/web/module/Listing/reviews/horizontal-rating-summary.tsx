@@ -22,7 +22,7 @@ const HorizontalRatingSummary = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 lg:gap-x-6 lg:divide-x gap-y-4 lg:gap-y-0">
         <div className="md:col-span-2 lg:col-span-2">
-          <OverallRating />
+          <OverallRating reviews={[]} />
         </div>
         <div className="md:col-span-3 lg:col-span-10">
           <div className="grid lg:mx-4 grid-cols-1 md:grid-cols-3 h-full items-center gap-y-2 lg:gap-y-0 md:gap-x-6">

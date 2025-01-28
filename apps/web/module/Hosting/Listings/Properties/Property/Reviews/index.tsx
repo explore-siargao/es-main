@@ -25,6 +25,7 @@ const ListingReviews = ({
             ratings={ratingSummary.ratings}
             reviews={ratingSummary.reviews}
             categories={ratingSummary.categories}
+            totalRating={[]}
           />
         </div>
         <div className="py-8">

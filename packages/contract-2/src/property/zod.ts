@@ -224,4 +224,16 @@ export const Z_Property = z.object({
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional().nullable(),
   deletedAt: z.union([z.string(), z.date()]).optional().nullable(),
+  averageReviews: z
+    .object({
+      totalReview: z.number(),
+      averageTotalRates: z.number(),
+      cleanliness: z.number(),
+      accuracy: z.number(),
+      checkIn: z.number(),
+      communication: z.number(),
+      value: z.number(),
+      location: z.number(),
+    })
+    .optional(),
 })

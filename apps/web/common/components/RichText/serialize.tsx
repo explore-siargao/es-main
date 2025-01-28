@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 // @ts-ignore
 import escapeHTML from "escape-html"
 import { Text } from "slate"
+import Image from "next/image"
 
 const serialize = (children: any) =>
   children.map((node: any, i: any) => {
@@ -11,47 +12,27 @@ const serialize = (children: any) =>
       )
 
       // @ts-ignore
-      if (node.bold) {
-        text = <strong key={i}>{text}</strong>
-      }
-
+      if (node.bold) text = <strong key={i}>{text}</strong>
       // @ts-ignore
-      if (node.code) {
-        text = <code key={i}>{text}</code>
-      }
-
+      if (node.code) text = <code key={i}>{text}</code>
       // @ts-ignore
-      if (node.italic) {
-        text = <em key={i}>{text}</em>
-      }
-
+      if (node.italic) text = <em key={i}>{text}</em>
       // @ts-ignore
-      if (node.underline) {
-        text = <u key={i}>{text}</u>
-      }
-
+      if (node.underline) text = <u key={i}>{text}</u>
       // @ts-ignore
-      if (node.strikethrough) {
-        text = <s key={i}>{text}</s>
-      }
-
+      if (node.strikethrough) text = <s key={i}>{text}</s>
       // @ts-ignore
-      if (node.url) {
+      if (node.url)
         text = (
           <a key={i} href="#">
             {text}
           </a>
         )
-      }
-
-      // Handle other leaf types here...
 
       return <Fragment key={i}>{text}</Fragment>
     }
 
-    if (!node) {
-      return null
-    }
+    if (!node) return null
 
     switch (node.type) {
       case "h1":
@@ -86,13 +67,22 @@ const serialize = (children: any) =>
         )
       case "upload":
         return (
-          <img
+          <Image
             key={i}
             src={node.value.url}
             alt={node.value.alt}
             width={node.value.width}
             height={node.value.height}
+            className="rounded-xl"
           />
+        )
+      case "indent":
+        const indentLevel = node.level || 1
+        const indentSize = indentLevel * 24
+        return (
+          <div key={i} style={{ marginLeft: `${indentSize}px` }}>
+            {serialize(node.children)}
+          </div>
         )
       default:
         return <p key={i}>{serialize(node.children)}</p>

@@ -55,10 +55,10 @@ function WithSearch({
       </div>
       <WidthWrapper width={contentWidth}>
         <nav
-          className="flex items-start justify-between py-2 my-2 w-full"
+          className="flex items-start justify-between pt-4 w-full"
           aria-label="Global"
         >
-          <Link href={LINK_HOME} className="gap-2 items-center min-w-64">
+          <Link href={LINK_HOME} className="gap-2 items-center min-w-64 z-0">
             <Image
               className="h-12 w-fit"
               src={Logo}
@@ -67,7 +67,7 @@ function WithSearch({
               alt={APP_NAME}
             />
           </Link>
-          <SearchBarByState isNavCenter={true} />
+
           <div className="hidden lg:flex lg:justify-end space-x-3 items-center relative min-w-64">
             <div className="flex gap-2 rounded-full items-center px-2 py-1">
               <GuidesMenu />
@@ -95,6 +95,7 @@ function WithSearch({
             {session.id && <LoggedInUserDropdown />}
           </div>
         </nav>
+        <SearchBarByState isNavCenter={true} />
         <ApplyToHostModal isModalOpen={isModalOpen} onClose={closeModal} />
       </WidthWrapper>
       {withFilters ? <FilterHeader /> : null}

@@ -22,6 +22,7 @@ import SimilarProperties from "./similar-properties"
 import { Typography } from "@/common/components/ui/Typography"
 import HostPolicies from "./host-policies"
 import { T_Property } from "@repo/contract-2/property"
+import { T_Reviews } from "@repo/contract-2/review"
 
 export const Property = ({
   property,
@@ -31,7 +32,7 @@ export const Property = ({
   unitId: string
 }) => {
   const [showReportModal, setShowReportModal] = useState(false)
-
+  console.log(property)
   const handleOpenModal = () => {
     setShowReportModal(true)
   }
@@ -43,6 +44,48 @@ export const Property = ({
     ? format(parseISO(String(offerBy.createdAt)), "MMMM d, yyyy")
     : ""
 
+  const categories = [
+    {
+      title: "Cleanliness",
+      rating: property?.averageReviews?.cleanliness,
+      isHorizontal: false,
+    },
+    {
+      title: "Accuracy",
+      rating: property?.averageReviews?.accuracy,
+      isHorizontal: false,
+    },
+    {
+      title: "Check-in",
+      rating: property?.averageReviews?.checkIn,
+      isHorizontal: false,
+    },
+    {
+      title: "Communication",
+      rating: property?.averageReviews?.communication,
+      isHorizontal: false,
+    },
+    {
+      title: "Location",
+      rating: property?.averageReviews?.location,
+      isHorizontal: false,
+    },
+    {
+      title: "Value",
+      rating: property?.averageReviews?.value,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: property?.averageReviews?.totalReview,
+      isHorizontal: false,
+    },
+    {
+      title: "",
+      rating: property?.averageReviews?.averageTotalRates,
+      isHorizontal: false,
+    },
+  ]
   return (
     <WidthWrapper width="medium" className="mt-4 lg:mt-8">
       <Hero images={property?.photos} title={property?.title} />
@@ -114,23 +157,28 @@ export const Property = ({
         <div className="py-8">
           <WhereYoullBeDescription location={property?.location} />
         </div>
+
         <div className="py-8">
           <RatingSummary
-            ratings={ratingSummary.ratings}
-            reviews={ratingSummary.reviews}
-            categories={ratingSummary.categories}
+            ratings={property?.averageReviews?.averageTotalRates as number}
+            reviews={property?.averageReviews?.totalReview as number}
+            categories={categories}
+            totalRating={property?.reviews as T_Reviews}
           />
         </div>
         <div className="py-8">
-          <UserReviews reviews={userReviews} />
+          <UserReviews
+            reviews={property.reviews as T_Reviews}
+            categories={categories}
+          />
         </div>
         <div className="py-8">
           <HostInformation
             hostName={`${offerBy?.offerBy?.guest?.firstName || ""} ${offerBy?.offerBy?.guest?.middleName || ""} ${offerBy?.offerBy?.guest?.lastName || ""}`}
-            hostProfilePic={hostDummy.hostProfilePic}
+            hostProfilePic={hostDummy?.hostProfilePic}
             joinedIn={formattedDate}
             countReviews={0}
-            rules={hostDummy.rules}
+            rules={hostDummy?.rules}
             responseRate={0}
             responseTime={""}
           />

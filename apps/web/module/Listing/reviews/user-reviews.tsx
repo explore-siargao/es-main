@@ -2,9 +2,15 @@ import React, { useState } from "react"
 import UserReview from "./review"
 import { Button } from "@/common/components/ui/Button"
 import UserReviewModal from "../modals/user-review-modal"
-import { T_UserReviewsProps } from "../property/types/UserReviews"
+import { T_Reviews, T_Review } from "@repo/contract-2/review"
+import { userReviews } from "../dummy"
+import { T_Review_Category } from "@/common/types/global"
 
-const UserReviews = ({ reviews }: T_UserReviewsProps) => {
+type T_Props = {
+  reviews: T_Reviews
+  categories?: T_Review_Category[]
+}
+const UserReviews = ({ reviews, categories }: T_Props) => {
   const [showMoreModalOpen, setShowMoreModalOpen] = useState(false)
 
   const openShowMoreModal = () => {
@@ -13,20 +19,24 @@ const UserReviews = ({ reviews }: T_UserReviewsProps) => {
   const closeShowMoreModal = () => {
     setShowMoreModalOpen(false)
   }
+  const countWords = (str: string) => {
+    return str.trim().split(/\s+/).length
+  }
 
   return (
     <>
       <div className="grid grid-cols-2 gap-y-8 gap-x-16">
-        {reviews.map((review) => (
+        {reviews?.map((review: T_Review, index) => (
           <UserReview
-            key={review.date}
-            avatarKey={review.imageSrc}
-            name={review.name}
-            origin={review.origin}
-            rate={review.rate}
-            date={review.date}
-            review={review.review}
-            showMore={review.showMore}
+            key={review?._id}
+            avatarKey={userReviews[index]?.imageSrc || ""}
+            name={`${review.reviewer.guest.firstName} ${review.reviewer.guest.middleName || ""} ${review.reviewer.guest.lastName}`}
+            origin={`${review?.reviewer?.guest?.address?.city} ${review?.reviewer?.guest?.address?.stateProvince}, 
+              ${review?.reviewer?.guest?.address?.country}`}
+            rate={review.totalRates}
+            date={review?.createdAt as string}
+            review={review?.comment}
+            showMore={countWords(review.comment) > 300}
           />
         ))}
       </div>
@@ -36,6 +46,8 @@ const UserReviews = ({ reviews }: T_UserReviewsProps) => {
       <UserReviewModal
         isOpen={showMoreModalOpen}
         onClose={() => closeShowMoreModal()}
+        reviews={reviews}
+        categories={categories}
       />
     </>
   )
