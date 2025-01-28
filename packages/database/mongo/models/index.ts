@@ -59,5 +59,5 @@ export {
   dbForPaymentListing,
   dbTesting,
   dbWishlists,
-  dbHostApproval
+  dbHostApproval,
 }

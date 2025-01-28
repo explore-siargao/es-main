@@ -8,6 +8,12 @@ import { addHostApproval } from './services/default'
 
 const router = express.Router()
 
-router.post('/', isOriginValid, isUserLoggedIn, isCsrfTokenValid, addHostApproval)
+router.post(
+  '/',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  addHostApproval
+)
 
 export default router

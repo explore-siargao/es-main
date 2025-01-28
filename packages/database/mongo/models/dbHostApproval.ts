@@ -12,13 +12,13 @@ const hostApproval = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Users",
   },
-  businessType:String,
-  companyName:String,
-  brn:String,
-  registeredAddress:String,
-  photocopyBusinessPermit:{
-    type:businessPermit,
-    required:false
+  businessType: String,
+  companyName: String,
+  brn: String,
+  registeredAddress: String,
+  photocopyBusinessPermit: {
+    type: businessPermit,
+    required: false,
   },
   createdAt: {
     type: Date,
