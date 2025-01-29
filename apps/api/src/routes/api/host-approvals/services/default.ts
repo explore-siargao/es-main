@@ -44,9 +44,10 @@ export const addHostApproval = async (req: Request, res: Response) => {
       await newHostApproval.save()
       await dbHostApproval.findByIdAndUpdate(newHostApproval._id, {
         $set: {
-          photocopyBusinessPermit: JSON.stringify(
-            { fileKey: upload.key, createdAt: new Date() },
-          ),
+          photocopyBusinessPermit: JSON.stringify({
+            fileKey: upload.key,
+            createdAt: new Date(),
+          }),
         },
       })
       res.json(
@@ -155,48 +156,77 @@ export const getRequestByHost = async (req: Request, res: Response) => {
   }
 }
 
-export const updateHostApproval = async(req:Request, res:Response) => {
-const userId = res.locals.user.id
-const { id } = req.params
-const {businessType, companyName, brn, registeredAddress} = req.body
-const files = req.files
-try {
-  const getHostApproval = await dbHostApproval.findOne({_id:id, userId:userId, deletedAt:null})
-  if(!getHostApproval){
-    res.json(response.error({message:"Invalid id or this item is not belong to you"}))
-  }else{
-  const status = getHostApproval?.status
-  if(status===E_Status.Approved){
-    res.json(response.error({message:"You are not allowed to edit item that already approved by admin"}))
-  }else{
-    let upload:any
-    const updateData:any = {
-      businessType,
-      companyName,
-      brn,
-      registeredAddress,
-      status:"Pending",
-      updatedAt:Date.now()
-    }
-    if(files){
-    upload = await fileService.upload({ files })
-    updateData.photocopyBusinessPermit = JSON.stringify(
-      { fileKey: upload.key, createdAt: new Date() },
-    )
-    }
-    const validUpdateData = Z_Update_Host_Approval.safeParse({...updateData,id:id})
-    if(validUpdateData.success){
-    const updateHostApproval = await dbHostApproval.findByIdAndUpdate(id,{
-      $set:updateData
+export const updateHostApproval = async (req: Request, res: Response) => {
+  const userId = res.locals.user.id
+  const { id } = req.params
+  const { businessType, companyName, brn, registeredAddress } = req.body
+  const files = req.files
+  try {
+    const getHostApproval = await dbHostApproval.findOne({
+      _id: id,
+      userId: userId,
+      deletedAt: null,
     })
-    res.json(response.success({item:updateHostApproval, message:"Host approval request successfully updated"}))
-    }else{
-      console.error(validUpdateData.error.message),
-      res.json(response.error({message:"Invalid payload"}))
+    if (!getHostApproval) {
+      res.json(
+        response.error({
+          message: 'Invalid id or this item is not belong to you',
+        })
+      )
+    } else {
+      const status = getHostApproval?.status
+      if (status === E_Status.Approved) {
+        res.json(
+          response.error({
+            message:
+              'You are not allowed to edit item that already approved by admin',
+          })
+        )
+      } else {
+        let upload: any
+        const updateData: any = {
+          businessType,
+          companyName,
+          brn,
+          registeredAddress,
+          status: 'Pending',
+          updatedAt: Date.now(),
+        }
+        if (files) {
+          upload = await fileService.upload({ files })
+          updateData.photocopyBusinessPermit = JSON.stringify({
+            fileKey: upload.key,
+            createdAt: new Date(),
+          })
+        }
+        const validUpdateData = Z_Update_Host_Approval.safeParse({
+          ...updateData,
+          id: id,
+        })
+        if (validUpdateData.success) {
+          const updateHostApproval = await dbHostApproval.findByIdAndUpdate(
+            id,
+            {
+              $set: updateData,
+            }
+          )
+          res.json(
+            response.success({
+              item: updateHostApproval,
+              message: 'Host approval request successfully updated',
+            })
+          )
+        } else {
+          console.error(validUpdateData.error.message),
+            res.json(response.error({ message: 'Invalid payload' }))
+        }
+      }
     }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
   }
-}
-} catch (err:any) {
-  res.json(response.error({message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED}))
-}
 }

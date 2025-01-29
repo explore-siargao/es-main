@@ -18,9 +18,9 @@ export class HostApprovalService {
     return this.api.post(HOST_APPROVAL_URL, item)
   }
 
-   async updateHostApproval(item: T_Update_Host_Approval) {
-      return this.api.patch(`${HOST_APPROVAL_URL}/${item.id}`, item)
-    }
+  async updateHostApproval(item: T_Update_Host_Approval) {
+    return this.api.patch(`${HOST_APPROVAL_URL}/${item.id}`, item)
+  }
 
   static getQueryKeys() {
     return {

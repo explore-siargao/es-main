@@ -60,15 +60,17 @@ export const Z_Host_Approval = z.object({
 export const Z_Host_Approvals = z.array(Z_Host_Approval)
 
 export const Z_Update_Host_Approval = z.object({
-  id:z.union([z.string(),objectIdSchema]),
-  businessType:z.string().optional(),
-  companyName:z.string().optional(),
-  brn:z.string().optional(),
-  registeredAddress:z.string().optional(),
-  photocopyBusinessPermit: z.array(
-    z.object({
-      fileKey: z.string(),
-      createdAt: z.date(),
-    })
-  ).optional(),
+  id: z.union([z.string(), objectIdSchema]),
+  businessType: z.string().optional(),
+  companyName: z.string().optional(),
+  brn: z.string().optional(),
+  registeredAddress: z.string().optional(),
+  photocopyBusinessPermit: z
+    .array(
+      z.object({
+        fileKey: z.string(),
+        createdAt: z.date(),
+      })
+    )
+    .optional(),
 })
