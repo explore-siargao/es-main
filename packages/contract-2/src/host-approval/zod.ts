@@ -74,3 +74,8 @@ export const Z_Update_Host_Approval = z.object({
     )
     .optional(),
 })
+
+export const Z_Approve_Reject_Host_Approval = z.object({
+  id: z.union([z.string(), objectIdSchema]),
+  status: z.nativeEnum(E_Status),
+})

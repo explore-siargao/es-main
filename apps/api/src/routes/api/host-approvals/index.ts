@@ -6,7 +6,9 @@ import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import {
   addHostApproval,
+  approveRejectHostApproval,
   cancelHostApproval,
+  getHostApprovalByAdmin,
   getRequestByHost,
   updateHostApproval,
 } from './services/default'
@@ -29,12 +31,28 @@ router.get(
   getRequestByHost
 )
 
+router.get(
+  '/admin',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  getHostApprovalByAdmin
+)
+
 router.patch(
   '/:id',
   isOriginValid,
   isUserLoggedIn,
   isCsrfTokenValid,
   updateHostApproval
+)
+
+router.post(
+  '/admin-approval/:id',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  approveRejectHostApproval
 )
 
 router.delete(
