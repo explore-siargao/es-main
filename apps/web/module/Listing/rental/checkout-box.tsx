@@ -90,12 +90,11 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
       guestCount: 1,
     }
     addForPayment(payload, {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         if (!data.error) {
           queryClient.invalidateQueries({
             queryKey: [queryKeys.getItems],
           })
-          console.log(data?.item?._id)
           router.push(`/book-now?listingId=${data?.item?._id}`)
         } else {
           toast.error(String(data.message))
