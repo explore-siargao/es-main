@@ -1,7 +1,11 @@
 import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { capitalizeFirstLetter } from '@/common/helpers/capitalizedFirstLetter'
 import { FileService } from '@/common/service/file'
 import { ResponseService } from '@/common/service/response'
-import { Z_Add_Host_Approval } from '@repo/contract-2/host-approval'
+import {
+  Z_Add_Host_Approval,
+  Z_Host_Approvals,
+} from '@repo/contract-2/host-approval'
 import { dbHostApproval } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
@@ -52,6 +56,93 @@ export const addHostApproval = async (req: Request, res: Response) => {
     } else {
       console.error(validHostApproval.error.message)
       res.json(response.error({ message: 'Invalid payload' }))
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
+}
+
+export const getRequestByHost = async (req: Request, res: Response) => {
+  const userId = res.locals.user.id
+  console.log(userId)
+  const { status = 'all', page = 1, limit = 15 } = req.query
+  const skip = (Number(page) - 1) * Number(limit)
+  let hostApprovals: any
+  let totalCounts: any
+  try {
+    if (status === 'all' || status === 'All') {
+      hostApprovals = await dbHostApproval
+        .find({ userId: userId, deletedAt: null })
+        .populate({
+          path: 'userId',
+          select: '_id guest',
+          populate: {
+            path: 'guest',
+            select: '_id firstName lastName middleName',
+          },
+        })
+        .populate({
+          path: 'approvedBy',
+          select: '_id guest',
+          populate: {
+            path: 'guest',
+            select: '_id firstName lastName middleName',
+          },
+        })
+        .skip(skip)
+        .limit(Number(limit))
+      totalCounts = await dbHostApproval
+        .find({ userId: userId, deletedAt: null })
+        .countDocuments()
+    } else if (
+      status === 'approved' ||
+      status === 'pending' ||
+      status === 'rejected'
+    ) {
+      const newStatus = capitalizeFirstLetter(status)
+      hostApprovals = await dbHostApproval
+        .find({ userId: userId, status: newStatus, deletedAt: null })
+        .populate({
+          path: 'userId',
+          select: '_id guest',
+          populate: {
+            path: 'guest',
+            select: '_id firstName lastName middleName',
+          },
+        })
+        .populate({
+          path: 'approvedBy',
+          select: '_id guest',
+          populate: {
+            path: 'guest',
+            select: '_id firstName lastName middleName',
+          },
+        })
+        .skip(skip)
+        .limit(Number(limit))
+      totalCounts = await dbHostApproval
+        .find({ userId: userId, status: newStatus, deletedAt: null })
+        .countDocuments()
+    } else {
+      res.json(response.error({ message: 'Invalid status' }))
+      return
+    }
+    const valisHostApprovals = Z_Host_Approvals.safeParse(hostApprovals)
+    if (valisHostApprovals.success) {
+      res.json(
+        response.success({
+          items: hostApprovals,
+          pageItemCount: hostApprovals.length,
+          allItemCount: totalCounts,
+        })
+      )
+    } else {
+      console.error(valisHostApprovals.error.message)
+      res.json(response.error({ message: 'Invalid host approvals data' }))
     }
   } catch (err: any) {
     res.json(

@@ -294,9 +294,9 @@ const seedUsers = async () => {
         createdAt: "2024-11-20",
       },
       {
-        firstName: "Maria",
-        middleName: "Santos",
-        lastName: "Lopez",
+        firstName: "John",
+        middleName: "V.",
+        lastName: "Madrigal",
         language: "English",
         currency: "PHP",
         gender: "F",
