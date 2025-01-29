@@ -22,6 +22,10 @@ export class HostApprovalService {
     return this.api.patch(`${HOST_APPROVAL_URL}/${item.id}`, item)
   }
 
+  async cancelHostApproval(id: string) {
+    return this.api.delete(`${HOST_APPROVAL_URL}/${id}`)
+  }
+
   static getQueryKeys() {
     return {
       getItemsByHost: "host-approvals",

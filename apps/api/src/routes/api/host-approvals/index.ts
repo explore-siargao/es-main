@@ -6,6 +6,7 @@ import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
 import {
   addHostApproval,
+  cancelHostApproval,
   getRequestByHost,
   updateHostApproval,
 } from './services/default'
@@ -34,6 +35,14 @@ router.patch(
   isUserLoggedIn,
   isCsrfTokenValid,
   updateHostApproval
+)
+
+router.delete(
+  '/:id',
+  isOriginValid,
+  isUserLoggedIn,
+  isCsrfTokenValid,
+  cancelHostApproval
 )
 
 export default router
