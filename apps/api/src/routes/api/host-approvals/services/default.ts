@@ -1,14 +1,15 @@
-import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
+import { UNKNOWN_ERROR_OCCURRED, USER_NOT_AUTHORIZED } from '@/common/constants'
 import { capitalizeFirstLetter } from '@/common/helpers/capitalizedFirstLetter'
 import { FileService } from '@/common/service/file'
 import { ResponseService } from '@/common/service/response'
 import {
   E_Status,
   Z_Add_Host_Approval,
+  Z_Approve_Reject_Host_Approval,
   Z_Host_Approvals,
   Z_Update_Host_Approval,
 } from '@repo/contract-2/host-approval'
-import { dbHostApproval } from '@repo/database'
+import { dbHostApproval, dbUsers } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
 const fileService = new FileService()
@@ -71,11 +72,11 @@ export const addHostApproval = async (req: Request, res: Response) => {
 
 export const getRequestByHost = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
-  console.log(userId)
   const { status = 'all', page = 1, limit = 15 } = req.query
   const skip = (Number(page) - 1) * Number(limit)
   let hostApprovals: any
   let totalCounts: any
+  const newStatus = capitalizeFirstLetter(String(status))
   try {
     if (status === 'all' || status === 'All') {
       hostApprovals = await dbHostApproval
@@ -96,18 +97,18 @@ export const getRequestByHost = async (req: Request, res: Response) => {
             select: '_id firstName lastName middleName',
           },
         })
+        .sort({createdAt:-1})
         .skip(skip)
         .limit(Number(limit))
       totalCounts = await dbHostApproval
         .find({ userId: userId })
         .countDocuments()
     } else if (
-      status === 'approved' ||
-      status === 'pending' ||
-      status === 'rejected' ||
-      status === 'cancelled'
+      newStatus===E_Status.Approved ||
+      newStatus===E_Status.Pending ||
+      newStatus===E_Status.Rejected ||
+      newStatus===E_Status.Cancelled
     ) {
-      const newStatus = capitalizeFirstLetter(status)
       hostApprovals = await dbHostApproval
         .find({ userId: userId, status: newStatus })
         .populate({
@@ -126,6 +127,7 @@ export const getRequestByHost = async (req: Request, res: Response) => {
             select: '_id firstName lastName middleName',
           },
         })
+        .sort({createdAt:-1})
         .skip(skip)
         .limit(Number(limit))
       totalCounts = await dbHostApproval
@@ -283,3 +285,120 @@ export const cancelHostApproval = async (req: Request, res: Response) => {
     )
   }
 }
+
+export const getHostApprovalByAdmin = async(req:Request, res:Response)=>{
+  const userId = res.locals.user.id
+  const {status="all", page=1,limit=15} = req.query
+  const skip = (Number(page) - 1) * Number(limit)
+  try {
+    const verifyAdmin = await dbUsers.findOne({_id:userId, deletedAt:null, role:"Admin"})
+    if(!verifyAdmin){
+      res.json(response.error({message:USER_NOT_AUTHORIZED}))
+    }else{
+      let getAllHostApproval:any
+      let totalCounts:number
+      const newStatus = capitalizeFirstLetter(String(status))
+      if(status==="all" || status==="All"){
+        getAllHostApproval = await dbHostApproval.find({})
+        .populate({
+          path: 'userId',
+          select: '_id guest',
+          populate: {
+            path: 'guest',
+            select: '_id firstName lastName middleName',
+          },
+        })
+        .populate({
+          path: 'approvedBy',
+          select: '_id guest',
+          populate: {
+            path: 'guest',
+            select: '_id firstName lastName middleName',
+          },
+        })
+        .sort({createdAt:-1})
+        .skip(skip)
+        .limit(Number(limit))
+        totalCounts = await dbHostApproval.find({}).countDocuments()
+      }else if(newStatus===E_Status.Approved || newStatus===E_Status.Pending || newStatus===E_Status.Rejected || newStatus===E_Status.Cancelled){
+      getAllHostApproval = await dbHostApproval.find({status:newStatus})
+      .populate({
+        path: 'userId',
+        select: '_id guest',
+        populate: {
+          path: 'guest',
+          select: '_id firstName lastName middleName',
+        },
+      })
+      .populate({
+        path: 'approvedBy',
+        select: '_id guest',
+        populate: {
+          path: 'guest',
+          select: '_id firstName lastName middleName',
+        },
+      })
+      .sort({createdAt:-1})
+      .skip(skip)
+      .limit(Number(limit))
+      totalCounts = await dbHostApproval.find({status:newStatus}).countDocuments()
+    }else{
+      res.json(response.error({message:"Invalid status"}))
+      return
+    }
+    const validHostApprovals = Z_Host_Approvals.safeParse(getAllHostApproval)
+    if(validHostApprovals.success){
+      res.json(response.success({items:validHostApprovals.data, pageItemCount:getAllHostApproval.length, allItemCount:totalCounts}))
+    }else{
+      console.error(validHostApprovals.error.message)
+      res.json(response.error({message:"Invalid host approvals data"}))
+    }
+    }
+  } catch (err:any) {
+    res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+  }
+}
+export const approveRejectHostApproval = async(req:Request, res:Response)=>{
+  const userId = res.locals.user.id 
+  const {id} = req.params
+  const {status} = req.body
+  const newStatus = capitalizeFirstLetter(String(status))
+  try {
+    const verifyAdmin = await dbUsers.findOne({_id:userId, deletedAt:null, role:"Admin"})
+    if(!verifyAdmin){
+      res.json(response.error({message:USER_NOT_AUTHORIZED}))
+    }else{
+      const checkIfPending = await dbHostApproval.findOne({_id:id, status:E_Status.Pending})
+      if(!checkIfPending){
+        res.json(response.error({message:"You can't approve or reject this request"}))
+      }else{
+        if(newStatus!==E_Status.Approved && newStatus!==E_Status.Rejected){
+          res.json(response.error({message:"Invalid status"}))
+        }else{
+          const updateData:any ={
+            status:newStatus,
+            updatedAt:Date.now()
+          }
+          if(newStatus===E_Status.Approved){
+            updateData.approvedBy = userId
+          }
+          const validApproval = Z_Approve_Reject_Host_Approval.safeParse({
+            id:id,
+            status:newStatus
+          })
+          if(validApproval.success){
+            const updateRequest = await dbHostApproval.findByIdAndUpdate(id, {
+              $set:updateData
+            })
+            res.json(response.success({item:updateRequest, message:`Request successfully ${newStatus===E_Status.Approved ? "approved" : "rejected"}`}))
+          }else{
+            console.error(validApproval.error.message)
+            res.json(response.error({message:"Invalid payload"}))
+          }
+      }
+      }
+    }
+  } catch (err:any) {
+    res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+  }
+} 

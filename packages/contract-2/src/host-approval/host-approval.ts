@@ -1,6 +1,6 @@
 import { ApiService } from "../common/services/api"
 import { E_Status } from "./enum"
-import { T_Add_Host_Approval, T_Update_Host_Approval } from "./type"
+import { T_Add_Host_Approval, T_Approve_Reject_Host_Approval, T_Update_Host_Approval } from "./type"
 
 const HOST_APPROVAL_URL = `/host-approvals`
 
@@ -14,8 +14,16 @@ export class HostApprovalService {
     return this.api.get(`${HOST_APPROVAL_URL}?status=${status}`)
   }
 
+  async getItemsByAdmin(status?: E_Status) {
+    return this.api.get(`${HOST_APPROVAL_URL}/admin?status=${status}`)
+  }
+
   async addHostApproval(item: T_Add_Host_Approval) {
-    return this.api.post(HOST_APPROVAL_URL, item)
+    return this.api.post(`${HOST_APPROVAL_URL}`, item)
+  }
+
+  async approveRejectHostApproval(item: T_Approve_Reject_Host_Approval) {
+    return this.api.post(`${HOST_APPROVAL_URL}/admin-approval/${item.id}`, item)
   }
 
   async updateHostApproval(item: T_Update_Host_Approval) {
@@ -29,6 +37,7 @@ export class HostApprovalService {
   static getQueryKeys() {
     return {
       getItemsByHost: "host-approvals",
+      getItemsByAdmin: "admin-host-approvals",
     }
   }
 }
