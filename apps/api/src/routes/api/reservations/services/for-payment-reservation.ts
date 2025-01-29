@@ -137,8 +137,6 @@ export const manualCardPayment = async (req: Request, res: Response) => {
   } = req.body
 
   try {
-    const recreateHMAC = hmacService.generateHMAC(cardInfo)
-    console.log(recreateHMAC)
     if (
       (!propertyIds && !rentalIds && !activityIds) ||
       !guestCount ||
@@ -157,6 +155,7 @@ export const manualCardPayment = async (req: Request, res: Response) => {
         const currentDate = new Date()
         const utcDate = format(currentDate, "yyyy-MM-dd'T'HH:mm:ss'Z'")
         const expiredDate = format(expirationDate, "yyyy-MM-dd'T'HH:mm:ss'Z'")
+        const recreateHMAC = hmacService.generateHMAC(decryptCard)
         if (hmac !== recreateHMAC) {
           res.json(response.error({ message: 'Invalid HMAC. Data tampered.' }))
         } else {

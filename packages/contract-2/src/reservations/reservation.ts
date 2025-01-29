@@ -4,6 +4,7 @@ import { ApiService } from "../common/services/api"
 import {
   T_Add_For_Payment,
   T_Linked_Card_Payment,
+  T_Manual_Card_Payment,
 } from "../for-payment-listings"
 import { T_Grouped_Reservations, T_Reservations } from "./type"
 
@@ -39,18 +40,15 @@ export class ReservationService {
   }
 
   async payForPayment(
-    item: T_Add_For_Payment | T_Payment_Method | T_Linked_Card_Payment,
+    item: T_Add_For_Payment | T_Manual_Card_Payment | T_Linked_Card_Payment,
     type: T_Payment_Method
   ) {
     if (type === "gcash") {
-      return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/gcash`, item)
+      return this.api.post(`${RESERVATION_BASE_URL}/checkout/gcash`, item)
     } else if (type === "card") {
-      return this.api.post(`${RESERVATION_BASE_URL}/cart/checkout/card`, item)
+      return this.api.post(`${RESERVATION_BASE_URL}/checkout/card`, item)
     } else if (type === "manual") {
-      return this.api.post(
-        `${RESERVATION_BASE_URL}/cart/checkout/manual-card`,
-        item
-      )
+      return this.api.post(`${RESERVATION_BASE_URL}/checkout/manual-card`, item)
     }
   }
 

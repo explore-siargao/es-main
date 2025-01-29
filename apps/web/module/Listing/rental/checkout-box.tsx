@@ -19,6 +19,8 @@ import useAddToCart from "@/common/hooks/use-add-to-cart"
 import { useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import combineDateTime from "@/common/helpers/combine-date-time"
+import { T_Add_For_Payment } from "@repo/contract-2/for-payment-listings"
+import useAddForPayment from "../hooks/use-add-for-payment"
 
 const queryKeys = CartService.getQueryKeys()
 
@@ -31,6 +33,8 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
+  const { mutate: addForPayment, isPending: isAddForPaymentPending } =
+    useAddForPayment()
   const dateRange = usePickupDropoffStore((state) => state.dateRange)
   const fromTime = usePickupDropoffStore((state) => state.fromTime)
   const toTime = usePickupDropoffStore((state) => state.toTime)
@@ -64,6 +68,34 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
           toast.success((data.message as string) || "Added to cart", {
             duration: 5000,
           })
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err) => {
+        toast.error(String(err))
+      },
+    })
+  }
+
+  const handleAddForPayment = () => {
+    const from = combineDateTime(dateRange.from!, fromTime)
+    const to = combineDateTime(dateRange.to!, fromTime)
+    const payload: T_Add_For_Payment = {
+      userId: "",
+      price: totalBeforeTaxes,
+      rentalIds: { rentalId: rental._id, qtyIdsId: rental.qtyIds![0]?._id },
+      startDate: from || new Date(),
+      endDate: to || new Date(),
+      guestCount: 1,
+    }
+    addForPayment(payload, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.getItems],
+          })
+          router.push(`/book-now?listingId=${data?.item?._id}`)
         } else {
           toast.error(String(data.message))
         }
@@ -173,9 +205,7 @@ const CheckoutBox = ({ rental }: { rental: T_Rental }) => {
             !toTime ||
             isAddToCartPending
           }
-          onClick={() =>
-            router.push(`/accommodation/${params.listingId}/checkout`)
-          }
+          onClick={() => handleAddForPayment()}
         >
           Book now
         </Button>
