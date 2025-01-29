@@ -79,7 +79,7 @@ export const getRequestByHost = async (req: Request, res: Response) => {
   try {
     if (status === 'all' || status === 'All') {
       hostApprovals = await dbHostApproval
-        .find({ userId: userId})
+        .find({ userId: userId })
         .populate({
           path: 'userId',
           select: '_id guest',
@@ -109,7 +109,7 @@ export const getRequestByHost = async (req: Request, res: Response) => {
     ) {
       const newStatus = capitalizeFirstLetter(status)
       hostApprovals = await dbHostApproval
-        .find({ userId: userId, status: newStatus})
+        .find({ userId: userId, status: newStatus })
         .populate({
           path: 'userId',
           select: '_id guest',
@@ -129,7 +129,7 @@ export const getRequestByHost = async (req: Request, res: Response) => {
         .skip(skip)
         .limit(Number(limit))
       totalCounts = await dbHostApproval
-        .find({ userId: userId, status: newStatus})
+        .find({ userId: userId, status: newStatus })
         .countDocuments()
     } else {
       res.json(response.error({ message: 'Invalid status' }))
@@ -232,28 +232,54 @@ export const updateHostApproval = async (req: Request, res: Response) => {
   }
 }
 
-export const cancelHostApproval = async(req:Request, res:Response)=>{
+export const cancelHostApproval = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
-  const {id} = req.params
+  const { id } = req.params
   try {
-    const getHostApproval = await dbHostApproval.findOne({_id:id, userId:userId, deletedAt:null})
-    if(!getHostApproval){
-      res.json(response.error({message:"This item are not exist or already cancelled"}))
-    }else{
-      const status = getHostApproval.status
-      if(status===E_Status.Approved || status===E_Status.Rejected || status===E_Status.Cancelled){
-        res.json(response.error({message:"You are not allowed to cancell all rejected, cancelled and approved request"}))
-      }else{
-        const cancelRequest = await dbHostApproval.findByIdAndUpdate(id,{
-          $set:{
-            status:E_Status.Cancelled,
-            deletedAt:Date.now()
-          }
+    const getHostApproval = await dbHostApproval.findOne({
+      _id: id,
+      userId: userId,
+      deletedAt: null,
+    })
+    if (!getHostApproval) {
+      res.json(
+        response.error({
+          message: 'This item are not exist or already cancelled',
         })
-        res.json(response.success({item:cancelRequest, message:"Request successfully cancelled"}))
+      )
+    } else {
+      const status = getHostApproval.status
+      if (
+        status === E_Status.Approved ||
+        status === E_Status.Rejected ||
+        status === E_Status.Cancelled
+      ) {
+        res.json(
+          response.error({
+            message:
+              'You are not allowed to cancell all rejected, cancelled and approved request',
+          })
+        )
+      } else {
+        const cancelRequest = await dbHostApproval.findByIdAndUpdate(id, {
+          $set: {
+            status: E_Status.Cancelled,
+            deletedAt: Date.now(),
+          },
+        })
+        res.json(
+          response.success({
+            item: cancelRequest,
+            message: 'Request successfully cancelled',
+          })
+        )
       }
     }
-  } catch (err:any) {
-    res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
   }
 }

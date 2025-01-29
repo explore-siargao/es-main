@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 const { Schema } = mongoose
 const genderEnum = ["M", "F", "N/A"]
 
-const status = ["Approved", "Pending", "Rejected","Cancelled"]
+const status = ["Approved", "Pending", "Rejected", "Cancelled"]
 const businessPermit = new Schema({
   fileKey: String,
   createdAt: Date,
