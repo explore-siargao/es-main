@@ -2,7 +2,10 @@ import { UNKNOWN_ERROR_OCCURRED } from '@/common/constants'
 import { capitalizeFirstLetter } from '@/common/helpers/capitalizedFirstLetter'
 import { FileService } from '@/common/service/file'
 import { ResponseService } from '@/common/service/response'
-import { Z_Add_Host_Approval, Z_Host_Approvals } from '@repo/contract-2/host-approval'
+import {
+  Z_Add_Host_Approval,
+  Z_Host_Approvals,
+} from '@repo/contract-2/host-approval'
 import { dbHostApproval } from '@repo/database'
 import { Request, Response } from 'express'
 const response = new ResponseService()
@@ -77,18 +80,18 @@ export const getRequestByHost = async (req: Request, res: Response) => {
         .populate({
           path: 'userId',
           select: '_id guest',
-          populate:({
+          populate: {
             path: 'guest',
-            select: '_id firstName lastName middleName'
-          })
+            select: '_id firstName lastName middleName',
+          },
         })
         .populate({
           path: 'approvedBy',
           select: '_id guest',
-          populate:({
+          populate: {
             path: 'guest',
-            select: '_id firstName lastName middleName'
-          })
+            select: '_id firstName lastName middleName',
+          },
         })
         .skip(skip)
         .limit(Number(limit))
@@ -106,18 +109,18 @@ export const getRequestByHost = async (req: Request, res: Response) => {
         .populate({
           path: 'userId',
           select: '_id guest',
-          populate:({
+          populate: {
             path: 'guest',
-            select: '_id firstName lastName middleName'
-          })
+            select: '_id firstName lastName middleName',
+          },
         })
         .populate({
           path: 'approvedBy',
           select: '_id guest',
-          populate:({
+          populate: {
             path: 'guest',
-            select: '_id firstName lastName middleName'
-          })
+            select: '_id firstName lastName middleName',
+          },
         })
         .skip(skip)
         .limit(Number(limit))
@@ -129,18 +132,18 @@ export const getRequestByHost = async (req: Request, res: Response) => {
       return
     }
     const valisHostApprovals = Z_Host_Approvals.safeParse(hostApprovals)
-    if(valisHostApprovals.success){
-    res.json(
-      response.success({
-        items: hostApprovals,
-        pageItemCount: hostApprovals.length,
-        allItemCount: totalCounts,
-      })
-    )
-  }else{
-    console.error(valisHostApprovals.error.message)
-    res.json(response.error({message:"Invalid host approvals data"}))
-  }
+    if (valisHostApprovals.success) {
+      res.json(
+        response.success({
+          items: hostApprovals,
+          pageItemCount: hostApprovals.length,
+          allItemCount: totalCounts,
+        })
+      )
+    } else {
+      console.error(valisHostApprovals.error.message)
+      res.json(response.error({ message: 'Invalid host approvals data' }))
+    }
   } catch (err: any) {
     res.json(
       response.error({

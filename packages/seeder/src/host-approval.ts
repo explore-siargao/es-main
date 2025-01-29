@@ -3,7 +3,7 @@ import { dbHostApproval, dbUsers } from "@repo/database"
 const seedHostApprovals = async () => {
   console.log("Seeding host approvals...")
   try {
-    const host = await dbUsers.findOne({ isHost:true })
+    const host = await dbUsers.findOne({ isHost: true })
     await dbHostApproval.insertMany([
       {
         businessType: "Hotel",
