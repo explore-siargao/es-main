@@ -97,17 +97,17 @@ export const getRequestByHost = async (req: Request, res: Response) => {
             select: '_id firstName lastName middleName',
           },
         })
-        .sort({createdAt:-1})
+        .sort({ createdAt: -1 })
         .skip(skip)
         .limit(Number(limit))
       totalCounts = await dbHostApproval
         .find({ userId: userId })
         .countDocuments()
     } else if (
-      newStatus===E_Status.Approved ||
-      newStatus===E_Status.Pending ||
-      newStatus===E_Status.Rejected ||
-      newStatus===E_Status.Cancelled
+      newStatus === E_Status.Approved ||
+      newStatus === E_Status.Pending ||
+      newStatus === E_Status.Rejected ||
+      newStatus === E_Status.Cancelled
     ) {
       hostApprovals = await dbHostApproval
         .find({ userId: userId, status: newStatus })
@@ -127,7 +127,7 @@ export const getRequestByHost = async (req: Request, res: Response) => {
             select: '_id firstName lastName middleName',
           },
         })
-        .sort({createdAt:-1})
+        .sort({ createdAt: -1 })
         .skip(skip)
         .limit(Number(limit))
       totalCounts = await dbHostApproval
@@ -286,119 +286,168 @@ export const cancelHostApproval = async (req: Request, res: Response) => {
   }
 }
 
-export const getHostApprovalByAdmin = async(req:Request, res:Response)=>{
+export const getHostApprovalByAdmin = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
-  const {status="all", page=1,limit=15} = req.query
+  const { status = 'all', page = 1, limit = 15 } = req.query
   const skip = (Number(page) - 1) * Number(limit)
   try {
-    const verifyAdmin = await dbUsers.findOne({_id:userId, deletedAt:null, role:"Admin"})
-    if(!verifyAdmin){
-      res.json(response.error({message:USER_NOT_AUTHORIZED}))
-    }else{
-      let getAllHostApproval:any
-      let totalCounts:number
+    const verifyAdmin = await dbUsers.findOne({
+      _id: userId,
+      deletedAt: null,
+      role: 'Admin',
+    })
+    if (!verifyAdmin) {
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    } else {
+      let getAllHostApproval: any
+      let totalCounts: number
       const newStatus = capitalizeFirstLetter(String(status))
-      if(status==="all" || status==="All"){
-        getAllHostApproval = await dbHostApproval.find({})
-        .populate({
-          path: 'userId',
-          select: '_id guest',
-          populate: {
-            path: 'guest',
-            select: '_id firstName lastName middleName',
-          },
-        })
-        .populate({
-          path: 'approvedBy',
-          select: '_id guest',
-          populate: {
-            path: 'guest',
-            select: '_id firstName lastName middleName',
-          },
-        })
-        .sort({createdAt:-1})
-        .skip(skip)
-        .limit(Number(limit))
+      if (status === 'all' || status === 'All') {
+        getAllHostApproval = await dbHostApproval
+          .find({})
+          .populate({
+            path: 'userId',
+            select: '_id guest',
+            populate: {
+              path: 'guest',
+              select: '_id firstName lastName middleName',
+            },
+          })
+          .populate({
+            path: 'approvedBy',
+            select: '_id guest',
+            populate: {
+              path: 'guest',
+              select: '_id firstName lastName middleName',
+            },
+          })
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(Number(limit))
         totalCounts = await dbHostApproval.find({}).countDocuments()
-      }else if(newStatus===E_Status.Approved || newStatus===E_Status.Pending || newStatus===E_Status.Rejected || newStatus===E_Status.Cancelled){
-      getAllHostApproval = await dbHostApproval.find({status:newStatus})
-      .populate({
-        path: 'userId',
-        select: '_id guest',
-        populate: {
-          path: 'guest',
-          select: '_id firstName lastName middleName',
-        },
+      } else if (
+        newStatus === E_Status.Approved ||
+        newStatus === E_Status.Pending ||
+        newStatus === E_Status.Rejected ||
+        newStatus === E_Status.Cancelled
+      ) {
+        getAllHostApproval = await dbHostApproval
+          .find({ status: newStatus })
+          .populate({
+            path: 'userId',
+            select: '_id guest',
+            populate: {
+              path: 'guest',
+              select: '_id firstName lastName middleName',
+            },
+          })
+          .populate({
+            path: 'approvedBy',
+            select: '_id guest',
+            populate: {
+              path: 'guest',
+              select: '_id firstName lastName middleName',
+            },
+          })
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(Number(limit))
+        totalCounts = await dbHostApproval
+          .find({ status: newStatus })
+          .countDocuments()
+      } else {
+        res.json(response.error({ message: 'Invalid status' }))
+        return
+      }
+      const validHostApprovals = Z_Host_Approvals.safeParse(getAllHostApproval)
+      if (validHostApprovals.success) {
+        res.json(
+          response.success({
+            items: validHostApprovals.data,
+            pageItemCount: getAllHostApproval.length,
+            allItemCount: totalCounts,
+          })
+        )
+      } else {
+        console.error(validHostApprovals.error.message)
+        res.json(response.error({ message: 'Invalid host approvals data' }))
+      }
+    }
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
       })
-      .populate({
-        path: 'approvedBy',
-        select: '_id guest',
-        populate: {
-          path: 'guest',
-          select: '_id firstName lastName middleName',
-        },
-      })
-      .sort({createdAt:-1})
-      .skip(skip)
-      .limit(Number(limit))
-      totalCounts = await dbHostApproval.find({status:newStatus}).countDocuments()
-    }else{
-      res.json(response.error({message:"Invalid status"}))
-      return
-    }
-    const validHostApprovals = Z_Host_Approvals.safeParse(getAllHostApproval)
-    if(validHostApprovals.success){
-      res.json(response.success({items:validHostApprovals.data, pageItemCount:getAllHostApproval.length, allItemCount:totalCounts}))
-    }else{
-      console.error(validHostApprovals.error.message)
-      res.json(response.error({message:"Invalid host approvals data"}))
-    }
-    }
-  } catch (err:any) {
-    res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+    )
   }
 }
-export const approveRejectHostApproval = async(req:Request, res:Response)=>{
-  const userId = res.locals.user.id 
-  const {id} = req.params
-  const {status} = req.body
+export const approveRejectHostApproval = async (
+  req: Request,
+  res: Response
+) => {
+  const userId = res.locals.user.id
+  const { id } = req.params
+  const { status } = req.body
   const newStatus = capitalizeFirstLetter(String(status))
   try {
-    const verifyAdmin = await dbUsers.findOne({_id:userId, deletedAt:null, role:"Admin"})
-    if(!verifyAdmin){
-      res.json(response.error({message:USER_NOT_AUTHORIZED}))
-    }else{
-      const checkIfPending = await dbHostApproval.findOne({_id:id, status:E_Status.Pending})
-      if(!checkIfPending){
-        res.json(response.error({message:"You can't approve or reject this request"}))
-      }else{
-        if(newStatus!==E_Status.Approved && newStatus!==E_Status.Rejected){
-          res.json(response.error({message:"Invalid status"}))
-        }else{
-          const updateData:any ={
-            status:newStatus,
-            updatedAt:Date.now()
+    const verifyAdmin = await dbUsers.findOne({
+      _id: userId,
+      deletedAt: null,
+      role: 'Admin',
+    })
+    if (!verifyAdmin) {
+      res.json(response.error({ message: USER_NOT_AUTHORIZED }))
+    } else {
+      const checkIfPending = await dbHostApproval.findOne({
+        _id: id,
+        status: E_Status.Pending,
+      })
+      if (!checkIfPending) {
+        res.json(
+          response.error({
+            message: "You can't approve or reject this request",
+          })
+        )
+      } else {
+        if (
+          newStatus !== E_Status.Approved &&
+          newStatus !== E_Status.Rejected
+        ) {
+          res.json(response.error({ message: 'Invalid status' }))
+        } else {
+          const updateData: any = {
+            status: newStatus,
+            updatedAt: Date.now(),
           }
-          if(newStatus===E_Status.Approved){
+          if (newStatus === E_Status.Approved) {
             updateData.approvedBy = userId
           }
           const validApproval = Z_Approve_Reject_Host_Approval.safeParse({
-            id:id,
-            status:newStatus
+            id: id,
+            status: newStatus,
           })
-          if(validApproval.success){
+          if (validApproval.success) {
             const updateRequest = await dbHostApproval.findByIdAndUpdate(id, {
-              $set:updateData
+              $set: updateData,
             })
-            res.json(response.success({item:updateRequest, message:`Request successfully ${newStatus===E_Status.Approved ? "approved" : "rejected"}`}))
-          }else{
+            res.json(
+              response.success({
+                item: updateRequest,
+                message: `Request successfully ${newStatus === E_Status.Approved ? 'approved' : 'rejected'}`,
+              })
+            )
+          } else {
             console.error(validApproval.error.message)
-            res.json(response.error({message:"Invalid payload"}))
+            res.json(response.error({ message: 'Invalid payload' }))
           }
-      }
+        }
       }
     }
-  } catch (err:any) {
-    res.json(response.error({message:err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
+  } catch (err: any) {
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
   }
-} 
+}

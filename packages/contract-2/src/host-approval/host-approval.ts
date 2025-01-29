@@ -1,6 +1,10 @@
 import { ApiService } from "../common/services/api"
 import { E_Status } from "./enum"
-import { T_Add_Host_Approval, T_Approve_Reject_Host_Approval, T_Update_Host_Approval } from "./type"
+import {
+  T_Add_Host_Approval,
+  T_Approve_Reject_Host_Approval,
+  T_Update_Host_Approval,
+} from "./type"
 
 const HOST_APPROVAL_URL = `/host-approvals`
 
