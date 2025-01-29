@@ -174,9 +174,6 @@ const BookNow = () => {
   return (
     <WidthWrapper width="medium" className="mt-6 lg:mt-8">
       <div className="flex items-center gap-2">
-        <Link href="/cart">
-          <LucideChevronLeft className="h-5 w-5 text-text-400 transition hover:text-text-500" />
-        </Link>
         <Typography variant={"h1"} fontWeight="semibold">
           Checkout
         </Typography>
