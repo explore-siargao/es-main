@@ -3,7 +3,7 @@ import express from 'express'
 import isCsrfTokenValid from '@/common/middleware/auth/isCsrfTokenValid3'
 import isOriginValid from '@/common/middleware/auth/isOriginValid'
 import isUserLoggedIn from '@/common/middleware/auth/isUserLoggedIn'
-import { addToWishList, getAllWishlistbyCategory } from './services/default'
+import { addToWishList, getAllWishList, getAllWishlistbyCategory } from './services/default'
 
 const router = express.Router()
 
@@ -19,7 +19,7 @@ router.get(
   '/:category',
   isOriginValid,
   isUserLoggedIn,
-  getAllWishlistbyCategory
+  getAllWishList
 )
 
 export default router
