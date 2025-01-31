@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.41.0](https://github.com/explore-siargao/es-main/compare/v0.40.0...v0.41.0) (2025-01-31)
+
+
+### 🚀 Features
+
+* **api:** Added endpoint and zod for add host approval ([ef8776f](https://github.com/explore-siargao/es-main/commit/ef8776fb862fc5526baf8898dfc442f7c244d2c5))
+* **api:** Added endpoint and zod for add host approval ([cbb546e](https://github.com/explore-siargao/es-main/commit/cbb546e10a684931d4f3e10d265a426a57f4f17d))
+* **api:** Added endpoint for cancellation of host approval request ([e7494af](https://github.com/explore-siargao/es-main/commit/e7494afa1bf9b89355d770a05b78b4c4ed497ba7))
+* **api:** added endpoint for get all approvals by admin and endpoint for approve or reject by admin ([3f8b8c2](https://github.com/explore-siargao/es-main/commit/3f8b8c296b0858c7b6ab7c0b547f202a723380e1))
+* **api:** Added endpoint for gt all host approval by host ([07e8602](https://github.com/explore-siargao/es-main/commit/07e86022e34f42e7af158713eae9aa2cba86e2b0))
+* **api:** added endpoint for updating host approval by host ([370ae51](https://github.com/explore-siargao/es-main/commit/370ae51835315c620b694501203bbc9f9876d1b6))
+* **api:** created seeder for host approvals ([0da83bf](https://github.com/explore-siargao/es-main/commit/0da83bfc2a4d2e3c931412f8ea06c1a7b0e8c3d8))
+* connect backend get reviews to single public page frontend ([7851ee9](https://github.com/explore-siargao/es-main/commit/7851ee90a0d51ff83c20fab414ff11c5d6a9aa3d))
+* header search on small screen in overflow to the right ([e0c1e9a](https://github.com/explore-siargao/es-main/commit/e0c1e9a3dfefe35e00b1a8a0669cbe4e47fadf99))
+* rental book now ([b45b96a](https://github.com/explore-siargao/es-main/commit/b45b96a6a637039b9fbfb7d6c37089da67d367d8))
+* rental book now ([83eced6](https://github.com/explore-siargao/es-main/commit/83eced652277f0f596b89639578eb9df1efc0c36))
+* rental book now ([cde415e](https://github.com/explore-siargao/es-main/commit/cde415ea02a95e41581971f3f192b097d36874cd))
+* update private activity setup on host to show price per person and price per slot input ([00a6c3f](https://github.com/explore-siargao/es-main/commit/00a6c3fba1c91e5f61ffcc394b0aa72f0e82f742))
+* **web:** activity book now ([b6a156c](https://github.com/explore-siargao/es-main/commit/b6a156c9a68f2bbb77c223997510eade297a0466))
+* **web:** property book now ([7b16b30](https://github.com/explore-siargao/es-main/commit/7b16b30abd10d4f339da13421ebc82a33f200546))
+
+
+### 🛠 Bug Fixes
+
+* adjust layout and spacing in header and search components ([cf1356b](https://github.com/explore-siargao/es-main/commit/cf1356bc94a0947ad65db0eb197c7acbcc50fae4))
+* error on image carousel on search filter results ([a0d6dc7](https://github.com/explore-siargao/es-main/commit/a0d6dc7729b4dc82e1ec713c09bc69a6a8e2df24))
+* rename price variable to pricePerPerson for type issue ([f7c25ad](https://github.com/explore-siargao/es-main/commit/f7c25ad4cb46f5dc4d53880c0b6981da678ccf3a))
+* simplify dynamic map center calculation for better readability ([8969386](https://github.com/explore-siargao/es-main/commit/896938609fec7d1cb7273d63462a9db6bc1c3516))
+
+
+### 🧰 Maintenance
+
+* add travel guide components and restructure blog guide for travels ([feddbc9](https://github.com/explore-siargao/es-main/commit/feddbc9cf12329a1ec33dec5b96edc695b2e4fa0))
+* adjust input and button sizes in search bars for better responsiveness ([941eaec](https://github.com/explore-siargao/es-main/commit/941eaecbf9f58cac799d3506f31b20e561480257))
+* remove back link from book now checkout page ([f4f81cd](https://github.com/explore-siargao/es-main/commit/f4f81cd6bba5f0bc1c9fd73f45019b2168eb9426))
+* update import paths for useAddBooking in confirm pay modals ([bd2462f](https://github.com/explore-siargao/es-main/commit/bd2462f1259c1295407941d8a0e4f735358b05c0))
+* update review category types and refactor related components ([019b4f2](https://github.com/explore-siargao/es-main/commit/019b4f2a828fd2fa341fc1aba3cd691450942025))
+
 ## [0.40.0](https://github.com/explore-siargao/es-main/compare/v0.39.0...v0.40.0) (2025-01-25)
 
 ### 🚀 Features
