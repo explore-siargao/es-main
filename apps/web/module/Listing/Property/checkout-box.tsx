@@ -45,7 +45,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
   const guestsCount = adults + children + infants
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
   const { mutate: addForPayment, isPending: isAddForPaymentPending } =
-  useAddForPayment()
+    useAddForPayment()
   const nightCount = differenceInDays(
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
@@ -197,8 +197,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
           variant="primary"
           className="font-bold"
           disabled={!selectedBookableUnit || isAddToCartPending}
-          onClick={() =>
-            handleAddForPayment(propertyId)}
+          onClick={() => handleAddForPayment(propertyId)}
         >
           Book now
         </Button>
