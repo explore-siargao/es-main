@@ -27,12 +27,12 @@ export const Z_Add_Host_Approval = z.object({
   companyName: z.string(),
   brn: z.string(),
   registeredAddress: z.string(),
-  photocopyBusinessPermit: z.array(
+  photocopyBusinessPermit: 
     z.object({
       fileKey: z.string(),
       createdAt: z.date(),
     })
-  ),
+  ,
   createdAt: z.union([z.string(), z.date()]).optional(),
   updatedAt: z.union([z.string(), z.date()]).optional(),
   deletedAt: z.union([z.string(), z.date()]).optional(),
@@ -65,13 +65,12 @@ export const Z_Update_Host_Approval = z.object({
   companyName: z.string().optional(),
   brn: z.string().optional(),
   registeredAddress: z.string().optional(),
-  photocopyBusinessPermit: z
-    .array(
+  photocopyBusinessPermit: 
       z.object({
         fileKey: z.string(),
         createdAt: z.date(),
       })
-    )
+    
     .optional(),
 })
 

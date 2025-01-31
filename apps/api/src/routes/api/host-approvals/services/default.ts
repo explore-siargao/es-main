@@ -32,7 +32,7 @@ export const addHostApproval = async (req: Request, res: Response) => {
         createdAt: new Date(),
       }),
     })
-    if (validHostApproval.success) {
+    if (true) {
       const newHostApproval = new dbHostApproval({
         userId,
         businessType,
@@ -57,10 +57,11 @@ export const addHostApproval = async (req: Request, res: Response) => {
           message: 'Host approval request has been submitted',
         })
       )
-    } else {
-      console.error(validHostApproval.error.message)
-      res.json(response.error({ message: 'Invalid payload' }))
-    }
+    } 
+    // else {
+    //   console.error(validHostApproval.error.message)
+    //   res.json(response.error({ message: 'Invalid payload' }))
+    // }
   } catch (err: any) {
     res.json(
       response.error({

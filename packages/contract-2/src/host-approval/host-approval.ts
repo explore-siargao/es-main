@@ -22,8 +22,8 @@ export class HostApprovalService {
     return this.api.get(`${HOST_APPROVAL_URL}/admin?status=${status}`)
   }
 
-  async addHostApproval(item: T_Add_Host_Approval) {
-    return this.api.post(`${HOST_APPROVAL_URL}`, item)
+  async addHostApproval(formData: FormData) {
+    return this.api.post(`${HOST_APPROVAL_URL}`, formData, true, true)
   }
 
   async approveRejectHostApproval(item: T_Approve_Reject_Host_Approval) {
