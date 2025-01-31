@@ -43,11 +43,12 @@ const BookNow = () => {
   const hmacService = new HMACService()
   const encryptionService = new EncryptionService("card")
   const allItems = data?.item ? [data.item as T_Cart_Item] : []
-  const allSelectedItems = allItems.filter((item) => item._id && item.rentalIds)
+  const selectedItem = allItems.filter((item) => 
+    item._id && (item.rentalIds || item.propertyIds || item.activityIds)
+  );
   const rentalItems = allItems.filter((item) => item._id && item.rentalIds)
   const propertyItems = allItems.filter((item) => item._id && item.propertyIds)
   const activityItems = allItems.filter((item) => item._id && item.activityIds)
-
   const remapItem = (item: T_Cart_Item) => {
     return {
       startDate: item.startDate,
@@ -222,7 +223,7 @@ const BookNow = () => {
               <RentalPriceDetailsBox items={rentalItems} />
             )}
             <SubTotalBox
-              selectedItemsPrice={allSelectedItems.map(
+              selectedItemsPrice={selectedItem.map(
                 (item) => item.price + item.guestComission
               )}
               buttonText="Pay now"

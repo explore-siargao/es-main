@@ -21,6 +21,9 @@ import Asterisk from "@/common/components/ui/Asterisk"
 import { cn } from "@/common/helpers/cn"
 import useGuestsStore from "./stores/use-guests-store"
 import PriceBreakdownModal from "./modals/price-breakdown-modal"
+import { T_Add_For_Payment } from "@repo/contract-2/for-payment-listings"
+import useAddForPayment from "../hooks/use-add-for-payment"
+import { useRouter } from "next/navigation"
 
 type T_Checkout = {
   activity: T_Activity
@@ -29,8 +32,11 @@ type T_Checkout = {
 const queryKeys = CartService.getQueryKeys()
 
 const CheckoutBox = ({ activity }: T_Checkout) => {
+  const router = useRouter()
   const queryClient = useQueryClient()
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
+  const { mutate: addForPayment, isPending: isAddForPaymentPending } =
+  useAddForPayment()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
@@ -93,6 +99,45 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
             toast.success((data.message as string) || "Added to cart", {
               duration: 5000,
             })
+          } else {
+            toast.error(String(data.message))
+          }
+        },
+        onError: (err) => {
+          toast.error(String(err))
+        },
+      })
+    } else {
+      toast.error("Please select a time slot")
+    }
+  }
+
+  const handleAddForPayment = () => {
+    const slot = dateSlot?.slots?.find(
+      (slot: T_Activity_Slot) => slot._id === timeSlotId
+    )
+    const slotIdsId = slot?.slotIdsId[0]._id || ""
+    if (timeSlotId && slotIdsId) {
+      const payload: T_Add_For_Payment = {
+         userId: "",
+        price: totalBeforeTaxes,
+        activityIds: {
+          activityId: activity._id,
+          dayId: dateSlot._id,
+          timeSlotId,
+          slotIdsId,
+        },
+        startDate: date?.toISOString() || "",
+        endDate: date?.toISOString() || "",
+        guestCount: guestsCount,
+      }
+      addForPayment(payload, {
+        onSuccess: (data) => {
+          if (!data.error) {
+            queryClient.invalidateQueries({
+              queryKey: [queryKeys.getItems],
+            })
+            router.push(`/book-now?listingId=${data?.item?._id}`)
           } else {
             toast.error(String(data.message))
           }
@@ -178,6 +223,7 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
           variant="primary"
           className="font-bold"
           disabled={!date || !timeSlotId || isAddToCartPending}
+          onClick={() => handleAddForPayment()}
         >
           Book now
         </Button>
