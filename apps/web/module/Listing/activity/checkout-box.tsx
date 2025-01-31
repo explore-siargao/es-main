@@ -36,7 +36,7 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
   const queryClient = useQueryClient()
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
   const { mutate: addForPayment, isPending: isAddForPaymentPending } =
-  useAddForPayment()
+    useAddForPayment()
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isMoreInfoModalOpen, setIsMoreInfoModalOpen] = useState(false)
   const [isBreakdownModalOpen, setIsBreakdownModalOpen] = useState(false)
@@ -119,7 +119,7 @@ const CheckoutBox = ({ activity }: T_Checkout) => {
     const slotIdsId = slot?.slotIdsId[0]._id || ""
     if (timeSlotId && slotIdsId) {
       const payload: T_Add_For_Payment = {
-         userId: "",
+        userId: "",
         price: totalBeforeTaxes,
         activityIds: {
           activityId: activity._id,
