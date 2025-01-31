@@ -21,6 +21,8 @@ import toast from "react-hot-toast"
 import { LucideShoppingCart } from "lucide-react"
 import { Option, Select } from "@/common/components/ui/Select"
 import { T_Bookable_Unit } from "@repo/contract-2/property"
+import { T_Add_For_Payment } from "@repo/contract-2/for-payment-listings"
+import useAddForPayment from "../hooks/use-add-for-payment"
 
 type T_Props = {
   units?: T_Bookable_Unit[]
@@ -42,6 +44,8 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
   const { adults, children, infants } = useGuestAdd((state) => state.guest)
   const guestsCount = adults + children + infants
   const { mutate: addToCart, isPending: isAddToCartPending } = useAddToCart()
+  const { mutate: addForPayment, isPending: isAddForPaymentPending } =
+    useAddForPayment()
   const nightCount = differenceInDays(
     dateRange.to ?? new Date(),
     dateRange.from ?? new Date()
@@ -72,6 +76,32 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
           toast.success((data.message as string) || "Added to cart", {
             duration: 5000,
           })
+        } else {
+          toast.error(String(data.message))
+        }
+      },
+      onError: (err) => {
+        toast.error(String(err))
+      },
+    })
+  }
+
+  const handleAddForPayment = (propertyId: string) => {
+    const payload: T_Add_For_Payment = {
+      userId: "",
+      price: totalBeforeTaxes,
+      propertyIds: { propertyId, unitId: selectedBookableUnit?.qtyIds[0]?._id },
+      startDate: dateRange.from?.toISOString() || "",
+      endDate: dateRange.to?.toISOString() || "",
+      guestCount: guestsCount,
+    }
+    addForPayment(payload, {
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.getItems],
+          })
+          router.push(`/book-now?listingId=${data?.item?._id}`)
         } else {
           toast.error(String(data.message))
         }
@@ -167,11 +197,7 @@ const CheckoutBox = ({ units, selectedUnitId, propertyId }: T_Props) => {
           variant="primary"
           className="font-bold"
           disabled={!selectedBookableUnit || isAddToCartPending}
-          onClick={() =>
-            selectedBookableUnit
-              ? router.push(`/accommodation/${propertyId}/checkout`)
-              : null
-          }
+          onClick={() => handleAddForPayment(propertyId)}
         >
           Book now
         </Button>
