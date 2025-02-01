@@ -3,7 +3,7 @@ import { Button } from "@/common/components/ui/Button"
 import { Typography } from "@/common/components/ui/Typography"
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react"
 import Link from "next/link"
-import BusinessHoursModal from "./components/modals/BusinessHoursModal"
+import BusinessHoursModal from "./modals/business-hours-modal"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 

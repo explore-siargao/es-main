@@ -1,12 +1,12 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import SectionInfo from "./SectionInfo"
-import RestaurantLocation from "./RestaurantLocation"
+import SectionInfo from "./section-info"
+import RestaurantLocation from "./restaurant-location"
 import { Separator } from "@/common/components/ui/Separator"
 import ListingReviews from "@/module/Hosting/Listings/Properties/Property/Reviews"
-import NearbyAccommodation from "./components/NearbyAccommodation"
-import ChefsNote from "./components/ChefsNote"
-import AmenityList from "./components/AmenityList"
+import NearbyAccommodation from "./nearby-accommodation"
+import ChefsNote from "./chefs-note"
+import AmenityList from "./amenity-list"
 
 type T_Props = {
   data: any

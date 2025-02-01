@@ -2,7 +2,7 @@
 import { Typography } from "@/common/components/ui/Typography"
 import { Heart, Share } from "lucide-react"
 import React, { useState } from "react"
-import SharePlaceModal from "./modals"
+import SharePlaceModal from "./modal"
 
 const ShareSave = () => {
   const [isClicked, setIsClicked] = useState(false)

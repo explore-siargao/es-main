@@ -1,11 +1,10 @@
 "use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import React from "react"
-import { Separator } from "@/common/components/ui/Separator"
-import BlogImages from "./BlogImages"
-import PopularBlogs from "./PopularBlogs"
-import serialize from "../../common/components/RichText/serialize"
+import BlogImages from "./blog-images"
+import PopularBlogs from "./popular-blogs"
 import { Typography } from "@/common/components/ui/Typography"
+import serialize from "@/common/components/RichText/serialize"
 
 type T_Prop = {
   data: any

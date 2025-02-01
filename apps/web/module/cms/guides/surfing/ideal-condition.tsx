@@ -1,7 +1,7 @@
 import React from "react"
-import ProgressBar from "./ProgressBar"
+import ProgressBar from "./progress-bar"
 import { Rainbow, Waves, Wind } from "lucide-react"
-import data from "../../data.json"
+import data from "./data.json"
 
 function IdealConditions() {
   return (

@@ -1,8 +1,8 @@
 "use client"
 import { Separator } from "@/common/components/ui/Separator"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
-import GuideContent from "../components/Content"
-import Guides from "../components/RecommendedListing"
+import GuideContent from "../content"
+import Guides from "../recommended-listing"
 
 const IslandsGuide = () => {
   const contentText = [

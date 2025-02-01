@@ -1,4 +1,4 @@
-import IslandsGuide from "@/module/Guides/Islands"
+import IslandsGuide from "@/module/cms/guides/island/landing"
 
 const IslandsGuidePage = () => {
   return <IslandsGuide />

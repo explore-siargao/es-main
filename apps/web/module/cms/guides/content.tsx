@@ -1,8 +1,8 @@
 import { Typography } from "@/common/components/ui/Typography"
-import data from "../data.json"
+import data from "./data.json"
 import dynamic from "next/dynamic"
 
-const DynamicMultiMarkerMap = dynamic(() => import("./MultiMarkerMap"), {
+const DynamicMultiMarkerMap = dynamic(() => import("./multi-marker-map"), {
   ssr: false,
 })
 

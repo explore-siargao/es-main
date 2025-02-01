@@ -2,7 +2,8 @@ import { hero } from "../../fields/surfs/hero"
 import { slugField } from "../../fields/slug"
 import { CollectionConfig } from "payload/types"
 import { content } from "../../fields/surfs/content"
-import payload from "payload"
+import useField from "payload/dist/admin/components/forms/useField"
+import React from "react"
 
 const Surfs: CollectionConfig = {
   slug: "surfs",
@@ -36,6 +37,42 @@ const Surfs: CollectionConfig = {
         const [category] = data.docs
 
         return [category.id]
+      },
+    },
+    {
+      name: "customButton",
+      type: "ui",
+      admin: {
+        position: "sidebar",
+        components: {
+          Field: (props) => {
+            const { value: slug } = useField({ path: "slug" })
+            const { value: status } = useField({ path: "_status" })
+            if (status === "published") {
+              const baseDomain = window.location.origin
+              const externalUrl = `${baseDomain}/siargao/surfing/guides/${slug}`
+              return (
+                <button
+                  type="button"
+                  onClick={() => window.open(externalUrl, "_blank")}
+                  style={{
+                    display: "block",
+                    margin: "1rem 0",
+                    padding: "10px 15px",
+                    background: "white",
+                    color: "black",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Preview blog
+                </button>
+              )
+            }
+            return null
+          },
+        },
       },
     },
     {

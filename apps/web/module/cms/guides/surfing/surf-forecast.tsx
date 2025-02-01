@@ -1,5 +1,5 @@
 import React from "react"
-import WindMap from "./WindMap"
+import WindMap from "./windy"
 
 function Forecast() {
   return (

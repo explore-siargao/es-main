@@ -2,10 +2,10 @@
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import React from "react"
 import { Separator } from "@/common/components/ui/Separator"
-import SurfGuide from "./SurfGuide"
-import Directions from "./Directions"
-import IdealConditions from "./IdealConditions"
-import Forecast from "./Forecast"
+import SurfGuide from "./hero"
+import Directions from "./direction"
+import IdealConditions from "./ideal-condition"
+import Forecast from "./surf-forecast"
 
 type T_Props = {
   data: any

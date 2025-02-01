@@ -1,5 +1,5 @@
 import { getRequestCMS } from "@/common/helpers/getRequestCMS"
-import RestaurantGuide from "@/module/BlogGuide/Guide/RestaurantGuide"
+import RestaurantGuide from "@/module/cms/guides/restaurant"
 import { notFound } from "next/navigation"
 import React from "react"
 
