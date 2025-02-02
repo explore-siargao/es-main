@@ -1,4 +1,7 @@
-import { HostApprovalService, T_Add_Host_Approval } from "@repo/contract-2/host-approval"
+import {
+  HostApprovalService,
+  T_Add_Host_Approval,
+} from "@repo/contract-2/host-approval"
 import { useMutation } from "@tanstack/react-query"
 import { FileWithPath } from "react-dropzone"
 

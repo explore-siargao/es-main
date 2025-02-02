@@ -16,38 +16,37 @@ import { LucideUndo2 } from "lucide-react"
 
 const AddVerification = () => {
   const { register, handleSubmit } = useForm<T_Add_Host_Approval>()
- const { mutate, isPending } = useAddHostApproval()
-   
- const [file, setFile] = useState<(FileWithPath & { preview: string }) | null>(
+  const { mutate, isPending } = useAddHostApproval()
+
+  const [file, setFile] = useState<(FileWithPath & { preview: string }) | null>(
     null
   )
 
   const onSubmit: SubmitHandler<T_Add_Host_Approval> = (formData) => {
     if (!file) {
-      toast.error("Please add the Identification Type and an image");
-      return;
+      toast.error("Please add the Identification Type and an image")
+      return
     }
-  
+
     const updatedFormData = {
       ...formData,
-      file, 
-    };
+      file,
+    }
     const callBackReq = {
       onSuccess: (data: any) => {
         if (!data.error) {
-          toast.success(data.message);
+          toast.success(data.message)
         } else {
-          toast.error(String(data.message));
+          toast.error(String(data.message))
         }
       },
       onError: (err: any) => {
-        toast.error(String(err));
+        toast.error(String(err))
       },
-    };
-  
-    mutate(updatedFormData, callBackReq);
-  };
-  
+    }
+
+    mutate(updatedFormData, callBackReq)
+  }
 
   const { getRootProps, getInputProps, isFocused } = useDropzone({
     multiple: false,
@@ -74,17 +73,35 @@ const AddVerification = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow mt-20 px-4 sm:px-6 lg:px-8">
-        <Typography variant="h1" fontWeight="semibold" className="flex justify-between items-center mb-4">
+        <Typography
+          variant="h1"
+          fontWeight="semibold"
+          className="flex justify-between items-center mb-4"
+        >
           Add verification
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)} className="py-4 max-w-2xl space-y-4">
-          <Input label="Business Type *"  {...register("businessType", { required: true })} />
-          <Input label="Company Name *"  {...register("companyName", { required: true })}/>
-          <Input label="BRN *"  {...register("brn", { required: true })}/>
-          <Input label="Registered Address *"  {...register("registeredAddress", { required: true })}/>
-            <div className="w-full my-4">
-              <h3 className="text-xl font-semibold">Upload photocopy of business permit *</h3>
-              <div className="mt-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="py-4 max-w-2xl space-y-4"
+        >
+          <Input
+            label="Business Type *"
+            {...register("businessType", { required: true })}
+          />
+          <Input
+            label="Company Name *"
+            {...register("companyName", { required: true })}
+          />
+          <Input label="BRN *" {...register("brn", { required: true })} />
+          <Input
+            label="Registered Address *"
+            {...register("registeredAddress", { required: true })}
+          />
+          <div className="w-full my-4">
+            <h3 className="text-xl font-semibold">
+              Upload photocopy of business permit *
+            </h3>
+            <div className="mt-4">
               {file ? (
                 <div className="flex justify-center my-6 bg-primary-50 rounded-xl border border-primary-200">
                   <div className="relative h-96">
@@ -147,21 +164,16 @@ const AddVerification = () => {
               )}
             </div>
           </div>
-        <div className="mt-auto p-4 sm:p-6 lg:p-8">
-      
-      </div>
-      <Button type="submit" variant="primary">
-          Submit
-        </Button>
+          <div className="mt-auto p-4 sm:p-6 lg:p-8"></div>
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
         </form>
       </div>
-      
-      <div className="p-5">
-     
-        </div>
+
+      <div className="p-5"></div>
     </div>
   )
 }
 
 export default AddVerification
-

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const SettingsPage = () => {
   return (
     <AuthGuard>
-     <Settings/>
+      <Settings />
     </AuthGuard>
   )
 }

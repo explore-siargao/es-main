@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const AddVerificationPage = () => {
   return (
     <AuthGuard>
-      <AddVerification/>
+      <AddVerification />
     </AuthGuard>
   )
 }
