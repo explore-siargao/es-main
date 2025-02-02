@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react"
 import ImageGallery from "@/module/Listing/property/image-gallery"
 import ImageGalleryModal from "@/module/Listing/property/modals/image-gallery-modal"
@@ -8,12 +9,6 @@ type T_Props = {
   readonly title: string
   readonly images: any
   readonly guideText: string
-}
-
-type T_Images = {
-  alt: string
-  fileName: string
-  url: string
 }
 
 function SurfGuide({ title, guideText, images }: T_Props) {

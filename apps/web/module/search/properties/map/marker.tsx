@@ -1,4 +1,5 @@
 import formatCurrency from "@/common/helpers/format-currency"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { LatLngTuple, divIcon } from "leaflet"
 import { ReactNode, useState } from "react"
 import { Marker as LeafletMarker } from "react-leaflet"

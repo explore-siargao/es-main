@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { Icon, LatLngTuple } from "leaflet"
 import { WEB_URL } from "../constants/ev"
 

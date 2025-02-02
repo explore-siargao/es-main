@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { TileLayer, Marker, useMapEvent } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { Icon, LatLngTuple, LeafletEvent, LeafletMouseEvent } from "leaflet"
 import { WEB_URL } from "@/common/constants/ev"
 import MapContainerWrapper from "@/common/components/Map/MapContainerWrapper"

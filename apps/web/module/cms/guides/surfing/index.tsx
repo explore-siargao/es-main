@@ -1,11 +1,10 @@
-"use client"
 import { WidthWrapper } from "@/common/components/Wrappers/WidthWrapper"
 import React from "react"
 import { Separator } from "@/common/components/ui/Separator"
 import SurfGuide from "./hero"
 import Directions from "./direction"
 import IdealConditions from "./ideal-condition"
-import Forecast from "./surf-forecast"
+import Forecast from "./forecast"
 
 type T_Props = {
   data: any
@@ -28,6 +27,7 @@ const SurfingGuide = ({ data }: T_Props) => {
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
       <IdealConditions />
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      {/* BUG: Forecast windy map controls is missing when Directions' map is rendered */}
       <Forecast />
     </WidthWrapper>
   )

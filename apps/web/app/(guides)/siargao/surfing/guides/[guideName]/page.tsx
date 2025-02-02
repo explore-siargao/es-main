@@ -11,15 +11,12 @@ type T_Props = {
 
 const SurfingGuidePage = async ({ params: { guideName } }: T_Props) => {
   const content = await getRequestCMS(`/surfs/guide/${guideName}`)
-
   if (!content) {
     notFound()
   }
 
   return (
-    <div>
-      <SurfingGuide data={content} />
-    </div>
+    <SurfingGuide data={content} />
   )
 }
 
