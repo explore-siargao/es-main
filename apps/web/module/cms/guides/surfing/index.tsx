@@ -18,15 +18,15 @@ const SurfingGuide = ({ data }: T_Props) => {
         guideText={data.hero.guide}
         images={data.hero.images}
       />
-      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <Separator orientation="horizontal" className="mt-2 mb-8 bg-gray-300" />
       <Directions
         longitude={data.content.location[0]}
         latitude={data.content.location[1]}
         locationGuide={data.content.locationGuide}
       />
       <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
-      <IdealConditions />
-      <Separator orientation="horizontal" className="mt-10 mb-6 bg-gray-300" />
+      <IdealConditions item={data.content.idealCondtions} />
+      <Separator orientation="horizontal" className="mt-3 mb-6 bg-gray-300" />
       {/* BUG: Forecast windy map controls is missing when Directions' map is rendered */}
       <Forecast />
     </WidthWrapper>
