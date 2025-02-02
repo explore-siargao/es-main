@@ -4,6 +4,7 @@ import { LucideStar } from "lucide-react"
 import { Popup as LeafletPopup } from "react-leaflet"
 import Link from "next/link"
 import React, { useRef } from "react"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { LatLngTuple } from "leaflet"
 import propertyTypeMap from "@/common/helpers/propertyTypeMap"
 import NewlyAddedTag from "../../components/newly-added-tag"

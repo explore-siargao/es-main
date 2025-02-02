@@ -11,6 +11,7 @@ import {
 } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { Spinner } from "./ui/Spinner"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { divIcon, Icon, LatLngTuple } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 import { WEB_URL } from "../constants/ev"

@@ -2,6 +2,7 @@ import React, { useRef } from "react"
 import MapContainerWrapper from "@/common/components/Map/MapContainerWrapper"
 import { TileLayer, useMapEvent, GeoJSON } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { LatLngTuple, LeafletMouseEvent } from "leaflet"
 import { useCoordinatesStore } from "@/common/store/useCoordinateStore"
 // import { Feature, Geometry } from "geojson";

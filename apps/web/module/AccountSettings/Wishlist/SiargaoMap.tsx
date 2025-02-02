@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { useEffect, useRef, useState } from "react"
 import MapCustomPopup from "@/common/components/MapCustomPopup"
+// We have to changed leaflet version from 1.7.1 to 1.4.0 for windy
 import { Icon } from "leaflet"
 import useSessionStore from "@/common/store/useSessionStore"
 import { useParams } from "next/navigation"

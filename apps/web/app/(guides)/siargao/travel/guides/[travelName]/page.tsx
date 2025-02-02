@@ -1,5 +1,5 @@
 import { getRequestCMS } from "@/common/helpers/getRequestCMS"
-import TravelBlog from "@/module/BlogGuide/Guide/travel-guide"
+import TravelBlog from "@/module/cms/guides/travel"
 import { notFound } from "next/navigation"
 import React from "react"
 

@@ -1,4 +1,4 @@
-import RestaurantGuide from "@/module/Guides/Restaurant"
+import RestaurantGuide from "@/module/cms/guides/restaurant/landing"
 
 const RestaurantGuidePage = () => {
   return <RestaurantGuide />
