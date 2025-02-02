@@ -16,10 +16,7 @@ function Directions({ latitude, longitude, locationGuide }: T_Props) {
   return (
     <div>
       <div className="h-96 w-full rounded-2xl mb-4">
-        <Map
-          center={[latitude, longitude]}
-          zoom={11}
-        />
+        <Map center={[latitude, longitude]} zoom={11} />
       </div>
       <div>
         <h2 className="text-xl font-bold mb-2">How to get there</h2>

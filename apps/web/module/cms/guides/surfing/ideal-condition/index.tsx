@@ -4,27 +4,27 @@ import { Rainbow, Waves, Wind } from "lucide-react"
 import data from "../data.json"
 
 type T_Ideal_Conditions = {
-  swellDirection: string;
-  windDirection: string;
-  tide: string;
+  swellDirection: string
+  windDirection: string
+  tide: string
   waveDifficulty: {
-    scale: number;
-    level: string;
-    description: string;
-  };
+    scale: number
+    level: string
+    description: string
+  }
   waveQuality: {
-    scale: number;
-    level: string;
-    description: string;
-  };
+    scale: number
+    level: string
+    description: string
+  }
   crowdFactor: {
-    scale: number;
-    level: string;
-    description: string;
-  };
-};
+    scale: number
+    level: string
+    description: string
+  }
+}
 
-function IdealConditions({ item }: { item: T_Ideal_Conditions}) {
+function IdealConditions({ item }: { item: T_Ideal_Conditions }) {
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Ideal Conditions</h2>
@@ -55,15 +55,17 @@ function IdealConditions({ item }: { item: T_Ideal_Conditions}) {
         <div>
           <h3 className="text-lg font-bold mb-2">Wave Difficulty</h3>
           <div className="flex gap-2 mb-4">
-            <ProgressBar progress={item.waveDifficulty.scale*10} />
+            <ProgressBar progress={item.waveDifficulty.scale * 10} />
           </div>
-          <p className="font-bold mb-1 uppercase">{item.waveDifficulty.level}</p>
+          <p className="font-bold mb-1 uppercase">
+            {item.waveDifficulty.level}
+          </p>
           <p>{item.waveDifficulty.description}</p>
         </div>
         <div>
           <h3 className="text-lg font-bold mb-2">Wave Quality</h3>
           <div className="flex gap-2 mb-4">
-            <ProgressBar progress={item.waveQuality.scale*10} />
+            <ProgressBar progress={item.waveQuality.scale * 10} />
           </div>
           <p className="font-bold mb-1 uppercase">{item.waveQuality.level}</p>
           <p>{item.waveQuality.description}</p>
@@ -71,7 +73,7 @@ function IdealConditions({ item }: { item: T_Ideal_Conditions}) {
         <div>
           <h3 className="text-lg font-bold mb-2">Crowd Factor</h3>
           <div className="flex gap-2 mb-4">
-            <ProgressBar progress={item.crowdFactor.scale*10} />
+            <ProgressBar progress={item.crowdFactor.scale * 10} />
           </div>
           <p className="font-bold mb-1 uppercase">{item.crowdFactor.level}</p>
           <p>{item.crowdFactor.description}</p>

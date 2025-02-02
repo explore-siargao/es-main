@@ -48,24 +48,24 @@ export const content: Field = {
               required: true,
             },
             {
-              name: 'level', // required
-              type: 'select', // required
+              name: "level", // required
+              type: "select", // required
               hasMany: false,
               admin: {
                 isClearable: true,
               },
               options: [
                 {
-                  label: 'Bad',
-                  value: 'Bad',
+                  label: "Bad",
+                  value: "Bad",
                 },
                 {
-                  label: 'Medium',
-                  value: 'Medium',
+                  label: "Medium",
+                  value: "Medium",
                 },
                 {
-                  label: 'Good',
-                  value: 'Good',
+                  label: "Good",
+                  value: "Good",
                 },
               ],
             },
@@ -91,24 +91,24 @@ export const content: Field = {
               required: true,
             },
             {
-              name: 'level', // required
-              type: 'select', // required
+              name: "level", // required
+              type: "select", // required
               hasMany: false,
               admin: {
                 isClearable: true,
               },
               options: [
                 {
-                  label: 'Bad',
-                  value: 'Bad',
+                  label: "Bad",
+                  value: "Bad",
                 },
                 {
-                  label: 'Medium',
-                  value: 'Medium',
+                  label: "Medium",
+                  value: "Medium",
                 },
                 {
-                  label: 'Good',
-                  value: 'Good',
+                  label: "Good",
+                  value: "Good",
                 },
               ],
             },
@@ -134,24 +134,24 @@ export const content: Field = {
               required: true,
             },
             {
-              name: 'level', // required
-              type: 'select', // required
+              name: "level", // required
+              type: "select", // required
               hasMany: false,
               admin: {
                 isClearable: true,
               },
               options: [
                 {
-                  label: 'Bad',
-                  value: 'Bad',
+                  label: "Bad",
+                  value: "Bad",
                 },
                 {
-                  label: 'Medium',
-                  value: 'Medium',
+                  label: "Medium",
+                  value: "Medium",
                 },
                 {
-                  label: 'Good',
-                  value: 'Good',
+                  label: "Good",
+                  value: "Good",
                 },
               ],
             },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 
 const SurfForecast = () => {
   return (
@@ -26,15 +26,13 @@ const SurfForecast = () => {
               </a>
               <div className="about" id="cmt">
                 View detailed surf forecast for{" "}
-                <a href="//www.surf-forecast.com/breaks/Cloud-Nine">
-                  Cloud 9
-                </a>
-                . Visit{" "}
+                <a href="//www.surf-forecast.com/breaks/Cloud-Nine">Cloud 9</a>.
+                Visit{" "}
                 <a href="//www.surf-forecast.com/breaks/Cloud-Nine">
                   surf-forecast.com
                 </a>{" "}
-                for more details, long range forecasts, surf reports, swell
-                and weather maps.
+                for more details, long range forecasts, surf reports, swell and
+                weather maps.
               </div>
             </div>
           </div>

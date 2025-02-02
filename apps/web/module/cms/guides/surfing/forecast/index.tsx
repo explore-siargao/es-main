@@ -1,10 +1,10 @@
 import React from "react"
-import dynamic from "next/dynamic";
-import SurfForecast from "./surf-forecast";
+import dynamic from "next/dynamic"
+import SurfForecast from "./surf-forecast"
 
 const WindyMap = dynamic(() => import("./windy"), {
   ssr: false,
-});
+})
 
 function Forecast() {
   return (

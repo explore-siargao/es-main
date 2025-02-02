@@ -24,11 +24,7 @@ const Map = ({ center, zoom, scrollWheelZoom }: T_Props) => {
         attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`}
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker
-        position={
-          center as LatLngTuple
-        }
-      />
+      <Marker position={center as LatLngTuple} />
     </MapContainerWrapper>
   )
 }

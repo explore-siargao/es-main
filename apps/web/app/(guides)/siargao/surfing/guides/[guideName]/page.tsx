@@ -15,9 +15,7 @@ const SurfingGuidePage = async ({ params: { guideName } }: T_Props) => {
     notFound()
   }
 
-  return (
-    <SurfingGuide data={content} />
-  )
+  return <SurfingGuide data={content} />
 }
 
 export default SurfingGuidePage
