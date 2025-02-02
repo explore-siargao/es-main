@@ -19,7 +19,6 @@ export const addHostApproval = async (req: Request, res: Response) => {
   const { businessType, companyName, brn, registeredAddress } = req.body
   const files = req.files
   try {
-    console.log(files)
     const upload = await fileService.upload({ files })
 
     const validHostApproval = Z_Add_Host_Approval.safeParse({
@@ -27,12 +26,12 @@ export const addHostApproval = async (req: Request, res: Response) => {
       companyName: companyName,
       brn: brn,
       registeredAddress: registeredAddress,
-      photocopyBusinessPermit: JSON.stringify({
+      photocopyBusinessPermit: {
         fileKey: upload.key,
         createdAt: new Date(),
-      }),
+      },
     })
-    if (true) {
+    if (validHostApproval.success) {
       const newHostApproval = new dbHostApproval({
         userId,
         businessType,
@@ -45,10 +44,10 @@ export const addHostApproval = async (req: Request, res: Response) => {
       await newHostApproval.save()
       await dbHostApproval.findByIdAndUpdate(newHostApproval._id, {
         $set: {
-          photocopyBusinessPermit: JSON.stringify({
+          photocopyBusinessPermit: {
             fileKey: upload.key,
             createdAt: new Date(),
-          }),
+          },
         },
       })
       res.json(
@@ -57,11 +56,10 @@ export const addHostApproval = async (req: Request, res: Response) => {
           message: 'Host approval request has been submitted',
         })
       )
-    } 
-    // else {
-    //   console.error(validHostApproval.error.message)
-    //   res.json(response.error({ message: 'Invalid payload' }))
-    // }
+    } else {
+      console.error(validHostApproval.error.message)
+      res.json(response.error({ message: 'Invalid payload' }))
+    }
   } catch (err: any) {
     res.json(
       response.error({
