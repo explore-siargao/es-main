@@ -10,7 +10,8 @@ export const hero: Field = {
       name: "images",
       label: "Images",
       required: true,
-      minRows: 5,
+      minRows: 3,
+      maxRows: 5,
       fields: [
         {
           type: "upload",
@@ -24,41 +25,6 @@ export const hero: Field = {
       type: "textarea",
       name: "guide",
       required: true,
-    },
-    {
-      type: "text",
-      name: "link",
-      label: "Link",
-    },
-    {
-      type: "text",
-      name: "email",
-      label: "Email Link",
-    },
-    {
-      type: "text",
-      name: "messages",
-      label: "Messages Link",
-    },
-    {
-      type: "text",
-      name: "whatsapp",
-      label: "WhatsApp Link",
-    },
-    {
-      type: "text",
-      name: "messenger",
-      label: "Messenger Link",
-    },
-    {
-      type: "text",
-      name: "facebook",
-      label: "Facebook Link",
-    },
-    {
-      type: "text",
-      name: "twitter",
-      label: "Twitter Link",
     },
   ],
 }
