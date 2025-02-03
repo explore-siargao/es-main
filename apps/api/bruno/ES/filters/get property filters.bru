@@ -1,0 +1,28 @@
+meta {
+  name: get property filters
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/properties/filtered?page=1&location=any&propertyTypes=homestay,hotel&priceFrom=any&priceTo=any&bedroomCount=any&bedCount=any&bathroomCount=any&facilities=any&amenities=any&starRating=any&checkIn=any&checkOut=any&numberOfGuest=any
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  location: any
+  propertyTypes: homestay,hotel
+  priceFrom: any
+  priceTo: any
+  bedroomCount: any
+  bedCount: any
+  bathroomCount: any
+  facilities: any
+  amenities: any
+  starRating: any
+  checkIn: any
+  checkOut: any
+  numberOfGuest: any
+}

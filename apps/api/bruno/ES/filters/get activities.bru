@@ -1,0 +1,24 @@
+meta {
+  name: get activities
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/activities/filtered?page=1&location=any&activityTypes=Land tour,Freediving&experienceTypes=any&priceTo=any&priceFrom=any&durations=any&starRating=any&activityDate=any&numberOfGuest=any
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  location: any
+  activityTypes: Land tour,Freediving
+  experienceTypes: any
+  priceTo: any
+  priceFrom: any
+  durations: any
+  starRating: any
+  activityDate: any
+  numberOfGuest: any
+}
