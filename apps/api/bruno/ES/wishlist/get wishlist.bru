@@ -1,0 +1,34 @@
+meta {
+  name: get wishlist
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/wishlists/:category
+  body: none
+  auth: none
+}
+
+params:path {
+  category: rentals
+}
+
+tests {
+  test("Should be able to send request and recieved response", function() {
+    const data = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+  });
+   
+  test("Get wishlist endpoint should return error:false and items as an array", function() {
+    const data = res.getBody();
+    expect(res.getBody()).to.be.an('object');
+    expect(res.getBody()).to.have.property('error',false);
+    expect(res.getBody()).to.have.property('items').that.is.an('array');
+  });
+}
+
+docs {
+  category 
+  This field can be (properties, rentals or activities)
+}

@@ -242,7 +242,7 @@ export const getAllWishlistbyCategory = async (req: Request, res: Response) => {
   }
 }
 
-export const getAllWishList = async(req:Request, res:Response)=>{
+export const getAllWishList = async (req: Request, res: Response) => {
   const userId = res.locals.user.id
   const category = req.params.category
   const preferredCurrency = res.locals.currency.preferred
@@ -252,85 +252,164 @@ export const getAllWishList = async(req:Request, res:Response)=>{
   const page = Number(req.query.page) || 1
   const limit = 15
   const skip = (page - 1) * limit
+
+  try{
   const wishlist = await dbWishlists
-        .find({
-          userId: userId,
-          category: capitalizedCategory,
-          deletedAt: null,
-        })
-        .populate({
-          path: 'listing',
-          select: `title subtitle location photos type bookableUnits
+    .find({
+      userId: userId,
+      category: capitalizedCategory,
+      deletedAt: null,
+    })
+    .populate({
+      path: 'listing',
+      select: `title subtitle location photos type bookableUnits
                    category year make modelBadge bodyType fuel transmission category pricing 
                    activityType experienceType pricePerPerson pricePerSlot meetingPoint`,
-          populate: [
-            {
-              path:
-                capitalizedCategory === 'Properties'
-                  ? 'photos location bookableUnits'
-                  : capitalizedCategory === 'Rentals'
-                    ? 'photos location pricing'
-                    : 'photos meetingPoint',
-            },
-            ...(capitalizedCategory === 'Properties'
-              ? [
-                  {
-                    path: 'bookableUnits',
-                    populate: {
-                      path: 'unitPrice', // Populate unitPrice inside bookableUnits
-                    },
-                  },
-                ]
-              : []),
-          ],
-        })
-        .skip(skip)
-        .limit(limit)
-        const wiishlistMapObject = wishlist.map((item: any) => item.toObject())
-
-        const reviews = async(id:any)=>{
-          const reviews = await dbReviews.find({'property.propertyId':id})
-          const reviewMap = reviews.map((item: any) => item.toObject())
-          const totalRates = reviewMap.map((item) => item.totalRates);
-          const sumTotalRates = totalRates.reduce((acc, rate) => acc + rate, 0);
-          const averageTotalRates = sumTotalRates / reviewMap.length;
-          return{
-            average: Number(averageTotalRates.toFixed(2)),
-            counts: reviews.length,
-          }
-        }
-
-        const mapWishlist = Promise.all(wiishlistMapObject.map( async(item: any) => {
-          if(item.category === 'Properties'){
-            const lowestUnitPrice = item.listing.bookableUnits.reduce((minPrice:number, unit:any) => {
-              return unit.unitPrice.baseRate < minPrice ? unit.unitPrice.baseRate : minPrice;
-            }, Infinity);
-            const reviewsCount = await reviews(item.listing._id);
-            return  {
-              listingId: item.listing._id,
-              type: item.listing.type==="WHOLE_PLACE" ? item.listing.bookableUnits[0].subtitle
-              : item.listing.type,
-              location:{
-                city:item.listing.location.city,
-                longitude:item.listing.location.longitude,
-                latitude:item.listing.location.latitude
+      populate: [
+        {
+          path:
+            capitalizedCategory === 'Properties'
+              ? 'photos location bookableUnits'
+              : capitalizedCategory === 'Rentals'
+                ? 'photos location pricing'
+                : 'photos meetingPoint',
+        },
+        ...(capitalizedCategory === 'Properties'
+          ? [
+              {
+                path: 'bookableUnits',
+                populate: {
+                  path: 'unitPrice', // Populate unitPrice inside bookableUnits
+                },
               },
-              title: item.listing.title,
-              photos: item.listing.photos.map((photo: any) =>({key:photo.key})),
-              average: reviewsCount.average,
-              reviewsCount: reviewsCount.counts,
-              price: convertPrice(lowestUnitPrice, preferredCurrency, conversionRates),
-            }
-          }
-          else if(item.category === 'Rentals'){
-            return{
-              listingId: item.listing._id,
-              category:item.listing.category,
-            }
-          }
-          else{
-            return {...item}
-          }
-        }))
-        res.json(response.success({items: await mapWishlist}))
+            ]
+          : []),
+      ],
+    })
+    .skip(skip)
+    .limit(limit)
+  const wiishlistMapObject = wishlist.map((item: any) => item.toObject())
+
+  const wishCounts = await dbWishlists
+    .find({
+      userId: userId,
+      category: capitalizedCategory,
+      deletedAt: null,
+    })
+    .countDocuments()
+
+  const reviews = async (id: any, category:string) => {
+    let query:any
+    if(category==="Properties")
+    {
+      query ={'property.propertyId': id}
+    }else if(category==="Rentals"){
+      query= {rental:id}
+    }
+    else if(category==="Activities"){
+      query= {activity:id}
+    }else{
+      res.json(response.error({message:"Invalid catgory"}))
+    }
+    const reviews = await dbReviews.find(query)
+    const reviewMap = reviews.map((item: any) => item.toObject())
+    const totalRates = reviewMap.map((item) => item.totalRates)
+    const sumTotalRates = totalRates.reduce((acc, rate) => acc + rate, 0)
+    const averageTotalRates = sumTotalRates / reviewMap.length
+    return {
+      average: Number(averageTotalRates.toFixed(2)),
+      counts: reviews.length,
+    }
+  }
+
+  const mapWishlist = Promise.all(
+    wiishlistMapObject.map(async (item: any) => {
+      if (item.category === 'Properties') {
+        const lowestUnitPrice = item.listing.bookableUnits.reduce(
+          (minPrice: number, unit: any) => {
+            return unit.unitPrice.baseRate < minPrice
+              ? unit.unitPrice.baseRate
+              : minPrice
+          },
+          Infinity
+        )
+        const reviewsCount = await reviews(item.listing._id,"Properties")
+        return {
+          listingId: item.listing._id,
+          type:
+            item.listing.type === 'WHOLE_PLACE'
+              ? item.listing.bookableUnits[0].subtitle
+              : item.listing.type,
+          location: {
+            city: item.listing.location.city,
+            longitude: item.listing.location.longitude,
+            latitude: item.listing.location.latitude,
+          },
+          title: item.listing.title,
+          photos: item.listing.photos.map((photo: any) => ({ key: photo.key })),
+          average: reviewsCount.average,
+          reviewsCount: reviewsCount.counts,
+          price: convertPrice(
+            lowestUnitPrice,
+            preferredCurrency,
+            conversionRates
+          ),
+        }
+      } else if (item.category === 'Rentals') {
+        const reviewsCount = await reviews(item.listing._id,"Rentals")
+        return {
+          listingId: item.listing._id,
+          category: item.listing.category,
+          make: item.listing.make,
+          modelBadge: item.listing.modelBadge,
+          year: item.listing.year,
+          location: item.listing.location,
+          pricing: item.listing.pricing,
+          photos: item.listing.photos,
+          reviewsCount: reviewsCount.counts,
+          average: reviewsCount.average,
+          transmission: item.listing.transmission,
+          fuel: item.listing.fuel,
+        }
+      }
+      else if (item.category === 'Activities') {
+        const reviewsCount = await reviews(item.listing._id,"Activities")
+        return{
+        listingId: item.listing._id,
+        title: item.listing.title,
+        activityType: item.listing.activityType,
+        meetingPoint:item.listing.meetingPoint,
+        experienceType:item.listing.experienceType,
+        photos:item.listing.photos,
+        pricePerPerson:item.listing.pricePerPerson,
+        pricePerSlot:item.listing.pricePerSlot,
+        average: reviewsCount.average,
+        reviewsCount: reviewsCount.counts
+        }
+      }
+      else {
+        return { ...item }
+      }
+    })
+  )
+  const validWishlist = Z_Wishlists.safeParse(await mapWishlist)
+  if(validWishlist.success){
+  res.json(
+    response.success({
+      items: await mapWishlist,
+      pageItemCount: wiishlistMapObject.length,
+      allItemCount: wishCounts,
+    })
+  )
+}else {
+  console.error(validWishlist.error.message)
+  res.json(response.error({message:"Invalid wishlist"}))
+}
+  }catch(err:any){
+    res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    )
+  }
 }

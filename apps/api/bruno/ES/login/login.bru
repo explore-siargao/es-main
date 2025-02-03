@@ -1,0 +1,18 @@
+meta {
+  name: login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/users/auth/manual
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "email":"ramil@gmail.com",
+      "password":"U2FsdGVkX1+nxuW5sQu942+98p2d1Ckayyz2+l3JEGg="
+  }
+}
