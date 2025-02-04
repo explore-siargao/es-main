@@ -7,6 +7,7 @@ import {
   LucideList,
   LucideListChecks,
   LucideMessagesSquare,
+  Settings,
 } from "lucide-react"
 import LinkIndicator from "./LinkIndicator"
 import { BOTTOM_LINKS } from "@/common/constants"
@@ -46,6 +47,12 @@ const TOP_LINKS = [
     icon: <LucideAreaChart className="h-5 w-5" />,
     link: "/hosting/insights/general",
     basePath: "/hosting/insights",
+  },
+  {
+    title: "Settings",
+    icon: <Settings className="h-5 w-5" />,
+    link: "/hosting/settings",
+    basePath: "/hosting/settings",
   },
 ]
 
