@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.42.0](https://github.com/explore-siargao/es-main/compare/v0.41.0...v0.42.0) (2025-02-04)
+
+
+### 🚀 Features
+
+* add ui Marker component and refactor ui IdealConditions to accept props ([ff72091](https://github.com/explore-siargao/es-main/commit/ff72091cc4ffab4dc7f720a0f5df82e8bb6d3517))
+* **api:** Modified recieved-email endpoint ([bb12a6f](https://github.com/explore-siargao/es-main/commit/bb12a6f665425a3c9bce5f7962a52753649c6ca6))
+* **api:** Modified return of get wishlist endpoint ([d870c8f](https://github.com/explore-siargao/es-main/commit/d870c8f8a91a45d7c4a05dfda9874067081513d3))
+* **cms:** enhance surf fields with ideal conditions and adjust hero image requirements ([6917021](https://github.com/explore-siargao/es-main/commit/69170216c3dd9f1a920886f0be0bb647df3b2e85))
+
+
+### 🧰 Maintenance
+
+* downgrade leaflet version to 1.4.0 for compatibility with windy and improve cms surf file structure ([cb3f054](https://github.com/explore-siargao/es-main/commit/cb3f054e24e7caea5127141a7f2ad472deb82799))
+* move blogs and blogsguide to cms module ([bbf36c4](https://github.com/explore-siargao/es-main/commit/bbf36c45d70991aaeb5363c5f4d899aab22e2f6e))
+
 ## [0.41.0](https://github.com/explore-siargao/es-main/compare/v0.40.0...v0.41.0) (2025-01-31)
 
 ### 🚀 Features
