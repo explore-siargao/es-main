@@ -1,0 +1,32 @@
+meta {
+  name: Update cart
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{url}}/carts/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 67a1814fb483232908dad102
+}
+
+body:json {
+  {
+      "startDate":"02/14/2025",
+      "endDate":"02/16/2025",
+      "guestCount":2,
+      "contacts":[
+          {
+              "firstName":"ranniel",
+              "lastName":"Kaharian",
+              "phoneNumber":"09092558726",
+              "email":"ram@gmail.com"
+          }
+         
+      ]
+  }
+}
