@@ -30,7 +30,7 @@ const OptMessageModal = () => {
   const {
     mutate: updateCanReceivedEmail,
     isPending: IsPendingCetCanReceivedEmail,
-  } = useSetReceivedEmail(session.id as number, {
+  } = useSetReceivedEmail({
     onSuccess: callBackReq.onSuccess,
     onError: callBackReq.onError,
   })

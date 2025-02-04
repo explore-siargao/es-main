@@ -84,7 +84,7 @@ router.get(
   getPersonalInfo
 )
 router.patch(
-  '/:userId/received-email',
+  '/received-email',
   isCsrfTokenValid,
   isOriginValid,
   isUserLoggedIn,

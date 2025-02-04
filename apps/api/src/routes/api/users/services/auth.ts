@@ -654,7 +654,7 @@ export const userDetails = async (req: Request, res: Response) => {
 }
 
 export const setCanReceiveEmail = async (req: Request, res: Response) => {
-  const userId = req.params.userId
+  const userId = res.locals.user.id
   const canReceive = req.body.canReceive
   if (typeof canReceive === 'boolean') {
     try {

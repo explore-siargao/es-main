@@ -2,22 +2,19 @@ import { API_URL_USERS } from "@/common/constants"
 import { useMutation } from "@tanstack/react-query"
 import { ApiService } from "@/common/service/api"
 
-export async function setReceivedEmail(
-  userId: number | string,
-  canReceive: boolean
-) {
+export async function setReceivedEmail(canReceive: boolean) {
   const apiService = new ApiService()
-  return await apiService.patch(`${API_URL_USERS}/${userId}/received-email`, {
+  return await apiService.patch(`${API_URL_USERS}/received-email`, {
     canReceive,
   })
 }
-function useSetReceivedEmail(
-  userId: number | string,
-  callbacks: { onSuccess: Function; onError: Function }
-) {
+function useSetReceivedEmail(callbacks: {
+  onSuccess: Function
+  onError: Function
+}) {
   const query = useMutation({
     mutationFn: ({ canReceive }: { canReceive: boolean }) =>
-      setReceivedEmail(userId, canReceive),
+      setReceivedEmail(canReceive),
     onSuccess: (data, variables, context) => {
       callbacks.onSuccess(data, variables, context)
     },
